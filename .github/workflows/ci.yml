@@ -1,0 +1,53 @@
+name: Build Project [myst]
+on: [push]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Anaconda
+        uses: goanpeca/setup-miniconda@v1
+        with:
+          auto-update-conda: true
+          auto-activate-base: true
+          miniconda-version: 'latest'
+          python-version: 3.8
+          environment-file: environment.yml
+          activate-environment: qe-lectures
+      - name: Install sphinxcontrib-tomyst
+        shell: bash -l {0}
+        run: |
+          git clone https://github.com/QuantEcon/sphinxcontrib-tomyst
+          cd sphinxcontrib-tomyst && python setup.py install
+      - name: Install quantecon-book-theme
+        shell: bash -l {0}
+        run: |
+          git clone https://github.com/QuantEcon/quantecon-book-theme
+          cd quantecon-book-theme
+          python setup.py install
+      - name: Install Dependencies
+        shell: bash -l {0}
+        run: |
+          pip install myst-nb
+      - name: Display Conda Environment Versions
+        shell: bash -l {0}
+        run: conda list
+      - name: Display Pip Versions
+        shell: bash -l {0}
+        run: pip list
+      - name: Build HTML
+        shell: bash -l {0}
+        run: |
+          pwd
+          make html
+      - name: Preview Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.1
+        with:
+          publish-dir: '_build/html/'
+          production-branch: master
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Preview Deploy from GitHub Actions"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
