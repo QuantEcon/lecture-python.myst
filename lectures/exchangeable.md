@@ -181,12 +181,12 @@ $G$ with probability $1 - \tilde \pi$.
 
 Thus, we  assume that the decision maker
 
-- **> knows**>  both $> F$>  and $> G$
-- **> doesnt't know**>  which of these two distributions that nature has drawn
-- > summarizing his ignorance by acting  as if or **> thinking**>  that nature chose distribution $> F$>  with probability $> \tilde \pi \in (0,1)$>  and distribution
-  > $> G$>  with probability $> 1 - \tilde \pi$
-- > at date $> t \geq 0$>  has observed  the partial history $> w_t, w_{t-1}, \ldots, w_0$>  of draws from the appropriate joint
-  > density of the partial history
+- **knows** both $F$ and $G$
+- **doesnt't know** which of these two distributions that nature has drawn
+- summarizing his ignorance by acting  as if or **thinking** that nature chose distribution $F$ with probability $\tilde \pi \in (0,1)$ and distribution
+  $G$ with probability $1 - \tilde \pi$
+- at date $t \geq 0$ has observed  the partial history $w_t, w_{t-1}, \ldots, w_0$ of draws from the appropriate joint
+  density of the partial history
 
 But what do we mean by the *appropriate joint distribution*?
 
@@ -616,7 +616,7 @@ periods when the sequence is truly IID draws from $G$. Again, we set the initial
 π_paths_G = simulate(a=3, b=1.2, T=T, N=1000)
 ```
 
-In  the above graph we observe that now  most paths $\pi_t \rightarrow 0$.
+In the above graph we observe that now  most paths $\pi_t \rightarrow 0$.
 
 ### Rates of convergence
 

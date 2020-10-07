@@ -104,9 +104,7 @@ $$
 1. Take an arbitary intial guess of $v$.
 1. Obtain an update $w$ defined by
    
-   > w(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
-   > 
-   >
+   w(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
 1. Stop if $w$ is approximately equal to $v$, otherwise set
    $v=w$ and go back to step 2.
 

@@ -49,22 +49,19 @@ The present lecture uses  additional  ideas including
   problem and the Hicks-Arrow prices.
 - A **Big** $K$ **, little** $k$ trick widely used in
   macroeconomic dynamics.
-
-* > We shall encounter this trick in [> this lecture](https://lectures.quantecon.org/py/rational_expectations.html#)> 
-  > and also in [> this lecture](https://lectures.quantecon.org/py/dyn_stack.html#)> .
-
+    * We shall encounter this trick in [this lecture](https://lectures.quantecon.org/py/rational_expectations.html#)
+      and also in [this lecture](https://lectures.quantecon.org/py/dyn_stack.html#).
 - A non-stochastic version of a theory of the **term structure of
   interest rates**.
 - An intimate connection between the cases for the optimality of two
   competing visions of good ways to organize an economy, namely:
-
-* **> socialism**>  in which a central planner commands the
-  > allocation of resources, and
-* **> capitalism**>  (also known as **> a  market economy**> ) in
-  > which competitive equilibrium **> prices**>  induce individual
-  > consumers and producers to choose a socially optimal allocation
-  > as an unintended consequence of their selfish
-  > decisions
+    * **socialism** in which a central planner commands the
+      allocation of resources, and
+    * **capitalism** (also known as **a  market economy**) in
+      which competitive equilibrium **prices** induce individual
+      consumers and producers to choose a socially optimal allocation
+      as an unintended consequence of their selfish
+      decisions
 
 Let's start with some standard imports:
 
@@ -581,7 +578,7 @@ which is {eq}`constraint3`.
 Combining {eq}`cond4` and {eq}`eq-price`, we get:
 
 $$
-- \beta^{T+1} \mu_{T+1} \leq 0
+-\beta^{T+1} \mu_{T+1} \leq 0
 $$
 
 Dividing both sides by $\beta^{T+1}$ gives
