@@ -214,8 +214,8 @@ unstable root (in this case $\lambda_2$) **forward**.
 
 Equation {eq}`equn_7` has a form that we shall encounter often.
 
-* $> \lambda_1 y_t$>  is called the **> feedback part**
-* $> -{\frac{\lambda_2^{-1}}{1 - \lambda_2^{-1}L^{-1}}} u_{t+1}$>  is called the **> feedforward part**
+* $\lambda_1 y_t$ is called the **feedback part**
+* $-{\frac{\lambda_2^{-1}}{1 - \lambda_2^{-1}L^{-1}}} u_{t+1}$ is called the **feedforward part**
 
 ## Illustration: Cagan's Model
 

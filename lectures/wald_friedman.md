@@ -108,7 +108,7 @@ Let's listen to Milton Friedman tell us what happened
 > few thousand or even few hundred [rounds] that the experiment need not
 > be completed either because the new method is obviously inferior or
 > because it is obviously superior beyond what was hoped for
-> $> \ldots$> .
+> $\ldots$.
 
 Friedman and Wallis struggled with the problem but, after realizing that
 they were not able to solve it,  described the problem to  Abraham Wald.
@@ -824,14 +824,14 @@ To quote Abraham Wald,
 
 > A test procedure leading to the acceptance or rejection of the [null]
 > hypothesis in question is simply a rule specifying, for each possible
-> sample of size $> n$> , whether the [null] hypothesis should be accepted
+> sample of size $n$, whether the [null] hypothesis should be accepted
 > or rejected on the basis of the sample. This may also be expressed as
 > follows: A test procedure is simply a subdivision of the totality of
-> all possible samples of size $> n$>  into two mutually exclusive
+> all possible samples of size $n$ into two mutually exclusive
 > parts, say part 1 and part 2, together with the application of the
 > rule that the [null] hypothesis be accepted if the observed sample is
 > contained in part 2. Part 1 is also called the critical region. Since
-> part 2 is the totality of all samples of size $> n$>  which are not
+> part 2 is the totality of all samples of size $n$ which are not
 > included in part 1, part 2 is uniquely determined by part 1. Thus,
 > choosing a test procedure is equivalent to determining a critical
 > region.
@@ -840,45 +840,45 @@ Let's listen to Wald longer:
 
 > As a basis for choosing among critical regions the following
 > considerations have been advanced by Neyman and Pearson: In accepting
-> or rejecting $> H_0$>  we may commit errors of two kinds. We commit
-> an error of the first kind if we reject $> H_0$>  when it is true;
-> we commit an error of the second kind if we accept $> H_0$>  when
-> $> H_1$>  is true. After a particular critical region $> W$>  has
+> or rejecting $H_0$ we may commit errors of two kinds. We commit
+> an error of the first kind if we reject $H_0$ when it is true;
+> we commit an error of the second kind if we accept $H_0$ when
+> $H_1$ is true. After a particular critical region $W$ has
 > been chosen, the probability of committing an error of the first
 > kind, as well as the probability of committing an error of the second
 > kind is uniquely determined. The probability of committing an error
 > of the first kind is equal to the probability, determined by the
-> assumption that $> H_0$>  is true, that the observed sample will be
-> included in the critical region $> W$> . The probability of
+> assumption that $H_0$ is true, that the observed sample will be
+> included in the critical region $W$. The probability of
 > committing an error of the second kind is equal to the probability,
-> determined on the assumption that $> H_1$>  is true, that the
-> probability will fall outside the critical region $> W$> . For any
-> given critical region $> W$>  we shall denote the probability of an
-> error of the first kind by $> \alpha$>  and the probability of an
-> error of the second kind by $> \beta$> .
+> determined on the assumption that $H_1$ is true, that the
+> probability will fall outside the critical region $W$. For any
+> given critical region $W$ we shall denote the probability of an
+> error of the first kind by $\alpha$ and the probability of an
+> error of the second kind by $\beta$.
 
 Let's listen carefully to how Wald applies law of large numbers to
 interpret $\alpha$ and $\beta$:
 
-> The probabilities $> \alpha$>  and $> \beta$>  have the
+> The probabilities $\alpha$ and $\beta$ have the
 > following important practical interpretation: Suppose that we draw a
-> large number of samples of size $> n$> . Let $> M$>  be the
+> large number of samples of size $n$. Let $M$ be the
 > number of such samples drawn. Suppose that for each of these
-> $> M$>  samples we reject $> H_0$>  if the sample is included in
-> $> W$>  and accept $> H_0$>  if the sample lies outside
-> $> W$> . In this way we make $> M$>  statements of rejection or
+> $M$ samples we reject $H_0$ if the sample is included in
+> $W$ and accept $H_0$ if the sample lies outside
+> $W$. In this way we make $M$ statements of rejection or
 > acceptance. Some of these statements will in general be wrong. If
-> $> H_0$>  is true and if $> M$>  is large, the probability is
-> nearly $> 1$>  (i.e., it is practically certain) that the
+> $H_0$ is true and if $M$ is large, the probability is
+> nearly $1$ (i.e., it is practically certain) that the
 > proportion of wrong statements (i.e., the number of wrong statements
-> divided by $> M$> ) will be approximately $> \alpha$> . If
-> $> H_1$>  is true, the probability is nearly $> 1$>  that the
-> proportion of wrong statements will be approximately $> \beta$> .
+> divided by $M$) will be approximately $\alpha$. If
+> $H_1$ is true, the probability is nearly $1$ that the
+> proportion of wrong statements will be approximately $\beta$.
 > Thus, we can say that in the long run [ here Wald applies law of
-> large numbers by driving $> M \rightarrow \infty$>  (our comment,
+> large numbers by driving $M \rightarrow \infty$ (our comment,
 > not Wald's) ] the proportion of wrong statements will be
-> $> \alpha$>  if $> H_0$> is true and $> \beta$>  if
-> $> H_1$>  is true.
+> $\alpha$ if $H_0$is true and $\beta$ if
+> $H_1$ is true.
 
 The quantity $\alpha$ is called the *size* of the critical region,
 and the quantity $1-\beta$ is called the *power* of the critical
@@ -886,26 +886,26 @@ region.
 
 Wald notes that
 
-> one critical region $> W$>  is more desirable than another if it
-> has smaller values of $> \alpha$>  and $> \beta$> . Although
-> either $> \alpha$>  or $> \beta$>  can be made arbitrarily small
-> by a proper choice of the critical region $> W$> , it is possible
-> to make both $> \alpha$>  and $> \beta$>  arbitrarily small for a
-> fixed value of $> n$> , i.e., a fixed sample size.
+> one critical region $W$ is more desirable than another if it
+> has smaller values of $\alpha$ and $\beta$. Although
+> either $\alpha$ or $\beta$ can be made arbitrarily small
+> by a proper choice of the critical region $W$, it is possible
+> to make both $\alpha$ and $\beta$ arbitrarily small for a
+> fixed value of $n$, i.e., a fixed sample size.
 
 Wald summarizes Neyman and Pearson's setup as follows:
 
 > Neyman and Pearson show that a region consisting of all samples
-> $> (z_1, z_2, \ldots, z_n)$>  which satisfy the inequality
-
-$$
+> $(z_1, z_2, \ldots, z_n)$ which satisfy the inequality
+> 
+> $$
 > \frac{ f_1(z_1) \cdots f_1(z_n)}{f_0(z_1) \cdots f_0(z_n)} \geq k
-$$
-
+> $$
+> 
 > is a most powerful critical region for testing the hypothesis
-> $> H_0$>  against the alternative hypothesis $> H_1$> . The term
-> $> k$>  on the right side is a constant chosen so that the region
-> will have the required size $> \alpha$> .
+> $H_0$ against the alternative hypothesis $H_1$. The term
+> $k$ on the right side is a constant chosen so that the region
+> will have the required size $\alpha$.
 
 Wald goes on to discuss Neyman and Pearson's concept of *uniformly most
 powerful* test.

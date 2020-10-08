@@ -53,15 +53,15 @@ Its many applications include:
 * representing dynamics of higher-order linear systems
 * predicting the position of a system $j$ steps into the future
 * predicting a geometric sum of future values of a variable like
-    * > non-financial income
-    * > dividends on a stock
-    * > the money supply
-    * > a government deficit or surplus, etc.
+    * non-financial income
+    * dividends on a stock
+    * the money supply
+    * a government deficit or surplus, etc.
 * key ingredient of useful models
-    * > Friedman's permanent income model of consumption smoothing.
-    * > Barro's model of smoothing total tax collections.
-    * > Rational expectations version of Cagan's model of hyperinflation.
-    * > Sargent and Wallace's "unpleasant monetarist arithmetic," etc.
+    * Friedman's permanent income model of consumption smoothing.
+    * Barro's model of smoothing total tax collections.
+    * Rational expectations version of Cagan's model of hyperinflation.
+    * Sargent and Wallace's "unpleasant monetarist arithmetic," etc.
 
 Let's start with some imports:
 

@@ -445,16 +445,16 @@ Note the substantial differences between hypergeometric distribution and the app
 The off-diagonal graphs plot the empirical joint distribution of
 $k_i$ and $k_j$ for each pair $(i, j)$.
 
-> The darker the blue, the more data points are contained in the corresponding cell.  (Note that $> k_i$>  is on the x-axis and $> k_j$>  is on the y-axis).
+The darker the blue, the more data points are contained in the corresponding cell.  (Note that $k_i$ is on the x-axis and $k_j$ is on the y-axis).
 
-> The contour maps plot the bivariate Gaussian density function of $> \left(k_i, k_j\right)$>  with the population mean and covariance given by slices of $> \mu$>  and $> \Sigma$>  that we computed above.
+The contour maps plot the bivariate Gaussian density function of $\left(k_i, k_j\right)$ with the population mean and covariance given by slices of $\mu$ and $\Sigma$ that we computed above.
 
 Let's also test the normality for each $k_i$ using `scipy.stats.normaltest` that implements D’Agostino and Pearson's
 test that combines skew and kurtosis to form an omnibus test of normality.
 
 The null hypothesis is that the sample follows normal distribution.
 
-> `normaltest`>  returns an array of p-values associated with tests for each $> k_i$>  sample.
+> `normaltest` returns an array of p-values associated with tests for each $k_i$ sample.
 
 ```{code-cell} python3
 test_multihyper = normaltest(sample)

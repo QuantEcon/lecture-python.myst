@@ -563,16 +563,16 @@ In the module, the various updating, simulation and fixed point methods
 are wrapped in a class  called `LQ`, which includes
 
 * Instance data:
-    * > The required parameters $> Q, R, A, B$>  and optional parameters > C, β, T, R_f, N>  specifying a given LQ model
-        * > set $> T$>  and $> R_f$>  to `> None`>  in the infinite horizon case
-        * > set `> C = None`>  (or zero) in the deterministic case
+    * The required parameters $Q, R, A, B$ and optional parameters C, β, T, R_f, N specifying a given LQ model
+        * set $T$ and $R_f$ to `None` in the infinite horizon case
+        * set `C = None` (or zero) in the deterministic case
     * the value function and policy data
-        * $> d_t, P_t, F_t$>  in the finite horizon case
-        * $> d, P, F$>  in the infinite horizon case
+        * $d_t, P_t, F_t$ in the finite horizon case
+        * $d, P, F$ in the infinite horizon case
 * Methods:
-    * `> update_values`>  --- shifts $> d_t, P_t, F_t$>  to their $> t-1$>  values via {eq}`lq_pr`> , {eq}`lq_dd`>  and {eq}`lq_oc`
-    * `> stationary_values`>  --- computes $> P, d, F$>  in the infinite horizon case
-    * `> compute_sequence`>  ---- simulates the dynamics of $> x_t, u_t, w_t$>  given $> x_0$>  and assuming standard normal shocks
+    * `update_values` --- shifts $d_t, P_t, F_t$ to their $t-1$ values via {eq}`lq_pr`, {eq}`lq_dd` and {eq}`lq_oc`
+    * `stationary_values` --- computes $P, d, F$ in the infinite horizon case
+    * `compute_sequence` ---- simulates the dynamics of $x_t, u_t, w_t$ given $x_0$ and assuming standard normal shocks
 
 (lq_mfpa)=
 ### An Application
