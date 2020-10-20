@@ -83,7 +83,7 @@ One way to summarize our knowledge is a point prediction $\hat x$
 
 * But what if the President wants to know the probability that the missile is currently over the Sea of Japan?
 * Then it is better to summarize our initial beliefs with a bivariate probability density $p$
-    * $> \int_E p(x)dx$>  indicates the probability that we attach to the missile being in region $> E$> .
+  * $\int_E p(x)dx$ indicates the probability that we attach to the missile being in region $E$.
 
 The density $p$ is called our *prior* for the random variable $x$.
 
@@ -507,8 +507,8 @@ In this case, for any initial choice of $\Sigma_0$ that is both non-negative and
 The class `Kalman` from the [QuantEcon.py](http://quantecon.org/quantecon-py) package implements the Kalman filter
 
 * Instance data consists of:
-    * > the moments $> (\hat x_t, \Sigma_t)$>  of the current prior.
-    * > An instance of the [> LinearStateSpace](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py)>  class from [> QuantEcon.py](http://quantecon.org/quantecon-py)> .
+    * the moments $(\hat x_t, \Sigma_t)$ of the current prior.
+    * An instance of the [LinearStateSpace](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) class from [QuantEcon.py](http://quantecon.org/quantecon-py).
 
 The latter represents a linear state space model of the form
 
@@ -530,10 +530,10 @@ $$
 
 * The class `Kalman` from the [QuantEcon.py](http://quantecon.org/quantecon-py) package has a number of methods, some that we will wait to use until we study more advanced applications in subsequent lectures.
 * Methods pertinent for this lecture  are:
-    * `> prior_to_filtered`> , which updates $> (\hat x_t, \Sigma_t)$>  to $> (\hat x_t^F, \Sigma_t^F)$
-    * `> filtered_to_forecast`> , which updates the filtering distribution to the predictive distribution -- which becomes the new prior $> (\hat x_{t+1}, \Sigma_{t+1})$
-    * `> update`> , which combines the last two methods
-    * > a `> stationary_values`> , which computes the solution to {eq}`kalman_dare`>  and the corresponding (stationary) Kalman gain
+    * `prior_to_filtered`, which updates $(\hat x_t, \Sigma_t)$ to $(\hat x_t^F, \Sigma_t^F)$
+    * `filtered_to_forecast`, which updates the filtering distribution to the predictive distribution -- which becomes the new prior $(\hat x_{t+1}, \Sigma_{t+1})$
+    * `update`, which combines the last two methods
+    * a `stationary_values`, which computes the solution to {eq}`kalman_dare` and the corresponding (stationary) Kalman gain
 
 You can view the program [on GitHub](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/kalman.py).
 

@@ -575,7 +575,7 @@ Recall the planner's problem {ref}`described above <ree_pp>`
 
 1. Formulate the planner's problem as an LQ problem.
 1. Solve it using the same parameter values in exercise 1
-    * $> a_0= 100, a_1= 0.05, \beta = 0.95, \gamma=10$
+    * $a_0= 100, a_1= 0.05, \beta = 0.95, \gamma=10$
 1. Represent the solution in the form $Y_{t+1} = \kappa_0 + \kappa_1 Y_t$.
 1. Compare your answer with the results from exercise 2.
 

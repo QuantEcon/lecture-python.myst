@@ -70,7 +70,7 @@ Economists differ in how they define a *bubble*.
 
 The Harrison-Kreps model illustrates the following notion of a bubble that attracts many economists:
 
-*> A component of an asset price can be interpreted as a bubble when all investors agree that the current price of the asset exceeds what they believe the asset's underlying dividend stream justifies*> .
+> *A component of an asset price can be interpreted as a bubble when all investors agree that the current price of the asset exceeds what they believe the asset's underlying dividend stream justifies*.
 
 ## Structure of the Model
 

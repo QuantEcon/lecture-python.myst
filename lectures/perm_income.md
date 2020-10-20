@@ -600,10 +600,10 @@ Using  these formulas together with {eq}`sprob15ab` and substituting  into {eq}`
 Representation {eq}`sprob16abcd` makes clear that
 
 * The state can be taken as $(c_t, z_t)$.
-    * > The endogenous part is $> c_t$>  and the exogenous part is $> z_t$> .
-    * > Debt $> b_t$>  has disappeared as a component of the state because it is encoded in $> c_t$> .
+    * The endogenous part is $c_t$ and the exogenous part is $z_t$.
+    * Debt $b_t$ has disappeared as a component of the state because it is encoded in $c_t$.
 * Consumption is a random walk with innovation $(1-\beta) U  (I-\beta A)^{-1} C w_{t+1}$.
-    * > This is a more explicit representation of the martingale result in {eq}`sprob5`> .
+    * This is a more explicit representation of the martingale result in {eq}`sprob5`.
 
 (coint_pi)=
 ### Cointegration

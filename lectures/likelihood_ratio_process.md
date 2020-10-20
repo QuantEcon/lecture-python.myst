@@ -40,10 +40,10 @@ We'll use a setting described in {doc}`this lecture <exchangeable>`.
 
 Among the things that we'll learn about are
 
-* > A peculiar property of likelihood ratio processes
-* > How a likelihood ratio process is the key ingredient in frequentist hypothesis testing
-* > How a **> receiver operator characteristic curve**>  summarizes information about a false alarm probability and power in frequentist hypothesis testing
-* > How during World War II the United States Navy devised a decision rule that Captain Garret L. Schyler challenged and asked Milton Friedman to justify to him, a topic to be studied in  {doc}`this lecture <wald_friedman>`
+* A peculiar property of likelihood ratio processes
+* How a likelihood ratio process is the key ingredient in frequentist hypothesis testing
+* How a **receiver operator characteristic curve** summarizes information about a false alarm probability and power in frequentist hypothesis testing
+* How during World War II the United States Navy devised a decision rule that Captain Garret L. Schyler challenged and asked Milton Friedman to justify to him, a topic to be studied in  {doc}`this lecture <wald_friedman>`
 
 ## Likelihood Ratio Process
 

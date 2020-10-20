@@ -149,7 +149,7 @@ The adjective "Markov" denotes that the equilibrium decision rules depend only o
 
 "Perfect" means complete, in the sense that the equilibrium is constructed by backward induction and hence builds in optimizing behavior for each firm at all possible future states.
 
-* > These include many states that will not be reached when we iterate forward on the pair of equilibrium strategies $> f_i$>  starting from a given initial state.
+* These include many states that will not be reached when we iterate forward on the pair of equilibrium strategies $f_i$ starting from a given initial state.
 
 ### Computation
 

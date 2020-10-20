@@ -478,9 +478,9 @@ The examples differ only in  the initial states with which we endow the consumer
 All other parameter values are kept the same in the two examples
 
 - In the first example, all consumers begin with zero nonfinancial income and zero debt.
-    * > The consumers are thus *> ex-ante*>  identical.
+    * The consumers are thus *ex-ante* identical.
 - In the second example, while all begin with zero debt, we draw their initial income levels from the invariant distribution of financial income.
-    * > Consumers are *> ex-ante*>  heterogeneous.
+    * Consumers are *ex-ante* heterogeneous.
 
 In the first example, consumers' nonfinancial income paths  display
 pronounced transients early in the sample

@@ -417,20 +417,20 @@ To use the algorithm, we take an initial guess at the maximum value,
 $\beta_0$ (the OLS parameter estimates might be a reasonable
 guess), then
 
-$$
-$$
-
-$$
-$$
-
 1. Use the updating rule to iterate the algorithm
    
-   \boldsymbol{\beta}_{(k+1)} = \boldsymbol{\beta}_{(k)} - H^{-1}(\boldsymbol{\beta}_{(k)})G(\boldsymbol{\beta}_{(k)})where:
+   $$
+   \boldsymbol{\beta}_{(k+1)} = \boldsymbol{\beta}_{(k)} - H^{-1}(\boldsymbol{\beta}_{(k)})G(\boldsymbol{\beta}_{(k)})
+   $$
+   where:
    
+   $$
    \begin{aligned}
    G(\boldsymbol{\beta}_{(k)}) = \frac{d \log \mathcal{L(\boldsymbol{\beta}_{(k)})}}{d \boldsymbol{\beta}_{(k)}} \\
    H(\boldsymbol{\beta}_{(k)}) = \frac{d^2 \log \mathcal{L(\boldsymbol{\beta}_{(k)})}}{d \boldsymbol{\beta}_{(k)}d \boldsymbol{\beta}'_{(k)}}
    \end{aligned}
+   $$
+   
 1. Check whether $\boldsymbol{\beta}_{(k+1)} - \boldsymbol{\beta}_{(k)} < tol$
     - If true, then stop iterating and set
       $\hat{\boldsymbol{\beta}} = \boldsymbol{\beta}_{(k+1)}$

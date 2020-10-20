@@ -285,7 +285,7 @@ The term $\int v(f(y - c) z) \phi(dz)$ can be understood as the expected next pe
 
 As shown in [EDTC](http://johnstachurski.net/edtc.html), theorem 10.1.11 and a range of other texts
 
-*> The value function*>  $> v^*$>  *> satisfies the Bellman equation*
+> *The value function* $v^*$ *satisfies the Bellman equation*
 
 In other words, {eq}`fpb30` holds when $v=v^*$.
 
@@ -324,7 +324,7 @@ function.
 
 In our setting, we have the following key result
 
-* > A feasible consumption policy is optimal if and only if it is $> v^*$> -greedy.
+* A feasible consumption policy is optimal if and only if it is $v^*$-greedy.
 
 The intuition is similar to the intuition for the Bellman equation, which was
 provided after {eq}`fpb30`.
