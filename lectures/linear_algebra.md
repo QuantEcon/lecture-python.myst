@@ -202,7 +202,7 @@ plt.show()
 ```
 
 In Python, a vector can be represented as a list or tuple, such as `x = (2, 4, 6)`, but is more commonly
-represented as a [NumPy array](http://python-programming.quantecon.org/numpy.html#NumPy-Arrays).
+represented as a [NumPy array](https://python-programming.quantecon.org/numpy.html#numpy-arrays).
 
 One advantage of NumPy arrays is that scalar multiplication and addition have very natural syntax
 
@@ -594,13 +594,13 @@ A.shape
 ```
 
 The `shape` attribute is a tuple giving the number of rows and columns ---
-see [here](https://python-programming.quantecon.org/numpy.html#Shape-and-Dimension)
+see [here](https://python-programming.quantecon.org/numpy.html#shape-and-dimension)
 for more discussion.
 
 To get the transpose of `A`, use `A.transpose()` or, more simply, `A.T`.
 
 There are many convenient functions for creating common matrices (matrices of zeros,
-ones, etc.) --- see [here](https://python-programming.quantecon.org/numpy.html#Creating-Arrays).
+ones, etc.) --- see [here](https://python-programming.quantecon.org/numpy.html#creating-arrays).
 
 Since operations are performed elementwise by default, scalar multiplication and addition have very natural syntax
 
@@ -618,7 +618,7 @@ To multiply matrices we use the `@` symbol.
 
 In particular, `A @ B` is matrix multiplication, whereas `A * B` is element-by-element multiplication.
 
-See [here](https://python-programming.quantecon.org/numpy.html#Matrix-Multiplication) for more discussion.
+See [here](https://python-programming.quantecon.org/numpy.html#matrix-multiplication) for more discussion.
 
 (la_linear_map)=
 ### Matrices as Maps
@@ -1360,7 +1360,7 @@ $v(x) = -x' \tilde{P}x$ follows the above result by denoting
 $\tilde{P} := A'PA - A'PB(Q + B'PB)^{-1}B'PA$
 
 [^fn_mdt]: Although there is a specialized matrix data type defined in NumPy, it's more standard to work with ordinary NumPy arrays.
-See [this discussion](https://python-programming.quantecon.org/numpy.html#Matrix-Multiplication).
+See [this discussion](https://python-programming.quantecon.org/numpy.html#matrix-multiplication).
 
 [^cfn]: Suppose that $\|S \| < 1$. Take any nonzero vector $x$, and let $r := \|x\|$. We have $\| Sx \| = r \| S (x/r) \| \leq r \| S \| < r = \| x\|$. Hence every point is pulled towards the origin.
 
