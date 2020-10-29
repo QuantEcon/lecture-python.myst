@@ -154,8 +154,8 @@ One good choice from both respects is continuous piecewise linear interpolation.
 
 This method
 
-{cite}`gordon1995stable`{cite}`stachurski2008continuous`1. combines well with value function iteration (see., e.g.,
-    or ) and
+``1. combines well with value function iteration (see., e.g.,
+   {cite}`gordon1995stable or {cite}`stachurski2008continuous) and
 1. preserves useful shape properties such as monotonicity and concavity/convexity.
 
 Linear interpolation will be implemented using a JIT-aware Python interpolation library called [interpolation.py](https://github.com/EconForge/interpolation.py).

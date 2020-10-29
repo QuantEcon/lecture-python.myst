@@ -61,9 +61,9 @@ In reading what follows, it will be useful to have some familiarity with
 
 For additional reading on LQ control, see, for example,
 
-{cite}`Ljungqvist2012`{cite}`HansenSargent2008`{cite}`HernandezLermaLasserre1996`* , chapter 5
-* , chapter 4
-* , section 3.5
+```* {cite}`Ljungqvist2012, chapter 5
+* {cite}`HansenSargent2008, chapter 4
+* {cite}`HernandezLermaLasserre1996, section 3.5
 
 In order to focus on computation, we leave longer proofs to these sources (while trying to provide as much intuition as possible).
 

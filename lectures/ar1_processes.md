@@ -302,8 +302,8 @@ whenever the integral on the right hand side is finite and well defined.
 
 Notes:
 
-{cite}`MeynTweedie2009`* In {eq}`ar1_ergo`, convergence holds with probability one.
-* The textbook by  is a classic reference on ergodicity.
+`* In {eq}`ar1_ergo`, convergence holds with probability one.
+* The textbook by {cite}`MeynTweedie2009 is a classic reference on ergodicity.
 
 For example, if we consider the identity function $h(x) = x$, we get
 

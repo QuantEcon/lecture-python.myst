@@ -41,7 +41,7 @@ tags: [hide-output]
 
 In this section, we solve a simple on-the-job search model
 
-{cite}`Ljungqvist2012`{cite}`Jovanovic1979`* based on , exercise 6.18, and 
+``* based on {cite}`Ljungqvist2012, exercise 6.18, and {cite}`Jovanovic1979
 
 Let's start with some imports:
 

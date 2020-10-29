@@ -63,10 +63,10 @@ The model determines  the price level or rate of inflation as a function of  the
 
 In this lecture, we'll encounter:
 
-{cite}`Blanchard_Khan`{cite}`Whiteman`* a convenient formula for the expectation of geometric sum of future values of a variable
+``* a convenient formula for the expectation of geometric sum of future values of a variable
 * a way of solving an expectational difference equation by mapping it into a vector first-order difference equation and appropriately manipulating an eigen decomposition of the transition matrix in order to impose stability
 * a way to use a Big $K$, little $k$ argument to allow apparent feedback from endogenous to exogenous variables within a rational expectations equilibrium
-* a use of eigenvector decompositions of matrices that allowed Blanchard and Khan (1981)  and Whiteman (1983)  to solve a class of linear rational expectations models
+* a use of eigenvector decompositions of matrices that allowed Blanchard and Khan (1981) {cite}`Blanchard_Khan and Whiteman (1983) {cite}`Whiteman to solve a class of linear rational expectations models
 * how to use **SymPy** to get analytical formulas for some key objects comprising a rational expectations equilibrium
 
 We formulate a version of  Cagan's model under  rational expectations

@@ -53,9 +53,9 @@ The model features
 
 The Aiyagari model has been used to investigate many topics, including
 
-{cite}`Aiyagari1994`{cite}`Heaton1996`{cite}`benhabib2015`* precautionary savings and the effect of liquidity constraints 
-* risk sharing and asset pricing 
-* the shape of the wealth distribution 
+```* precautionary savings and the effect of liquidity constraints {cite}`Aiyagari1994
+* risk sharing and asset pricing {cite}`Heaton1996
+* the shape of the wealth distribution {cite}`benhabib2015
 * etc., etc., etc.
 
 Let's start with some imports:

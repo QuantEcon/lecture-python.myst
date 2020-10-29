@@ -45,7 +45,8 @@ This lecture provides a simple and intuitive introduction to the Kalman filter, 
 
 For additional (more advanced) reading on the Kalman filter, see
 
-{cite}`Ljungqvist2012`{cite}`AndersonMoore2005`* , section 2.7
+``* {cite}`Ljungqvist2012, section 2.7
+* {cite}`AndersonMoore2005
 
 The second reference presents a  comprehensive treatment of the Kalman filter.
 
