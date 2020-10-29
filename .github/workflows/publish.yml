@@ -1,0 +1,36 @@
+name: Build & Publish to GH Pages
+on:
+  push:
+    branches:
+      - master
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Anaconda
+        uses: goanpeca/setup-miniconda@v1
+        with:
+          auto-update-conda: true
+          auto-activate-base: true
+          miniconda-version: 'latest'
+          python-version: 3.8
+          environment-file: environment.yml
+          activate-environment: lecture-python
+      - name: Display Conda Environment Versions
+        shell: bash -l {0}
+        run: conda list
+      - name: Display Pip Versions
+        shell: bash -l {0}
+        run: pip list
+      - name: Build HTML
+        shell: bash -l {0}
+        run: |
+          jb build lectures --path-output ./
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _build/html/
+          cname: python-programming.quantecon.org
