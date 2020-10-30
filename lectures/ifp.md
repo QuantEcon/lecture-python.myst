@@ -475,37 +475,7 @@ start to iterate.
 The following function iterates to convergence and returns the approximate
 optimal policy.
 
-```
----
-lineno-start: 1
----
-def solve_model_time_iter(model,    # Class with model information
-                          σ,        # Initial condition
-                          tol=1e-4,
-                          max_iter=1000,
-                          verbose=True,
-                          print_skip=25):
-
-    # Set up loop
-    i = 0
-    error = tol + 1
-
-    while i < max_iter and error > tol:
-        σ_new = K(σ, model)
-        error = np.max(np.abs(σ - σ_new))
-        i += 1
-        if verbose and i % print_skip == 0:
-            print(f"Error at iteration {i} is {error}.")
-        σ = σ_new
-
-    if i == max_iter:
-        print("Failed to converge!")
-
-    if verbose and i < max_iter:
-        print(f"\nConverged in {i} iterations.")
-
-    return σ_new
-
+```{literalinclude} _static/lecture_specific/coleman_policy_iter/solve_time_iter.py
 ```
 
 Let's carry this out using the default parameters of the `IFP` class:
@@ -548,20 +518,7 @@ In this case, our income fluctuation problem is just a cake eating problem.
 We know that, in this case, the value function and optimal consumption policy
 are given by
 
-```
----
-lineno-start: 1
----
-def c_star(x, β, γ):
-
-    return (1 - β ** (1/γ)) * x
-
-
-def v_star(x, β, γ):
-
-    return (1 - β**(1 / γ))**(-γ) * (x**(1-γ) / (1-γ))
-
-
+```{literalinclude} _static/lecture_specific/cake_eating_numerical/analytical.py
 ```
 
 Let's see if we match up:

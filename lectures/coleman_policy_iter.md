@@ -266,28 +266,7 @@ As in our {doc}`previous study <optgrowth_fast>`, we continue to assume that
 
 This will allow us to compare our results to the analytical solutions
 
-```
----
-lineno-start: 1
----
-
-def v_star(y, α, β, μ):
-    """
-    True value function
-    """
-    c1 = np.log(1 - α * β) / (1 - β)
-    c2 = (μ + α * np.log(α * β)) / (1 - α)
-    c3 = 1 / (1 - β)
-    c4 = 1 / (1 - α * β)
-    return c1 + c2 * (c3 - c4) + c4 * np.log(y)
-
-def σ_star(y, α, β):
-    """
-    True optimal policy
-    """
-    return (1 - α * β) * y
-
-
+```{literalinclude} _static/lecture_specific/optgrowth/cd_analytical.py
 ```
 
 As discussed above, our plan is to solve the model using time iteration, which
@@ -298,67 +277,7 @@ For this we need access to the functions $u'$ and $f, f'$.
 These are available in a class called `OptimalGrowthModel` that we
 constructed in an {doc}`earlier lecture <optgrowth_fast>`.
 
-```
----
-lineno-start: 1
----
-
-opt_growth_data = [
-    ('α', float64),          # Production parameter
-    ('β', float64),          # Discount factor
-    ('μ', float64),          # Shock location parameter
-    ('s', float64),          # Shock scale parameter
-    ('grid', float64[:]),    # Grid (array)
-    ('shocks', float64[:])   # Shock draws (array)
-]
-
-@jitclass(opt_growth_data)
-class OptimalGrowthModel:
-
-    def __init__(self,
-                α=0.4, 
-                β=0.96, 
-                μ=0,
-                s=0.1,
-                grid_max=4,
-                grid_size=120,
-                shock_size=250,
-                seed=1234):
-
-        self.α, self.β, self.μ, self.s = α, β, μ, s
-
-        # Set up grid
-        self.grid = np.linspace(1e-5, grid_max, grid_size)
-
-        # Store shocks (with a seed, so results are reproducible)
-        np.random.seed(seed)
-        self.shocks = np.exp(μ + s * np.random.randn(shock_size))
-       
-
-    def f(self, k):
-        "The production function"
-        return k**self.α
-       
-
-    def u(self, c):
-        "The utility function"
-        return np.log(c)
-
-    def f_prime(self, k):
-        "Derivative of f"
-        return self.α * (k**(self.α - 1))
-
-
-    def u_prime(self, c):
-        "Derivative of u"
-        return 1/c
-
-    def u_prime_inv(self, c):
-        "Inverse of u'"
-        return 1/c
-
-
-
+```{literalinclude} _static/lecture_specific/optgrowth_fast/ogm.py
 ```
 
 Now we implement a method called `euler_diff`, which returns
@@ -454,37 +373,7 @@ Here is a function called `solve_model_time_iter` that takes an instance of
 `OptimalGrowthModel` and returns an approximation to the optimal policy,
 using time iteration.
 
-```
----
-lineno-start: 1
----
-def solve_model_time_iter(model,    # Class with model information
-                          σ,        # Initial condition
-                          tol=1e-4,
-                          max_iter=1000,
-                          verbose=True,
-                          print_skip=25):
-
-    # Set up loop
-    i = 0
-    error = tol + 1
-
-    while i < max_iter and error > tol:
-        σ_new = K(σ, model)
-        error = np.max(np.abs(σ - σ_new))
-        i += 1
-        if verbose and i % print_skip == 0:
-            print(f"Error at iteration {i} is {error}.")
-        σ = σ_new
-
-    if i == max_iter:
-        print("Failed to converge!")
-
-    if verbose and i < max_iter:
-        print(f"\nConverged in {i} iterations.")
-
-    return σ_new
-
+```{literalinclude} _static/lecture_specific/coleman_policy_iter/solve_time_iter.py
 ```
 
 Let's call it:
@@ -549,66 +438,7 @@ Compute and plot the optimal policy.
 
 We use the class `OptimalGrowthModel_CRRA` from our {doc}`VFI lecture <optgrowth_fast>`.
 
-```
----
-lineno-start: 1
----
-
-
-opt_growth_data = [
-    ('α', float64),          # Production parameter
-    ('β', float64),          # Discount factor
-    ('μ', float64),          # Shock location parameter
-    ('γ', float64),          # Preference parameter
-    ('s', float64),          # Shock scale parameter
-    ('grid', float64[:]),    # Grid (array)
-    ('shocks', float64[:])   # Shock draws (array)
-]
-
-@jitclass(opt_growth_data)
-class OptimalGrowthModel_CRRA:
-
-    def __init__(self,
-                α=0.4, 
-                β=0.96, 
-                μ=0,
-                s=0.1,
-                γ=1.5, 
-                grid_max=4,
-                grid_size=120,
-                shock_size=250,
-                seed=1234):
-
-        self.α, self.β, self.γ, self.μ, self.s = α, β, γ, μ, s
-
-        # Set up grid
-        self.grid = np.linspace(1e-5, grid_max, grid_size)
-
-        # Store shocks (with a seed, so results are reproducible)
-        np.random.seed(seed)
-        self.shocks = np.exp(μ + s * np.random.randn(shock_size))
-       
-
-    def f(self, k):
-        "The production function."
-        return k**self.α
-
-    def u(self, c):
-        "The utility function."
-        return c**(1 - self.γ) / (1 - self.γ)
-
-    def f_prime(self, k):
-        "Derivative of f."
-        return self.α * (k**(self.α - 1))
-
-    def u_prime(self, c):
-        "Derivative of u."
-        return c**(-self.γ)
-
-    def u_prime_inv(c):
-        return c**(-1 / self.γ)
-
-
+```{literalinclude} _static/lecture_specific/optgrowth_fast/ogm_crra.py
 ```
 
 Let's create an instance:

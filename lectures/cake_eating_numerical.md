@@ -72,20 +72,7 @@ where $u$ is the CRRA utility function.
 The analytical solutions for the value function and optimal policy were found
 to be as follows.
 
-```
----
-lineno-start: 1
----
-def c_star(x, β, γ):
-
-    return (1 - β ** (1/γ)) * x
-
-
-def v_star(x, β, γ):
-
-    return (1 - β**(1 / γ))**(-γ) * (x**(1-γ) / (1-γ))
-
-
+```{literalinclude} _static/lecture_specific/cake_eating_numerical/analytical.py
 ```
 
 Our first aim is to obtain these analytical solutions numerically.
