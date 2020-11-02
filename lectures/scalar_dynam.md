@@ -135,7 +135,7 @@ This made analysis of dynamics very easy.
 
 When models are nonlinear, however, the situation can be quite different.
 
-For example, recall how we [previously studied](http://python-programming.quantecon.org/python_oop.html#Example:-The-Solow-Growth-Model) the law of motion for the Solow growth model, a simplified version of which is
+For example, recall how we [previously studied](https://python-programming.quantecon.org/python_oop.html#example-the-solow-growth-model) the law of motion for the Solow growth model, a simplified version of which is
 
 ```{math}
 :label: solow_lom2
