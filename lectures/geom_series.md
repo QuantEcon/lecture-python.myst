@@ -810,7 +810,7 @@ R = (1 + r)
 p0 = x0 / (1 - G * R**(-1))
 init_printing(use_latex='mathjax')
 print('Our formula is:')
-latex(p0)
+p0
 ```
 
 ```{code-cell} python3
