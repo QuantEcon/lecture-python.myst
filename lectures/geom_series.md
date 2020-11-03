@@ -803,17 +803,12 @@ represents our present value formula for an infinite lease.
 After that, we'll use SymPy to compute derivatives
 
 ```{code-cell} python3
----
-render:
-  image:
-    width: 200px
----
 # Creates algebraic symbols that can be used in an algebraic expression
 g, r, x0 = sym.symbols('g, r, x0')
 G = (1 + g)
 R = (1 + r)
 p0 = x0 / (1 - G * R**(-1))
-init_printing()
+init_printing(use_latex=True)
 print('Our formula is:')
 p0
 ```
