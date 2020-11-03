@@ -808,7 +808,7 @@ g, r, x0 = sym.symbols('g, r, x0')
 G = (1 + g)
 R = (1 + r)
 p0 = x0 / (1 - G * R**(-1))
-init_printing()
+init_printing(use_latex='mathjax')
 print('Our formula is:')
 latex(p0)
 ```
