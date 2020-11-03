@@ -54,7 +54,8 @@ import matplotlib.pyplot as plt
 import quantecon as qe
 from interpolation import interp
 from numpy.random import randn
-from numba import njit, jitclass, prange, float64
+from numba import njit, prange, float64
+from numba.experimental import jitclass
 ```
 
 ## The Model

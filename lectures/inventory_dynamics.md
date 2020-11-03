@@ -51,7 +51,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 %matplotlib inline
 
-from numba import njit, jitclass, float64, prange
+from numba import njit, float64, prange
+from numba.experimental import jitclass
 ```
 
 ## Sample Paths

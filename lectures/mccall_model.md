@@ -61,7 +61,8 @@ Let's start with some imports:
 
 ```{code-cell} ipython
 import numpy as np
-from numba import jit, jitclass, float64
+from numba import jit, float64
+from numba.experimental import jitclass
 import matplotlib.pyplot as plt
 %matplotlib inline
 import quantecon as qe

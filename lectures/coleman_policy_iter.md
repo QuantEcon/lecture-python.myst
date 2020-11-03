@@ -68,7 +68,8 @@ import matplotlib.pyplot as plt
 
 from interpolation import interp
 from quantecon.optimize import brentq
-from numba import njit, jitclass, float64
+from numba import njit, float64
+from numba.experimental import jitclass
 ```
 
 ## The Euler Equation
