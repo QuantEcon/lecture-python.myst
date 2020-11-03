@@ -54,7 +54,8 @@ Let's start with some standard imports:
 import numpy as np
 import quantecon as qe
 from interpolation import interp
-from numba import jitclass, njit, float64
+from numba import njit, float64
+from numba.experimental import jitclass
 from quantecon.optimize import brentq
 import matplotlib.pyplot as plt
 %matplotlib inline

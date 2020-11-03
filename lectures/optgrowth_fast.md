@@ -63,7 +63,8 @@ Let's start with some imports:
 import numpy as np
 import matplotlib.pyplot as plt
 from interpolation import interp
-from numba import jit, njit, jitclass, prange, float64, int32
+from numba import jit, njit, prange, float64, int32
+from numba.experimental import jitclass
 from quantecon.optimize.scalar_maximization import brent_max
 
 %matplotlib inline
