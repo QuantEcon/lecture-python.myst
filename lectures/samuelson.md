@@ -402,6 +402,9 @@ $$
 We'll start by drawing an informative graph from page 189 of {cite}`Sargent1987`
 
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 def param_plot():
 
     """This function creates the graph on page 189 of

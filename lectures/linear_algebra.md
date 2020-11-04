@@ -170,6 +170,9 @@ $$
 Scalar multiplication is illustrated in the next figure
 
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 fig, ax = plt.subplots(figsize=(10, 8))
 # Set the axes through the origin
 for spine in ['left', 'bottom']:
@@ -281,6 +284,9 @@ The span is a two-dimensional plane passing through these two points and the ori
 
 (la_3dvec)=
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 fig = plt.figure(figsize=(10, 8))
 ax = fig.gca(projection='3d')
 
@@ -667,6 +673,9 @@ If so, is it always unique?
 The answer to both these questions is negative, as the next figure shows
 
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 def f(x):
     return 0.6 * np.cos(4 * x) + 1.4
 
@@ -931,6 +940,9 @@ The next figure shows two eigenvectors (blue arrows) and their images under $A$ 
 As expected, the image $Av$ of each $v$ is just a scaled version of the original
 
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 A = ((1, 2),
      (2, 1))
 A = np.array(A)

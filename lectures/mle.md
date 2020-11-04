@@ -576,6 +576,9 @@ The iterative process can be visualized in the following diagram, where
 the maximum is found at $\beta = 10$
 
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 logL = lambda x: -(x - 10) ** 2 - 10
 
 def find_tangent(β, a=0.01):

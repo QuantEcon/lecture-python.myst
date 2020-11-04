@@ -215,6 +215,9 @@ The function of the code is to produce 45 degree diagrams and time series
 plots.
 
 ```{code-cell} ipython
+---
+tags: [output_scroll]
+---
 def subplots(fs):
     "Custom subplots with axes throught the origin"
     fig, ax = plt.subplots(figsize=fs)

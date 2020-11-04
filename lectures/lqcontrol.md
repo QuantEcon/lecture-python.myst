@@ -734,6 +734,9 @@ This consumer is slightly more patient than the last one, and hence puts
 relatively more weight on later consumption values.
 
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 # Compute solutions and simulate
 lq = LQ(Q, R, A, B, C, beta=0.96, T=T, Rf=Rf)
 x0 = (0, 1)

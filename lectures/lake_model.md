@@ -646,6 +646,9 @@ We will make use of techniques from the {doc}`McCall model lecture <mccall_model
 The first piece of code implements value function iteration
 
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 # A default utility function
 
 @jit
@@ -739,6 +742,9 @@ def solve_mccall_model(mcm, tol=1e-5, max_iter=2000):
 The second piece of code is used to complete the reservation wage:
 
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 def compute_reservation_wage(mcm, return_values=False):
     """
     Computes the reservation wage of an instance of the McCall model

@@ -124,6 +124,9 @@ $2 \times 2$ covariance matrix.  In our simulations, we will suppose that
 This density $p(x)$ is shown below as a contour map, with the center of the red ellipse being equal to $\hat x$.
 
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 # Set up the Gaussian prior density p
 Σ = [[0.4, 0.3], [0.3, 0.45]]
 Σ = np.matrix(Σ)
