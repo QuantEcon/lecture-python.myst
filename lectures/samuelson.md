@@ -68,7 +68,7 @@ from cmath import sqrt
 Samuelson used a *second-order linear difference equation* to
 represent a model of national output based on three components:
 
-- a *national output identity* asserting that national outcome is the
+- a *national output identity* asserting that national output or national income is the
   sum of consumption plus investment plus government purchases.
 - a Keynesian *consumption function* asserting that consumption at
   time $t$ is equal to a constant times national output at time $t-1$.

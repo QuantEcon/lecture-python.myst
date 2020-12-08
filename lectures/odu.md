@@ -52,8 +52,8 @@ permanent job at a specific fixed wage, given
 In the version considered below, the wage distribution is unknown and
 must be learned.
 
-`- The following is based on the presentation in
-  {cite}`Ljungqvist2012, section 6.6.
+- The following is based on the presentation in
+  {cite}`Ljungqvist2012`, section 6.6.
 
 Let’s start with some imports
 

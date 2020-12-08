@@ -59,10 +59,10 @@ frequently.
 Examples of heavy-tailed distributions observed in economic and financial
 settings include
 
-````````* the income distributions and the wealth distribution (see, e.g., {cite}`pareto1896cours, {cite}`benhabib2018skewed),
-* the firm size distribution ({cite}`axtell2001zipf, {cite}`gabaix2016power}),
-* the distribution of returns on holding assets over short time horizons ({cite}`mandelbrot1963variation, {cite}`rachev2003handbook), and
-* the distribution of city sizes ({cite}`rozenfeld2011area, {cite}`gabaix2016power).
+* the income distributions and the wealth distribution (see, e.g., {cite}`pareto1896cours`, {cite}`benhabib2018skewed`),
+* the firm size distribution ({cite}`axtell2001zipf`, {cite}`gabaix2016power`}),
+* the distribution of returns on holding assets over short time horizons ({cite}`mandelbrot1963variation`, {cite}`rachev2003handbook`), and
+* the distribution of city sizes ({cite}`rozenfeld2011area`, {cite}`gabaix2016power`).
 
 These heavy tails turn out to be important for our understanding of economic outcomes.
 
@@ -73,7 +73,7 @@ It matters for taxation and redistribution
 policies, as well as for flow-on effects for productivity growth, business
 cycles, and political economy
 
-````* see, e.g., {cite}`acemoglu2002political, {cite}`glaeser2003injustice, {cite}`bhandari2018inequality or {cite}`ahn2018inequality.
+* see, e.g., {cite}`acemoglu2002political`, {cite}`glaeser2003injustice`, {cite}`bhandari2018inequality` or {cite}`ahn2018inequality`.
 
 This lecture formalizes some of the concepts introduced above and reviews the
 key ideas.

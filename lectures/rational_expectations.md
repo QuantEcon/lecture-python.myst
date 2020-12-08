@@ -165,9 +165,9 @@ After solving for $Y$, we can compute the competitive equilibrium price $p$ from
 
 References for this lecture include
 
-```* {cite}`LucasPrescott1971
-* {cite}`Sargent1987, chapter XIV
-* {cite}`Ljungqvist2012, chapter 7
+* {cite}`LucasPrescott1971`
+* {cite}`Sargent1987`, chapter XIV
+* {cite}`Ljungqvist2012`, chapter 7
 
 ## Defining Rational Expectations Equilibrium
 

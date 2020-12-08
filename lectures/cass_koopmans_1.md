@@ -251,9 +251,8 @@ K_t: \qquad \beta \mu_t\left[(1-\delta)+f'(K_t)\right] - \mu_{t-1}=0 \qquad \tex
 K_{T+1}: \qquad -\mu_T \leq 0, \ \leq 0 \text{ if } K_{T+1}=0; \ =0 \text{ if } K_{T+1}>0
 ```
 
-In computing  {eq}`constraint3` we recognize that
-of $K_t$ appears in both the time  $t$ and time $t-1$
-feasibility constraints.
+In computing  {eq}`constraint3` we recognize that $K_t$ appears
+in both the time  $t$ and time $t-1$ feasibility constraints.
 
 {eq}`constraint4` comes from differentiating with respect
 to $K_{T+1}$ and applying the following **Karush-Kuhn-Tucker condition** (KKT)

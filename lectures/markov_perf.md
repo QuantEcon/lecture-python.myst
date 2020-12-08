@@ -83,8 +83,8 @@ Markov perfect equilibrium prevails when no agent wishes to revise its policy, t
 
 Well known examples include
 
-`````* Choice of price, output, location or capacity for firms in an industry (e.g., {cite}`ericson1995markov, {cite}`ryan2012costs, {cite}`doraszelski2010computable).
-* Rate of extraction from a shared natural resource, such as a fishery (e.g., {cite}`levhari1980great, {cite}`van2011dynamic).
+* Choice of price, output, location or capacity for firms in an industry (e.g., {cite}`ericson1995markov`, {cite}`ryan2012costs`, {cite}`doraszelski2010computable`).
+* Rate of extraction from a shared natural resource, such as a fishery (e.g., {cite}`levhari1980great`, {cite}`van2011dynamic`).
 
 Let's examine a model of the first type.
 

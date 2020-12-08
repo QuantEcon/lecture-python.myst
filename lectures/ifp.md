@@ -39,8 +39,8 @@ In this lecture, we study an optimal savings problem for an infinitely lived con
 
 This is an essential sub-problem for many representative macroeconomic models
 
-``* {cite}`Aiyagari1994
-* {cite}`Huggett1993
+* {cite}`Aiyagari1994`
+* {cite}`Huggett1993`
 * etc.
 
 It is related to the decision problem in the {doc}`stochastic optimal growth
@@ -598,7 +598,7 @@ diverge even in the highest state.
 
 In fact there is a unique stationary distribution of assets that we can calculate by simulation
 
-`* Can be proved via theorem 2 of {cite}`HopenhaynPrescott1992.
+* Can be proved via theorem 2 of {cite}`HopenhaynPrescott1992`.
 * It represents the long run dispersion of assets across households when households have idiosyncratic shocks.
 
 Ergodicity is valid here, so stationary probabilities can be calculated by averaging over a single long time series.
@@ -618,7 +618,7 @@ Your task is to generate such a histogram.
 Following on from exercises 1 and 2, let's look at how savings and aggregate
 asset holdings vary with the interest rate
 
-`* Note: {cite}`Ljungqvist2012 section 18.6 can be consulted for more
+* Note: {cite}`Ljungqvist2012` section 18.6 can be consulted for more
   background on the topic treated in this exercise.
 
 For a given parameterization of the model, the mean of the stationary

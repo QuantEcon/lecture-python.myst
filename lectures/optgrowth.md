@@ -32,10 +32,10 @@ agent.
 The model is a version of the standard one sector infinite horizon growth
 model studied in
 
-```* {cite}`StokeyLucas1989, chapter 2
-* {cite}`Ljungqvist2012, section 3.1
+* {cite}`StokeyLucas1989`, chapter 2
+* {cite}`Ljungqvist2012`, section 3.1
 * [EDTC](http://johnstachurski.net/edtc.html), chapter 1
-* {cite}`Sundaram1996, chapter 12
+* {cite}`Sundaram1996`, chapter 12
 
 It is an extension of the simple {doc}`cake eating problem <cake_eating_problem>` we looked at earlier.
 
