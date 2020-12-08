@@ -1,0 +1,1344 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>38. Exchangeability and Bayesian Updating &#8212; Quantitative Economics with Python</title>
+    <link rel="stylesheet" href="_static/quantecon-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/exchangeable.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="39. Likelihood Ratio Processes and Bayesian Learning" href="likelihood_bayes.html" />
+    <link rel="prev" title="37. Likelihood Ratio Processes" href="likelihood_ratio_process.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Exchangeability and Bayesian Updating"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Exchangeability and Bayesian Updating" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/exchangeable.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+
+<meta name="theme-color" content="#ffffff" />
+
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page">
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+
+                            <ul class="nav section-nav flex-column">
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#overview" class="nav-link">Overview</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#independently-and-identically-distributed" class="nav-link">Independently and Identically Distributed</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#iid-means-past-observations-don-t-tell-us-anything-about-future-observations" class="nav-link">IID Means Past Observations Don’t Tell Us Anything About Future Observations</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#a-setting-in-which-past-observations-are-informative" class="nav-link">A Setting in Which Past Observations Are Informative</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#relationship-between-iid-and-exchangeable" class="nav-link">Relationship Between IID and Exchangeable</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#exchangeability" class="nav-link">Exchangeability</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#bayes-law" class="nav-link">Bayes’ Law</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#more-details-about-bayesian-updating" class="nav-link">More Details about Bayesian Updating</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#appendix" class="nav-link">Appendix</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#sample-paths-of-pi-t" class="nav-link">Sample Paths of \pi_t</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#rates-of-convergence" class="nav-link">Rates of convergence</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#another-graph-of-population-dynamics-of-pi-t" class="nav-link">Another Graph of Population Dynamics of \pi_t</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#sequels" class="nav-link">Sequels</a>
+                                </li>
+                                
+                            </ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">Exchangeability and Bayesian Updating</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div><div class="section" id="exchangeability-and-bayesian-updating">
+<h1><a class="toc-backref" href="#id5"><span class="section-number">38. </span>Exchangeability and Bayesian Updating</a><a class="headerlink" href="#exchangeability-and-bayesian-updating" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#exchangeability-and-bayesian-updating" id="id5">Exchangeability and Bayesian Updating</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id6">Overview</a></p></li>
+<li><p><a class="reference internal" href="#independently-and-identically-distributed" id="id7">Independently and Identically Distributed</a></p></li>
+<li><p><a class="reference internal" href="#a-setting-in-which-past-observations-are-informative" id="id8">A Setting in Which Past Observations Are Informative</a></p></li>
+<li><p><a class="reference internal" href="#relationship-between-iid-and-exchangeable" id="id9">Relationship Between IID and Exchangeable</a></p></li>
+<li><p><a class="reference internal" href="#exchangeability" id="id10">Exchangeability</a></p></li>
+<li><p><a class="reference internal" href="#bayes-law" id="id11">Bayes’ Law</a></p></li>
+<li><p><a class="reference internal" href="#more-details-about-bayesian-updating" id="id12">More Details about Bayesian Updating</a></p></li>
+<li><p><a class="reference internal" href="#appendix" id="id13">Appendix</a></p></li>
+<li><p><a class="reference internal" href="#sequels" id="id14">Sequels</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">38.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This lecture studies an example  of learning
+via Bayes’ Law.</p>
+<p>We touch on foundations of Bayesian statistical inference invented by Bruno DeFinetti <a class="bibtex reference internal" href="zreferences.html#definetti" id="id1">[dF37]</a>.</p>
+<p>The relevance of DeFinetti’s work for economists is presented forcefully
+in chapter 11 of <a class="bibtex reference internal" href="zreferences.html#kreps88" id="id2">[Kre88]</a> by David Kreps.</p>
+<p>The example  that we study in this lecture  is a key component of <a class="reference internal" href="odu.html"><span class="doc">this lecture</span></a> that augments the
+<a class="reference internal" href="mccall_model.html"><span class="doc">classic</span></a>  job search model of McCall
+<a class="bibtex reference internal" href="zreferences.html#mccall1970" id="id3">[McC70]</a> by presenting an unemployed worker with a statistical inference problem.</p>
+<p>Here we create  graphs that illustrate the role that  a  likelihood ratio
+plays in  Bayes’ Law.</p>
+<p>We’ll use such graphs to provide insights into the mechanics driving outcomes in <a class="reference internal" href="odu.html"><span class="doc">this lecture</span></a> about learning in an augmented McCall job
+search model.</p>
+<p>Among other things, this lecture discusses  connections between the statistical concepts of sequences of random variables
+that are</p>
+<ul class="simple">
+<li><p>independently and identically distributed</p></li>
+<li><p>exchangeable</p></li>
+</ul>
+<p>Understanding the distinction between these concepts is essential for appreciating how Bayesian updating
+works in our example.</p>
+<p>You can read about exchangeability <a class="reference external" href="https://en.wikipedia.org/wiki/Exchangeable_random_variables">here</a></p>
+<p>Below, we’ll often use</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(W\)</span> to denote a random variable</p></li>
+<li><p><span class="math notranslate nohighlight">\(w\)</span> to denote a particular realization of a random variable <span class="math notranslate nohighlight">\(W\)</span></p></li>
+</ul>
+<p>Let’s start with some imports:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">vectorize</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
+<span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">op</span>
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="independently-and-identically-distributed">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">38.2. </span>Independently and Identically Distributed</a><a class="headerlink" href="#independently-and-identically-distributed" title="Permalink to this headline">¶</a></h2>
+<p>We begin by looking at the notion of an  <strong>independently and identically  distributed sequence</strong> of random variables.</p>
+<p>An independently and identically distributed sequence is often abbreviated as IID.</p>
+<p>Two notions are involved, <strong>independently</strong> and <strong>identically</strong> distributed.</p>
+<p>A sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is <strong>independently distributed</strong> if the joint probability density
+of the sequence is the <strong>product</strong> of the densities of the  components of the sequence.</p>
+<p>The sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is <strong>independently and identically distributed</strong> if in addition the marginal
+density of <span class="math notranslate nohighlight">\(W_t\)</span> is the same for all <span class="math notranslate nohighlight">\(t =0, 1, \ldots\)</span>.</p>
+<p>For example,  let <span class="math notranslate nohighlight">\(p(W_0, W_1, \ldots)\)</span> be the <strong>joint density</strong> of the sequence and
+let <span class="math notranslate nohighlight">\(p(W_t)\)</span> be the <strong>marginal density</strong> for a particular <span class="math notranslate nohighlight">\(W_t\)</span> for all <span class="math notranslate nohighlight">\(t =0, 1, \ldots\)</span>.</p>
+<p>Then the joint density of the sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is IID if</p>
+<div class="math notranslate nohighlight">
+\[
+p(W_0, W_1, \ldots) =  p(W_0) p(W_1) \cdots
+\]</div>
+<p>so that the joint density is the product of a sequence of identical marginal densities.</p>
+<div class="section" id="iid-means-past-observations-don-t-tell-us-anything-about-future-observations">
+<h3><span class="section-number">38.2.1. </span>IID Means Past Observations Don’t Tell Us Anything About Future Observations<a class="headerlink" href="#iid-means-past-observations-don-t-tell-us-anything-about-future-observations" title="Permalink to this headline">¶</a></h3>
+<p>If a sequence is random variables is IID, past information provides no information about future realizations.</p>
+<p>In this sense, there is <strong>nothing to learn</strong>  about the future from the past.</p>
+<p>To understand these statements, let the joint distribution of a sequence of random variables <span class="math notranslate nohighlight">\(\{W_t\}_{t=0}^T\)</span>
+that is not necessarily IID, be</p>
+<div class="math notranslate nohighlight">
+\[
+p(W_T, W_{T-1}, \ldots, W_1, W_0)
+\]</div>
+<p>Using the laws of probability, we can always factor such a joint density into a product of conditional densities:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align}
+  p(W_T, W_{T-1}, \ldots, W_1, W_0)    = &amp; p(W_T | W_{t-1}, \ldots, W_0) p(W_{T-1} | W_{T-2}, \ldots, W_0) \cdots  \cr
+  &amp; p(W_1 | W_0) p(W_0)
+\end{align}
+\]</div>
+<p>In general,</p>
+<div class="math notranslate nohighlight">
+\[
+p(W_t | W_{t-1}, \ldots, W_0)   \neq   p(W_t)
+\]</div>
+<p>which states that the <strong>conditional density</strong> on the left side does not equal the <strong>marginal density</strong> on the right side.</p>
+<p>In the special IID case,</p>
+<div class="math notranslate nohighlight">
+\[
+p(W_t | W_{t-1}, \ldots, W_0)   =  p(W_t)
+\]</div>
+<p>and partial history <span class="math notranslate nohighlight">\(W_{t-1}, \ldots, W_0\)</span> contains no information about the probability of <span class="math notranslate nohighlight">\(W_t\)</span>.</p>
+<p>So in the IID case, there is <strong>nothing to learn</strong> about the densities of future random variables from past data.</p>
+<p>In the general case, there is something go learn from past data.</p>
+<p>We turn next to an instance of this general case in which there is something to learn from past data.</p>
+<p>Please keep your eye out for <strong>what</strong> there is to learn from past data.</p>
+</div>
+</div>
+<div class="section" id="a-setting-in-which-past-observations-are-informative">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">38.3. </span>A Setting in Which Past Observations Are Informative</a><a class="headerlink" href="#a-setting-in-which-past-observations-are-informative" title="Permalink to this headline">¶</a></h2>
+<p>We now turn to a setting in which there <strong>is</strong> something to learn.</p>
+<p>Let <span class="math notranslate nohighlight">\(\{W_t\}_{t=0}^\infty\)</span> be a sequence of nonnegative
+scalar random variables with a joint probability distribution
+constructed as follows.</p>
+<p>There are two distinct cumulative distribution functions <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(G\)</span>
+— with densities <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> for a nonnegative scalar random
+variable <span class="math notranslate nohighlight">\(W\)</span>.</p>
+<p>Before the start of time, say at time <span class="math notranslate nohighlight">\(t= -1\)</span>, “nature” once and for
+all selects <strong>either</strong> <span class="math notranslate nohighlight">\(f\)</span> <strong>or</strong> <span class="math notranslate nohighlight">\(g\)</span> — and thereafter at each time
+<span class="math notranslate nohighlight">\(t \geq 0\)</span> draws a random <span class="math notranslate nohighlight">\(W\)</span> from the selected
+distribution.</p>
+<p>So  the data are permanently generated as independently and identically distributed (IID) draws from <strong>either</strong> <span class="math notranslate nohighlight">\(F\)</span> <strong>or</strong>
+<span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>We could say that <em>objectively</em> the probability that the data are generated as draws from <span class="math notranslate nohighlight">\(F\)</span> is either <span class="math notranslate nohighlight">\(0\)</span>
+or <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>We now drop into this setting a decision maker who knows <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(G\)</span> and that nature picked one
+of them once and for all and then drew an IID sequence of draws from that distribution.</p>
+<p>But our decision maker does not know which of the two distributions nature selected.</p>
+<p>The decision maker summarizes his ignorance about this by picking a <strong>subjective probability</strong>
+<span class="math notranslate nohighlight">\(\tilde \pi\)</span> and reasons as if  nature had selected <span class="math notranslate nohighlight">\(F\)</span> with probability
+<span class="math notranslate nohighlight">\(\tilde \pi \in (0,1)\)</span> and
+<span class="math notranslate nohighlight">\(G\)</span> with probability <span class="math notranslate nohighlight">\(1 - \tilde \pi\)</span>.</p>
+<p>Thus, we  assume that the decision maker</p>
+<ul class="simple">
+<li><p><strong>knows</strong> both <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(G\)</span></p></li>
+<li><p><strong>doesnt’t know</strong> which of these two distributions that nature has drawn</p></li>
+<li><p>summarizing his ignorance by acting  as if or <strong>thinking</strong> that nature chose distribution <span class="math notranslate nohighlight">\(F\)</span> with probability <span class="math notranslate nohighlight">\(\tilde \pi \in (0,1)\)</span> and distribution
+<span class="math notranslate nohighlight">\(G\)</span> with probability <span class="math notranslate nohighlight">\(1 - \tilde \pi\)</span></p></li>
+<li><p>at date <span class="math notranslate nohighlight">\(t \geq 0\)</span> has observed  the partial history <span class="math notranslate nohighlight">\(w_t, w_{t-1}, \ldots, w_0\)</span> of draws from the appropriate joint
+density of the partial history</p></li>
+</ul>
+<p>But what do we mean by the <em>appropriate joint distribution</em>?</p>
+<p>We’ll discuss that next and in the process describe the concept of <strong>exchangeability</strong>.</p>
+</div>
+<div class="section" id="relationship-between-iid-and-exchangeable">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">38.4. </span>Relationship Between IID and Exchangeable</a><a class="headerlink" href="#relationship-between-iid-and-exchangeable" title="Permalink to this headline">¶</a></h2>
+<p>Conditional on nature selecting <span class="math notranslate nohighlight">\(F\)</span>, the joint density of the
+sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+f(W_0) f(W_1) \cdots
+\]</div>
+<p>Conditional on nature selecting <span class="math notranslate nohighlight">\(G\)</span>, the joint density of the
+sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+g(W_0) g(W_1) \cdots
+\]</div>
+<p>Notice that <strong>conditional on nature having selected</strong> <span class="math notranslate nohighlight">\(F\)</span>, the
+sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is independently and
+identically distributed.</p>
+<p>Furthermore,  <strong>conditional on nature having
+selected</strong> <span class="math notranslate nohighlight">\(G\)</span>, the sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is also
+independently and identically distributed.</p>
+<p>But what about the unconditional distribution?</p>
+<p>The unconditional distribution of <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is
+evidently</p>
+<div class="math notranslate nohighlight" id="equation-eq-definetti">
+<span class="eqno">(38.1)<a class="headerlink" href="#equation-eq-definetti" title="Permalink to this equation">¶</a></span>\[h(W_0, W_1, \ldots ) \equiv \tilde \pi [f(W_0) f(W_1) \cdots ] + ( 1- \tilde \pi) [g(W_0) g(W_1) \cdots ]\]</div>
+<p>Under the unconditional distribution <span class="math notranslate nohighlight">\(h(W_0, W_1, \ldots )\)</span>, the
+sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is <strong>not</strong> independently and
+identically distributed.</p>
+<p>To verify this claim, it is sufficient to notice, for example, that</p>
+<div class="math notranslate nohighlight">
+\[
+h(w_0, w_1) = \tilde \pi f(w_0)f (w_1) + (1 - \tilde \pi) g(w_0)g(w_1) \neq
+              (\tilde \pi f(w_0) + (1-\tilde \pi) g(w_0))(
+               \tilde \pi f(w_1) + (1-\tilde \pi) g(w_1))
+\]</div>
+<p>Thus, the conditional distribution</p>
+<div class="math notranslate nohighlight">
+\[
+h(w_1 | w_0) \equiv \frac{h(w_0, w_1)}{(\tilde \pi f(w_0) + (1-\tilde \pi) g(w_0))}
+ \neq ( \tilde \pi f(w_1) + (1-\tilde \pi) g(w_1))
+\]</div>
+<p>This means that the realization <span class="math notranslate nohighlight">\(w_0\)</span> contains information about <span class="math notranslate nohighlight">\(w_1\)</span>.</p>
+<p>So there is something to learn.</p>
+<p>But what and how?</p>
+</div>
+<div class="section" id="exchangeability">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">38.5. </span>Exchangeability</a><a class="headerlink" href="#exchangeability" title="Permalink to this headline">¶</a></h2>
+<p>While the sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is not IID, it can be verified that it is
+<strong>exchangeable</strong>, which means that</p>
+<div class="math notranslate nohighlight">
+\[
+h(w_0, w_1) = h(w_1, w_0)
+\]</div>
+<p>and so on.</p>
+<p>More generally, a sequence of random variables is said to be <strong>exchangeable</strong> if  the  joint probability distribution
+for the sequence does not change when the positions in the sequence in which finitely many of the random variables
+appear are altered.</p>
+<p>Equation <a class="reference internal" href="#equation-eq-definetti">(38.1)</a> represents our instance of an exchangeable joint density over a sequence of random
+variables  as a <strong>mixture</strong>  of  two IID joint densities over a sequence of random variables.</p>
+<p>For a Bayesian statistician, the mixing parameter <span class="math notranslate nohighlight">\(\tilde \pi \in (0,1)\)</span> has a special interpretation
+as a <strong>prior probability</strong> that nature selected probability distribution <span class="math notranslate nohighlight">\(F\)</span>.</p>
+<p>DeFinetti <a class="bibtex reference internal" href="zreferences.html#definetti" id="id4">[dF37]</a> established a related representation of an exchangeable process created by mixing
+sequences of IID Bernoulli random variables with parameters <span class="math notranslate nohighlight">\(\theta\)</span> and mixing probability <span class="math notranslate nohighlight">\(\pi(\theta)\)</span>
+for a density <span class="math notranslate nohighlight">\(\pi(\theta)\)</span> that a Bayesian statistician would interpret as a prior over the unknown
+Bernoulli paramter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+</div>
+<div class="section" id="bayes-law">
+<h2><a class="toc-backref" href="#id11"><span class="section-number">38.6. </span>Bayes’ Law</a><a class="headerlink" href="#bayes-law" title="Permalink to this headline">¶</a></h2>
+<p>We noted above that in our example model there is something to learn about about the future from past data drawn
+from our particular instance of a process that is exchangeable but not IID.</p>
+<p>But how can we learn?</p>
+<p>And about what?</p>
+<p>The answer to the <em>about what</em> question is about <span class="math notranslate nohighlight">\(\tilde pi\)</span>.</p>
+<p>The answer to the <em>how</em> question is to use  Bayes’ Law.</p>
+<p>Another way to say <em>use Bayes’ Law</em> is to say <em>compute an appropriate conditional distribution</em>.</p>
+<p>Let’s dive into Bayes’ Law in this context.</p>
+<p>Let <span class="math notranslate nohighlight">\(q\)</span> represent the distribution that nature actually draws from
+<span class="math notranslate nohighlight">\(w\)</span> from and let</p>
+<div class="math notranslate nohighlight">
+\[
+\pi = \mathbb{P}\{q = f \}
+\]</div>
+<p>where we regard <span class="math notranslate nohighlight">\(\pi\)</span> as the decision maker’s <strong>subjective probability</strong>  (also called a <strong>personal probability</strong>.</p>
+<p>Suppose that at <span class="math notranslate nohighlight">\(t \geq 0\)</span>, the decision maker has  observed a history
+<span class="math notranslate nohighlight">\(w^t \equiv [w_t, w_{t-1}, \ldots, w_0]\)</span>.</p>
+<p>We let</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_t  = \mathbb{P}\{q = f  | w^t \}
+\]</div>
+<p>where we adopt the convention</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{-1}  = \tilde \pi
+\]</div>
+<p>The distribution of <span class="math notranslate nohighlight">\(w_{t+1}\)</span> conditional on <span class="math notranslate nohighlight">\(w^t\)</span> is then</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_t f + (1 - \pi_t) g .
+\]</div>
+<p>Bayes’ rule for updating <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span> is</p>
+<div class="math notranslate nohighlight" id="equation-eq-bayes102">
+<span class="eqno">(38.2)<a class="headerlink" href="#equation-eq-bayes102" title="Permalink to this equation">¶</a></span>\[\pi_{t+1}
+= \frac{\pi_t f(w_{t+1})}{\pi_t f(w_{t+1}) + (1 - \pi_t) g(w_{t+1})}\]</div>
+<p>The last expression follows from Bayes’ rule, which
+tells us that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}\{q = f \,|\, W = w\}
+= \frac{\mathbb{P}\{W = w \,|\, q = f\}\mathbb{P}\{q = f\}}
+{\mathbb{P}\{W = w\}}
+\quad \text{and} \quad
+\mathbb{P}\{W = w\} = \sum_{\omega \in \{f, g\}} \mathbb{P}\{W = w \,|\, q = \omega\} \mathbb{P}\{q = \omega\}
+\]</div>
+</div>
+<div class="section" id="more-details-about-bayesian-updating">
+<h2><a class="toc-backref" href="#id12"><span class="section-number">38.7. </span>More Details about Bayesian Updating</a><a class="headerlink" href="#more-details-about-bayesian-updating" title="Permalink to this headline">¶</a></h2>
+<p>Let’s stare at and rearrange Bayes’ Law as represented in equation <a class="reference internal" href="#equation-eq-bayes102">(38.2)</a> with the aim of understanding
+how the <strong>posterior</strong> <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span> is influenced by the <strong>prior</strong> <span class="math notranslate nohighlight">\(\pi_t\)</span> and the <strong>likelihood ratio</strong></p>
+<div class="math notranslate nohighlight">
+\[
+l(w) = \frac{f(w)}{g(w)}
+\]</div>
+<p>It is convenient for us to rewrite the updating rule <a class="reference internal" href="#equation-eq-bayes102">(38.2)</a> as</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{t+1}   =\frac{\pi_{t}f\left(w_{t+1}\right)}{\pi_{t}f\left(w_{t+1}\right)+\left(1-\pi_{t}\right)g\left(w_{t+1}\right)}
+    =\frac{\pi_{t}\frac{f\left(w_{t+1}\right)}{g\left(w_{t+1}\right)}}{\pi_{t}\frac{f\left(w_{t+1}\right)}{g\left(w_{t+1}\right)}+\left(1-\pi_{t}\right)}
+    =\frac{\pi_{t}l\left(w_{t+1}\right)}{\pi_{t}l\left(w_{t+1}\right)+\left(1-\pi_{t}\right)}
+\]</div>
+<p>This implies that</p>
+<div class="math notranslate nohighlight" id="equation-eq-bayes103">
+<span class="eqno">(38.3)<a class="headerlink" href="#equation-eq-bayes103" title="Permalink to this equation">¶</a></span>\[\begin{split}\frac{\pi_{t+1}}{\pi_{t}}=\frac{l\left(w_{t+1}\right)}{\pi_{t}l\left(w_{t+1}\right)+\left(1-\pi_{t}\right)}\begin{cases} &gt;1 &amp;
+\text{if }l\left(w_{t+1}\right)&gt;1\\
+\leq1 &amp; \text{if }l\left(w_{t+1}\right)\leq1
+\end{cases}\end{split}\]</div>
+<p>Notice how the likelihood ratio and the prior interact to determine whether an observation <span class="math notranslate nohighlight">\(w_{t+1}\)</span> leads the decision maker
+to increase or decrease the subjective probability he/she attaches to distribution <span class="math notranslate nohighlight">\(F\)</span>.</p>
+<p>When the likelihood ratio <span class="math notranslate nohighlight">\(l(w_{t+1})\)</span> exceeds one, the observation <span class="math notranslate nohighlight">\(w_{t+1}\)</span> nudges the probability
+<span class="math notranslate nohighlight">\(\pi\)</span> put on distribution <span class="math notranslate nohighlight">\(F\)</span> upward,
+and when the likelihood ratio <span class="math notranslate nohighlight">\(l(w_{t+1})\)</span> is less that  one, the observation <span class="math notranslate nohighlight">\(w_{t+1}\)</span> nudges <span class="math notranslate nohighlight">\(\pi\)</span> downward.</p>
+<p>Representation <a class="reference internal" href="#equation-eq-bayes103">(38.3)</a> is the foundation of the graphs that we’ll use to display the dynamics of
+<span class="math notranslate nohighlight">\(\{\pi_t\}_{t=0}^\infty\)</span> that are  induced by
+Bayes’ Law.</p>
+<p>We’ll plot <span class="math notranslate nohighlight">\(l\left(w\right)\)</span> as a way to enlighten us about how
+learning – i.e., Bayesian updating of the probability <span class="math notranslate nohighlight">\(\pi\)</span> that
+nature has chosen distribution <span class="math notranslate nohighlight">\(f\)</span> – works.</p>
+<p>To create the Python infrastructure to do our work for us,  we construct a wrapper function that displays informative graphs
+given parameters of <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@vectorize</span>
+<span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="s2">&quot;The general beta distribution function.&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">gamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">learning_example</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A wrapper function that displays the updating rule of belief π,</span>
+<span class="sd">    given the parameters which specify F and G distributions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+
+    <span class="c1"># l(w) = f(w) / g(w)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="c1"># objective function for solving l(w) = 1</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">l</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="n">x_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">π_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+    <span class="n">w_max</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">w_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">w_max</span><span class="o">-</span><span class="mf">1e-12</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+    <span class="c1"># the mode of beta distribution</span>
+    <span class="c1"># use this to divide w into two intervals for root finding</span>
+    <span class="n">G_mode</span> <span class="o">=</span> <span class="p">(</span><span class="n">G_a</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">G_a</span> <span class="o">+</span> <span class="n">G_b</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">root_scalar</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">bracket</span><span class="o">=</span><span class="p">[</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">G_mode</span><span class="p">])</span><span class="o">.</span><span class="n">root</span>
+    <span class="n">roots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">root_scalar</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">bracket</span><span class="o">=</span><span class="p">[</span><span class="n">G_mode</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-10</span><span class="p">])</span><span class="o">.</span><span class="n">root</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">ax3</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+    <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">l</span><span class="p">(</span><span class="n">w_grid</span><span class="p">),</span> <span class="n">w_grid</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$l$&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">])</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;$l(w)=f(w)/g(w)$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;$w$&#39;</span><span class="p">)</span>
+
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x_grid</span><span class="p">),</span> <span class="n">x_grid</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$f$&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">x_grid</span><span class="p">),</span> <span class="n">x_grid</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$g$&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;$f(w), g(w)$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;$w$&#39;</span><span class="p">)</span>
+
+    <span class="n">area1</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">area2</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">roots</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">area3</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">roots</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">f</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span> <span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">area1</span><span class="si">:</span><span class="s2"> .3g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">fill_between</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">roots</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">roots</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">area2</span><span class="si">:</span><span class="s2"> .3g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">w_roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">roots</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">(</span><span class="n">w_roots</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">g</span><span class="p">(</span><span class="n">w_roots</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">f</span><span class="p">(</span><span class="n">roots</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span> <span class="p">(</span><span class="n">roots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">area3</span><span class="si">:</span><span class="s2"> .3g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">fill_between</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">roots</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+
+    <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">)</span>
+    <span class="n">Π</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">)</span>
+
+    <span class="n">ΔW</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">Π</span><span class="p">)))</span>
+    <span class="n">ΔΠ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">Π</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">π</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Π</span><span class="p">):</span>
+            <span class="n">lw</span> <span class="o">=</span> <span class="n">l</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+            <span class="n">ΔΠ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">π</span> <span class="o">*</span> <span class="p">(</span><span class="n">lw</span> <span class="o">/</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="n">lw</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">q</span> <span class="o">=</span> <span class="n">ax3</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">Π</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">ΔΠ</span><span class="p">,</span> <span class="n">ΔW</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+    <span class="n">ax3</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">π_grid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">roots</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">roots</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">w_max</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;$\pi$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;$w$&#39;</span><span class="p">)</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we’ll create a group of graphs designed to illustrate the dynamics induced by Bayes’ Law.</p>
+<p>We’ll begin with the default values of various objects, then change them in a subsequent example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learning_example</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/exchangeable_5_0.png" src="_images/exchangeable_5_0.png" />
+</div>
+</div>
+<p>Please look at the three graphs above created for an instance in which <span class="math notranslate nohighlight">\(f\)</span> is a uniform distribution on <span class="math notranslate nohighlight">\([0,1]\)</span>
+(i.e., a Beta distribution with parameters <span class="math notranslate nohighlight">\(F_a=1, F_b=1\)</span>, while  <span class="math notranslate nohighlight">\(g\)</span> is a Beta distribution with the default parameter values <span class="math notranslate nohighlight">\(G_a=3, G_b=1.2\)</span>.</p>
+<p>The graph in the left  plots the likehood ratio <span class="math notranslate nohighlight">\(l(w)\)</span> on the coordinate axis against <span class="math notranslate nohighlight">\(w\)</span> on the coordinate axis.</p>
+<p>The middle graph plots both <span class="math notranslate nohighlight">\(f(w)\)</span> and <span class="math notranslate nohighlight">\(g(w)\)</span>  against <span class="math notranslate nohighlight">\(w\)</span>, with the horizontal dotted lines showing values
+of <span class="math notranslate nohighlight">\(w\)</span> at which the likelihood ratio equals <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>The graph on the right side plots arrows to the right that show when Bayes’ Law  makes <span class="math notranslate nohighlight">\(\pi\)</span> increase and arrows
+to the left that show when Bayes’ Law make <span class="math notranslate nohighlight">\(\pi\)</span> decrease.</p>
+<p>Notice how the length of the arrows, which show the magnitude of the force from Bayes’ Law impelling <span class="math notranslate nohighlight">\(\pi\)</span> to change,
+depend on both the prior probability <span class="math notranslate nohighlight">\(\pi\)</span> on the ordinate axis and the evidence in the form of the current draw of
+<span class="math notranslate nohighlight">\(w\)</span> on the coordinate axis.</p>
+<p>The fractions in the colored areas of the middle graphs are probabilities under <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(G\)</span>, respectively,
+that  realizations of <span class="math notranslate nohighlight">\(w\)</span> fall
+into the interval that updates the belief <span class="math notranslate nohighlight">\(\pi\)</span> in a correct direction (i.e., toward <span class="math notranslate nohighlight">\(0\)</span> when <span class="math notranslate nohighlight">\(G\)</span> is the true
+distribution, and towards <span class="math notranslate nohighlight">\(1\)</span> when <span class="math notranslate nohighlight">\(F\)</span> is the true distribution).</p>
+<p>For example,
+in the above  example, under true distribution <span class="math notranslate nohighlight">\(F\)</span>,  <span class="math notranslate nohighlight">\(\pi\)</span> will  be updated toward <span class="math notranslate nohighlight">\(0\)</span> if <span class="math notranslate nohighlight">\(w\)</span> falls into the interval
+<span class="math notranslate nohighlight">\([0.524, 0.999]\)</span>, which occurs with probability <span class="math notranslate nohighlight">\(1 - .524 = .476\)</span> under <span class="math notranslate nohighlight">\(F\)</span>.  But this
+would occur with probability
+<span class="math notranslate nohighlight">\(0.816\)</span> if <span class="math notranslate nohighlight">\(G\)</span> were the true distribution.  The fraction <span class="math notranslate nohighlight">\(0.816\)</span>
+in the orange region is the integral of <span class="math notranslate nohighlight">\(g(w)\)</span> over this interval.</p>
+<p>Next we use our code to create graphs for another instance of our model.</p>
+<p>We keep <span class="math notranslate nohighlight">\(F\)</span> the same as in the preceding instance, namely a uniform distribution, but now assume that <span class="math notranslate nohighlight">\(G\)</span>
+is a Beta distribution with parameters <span class="math notranslate nohighlight">\(G_a=2, G_b=1.6\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learning_example</span><span class="p">(</span><span class="n">G_a</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mf">1.6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/exchangeable_7_0.png" src="_images/exchangeable_7_0.png" />
+</div>
+</div>
+<p>Notice how the likelihood ratio, the middle graph, and the arrows compare with the previous instance of our example.</p>
+</div>
+<div class="section" id="appendix">
+<h2><a class="toc-backref" href="#id13"><span class="section-number">38.8. </span>Appendix</a><a class="headerlink" href="#appendix" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="sample-paths-of-pi-t">
+<h3><span class="section-number">38.8.1. </span>Sample Paths of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#sample-paths-of-pi-t" title="Permalink to this headline">¶</a></h3>
+<p>Now we’ll have some fun by plotting multiple realizations of sample paths of <span class="math notranslate nohighlight">\(\pi_t\)</span> under two possible
+assumptions about nature’s choice of distribution:</p>
+<ul class="simple">
+<li><p>that nature permanently draws from <span class="math notranslate nohighlight">\(F\)</span></p></li>
+<li><p>that nature permanently draws from <span class="math notranslate nohighlight">\(G\)</span></p></li>
+</ul>
+<p>Outcomes depend on a peculiar property of likelihood ratio processes that are discussed in
+<a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html">this lecture</a></p>
+<p>To do this, we create some Python code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">function_factory</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">):</span>
+
+    <span class="c1"># define f and g</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+
+    <span class="nd">@njit</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
+        <span class="s2">&quot;Update π by drawing from beta distribution with parameters a and b&quot;</span>
+
+        <span class="c1"># Draw</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+        <span class="c1"># Update belief</span>
+        <span class="n">π</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">π</span>
+
+    <span class="nd">@njit</span>
+    <span class="k">def</span> <span class="nf">simulate_path</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+        <span class="s2">&quot;Simulates a path of beliefs π with length T&quot;</span>
+
+        <span class="n">π</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># initial condition</span>
+        <span class="n">π</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">π</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">π</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">π</span>
+
+    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="s2">&quot;Simulates N paths of beliefs π with length T&quot;</span>
+
+        <span class="n">π_paths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">display</span><span class="p">:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="n">π_paths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulate_path</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">display</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">π_paths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">display</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">π_paths</span>
+
+    <span class="k">return</span> <span class="n">simulate</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simulate</span> <span class="o">=</span> <span class="n">function_factory</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We begin by generating <span class="math notranslate nohighlight">\(N\)</span> simulated <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span> paths with <span class="math notranslate nohighlight">\(T\)</span>
+periods when the sequence is truly IID draws from <span class="math notranslate nohighlight">\(F\)</span>. We set the initial prior <span class="math notranslate nohighlight">\(\pi_{-1} = .5\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="mi">50</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># when nature selects F</span>
+<span class="n">π_paths_F</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/exchangeable_13_0.png" src="_images/exchangeable_13_0.png" />
+</div>
+</div>
+<p>In the above graph we observe that  for most paths <span class="math notranslate nohighlight">\(\pi_t \rightarrow 1\)</span>. So Bayes’ Law evidently eventually
+discovers the truth for most of our paths.</p>
+<p>Next, we generate paths with <span class="math notranslate nohighlight">\(T\)</span>
+periods when the sequence is truly IID draws from <span class="math notranslate nohighlight">\(G\)</span>. Again, we set the initial prior <span class="math notranslate nohighlight">\(\pi_{-1} = .5\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># when nature selects G</span>
+<span class="n">π_paths_G</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/exchangeable_15_0.png" src="_images/exchangeable_15_0.png" />
+</div>
+</div>
+<p>In the above graph we observe that now  most paths <span class="math notranslate nohighlight">\(\pi_t \rightarrow 0\)</span>.</p>
+</div>
+<div class="section" id="rates-of-convergence">
+<h3><span class="section-number">38.8.2. </span>Rates of convergence<a class="headerlink" href="#rates-of-convergence" title="Permalink to this headline">¶</a></h3>
+<p>We study rates of  convergence of <span class="math notranslate nohighlight">\(\pi_t\)</span> to <span class="math notranslate nohighlight">\(1\)</span> when nature generates the data as IID draws from <span class="math notranslate nohighlight">\(F\)</span>
+and of <span class="math notranslate nohighlight">\(\pi_t\)</span> to <span class="math notranslate nohighlight">\(0\)</span> when nature generates the data as IID draws from <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<p>We do this by averaging across simulated paths of <span class="math notranslate nohighlight">\(\{\pi_t\}_{t=0}^T\)</span>.</p>
+<p>Using   <span class="math notranslate nohighlight">\(N\)</span> simulated <span class="math notranslate nohighlight">\(\pi_t\)</span> paths, we compute
+<span class="math notranslate nohighlight">\(1 - \sum_{i=1}^{N}\pi_{i,t}\)</span> at each <span class="math notranslate nohighlight">\(t\)</span> when the data are generated as draws from  <span class="math notranslate nohighlight">\(F\)</span>
+and compute <span class="math notranslate nohighlight">\(\sum_{i=1}^{N}\pi_{i,t}\)</span> when the data are generated as draws from <span class="math notranslate nohighlight">\(G\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">π_paths_F</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;F generates&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">π_paths_G</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;G generates&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;convergence&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/exchangeable_17_0.png" src="_images/exchangeable_17_0.png" />
+</div>
+</div>
+<p>From the above graph, rates of convergence appear not to depend on whether <span class="math notranslate nohighlight">\(F\)</span> or <span class="math notranslate nohighlight">\(G\)</span> generates the data.</p>
+</div>
+<div class="section" id="another-graph-of-population-dynamics-of-pi-t">
+<h3><span class="section-number">38.8.3. </span>Another Graph of Population Dynamics of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#another-graph-of-population-dynamics-of-pi-t" title="Permalink to this headline">¶</a></h3>
+<p>More insights about the dynamics of <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span> can be gleaned by computing the following
+conditional expectations of <span class="math notranslate nohighlight">\(\frac{\pi_{t+1}}{\pi_{t}}\)</span> as functions of <span class="math notranslate nohighlight">\(\pi_t\)</span> via integration with respect
+to the pertinent probability distribution:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+E\left[\frac{\pi_{t+1}}{\pi_{t}}\biggm|q=\omega, \pi_{t}\right] &amp;=E\left[\frac{l\left(w_{t+1}\right)}{\pi_{t}l\left(w_{t+1}\right)+\left(1-\pi_{t}\right)}\biggm|q=\omega, \pi_{t}\right], \\
+    &amp;=\int_{0}^{1}\frac{l\left(w_{t+1}\right)}{\pi_{t}l\left(w_{t+1}\right)+\left(1-\pi_{t}\right)}\omega\left(w_{t+1}\right)dw_{t+1}
+\end{aligned}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\omega=f,g\)</span>.</p>
+<p>The following code approximates the integral above:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">expected_ratio</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">):</span>
+
+    <span class="c1"># define f and g</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+
+    <span class="n">l</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">integrand_f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">w</span><span class="p">,</span> <span class="n">π</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">l</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="n">l</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span>
+    <span class="n">integrand_g</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">w</span><span class="p">,</span> <span class="n">π</span><span class="p">:</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">l</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="n">l</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span>
+
+    <span class="n">π_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.98</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+    <span class="n">expected_rario</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">π_grid</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">inte</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">integrand_f</span><span class="p">,</span> <span class="n">integrand_g</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">π</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">π_grid</span><span class="p">):</span>
+            <span class="n">expected_rario</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">inte</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">π</span><span class="p">,))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">expected_rario</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">q</span><span class="si">}</span><span class="s2"> generates&quot;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$π_t$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$E[\pi_{t+1}/\pi_t]$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>First, consider the case where <span class="math notranslate nohighlight">\(F_a=F_b=1\)</span> and
+<span class="math notranslate nohighlight">\(G_a=3, G_b=1.2\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expected_ratio</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/exchangeable_21_0.png" src="_images/exchangeable_21_0.png" />
+</div>
+</div>
+<p>The above graphs shows that when <span class="math notranslate nohighlight">\(F\)</span> generates the data, <span class="math notranslate nohighlight">\(\pi_t\)</span> on average always heads north, while
+when <span class="math notranslate nohighlight">\(G\)</span> generates the data, <span class="math notranslate nohighlight">\(\pi_t\)</span> heads south.</p>
+<p>Next, we’ll look at a degenerate case in whcih  <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> are identical beta
+distributions, and <span class="math notranslate nohighlight">\(F_a=G_a=3, F_b=G_b=1.2\)</span>.</p>
+<p>In a sense, here  there
+is nothing to learn.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expected_ratio</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/exchangeable_23_0.png" src="_images/exchangeable_23_0.png" />
+</div>
+</div>
+<p>The above graph says that <span class="math notranslate nohighlight">\(\pi_t\)</span> is inert and would remain at its initial value.</p>
+<p>Finally, let’s look at a case in which  <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> are neither very
+different nor identical, in particular one in which  <span class="math notranslate nohighlight">\(F_a=2, F_b=1\)</span> and
+<span class="math notranslate nohighlight">\(G_a=3, G_b=1.2\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expected_ratio</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/exchangeable_25_0.png" src="_images/exchangeable_25_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="sequels">
+<h2><a class="toc-backref" href="#id14"><span class="section-number">38.9. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this headline">¶</a></h2>
+<p>We’ll dig deeper into some of the ideas used here in the following lectures:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a> describes <strong>likelihood ratio processes</strong>
+and their role in frequentist and Bayesian statistical theories</p></li>
+<li><p><a class="reference internal" href="navy_captain.html"><span class="doc">this lecture</span></a> returns to the subject of this lecture and studies
+whether the Captain’s hunch that the (frequentist) decision rule that the Navy had ordered
+him to use can be expected to be better or worse than the rule sequential rule that Abraham
+Wald designed</p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   6. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   7. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   8. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   10. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   11. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   12. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   13. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   14. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   15. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   16. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   17. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   18. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   19. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   20. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   21. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   22. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   23. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   24. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   25. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   26. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   27. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   28. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   29. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   30. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   31. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   32. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   33. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   34. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   35. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   36. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   37. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   38. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   39. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   40. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   41. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   42. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   43. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   44. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   45. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   46. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   47. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   48. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   49. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   50. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   51. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   52. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   53. Asset Pricing with Incomplete Markets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   54. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   55. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   56. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   57. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   58. References
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="_notebooks/exchangeable.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Launch Notebook"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/exchangeable.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
+                    <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lecture-python.myst/lectures/exchangeable.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+
+        </div> <!-- .toolbar -->
+
+    </div> <!-- .wrapper-->
+
+<script src="_static/plugins.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+
+    <script src=[></script>
+
+    <script src=]></script>
+
+<script src="_static/scripts.js"></script>
+<script>
+    feather.replace()
+    tippy('[data-tippy-content]');
+</script>
+
+
+  </body>
+</html>

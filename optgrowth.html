@@ -1,0 +1,1459 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30. Optimal Growth I: The Stochastic Optimal Growth Model &#8212; Quantitative Economics with Python</title>
+    <link rel="stylesheet" href="_static/quantecon-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/optgrowth.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="31. Optimal Growth II: Accelerating the Code with Numba" href="optgrowth_fast.html" />
+    <link rel="prev" title="29. Cake Eating II: Numerical Methods" href="cake_eating_numerical.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Optimal Growth I: The Stochastic Optimal Growth Model"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Optimal Growth I: The Stochastic Optimal Growth Model" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/optgrowth.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+
+<meta name="theme-color" content="#ffffff" />
+
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page">
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+
+                            <ul class="nav section-nav flex-column">
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#overview" class="nav-link">Overview</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#the-model" class="nav-link">The Model</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#assumptions-and-comments" class="nav-link">Assumptions and Comments</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#optimization" class="nav-link">Optimization</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#the-policy-function-approach" class="nav-link">The Policy Function Approach</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#optimality" class="nav-link">Optimality</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#the-bellman-equation" class="nav-link">The Bellman Equation</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#greedy-policies" class="nav-link">Greedy Policies</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#the-bellman-operator" class="nav-link">The Bellman Operator</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#review-of-theoretical-results" class="nav-link">Review of Theoretical Results</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#unbounded-utility" class="nav-link">Unbounded Utility</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#computation" class="nav-link">Computation</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#scalar-maximization" class="nav-link">Scalar Maximization</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#optimal-growth-model" class="nav-link">Optimal Growth Model</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#id8" class="nav-link">The Bellman Operator</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#an-example" class="nav-link">An Example</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#iterating-to-convergence" class="nav-link">Iterating to Convergence</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#the-policy-function" class="nav-link">The Policy Function</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#exercises" class="nav-link">Exercises</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#exercise-1" class="nav-link">Exercise 1</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#exercise-2" class="nav-link">Exercise 2</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#solutions" class="nav-link">Solutions</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#id10" class="nav-link">Exercise 1</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#id11" class="nav-link">Exercise 2</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                            </ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">Optimal Growth I: The Stochastic Optimal Growth Model</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div><div class="section" id="optimal-growth-i-the-stochastic-optimal-growth-model">
+<h1><a class="toc-backref" href="#id12"><span class="section-number">30. </span><span class="target" id="index-0"></span>Optimal Growth I: The Stochastic Optimal Growth Model</a><a class="headerlink" href="#optimal-growth-i-the-stochastic-optimal-growth-model" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#optimal-growth-i-the-stochastic-optimal-growth-model" id="id12">Optimal Growth I: The Stochastic Optimal Growth Model</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id13">Overview</a></p></li>
+<li><p><a class="reference internal" href="#the-model" id="id14">The Model</a></p></li>
+<li><p><a class="reference internal" href="#computation" id="id15">Computation</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id16">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#solutions" id="id17">Solutions</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id13"><span class="section-number">30.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>In this lecture, we’re going to study a simple optimal growth model with one
+agent.</p>
+<p>The model is a version of the standard one sector infinite horizon growth
+model studied in</p>
+<ul class="simple">
+<li><p><a class="bibtex reference internal" href="zreferences.html#stokeylucas1989" id="id1">[SLP89]</a>, chapter 2</p></li>
+<li><p><a class="bibtex reference internal" href="zreferences.html#ljungqvist2012" id="id2">[LS18]</a>, section 3.1</p></li>
+<li><p><a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a>, chapter 1</p></li>
+<li><p><a class="bibtex reference internal" href="zreferences.html#sundaram1996" id="id3">[Sun96]</a>, chapter 12</p></li>
+</ul>
+<p>It is an extension of the simple <a class="reference internal" href="cake_eating_problem.html"><span class="doc">cake eating problem</span></a> we looked at earlier.</p>
+<p>The extension involves</p>
+<ul class="simple">
+<li><p>nonlinear returns to saving, through a production function, and</p></li>
+<li><p>stochastic returns, due to shocks to production.</p></li>
+</ul>
+<p>Despite these additions, the model is still relatively simple.</p>
+<p>We regard it as a stepping stone to more sophisticated models.</p>
+<p>We solve the model using dynamic programming and a range of numerical
+techniques.</p>
+<p>In this first lecture on optimal growth, the solution method will be value
+function iteration (VFI).</p>
+<p>While the code in this first lecture runs slowly, we will use a variety of
+techniques to drastically improve execution time over the next few lectures.</p>
+<p>Let’s start with some imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize_scalar</span>
+
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="the-model">
+<h2><a class="toc-backref" href="#id14"><span class="section-number">30.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">Consider an agent who owns an amount <span class="math notranslate nohighlight">\(y_t \in \mathbb R_+ := [0, \infty)\)</span> of a consumption good at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>This output can either be consumed or invested.</p>
+<p>When the good is invested, it is transformed one-for-one into capital.</p>
+<p>The resulting capital stock, denoted here by <span class="math notranslate nohighlight">\(k_{t+1}\)</span>, will then be used for production.</p>
+<p>Production is stochastic, in that it also depends on a shock <span class="math notranslate nohighlight">\(\xi_{t+1}\)</span> realized at the end of the current period.</p>
+<p>Next period output is</p>
+<div class="math notranslate nohighlight">
+\[
+y_{t+1} := f(k_{t+1}) \xi_{t+1}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(f \colon \mathbb R_+ \to \mathbb R_+\)</span> is called the production function.</p>
+<p>The resource constraint is</p>
+<div class="math notranslate nohighlight" id="equation-outcsdp0">
+<span class="eqno">(30.1)<a class="headerlink" href="#equation-outcsdp0" title="Permalink to this equation">¶</a></span>\[k_{t+1} + c_t \leq y_t\]</div>
+<p>and all variables are required to be nonnegative.</p>
+<div class="section" id="assumptions-and-comments">
+<h3><span class="section-number">30.2.1. </span>Assumptions and Comments<a class="headerlink" href="#assumptions-and-comments" title="Permalink to this headline">¶</a></h3>
+<p>In what follows,</p>
+<ul class="simple">
+<li><p>The sequence <span class="math notranslate nohighlight">\(\{\xi_t\}\)</span> is assumed to be IID.</p></li>
+<li><p>The common distribution of each <span class="math notranslate nohighlight">\(\xi_t\)</span> will be denoted by <span class="math notranslate nohighlight">\(\phi\)</span>.</p></li>
+<li><p>The production function <span class="math notranslate nohighlight">\(f\)</span> is assumed to be increasing and continuous.</p></li>
+<li><p>Depreciation of capital is not made explicit but can be incorporated into the production function.</p></li>
+</ul>
+<p>While many other treatments of the stochastic growth model use <span class="math notranslate nohighlight">\(k_t\)</span> as the state variable, we will use <span class="math notranslate nohighlight">\(y_t\)</span>.</p>
+<p>This will allow us to treat a stochastic model while maintaining only one state variable.</p>
+<p>We consider alternative states and timing specifications in some of our other lectures.</p>
+</div>
+<div class="section" id="optimization">
+<h3><span class="section-number">30.2.2. </span>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">¶</a></h3>
+<p>Taking <span class="math notranslate nohighlight">\(y_0\)</span> as given, the agent wishes to maximize</p>
+<div class="math notranslate nohighlight" id="equation-texs0-og2">
+<span class="eqno">(30.2)<a class="headerlink" href="#equation-texs0-og2" title="Permalink to this equation">¶</a></span>\[\mathbb E \left[ \sum_{t = 0}^{\infty} \beta^t u(c_t) \right]\]</div>
+<p>subject to</p>
+<div class="math notranslate nohighlight" id="equation-og-conse">
+<span class="eqno">(30.3)<a class="headerlink" href="#equation-og-conse" title="Permalink to this equation">¶</a></span>\[y_{t+1} = f(y_t - c_t) \xi_{t+1}
+\quad \text{and} \quad
+0 \leq c_t \leq y_t
+\quad \text{for all } t\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(u\)</span> is a bounded, continuous and strictly increasing utility function and</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta \in (0, 1)\)</span> is a discount factor.</p></li>
+</ul>
+<p>In <a class="reference internal" href="#equation-og-conse">(30.3)</a> we are assuming that the resource constraint <a class="reference internal" href="#equation-outcsdp0">(30.1)</a> holds with equality — which is reasonable because <span class="math notranslate nohighlight">\(u\)</span> is strictly increasing and no output will be wasted at the optimum.</p>
+<p>In summary, the agent’s aim is to select a path <span class="math notranslate nohighlight">\(c_0, c_1, c_2, \ldots\)</span> for consumption that is</p>
+<ol class="simple">
+<li><p>nonnegative,</p></li>
+<li><p>feasible in the sense of <a class="reference internal" href="#equation-outcsdp0">(30.1)</a>,</p></li>
+<li><p>optimal, in the sense that it maximizes <a class="reference internal" href="#equation-texs0-og2">(30.2)</a> relative to all other feasible consumption sequences, and</p></li>
+<li><p><em>adapted</em>, in the sense that the action <span class="math notranslate nohighlight">\(c_t\)</span> depends only on
+observable outcomes, not on future outcomes such as <span class="math notranslate nohighlight">\(\xi_{t+1}\)</span>.</p></li>
+</ol>
+<p>In the present context</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(y_t\)</span> is called the <em>state</em> variable — it summarizes the “state of the world” at the start of each period.</p></li>
+<li><p><span class="math notranslate nohighlight">\(c_t\)</span> is called the <em>control</em> variable — a value chosen by the agent each period after observing the state.</p></li>
+</ul>
+</div>
+<div class="section" id="the-policy-function-approach">
+<h3><span class="section-number">30.2.3. </span>The Policy Function Approach<a class="headerlink" href="#the-policy-function-approach" title="Permalink to this headline">¶</a></h3>
+<p id="index-2">One way to think about solving this problem is to look for the best <strong>policy function</strong>.</p>
+<p>A policy function is a map from past and present observables into current action.</p>
+<p>We’ll be particularly interested in <strong>Markov policies</strong>, which are maps from the current state <span class="math notranslate nohighlight">\(y_t\)</span> into a current action <span class="math notranslate nohighlight">\(c_t\)</span>.</p>
+<p>For dynamic programming problems such as this one (in fact for any <a class="reference external" href="https://en.wikipedia.org/wiki/Markov_decision_process">Markov decision process</a>), the optimal policy is always a Markov policy.</p>
+<p>In other words, the current state <span class="math notranslate nohighlight">\(y_t\)</span> provides a <a class="reference external" href="https://en.wikipedia.org/wiki/Sufficient_statistic">sufficient statistic</a>
+for the history in terms of making an optimal decision today.</p>
+<p>This is quite intuitive, but if you wish you can find proofs in texts such as <a class="bibtex reference internal" href="zreferences.html#stokeylucas1989" id="id4">[SLP89]</a> (section 4.1).</p>
+<p>Hereafter we focus on finding the best Markov policy.</p>
+<p>In our context, a Markov policy is a function <span class="math notranslate nohighlight">\(\sigma \colon
+\mathbb R_+ \to \mathbb R_+\)</span>, with the understanding that states are mapped to actions via</p>
+<div class="math notranslate nohighlight">
+\[
+c_t = \sigma(y_t) \quad \text{for all } t
+\]</div>
+<p>In what follows, we will call <span class="math notranslate nohighlight">\(\sigma\)</span> a <em>feasible consumption policy</em> if it satisfies</p>
+<div class="math notranslate nohighlight" id="equation-idp-fp-og2">
+<span class="eqno">(30.4)<a class="headerlink" href="#equation-idp-fp-og2" title="Permalink to this equation">¶</a></span>\[0 \leq \sigma(y) \leq y
+\quad \text{for all} \quad
+y \in \mathbb R_+\]</div>
+<p>In other words, a feasible consumption policy is a Markov policy that respects the resource constraint.</p>
+<p>The set of all feasible consumption policies will be denoted by <span class="math notranslate nohighlight">\(\Sigma\)</span>.</p>
+<p>Each <span class="math notranslate nohighlight">\(\sigma \in \Sigma\)</span> determines a <a class="reference external" href="https://python-advanced.quantecon.org/stationary_densities.html">continuous state Markov process</a> <span class="math notranslate nohighlight">\(\{y_t\}\)</span> for output via</p>
+<div class="math notranslate nohighlight" id="equation-firstp0-og2">
+<span class="eqno">(30.5)<a class="headerlink" href="#equation-firstp0-og2" title="Permalink to this equation">¶</a></span>\[y_{t+1} = f(y_t - \sigma(y_t)) \xi_{t+1},
+\quad y_0 \text{ given}\]</div>
+<p>This is the time path for output when we choose and stick with the policy <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
+<p>We insert this process into the objective function to get</p>
+<div class="math notranslate nohighlight" id="equation-texss">
+<span class="eqno">(30.6)<a class="headerlink" href="#equation-texss" title="Permalink to this equation">¶</a></span>\[\mathbb E
+\left[ \,
+\sum_{t = 0}^{\infty} \beta^t u(c_t) \,
+\right] =
+\mathbb E
+\left[ \,
+\sum_{t = 0}^{\infty} \beta^t u(\sigma(y_t)) \,
+\right]\]</div>
+<p>This is the total expected present value of following policy <span class="math notranslate nohighlight">\(\sigma\)</span> forever,
+given initial income <span class="math notranslate nohighlight">\(y_0\)</span>.</p>
+<p>The aim is to select a policy that makes this number as large as possible.</p>
+<p>The next section covers these ideas more formally.</p>
+</div>
+<div class="section" id="optimality">
+<h3><span class="section-number">30.2.4. </span>Optimality<a class="headerlink" href="#optimality" title="Permalink to this headline">¶</a></h3>
+<p>The <span class="math notranslate nohighlight">\(\sigma\)</span> associated with a given policy <span class="math notranslate nohighlight">\(\sigma\)</span> is the mapping defined by</p>
+<div class="math notranslate nohighlight" id="equation-vfcsdp00">
+<span class="eqno">(30.7)<a class="headerlink" href="#equation-vfcsdp00" title="Permalink to this equation">¶</a></span>\[v_{\sigma}(y) =
+\mathbb E \left[ \sum_{t = 0}^{\infty} \beta^t u(\sigma(y_t)) \right]\]</div>
+<p>when <span class="math notranslate nohighlight">\(\{y_t\}\)</span> is given by <a class="reference internal" href="#equation-firstp0-og2">(30.5)</a> with <span class="math notranslate nohighlight">\(y_0 = y\)</span>.</p>
+<p>In other words, it is the lifetime value of following policy <span class="math notranslate nohighlight">\(\sigma\)</span>
+starting at initial condition <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>The <strong>value function</strong> is then defined as</p>
+<div class="math notranslate nohighlight" id="equation-vfcsdp0">
+<span class="eqno">(30.8)<a class="headerlink" href="#equation-vfcsdp0" title="Permalink to this equation">¶</a></span>\[v^*(y) := \sup_{\sigma \in \Sigma} \; v_{\sigma}(y)\]</div>
+<p>The value function gives the maximal value that can be obtained from state <span class="math notranslate nohighlight">\(y\)</span>, after considering all feasible policies.</p>
+<p>A policy <span class="math notranslate nohighlight">\(\sigma \in \Sigma\)</span> is called <strong>optimal</strong> if it attains the supremum in <a class="reference internal" href="#equation-vfcsdp0">(30.8)</a> for all <span class="math notranslate nohighlight">\(y \in \mathbb R_+\)</span>.</p>
+</div>
+<div class="section" id="the-bellman-equation">
+<h3><span class="section-number">30.2.5. </span>The Bellman Equation<a class="headerlink" href="#the-bellman-equation" title="Permalink to this headline">¶</a></h3>
+<p>With our assumptions on utility and production functions, the value function as defined in <a class="reference internal" href="#equation-vfcsdp0">(30.8)</a> also satisfies a <strong>Bellman equation</strong>.</p>
+<p>For this problem, the Bellman equation takes the form</p>
+<div class="math notranslate nohighlight" id="equation-fpb30">
+<span class="eqno">(30.9)<a class="headerlink" href="#equation-fpb30" title="Permalink to this equation">¶</a></span>\[v(y) = \max_{0 \leq c \leq y}
+    \left\{
+        u(c) + \beta \int v(f(y - c) z) \phi(dz)
+    \right\}
+\qquad (y \in \mathbb R_+)\]</div>
+<p>This is a <em>functional equation in</em> <span class="math notranslate nohighlight">\(v\)</span>.</p>
+<p>The term <span class="math notranslate nohighlight">\(\int v(f(y - c) z) \phi(dz)\)</span> can be understood as the expected next period value when</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(v\)</span> is used to measure value</p></li>
+<li><p>the state is <span class="math notranslate nohighlight">\(y\)</span></p></li>
+<li><p>consumption is set to <span class="math notranslate nohighlight">\(c\)</span></p></li>
+</ul>
+<p>As shown in <a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a>, theorem 10.1.11 and a range of other texts</p>
+<blockquote>
+<div><p><em>The value function</em> <span class="math notranslate nohighlight">\(v^*\)</span> <em>satisfies the Bellman equation</em></p>
+</div></blockquote>
+<p>In other words, <a class="reference internal" href="#equation-fpb30">(30.9)</a> holds when <span class="math notranslate nohighlight">\(v=v^*\)</span>.</p>
+<p>The intuition is that maximal value from a given state can be obtained by optimally trading off</p>
+<ul class="simple">
+<li><p>current reward from a given action, vs</p></li>
+<li><p>expected discounted future value of the state resulting from that action</p></li>
+</ul>
+<p>The Bellman equation is important because it gives us more information about the value function.</p>
+<p>It also suggests a way of computing the value function, which we discuss below.</p>
+</div>
+<div class="section" id="greedy-policies">
+<h3><span class="section-number">30.2.6. </span>Greedy Policies<a class="headerlink" href="#greedy-policies" title="Permalink to this headline">¶</a></h3>
+<p>The primary importance of the value function is that we can use it to compute optimal policies.</p>
+<p>The details are as follows.</p>
+<p>Given a continuous function <span class="math notranslate nohighlight">\(v\)</span> on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span>, we say that
+<span class="math notranslate nohighlight">\(\sigma \in \Sigma\)</span> is <span class="math notranslate nohighlight">\(v\)</span>-<strong>greedy</strong> if <span class="math notranslate nohighlight">\(\sigma(y)\)</span> is a solution to</p>
+<div class="math notranslate nohighlight" id="equation-defgp20">
+<span class="eqno">(30.10)<a class="headerlink" href="#equation-defgp20" title="Permalink to this equation">¶</a></span>\[\max_{0 \leq c \leq y}
+    \left\{
+    u(c) + \beta \int v(f(y - c) z) \phi(dz)
+    \right\}\]</div>
+<p>for every <span class="math notranslate nohighlight">\(y \in \mathbb R_+\)</span>.</p>
+<p>In other words, <span class="math notranslate nohighlight">\(\sigma \in \Sigma\)</span> is <span class="math notranslate nohighlight">\(v\)</span>-greedy if it optimally
+trades off current and future rewards when <span class="math notranslate nohighlight">\(v\)</span> is taken to be the value
+function.</p>
+<p>In our setting, we have the following key result</p>
+<ul class="simple">
+<li><p>A feasible consumption policy is optimal if and only if it is <span class="math notranslate nohighlight">\(v^*\)</span>-greedy.</p></li>
+</ul>
+<p>The intuition is similar to the intuition for the Bellman equation, which was
+provided after <a class="reference internal" href="#equation-fpb30">(30.9)</a>.</p>
+<p>See, for example, theorem 10.1.11 of <a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a>.</p>
+<p>Hence, once we have a good approximation to <span class="math notranslate nohighlight">\(v^*\)</span>, we can compute the
+(approximately) optimal policy by computing the corresponding greedy policy.</p>
+<p>The advantage is that we are now solving a much lower dimensional optimization
+problem.</p>
+</div>
+<div class="section" id="the-bellman-operator">
+<h3><span class="section-number">30.2.7. </span>The Bellman Operator<a class="headerlink" href="#the-bellman-operator" title="Permalink to this headline">¶</a></h3>
+<p>How, then, should we compute the value function?</p>
+<p>One way is to use the so-called <strong>Bellman operator</strong>.</p>
+<p>(An operator is a map that sends functions into functions.)</p>
+<p>The Bellman operator is denoted by <span class="math notranslate nohighlight">\(T\)</span> and defined by</p>
+<div class="math notranslate nohighlight" id="equation-fcbell20-optgrowth">
+<span class="eqno">(30.11)<a class="headerlink" href="#equation-fcbell20-optgrowth" title="Permalink to this equation">¶</a></span>\[Tv(y) := \max_{0 \leq c \leq y}
+\left\{
+    u(c) + \beta \int v(f(y - c) z) \phi(dz)
+\right\}
+\qquad (y \in \mathbb R_+)\]</div>
+<p>In other words, <span class="math notranslate nohighlight">\(T\)</span> sends the function <span class="math notranslate nohighlight">\(v\)</span> into the new function
+<span class="math notranslate nohighlight">\(Tv\)</span> defined by <a class="reference internal" href="#equation-fcbell20-optgrowth">(30.11)</a>.</p>
+<p>By construction, the set of solutions to the Bellman equation
+<a class="reference internal" href="#equation-fpb30">(30.9)</a> <em>exactly coincides with</em> the set of fixed points of <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>For example, if <span class="math notranslate nohighlight">\(Tv = v\)</span>, then, for any <span class="math notranslate nohighlight">\(y \geq 0\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+v(y)
+= Tv(y)
+= \max_{0 \leq c \leq y}
+\left\{
+    u(c) + \beta \int v^*(f(y - c) z) \phi(dz)
+\right\}
+\]</div>
+<p>which says precisely that <span class="math notranslate nohighlight">\(v\)</span> is a solution to the Bellman equation.</p>
+<p>It follows that <span class="math notranslate nohighlight">\(v^*\)</span> is a fixed point of <span class="math notranslate nohighlight">\(T\)</span>.</p>
+</div>
+<div class="section" id="review-of-theoretical-results">
+<h3><span class="section-number">30.2.8. </span>Review of Theoretical Results<a class="headerlink" href="#review-of-theoretical-results" title="Permalink to this headline">¶</a></h3>
+<p id="index-3">One can also show that <span class="math notranslate nohighlight">\(T\)</span> is a contraction mapping on the set of
+continuous bounded functions on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span> under the supremum distance</p>
+<div class="math notranslate nohighlight">
+\[
+\rho(g, h) = \sup_{y \geq 0} |g(y) - h(y)|
+\]</div>
+<p>See  <a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a>, lemma 10.1.18.</p>
+<p>Hence, it has exactly one fixed point in this set, which we know is equal to the value function.</p>
+<p>It follows that</p>
+<ul class="simple">
+<li><p>The value function <span class="math notranslate nohighlight">\(v^*\)</span> is bounded and continuous.</p></li>
+<li><p>Starting from any bounded and continuous <span class="math notranslate nohighlight">\(v\)</span>, the sequence <span class="math notranslate nohighlight">\(v, Tv, T^2v, \ldots\)</span>
+generated by iteratively applying <span class="math notranslate nohighlight">\(T\)</span> converges uniformly to <span class="math notranslate nohighlight">\(v^*\)</span>.</p></li>
+</ul>
+<p>This iterative method is called <strong>value function iteration</strong>.</p>
+<p>We also know that a feasible policy is optimal if and only if it is <span class="math notranslate nohighlight">\(v^*\)</span>-greedy.</p>
+<p>It’s not too hard to show that a <span class="math notranslate nohighlight">\(v^*\)</span>-greedy policy exists
+(see  <a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a>, theorem 10.1.11 if you get stuck).</p>
+<p>Hence, at least one optimal policy exists.</p>
+<p>Our problem now is how to compute it.</p>
+</div>
+<div class="section" id="unbounded-utility">
+<h3><span class="section-number">30.2.9. </span><span class="target" id="index-4"></span>Unbounded Utility<a class="headerlink" href="#unbounded-utility" title="Permalink to this headline">¶</a></h3>
+<p id="index-5">The results stated above assume that the utility function is bounded.</p>
+<p>In practice economists often work with unbounded utility functions — and so will we.</p>
+<p>In the unbounded setting, various optimality theories exist.</p>
+<p>Unfortunately, they tend to be case-specific, as opposed to valid for a large range of applications.</p>
+<p>Nevertheless, their main conclusions are usually in line with those stated for
+the bounded case just above (as long as we drop the word “bounded”).</p>
+<p>Consult,  for example, section 12.2 of <a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a>, <a class="bibtex reference internal" href="zreferences.html#kamihigashi2012" id="id5">[Kam12]</a> or <a class="bibtex reference internal" href="zreferences.html#mv2010" id="id6">[MdRV10]</a>.</p>
+</div>
+</div>
+<div class="section" id="computation">
+<h2><a class="toc-backref" href="#id15"><span class="section-number">30.3. </span>Computation</a><a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h2>
+<p id="index-6">Let’s now look at computing the value function and the optimal policy.</p>
+<p>Our implementation in this lecture will focus on clarity and
+flexibility.</p>
+<p>Both of these things are helpful, but they do cost us some speed — as you
+will see when you run the code.</p>
+<p><a class="reference internal" href="optgrowth_fast.html"><span class="doc">Later</span></a> we will sacrifice some of this clarity and
+flexibility in order to accelerate our code with just-in-time (JIT)
+compilation.</p>
+<p>The algorithm we will use is fitted value function iteration, which was
+described in earlier lectures <a class="reference internal" href="mccall_fitted_vfi.html"><span class="doc">the McCall model</span></a> and
+<a class="reference internal" href="cake_eating_numerical.html"><span class="doc">cake eating</span></a>.</p>
+<p>The algorithm will be</p>
+<ol class="simple" id="fvi-alg">
+<li><p>Begin with an array of values <span class="math notranslate nohighlight">\(\{ v_1, \ldots, v_I \}\)</span> representing
+the values of some initial function <span class="math notranslate nohighlight">\(v\)</span> on the grid points <span class="math notranslate nohighlight">\(\{ y_1, \ldots, y_I \}\)</span>.</p></li>
+<li><p>Build a function <span class="math notranslate nohighlight">\(\hat v\)</span> on the state space <span class="math notranslate nohighlight">\(\mathbb R_+\)</span> by
+linear interpolation, based on these data points.</p></li>
+<li><p>Obtain and record the value <span class="math notranslate nohighlight">\(T \hat v(y_i)\)</span> on each grid point
+<span class="math notranslate nohighlight">\(y_i\)</span> by repeatedly solving <a class="reference internal" href="#equation-fcbell20-optgrowth">(30.11)</a>.</p></li>
+<li><p>Unless some stopping condition is satisfied, set
+<span class="math notranslate nohighlight">\(\{ v_1, \ldots, v_I \} = \{ T \hat v(y_1), \ldots, T \hat v(y_I) \}\)</span> and go to step 2.</p></li>
+</ol>
+<div class="section" id="scalar-maximization">
+<h3><span class="section-number">30.3.1. </span>Scalar Maximization<a class="headerlink" href="#scalar-maximization" title="Permalink to this headline">¶</a></h3>
+<p>To maximize the right hand side of the Bellman equation <a class="reference internal" href="#equation-fpb30">(30.9)</a>, we are going to use
+the <code class="docutils literal notranslate"><span class="pre">minimize_scalar</span></code> routine from SciPy.</p>
+<p>Since we are maximizing rather than minimizing, we will use the fact that the
+maximizer of <span class="math notranslate nohighlight">\(g\)</span> on the interval <span class="math notranslate nohighlight">\([a, b]\)</span> is the minimizer of
+<span class="math notranslate nohighlight">\(-g\)</span> on the same interval.</p>
+<p>To this end, and to keep the interface tidy, we will wrap <code class="docutils literal notranslate"><span class="pre">minimize_scalar</span></code>
+in an outer function as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">maximize</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maximize the function g over the interval [a, b].</span>
+
+<span class="sd">    We use the fact that the maximizer of g on any interval is</span>
+<span class="sd">    also the minimizer of -g.  The tuple args collects any extra</span>
+<span class="sd">    arguments to g.</span>
+
+<span class="sd">    Returns the maximal value and the maximizer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">objective</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">minimize_scalar</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;bounded&#39;</span><span class="p">)</span>
+    <span class="n">maximizer</span><span class="p">,</span> <span class="n">maximum</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">result</span><span class="o">.</span><span class="n">fun</span>
+    <span class="k">return</span> <span class="n">maximizer</span><span class="p">,</span> <span class="n">maximum</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="optimal-growth-model">
+<h3><span class="section-number">30.3.2. </span>Optimal Growth Model<a class="headerlink" href="#optimal-growth-model" title="Permalink to this headline">¶</a></h3>
+<p>We will assume for now that <span class="math notranslate nohighlight">\(\phi\)</span> is the distribution of <span class="math notranslate nohighlight">\(\xi := \exp(\mu + s \zeta)\)</span> where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\zeta\)</span> is standard normal,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu\)</span> is a shock location parameter and</p></li>
+<li><p><span class="math notranslate nohighlight">\(s\)</span> is a shock scale parameter.</p></li>
+</ul>
+<p>We will store this and other primitives of the optimal growth model in a class.</p>
+<p>The class, defined below, combines both parameters and a method that realizes the
+right hand side of the Bellman equation <a class="reference internal" href="#equation-fpb30">(30.9)</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">OptimalGrowthModel</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">u</span><span class="p">,</span>            <span class="c1"># utility function</span>
+                 <span class="n">f</span><span class="p">,</span>            <span class="c1"># production function</span>
+                 <span class="n">β</span><span class="o">=</span><span class="mf">0.96</span><span class="p">,</span>       <span class="c1"># discount factor</span>
+                 <span class="n">μ</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>          <span class="c1"># shock location parameter</span>
+                 <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>        <span class="c1"># shock scale parameter</span>
+                 <span class="n">grid_max</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                 <span class="n">grid_size</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+                 <span class="n">shock_size</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+                 <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">μ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">u</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">s</span>
+
+        <span class="c1"># Set up grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">grid_max</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
+
+        <span class="c1"># Store shocks (with a seed, so results are reproducible)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shocks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">μ</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">shock_size</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">state_action_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">v_array</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Right hand side of the Bellman equation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">u</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">shocks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shocks</span>
+
+        <span class="n">v</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_array</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">v</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the second last line we are using linear interpolation.</p>
+<p>In the last line, the expectation in <a class="reference internal" href="#equation-fcbell20-optgrowth">(30.11)</a> is
+computed via <a class="reference external" href="https://en.wikipedia.org/wiki/Monte_Carlo_integration">Monte Carlo</a>, using the approximation</p>
+<div class="math notranslate nohighlight">
+\[
+\int v(f(y - c) z) \phi(dz) \approx \frac{1}{n} \sum_{i=1}^n v(f(y - c) \xi_i)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\{\xi_i\}_{i=1}^n\)</span> are IID draws from <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
+<p>Monte Carlo is not always the most efficient way to compute integrals numerically
+but it does have some theoretical advantages in the present setting.</p>
+<p>(For example, it preserves the contraction mapping property of the Bellman operator — see, e.g., <a class="bibtex reference internal" href="zreferences.html#pal2013" id="id7">[PalS13]</a>.)</p>
+</div>
+<div class="section" id="id8">
+<h3><span class="section-number">30.3.3. </span>The Bellman Operator<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>The next function implements the Bellman operator.</p>
+<p>(We could have added it as a method to the <code class="docutils literal notranslate"><span class="pre">OptimalGrowthModel</span></code> class, but we
+prefer small classes rather than monolithic ones for this kind of
+numerical work.)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">og</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Bellman operator.  Updates the guess of the value function</span>
+<span class="sd">    and also computes a v-greedy policy.</span>
+
+<span class="sd">      * og is an instance of OptimalGrowthModel</span>
+<span class="sd">      * v is an array representing a guess of the value function</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">v_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">v_greedy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">)):</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c1"># Maximize RHS of Bellman equation at state y</span>
+        <span class="n">c_star</span><span class="p">,</span> <span class="n">v_max</span> <span class="o">=</span> <span class="n">maximize</span><span class="p">(</span><span class="n">og</span><span class="o">.</span><span class="n">state_action_value</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="n">v_new</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">v_max</span>
+        <span class="n">v_greedy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_star</span>
+
+    <span class="k">return</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="an-example">
+<span id="benchmark-growth-mod"></span><h3><span class="section-number">30.3.4. </span>An Example<a class="headerlink" href="#an-example" title="Permalink to this headline">¶</a></h3>
+<p>Let’s suppose now that</p>
+<div class="math notranslate nohighlight">
+\[
+f(k) = k^{\alpha}
+\quad \text{and} \quad
+u(c) = \ln c
+\]</div>
+<p>For this particular problem, an exact analytical solution is available (see <a class="bibtex reference internal" href="zreferences.html#ljungqvist2012" id="id9">[LS18]</a>, section 3.1.2), with</p>
+<div class="math notranslate nohighlight" id="equation-dpi-tv">
+<span class="eqno">(30.12)<a class="headerlink" href="#equation-dpi-tv" title="Permalink to this equation">¶</a></span>\[v^*(y) =
+\frac{\ln (1 - \alpha \beta) }{ 1 - \beta} +
+\frac{(\mu + \alpha \ln (\alpha \beta))}{1 - \alpha}
+ \left[
+     \frac{1}{1- \beta} - \frac{1}{1 - \alpha \beta}
+ \right] +
+ \frac{1}{1 - \alpha \beta} \ln y\]</div>
+<p>and optimal consumption policy</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma^*(y) = (1 - \alpha \beta ) y
+\]</div>
+<p>It is valuable to have these closed-form solutions because it lets us check
+whether our code works for this particular case.</p>
+<p>In Python, the functions above can be expressed as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="k">def</span> <span class="nf">v_star</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    True value function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span> <span class="o">*</span> <span class="n">β</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span>
+    <span class="n">c2</span> <span class="o">=</span> <span class="p">(</span><span class="n">μ</span> <span class="o">+</span> <span class="n">α</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">α</span> <span class="o">*</span> <span class="n">β</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">)</span>
+    <span class="n">c3</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span>
+    <span class="n">c4</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span> <span class="o">*</span> <span class="n">β</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">c1</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="n">c3</span> <span class="o">-</span> <span class="n">c4</span><span class="p">)</span> <span class="o">+</span> <span class="n">c4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">σ_star</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    True optimal policy</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span> <span class="o">*</span> <span class="n">β</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
+
+</pre></div>
+</div>
+<p>Next let’s create an instance of the model with the above primitives and assign it to the variable <code class="docutils literal notranslate"><span class="pre">og</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">α</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="k">def</span> <span class="nf">fcd</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">k</span><span class="o">**</span><span class="n">α</span>
+
+<span class="n">og</span> <span class="o">=</span> <span class="n">OptimalGrowthModel</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">fcd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s see what happens when we apply our Bellman operator to the exact
+solution <span class="math notranslate nohighlight">\(v^*\)</span> in this case.</p>
+<p>In theory, since <span class="math notranslate nohighlight">\(v^*\)</span> is a fixed point, the resulting function should again be <span class="math notranslate nohighlight">\(v^*\)</span>.</p>
+<p>In practice, we expect some small numerical error.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">grid</span>
+
+<span class="n">v_init</span> <span class="o">=</span> <span class="n">v_star</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">μ</span><span class="p">)</span>    <span class="c1"># Start at the solution</span>
+<span class="n">v_greedy</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v_init</span><span class="p">,</span> <span class="n">og</span><span class="p">)</span>             <span class="c1"># Apply T once</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">35</span><span class="p">,</span> <span class="o">-</span><span class="mi">24</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$Tv^*$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_init</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$v^*$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The two functions are essentially indistinguishable, so we are off to a good start.</p>
+<p>Now let’s have a look at iterating with the Bellman operator, starting
+from an arbitrary initial condition.</p>
+<p>The initial condition we’ll start with is, somewhat arbitrarily, <span class="math notranslate nohighlight">\(v(y) = 5 \ln (y)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>  <span class="c1"># An initial condition</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">35</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+        <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Initial condition&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">og</span><span class="p">)</span>  <span class="c1"># Apply the Bellman operator</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">n</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_star</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">μ</span><span class="p">),</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True value function&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">grid</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The figure shows</p>
+<ol class="simple">
+<li><p>the first 36 functions generated by the fitted value function iteration algorithm, with hotter colors given to higher iterates</p></li>
+<li><p>the true value function <span class="math notranslate nohighlight">\(v^*\)</span> drawn in black</p></li>
+</ol>
+<p>The sequence of iterates converges towards <span class="math notranslate nohighlight">\(v^*\)</span>.</p>
+<p>We are clearly getting closer.</p>
+</div>
+<div class="section" id="iterating-to-convergence">
+<h3><span class="section-number">30.3.5. </span>Iterating to Convergence<a class="headerlink" href="#iterating-to-convergence" title="Permalink to this headline">¶</a></h3>
+<p>We can write a function that iterates until the difference is below a particular
+tolerance level.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve_model</span><span class="p">(</span><span class="n">og</span><span class="p">,</span>
+                <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+                <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">print_skip</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve model by iterating with the Bellman operator.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Set up loop</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="n">og</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>  <span class="c1"># Initial condition</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span> <span class="ow">and</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">og</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">v_new</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="n">print_skip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error at iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v_new</span>
+
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to converge!&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Converged in </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_new</span>
+</pre></div>
+</div>
+<p>Let’s use this function to compute an approximate solution at the defaults.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_solution</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">og</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we check our result by plotting it against the true value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_solution</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Approximate value function&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_star</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">μ</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True value function&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">35</span><span class="p">,</span> <span class="o">-</span><span class="mi">24</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The figure shows that we are pretty much on the money.</p>
+</div>
+<div class="section" id="the-policy-function">
+<h3><span class="section-number">30.3.6. </span>The Policy Function<a class="headerlink" href="#the-policy-function" title="Permalink to this headline">¶</a></h3>
+<p id="index-7">The policy <code class="docutils literal notranslate"><span class="pre">v_greedy</span></code> computed above corresponds to an approximate optimal policy.</p>
+<p>The next figure compares it to the exact solution, which, as mentioned
+above, is <span class="math notranslate nohighlight">\(\sigma(y) = (1 - \alpha \beta) y\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;approximate policy function&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">β</span><span class="p">),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span>
+        <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;true policy function&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The figure shows that we’ve done a good job in this instance of approximating
+the true policy.</p>
+</div>
+</div>
+<div class="section" id="exercises">
+<h2><a class="toc-backref" href="#id16"><span class="section-number">30.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="exercise-1">
+<span id="ogex1"></span><h3><span class="section-number">30.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<p>A common choice for utility function in this kind of work is the CRRA
+specification</p>
+<div class="math notranslate nohighlight">
+\[
+u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
+\]</div>
+<p>Maintaining the other defaults, including the Cobb-Douglas production
+function,  solve the optimal growth model with this
+utility specification.</p>
+<p>Setting <span class="math notranslate nohighlight">\(\gamma = 1.5\)</span>, compute and plot an estimate of the optimal policy.</p>
+<p>Time how long this function takes to run, so you can compare it to faster code developed in the <a class="reference internal" href="optgrowth_fast.html"><span class="doc">next lecture</span></a></p>
+</div>
+<div class="section" id="exercise-2">
+<span id="og-ex2"></span><h3><span class="section-number">30.4.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
+<p>Time how long it takes to iterate with the Bellman operator
+20 times, starting from initial condition <span class="math notranslate nohighlight">\(v(y) = u(y)\)</span>.</p>
+<p>Use the model specification in the previous exercise.</p>
+<p>(As before, we will compare this number with that for the faster code developed in the <a class="reference internal" href="optgrowth_fast.html"><span class="doc">next lecture</span></a>.)</p>
+</div>
+</div>
+<div class="section" id="solutions">
+<h2><a class="toc-backref" href="#id17"><span class="section-number">30.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id10">
+<h3><span class="section-number">30.5.1. </span>Exercise 1<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<p>Here we set up the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">γ</span> <span class="o">=</span> <span class="mf">1.5</span>   <span class="c1"># Preference parameter</span>
+
+<span class="k">def</span> <span class="nf">u_crra</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span>
+
+<span class="n">og</span> <span class="o">=</span> <span class="n">OptimalGrowthModel</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="n">u_crra</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">fcd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s run it, with a timer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
+<span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_solution</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">og</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot the policy function just to see what it looks like:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Approximate optimal policy&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id11">
+<h3><span class="section-number">30.5.2. </span>Exercise 2<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<p>Let’s set up:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">og</span> <span class="o">=</span> <span class="n">OptimalGrowthModel</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="n">u_crra</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">fcd</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="n">og</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s the timing:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+    <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">og</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">v_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   6. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   7. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   8. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   10. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   11. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   12. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   13. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   14. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   15. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   16. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   17. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   18. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   19. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   20. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   21. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   22. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   23. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   24. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   25. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   26. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   27. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   28. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   29. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   30. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   31. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   32. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   33. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   34. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   35. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   36. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   37. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   38. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   39. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   40. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   41. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   42. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   43. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   44. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   45. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   46. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   47. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   48. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   49. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   50. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   51. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   52. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   53. Asset Pricing with Incomplete Markets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   54. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   55. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   56. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   57. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   58. References
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="_notebooks/optgrowth.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Launch Notebook"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/optgrowth.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
+                    <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lecture-python.myst/lectures/optgrowth.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+
+        </div> <!-- .toolbar -->
+
+    </div> <!-- .wrapper-->
+
+<script src="_static/plugins.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+
+    <script src=[></script>
+
+    <script src=]></script>
+
+<script src="_static/scripts.js"></script>
+<script>
+    feather.replace()
+    tippy('[data-tippy-content]');
+</script>
+
+
+  </body>
+</html>

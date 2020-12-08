@@ -1,0 +1,1434 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20. Cass-Koopmans Planning Problem &#8212; Quantitative Economics with Python</title>
+    <link rel="stylesheet" href="_static/quantecon-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/cass_koopmans_1.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="21. Cass-Koopmans Competitive Equilibrium" href="cass_koopmans_2.html" />
+    <link rel="prev" title="19. Shortest Paths" href="short_path.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Cass-Koopmans Planning Problem"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Cass-Koopmans Planning Problem" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/cass_koopmans_1.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+
+<meta name="theme-color" content="#ffffff" />
+
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page">
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+
+                            <ul class="nav section-nav flex-column">
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#overview" class="nav-link">Overview</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#the-model" class="nav-link">The Model</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#planning-problem" class="nav-link">Planning Problem</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#useful-properties-of-linearly-homogeneous-production-function" class="nav-link">Useful Properties of Linearly Homogeneous Production Function</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#first-order-necessary-conditions" class="nav-link">First-order necessary conditions</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#shooting-algorithm" class="nav-link">Shooting Algorithm</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#setting-initial-capital-to-steady-state-capital" class="nav-link">Setting Initial Capital to Steady State Capital</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#a-turnpike-property" class="nav-link">A Turnpike Property</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#a-limiting-economy" class="nav-link">A Limiting Economy</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#exercise" class="nav-link">Exercise</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#solution" class="nav-link">Solution</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#concluding-remarks" class="nav-link">Concluding Remarks</a>
+                                </li>
+                                
+                            </ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">Cass-Koopmans Planning Problem</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div><div class="section" id="cass-koopmans-planning-problem">
+<h1><a class="toc-backref" href="#id3"><span class="section-number">20. </span>Cass-Koopmans Planning Problem</a><a class="headerlink" href="#cass-koopmans-planning-problem" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#cass-koopmans-planning-problem" id="id3">Cass-Koopmans Planning Problem</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id4">Overview</a></p></li>
+<li><p><a class="reference internal" href="#the-model" id="id5">The Model</a></p></li>
+<li><p><a class="reference internal" href="#planning-problem" id="id6">Planning Problem</a></p></li>
+<li><p><a class="reference internal" href="#shooting-algorithm" id="id7">Shooting Algorithm</a></p></li>
+<li><p><a class="reference internal" href="#setting-initial-capital-to-steady-state-capital" id="id8">Setting Initial Capital to Steady State Capital</a></p></li>
+<li><p><a class="reference internal" href="#a-turnpike-property" id="id9">A Turnpike Property</a></p></li>
+<li><p><a class="reference internal" href="#a-limiting-economy" id="id10">A Limiting Economy</a></p></li>
+<li><p><a class="reference internal" href="#concluding-remarks" id="id11">Concluding Remarks</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">20.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This lecture and in <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> describe a model that Tjalling Koopmans <a class="bibtex reference internal" href="zreferences.html#koopmans" id="id1">[Koo65]</a>
+and David Cass <a class="bibtex reference internal" href="zreferences.html#cass" id="id2">[Cas65]</a> used to analyze optimal growth.</p>
+<p>The model can be viewed as an extension of the model of Robert Solow
+described in <a class="reference external" href="https://lectures.quantecon.org/py/python_oop.html">an earlier lecture</a>
+but adapted to make the saving rate the outcome of an optimal choice.</p>
+<p>(Solow assumed a constant saving rate determined outside the model).</p>
+<p>We describe two versions of the model, one in this lecture and the other in <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a>.</p>
+<p>Together, the two lectures  illustrate what is, in fact, a
+more general connection between a <strong>planned economy</strong> and a decentralized economy
+organized as a <strong>competitive equilibrium</strong>.</p>
+<p>This lecture is devoted to the planned economy version.</p>
+<p>The lecture uses important ideas including</p>
+<ul class="simple">
+<li><p>A min-max problem for solving a planning problem.</p></li>
+<li><p>A <strong>shooting algorithm</strong> for solving difference equations subject
+to initial and terminal conditions.</p></li>
+<li><p>A <strong>turnpike</strong> property that describes optimal paths for
+long but finite-horizon economies.</p></li>
+</ul>
+<p>Let’s start with some standard imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">float64</span>
+<span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="the-model">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">20.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
+<p>Time is discrete and takes values <span class="math notranslate nohighlight">\(t = 0, 1 , \ldots, T\)</span> where <span class="math notranslate nohighlight">\(T\)</span> is  finite.</p>
+<p>(We’ll study a limiting case in which  <span class="math notranslate nohighlight">\(T = + \infty\)</span> before concluding).</p>
+<p>A single good can either be consumed or invested in physical capital.</p>
+<p>The consumption good is not durable and depreciates completely if not
+consumed immediately.</p>
+<p>The capital good is durable but depreciates some each period.</p>
+<p>We let <span class="math notranslate nohighlight">\(C_t\)</span> be a nondurable consumption good at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(K_t\)</span> be the stock of physical capital at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(\vec{C}\)</span> = <span class="math notranslate nohighlight">\(\{C_0,\dots, C_T\}\)</span> and
+<span class="math notranslate nohighlight">\(\vec{K}\)</span> = <span class="math notranslate nohighlight">\(\{K_0,\dots,K_{T+1}\}\)</span>.</p>
+<p>A representative household is endowed with one unit of labor at each
+<span class="math notranslate nohighlight">\(t\)</span> and likes the consumption good at each <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>The representative household inelastically supplies a single unit of
+labor <span class="math notranslate nohighlight">\(N_t\)</span> at each <span class="math notranslate nohighlight">\(t\)</span>, so that
+<span class="math notranslate nohighlight">\(N_t =1 \text{ for all } t \in [0,T]\)</span>.</p>
+<p>The representative household has preferences over consumption bundles
+ordered by the utility functional:</p>
+<div class="math notranslate nohighlight" id="equation-utility-functional">
+<span class="eqno">(20.1)<a class="headerlink" href="#equation-utility-functional" title="Permalink to this equation">¶</a></span>\[U(\vec{C}) = \sum_{t=0}^{T} \beta^t \frac{C_t^{1-\gamma}}{1-\gamma}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span> is a discount factor and <span class="math notranslate nohighlight">\(\gamma &gt;0\)</span>
+governs the curvature of the one-period utility function with larger <span class="math notranslate nohighlight">\(\gamma\)</span> implying more curvature.</p>
+<p>Note that</p>
+<div class="math notranslate nohighlight" id="equation-utility-oneperiod">
+<span class="eqno">(20.2)<a class="headerlink" href="#equation-utility-oneperiod" title="Permalink to this equation">¶</a></span>\[u(C_t) = \frac{C_t^{1-\gamma}}{1-\gamma}\]</div>
+<p>satisfies <span class="math notranslate nohighlight">\(u'&gt;0,u''&lt;0\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(u' &gt; 0\)</span> asserts that the consumer prefers more to less.</p>
+<p><span class="math notranslate nohighlight">\(u''&lt; 0\)</span> asserts that marginal utility declines with increases
+in <span class="math notranslate nohighlight">\(C_t\)</span>.</p>
+<p>We assume that <span class="math notranslate nohighlight">\(K_0 &gt; 0\)</span> is an  exogenous  initial
+capital stock.</p>
+<p>There is an economy-wide production function</p>
+<div class="math notranslate nohighlight" id="equation-production-function">
+<span class="eqno">(20.3)<a class="headerlink" href="#equation-production-function" title="Permalink to this equation">¶</a></span>\[F(K_t,N_t) = A K_t^{\alpha}N_t^{1-\alpha}\]</div>
+<p>with <span class="math notranslate nohighlight">\(0 &lt; \alpha&lt;1\)</span>, <span class="math notranslate nohighlight">\(A &gt; 0\)</span>.</p>
+<p>A feasible allocation <span class="math notranslate nohighlight">\(\vec{C}, \vec{K}\)</span> satisfies</p>
+<div class="math notranslate nohighlight" id="equation-allocation">
+<span class="eqno">(20.4)<a class="headerlink" href="#equation-allocation" title="Permalink to this equation">¶</a></span>\[C_t + K_{t+1} \leq F(K_t,N_t) + (1-\delta) K_t, \quad \text{for all } t \in [0, T]\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta \in (0,1)\)</span> is a depreciation rate of capital.</p>
+</div>
+<div class="section" id="planning-problem">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">20.3. </span>Planning Problem</a><a class="headerlink" href="#planning-problem" title="Permalink to this headline">¶</a></h2>
+<p>A planner chooses an allocation <span class="math notranslate nohighlight">\(\{\vec{C},\vec{K}\}\)</span> to
+maximize <a class="reference internal" href="#equation-utility-functional">(20.1)</a> subject to <a class="reference internal" href="#equation-allocation">(20.4)</a>.</p>
+<p>Let <span class="math notranslate nohighlight">\(\vec{\mu}=\{\mu_0,\dots,\mu_T\}\)</span> be a sequence of
+nonnegative <strong>Lagrange multipliers</strong>.</p>
+<p>To find an optimal allocation, form a Lagrangian</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\vec{C} ,\vec{K} ,\vec{\mu} ) =
+\sum_{t=0}^T \beta^t\left\{ u(C_t)+ \mu_t
+\left(F(K_t,1) + (1-\delta) K_t- C_t - K_{t+1} \right)\right\}
+\]</div>
+<p>and then pose the following min-max problem:</p>
+<div class="math notranslate nohighlight" id="equation-min-max-prob">
+<span class="eqno">(20.5)<a class="headerlink" href="#equation-min-max-prob" title="Permalink to this equation">¶</a></span>\[\min_{\vec{\mu}} \max_{\vec{C},\vec{K}} \mathcal{L}(\vec{C},\vec{K},\vec{\mu} )\]</div>
+<ul class="simple">
+<li><p><strong>Extremization</strong> means
+maximization with respect to <span class="math notranslate nohighlight">\(\vec{C}, \vec{K}\)</span> and
+minimization with respect to <span class="math notranslate nohighlight">\(\vec{\mu}\)</span>.</p></li>
+<li><p>Our problem satisfies
+conditions that assure that required second-order
+conditions are satisfied at an allocation that satisfies the
+first-order conditions that we are about to compute.</p></li>
+</ul>
+<p>Before computing first-order conditions, we present some handy formulas.</p>
+<div class="section" id="useful-properties-of-linearly-homogeneous-production-function">
+<h3><span class="section-number">20.3.1. </span>Useful Properties of Linearly Homogeneous Production Function<a class="headerlink" href="#useful-properties-of-linearly-homogeneous-production-function" title="Permalink to this headline">¶</a></h3>
+<p>The following technicalities will help us.</p>
+<p>Notice that</p>
+<div class="math notranslate nohighlight">
+\[
+F(K_t,N_t) = A K_t^\alpha N_t^{1-\alpha} = N_t A\left(\frac{K_t}{N_t}\right)^\alpha
+\]</div>
+<p>Define the <strong>output per-capita production function</strong></p>
+<div class="math notranslate nohighlight">
+\[
+\frac{F(K_t,N_t)}{N_t} \equiv f\left(\frac{K_t}{N_t}\right) = A\left(\frac{K_t}{N_t}\right)^\alpha
+\]</div>
+<p>whose argument is <strong>capital per-capita</strong>.</p>
+<p>It is useful to recall the following calculations for the marginal product of capital</p>
+<div class="math notranslate nohighlight" id="equation-useful-calc1">
+<span class="eqno">(20.6)<a class="headerlink" href="#equation-useful-calc1" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+\frac{\partial F(K_t,N_t)}{\partial K_t}
+&amp; =
+\frac{\partial N_t f\left( \frac{K_t}{N_t}\right)}{\partial K_t}
+\\ &amp;=
+N_t f'\left(\frac{K_t}{N_t}\right)\frac{1}{N_t} \quad \text{(Chain rule)}
+\\ &amp;=
+f'\left.\left(\frac{K_t}{N_t}\right)\right|_{N_t=1}
+\\ &amp;= f'(K_t)
+\end{aligned}\end{split}\]</div>
+<p>and the marginal product of labor</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\frac{\partial F(K_t,N_t)}{\partial N_t}
+&amp;=
+\frac{\partial N_t f\left( \frac{K_t}{N_t}\right)}{\partial N_t} \quad \text{(Product rule)}
+\\ &amp;=
+f\left(\frac{K_t}{N_t}\right){+} N_t f'\left(\frac{K_t}{N_t}\right) \frac{-K_t}{N_t^2} \quad \text{(Chain rule)}
+\\ &amp;=
+f\left(\frac{K_t}{N_t}\right){-}\frac{K_t}{N_t}f'\left.\left(\frac{K_t}{N_t}\right)\right|_{N_t=1}
+\\ &amp;=
+f(K_t) - f'(K_t) K_t
+\end{aligned}
+\end{split}\]</div>
+</div>
+<div class="section" id="first-order-necessary-conditions">
+<h3><span class="section-number">20.3.2. </span>First-order necessary conditions<a class="headerlink" href="#first-order-necessary-conditions" title="Permalink to this headline">¶</a></h3>
+<p>We now compute <strong>first order necessary conditions</strong> for extremization of the Lagrangian:</p>
+<div class="math notranslate nohighlight" id="equation-constraint1">
+<span class="eqno">(20.7)<a class="headerlink" href="#equation-constraint1" title="Permalink to this equation">¶</a></span>\[C_t: \qquad u'(C_t)-\mu_t=0 \qquad \text{for all} \quad t= 0,1,\dots,T\]</div>
+<div class="math notranslate nohighlight" id="equation-constraint2">
+<span class="eqno">(20.8)<a class="headerlink" href="#equation-constraint2" title="Permalink to this equation">¶</a></span>\[K_t: \qquad \beta \mu_t\left[(1-\delta)+f'(K_t)\right] - \mu_{t-1}=0 \qquad \text{for all } \quad t=1,2,\dots,T\]</div>
+<div class="math notranslate nohighlight" id="equation-constraint3">
+<span class="eqno">(20.9)<a class="headerlink" href="#equation-constraint3" title="Permalink to this equation">¶</a></span>\[\mu_t:\qquad F(K_t,1)+ (1-\delta) K_t  - C_t - K_{t+1}=0 \qquad \text{for all } \quad t=0,1,\dots,T\]</div>
+<div class="math notranslate nohighlight" id="equation-constraint4">
+<span class="eqno">(20.10)<a class="headerlink" href="#equation-constraint4" title="Permalink to this equation">¶</a></span>\[K_{T+1}: \qquad -\mu_T \leq 0, \ \leq 0 \text{ if } K_{T+1}=0; \ =0 \text{ if } K_{T+1}&gt;0\]</div>
+<p>In computing  <a class="reference internal" href="#equation-constraint3">(20.9)</a> we recognize that <span class="math notranslate nohighlight">\(K_t\)</span> appears
+in both the time  <span class="math notranslate nohighlight">\(t\)</span> and time <span class="math notranslate nohighlight">\(t-1\)</span> feasibility constraints.</p>
+<p><a class="reference internal" href="#equation-constraint4">(20.10)</a> comes from differentiating with respect
+to <span class="math notranslate nohighlight">\(K_{T+1}\)</span> and applying the following <strong>Karush-Kuhn-Tucker condition</strong> (KKT)
+(see <a class="reference external" href="https://en.wikipedia.org/wiki/Karush-Kuhn-Tucker_conditions">Karush-Kuhn-Tucker conditions</a>):</p>
+<div class="math notranslate nohighlight" id="equation-kkt">
+<span class="eqno">(20.11)<a class="headerlink" href="#equation-kkt" title="Permalink to this equation">¶</a></span>\[\mu_T K_{T+1}=0\]</div>
+<p>Combining <a class="reference internal" href="#equation-constraint1">(20.7)</a> and <a class="reference internal" href="#equation-constraint2">(20.8)</a> gives</p>
+<div class="math notranslate nohighlight">
+\[
+u'\left(C_t\right)\left[(1-\delta)+f'\left(K_t\right)\right]-u'\left(C_{t-1}\right)=0
+\quad \text{ for all } t=1,2,\dots, T+1
+\]</div>
+<p>which can be rearranged to become</p>
+<div class="math notranslate nohighlight" id="equation-l12">
+<span class="eqno">(20.12)<a class="headerlink" href="#equation-l12" title="Permalink to this equation">¶</a></span>\[u'\left(C_{t+1}\right)\left[(1-\delta)+f'\left(K_{t+1}\right)\right]=
+u'\left(C_{t}\right) \quad \text{ for all } t=0,1,\dots, T\]</div>
+<p>Applying  the inverse of the utility function on both sides of the above
+equation gives</p>
+<div class="math notranslate nohighlight">
+\[
+C_{t+1} =u'^{-1}\left(\left(\frac{\beta}{u'(C_t)}[f'(K_{t+1}) +(1-\delta)]\right)^{-1}\right)
+\]</div>
+<p>which for our utility function <a class="reference internal" href="#equation-utility-oneperiod">(20.2)</a> becomes the consumption <strong>Euler
+equation</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned} C_{t+1} =\left(\beta C_t^{\gamma}[f'(K_{t+1}) +
+(1-\delta)]\right)^{1/\gamma} \notag\\= C_t\left(\beta [f'(K_{t+1}) +
+(1-\delta)]\right)^{1/\gamma} \end{aligned}
+\end{split}\]</div>
+<p>Below we define a <code class="docutils literal notranslate"><span class="pre">jitclass</span></code> that stores parameters and functions
+that define our economy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">planning_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;γ&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>    <span class="c1"># Coefficient of relative risk aversion</span>
+    <span class="p">(</span><span class="s1">&#39;β&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>    <span class="c1"># Discount factor</span>
+    <span class="p">(</span><span class="s1">&#39;δ&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>    <span class="c1"># Depreciation rate on capital</span>
+    <span class="p">(</span><span class="s1">&#39;α&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>    <span class="c1"># Return to capital per capita</span>
+    <span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">)</span>     <span class="c1"># Technology</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jitclass</span><span class="p">(</span><span class="n">planning_data</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">PlanningProblem</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span> <span class="o">=</span> <span class="n">γ</span><span class="p">,</span> <span class="n">β</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">δ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">δ</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">A</span>
+
+    <span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Utility function</span>
+<span class="sd">        ASIDE: If you have a utility function that is hard to solve by hand</span>
+<span class="sd">        you can use automatic or symbolic differentiation</span>
+<span class="sd">        See https://github.com/HIPS/autograd</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">γ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">γ</span>
+
+        <span class="k">return</span> <span class="n">c</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="k">if</span> <span class="n">γ</span><span class="o">!=</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">u_prime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="s1">&#39;Derivative of utility&#39;</span>
+        <span class="n">γ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">γ</span>
+
+        <span class="k">return</span> <span class="n">c</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">u_prime_inv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="s1">&#39;Inverse of derivative of utility&#39;</span>
+        <span class="n">γ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">γ</span>
+
+        <span class="k">return</span> <span class="n">c</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="n">γ</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="s1">&#39;Production function&#39;</span>
+        <span class="n">α</span><span class="p">,</span> <span class="n">A</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span>
+
+        <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="n">k</span> <span class="o">**</span> <span class="n">α</span>
+
+    <span class="k">def</span> <span class="nf">f_prime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="s1">&#39;Derivative of production function&#39;</span>
+        <span class="n">α</span><span class="p">,</span> <span class="n">A</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span>
+
+        <span class="k">return</span> <span class="n">α</span> <span class="o">*</span> <span class="n">A</span> <span class="o">*</span> <span class="n">k</span> <span class="o">**</span> <span class="p">(</span><span class="n">α</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">f_prime_inv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="s1">&#39;Inverse of derivative of production function&#39;</span>
+        <span class="n">α</span><span class="p">,</span> <span class="n">A</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">k</span> <span class="o">/</span> <span class="p">(</span><span class="n">A</span> <span class="o">*</span> <span class="n">α</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">α</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">next_k_c</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;&#39;</span>
+<span class="sd">        Given the current capital Kt and an arbitrary feasible</span>
+<span class="sd">        consumption choice Ct, computes Kt+1 by state transition law</span>
+<span class="sd">        and optimal Ct+1 by Euler equation.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">β</span><span class="p">,</span> <span class="n">δ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">δ</span>
+        <span class="n">u_prime</span><span class="p">,</span> <span class="n">u_prime_inv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_prime</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_prime_inv</span>
+        <span class="n">f</span><span class="p">,</span> <span class="n">f_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_prime</span>
+
+        <span class="n">k_next</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">δ</span><span class="p">)</span> <span class="o">*</span> <span class="n">k</span> <span class="o">-</span> <span class="n">c</span>
+        <span class="n">c_next</span> <span class="o">=</span> <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">u_prime</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="p">(</span><span class="n">f_prime</span><span class="p">(</span><span class="n">k_next</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">δ</span><span class="p">))))</span>
+
+        <span class="k">return</span> <span class="n">k_next</span><span class="p">,</span> <span class="n">c_next</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can construct an economy with the Python code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span> <span class="o">=</span> <span class="n">PlanningProblem</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="shooting-algorithm">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">20.4. </span>Shooting Algorithm</a><a class="headerlink" href="#shooting-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>We use  <strong>shooting</strong> to compute an optimal allocation
+<span class="math notranslate nohighlight">\(\vec{C}, \vec{K}\)</span> and an associated Lagrange multiplier sequence
+<span class="math notranslate nohighlight">\(\vec{\mu}\)</span>.</p>
+<p>The first-order necessary conditions
+<a class="reference internal" href="#equation-constraint1">(20.7)</a>, <a class="reference internal" href="#equation-constraint2">(20.8)</a>, and
+<a class="reference internal" href="#equation-constraint3">(20.9)</a>  for the planning problem form a system of <strong>difference equations</strong> with
+two boundary conditions:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(K_0\)</span> is a given <strong>initial condition</strong> for capital</p></li>
+<li><p><span class="math notranslate nohighlight">\(K_{T+1} =0\)</span> is a <strong>terminal condition</strong> for capital that we
+deduced from the first-order necessary condition for <span class="math notranslate nohighlight">\(K_{T+1}\)</span>
+the KKT condition <a class="reference internal" href="#equation-kkt">(20.11)</a></p></li>
+</ul>
+<p>We have no initial condition for the Lagrange multiplier
+<span class="math notranslate nohighlight">\(\mu_0\)</span>.</p>
+<p>If we did, our job would be easy:</p>
+<ul class="simple">
+<li><p>Given <span class="math notranslate nohighlight">\(\mu_0\)</span> and <span class="math notranslate nohighlight">\(k_0\)</span>, we could compute <span class="math notranslate nohighlight">\(c_0\)</span> from
+equation <a class="reference internal" href="#equation-constraint1">(20.7)</a> and then <span class="math notranslate nohighlight">\(k_1\)</span> from equation
+<a class="reference internal" href="#equation-constraint3">(20.9)</a> and <span class="math notranslate nohighlight">\(\mu_1\)</span> from equation
+<a class="reference internal" href="#equation-constraint2">(20.8)</a>.</p></li>
+<li><p>We could continue in this way to compute the remaining elements of
+<span class="math notranslate nohighlight">\(\vec{C}, \vec{K}, \vec{\mu}\)</span>.</p></li>
+</ul>
+<p>But we don’t have an initial condition for <span class="math notranslate nohighlight">\(\mu_0\)</span>, so this
+won’t work.</p>
+<p>Indeed, part of our task is to compute the optimal value of <span class="math notranslate nohighlight">\(\mu_0\)</span>.</p>
+<p>To compute <span class="math notranslate nohighlight">\(\mu_0\)</span> and the other objects we want, a  simple modification of the above procedure will work.</p>
+<p>It is  called the <strong>shooting algorithm</strong>.</p>
+<p>It is  an instance of a <strong>guess and verify</strong>
+algorithm that consists of the following steps:</p>
+<ul class="simple">
+<li><p>Guess an initial Lagrange multiplier <span class="math notranslate nohighlight">\(\mu_0\)</span>.</p></li>
+<li><p>Apply the <strong>simple algorithm</strong> described above.</p></li>
+<li><p>Compute <span class="math notranslate nohighlight">\(k_{T+1}\)</span> and check whether it
+equals zero.</p></li>
+<li><p>If  <span class="math notranslate nohighlight">\(K_{T+1} =0\)</span>, we have solved the problem.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(K_{T+1} &gt; 0\)</span>, lower <span class="math notranslate nohighlight">\(\mu_0\)</span> and try again.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(K_{T+1} &lt; 0\)</span>, raise <span class="math notranslate nohighlight">\(\mu_0\)</span> and try again.</p></li>
+</ul>
+<p>The following Python code implements the shooting algorithm for the
+planning problem.</p>
+<p>We actually modify the algorithm slightly by starting with a guess for
+<span class="math notranslate nohighlight">\(c_0\)</span> instead of <span class="math notranslate nohighlight">\(\mu_0\)</span> in the following code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">shooting</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Given the initial condition of capital k0 and an initial guess</span>
+<span class="sd">    of consumption c0, computes the whole paths of c and k</span>
+<span class="sd">    using the state transition law and Euler equation for T periods.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">c0</span> <span class="o">&gt;</span> <span class="n">pp</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">k0</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;initial consumption is not feasible&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># initialize vectors of c and k</span>
+    <span class="n">c_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">k_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">c_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">c0</span>
+    <span class="n">k_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">k0</span>
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+        <span class="n">k_vec</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">c_vec</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">next_k_c</span><span class="p">(</span><span class="n">k_vec</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">c_vec</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+
+    <span class="n">k_vec</span><span class="p">[</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">k_vec</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pp</span><span class="o">.</span><span class="n">δ</span><span class="p">)</span> <span class="o">*</span> <span class="n">k_vec</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">-</span> <span class="n">c_vec</span><span class="p">[</span><span class="n">T</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">c_vec</span><span class="p">,</span> <span class="n">k_vec</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll start with an incorrect guess.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">paths</span> <span class="o">=</span> <span class="n">shooting</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">]</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Consumption&#39;</span><span class="p">,</span> <span class="s1">&#39;Capital&#39;</span><span class="p">]</span>
+<span class="n">ylabels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$c_t$&#39;</span><span class="p">,</span> <span class="s1">&#39;$k_t$&#39;</span><span class="p">]</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">paths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/cass_koopmans_1_11_0.png" src="_images/cass_koopmans_1_11_0.png" />
+</div>
+</div>
+<p>Evidently, our initial guess for <span class="math notranslate nohighlight">\(\mu_0\)</span> is too high, so
+initial consumption too low.</p>
+<p>We know this because we miss our <span class="math notranslate nohighlight">\(K_{T+1}=0\)</span> target on the high
+side.</p>
+<p>Now we automate things with a search-for-a-good <span class="math notranslate nohighlight">\(\mu_0\)</span>
+algorithm that stops when we hit the target <span class="math notranslate nohighlight">\(K_{t+1} = 0\)</span>.</p>
+<p>We use a <strong>bisection method</strong>.</p>
+<p>We make an initial guess for <span class="math notranslate nohighlight">\(C_0\)</span> (we can eliminate
+<span class="math notranslate nohighlight">\(\mu_0\)</span> because <span class="math notranslate nohighlight">\(C_0\)</span> is an exact function of
+<span class="math notranslate nohighlight">\(\mu_0\)</span>).</p>
+<p>We know that the lowest <span class="math notranslate nohighlight">\(C_0\)</span> can ever be is <span class="math notranslate nohighlight">\(0\)</span> and the
+largest it can be is initial output <span class="math notranslate nohighlight">\(f(K_0)\)</span>.</p>
+<p>Guess <span class="math notranslate nohighlight">\(C_0\)</span>  and shoot forward to <span class="math notranslate nohighlight">\(T+1\)</span>.</p>
+<p>If <span class="math notranslate nohighlight">\(K_{T+1}&gt;0\)</span>, we take it to be our new <strong>lower</strong> bound
+on <span class="math notranslate nohighlight">\(C_0\)</span>.</p>
+<p>If <span class="math notranslate nohighlight">\(K_{T+1}&lt;0\)</span>, we take  it to be our new <strong>upper</strong> bound.</p>
+<p>Make a new guess for <span class="math notranslate nohighlight">\(C_0\)</span> that is  halfway between our new
+upper and lower bounds.</p>
+<p>Shoot forward again, iterating on these steps until we converge.</p>
+<p>When <span class="math notranslate nohighlight">\(K_{T+1}\)</span> gets close enough to <span class="math notranslate nohighlight">\(0\)</span> (i.e., within an error
+tolerance bounds), we stop.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">bisection</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">k_ter</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+    <span class="c1"># initial boundaries for guess c0</span>
+    <span class="n">c0_upper</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">k0</span><span class="p">)</span>
+    <span class="n">c0_lower</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">c_vec</span><span class="p">,</span> <span class="n">k_vec</span> <span class="o">=</span> <span class="n">shooting</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">k_vec</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">k_ter</span>
+
+        <span class="c1"># check if the terminal condition is satisfied</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Converged successfully on iteration &#39;</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">c_vec</span><span class="p">,</span> <span class="n">k_vec</span>
+
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">max_iter</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Convergence failed.&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">c_vec</span><span class="p">,</span> <span class="n">k_vec</span>
+
+        <span class="c1"># if iteration continues, updates boundaries and guess of c0</span>
+        <span class="k">if</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">c0_lower</span> <span class="o">=</span> <span class="n">c0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">c0_upper</span> <span class="o">=</span> <span class="n">c0</span>
+
+        <span class="n">c0</span> <span class="o">=</span> <span class="p">(</span><span class="n">c0_lower</span> <span class="o">+</span> <span class="n">c0_upper</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_paths</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">T_arr</span><span class="p">,</span> <span class="n">k_ter</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">axs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fix</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">ylabels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$c_t$&#39;</span><span class="p">,</span> <span class="s1">&#39;$k_t$&#39;</span><span class="p">,</span> <span class="s1">&#39;$\mu_t$&#39;</span><span class="p">]</span>
+    <span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Consumption&#39;</span><span class="p">,</span> <span class="s1">&#39;Capital&#39;</span><span class="p">,</span> <span class="s1">&#39;Lagrange Multiplier&#39;</span><span class="p">]</span>
+
+    <span class="n">c_paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">k_paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">T</span> <span class="ow">in</span> <span class="n">T_arr</span><span class="p">:</span>
+        <span class="n">c_vec</span><span class="p">,</span> <span class="n">k_vec</span> <span class="o">=</span> <span class="n">bisection</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">k_ter</span><span class="o">=</span><span class="n">k_ter</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">c_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_vec</span><span class="p">)</span>
+        <span class="n">k_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k_vec</span><span class="p">)</span>
+
+        <span class="n">μ_vec</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">u_prime</span><span class="p">(</span><span class="n">c_vec</span><span class="p">)</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">c_vec</span><span class="p">,</span> <span class="n">k_vec</span><span class="p">,</span> <span class="n">μ_vec</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="c1"># Plot steady state value of capital</span>
+        <span class="k">if</span> <span class="n">k_ss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">k_ss</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">paths</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">c_paths</span><span class="p">,</span> <span class="n">k_paths</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can solve the model and plot the paths of consumption, capital, and Lagrange multiplier.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_paths</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/cass_koopmans_1_16_0.png" src="_images/cass_koopmans_1_16_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="setting-initial-capital-to-steady-state-capital">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">20.5. </span>Setting Initial Capital to Steady State Capital</a><a class="headerlink" href="#setting-initial-capital-to-steady-state-capital" title="Permalink to this headline">¶</a></h2>
+<p>When  <span class="math notranslate nohighlight">\(T \rightarrow +\infty\)</span>, the optimal allocation converges to
+steady state values of <span class="math notranslate nohighlight">\(C_t\)</span> and <span class="math notranslate nohighlight">\(K_t\)</span>.</p>
+<p>It is instructive to set <span class="math notranslate nohighlight">\(K_0\)</span> equal
+to the <span class="math notranslate nohighlight">\(\lim_{T \rightarrow + \infty } K_t\)</span>, which we’ll call  steady state capital.</p>
+<p>In a steady state <span class="math notranslate nohighlight">\(K_{t+1} = K_t=\bar{K}\)</span> for all very
+large <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Evalauating the feasibility constraint <a class="reference internal" href="#equation-allocation">(20.4)</a> at <span class="math notranslate nohighlight">\(\bar K\)</span> gives</p>
+<div class="math notranslate nohighlight" id="equation-feasibility-constraint">
+<span class="eqno">(20.13)<a class="headerlink" href="#equation-feasibility-constraint" title="Permalink to this equation">¶</a></span>\[f(\bar{K})-\delta \bar{K} = \bar{C}\]</div>
+<p>Substituting <span class="math notranslate nohighlight">\(K_t = \bar K\)</span> and <span class="math notranslate nohighlight">\(C_t=\bar C\)</span> for
+all <span class="math notranslate nohighlight">\(t\)</span> into <a class="reference internal" href="#equation-l12">(20.12)</a> gives</p>
+<div class="math notranslate nohighlight">
+\[
+1=\beta \frac{u'(\bar{C})}{u'(\bar{C})}[f'(\bar{K})+(1-\delta)]
+\]</div>
+<p>Defining <span class="math notranslate nohighlight">\(\beta = \frac{1}{1+\rho}\)</span>, and cancelling gives</p>
+<div class="math notranslate nohighlight">
+\[
+1+\rho = 1[f'(\bar{K}) + (1-\delta)]
+\]</div>
+<p>Simplifying gives</p>
+<div class="math notranslate nohighlight">
+\[
+f'(\bar{K}) = \rho +\delta
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\bar{K} = f'^{-1}(\rho+\delta)
+\]</div>
+<p>For the  production function <a class="reference internal" href="#equation-production-function">(20.3)</a> this becomes</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha \bar{K}^{\alpha-1} = \rho + \delta
+\]</div>
+<p>As an example, after setting <span class="math notranslate nohighlight">\(\alpha= .33\)</span>,
+<span class="math notranslate nohighlight">\(\rho = 1/\beta-1 =1/(19/20)-1 = 20/19-19/19 = 1/19\)</span>, <span class="math notranslate nohighlight">\(\delta = 1/50\)</span>,
+we get</p>
+<div class="math notranslate nohighlight">
+\[
+\bar{K} = \left(\frac{\frac{33}{100}}{\frac{1}{50}+\frac{1}{19}}\right)^{\frac{67}{100}} \approx 9.57583
+\]</div>
+<p>Let’s verify this with Python and then use this steady state
+<span class="math notranslate nohighlight">\(\bar K\)</span> as our initial capital stock <span class="math notranslate nohighlight">\(K_0\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ρ</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">pp</span><span class="o">.</span><span class="n">β</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">k_ss</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">f_prime_inv</span><span class="p">(</span><span class="n">ρ</span><span class="o">+</span><span class="n">pp</span><span class="o">.</span><span class="n">δ</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;steady state for capital is: </span><span class="si">{</span><span class="n">k_ss</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>steady state for capital is: 9.57583816331462
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we plot</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_paths</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">k_ss</span><span class="p">,</span> <span class="p">[</span><span class="mi">150</span><span class="p">],</span> <span class="n">k_ss</span><span class="o">=</span><span class="n">k_ss</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/cass_koopmans_1_20_0.png" src="_images/cass_koopmans_1_20_0.png" />
+</div>
+</div>
+<p>Evidently,  with a large value of
+<span class="math notranslate nohighlight">\(T\)</span>, <span class="math notranslate nohighlight">\(K_t\)</span> stays near <span class="math notranslate nohighlight">\(K_0\)</span> until <span class="math notranslate nohighlight">\(t\)</span> approaches <span class="math notranslate nohighlight">\(T\)</span> closely.</p>
+<p>Let’s see what the planner does when we set
+<span class="math notranslate nohighlight">\(K_0\)</span> below <span class="math notranslate nohighlight">\(\bar K\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_paths</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">150</span><span class="p">],</span> <span class="n">k_ss</span><span class="o">=</span><span class="n">k_ss</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/cass_koopmans_1_22_0.png" src="_images/cass_koopmans_1_22_0.png" />
+</div>
+</div>
+<p>Notice how the planner pushes capital toward the steady state, stays
+near there for a while, then pushes <span class="math notranslate nohighlight">\(K_t\)</span> toward the terminal
+value <span class="math notranslate nohighlight">\(K_{T+1} =0\)</span> when <span class="math notranslate nohighlight">\(t\)</span> closely approaches <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>The following graphs compare optimal outcomes as we vary <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_paths</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">150</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span> <span class="n">k_ss</span><span class="o">=</span><span class="n">k_ss</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/cass_koopmans_1_24_0.png" src="_images/cass_koopmans_1_24_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="a-turnpike-property">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">20.6. </span>A Turnpike Property</a><a class="headerlink" href="#a-turnpike-property" title="Permalink to this headline">¶</a></h2>
+<p>The following calculation indicates that when  <span class="math notranslate nohighlight">\(T\)</span> is very large,
+the optimal capital stock stays close to
+its steady state value most of the time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_paths</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span> <span class="n">k_ss</span><span class="o">=</span><span class="n">k_ss</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/cass_koopmans_1_26_0.png" src="_images/cass_koopmans_1_26_0.png" />
+</div>
+</div>
+<p>Different colors in the above graphs are associated
+different horizons <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>Notice that as the horizon increases, the planner puts <span class="math notranslate nohighlight">\(K_t\)</span>
+closer to the steady state value <span class="math notranslate nohighlight">\(\bar K\)</span> for longer.</p>
+<p>This pattern reflects a <strong>turnpike</strong> property of the steady state.</p>
+<p>A rule of thumb for the planner is</p>
+<ul class="simple">
+<li><p>from <span class="math notranslate nohighlight">\(K_0\)</span>, push <span class="math notranslate nohighlight">\(K_t\)</span> toward
+the steady state and stay close to the steady state until time approaches <span class="math notranslate nohighlight">\(T\)</span>.</p></li>
+</ul>
+<p>The planner accomplishes this by adjusting the saving rate <span class="math notranslate nohighlight">\(\frac{f(K_t) - C_t}{f(K_t)}\)</span>
+over time.</p>
+<p>Let’s calculate and  plot the saving rate.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">saving_rate</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c_path</span><span class="p">,</span> <span class="n">k_path</span><span class="p">):</span>
+    <span class="s1">&#39;Given paths of c and k, computes the path of saving rate.&#39;</span>
+    <span class="n">production</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">k_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">production</span> <span class="o">-</span> <span class="n">c_path</span><span class="p">)</span> <span class="o">/</span> <span class="n">production</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_saving_rate</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">T_arr</span><span class="p">,</span> <span class="n">k_ter</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">s_ss</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="n">fix</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+
+    <span class="n">c_paths</span><span class="p">,</span> <span class="n">k_paths</span> <span class="o">=</span> <span class="n">plot_paths</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">T_arr</span><span class="p">,</span> <span class="n">k_ter</span><span class="o">=</span><span class="n">k_ter</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">=</span><span class="n">k_ss</span><span class="p">,</span> <span class="n">axs</span><span class="o">=</span><span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">T_arr</span><span class="p">):</span>
+        <span class="n">s_path</span> <span class="o">=</span> <span class="n">saving_rate</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">c_paths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">k_paths</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">s_path</span><span class="p">)</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;$s_t$&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Saving rate&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">s_ss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">s_ss</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">T_arr</span><span class="p">),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_saving_rate</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="n">k_ss</span><span class="o">=</span><span class="n">k_ss</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/cass_koopmans_1_30_0.png" src="_images/cass_koopmans_1_30_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="a-limiting-economy">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">20.7. </span>A Limiting Economy</a><a class="headerlink" href="#a-limiting-economy" title="Permalink to this headline">¶</a></h2>
+<p>We want to set <span class="math notranslate nohighlight">\(T = +\infty\)</span>.</p>
+<p>The appropriate thing to do is to replace terminal condition
+<a class="reference internal" href="#equation-constraint4">(20.10)</a> with</p>
+<div class="math notranslate nohighlight">
+\[
+\lim_{T \rightarrow +\infty} \beta^T u'(C_T) K_{T+1} = 0 ,
+\]</div>
+<p>a condition that will be satisfied by a path that converges to an
+optimal steady state.</p>
+<p>We can approximate the optimal path by starting from an arbitrary initial
+<span class="math notranslate nohighlight">\(K_0\)</span> and shooting towards the optimal steady state
+<span class="math notranslate nohighlight">\(K\)</span> at a large but finite <span class="math notranslate nohighlight">\(T+1\)</span>.</p>
+<p>In the following code, we do this for a large <span class="math notranslate nohighlight">\(T\)</span> and plot consumption, capital, and the
+saving rate.</p>
+<p>We know that in the steady state that the saving rate is constant
+and that <span class="math notranslate nohighlight">\(\bar s= \frac{f(\bar K)-\bar C}{f(\bar K)}\)</span>.</p>
+<p>From <a class="reference internal" href="#equation-feasibility-constraint">(20.13)</a> the steady state saving rate equals</p>
+<div class="math notranslate nohighlight">
+\[
+\bar s =\frac{ \delta \bar{K}}{f(\bar K)}
+\]</div>
+<p>The steady state saving rate <span class="math notranslate nohighlight">\(\bar S = \bar s f(\bar K)\)</span> is
+the amount required to offset capital depreciation each period.</p>
+<p>We first study optimal capital paths that start below the steady
+state.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># steady state of saving rate</span>
+<span class="n">s_ss</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">δ</span> <span class="o">*</span> <span class="n">k_ss</span> <span class="o">/</span> <span class="n">pp</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">k_ss</span><span class="p">)</span>
+
+<span class="n">plot_saving_rate</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">130</span><span class="p">],</span> <span class="n">k_ter</span><span class="o">=</span><span class="n">k_ss</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">=</span><span class="n">k_ss</span><span class="p">,</span> <span class="n">s_ss</span><span class="o">=</span><span class="n">s_ss</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/cass_koopmans_1_32_0.png" src="_images/cass_koopmans_1_32_0.png" />
+</div>
+</div>
+<p>Since <span class="math notranslate nohighlight">\(K_0&lt;\bar K\)</span>, <span class="math notranslate nohighlight">\(f'(K_0)&gt;\rho +\delta\)</span>.</p>
+<p>The planner chooses a positive saving rate that is higher than  the steady state
+saving rate.</p>
+<p>Note, <span class="math notranslate nohighlight">\(f''(K)&lt;0\)</span>, so as <span class="math notranslate nohighlight">\(K\)</span> rises, <span class="math notranslate nohighlight">\(f'(K)\)</span> declines.</p>
+<p>The planner slowly lowers the saving rate until reaching a steady
+state in which <span class="math notranslate nohighlight">\(f'(K)=\rho +\delta\)</span>.</p>
+<div class="section" id="exercise">
+<h3><span class="section-number">20.7.1. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Plot the optimal consumption, capital, and saving paths when the
+initial capital level begins at 1.5 times the steady state level
+as we shoot towards the steady state at <span class="math notranslate nohighlight">\(T=130\)</span>.</p></li>
+<li><p>Why does the saving rate respond as it does?</p></li>
+</ul>
+</div>
+<div class="section" id="solution">
+<h3><span class="section-number">20.7.2. </span>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_saving_rate</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">*</span><span class="mf">1.5</span><span class="p">,</span> <span class="p">[</span><span class="mi">130</span><span class="p">],</span> <span class="n">k_ter</span><span class="o">=</span><span class="n">k_ss</span><span class="p">,</span> <span class="n">k_ss</span><span class="o">=</span><span class="n">k_ss</span><span class="p">,</span> <span class="n">s_ss</span><span class="o">=</span><span class="n">s_ss</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/cass_koopmans_1_34_0.png" src="_images/cass_koopmans_1_34_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="concluding-remarks">
+<h2><a class="toc-backref" href="#id11"><span class="section-number">20.8. </span>Concluding Remarks</a><a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
+<p>In <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a>,  we study a decentralized version of an economy with exactly the same
+technology and preference structure as deployed here.</p>
+<p>In that lecture, we replace the  planner of this lecture with Adam Smith’s <strong>invisible hand</strong></p>
+<p>In place of quantity choices made by the planner, there are market prices somewhat produced by
+the invisible hand.</p>
+<p>Market prices must adjust to reconcile distinct decisions that are made independently
+by a representative household and a representative firm.</p>
+<p>The relationship between a command economy like the one studied in this lecture and a market economy like that
+studied in <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> is a foundational topic in general equilibrium theory and welfare economics.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   6. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   7. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   8. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   10. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   11. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   12. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   13. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   14. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   15. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   16. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   17. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   18. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   19. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   20. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   21. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   22. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   23. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   24. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   25. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   26. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   27. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   28. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   29. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   30. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   31. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   32. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   33. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   34. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   35. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   36. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   37. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   38. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   39. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   40. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   41. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   42. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   43. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   44. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   45. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   46. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   47. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   48. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   49. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   50. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   51. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   52. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   53. Asset Pricing with Incomplete Markets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   54. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   55. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   56. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   57. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   58. References
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="_notebooks/cass_koopmans_1.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Launch Notebook"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/cass_koopmans_1.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
+                    <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lecture-python.myst/lectures/cass_koopmans_1.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+
+        </div> <!-- .toolbar -->
+
+    </div> <!-- .wrapper-->
+
+<script src="_static/plugins.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+
+    <script src=[></script>
+
+    <script src=]></script>
+
+<script src="_static/scripts.js"></script>
+<script>
+    feather.replace()
+    tippy('[data-tippy-content]');
+</script>
+
+
+  </body>
+</html>

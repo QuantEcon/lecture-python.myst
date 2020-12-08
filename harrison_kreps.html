@@ -1,0 +1,1369 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>53. Asset Pricing with Incomplete Markets &#8212; Quantitative Economics with Python</title>
+    <link rel="stylesheet" href="_static/quantecon-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/harrison_kreps.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="54. Pandas for Panel Data" href="pandas_panel.html" />
+    <link rel="prev" title="52. Asset Pricing: Finite State Models" href="markov_asset.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Asset Pricing with Incomplete Markets"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Asset Pricing with Incomplete Markets" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/harrison_kreps.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+
+<meta name="theme-color" content="#ffffff" />
+
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page">
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+
+                            <ul class="nav section-nav flex-column">
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#overview" class="nav-link">Overview</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#references" class="nav-link">References</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#bubbles" class="nav-link">Bubbles</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#structure-of-the-model" class="nav-link">Structure of the Model</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#ownership-rights" class="nav-link">Ownership Rights</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#short-sales-prohibited" class="nav-link">Short Sales Prohibited</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#optimism-and-pessimism" class="nav-link">Optimism and Pessimism</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#information" class="nav-link">Information</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#solving-the-model" class="nav-link">Solving the Model</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#summary-table" class="nav-link">Summary Table</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#single-belief-prices" class="nav-link">Single Belief Prices</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h4">
+                                    <a href="#single-belief-prices-as-benchmarks" class="nav-link">Single Belief Prices as Benchmarks</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#pricing-under-heterogeneous-beliefs" class="nav-link">Pricing under Heterogeneous Beliefs</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#insufficient-funds" class="nav-link">Insufficient Funds</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#further-interpretation" class="nav-link">Further Interpretation</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#exercises" class="nav-link">Exercises</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#exercise-1" class="nav-link">Exercise 1</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#solutions" class="nav-link">Solutions</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#id4" class="nav-link">Exercise 1</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                            </ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">Asset Pricing with Incomplete Markets</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div><div class="section" id="asset-pricing-with-incomplete-markets">
+<h1><a class="toc-backref" href="#id5"><span class="section-number">53. </span>Asset Pricing with Incomplete Markets</a><a class="headerlink" href="#asset-pricing-with-incomplete-markets" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<span id="index-0"></span><p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#asset-pricing-with-incomplete-markets" id="id5">Asset Pricing with Incomplete Markets</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id6">Overview</a></p></li>
+<li><p><a class="reference internal" href="#structure-of-the-model" id="id7">Structure of the Model</a></p></li>
+<li><p><a class="reference internal" href="#solving-the-model" id="id8">Solving the Model</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id9">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#solutions" id="id10">Solutions</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>conda install -y quantecon
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting package metadata (current_repodata.json): - 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
+Solving environment: / 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># All requested packages already installed.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">53.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This lecture describes a version of a model of Harrison and Kreps <a class="bibtex reference internal" href="zreferences.html#harrkreps1978" id="id1">[HK78]</a>.</p>
+<p>The model determines the price of a dividend-yielding asset that is traded by two types of self-interested investors.</p>
+<p>The model features</p>
+<ul class="simple">
+<li><p>heterogeneous beliefs</p></li>
+<li><p>incomplete markets</p></li>
+<li><p>short sales constraints, and possibly <span class="math notranslate nohighlight">\(\ldots\)</span></p></li>
+<li><p>(leverage) limits on an investor’s ability to borrow in order to finance purchases of a risky asset</p></li>
+</ul>
+<p>Let’s start with some standard imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
+<span class="kn">import</span> <span class="nn">scipy.linalg</span> <span class="k">as</span> <span class="nn">la</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="references">
+<h3><span class="section-number">53.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<p>Prior to reading the following, you might like to review our lectures on</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="finite_markov.html"><span class="doc">Markov chains</span></a></p></li>
+<li><p><a class="reference internal" href="markov_asset.html"><span class="doc">Asset pricing with finite state space</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="bubbles">
+<h3><span class="section-number">53.1.2. </span>Bubbles<a class="headerlink" href="#bubbles" title="Permalink to this headline">¶</a></h3>
+<p>Economists differ in how they define a <em>bubble</em>.</p>
+<p>The Harrison-Kreps model illustrates the following notion of a bubble that attracts many economists:</p>
+<blockquote>
+<div><p><em>A component of an asset price can be interpreted as a bubble when all investors agree that the current price of the asset exceeds what they believe the asset’s underlying dividend stream justifies</em>.</p>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="structure-of-the-model">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">53.2. </span>Structure of the Model</a><a class="headerlink" href="#structure-of-the-model" title="Permalink to this headline">¶</a></h2>
+<p>The model simplifies by ignoring alterations in the distribution of wealth
+among investors having different beliefs about the fundamentals that determine
+asset payouts.</p>
+<p>There is a fixed number <span class="math notranslate nohighlight">\(A\)</span> of shares of an asset.</p>
+<p>Each share entitles its owner to a stream of dividends <span class="math notranslate nohighlight">\(\{d_t\}\)</span> governed by a Markov chain defined on a state space <span class="math notranslate nohighlight">\(S \in \{0, 1\}\)</span>.</p>
+<p>The dividend obeys</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+d_t =
+\begin{cases}
+    0 &amp; \text{ if } s_t = 0 \\
+    1 &amp; \text{ if } s_t = 1
+\end{cases}
+\end{split}\]</div>
+<p>The owner of a share at the beginning of time <span class="math notranslate nohighlight">\(t\)</span> is entitled to the dividend paid at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>The owner of the share at the beginning of time <span class="math notranslate nohighlight">\(t\)</span> is also entitled to sell the share to another investor during time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Two types <span class="math notranslate nohighlight">\(h=a, b\)</span> of investors differ only in their beliefs about a Markov transition matrix <span class="math notranslate nohighlight">\(P\)</span> with typical element</p>
+<div class="math notranslate nohighlight">
+\[
+P(i,j) = \mathbb P\{s_{t+1} = j \mid s_t = i\}
+\]</div>
+<p>Investors of type <span class="math notranslate nohighlight">\(a\)</span> believe the transition matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P_a =
+    \begin{bmatrix}
+        \frac{1}{2} &amp; \frac{1}{2} \\
+        \frac{2}{3} &amp; \frac{1}{3}
+    \end{bmatrix}
+\end{split}\]</div>
+<p>Investors of  type <span class="math notranslate nohighlight">\(b\)</span> think the transition matrix is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P_b =
+    \begin{bmatrix}
+        \frac{2}{3} &amp; \frac{1}{3} \\
+        \frac{1}{4} &amp; \frac{3}{4}
+    \end{bmatrix}
+\end{split}\]</div>
+<p>The stationary (i.e., invariant) distributions of these two matrices can be calculated as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">]])</span>
+<span class="n">qb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">4</span><span class="p">]])</span>
+<span class="n">mca</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">MarkovChain</span><span class="p">(</span><span class="n">qa</span><span class="p">)</span>
+<span class="n">mcb</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">MarkovChain</span><span class="p">(</span><span class="n">qb</span><span class="p">)</span>
+<span class="n">mca</span><span class="o">.</span><span class="n">stationary_distributions</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.57142857, 0.42857143]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mcb</span><span class="o">.</span><span class="n">stationary_distributions</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.42857143, 0.57142857]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The stationary distribution of <span class="math notranslate nohighlight">\(P_a\)</span> is approximately <span class="math notranslate nohighlight">\(\pi_A = \begin{bmatrix} .57 &amp; .43 \end{bmatrix}\)</span>.</p>
+<p>The stationary distribution of <span class="math notranslate nohighlight">\(P_b\)</span> is approximately <span class="math notranslate nohighlight">\(\pi_B = \begin{bmatrix} .43 &amp; .57 \end{bmatrix}\)</span>.</p>
+<div class="section" id="ownership-rights">
+<h3><span class="section-number">53.2.1. </span>Ownership Rights<a class="headerlink" href="#ownership-rights" title="Permalink to this headline">¶</a></h3>
+<p>An owner of the asset at the end of time <span class="math notranslate nohighlight">\(t\)</span> is entitled to the dividend at time <span class="math notranslate nohighlight">\(t+1\)</span> and also has the right to sell the asset at time <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
+<p>Both types of investors are risk-neutral and both have the same fixed discount factor <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span>.</p>
+<p>In our numerical example, we’ll set <span class="math notranslate nohighlight">\(\beta = .75\)</span>, just as Harrison and Kreps did.</p>
+<p>We’ll eventually study the consequences of two different assumptions about the number of shares <span class="math notranslate nohighlight">\(A\)</span> relative to the resources that our two types of investors can invest in the stock.</p>
+<ol class="simple">
+<li><p>Both types of investors have enough resources (either wealth or the capacity to borrow) so that they can purchase the entire available stock of the asset <a class="footnote-reference brackets" href="#f1" id="id2">1</a>.</p></li>
+<li><p>No single type of investor has sufficient resources to purchase the entire stock.</p></li>
+</ol>
+<p>Case 1 is the case studied in Harrison and Kreps.</p>
+<p>In case 2, both types of investors always hold at least some of the asset.</p>
+</div>
+<div class="section" id="short-sales-prohibited">
+<h3><span class="section-number">53.2.2. </span>Short Sales Prohibited<a class="headerlink" href="#short-sales-prohibited" title="Permalink to this headline">¶</a></h3>
+<p>No short sales are allowed.</p>
+<p>This matters because it limits pessimists from expressing their opinions.</p>
+<ul class="simple">
+<li><p>They can express their views by selling their shares.</p></li>
+<li><p>They cannot express their pessimism more loudly by artificially “manufacturing shares” – that is, they cannot borrow shares from more optimistic investors and sell them immediately.</p></li>
+</ul>
+</div>
+<div class="section" id="optimism-and-pessimism">
+<h3><span class="section-number">53.2.3. </span>Optimism and Pessimism<a class="headerlink" href="#optimism-and-pessimism" title="Permalink to this headline">¶</a></h3>
+<p>The above specifications of the perceived transition matrices <span class="math notranslate nohighlight">\(P_a\)</span> and <span class="math notranslate nohighlight">\(P_b\)</span>, taken directly from Harrison and Kreps, build in stochastically alternating temporary optimism and pessimism.</p>
+<p>Remember that state <span class="math notranslate nohighlight">\(1\)</span> is the high dividend state.</p>
+<ul class="simple">
+<li><p>In state <span class="math notranslate nohighlight">\(0\)</span>, a type <span class="math notranslate nohighlight">\(a\)</span> agent is more optimistic about next period’s dividend than a type <span class="math notranslate nohighlight">\(b\)</span> agent.</p></li>
+<li><p>In state <span class="math notranslate nohighlight">\(1\)</span>, a type <span class="math notranslate nohighlight">\(b\)</span> agent is more optimistic about next period’s dividend.</p></li>
+</ul>
+<p>However, the stationary distributions <span class="math notranslate nohighlight">\(\pi_A = \begin{bmatrix} .57 &amp; .43 \end{bmatrix}\)</span> and <span class="math notranslate nohighlight">\(\pi_B = \begin{bmatrix} .43 &amp; .57 \end{bmatrix}\)</span> tell us that a type <span class="math notranslate nohighlight">\(B\)</span> person is more optimistic about the dividend process in the long run than is a type A person.</p>
+<p>Transition matrices for the temporarily optimistic and pessimistic investors are constructed as follows.</p>
+<p>Temporarily optimistic investors (i.e., the investor with the most optimistic
+beliefs in each state) believe the transition matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P_o =
+    \begin{bmatrix}
+        \frac{1}{2} &amp; \frac{1}{2} \\
+        \frac{1}{4} &amp; \frac{3}{4}
+    \end{bmatrix}
+\end{split}\]</div>
+<p>Temporarily pessimistic believe the transition matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P_p =
+    \begin{bmatrix}
+        \frac{1}{2} &amp; \frac{1}{2} \\
+        \frac{1}{4} &amp; \frac{3}{4}
+    \end{bmatrix}
+\end{split}\]</div>
+<p>We’ll return to these matrices and their significance in the exercise.</p>
+</div>
+<div class="section" id="information">
+<h3><span class="section-number">53.2.4. </span>Information<a class="headerlink" href="#information" title="Permalink to this headline">¶</a></h3>
+<p>Investors know a price function mapping the state <span class="math notranslate nohighlight">\(s_t\)</span> at <span class="math notranslate nohighlight">\(t\)</span> into the equilibrium price <span class="math notranslate nohighlight">\(p(s_t)\)</span> that prevails in that state.</p>
+<p>This price function is endogenous and to be determined below.</p>
+<p>When investors choose whether to purchase or sell the asset at <span class="math notranslate nohighlight">\(t\)</span>, they also know <span class="math notranslate nohighlight">\(s_t\)</span>.</p>
+</div>
+</div>
+<div class="section" id="solving-the-model">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">53.3. </span>Solving the Model</a><a class="headerlink" href="#solving-the-model" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s turn to solving the model.</p>
+<p>This amounts to determining equilibrium prices under the different possible specifications of beliefs and constraints listed above.</p>
+<p>In particular, we compare equilibrium price functions under the following alternative
+assumptions about beliefs:</p>
+<ol class="simple">
+<li><p>There is only one type of agent, either <span class="math notranslate nohighlight">\(a\)</span> or <span class="math notranslate nohighlight">\(b\)</span>.</p></li>
+<li><p>There are two types of agents differentiated only by their beliefs. Each type of agent has sufficient resources to purchase all of the asset (Harrison and Kreps’s setting).</p></li>
+<li><p>There are two types of agents with different beliefs, but because of limited wealth and/or limited leverage, both types of investors hold the asset each period.</p></li>
+</ol>
+<div class="section" id="summary-table">
+<h3><span class="section-number">53.3.1. </span>Summary Table<a class="headerlink" href="#summary-table" title="Permalink to this headline">¶</a></h3>
+<p>The following table gives a summary of the findings obtained in the remainder of the lecture
+(you will be asked to recreate the table in an exercise).</p>
+<p>It records implications of Harrison and Kreps’s specifications of <span class="math notranslate nohighlight">\(P_a, P_b, \beta\)</span>.</p>
+<div class="content-table"></div><p>|<span class="math notranslate nohighlight">\(|s_t|\)</span>|0|1|
+|:———————:|:—-:|:—-:|
+|<span class="math notranslate nohighlight">\(|p_a|\)</span>|1.33|1.22|
+|<span class="math notranslate nohighlight">\(|p_b|\)</span>|1.45|1.91|
+|<span class="math notranslate nohighlight">\(|p_o|\)</span>|1.85|2.08|
+|<span class="math notranslate nohighlight">\(|p_p|\)</span>|1|1|
+|<span class="math notranslate nohighlight">\(|\hat{p}_a|\)</span>|1.85|1.69|
+|<span class="math notranslate nohighlight">\(|\hat{p}_b|\)</span>|1.69|2.08|</p>
+<p>Here</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(p_a\)</span> is the equilibrium price function  under homogeneous beliefs <span class="math notranslate nohighlight">\(P_a\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_b\)</span> is the equilibrium price function under homogeneous beliefs <span class="math notranslate nohighlight">\(P_b\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_o\)</span> is the equilibrium price function under heterogeneous beliefs with optimistic marginal investors</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_p\)</span> is the equilibrium price function under heterogeneous beliefs with pessimistic marginal investors</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{p}_a\)</span> is the amount type <span class="math notranslate nohighlight">\(a\)</span> investors are willing to pay for the asset</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{p}_b\)</span> is the amount type <span class="math notranslate nohighlight">\(b\)</span> investors are willing to pay for the asset</p></li>
+</ul>
+<p>We’ll explain these values and how they are calculated one row at a time.</p>
+</div>
+<div class="section" id="single-belief-prices">
+<h3><span class="section-number">53.3.2. </span>Single Belief Prices<a class="headerlink" href="#single-belief-prices" title="Permalink to this headline">¶</a></h3>
+<p>We’ll start by pricing the asset under homogeneous beliefs.</p>
+<p>(This is the case treated in <a class="reference internal" href="markov_asset.html"><span class="doc">the lecture</span></a> on asset pricing with finite Markov states)</p>
+<p>Suppose that there is only one type of investor, either of type <span class="math notranslate nohighlight">\(a\)</span> or <span class="math notranslate nohighlight">\(b\)</span>, and that this investor always “prices the asset”.</p>
+<p>Let <span class="math notranslate nohighlight">\(p_h = \begin{bmatrix} p_h(0) \cr p_h(1) \end{bmatrix}\)</span> be the equilibrium price vector when all investors are of type <span class="math notranslate nohighlight">\(h\)</span>.</p>
+<p>The price today equals the expected discounted value of tomorrow’s dividend and tomorrow’s price of the asset:</p>
+<div class="math notranslate nohighlight">
+\[
+p_h(s) = \beta \left( P_h(s,0) (0 + p_h(0)) + P_h(s,1) ( 1 + p_h(1)) \right), \quad s = 0, 1
+\]</div>
+<p>These equations imply that the equilibrium price vector is</p>
+<div class="math notranslate nohighlight" id="equation-harrkrep1">
+<span class="eqno">(53.1)<a class="headerlink" href="#equation-harrkrep1" title="Permalink to this equation">¶</a></span>\[\begin{bmatrix} p_h(0) \cr p_h(1) \end{bmatrix}
+= \beta [I - \beta P_h]^{-1} P_h \begin{bmatrix} 0 \cr 1 \end{bmatrix}\]</div>
+<p>The first two rows of the table report <span class="math notranslate nohighlight">\(p_a(s)\)</span> and <span class="math notranslate nohighlight">\(p_b(s)\)</span>.</p>
+<p>Here’s a function that can be used to compute these values</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">price_single_beliefs</span><span class="p">(</span><span class="n">transition</span><span class="p">,</span> <span class="n">dividend_payoff</span><span class="p">,</span> <span class="n">β</span><span class="o">=.</span><span class="mi">75</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to Solve Single Beliefs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># First compute inverse piece</span>
+    <span class="n">imbq_inv</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">transition</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">β</span> <span class="o">*</span> <span class="n">transition</span><span class="p">)</span>
+
+    <span class="c1"># Next compute prices</span>
+    <span class="n">prices</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">imbq_inv</span> <span class="o">@</span> <span class="n">transition</span> <span class="o">@</span> <span class="n">dividend_payoff</span>
+
+    <span class="k">return</span> <span class="n">prices</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="single-belief-prices-as-benchmarks">
+<h4><span class="section-number">53.3.2.1. </span>Single Belief Prices as Benchmarks<a class="headerlink" href="#single-belief-prices-as-benchmarks" title="Permalink to this headline">¶</a></h4>
+<p>These equilibrium prices under homogeneous beliefs are important benchmarks for the subsequent analysis.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(p_h(s)\)</span> tells what investor <span class="math notranslate nohighlight">\(h\)</span> thinks is the “fundamental value” of the asset.</p></li>
+<li><p>Here “fundamental value” means the expected discounted present value of future dividends.</p></li>
+</ul>
+<p>We will compare these fundamental values of the asset with equilibrium values when traders have different beliefs.</p>
+</div>
+</div>
+<div class="section" id="pricing-under-heterogeneous-beliefs">
+<h3><span class="section-number">53.3.3. </span>Pricing under Heterogeneous Beliefs<a class="headerlink" href="#pricing-under-heterogeneous-beliefs" title="Permalink to this headline">¶</a></h3>
+<p>There are several cases to consider.</p>
+<p>The first is when both types of agents have sufficient wealth to purchase all of the asset themselves.</p>
+<p>In this case, the marginal investor who prices the asset is the more optimistic type so that the equilibrium price <span class="math notranslate nohighlight">\(\bar p\)</span> satisfies Harrison and Kreps’s key equation:</p>
+<div class="math notranslate nohighlight" id="equation-hakr2">
+<span class="eqno">(53.2)<a class="headerlink" href="#equation-hakr2" title="Permalink to this equation">¶</a></span>\[\bar p(s) =
+\beta
+\max
+\left\{
+        P_a(s,0) \bar p(0) + P_a(s,1) ( 1 +  \bar p(1))
+        ,\;
+        P_b(s,0) \bar p(0) + P_b(s,1) ( 1 +  \bar p(1))
+\right\}\]</div>
+<p>for <span class="math notranslate nohighlight">\(s=0,1\)</span>.</p>
+<p>The marginal investor who prices the asset in state <span class="math notranslate nohighlight">\(s\)</span> is of type <span class="math notranslate nohighlight">\(a\)</span> if</p>
+<div class="math notranslate nohighlight">
+\[
+P_a(s,0)  \bar p(0) + P_a(s,1) ( 1 +  \bar p(1)) &gt;
+P_b(s,0)  \bar p(0) + P_b(s,1) ( 1 +  \bar p(1))
+\]</div>
+<p>The marginal investor is of type  <span class="math notranslate nohighlight">\(b\)</span> if</p>
+<div class="math notranslate nohighlight">
+\[
+P_a(s,1)  \bar p(0) + P_a(s,1) ( 1 +  \bar  p(1)) &lt;
+P_b(s,1)  \bar p(0) + P_b(s,1) ( 1 +  \bar  p(1))
+\]</div>
+<p><strong>Thus the marginal investor is the (temporarily) optimistic type</strong>.</p>
+<p>Equation <a class="reference internal" href="#equation-hakr2">(53.2)</a> is a functional equation that, like a Bellman equation, can be solved by</p>
+<ul class="simple">
+<li><p>starting with a guess for the price vector <span class="math notranslate nohighlight">\(\bar p\)</span> and</p></li>
+<li><p>iterating to convergence on the operator that maps a guess <span class="math notranslate nohighlight">\(\bar p^j\)</span> into an updated guess
+<span class="math notranslate nohighlight">\(\bar p^{j+1}\)</span> defined by the right side of <a class="reference internal" href="#equation-hakr2">(53.2)</a>, namely</p></li>
+</ul>
+<div class="math notranslate nohighlight" id="equation-harrkrep3">
+<span class="eqno">(53.3)<a class="headerlink" href="#equation-harrkrep3" title="Permalink to this equation">¶</a></span>\[\bar  p^{j+1}(s)
+ = \beta \max
+ \left\{
+        P_a(s,0) \bar p^j(0) + P_a(s,1) ( 1 + \bar p^j(1))
+        ,\;
+        P_b(s,0) \bar p^j(0) + P_b(s,1) ( 1 + \bar p^j(1))
+\right\}\]</div>
+<p>for <span class="math notranslate nohighlight">\(s=0,1\)</span>.</p>
+<p>The third row of the table reports equilibrium prices that solve the functional equation when <span class="math notranslate nohighlight">\(\beta = .75\)</span>.</p>
+<p>Here the type that is optimistic about <span class="math notranslate nohighlight">\(s_{t+1}\)</span> prices the asset in state <span class="math notranslate nohighlight">\(s_t\)</span>.</p>
+<p>It is instructive to compare these prices with the equilibrium prices for the homogeneous belief economies that solve under beliefs <span class="math notranslate nohighlight">\(P_a\)</span> and <span class="math notranslate nohighlight">\(P_b\)</span>.</p>
+<p>Equilibrium prices <span class="math notranslate nohighlight">\(\bar p\)</span> in the heterogeneous beliefs economy exceed what any prospective investor regards as the fundamental value of the asset in each possible state.</p>
+<p>Nevertheless, the economy recurrently visits a state that makes each investor want to
+purchase the asset for more than he believes its future dividends are
+worth.</p>
+<p>The reason is that he expects to have the option to sell the asset later to another investor who will value the asset more highly than he will.</p>
+<ul class="simple">
+<li><p>Investors of type <span class="math notranslate nohighlight">\(a\)</span> are willing to pay the following price for the asset</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\hat p_a(s) =
+\begin{cases}
+\bar p(0)  &amp; \text{ if } s_t = 0 \\
+\beta(P_a(1,0) \bar p(0) + P_a(1,1) ( 1 +  \bar p(1))) &amp; \text{ if } s_t = 1
+\end{cases}
+\end{split}\]</div>
+<ul class="simple">
+<li><p>Investors of type <span class="math notranslate nohighlight">\(b\)</span> are willing to pay the following price for the asset</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\hat p_b(s) =
+\begin{cases}
+    \beta(P_b(0,0) \bar p(0) + P_b (0,1) ( 1 +  \bar p(1)))  &amp; \text{ if } s_t = 0 \\
+    \bar p(1)  &amp; \text{ if } s_t =1
+\end{cases}
+\end{split}\]</div>
+<p>Evidently, <span class="math notranslate nohighlight">\(\hat p_a(1) &lt; \bar p(1)\)</span> and <span class="math notranslate nohighlight">\(\hat p_b(0) &lt; \bar p(0)\)</span>.</p>
+<p>Investors of type <span class="math notranslate nohighlight">\(a\)</span> want to sell the asset in state <span class="math notranslate nohighlight">\(1\)</span> while investors of type <span class="math notranslate nohighlight">\(b\)</span> want to sell it in state <span class="math notranslate nohighlight">\(0\)</span>.</p>
+<ul class="simple">
+<li><p>The asset changes hands whenever the state changes from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(1\)</span> or from <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(0\)</span>.</p></li>
+<li><p>The valuations <span class="math notranslate nohighlight">\(\hat p_a(s)\)</span> and <span class="math notranslate nohighlight">\(\hat p_b(s)\)</span> are displayed in the fourth and fifth rows of the table.</p></li>
+<li><p>Even the pessimistic investors who don’t buy the asset think that it is worth more than they think future dividends are worth.</p></li>
+</ul>
+<p>Here’s code to solve for <span class="math notranslate nohighlight">\(\bar p\)</span>, <span class="math notranslate nohighlight">\(\hat p_a\)</span> and <span class="math notranslate nohighlight">\(\hat p_b\)</span> using the iterative method described above</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">price_optimistic_beliefs</span><span class="p">(</span><span class="n">transitions</span><span class="p">,</span> <span class="n">dividend_payoff</span><span class="p">,</span> <span class="n">β</span><span class="o">=.</span><span class="mi">75</span><span class="p">,</span>
+                            <span class="n">max_iter</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-16</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to Solve Optimistic Beliefs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># We will guess an initial price vector of [0, 0]</span>
+    <span class="n">p_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+    <span class="n">p_old</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">10.</span><span class="p">],</span> <span class="p">[</span><span class="mf">10.</span><span class="p">]])</span>
+
+    <span class="c1"># We know this is a contraction mapping, so we can iterate to conv</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+        <span class="n">p_old</span> <span class="o">=</span> <span class="n">p_new</span>
+        <span class="n">p_new</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">q</span> <span class="o">@</span> <span class="n">p_old</span>
+                            <span class="o">+</span> <span class="n">q</span> <span class="o">@</span> <span class="n">dividend_payoff</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">transitions</span><span class="p">],</span>
+                            <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># If we succeed in converging, break out of for loop</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">p_new</span> <span class="o">-</span> <span class="n">p_old</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="n">ptwiddle</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">q</span> <span class="o">@</span> <span class="n">p_old</span>
+                          <span class="o">+</span> <span class="n">q</span> <span class="o">@</span> <span class="n">dividend_payoff</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">transitions</span><span class="p">],</span>
+                          <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">phat_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">p_new</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ptwiddle</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">phat_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ptwiddle</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p_new</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+
+    <span class="k">return</span> <span class="n">p_new</span><span class="p">,</span> <span class="n">phat_a</span><span class="p">,</span> <span class="n">phat_b</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="insufficient-funds">
+<h3><span class="section-number">53.3.4. </span>Insufficient Funds<a class="headerlink" href="#insufficient-funds" title="Permalink to this headline">¶</a></h3>
+<p>Outcomes differ when the more optimistic type of investor has insufficient wealth — or insufficient ability to borrow enough — to hold the entire stock of the asset.</p>
+<p>In this case, the asset price must adjust to attract pessimistic investors.</p>
+<p>Instead of equation <a class="reference internal" href="#equation-hakr2">(53.2)</a>, the equilibrium price satisfies</p>
+<div class="math notranslate nohighlight" id="equation-harrkrep4">
+<span class="eqno">(53.4)<a class="headerlink" href="#equation-harrkrep4" title="Permalink to this equation">¶</a></span>\[\check p(s)
+= \beta \min
+\left\{
+    P_a(s,1)  \check  p(0) + P_a(s,1) ( 1 +   \check  p(1)) ,\;
+    P_b(s,1)  \check p(0) + P_b(s,1) ( 1 + \check p(1))
+\right\}\]</div>
+<p>and the marginal investor who prices the asset is always the one that values it <em>less</em> highly than does the other type.</p>
+<p>Now the marginal investor is always the (temporarily) pessimistic type.</p>
+<p>Notice from the sixth row of that the pessimistic price <span class="math notranslate nohighlight">\(\underline p\)</span> is lower than the homogeneous belief prices <span class="math notranslate nohighlight">\(p_a\)</span> and <span class="math notranslate nohighlight">\(p_b\)</span> in both states.</p>
+<p>When pessimistic investors price the asset according to <a class="reference internal" href="#equation-harrkrep4">(53.4)</a>, optimistic investors think that the asset is underpriced.</p>
+<p>If they could, optimistic investors would willingly borrow at the one-period gross interest rate <span class="math notranslate nohighlight">\(\beta^{-1}\)</span> to purchase more of the asset.</p>
+<p>Implicit constraints on leverage prohibit them from doing so.</p>
+<p>When optimistic investors price the asset as in equation <a class="reference internal" href="#equation-hakr2">(53.2)</a>, pessimistic investors think that the asset is overpriced and would like to sell the asset short.</p>
+<p>Constraints on short sales prevent that.</p>
+<p>Here’s code to solve for <span class="math notranslate nohighlight">\(\check p\)</span> using iteration</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">price_pessimistic_beliefs</span><span class="p">(</span><span class="n">transitions</span><span class="p">,</span> <span class="n">dividend_payoff</span><span class="p">,</span> <span class="n">β</span><span class="o">=.</span><span class="mi">75</span><span class="p">,</span>
+                            <span class="n">max_iter</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-16</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to Solve Pessimistic Beliefs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># We will guess an initial price vector of [0, 0]</span>
+    <span class="n">p_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+    <span class="n">p_old</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">10.</span><span class="p">],</span> <span class="p">[</span><span class="mf">10.</span><span class="p">]])</span>
+
+    <span class="c1"># We know this is a contraction mapping, so we can iterate to conv</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+        <span class="n">p_old</span> <span class="o">=</span> <span class="n">p_new</span>
+        <span class="n">p_new</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">q</span> <span class="o">@</span> <span class="n">p_old</span>
+                            <span class="o">+</span> <span class="n">q</span> <span class="o">@</span> <span class="n">dividend_payoff</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">transitions</span><span class="p">],</span>
+                           <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># If we succeed in converging, break out of for loop</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">p_new</span> <span class="o">-</span> <span class="n">p_old</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">p_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="further-interpretation">
+<h3><span class="section-number">53.3.5. </span>Further Interpretation<a class="headerlink" href="#further-interpretation" title="Permalink to this headline">¶</a></h3>
+<p><a class="bibtex reference internal" href="zreferences.html#scheinkman2014" id="id3">[Sch14]</a> interprets the Harrison-Kreps model as a model of a bubble — a situation in which an asset price exceeds what every investor thinks is merited by the asset’s underlying dividend stream.</p>
+<p>Scheinkman stresses these features of the Harrison-Kreps model:</p>
+<ul class="simple">
+<li><p>Compared to the homogeneous beliefs setting leading to the pricing formula, high volume occurs when the Harrison-Kreps pricing formula prevails.</p></li>
+</ul>
+<p>Type <span class="math notranslate nohighlight">\(a\)</span> investors sell the entire stock of the asset to type <span class="math notranslate nohighlight">\(b\)</span> investors every time the state switches from <span class="math notranslate nohighlight">\(s_t =0\)</span> to <span class="math notranslate nohighlight">\(s_t =1\)</span>.</p>
+<p>Type <span class="math notranslate nohighlight">\(b\)</span> investors sell the asset to type <span class="math notranslate nohighlight">\(a\)</span> investors every time the state switches from <span class="math notranslate nohighlight">\(s_t = 1\)</span> to <span class="math notranslate nohighlight">\(s_t =0\)</span>.</p>
+<p>Scheinkman takes this as a strength of the model because he observes high volume during <em>famous bubbles</em>.</p>
+<ul class="simple">
+<li><p>If the <em>supply</em> of the asset is increased sufficiently either physically (more “houses” are built) or artificially (ways are invented to short sell “houses”), bubbles end when the supply has grown enough to outstrip optimistic investors’ resources for purchasing the asset.</p></li>
+<li><p>If optimistic investors finance purchases by borrowing, tightening leverage constraints can extinguish a bubble.</p></li>
+</ul>
+<p>Scheinkman extracts insights about the effects of financial regulations on bubbles.</p>
+<p>He emphasizes how limiting short sales and limiting leverage have opposite effects.</p>
+</div>
+</div>
+<div class="section" id="exercises">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">53.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="exercise-1">
+<h3><span class="section-number">53.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<p>Recreate the summary table using the functions we have built above.</p>
+<p>|<span class="math notranslate nohighlight">\(|s_t|\)</span>|0|1|
+|:———————:|:—-:|:—-:|
+|<span class="math notranslate nohighlight">\(|p_a|\)</span>|1.33|1.22|
+|<span class="math notranslate nohighlight">\(|p_b|\)</span>|1.45|1.91|
+|<span class="math notranslate nohighlight">\(|p_o|\)</span>|1.85|2.08|
+|<span class="math notranslate nohighlight">\(|p_p|\)</span>|1|1|
+|<span class="math notranslate nohighlight">\(|\hat{p}_a|\)</span>|1.85|1.69|
+|<span class="math notranslate nohighlight">\(|\hat{p}_b|\)</span>|1.69|2.08|</p>
+<p>You will first need to define the transition matrices and dividend payoff vector.</p>
+</div>
+</div>
+<div class="section" id="solutions">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">53.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h3><span class="section-number">53.5.1. </span>Exercise 1<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>First, we will obtain equilibrium price vectors with homogeneous beliefs, including when all
+investors are optimistic or pessimistic.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">]])</span>    <span class="c1"># Type a transition matrix</span>
+<span class="n">qb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">4</span><span class="p">]])</span>    <span class="c1"># Type b transition matrix</span>
+<span class="c1"># Optimistic investor transition matrix</span>
+<span class="n">qopt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">4</span><span class="p">]])</span>
+<span class="c1"># Pessimistic investor transition matrix</span>
+<span class="n">qpess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">]])</span>
+
+<span class="n">dividendreturn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+
+<span class="n">transitions</span> <span class="o">=</span> <span class="p">[</span><span class="n">qa</span><span class="p">,</span> <span class="n">qb</span><span class="p">,</span> <span class="n">qopt</span><span class="p">,</span> <span class="n">qpess</span><span class="p">]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;p_a&#39;</span><span class="p">,</span> <span class="s1">&#39;p_b&#39;</span><span class="p">,</span> <span class="s1">&#39;p_optimistic&#39;</span><span class="p">,</span> <span class="s1">&#39;p_pessimistic&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">transition</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">transitions</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">s0</span><span class="p">,</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">price_single_beliefs</span><span class="p">(</span><span class="n">transition</span><span class="p">,</span> <span class="n">dividendreturn</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State 0: </span><span class="si">{</span><span class="n">s0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State 1: </span><span class="si">{</span><span class="n">s1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p_a
+====================
+State 0: [1.33]
+State 1: [1.22]
+--------------------
+p_b
+====================
+State 0: [1.45]
+State 1: [1.91]
+--------------------
+p_optimistic
+====================
+State 0: [1.85]
+State 1: [2.08]
+--------------------
+p_pessimistic
+====================
+State 0: [1.]
+State 1: [1.]
+--------------------
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will use the price_optimistic_beliefs function to find the price under
+heterogeneous beliefs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">opt_beliefs</span> <span class="o">=</span> <span class="n">price_optimistic_beliefs</span><span class="p">([</span><span class="n">qa</span><span class="p">,</span> <span class="n">qb</span><span class="p">],</span> <span class="n">dividendreturn</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;p_optimistic&#39;</span><span class="p">,</span> <span class="s1">&#39;p_hat_a&#39;</span><span class="p">,</span> <span class="s1">&#39;p_hat_b&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">opt_beliefs</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">s0</span><span class="p">,</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State 0: </span><span class="si">{</span><span class="n">s0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State 1: </span><span class="si">{</span><span class="n">s1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p_optimistic
+====================
+State 0: [1.85]
+State 1: [2.08]
+--------------------
+p_hat_a
+====================
+State 0: [1.85]
+State 1: [1.69]
+--------------------
+p_hat_b
+====================
+State 0: [1.69]
+State 1: [2.08]
+--------------------
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that the equilibrium price with heterogeneous beliefs is equal to the price under single beliefs
+with optimistic investors - this is due to the marginal investor being the temporarily optimistic type.</p>
+<hr class="docutils" />
+<dl class="footnote brackets">
+<dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
+<dd><p>By assuming that both types of agents always have “deep enough pockets” to purchase all of the asset, the model takes wealth dynamics off the table. The Harrison-Kreps model generates high trading volume when the state changes either from 0 to 1 or from 1 to 0.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   6. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   7. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   8. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   10. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   11. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   12. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   13. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   14. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   15. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   16. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   17. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   18. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   19. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   20. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   21. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   22. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   23. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   24. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   25. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   26. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   27. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   28. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   29. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   30. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   31. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   32. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   33. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   34. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   35. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   36. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   37. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   38. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   39. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   40. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   41. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   42. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   43. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   44. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   45. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   46. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   47. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   48. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   49. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   50. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   51. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   52. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   53. Asset Pricing with Incomplete Markets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   54. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   55. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   56. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   57. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   58. References
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="_notebooks/harrison_kreps.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Launch Notebook"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/harrison_kreps.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
+                    <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lecture-python.myst/lectures/harrison_kreps.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+
+        </div> <!-- .toolbar -->
+
+    </div> <!-- .wrapper-->
+
+<script src="_static/plugins.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+
+    <script src=[></script>
+
+    <script src=]></script>
+
+<script src="_static/scripts.js"></script>
+<script>
+    feather.replace()
+    tippy('[data-tippy-content]');
+</script>
+
+
+  </body>
+</html>

@@ -1,0 +1,1986 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>40. Bayesian versus Frequentist Decision Rules &#8212; Quantitative Economics with Python</title>
+    <link rel="stylesheet" href="_static/quantecon-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/navy_captain.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="41. LQ Control: Foundations" href="lqcontrol.html" />
+    <link rel="prev" title="39. Likelihood Ratio Processes and Bayesian Learning" href="likelihood_bayes.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Bayesian versus Frequentist Decision Rules"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Bayesian versus Frequentist Decision Rules" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/navy_captain.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+
+<meta name="theme-color" content="#ffffff" />
+
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page">
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+
+                            <ul class="nav section-nav flex-column">
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#overview" class="nav-link">Overview</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#setup" class="nav-link">Setup</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#frequentist-decision-rule" class="nav-link">Frequentist Decision Rule</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#bayesian-decision-rule" class="nav-link">Bayesian Decision Rule</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#was-the-navy-captains-hunch-correct" class="nav-link">Was the Navy Captain’s hunch correct?</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#more-details" class="nav-link">More details</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#distribution-of-bayesian-decision-rules-times-to-decide" class="nav-link">Distribution of Bayesian decision rule’s times to decide</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#probability-of-making-correct-decisions" class="nav-link">Probability of making correct decisions</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#distribution-of-likelihood-ratios-at-frequentists-t" class="nav-link">Distribution of likelihood ratios at frequentist’s t</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                            </ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">Bayesian versus Frequentist Decision Rules</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div><div class="section" id="bayesian-versus-frequentist-decision-rules">
+<h1><a class="toc-backref" href="#id1"><span class="section-number">40. </span>Bayesian versus Frequentist Decision Rules</a><a class="headerlink" href="#bayesian-versus-frequentist-decision-rules" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#bayesian-versus-frequentist-decision-rules" id="id1">Bayesian versus Frequentist Decision Rules</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p></li>
+<li><p><a class="reference internal" href="#setup" id="id3">Setup</a></p></li>
+<li><p><a class="reference internal" href="#frequentist-decision-rule" id="id4">Frequentist Decision Rule</a></p></li>
+<li><p><a class="reference internal" href="#bayesian-decision-rule" id="id5">Bayesian Decision Rule</a></p></li>
+<li><p><a class="reference internal" href="#was-the-navy-captains-hunch-correct" id="id6">Was the Navy Captain’s hunch correct?</a></p></li>
+<li><p><a class="reference internal" href="#more-details" id="id7">More details</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>conda install -y quantecon
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting package metadata (current_repodata.json): - 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
+Solving environment: | 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># All requested packages already installed.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">int64</span>
+<span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
+<span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">interp</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id2"><span class="section-number">40.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This lecture follows up on ideas presented in the following lectures:</p>
+<ul class="simple">
+<li><p><span class="xref std std-doc">A Problem that Stumped Milton Friedman</span></p></li>
+<li><p><a class="reference internal" href="exchangeable.html"><span class="doc">Exchangeability and Bayesian Updating</span></a></p></li>
+<li><p><a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a></p></li>
+</ul>
+<p>In <span class="xref std std-doc">A Problem that Stumped Milton Friedman</span>  we described a problem
+that a Navy Captain presented to Milton Friedman during World War II.</p>
+<p>The Navy had instructed the Captain to use a decision rule for quality control that the Captain suspected
+could be dominated by a better rule.</p>
+<p>(The Navy had ordered the  Captain  to use  an instance of a <strong>frequentist decision rule</strong>.)</p>
+<p>Milton Friedman recognized the Captain’s conjecture as posing a challenging statistical problem that he and other
+members of the US Government’s Statistical Research Group at Columbia University proceeded to try to solve.</p>
+<p>One of the members of the group, the great mathematician Abraham Wald, soon solved the problem.</p>
+<p>A good way to formulate the problem is to use some ideas from Bayesian statistics that we describe in
+this lecture <a class="reference internal" href="exchangeable.html"><span class="doc">Exchangeability and Bayesian Updating</span></a> and in this lecture
+<a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a>, which describes the link between Bayesian
+updating and likelihood ratio processes.</p>
+<p>The present lecture  uses Python to generate simulations that   evaluate expected losses under  <strong>frequentist</strong> and <strong>Bayesian</strong>
+decision rules for a instances of the Navy Captain’s decision problem.</p>
+<p>The simulations validate the Navy Captain’s hunch that there is a better rule than the one the Navy had ordered him
+to use.</p>
+</div>
+<div class="section" id="setup">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">40.2. </span>Setup</a><a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>To formalize the problem of the Navy Captain whose questions posed the
+problem that Milton Friedman and Allan Wallis handed over to Abraham
+Wald, we consider a setting with the following parts.</p>
+<ul class="simple">
+<li><p>Each period a decision maker draws a non-negative random variable
+<span class="math notranslate nohighlight">\(Z\)</span> from a probability distribution that he does not completely
+understand. He knows that two probability distributions are possible,
+<span class="math notranslate nohighlight">\(f_{0}\)</span> and <span class="math notranslate nohighlight">\(f_{1}\)</span>, and that which ever distribution it
+is remains fixed over time. The decision maker believes that before
+the beginning of time, nature once and for all selected either
+<span class="math notranslate nohighlight">\(f_{0}\)</span> or <span class="math notranslate nohighlight">\(f_1\)</span> and that the probability that it
+selected <span class="math notranslate nohighlight">\(f_0\)</span> is probability <span class="math notranslate nohighlight">\(\pi^{*}\)</span>.</p></li>
+<li><p>The decision maker observes a sample
+<span class="math notranslate nohighlight">\(\left\{ z_{i}\right\} _{i=0}^{t}\)</span> from the the distribution
+chosen by nature.</p></li>
+</ul>
+<p>The decision maker wants to decide which distribution actually governs
+<span class="math notranslate nohighlight">\(Z\)</span> and is worried by two types of errors and the losses that they
+impose on him.</p>
+<ul class="simple">
+<li><p>a loss <span class="math notranslate nohighlight">\(\bar L_{1}\)</span> from a <strong>type I error</strong> that occurs when he decides that
+<span class="math notranslate nohighlight">\(f=f_{1}\)</span> when actually <span class="math notranslate nohighlight">\(f=f_{0}\)</span></p></li>
+<li><p>a loss  <span class="math notranslate nohighlight">\(\bar L_{0}\)</span> from a <strong>type II error</strong> that occurs when he decides that
+<span class="math notranslate nohighlight">\(f=f_{0}\)</span> when actually <span class="math notranslate nohighlight">\(f=f_{1}\)</span></p></li>
+</ul>
+<p>The decision maker pays  a cost <span class="math notranslate nohighlight">\(c\)</span> for drawing
+another  <span class="math notranslate nohighlight">\(z\)</span></p>
+<p>We mainly borrow parameters from the quantecon lecture “A Problem that
+Stumped Milton Friedman” except that we increase both <span class="math notranslate nohighlight">\(\bar L_{0}\)</span>
+and <span class="math notranslate nohighlight">\(\bar L_{1}\)</span> from <span class="math notranslate nohighlight">\(25\)</span> to <span class="math notranslate nohighlight">\(100\)</span> to encourage the
+frequentist Navy Captain to take more draws before deciding.</p>
+<p>We set the cost <span class="math notranslate nohighlight">\(c\)</span> of taking one more draw  at <span class="math notranslate nohighlight">\(1.25\)</span>.</p>
+<p>We set the probability distributions <span class="math notranslate nohighlight">\(f_{0}\)</span> and <span class="math notranslate nohighlight">\(f_{1}\)</span> to
+be beta distributions with <span class="math notranslate nohighlight">\(a_{0}=b_{0}=1\)</span>, <span class="math notranslate nohighlight">\(a_{1}=3\)</span>, and
+<span class="math notranslate nohighlight">\(b_{1}=1.2\)</span>, respectively.</p>
+<p>Below is some Python code that sets up these objects.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="s2">&quot;Beta distribution.&quot;</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">gamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We start with defining a <code class="docutils literal notranslate"><span class="pre">jitclass</span></code> that stores parameters and
+functions we need to solve problems for both the bayesian and
+frequentist Navy Captains.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wf_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>           <span class="c1"># unemployment compensation</span>
+    <span class="p">(</span><span class="s1">&#39;a0&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>          <span class="c1"># parameters of beta distribution</span>
+    <span class="p">(</span><span class="s1">&#39;b0&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;a1&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;b1&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;L0&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>          <span class="c1"># cost of selecting f0 when f1 is true</span>
+    <span class="p">(</span><span class="s1">&#39;L1&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>          <span class="c1"># cost of selecting f1 when f0 is true</span>
+    <span class="p">(</span><span class="s1">&#39;π_grid&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:]),</span>   <span class="c1"># grid of beliefs π</span>
+    <span class="p">(</span><span class="s1">&#39;π_grid_size&#39;</span><span class="p">,</span> <span class="n">int64</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;mc_size&#39;</span><span class="p">,</span> <span class="n">int64</span><span class="p">),</span>       <span class="c1"># size of Monto Carlo simulation</span>
+    <span class="p">(</span><span class="s1">&#39;z0&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:]),</span>       <span class="c1"># sequence of random values</span>
+    <span class="p">(</span><span class="s1">&#39;z1&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:])</span>        <span class="c1"># sequence of random values</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jitclass</span><span class="p">(</span><span class="n">wf_data</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">WaldFriedman</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">c</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+                 <span class="n">a0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">b0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">a1</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                 <span class="n">b1</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
+                 <span class="n">L0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                 <span class="n">L1</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                 <span class="n">π_grid_size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+                 <span class="n">mc_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">π_grid_size</span> <span class="o">=</span> <span class="n">c</span><span class="p">,</span> <span class="n">π_grid_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span> <span class="o">=</span> <span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">b1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">L1</span> <span class="o">=</span> <span class="n">L0</span><span class="p">,</span> <span class="n">L1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">π_grid_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mc_size</span> <span class="o">=</span> <span class="n">mc_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">z0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">mc_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">mc_size</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">f0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">f1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">κ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates π using Bayes&#39; rule and the current observation z</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">b1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span>
+
+        <span class="n">π_f0</span><span class="p">,</span> <span class="n">π_f1</span> <span class="o">=</span> <span class="n">π</span> <span class="o">*</span> <span class="n">p</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">b1</span><span class="p">)</span>
+        <span class="n">π_new</span> <span class="o">=</span> <span class="n">π_f0</span> <span class="o">/</span> <span class="p">(</span><span class="n">π_f0</span> <span class="o">+</span> <span class="n">π_f1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">π_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wf</span> <span class="o">=</span> <span class="n">WaldFriedman</span><span class="p">()</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Two Distributions&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">f0</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$f_0$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">f1</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$f_1$&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$z$ values&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;density of $z_k$&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_8_0.png" src="_images/navy_captain_8_0.png" />
+</div>
+</div>
+<p>Above, we plot the two possible probability densities <span class="math notranslate nohighlight">\(f_0\)</span> and
+<span class="math notranslate nohighlight">\(f_1\)</span></p>
+</div>
+<div class="section" id="frequentist-decision-rule">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">40.3. </span>Frequentist Decision Rule</a><a class="headerlink" href="#frequentist-decision-rule" title="Permalink to this headline">¶</a></h2>
+<p>The Navy told the Captain to use a  frequentist decision rule.</p>
+<p>In particular, it gave him a decision rule that the Navy had designed  by using
+frequentist statistical theory to minimize an
+expected loss function.</p>
+<p>That decision rule is characterized by a sample size <span class="math notranslate nohighlight">\(t\)</span> and a
+cutoff <span class="math notranslate nohighlight">\(d\)</span> associated with a likelihood ratio.</p>
+<p>Let
+<span class="math notranslate nohighlight">\(L\left(z^{t}\right)=\prod_{i=0}^{t}\frac{f_{0}\left(z_{i}\right)}{f_{1}\left(z_{i}\right)}\)</span>
+be the likelihood ratio associated with observing the sequence
+<span class="math notranslate nohighlight">\(\left\{ z_{i}\right\} _{i=0}^{t}\)</span>.</p>
+<p>The decision rule associated with a sample size <span class="math notranslate nohighlight">\(t\)</span> is:</p>
+<ul class="simple">
+<li><p>decide that <span class="math notranslate nohighlight">\(f_0\)</span> is the distribution if the likelihood ratio
+is greater than <span class="math notranslate nohighlight">\(d\)</span></p></li>
+</ul>
+<p>To understand how that rule was engineered, let null and alternative
+hypotheses be</p>
+<ul class="simple">
+<li><p>null: <span class="math notranslate nohighlight">\(H_{0}\)</span>: <span class="math notranslate nohighlight">\(f=f_{0}\)</span>,</p></li>
+<li><p>alternative <span class="math notranslate nohighlight">\(H_{1}\)</span>: <span class="math notranslate nohighlight">\(f=f_{1}\)</span>.</p></li>
+</ul>
+<p>Given sample size <span class="math notranslate nohighlight">\(t\)</span> and cutoff <span class="math notranslate nohighlight">\(d\)</span>, under the model
+described above, the mathematical expectation of total loss is</p>
+<div class="math notranslate nohighlight" id="equation-val1">
+<span class="eqno">(40.1)<a class="headerlink" href="#equation-val1" title="Permalink to this equation">¶</a></span>\[\begin{aligned}
+\bar{V}_{fre}\left(t,d\right)=ct+\pi^{*}PFA\times \bar L_{1}+\left(1-\pi^{*}\right)\left(1-PD\right)\times \bar L_{0}
+\end{aligned}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\textrm{where} \quad PFA &amp; =\Pr\left\{ L\left(z^{t}\right)&lt;d\mid q=f_{0}\right\} \\
+PD &amp; =\Pr\left\{ L\left(z^{t}\right)&lt;d\mid q=f_{1}\right\}
+\end{aligned}
+\end{split}\]</div>
+<p>Here</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(PFA\)</span> denotes the probability of a <strong>false alarm</strong>, i.e.,
+rejecting <span class="math notranslate nohighlight">\(H_0\)</span> when it is true</p></li>
+<li><p><span class="math notranslate nohighlight">\(PD\)</span> denotes the probability of a <strong>detection error</strong>, i.e.,
+not rejecting <span class="math notranslate nohighlight">\(H_0\)</span> when <span class="math notranslate nohighlight">\(H_1\)</span> is true</p></li>
+</ul>
+<p>For a given sample size <span class="math notranslate nohighlight">\(t\)</span>, the pairs <span class="math notranslate nohighlight">\(\left(PFA,PD\right)\)</span>
+lie on a “receiver operating characteristic curve” and can be uniquely
+pinned down by choosing <span class="math notranslate nohighlight">\(d\)</span>.</p>
+<p>To see some receiver operating characteristic curves, please see this
+lecture <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a>.</p>
+<p>To solve for <span class="math notranslate nohighlight">\(\bar{V}_{fre}\left(t,d\right)\)</span> numerically, we first
+simulate sequences of <span class="math notranslate nohighlight">\(z\)</span> when either <span class="math notranslate nohighlight">\(f_0\)</span> or <span class="math notranslate nohighlight">\(f_1\)</span>
+generates data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z0_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">a0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">b0</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+<span class="n">z1_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">a1</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">b1</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">z0_arr</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f0&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">z1_arr</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_12_0.png" src="_images/navy_captain_12_0.png" />
+</div>
+</div>
+<p>We can compute sequneces of likelihood ratios using simulated samples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">wf</span><span class="o">.</span><span class="n">f0</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">/</span> <span class="n">wf</span><span class="o">.</span><span class="n">f1</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l0_arr</span> <span class="o">=</span> <span class="n">l</span><span class="p">(</span><span class="n">z0_arr</span><span class="p">)</span>
+<span class="n">l1_arr</span> <span class="o">=</span> <span class="n">l</span><span class="p">(</span><span class="n">z1_arr</span><span class="p">)</span>
+
+<span class="n">L0_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">l0_arr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">L1_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">l1_arr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>With an empirical distribution of likelihood ratios in hand, we can draw
+“receiver operating characteristic curves” by enumerating
+<span class="math notranslate nohighlight">\(\left(PFA,PD\right)\)</span> pairs given each sample size <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">PFA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+    <span class="n">percentile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">[:,</span> <span class="n">t</span><span class="p">],</span> <span class="n">PFA</span><span class="p">)</span>
+    <span class="n">PD</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L1_arr</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">p</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">percentile</span><span class="p">]</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">PFA</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span> <span class="n">PD</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;t=</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;perfect detection&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;random detection&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s2">&quot;better&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Probability of false alarm&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Probability of detection&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Receiver Operating Characteristic Curve&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_17_0.png" src="_images/navy_captain_17_0.png" />
+</div>
+</div>
+<p>Our frequentist minimizes the expected total loss presented in equation
+<a class="reference internal" href="#equation-val1">(40.1)</a> by choosing <span class="math notranslate nohighlight">\(\left(t,d\right)\)</span>.</p>
+<p>Doing that delivers an expected loss</p>
+<div class="math notranslate nohighlight">
+\[
+\bar{V}_{fre}=\min_{t,d}\bar{V}_{fre}\left(t,d\right).
+\]</div>
+<p>We first consider the case in which
+<span class="math notranslate nohighlight">\(\pi^{*}=\Pr\left\{ \text{nature selects }f_{0}\right\} =0.5\)</span>.</p>
+<p>We can solve the minimization problem in two steps.</p>
+<p>First, we fix <span class="math notranslate nohighlight">\(t\)</span> and find the optimal cutoff <span class="math notranslate nohighlight">\(d\)</span> and
+consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{fre}\left(t\right)\)</span>.</p>
+<p>Here is Python code that does that and then plots a useful graph.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">V_fre_d_t</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="n">L0_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">PFA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">[:,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
+    <span class="n">PD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L1_arr</span><span class="p">[:,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
+
+    <span class="n">V</span> <span class="o">=</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">PFA</span> <span class="o">*</span><span class="n">wf</span><span class="o">.</span> <span class="n">L1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">PD</span><span class="p">)</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span>
+
+    <span class="k">return</span> <span class="n">V</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">V_fre_t</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">V_fre_d_t</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Nelder-Mead&#39;</span><span class="p">)</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">fun</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span>
+
+    <span class="n">PFA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">[:,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
+    <span class="n">PD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L1_arr</span><span class="p">[:,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
+
+    <span class="k">return</span> <span class="n">V</span><span class="p">,</span> <span class="n">PFA</span><span class="p">,</span> <span class="n">PD</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_V_fre</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
+
+    <span class="n">T</span> <span class="o">=</span> <span class="n">L0_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">V_fre_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">PFA_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">PD_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">V</span><span class="p">,</span> <span class="n">PFA</span><span class="p">,</span> <span class="n">PD</span> <span class="o">=</span> <span class="n">V_fre_t</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">)</span>
+        <span class="n">V_fre_arr</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">c</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">V</span>
+        <span class="n">PFA_arr</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">PFA</span>
+        <span class="n">PD_arr</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">PD</span>
+
+    <span class="k">return</span> <span class="n">V_fre_arr</span><span class="p">,</span> <span class="n">PFA_arr</span><span class="p">,</span> <span class="n">PD_arr</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">π_star</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">V_fre_arr</span><span class="p">,</span> <span class="n">PFA_arr</span><span class="p">,</span> <span class="n">PD_arr</span> <span class="o">=</span> <span class="n">compute_V_fre</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">V_fre_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\min_</span><span class="si">{d}</span><span class="s1"> \overline</span><span class="si">{V}</span><span class="s1">_</span><span class="si">{fre}</span><span class="s1">(t,d)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;$\pi^*=0.5$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_22_0.png" src="_images/navy_captain_22_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_optimal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">V_fre_arr</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;The above graph indicates that minimizing over t tells the frequentist to draw </span><span class="si">{</span><span class="n">t_optimal</span><span class="si">}</span><span class="s2"> observations and then decide.&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The above graph indicates that minimizing over t tells the frequentist to draw 9 observations and then decide.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s now change the value of <span class="math notranslate nohighlight">\(\pi^{*}\)</span> and watch how the decision
+rule changes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_π</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">π_star_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">n_π</span><span class="p">)</span>
+
+<span class="n">V_fre_bar_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_π</span><span class="p">)</span>
+<span class="n">t_optimal_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_π</span><span class="p">)</span>
+<span class="n">PFA_optimal_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_π</span><span class="p">)</span>
+<span class="n">PD_optimal_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_π</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">π_star</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">):</span>
+    <span class="n">V_fre_arr</span><span class="p">,</span> <span class="n">PFA_arr</span><span class="p">,</span> <span class="n">PD_arr</span> <span class="o">=</span> <span class="n">compute_V_fre</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">)</span>
+    <span class="n">t_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">V_fre_arr</span><span class="p">)</span>
+
+    <span class="n">V_fre_bar_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">V_fre_arr</span><span class="p">[</span><span class="n">t_idx</span><span class="p">]</span>
+    <span class="n">t_optimal_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_idx</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">PFA_optimal_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">PFA_arr</span><span class="p">[</span><span class="n">t_idx</span><span class="p">]</span>
+    <span class="n">PD_optimal_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">PD_arr</span><span class="p">[</span><span class="n">t_idx</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">,</span> <span class="n">V_fre_bar_arr</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$\pi^*$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;$\overline</span><span class="si">{V}</span><span class="s1">_</span><span class="si">{fre}</span><span class="s1">$&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_27_0.png" src="_images/navy_captain_27_0.png" />
+</div>
+</div>
+<p>The following shows how do optimal sample size <span class="math notranslate nohighlight">\(t\)</span> and targeted
+<span class="math notranslate nohighlight">\(\left(PFA,PD\right)\)</span> change as <span class="math notranslate nohighlight">\(\pi^{*}\)</span> varies.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">,</span> <span class="n">t_optimal_arr</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\pi^*$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;optimal sample size given $\pi^*$&#39;</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">,</span> <span class="n">PFA_optimal_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$PFA^*(\pi^*)$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">,</span> <span class="n">PD_optimal_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$PD^*(\pi^*)$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\pi^*$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;optimal PFA and PD given $\pi^*$&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_29_0.png" src="_images/navy_captain_29_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="bayesian-decision-rule">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">40.4. </span>Bayesian Decision Rule</a><a class="headerlink" href="#bayesian-decision-rule" title="Permalink to this headline">¶</a></h2>
+<p>In this lecture <span class="xref std std-doc">A Problem that Stumped Milton Friedman</span>,
+we learned how Abraham Wald confirmed the Navy
+Captain’s hunch that there is a better decision rule.</p>
+<p>We presented a Bayesian procedure that instructed the Captain to makes
+decisions by comparing his current Bayesian posterior probability
+<span class="math notranslate nohighlight">\(\pi\)</span> with two cutoff probabilities called <span class="math notranslate nohighlight">\(\alpha\)</span> and
+<span class="math notranslate nohighlight">\(\beta\)</span>.</p>
+<p>To proceed, we borrow some Python code from the quantecon
+lecture <span class="xref std std-doc">A Problem that Stumped Milton Friedman</span>
+that computes <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">Q</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
+
+    <span class="n">c</span><span class="p">,</span> <span class="n">π_grid</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span>
+    <span class="n">L0</span><span class="p">,</span> <span class="n">L1</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span>
+    <span class="n">z0</span><span class="p">,</span> <span class="n">z1</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">z0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">z1</span>
+    <span class="n">mc_size</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">mc_size</span>
+
+    <span class="n">κ</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">κ</span>
+
+    <span class="n">h_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">π_grid</span><span class="p">)</span>
+    <span class="n">h_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">interp</span><span class="p">(</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">π_grid</span><span class="p">)):</span>
+        <span class="n">π</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c1"># Find the expected value of J by integrating over z</span>
+        <span class="n">integral_f0</span><span class="p">,</span> <span class="n">integral_f1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mc_size</span><span class="p">):</span>
+            <span class="n">π_0</span> <span class="o">=</span> <span class="n">κ</span><span class="p">(</span><span class="n">z0</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">π</span><span class="p">)</span>  <span class="c1"># Draw z from f0 and update π</span>
+            <span class="n">integral_f0</span> <span class="o">+=</span> <span class="nb">min</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_0</span><span class="p">)</span> <span class="o">*</span> <span class="n">L0</span><span class="p">,</span> <span class="n">π_0</span> <span class="o">*</span> <span class="n">L1</span><span class="p">,</span> <span class="n">h_func</span><span class="p">(</span><span class="n">π_0</span><span class="p">))</span>
+
+            <span class="n">π_1</span> <span class="o">=</span> <span class="n">κ</span><span class="p">(</span><span class="n">z1</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">π</span><span class="p">)</span>  <span class="c1"># Draw z from f1 and update π</span>
+            <span class="n">integral_f1</span> <span class="o">+=</span> <span class="nb">min</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_1</span><span class="p">)</span> <span class="o">*</span> <span class="n">L0</span><span class="p">,</span> <span class="n">π_1</span> <span class="o">*</span> <span class="n">L1</span><span class="p">,</span> <span class="n">h_func</span><span class="p">(</span><span class="n">π_1</span><span class="p">))</span>
+
+        <span class="n">integral</span> <span class="o">=</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="n">integral_f0</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">integral_f1</span><span class="p">)</span> <span class="o">/</span> <span class="n">mc_size</span>
+
+        <span class="n">h_new</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">integral</span>
+
+    <span class="k">return</span> <span class="n">h_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">solve_model</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the continuation value function</span>
+
+<span class="sd">    * wf is an instance of WaldFriedman</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Set up loop</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">))</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span> <span class="ow">and</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="n">h_new</span> <span class="o">=</span> <span class="n">Q</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">wf</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="n">h_new</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">h_new</span>
+
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to converge!&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">h_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h_star</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">find_cutoff_rule</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function takes a continuation value function and returns the</span>
+<span class="sd">    corresponding cutoffs of where you transition between continuing and</span>
+<span class="sd">    choosing a specific model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">π_grid</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span>
+    <span class="n">L0</span><span class="p">,</span> <span class="n">L1</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span>
+
+    <span class="c1"># Evaluate cost at all points on grid for choosing a model</span>
+    <span class="n">payoff_f0</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">L0</span>
+    <span class="n">payoff_f1</span> <span class="o">=</span> <span class="n">π_grid</span> <span class="o">*</span> <span class="n">L1</span>
+
+    <span class="c1"># The cutoff points can be found by differencing these costs with</span>
+    <span class="c1"># The Bellman equation (J is always less than or equal to p_c_i)</span>
+    <span class="n">β</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span>
+                              <span class="n">payoff_f1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">payoff_f0</span><span class="p">),</span>
+                              <span class="mf">1e-10</span><span class="p">)</span>
+               <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">α</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span>
+                              <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">payoff_f1</span><span class="p">)</span> <span class="o">-</span> <span class="n">payoff_f0</span><span class="p">,</span>
+                              <span class="mf">1e-10</span><span class="p">)</span>
+               <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">β</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span>
+
+<span class="n">β</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="n">find_cutoff_rule</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">h_star</span><span class="p">)</span>
+<span class="n">cost_L0</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span>
+<span class="n">cost_L1</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">h_star</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;continuation value&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">cost_L1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;choose f1&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">cost_L0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;choose f0&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">h_star</span><span class="p">,</span> <span class="n">cost_L0</span><span class="p">,</span> <span class="n">cost_L1</span><span class="p">]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">lw</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;minimum cost&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\beta$&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">β</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\alpha$&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">α</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">β</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">β</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span><span class="p">)),</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;cost&quot;</span><span class="p">,</span>
+       <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;$\pi$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Value function&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">borderpad</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_34_0.png" src="_images/navy_captain_34_0.png" />
+</div>
+</div>
+<p>The above figure portrays the value function plotted against decision
+maker’s Bayesian posterior.</p>
+<p>It also shows the probabilities <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
+<p>The Bayesian decision rule is:</p>
+<ul class="simple">
+<li><p>accept <span class="math notranslate nohighlight">\(H_0\)</span> if <span class="math notranslate nohighlight">\(\pi \geq \alpha\)</span></p></li>
+<li><p>accept <span class="math notranslate nohighlight">\(H_1\)</span> if <span class="math notranslate nohighlight">\(\pi \leq \beta\)</span></p></li>
+<li><p>delay deciding and draw another <span class="math notranslate nohighlight">\(z\)</span> if
+<span class="math notranslate nohighlight">\(\beta \leq \pi \leq \alpha\)</span></p></li>
+</ul>
+<p>We can calculate two ‘’objective’’ loss functions under this situation
+conditioning on knowing for sure that nature has selected <span class="math notranslate nohighlight">\(f_{0}\)</span>,
+in the first case, or <span class="math notranslate nohighlight">\(f_{1}\)</span>, in the second case.</p>
+<ol class="simple">
+<li><p>under <span class="math notranslate nohighlight">\(f_{0}\)</span>,</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+V^{0}\left(\pi\right)=\begin{cases}
+0 &amp; \text{if }\alpha\leq\pi,\\
+c+EV^{0}\left(\pi^{\prime}\right) &amp; \text{if }\beta\leq\pi&lt;\alpha,\\
+\bar L_{1} &amp; \text{if }\pi&lt;\beta.
+\end{cases}
+\end{split}\]</div>
+<ol class="simple">
+<li><p>under <span class="math notranslate nohighlight">\(f_{1}\)</span></p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+V^{1}\left(\pi\right)=\begin{cases}
+\bar L_{0} &amp; \text{if }\alpha\leq\pi,\\
+c+EV^{1}\left(\pi^{\prime}\right) &amp; \text{if }\beta\leq\pi&lt;\alpha,\\
+0 &amp; \text{if }\pi&lt;\beta.
+\end{cases}
+\end{split}\]</div>
+<p>where
+<span class="math notranslate nohighlight">\(\pi^{\prime}=\frac{\pi f_{0}\left(z^{\prime}\right)}{\pi f_{0}\left(z^{\prime}\right)+\left(1-\pi\right)f_{1}\left(z^{\prime}\right)}\)</span>.
+Given a prior probability <span class="math notranslate nohighlight">\(\pi_{0}\)</span>, the expected loss for the
+Bayesian is</p>
+<div class="math notranslate nohighlight">
+\[
+\bar{V}_{Bayes}\left(\pi_{0}\right)=\pi^{*}V^{0}\left(\pi_{0}\right)+\left(1-\pi^{*}\right)V^{1}\left(\pi_{0}\right).
+\]</div>
+<p>Below we write some Python code that computes
+<span class="math notranslate nohighlight">\(V^{0}\left(\pi\right)\)</span> and <span class="math notranslate nohighlight">\(V^{1}\left(\pi\right)\)</span>
+numerically.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">V_q</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid_size</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">flag</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">z_arr</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">z0</span>
+        <span class="n">V</span><span class="p">[</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">&lt;</span> <span class="n">β</span><span class="p">]</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">L1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">z_arr</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">z1</span>
+        <span class="n">V</span><span class="p">[</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">&gt;=</span> <span class="n">α</span><span class="p">]</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span>
+
+    <span class="n">V_old</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">V_old</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">V</span><span class="p">[:]</span>
+        <span class="n">V</span><span class="p">[(</span><span class="n">β</span> <span class="o">&lt;=</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">&lt;</span> <span class="n">α</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">)):</span>
+            <span class="n">π</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">π</span> <span class="o">&gt;=</span> <span class="n">α</span> <span class="ow">or</span> <span class="n">π</span> <span class="o">&lt;</span> <span class="n">β</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_arr</span><span class="p">)):</span>
+                <span class="n">π_next</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">κ</span><span class="p">(</span><span class="n">z_arr</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">π</span><span class="p">)</span>
+                <span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">wf</span><span class="o">.</span><span class="n">c</span> <span class="o">+</span> <span class="n">interp</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">V_old</span><span class="p">,</span> <span class="n">π_next</span><span class="p">)</span>
+
+            <span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">wf</span><span class="o">.</span><span class="n">mc_size</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">V</span> <span class="o">-</span> <span class="n">V_old</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">1e-5</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">V</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V0</span> <span class="o">=</span> <span class="n">V_q</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">V1</span> <span class="o">=</span> <span class="n">V_q</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">V0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$V^0$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">V1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$V^1$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">β</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">β</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;β&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">α</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">wf</span><span class="o">.</span><span class="n">L0</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;α&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$\pi$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Objective value function $V(\pi)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_37_0.png" src="_images/navy_captain_37_0.png" />
+</div>
+</div>
+<p>Given an assumed value for
+<span class="math notranslate nohighlight">\(\pi^{*}=\Pr\left\{ \text{nature selects }f_{0}\right\}\)</span>, we can
+then compute <span class="math notranslate nohighlight">\(\bar{V}_{Bayes}\left(\pi_{0}\right)\)</span>.</p>
+<p>We can then determine an initial Bayesian prior <span class="math notranslate nohighlight">\(\pi_{0}^{*}\)</span> that
+minimizes this objective concept of expected loss.</p>
+<p>The figure 9 below plots four cases corresponding to
+<span class="math notranslate nohighlight">\(\pi^{*}=0.25,0.3,0.5,0.7\)</span>.</p>
+<p>We observe that in each case <span class="math notranslate nohighlight">\(\pi_{0}^{*}\)</span> equals <span class="math notranslate nohighlight">\(\pi^{*}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_V_baye_bar</span><span class="p">(</span><span class="n">π_star</span><span class="p">,</span> <span class="n">V0</span><span class="p">,</span> <span class="n">V1</span><span class="p">,</span> <span class="n">wf</span><span class="p">):</span>
+
+    <span class="n">V_baye</span> <span class="o">=</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">V0</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span> <span class="o">*</span> <span class="n">V1</span>
+    <span class="n">π_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">V_baye</span><span class="p">)</span>
+    <span class="n">π_optimal</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">[</span><span class="n">π_idx</span><span class="p">]</span>
+    <span class="n">V_baye_bar</span> <span class="o">=</span> <span class="n">V_baye</span><span class="p">[</span><span class="n">π_idx</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">V_baye</span><span class="p">,</span> <span class="n">π_optimal</span><span class="p">,</span> <span class="n">V_baye_bar</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">π_star_arr</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">π_star</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">):</span>
+    <span class="n">row_i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">col_i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span>
+
+    <span class="n">V_baye</span><span class="p">,</span> <span class="n">π_optimal</span><span class="p">,</span> <span class="n">V_baye_bar</span> <span class="o">=</span> <span class="n">compute_V_baye_bar</span><span class="p">(</span><span class="n">π_star</span><span class="p">,</span> <span class="n">V0</span><span class="p">,</span> <span class="n">V1</span><span class="p">,</span> <span class="n">wf</span><span class="p">)</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="n">row_i</span><span class="p">,</span> <span class="n">col_i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">V_baye</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">row_i</span><span class="p">,</span> <span class="n">col_i</span><span class="p">]</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">V_baye_bar</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">row_i</span><span class="p">,</span> <span class="n">col_i</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">π_optimal</span><span class="p">,</span> <span class="n">V_baye_bar</span><span class="p">,</span> <span class="n">V_baye</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">row_i</span><span class="p">,</span> <span class="n">col_i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">π_optimal</span><span class="o">+</span><span class="mf">0.05</span><span class="p">,</span> <span class="p">(</span><span class="n">V_baye_bar</span> <span class="o">+</span> <span class="n">V_baye</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+                        <span class="s1">&#39;${\pi_0^*}=$&#39;</span><span class="o">+</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">π_optimal</span><span class="si">:</span><span class="s1">0.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">row_i</span><span class="p">,</span> <span class="n">col_i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\pi$&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">row_i</span><span class="p">,</span> <span class="n">col_i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\overline</span><span class="si">{V}</span><span class="s1">_</span><span class="si">{baye}</span><span class="s1">(\pi)$&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">row_i</span><span class="p">,</span> <span class="n">col_i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;$\pi^*=$&#39;</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">π_star</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;$\overline</span><span class="si">{V}</span><span class="s1">_</span><span class="si">{baye}</span><span class="s1">(\pi)=\pi^*V^0(\pi) + (1-\pi^*)V^1(\pi)$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_40_0.png" src="_images/navy_captain_40_0.png" />
+</div>
+</div>
+<p>This pattern of outcomes holds more generally.</p>
+<p>Thus, the following Python code generates the associated graph that
+verifies the equality of <span class="math notranslate nohighlight">\(\pi_{0}^{*}\)</span> to <span class="math notranslate nohighlight">\(\pi^{*}\)</span> holds
+for all <span class="math notranslate nohighlight">\(\pi^{*}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">π_star_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">n_π</span><span class="p">)</span>
+<span class="n">V_baye_bar_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">)</span>
+<span class="n">π_optimal_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">π_star</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">):</span>
+
+    <span class="n">V_baye</span><span class="p">,</span> <span class="n">π_optimal</span><span class="p">,</span> <span class="n">V_baye_bar</span> <span class="o">=</span> <span class="n">compute_V_baye_bar</span><span class="p">(</span><span class="n">π_star</span><span class="p">,</span> <span class="n">V0</span><span class="p">,</span> <span class="n">V1</span><span class="p">,</span> <span class="n">wf</span><span class="p">)</span>
+
+    <span class="n">V_baye_bar_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">V_baye_bar</span>
+    <span class="n">π_optimal_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_optimal</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">,</span> <span class="n">V_baye_bar_arr</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\pi^*$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;$\overline</span><span class="si">{V}</span><span class="s1">_</span><span class="si">{baye}</span><span class="s1">$&#39;</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">,</span> <span class="n">π_optimal_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;optimal prior&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">π_star_arr</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">π_star_arr</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span>
+            <span class="p">[</span><span class="n">π_star_arr</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">π_star_arr</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span>
+            <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;45 degree line&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\pi^*$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;optimal prior given $\pi^*$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_42_0.png" src="_images/navy_captain_42_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="was-the-navy-captains-hunch-correct">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">40.5. </span>Was the Navy Captain’s hunch correct?</a><a class="headerlink" href="#was-the-navy-captains-hunch-correct" title="Permalink to this headline">¶</a></h2>
+<p>We now compare average (i.e., frequentist) losses obtained by the
+frequentist and Bayesian decision rules.</p>
+<p>As a starting point, let’s compare average loss functions when
+<span class="math notranslate nohighlight">\(\pi^{*}=0.5\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">π_star</span> <span class="o">=</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># frequentist</span>
+<span class="n">V_fre_arr</span><span class="p">,</span> <span class="n">PFA_arr</span><span class="p">,</span> <span class="n">PD_arr</span> <span class="o">=</span> <span class="n">compute_V_fre</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">)</span>
+
+<span class="c1"># bayesian</span>
+<span class="n">V_baye</span> <span class="o">=</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">V0</span> <span class="o">+</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">V1</span>
+<span class="n">V_baye_bar</span> <span class="o">=</span> <span class="n">V_baye</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">V_fre_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\min_</span><span class="si">{d}</span><span class="s1"> \overline</span><span class="si">{V}</span><span class="s1">_</span><span class="si">{fre}</span><span class="s1">(t,d)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="p">[</span><span class="n">V_baye_bar</span><span class="p">,</span> <span class="n">V_baye_bar</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\overline</span><span class="si">{V}</span><span class="s1">_</span><span class="si">{baye}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;$\pi^*=0.5$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_46_0.png" src="_images/navy_captain_46_0.png" />
+</div>
+</div>
+<p>Evidently, there is no sample size <span class="math notranslate nohighlight">\(t\)</span> at which the frequentist
+decision rule attains a lower loss function than does the Bayesian rule.</p>
+<p>Furthermore, the following graph indicates that the Bayesian decision
+rule does better on average for all values of <span class="math notranslate nohighlight">\(\pi^{*}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">,</span> <span class="n">V_fre_bar_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\overline</span><span class="si">{V}</span><span class="s1">_</span><span class="si">{fre}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">,</span> <span class="n">V_baye_bar_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\overline</span><span class="si">{V}</span><span class="s1">_</span><span class="si">{baye}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\pi^*$&#39;</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">π_star_arr</span><span class="p">,</span> <span class="n">V_fre_bar_arr</span> <span class="o">-</span> <span class="n">V_baye_bar_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$diff$&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\pi^*$&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_48_0.png" src="_images/navy_captain_48_0.png" />
+</div>
+</div>
+<p>The right panel of the above graph plots the difference
+<span class="math notranslate nohighlight">\(\bar{V}_{fre}-\bar{V}_{Bayes}\)</span>.</p>
+<p>It is always positive.</p>
+</div>
+<div class="section" id="more-details">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">40.6. </span>More details</a><a class="headerlink" href="#more-details" title="Permalink to this headline">¶</a></h2>
+<p>We can provide more insights by focusing soley the case in which
+<span class="math notranslate nohighlight">\(\pi^{*}=0.5=\pi_{0}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">π_star</span> <span class="o">=</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Recall that when <span class="math notranslate nohighlight">\(\pi^*=0.5\)</span>, the frequentist decision rule sets a
+sample size <code class="docutils literal notranslate"><span class="pre">t_optimal</span></code> <strong>ex ante</strong></p>
+<p>For our parameter settings, we can compute it’s value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_optimal</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9
+</pre></div>
+</div>
+</div>
+</div>
+<p>For convenience, let’s define <code class="docutils literal notranslate"><span class="pre">t_idx</span></code> as the Python array index
+corresponding to <code class="docutils literal notranslate"><span class="pre">t_optimal</span></code> sample size.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_idx</span> <span class="o">=</span> <span class="n">t_optimal</span> <span class="o">-</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="distribution-of-bayesian-decision-rules-times-to-decide">
+<h3><span class="section-number">40.6.1. </span>Distribution of Bayesian decision rule’s times to decide<a class="headerlink" href="#distribution-of-bayesian-decision-rules-times-to-decide" title="Permalink to this headline">¶</a></h3>
+<p>By using simulations, we compute the frequency distribution of time to
+deciding for the Bayesian decision rule and compare that time to the
+frequentist rule’sfixed <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>The following Python code creates a graph that shows the frequency
+distribution of Bayesian times to decide of Bayesian decision maker,
+conditional on distribution <span class="math notranslate nohighlight">\(q=f_{0}\)</span> or <span class="math notranslate nohighlight">\(q= f_{1}\)</span>
+generating the data.</p>
+<p>The blue and red dotted lines show averages for the Bayesian decision
+rule, while the black dotted line shows the frequentist optimal sample
+size <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>On average the Bayesian rule decides <strong>earlier</strong> than the frequentist
+rule when <span class="math notranslate nohighlight">\(q= f_0\)</span> and <strong>later</strong> when <span class="math notranslate nohighlight">\(q = f_1\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">check_results</span><span class="p">(</span><span class="n">L_arr</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">π0</span><span class="p">):</span>
+
+    <span class="n">N</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">L_arr</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="n">time_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">correctness</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+
+    <span class="n">π_arr</span> <span class="o">=</span> <span class="n">π0</span> <span class="o">*</span> <span class="n">L_arr</span> <span class="o">/</span> <span class="p">(</span><span class="n">π0</span> <span class="o">*</span> <span class="n">L_arr</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π0</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">π_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">β</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">π_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">α</span><span class="p">):</span>
+                <span class="n">time_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">correctness</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">π_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">α</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">π_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">β</span><span class="p">)</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">time_arr</span><span class="p">,</span> <span class="n">correctness</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_arr0</span><span class="p">,</span> <span class="n">correctness0</span> <span class="o">=</span> <span class="n">check_results</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">π_star</span><span class="p">)</span>
+<span class="n">time_arr1</span><span class="p">,</span> <span class="n">correctness1</span> <span class="o">=</span> <span class="n">check_results</span><span class="p">(</span><span class="n">L1_arr</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">π_star</span><span class="p">)</span>
+
+<span class="c1"># unconditional distribution</span>
+<span class="n">time_arr_u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">time_arr0</span><span class="p">,</span> <span class="n">time_arr1</span><span class="p">))</span>
+<span class="n">correctness_u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">correctness0</span><span class="p">,</span> <span class="n">correctness1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">time_arr0</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f0 generates&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">n2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">time_arr1</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f1 generates&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">t_optimal</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n2</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;frequentist&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">time_arr0</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n2</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span>
+           <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;E(t) under f0&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">time_arr1</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n2</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span>
+           <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;E(t) under f1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Conditional frequency distribution of times&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_58_0.png" src="_images/navy_captain_58_0.png" />
+</div>
+</div>
+<p>Later we’ll figure out how these distributions ultimately affect
+objective expected values under the two decision rules.</p>
+<p>To begin, let’s look at simulations of the Bayesian’s beliefs over time.</p>
+<p>We can easily compute the updated beliefs at any time <span class="math notranslate nohighlight">\(t\)</span> using
+the one-to-one mapping from <span class="math notranslate nohighlight">\(L_{t}\)</span> to <span class="math notranslate nohighlight">\(\pi_{t}\)</span> given
+<span class="math notranslate nohighlight">\(\pi_0\)</span> described in this lecture <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">π0_arr</span> <span class="o">=</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">L0_arr</span> <span class="o">/</span> <span class="p">(</span><span class="n">π_star</span> <span class="o">*</span> <span class="n">L0_arr</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span>
+<span class="n">π1_arr</span> <span class="o">=</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">L1_arr</span> <span class="o">/</span> <span class="p">(</span><span class="n">π_star</span> <span class="o">*</span> <span class="n">L1_arr</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">π0_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">π0_arr</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f0 generates&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">π1_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">π1_arr</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f1 generates&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$E(\pi_t)$ or ($1 - E(\pi_t)$)&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Expectation of beliefs after drawing t observations&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">π0_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">π0_arr</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f0 generates&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">π1_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">π1_arr</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f1 generates&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;var($\pi_t$)&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Variance of beliefs after drawing t observations&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_61_0.png" src="_images/navy_captain_61_0.png" />
+</div>
+</div>
+<p>The above figures compare averages and variances of updated Bayesian
+posteriors after <span class="math notranslate nohighlight">\(t\)</span> draws.</p>
+<p>The left graph compares <span class="math notranslate nohighlight">\(E\left(\pi_{t}\right)\)</span> under
+<span class="math notranslate nohighlight">\(f_{0}\)</span> to <span class="math notranslate nohighlight">\(1-E\left(\pi_{t}\right)\)</span> under <span class="math notranslate nohighlight">\(f_{1}\)</span>:
+they lie on top of each other.</p>
+<p>However, as the right hand size graph shows, there is significant
+difference in variances when <span class="math notranslate nohighlight">\(t\)</span> is small: the variance is lower
+under <span class="math notranslate nohighlight">\(f_{1}\)</span>.</p>
+<p>The difference in variances is the reason that the Bayesian decision
+maker waits longer to decide when <span class="math notranslate nohighlight">\(f_{1}\)</span> generates the data.</p>
+<p>The code below plots outcomes of constructing an unconditional
+distribution by simply pooling the simulated data across the two
+possible distributions <span class="math notranslate nohighlight">\(f_0\)</span> and <span class="math notranslate nohighlight">\(f_1\)</span>.</p>
+<p>The pooled distribution describes a sense in which on average the
+Bayesian decides earlier, an outcome that seems at least partly to
+confirm the Navy Captain’s hunch.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">time_arr_u</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;bayesian&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">time_arr_u</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;bayesian E(t)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">t_optimal</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;frequentist&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Unconditional distribution of times&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_63_0.png" src="_images/navy_captain_63_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="probability-of-making-correct-decisions">
+<h3><span class="section-number">40.6.2. </span>Probability of making correct decisions<a class="headerlink" href="#probability-of-making-correct-decisions" title="Permalink to this headline">¶</a></h3>
+<p>Now we use simulations to compute the fraction of samples in which the
+Bayesian and the frequentist decision rules decide correctly.</p>
+<p>For the frequentist rule, the probability of making the correct decision
+under <span class="math notranslate nohighlight">\(f_{1}\)</span> is the optimal probability of detection given
+<span class="math notranslate nohighlight">\(t\)</span> that we defined earlier, and similarly it equals <span class="math notranslate nohighlight">\(1\)</span>
+minus the optimal probability of a false alarm under <span class="math notranslate nohighlight">\(f_{0}\)</span>.</p>
+<p>Below we plot these two probabilities for the frequentist rule, along
+with the conditional probabilities that the Bayesian rule decides before
+<span class="math notranslate nohighlight">\(t\)</span> <em>and</em> that the decision is correct.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># optimal PFA and PD of frequentist with optimal sample size</span>
+<span class="n">V</span><span class="p">,</span> <span class="n">PFA</span><span class="p">,</span> <span class="n">PD</span> <span class="o">=</span> <span class="n">V_fre_t</span><span class="p">(</span><span class="n">t_optimal</span><span class="p">,</span> <span class="n">L0_arr</span><span class="p">,</span> <span class="n">L1_arr</span><span class="p">,</span> <span class="n">π_star</span><span class="p">,</span> <span class="n">wf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="n">PD</span><span class="p">,</span> <span class="n">PD</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;PD: fre. chooses f1 correctly&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="n">PFA</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">PFA</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;1-PFA: fre. chooses f0 correctly&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">t_optimal</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;frequentist optimal sample size&#39;</span><span class="p">)</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="n">time_arr0</span><span class="o">.</span><span class="n">size</span>
+<span class="n">T_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_arr</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">correctness0</span><span class="p">[</span><span class="n">time_arr0</span> <span class="o">&lt;=</span> <span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">T_arr</span><span class="p">],</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;q=f0 and baye. choose f0&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_arr</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">correctness1</span><span class="p">[</span><span class="n">time_arr1</span> <span class="o">&lt;=</span> <span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">T_arr</span><span class="p">],</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;q=f1 and baye. choose f1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cond. probability of making correct decisions before t&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_66_0.png" src="_images/navy_captain_66_0.png" />
+</div>
+</div>
+<p>By averaging using <span class="math notranslate nohighlight">\(\pi^{*}\)</span>, we also plot the unconditional
+distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="p">[(</span><span class="n">PD</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">PFA</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">PD</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">PFA</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">],</span>
+        <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;fre. makes correct decision&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">t_optimal</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;frequentist optimal sample size&#39;</span><span class="p">)</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="n">time_arr_u</span><span class="o">.</span><span class="n">size</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T_arr</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">correctness_u</span><span class="p">[</span><span class="n">time_arr_u</span> <span class="o">&lt;=</span> <span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">T_arr</span><span class="p">],</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;bayesian makes correct decision&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Uncond. probability of making correct decisions before t&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_68_0.png" src="_images/navy_captain_68_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="distribution-of-likelihood-ratios-at-frequentists-t">
+<h3><span class="section-number">40.6.3. </span>Distribution of likelihood ratios at frequentist’s <span class="math notranslate nohighlight">\(t\)</span><a class="headerlink" href="#distribution-of-likelihood-ratios-at-frequentists-t" title="Permalink to this headline">¶</a></h3>
+<p>Next we use simulations to construct distributions of likelihood ratios
+after <span class="math notranslate nohighlight">\(t\)</span> draws.</p>
+<p>To serve as useful reference points, we also show likelihood ratios that
+correspond to the Bayesian cutoffs <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
+<p>In order to exhibit the distribution more clearly, we report logarithms
+of likelihood ratios.</p>
+<p>The graphs below reports two distributions, one conditional on
+<span class="math notranslate nohighlight">\(f_0\)</span> generating the data, the other conditional on <span class="math notranslate nohighlight">\(f_1\)</span>
+generating the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Lα</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span> <span class="o">*</span>  <span class="n">α</span> <span class="o">/</span> <span class="p">(</span><span class="n">π_star</span> <span class="o">-</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">α</span><span class="p">)</span>
+<span class="n">Lβ</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π_star</span><span class="p">)</span> <span class="o">*</span>  <span class="n">β</span> <span class="o">/</span> <span class="p">(</span><span class="n">π_star</span> <span class="o">-</span> <span class="n">π_star</span> <span class="o">*</span> <span class="n">β</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">[:,</span> <span class="n">t_idx</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">L1_arr</span><span class="p">[:,</span> <span class="n">t_idx</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<span class="n">L_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">[:,</span> <span class="n">t_idx</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">L1_arr</span><span class="p">[:,</span> <span class="n">t_idx</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">bin_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">L_min</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">L_max</span><span class="p">),</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">n0</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">L0_arr</span><span class="p">[:,</span> <span class="n">t_idx</span><span class="p">]),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_range</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f0 generates&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">n1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">L1_arr</span><span class="p">[:,</span> <span class="n">t_idx</span><span class="p">]),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_range</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f1 generates&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Lβ</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n0</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log($L_β$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Lα</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n0</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log($L_α$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;log(L)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cond. distribution of log likelihood ratio at frequentist  t&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_71_0.png" src="_images/navy_captain_71_0.png" />
+</div>
+</div>
+<p>The next graph plots the unconditional distribution of Bayesian times to
+decide, constructed as earlier by pooling the two conditional
+distributions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">L0_arr</span><span class="p">[:,</span> <span class="n">t_idx</span><span class="p">],</span> <span class="n">L1_arr</span><span class="p">[:,</span> <span class="n">t_idx</span><span class="p">]])),</span>
+        <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;unconditional dist. of log(L)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Lβ</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n0</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log($L_β$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Lα</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n0</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log($L_α$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;log(L)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Uncond. distribution of log likelihood ratio at frequentist  t&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/navy_captain_73_0.png" src="_images/navy_captain_73_0.png" />
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   6. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   7. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   8. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   10. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   11. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   12. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   13. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   14. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   15. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   16. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   17. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   18. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   19. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   20. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   21. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   22. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   23. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   24. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   25. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   26. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   27. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   28. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   29. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   30. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   31. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   32. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   33. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   34. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   35. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   36. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   37. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   38. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   39. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   40. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   41. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   42. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   43. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   44. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   45. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   46. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   47. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   48. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   49. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   50. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   51. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   52. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   53. Asset Pricing with Incomplete Markets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   54. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   55. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   56. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   57. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   58. References
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="_notebooks/navy_captain.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Launch Notebook"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/navy_captain.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
+                    <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lecture-python.myst/lectures/navy_captain.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+
+        </div> <!-- .toolbar -->
+
+    </div> <!-- .wrapper-->
+
+<script src="_static/plugins.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+
+    <script src=[></script>
+
+    <script src=]></script>
+
+<script src="_static/scripts.js"></script>
+<script>
+    feather.replace()
+    tippy('[data-tippy-content]');
+</script>
+
+
+  </body>
+</html>

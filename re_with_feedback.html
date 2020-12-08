@@ -1,0 +1,1884 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>48. Stability in Linear Rational Expectations Models &#8212; Quantitative Economics with Python</title>
+    <link rel="stylesheet" href="_static/quantecon-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/re_with_feedback.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="49. Markov Perfect Equilibrium" href="markov_perf.html" />
+    <link rel="prev" title="47. Rational Expectations Equilibrium" href="rational_expectations.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Stability in Linear Rational Expectations Models"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Stability in Linear Rational Expectations Models" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/re_with_feedback.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+
+<meta name="theme-color" content="#ffffff" />
+
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page">
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+
+                            <ul class="nav section-nav flex-column">
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#overview" class="nav-link">Overview</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#linear-difference-equations" class="nav-link">Linear difference equations</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#first-order" class="nav-link">First order</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#second-order" class="nav-link">Second order</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#illustration-cagan-s-model" class="nav-link">Illustration: Cagan’s Model</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#some-python-code" class="nav-link">Some Python code</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#alternative-code" class="nav-link">Alternative code</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#special-case" class="nav-link">Special case</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#another-perspective" class="nav-link">Another perspective</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#refining-the-formula" class="nav-link">Refining the formula</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#some-remarks-about-feedback" class="nav-link">Some remarks about feedback</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#log-money-supply-feeds-back-on-log-price-level" class="nav-link">Log money supply feeds back on log price level</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#big-p-little-p-interpretation" class="nav-link">Big P, little p interpretation</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#fun-with-sympy-code" class="nav-link">Fun with SymPy code</a>
+                                </li>
+                                
+                            </ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">Stability in Linear Rational Expectations Models</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div><div class="section" id="stability-in-linear-rational-expectations-models">
+<h1><a class="toc-backref" href="#id8"><span class="section-number">48. </span>Stability in Linear Rational Expectations Models</a><a class="headerlink" href="#stability-in-linear-rational-expectations-models" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<span id="index-0"></span><p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#stability-in-linear-rational-expectations-models" id="id8">Stability in Linear Rational Expectations Models</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id9">Overview</a></p></li>
+<li><p><a class="reference internal" href="#linear-difference-equations" id="id10">Linear difference equations</a></p></li>
+<li><p><a class="reference internal" href="#illustration-cagan-s-model" id="id11">Illustration: Cagan’s Model</a></p></li>
+<li><p><a class="reference internal" href="#some-python-code" id="id12">Some Python code</a></p></li>
+<li><p><a class="reference internal" href="#alternative-code" id="id13">Alternative code</a></p></li>
+<li><p><a class="reference internal" href="#another-perspective" id="id14">Another perspective</a></p></li>
+<li><p><a class="reference internal" href="#log-money-supply-feeds-back-on-log-price-level" id="id15">Log money supply feeds back on log price level</a></p></li>
+<li><p><a class="reference internal" href="#big-p-little-p-interpretation" id="id16">Big <span class="math notranslate nohighlight">\(P\)</span>, little <span class="math notranslate nohighlight">\(p\)</span> interpretation</a></p></li>
+<li><p><a class="reference internal" href="#fun-with-sympy-code" id="id17">Fun with SymPy code</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>In addition to what’s in Anaconda, this lecture deploys the following libraries:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>conda install -y quantecon
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting package metadata (current_repodata.json): - 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
+Solving environment: | 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># All requested packages already installed.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">init_printing</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">48.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This lecture studies stability in the context of an elementary rational expectations model.</p>
+<p>We study a rational expectations version of Philip Cagan’s model <a class="bibtex reference internal" href="zreferences.html#cagan" id="id1">[Cag56]</a> linking
+the price level to the money supply.</p>
+<p>Cagan did not use a rational expectations version of his model, but Sargent <a class="bibtex reference internal" href="zreferences.html#sargent77hyper" id="id2">[Sar77]</a> did.</p>
+<p>We study a rational expectations version of this model because it is intrinsically interesting and  because it
+has a mathematical structure that
+appears in virtually all  linear rational expectations model, namely, that a key  endogenous variable equals
+a mathematical expectation of a geometric sum of future values of another variable.</p>
+<p>The model determines  the price level or rate of inflation as a function of  the money supply or the rate of change in the money supply.</p>
+<p>In this lecture, we’ll encounter:</p>
+<ul class="simple">
+<li><p>a convenient formula for the expectation of geometric sum of future values of a variable</p></li>
+<li><p>a way of solving an expectational difference equation by mapping it into a vector first-order difference equation and appropriately manipulating an eigen decomposition of the transition matrix in order to impose stability</p></li>
+<li><p>a way to use a Big <span class="math notranslate nohighlight">\(K\)</span>, little <span class="math notranslate nohighlight">\(k\)</span> argument to allow apparent feedback from endogenous to exogenous variables within a rational expectations equilibrium</p></li>
+<li><p>a use of eigenvector decompositions of matrices that allowed Blanchard and Khan (1981) <a class="bibtex reference internal" href="zreferences.html#blanchard-khan" id="id3">[BK80]</a> and Whiteman (1983) <a class="bibtex reference internal" href="zreferences.html#whiteman" id="id4">[Whi83]</a> to solve a class of linear rational expectations models</p></li>
+<li><p>how to use <strong>SymPy</strong> to get analytical formulas for some key objects comprising a rational expectations equilibrium</p></li>
+</ul>
+<p>We formulate a version of  Cagan’s model under  rational expectations
+as an <strong>expectational difference equation</strong> whose solution is a rational expectations equilibrium.</p>
+<p>We’ll start this lecture with a quick review of deterministic (i.e., non-random)
+first-order and second-order linear difference equations.</p>
+</div>
+<div class="section" id="linear-difference-equations">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">48.2. </span>Linear difference equations</a><a class="headerlink" href="#linear-difference-equations" title="Permalink to this headline">¶</a></h2>
+<p>We’ll use the <em>backward shift</em> or <em>lag</em> operator <span class="math notranslate nohighlight">\(L\)</span>.</p>
+<p>The lag operator <span class="math notranslate nohighlight">\(L\)</span>  maps a sequence <span class="math notranslate nohighlight">\(\{x_t\}_{t=0}^\infty\)</span> into the sequence <span class="math notranslate nohighlight">\(\{x_{t-1}\}_{t=0}^\infty\)</span></p>
+<p>We’ll deploy  <span class="math notranslate nohighlight">\(L\)</span>  by using the equality
+<span class="math notranslate nohighlight">\(L x_t \equiv x_{t-1}\)</span> in algebraic expressions.</p>
+<p>Further,  the inverse <span class="math notranslate nohighlight">\(L^{-1}\)</span> of the lag operator is  the <em>forward shift</em>
+operator.</p>
+<p>We’ll often use the equality  <span class="math notranslate nohighlight">\(L^{-1} x_t \equiv x_{t+1}\)</span> below.</p>
+<p>The algebra of lag and forward shift operators can simplify representing and solving linear difference equations.</p>
+<div class="section" id="first-order">
+<h3><span class="section-number">48.2.1. </span>First order<a class="headerlink" href="#first-order" title="Permalink to this headline">¶</a></h3>
+<p>We want to solve a linear first-order scalar difference equation.</p>
+<p>Let <span class="math notranslate nohighlight">\(|\lambda | &lt; 1\)</span> and let
+<span class="math notranslate nohighlight">\(\{u_t\}_{t=-\infty}^\infty\)</span> be a bounded sequence of scalar real
+numbers.</p>
+<p>Let <span class="math notranslate nohighlight">\(L\)</span> be the lag operator defined by
+<span class="math notranslate nohighlight">\(L x_t \equiv x_{t-1}\)</span> and let <span class="math notranslate nohighlight">\(L^{-1}\)</span> be the forward shift
+operator defined by <span class="math notranslate nohighlight">\(L^{-1} x_t \equiv x_{t+1}\)</span>.</p>
+<p>Then</p>
+<div class="math notranslate nohighlight" id="equation-equn-1">
+<span class="eqno">(48.1)<a class="headerlink" href="#equation-equn-1" title="Permalink to this equation">¶</a></span>\[(1 - \lambda L) y_t = u_t, \forall t\]</div>
+<p>has solutions</p>
+<div class="math notranslate nohighlight" id="equation-equn-2">
+<span class="eqno">(48.2)<a class="headerlink" href="#equation-equn-2" title="Permalink to this equation">¶</a></span>\[y_t = (1 -\lambda L)^{-1} u_t +k \lambda^t\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[
+y_t =  \sum_{j=0}^\infty \lambda^j u_{t-j} +k \lambda^t
+\]</div>
+<p>for any real number <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>You can verify this fact by applying <span class="math notranslate nohighlight">\((1-\lambda L)\)</span> to both sides
+of equation <a class="reference internal" href="#equation-equn-2">(48.2)</a> and noting that <span class="math notranslate nohighlight">\((1 - \lambda L) \lambda^t =0\)</span>.</p>
+<p>To pin down <span class="math notranslate nohighlight">\(k\)</span> we need one condition imposed from outside (e.g.,
+an initial or terminal condition) on the path of <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>Now let <span class="math notranslate nohighlight">\(| \lambda | &gt; 1\)</span>.</p>
+<p>Rewrite equation <a class="reference internal" href="#equation-equn-1">(48.1)</a> as</p>
+<div class="math notranslate nohighlight" id="equation-equn-3">
+<span class="eqno">(48.3)<a class="headerlink" href="#equation-equn-3" title="Permalink to this equation">¶</a></span>\[y_{t-1} = \lambda^{-1} y_t - \lambda^{-1} u_t , \forall t\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight" id="equation-equn-4">
+<span class="eqno">(48.4)<a class="headerlink" href="#equation-equn-4" title="Permalink to this equation">¶</a></span>\[(1 - \lambda^{-1} L^{-1}) y_t = - \lambda^{-1} u_{t+1}.\]</div>
+<p>A solution is</p>
+<div class="math notranslate nohighlight" id="equation-equn-5">
+<span class="eqno">(48.5)<a class="headerlink" href="#equation-equn-5" title="Permalink to this equation">¶</a></span>\[y_t = - \lambda^{-1}\left({ 1 \over  1 - \lambda^{-1} L^{-1}} \right)
+         u_{t+1} + k \lambda^t\]</div>
+<p>for any <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>To verify that this is a solution, check the consequences of operating
+on both sides of equation <a class="reference internal" href="#equation-equn-5">(48.5)</a> by <span class="math notranslate nohighlight">\((1 -\lambda L)\)</span> and compare to
+equation <a class="reference internal" href="#equation-equn-1">(48.1)</a>.</p>
+<p>For any bounded <span class="math notranslate nohighlight">\(\{u_t\}\)</span> sequence, solution <a class="reference internal" href="#equation-equn-2">(48.2)</a> exists for <span class="math notranslate nohighlight">\(|\lambda | &lt; 1\)</span> because
+the <strong>distributed lag</strong> in <span class="math notranslate nohighlight">\(u\)</span> converges.</p>
+<p>Solution <a class="reference internal" href="#equation-equn-5">(48.5)</a> exists when <span class="math notranslate nohighlight">\(|\lambda| &gt; 1\)</span> because the <strong>distributed
+lead</strong> in <span class="math notranslate nohighlight">\(u\)</span> converges.</p>
+<p>When <span class="math notranslate nohighlight">\(|\lambda | &gt; 1\)</span>, the distributed lag in <span class="math notranslate nohighlight">\(u\)</span> in <a class="reference internal" href="#equation-equn-2">(48.2)</a> may
+diverge, in which case a solution of this form does not exist.</p>
+<p>The distributed lead in <span class="math notranslate nohighlight">\(u\)</span> in <a class="reference internal" href="#equation-equn-5">(48.5)</a> need not
+converge when <span class="math notranslate nohighlight">\(|\lambda| &lt; 1\)</span>.</p>
+</div>
+<div class="section" id="second-order">
+<h3><span class="section-number">48.2.2. </span>Second order<a class="headerlink" href="#second-order" title="Permalink to this headline">¶</a></h3>
+<p>Now consider the second order difference equation</p>
+<div class="math notranslate nohighlight" id="equation-equn-6">
+<span class="eqno">(48.6)<a class="headerlink" href="#equation-equn-6" title="Permalink to this equation">¶</a></span>\[(1-\lambda_1 L) (1 - \lambda_2 L) y_{t+1} = u_t\]</div>
+<p>where <span class="math notranslate nohighlight">\(\{u_t\}\)</span> is a bounded sequence, <span class="math notranslate nohighlight">\(y_0\)</span> is an initial
+condition, <span class="math notranslate nohighlight">\(| \lambda_1 | &lt; 1\)</span> and <span class="math notranslate nohighlight">\(| \lambda_2| &gt;1\)</span>.</p>
+<p>We seek a bounded sequence <span class="math notranslate nohighlight">\(\{y_t\}_{t=0}^\infty\)</span> that satisfies
+<a class="reference internal" href="#equation-equn-6">(48.6)</a>. Using insights from our analysis of the first-order equation,
+operate on both sides of <a class="reference internal" href="#equation-equn-6">(48.6)</a> by the forward inverse of
+<span class="math notranslate nohighlight">\((1-\lambda_2 L)\)</span> to rewrite equation <a class="reference internal" href="#equation-equn-6">(48.6)</a> as</p>
+<div class="math notranslate nohighlight">
+\[
+(1-\lambda_1 L) y_{t+1} = -{\frac{\lambda_2^{-1}}{1 - \lambda_2^{-1}L^{-1}}} u_{t+1}
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight" id="equation-equn-7">
+<span class="eqno">(48.7)<a class="headerlink" href="#equation-equn-7" title="Permalink to this equation">¶</a></span>\[y_{t+1} = \lambda_1 y_t - \lambda_2^{-1} \sum_{j=0}^\infty \lambda_2^{-j} u_{t+j+1} .\]</div>
+<p>Thus, we obtained equation <a class="reference internal" href="#equation-equn-7">(48.7)</a> by
+solving a stable root (in this case <span class="math notranslate nohighlight">\(\lambda_1\)</span>) <strong>backward</strong>, and an
+unstable root (in this case <span class="math notranslate nohighlight">\(\lambda_2\)</span>) <strong>forward</strong>.</p>
+<p>Equation <a class="reference internal" href="#equation-equn-7">(48.7)</a> has a form that we shall encounter often.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\lambda_1 y_t\)</span> is called the <strong>feedback part</strong></p></li>
+<li><p><span class="math notranslate nohighlight">\(-{\frac{\lambda_2^{-1}}{1 - \lambda_2^{-1}L^{-1}}} u_{t+1}\)</span> is called the <strong>feedforward part</strong></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="illustration-cagan-s-model">
+<h2><a class="toc-backref" href="#id11"><span class="section-number">48.3. </span>Illustration: Cagan’s Model</a><a class="headerlink" href="#illustration-cagan-s-model" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s use linear difference equations to represent and solve Sargent’s  <a class="bibtex reference internal" href="zreferences.html#sargent77hyper" id="id5">[Sar77]</a> rational expectations version of
+Cagan’s model <a class="bibtex reference internal" href="zreferences.html#cagan" id="id6">[Cag56]</a> that connects the price level to the public’s anticipations of future money supplies.</p>
+<p>Cagan did not use a rational expectations version of his model, but Sargent <a class="bibtex reference internal" href="zreferences.html#sargent77hyper" id="id7">[Sar77]</a></p>
+<p>Let</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(m_t^d\)</span> be the log of the demand for money</p></li>
+<li><p><span class="math notranslate nohighlight">\(m_t\)</span> be the log of the supply of money</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_t\)</span> be the log of the price level</p></li>
+</ul>
+<p>It follows that <span class="math notranslate nohighlight">\(p_{t+1} - p_t\)</span> is the rate of inflation.</p>
+<p>The logarithm of the demand for real money balances <span class="math notranslate nohighlight">\(m_t^d - p_t\)</span>
+is an inverse function of the expected rate of inflation
+<span class="math notranslate nohighlight">\(p_{t+1} - p_t\)</span> for <span class="math notranslate nohighlight">\(t \geq 0\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+m_t^d - p_t = - \beta (p_{t+1} - p_t ), \quad \beta &gt;0
+\]</div>
+<p>Equate the demand for log money <span class="math notranslate nohighlight">\(m_t^d\)</span> to the supply of log money
+<span class="math notranslate nohighlight">\(m_t\)</span> in the above equation and rearrange to deduce that the
+logarithm of the price level <span class="math notranslate nohighlight">\(p_t\)</span> is related to the logarithm of
+the money supply <span class="math notranslate nohighlight">\(m_t\)</span> by</p>
+<div class="math notranslate nohighlight" id="equation-equation-1">
+<span class="eqno">(48.8)<a class="headerlink" href="#equation-equation-1" title="Permalink to this equation">¶</a></span>\[p_t = (1 -\lambda) m_t + \lambda p_{t+1}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda \equiv \frac{\beta}{1+\beta} \in (0,1)\)</span>.</p>
+<p>(We note that the characteristic polynomial if <span class="math notranslate nohighlight">\(1 - \lambda^{-1} z^{-1} = 0\)</span> so that the zero of the
+characteristic polynomial in this case is <span class="math notranslate nohighlight">\(\lambda \in (0,1)\)</span> which here is <strong>inside</strong> the unit circle.)</p>
+<p>Solving the first order difference equation <a class="reference internal" href="#equation-equation-1">(48.8)</a> forward gives</p>
+<div class="math notranslate nohighlight" id="equation-equation-2">
+<span class="eqno">(48.9)<a class="headerlink" href="#equation-equation-2" title="Permalink to this equation">¶</a></span>\[p_t = (1 - \lambda) \sum_{j=0}^\infty \lambda^j m_{t+j},\]</div>
+<p>which is the unique <strong>stable</strong> solution of difference equation <a class="reference internal" href="#equation-equation-1">(48.8)</a> among
+a class of more general solutions</p>
+<div class="math notranslate nohighlight" id="equation-equation-1a">
+<span class="eqno">(48.10)<a class="headerlink" href="#equation-equation-1a" title="Permalink to this equation">¶</a></span>\[p_t = (1 - \lambda) \sum_{j=0}^\infty \lambda^j m_{t+j} + c \lambda^{-t}\]</div>
+<p>that is indexed by the real number <span class="math notranslate nohighlight">\(c \in {\bf R}\)</span>.</p>
+<p>Because we want to focus on stable solutions, we set <span class="math notranslate nohighlight">\(c=0\)</span>.</p>
+<p>Equation <a class="reference internal" href="#equation-equation-1a">(48.10)</a> attributes  <strong>perfect foresight</strong> about the money supply sequence to the holders of real balances.</p>
+<p>We begin by assuming that the log of the money supply is <strong>exogenous</strong>
+in the sense that it is an autonomous process that does not feed back on
+the log of the price level.</p>
+<p>In particular, we assume that the log of the money supply is described
+by the linear state space system</p>
+<div class="math notranslate nohighlight" id="equation-equation-3">
+<span class="eqno">(48.11)<a class="headerlink" href="#equation-equation-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+  m_t &amp;  = G x_t \\ x_{t+1} &amp; = A x_t
+ \end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_t\)</span> is an <span class="math notranslate nohighlight">\(n \times 1\)</span> vector that does not include
+<span class="math notranslate nohighlight">\(p_t\)</span> or lags of <span class="math notranslate nohighlight">\(p_t\)</span>, <span class="math notranslate nohighlight">\(A\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span>
+matrix with eigenvalues that are less than <span class="math notranslate nohighlight">\(\lambda^{-1}\)</span> in
+absolute values, and <span class="math notranslate nohighlight">\(G\)</span> is a <span class="math notranslate nohighlight">\(1 \times n\)</span> selector matrix.</p>
+<p>Variables appearing in the vector <span class="math notranslate nohighlight">\(x_t\)</span> contain information that
+might help predict future values of the money supply.</p>
+<p>We’ll start with an example in which <span class="math notranslate nohighlight">\(x_t\)</span> includes only <span class="math notranslate nohighlight">\(m_t\)</span>,
+possibly lagged values of <span class="math notranslate nohighlight">\(m\)</span>, and a constant.</p>
+<p>An example of such an <span class="math notranslate nohighlight">\(\{m_t\}\)</span> process that fits info state space
+system <a class="reference internal" href="#equation-equation-3">(48.11)</a> is one that satisfies the second order linear difference
+equation</p>
+<div class="math notranslate nohighlight">
+\[
+m_{t+1} = \alpha + \rho_1 m_t + \rho_2 m_{t-1}
+\]</div>
+<p>where the zeros of the characteristic polynomial
+<span class="math notranslate nohighlight">\((1 - \rho_1 z - \rho_2 z^2)\)</span> are strictly greater than <span class="math notranslate nohighlight">\(1\)</span>
+in modulus.</p>
+<p>(Please see  <a class="reference internal" href="samuelson.html"><span class="doc">this</span></a> QuantEcon lecture for more about characteristic polynomials and their role in solving linear difference equations.)</p>
+<p>We seek a stable or non-explosive solution of the difference equation <a class="reference internal" href="#equation-equation-1">(48.8)</a> that
+obeys the system comprised of <a class="reference internal" href="#equation-equation-1">(48.8)</a>-<a class="reference internal" href="#equation-equation-3">(48.11)</a>.</p>
+<p>By stable or non-explosive, we mean that neither <span class="math notranslate nohighlight">\(m_t\)</span> nor <span class="math notranslate nohighlight">\(p_t\)</span>
+diverges as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>.</p>
+<p>This requirees  that we  shut down the term <span class="math notranslate nohighlight">\(c \lambda^{-t}\)</span> in equation <a class="reference internal" href="#equation-equation-1a">(48.10)</a> above by setting <span class="math notranslate nohighlight">\(c=0\)</span></p>
+<p>The solution we are after is</p>
+<div class="math notranslate nohighlight" id="equation-equation-4">
+<span class="eqno">(48.12)<a class="headerlink" href="#equation-equation-4" title="Permalink to this equation">¶</a></span>\[p_t = F x_t\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight" id="equation-equation-5">
+<span class="eqno">(48.13)<a class="headerlink" href="#equation-equation-5" title="Permalink to this equation">¶</a></span>\[F = (1-\lambda) G (I - \lambda A)^{-1}\]</div>
+<p><strong>Note:</strong> As mentioned above, an <em>explosive solution</em> of difference
+equation <a class="reference internal" href="#equation-equation-1">(48.8)</a> can be constructed by adding to the right hand of <a class="reference internal" href="#equation-equation-4">(48.12)</a> a
+sequence <span class="math notranslate nohighlight">\(c \lambda^{-t}\)</span> where <span class="math notranslate nohighlight">\(c\)</span> is an arbitrary positive
+constant.</p>
+</div>
+<div class="section" id="some-python-code">
+<h2><a class="toc-backref" href="#id12"><span class="section-number">48.4. </span>Some Python code</a><a class="headerlink" href="#some-python-code" title="Permalink to this headline">¶</a></h2>
+<p>We’ll construct examples that illustrate <a class="reference internal" href="#equation-equation-3">(48.11)</a>.</p>
+<p>Our first example takes as the law of motion for the log money supply
+the second order difference equation</p>
+<div class="math notranslate nohighlight" id="equation-equation-6">
+<span class="eqno">(48.14)<a class="headerlink" href="#equation-equation-6" title="Permalink to this equation">¶</a></span>\[m_{t+1} = \alpha + \rho_1 m_t + \rho_2 m_{t-1}\]</div>
+<p>that is parameterized by <span class="math notranslate nohighlight">\(\rho_1, \rho_2, \alpha\)</span></p>
+<p>To capture this parameterization with system <a class="reference internal" href="#equation-equation-2">(48.9)</a> we set</p>
+<div class="math notranslate nohighlight">
+\[
+x_t = \begin{bmatrix} 1 \cr m_t \cr m_{t-1} \end{bmatrix} , \quad
+  A= \begin{bmatrix} 1 &amp; 0 &amp; 0 \cr
+                     \alpha &amp; \rho_1 &amp; \rho_2 \cr
+                      0 &amp; 1 &amp; 0 \end{bmatrix} , \quad
+  G = \begin{bmatrix} 0 &amp; 1 &amp; 0 \end{bmatrix}
+\]</div>
+<p>Here is Python code</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">λ</span> <span class="o">=</span> <span class="o">.</span><span class="mi">9</span>
+
+<span class="n">α</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">ρ1</span> <span class="o">=</span> <span class="o">.</span><span class="mi">9</span>
+<span class="n">ρ2</span> <span class="o">=</span> <span class="o">.</span><span class="mi">05</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+              <span class="p">[</span><span class="n">α</span><span class="p">,</span> <span class="n">ρ1</span><span class="p">,</span> <span class="n">ρ2</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">]])</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The matrix <span class="math notranslate nohighlight">\(A\)</span> has one eigenvalue equal to unity.</p>
+<p>It is associated with the <span class="math notranslate nohighlight">\(A_{11}\)</span> component that captures a
+constant component of the state <span class="math notranslate nohighlight">\(x_t\)</span>.</p>
+<p>We can verify that the two eigenvalues of <span class="math notranslate nohighlight">\(A\)</span> not associated with
+the constant in the state <span class="math notranslate nohighlight">\(x_t\)</span> are strictly less than unity in
+modulus.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eigvals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">eigvals</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-0.05249378  0.95249378  1.        ]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">eigvals</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s compute <span class="math notranslate nohighlight">\(F\)</span> in formulas <a class="reference internal" href="#equation-equation-4">(48.12)</a> and <a class="reference internal" href="#equation-equation-5">(48.13)</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute the solution, i.e. forumula (3)</span>
+<span class="n">F</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">λ</span><span class="p">)</span> <span class="o">*</span> <span class="n">G</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">λ</span> <span class="o">*</span> <span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;F= &quot;</span><span class="p">,</span><span class="n">F</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>F=  [[0.         0.66889632 0.03010033]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s simulate paths of <span class="math notranslate nohighlight">\(m_t\)</span> and <span class="math notranslate nohighlight">\(p_t\)</span> starting from an
+initial value <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set the initial state</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># length of simulation</span>
+
+<span class="n">m_seq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">p_seq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">m_seq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span> <span class="o">@</span> <span class="n">x0</span>
+<span class="n">p_seq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span> <span class="o">@</span> <span class="n">x0</span>
+
+<span class="c1"># simulate for T periods</span>
+<span class="n">x_old</span> <span class="o">=</span> <span class="n">x0</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">x_old</span>
+
+    <span class="n">m_seq</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span> <span class="o">@</span> <span class="n">x</span>
+    <span class="n">p_seq</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span> <span class="o">@</span> <span class="n">x</span>
+
+    <span class="n">x_old</span> <span class="o">=</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">m_seq</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$m_t$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">p_seq</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$p_t$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;λ=</span><span class="si">{</span><span class="n">λ</span><span class="si">}</span><span class="s1">, α=</span><span class="si">{</span><span class="n">α</span><span class="si">}</span><span class="s1">, $ρ_1$=</span><span class="si">{</span><span class="n">ρ1</span><span class="si">}</span><span class="s1">, $ρ_2$=</span><span class="si">{</span><span class="n">ρ2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/re_with_feedback_12_0.png" src="_images/re_with_feedback_12_0.png" />
+</div>
+</div>
+<p>In the above graph, why is the log of the price level always less than
+the log of the money supply?</p>
+<p>Because</p>
+<ul class="simple">
+<li><p>according to equation <a class="reference internal" href="#equation-equation-2">(48.9)</a>, <span class="math notranslate nohighlight">\(p_t\)</span> is a geometric weighted
+average of current and future values of <span class="math notranslate nohighlight">\(m_t\)</span>, and</p></li>
+<li><p>it happens that in this example future <span class="math notranslate nohighlight">\(m\)</span>’s are always less
+than the current <span class="math notranslate nohighlight">\(m\)</span></p></li>
+</ul>
+</div>
+<div class="section" id="alternative-code">
+<h2><a class="toc-backref" href="#id13"><span class="section-number">48.5. </span>Alternative code</a><a class="headerlink" href="#alternative-code" title="Permalink to this headline">¶</a></h2>
+<p>We could also have run the simulation using the quantecon
+<strong>LinearStateSpace</strong> code.</p>
+<p>The following code block performs the calculation with that code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct a LinearStateSpace instance</span>
+
+<span class="c1"># stack G and F</span>
+<span class="n">G_ext</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">G</span><span class="p">,</span> <span class="n">F</span><span class="p">])</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="n">ss</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">LinearStateSpace</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">G_ext</span><span class="p">,</span> <span class="n">mu_0</span><span class="o">=</span><span class="n">x0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># simulate using LinearStateSpace</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">ts_length</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
+
+<span class="c1"># plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$m_t$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$p_t$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;λ=</span><span class="si">{</span><span class="n">λ</span><span class="si">}</span><span class="s1">, α=</span><span class="si">{</span><span class="n">α</span><span class="si">}</span><span class="s1">, $ρ_1$=</span><span class="si">{</span><span class="n">ρ1</span><span class="si">}</span><span class="s1">, $ρ_2$=</span><span class="si">{</span><span class="n">ρ2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/re_with_feedback_15_0.png" src="_images/re_with_feedback_15_0.png" />
+</div>
+</div>
+<div class="section" id="special-case">
+<h3><span class="section-number">48.5.1. </span>Special case<a class="headerlink" href="#special-case" title="Permalink to this headline">¶</a></h3>
+<p>To simplify our presentation in ways that will let focus on an important
+idea, in the above second-order difference equation <a class="reference internal" href="#equation-equation-6">(48.14)</a> that governs
+<span class="math notranslate nohighlight">\(m_t\)</span>, we now set <span class="math notranslate nohighlight">\(\alpha =0\)</span>,
+<span class="math notranslate nohighlight">\(\rho_1 = \rho \in (-1,1)\)</span>, and <span class="math notranslate nohighlight">\(\rho_2 =0\)</span> so that the law
+of motion for <span class="math notranslate nohighlight">\(m_t\)</span> becomes</p>
+<div class="math notranslate nohighlight" id="equation-equation-7">
+<span class="eqno">(48.15)<a class="headerlink" href="#equation-equation-7" title="Permalink to this equation">¶</a></span>\[m_{t+1} =\rho m_t\]</div>
+<p>and the state <span class="math notranslate nohighlight">\(x_t\)</span> becomes</p>
+<div class="math notranslate nohighlight">
+\[
+x_t = m_t .
+\]</div>
+<p>Consequently,  we can set <span class="math notranslate nohighlight">\(G =1, A =\rho\)</span> making our formula <a class="reference internal" href="#equation-equation-5">(48.13)</a> for <span class="math notranslate nohighlight">\(F\)</span>
+become</p>
+<div class="math notranslate nohighlight">
+\[
+F = (1-\lambda) (1 -\lambda \rho)^{-1} .
+\]</div>
+<p>so that the log the log price level satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+p_t = F m_t .
+\]</div>
+<p>Please keep these formulas in mind as we investigate an alternative
+route to and interpretation of our formula for <span class="math notranslate nohighlight">\(F\)</span>.</p>
+</div>
+</div>
+<div class="section" id="another-perspective">
+<h2><a class="toc-backref" href="#id14"><span class="section-number">48.6. </span>Another perspective</a><a class="headerlink" href="#another-perspective" title="Permalink to this headline">¶</a></h2>
+<p>Above, we imposed stability or non-explosiveness on the solution of the key difference equation <a class="reference internal" href="#equation-equation-1">(48.8)</a>
+in Cagan’s model by solving the  unstable root of the characteristic polynomial forward.</p>
+<p>To shed light on the mechanics involved in imposing stability on a
+solution of a potentially unstable system of linear difference equations
+and to prepare the way for generalizations of our model in which the
+money supply is allowed to feed back on the price level itself, we stack
+equations <a class="reference internal" href="#equation-equation-1">(48.8)</a> and <a class="reference internal" href="#equation-equation-7">(48.15)</a> to form the system</p>
+<div class="math notranslate nohighlight" id="equation-equation-8">
+<span class="eqno">(48.16)<a class="headerlink" href="#equation-equation-8" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix} m_{t+1} \cr p_{t+1} \end{bmatrix} = \begin{bmatrix} \rho &amp; 0 \\ - (1-\lambda)/\lambda &amp; \lambda^{-1}  \end{bmatrix} \begin{bmatrix} m_t \\ p_t \end{bmatrix}\end{split}\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight" id="equation-equation-9">
+<span class="eqno">(48.17)<a class="headerlink" href="#equation-equation-9" title="Permalink to this equation">¶</a></span>\[y_{t+1} = H y_t, \quad t \geq 0\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight" id="equation-equation-10">
+<span class="eqno">(48.18)<a class="headerlink" href="#equation-equation-10" title="Permalink to this equation">¶</a></span>\[\begin{split}H = \begin{bmatrix} \rho &amp; 0 \\ - (1-\lambda)/\lambda &amp; \lambda^{-1}  \end{bmatrix} .\end{split}\]</div>
+<p>Transition matrix <span class="math notranslate nohighlight">\(H\)</span> has eigenvalues <span class="math notranslate nohighlight">\(\rho \in (0,1)\)</span> and
+<span class="math notranslate nohighlight">\(\lambda^{-1} &gt; 1\)</span>.</p>
+<p>Because an eigenvalue of <span class="math notranslate nohighlight">\(H\)</span> exceeds unity, if we iterate on
+equation <a class="reference internal" href="#equation-equation-9">(48.17)</a> starting from an arbitrary initial vector
+<span class="math notranslate nohighlight">\(y_0 = \begin{bmatrix} m_0 \\ p_0 \end{bmatrix}\)</span> with <span class="math notranslate nohighlight">\(m_0 &gt;0, p_0 &gt;0\)</span>, we discover that
+in general absolute values of both components of <span class="math notranslate nohighlight">\(y_t\)</span> diverge
+toward <span class="math notranslate nohighlight">\(+\infty\)</span> as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>.</p>
+<p>To substantiate this claim, we can use the eigenector matrix
+decomposition of <span class="math notranslate nohighlight">\(H\)</span> that is available to us because the
+eigenvalues of <span class="math notranslate nohighlight">\(H\)</span> are distinct</p>
+<div class="math notranslate nohighlight">
+\[
+H = Q \Lambda Q^{-1} .
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\Lambda\)</span> is a diagonal matrix of eigenvalues of <span class="math notranslate nohighlight">\(H\)</span>
+and <span class="math notranslate nohighlight">\(Q\)</span> is a matrix whose columns are eigenvectors associated with the
+corresponding eigenvalues.</p>
+<p>Note that</p>
+<div class="math notranslate nohighlight">
+\[
+H^t = Q \Lambda^t Q^{-1}
+\]</div>
+<p>so that</p>
+<div class="math notranslate nohighlight">
+\[
+y_t = Q \Lambda^t Q^{-1} y_0
+\]</div>
+<p>For almost all initial vectors <span class="math notranslate nohighlight">\(y_0\)</span>, the presence of the
+eigenvalue <span class="math notranslate nohighlight">\(\lambda^{-1} &gt; 1\)</span> causes both components of
+<span class="math notranslate nohighlight">\(y_t\)</span> to diverge in absolute value to <span class="math notranslate nohighlight">\(+\infty\)</span>.</p>
+<p>To explore this outcome in more detail, we can use the following
+transformation</p>
+<div class="math notranslate nohighlight">
+\[
+y^*_t = Q^{-1} y_t
+\]</div>
+<p>that allows us to represent the dynamics in a way that isolates the
+source of the propensity of paths to diverge:</p>
+<div class="math notranslate nohighlight">
+\[
+y^*_{t+1} = \Lambda^t y^*_t
+\]</div>
+<p>Staring at this equation indicates that unless</p>
+<div class="math notranslate nohighlight" id="equation-equation-11">
+<span class="eqno">(48.19)<a class="headerlink" href="#equation-equation-11" title="Permalink to this equation">¶</a></span>\[y^*_0 = \begin{bmatrix} y^*_{1,0} \cr 0 \end{bmatrix}\]</div>
+<p>the path of <span class="math notranslate nohighlight">\(y^*_t\)</span> and therefore the paths of both components of
+<span class="math notranslate nohighlight">\(y_t = Q y^*_t\)</span> will diverge in absolute value as
+<span class="math notranslate nohighlight">\(t \rightarrow +\infty\)</span>. (We say that the paths <em>explode</em>)</p>
+<p>Equation <a class="reference internal" href="#equation-equation-11">(48.19)</a> also leads us to conclude that there is a unique setting
+for the initial vector <span class="math notranslate nohighlight">\(y_0\)</span> for which both components of
+<span class="math notranslate nohighlight">\(y_t\)</span> do not diverge.</p>
+<p>The required setting of <span class="math notranslate nohighlight">\(y_0\)</span> must evidently have the property
+that</p>
+<div class="math notranslate nohighlight">
+\[
+Q y_0 =  y^*_0 = \begin{bmatrix} y^*_{1,0} \cr 0 \end{bmatrix} .
+\]</div>
+<p>But note that since
+<span class="math notranslate nohighlight">\(y_0 = \begin{bmatrix} m_0 \cr p_0 \end{bmatrix}\)</span> and <span class="math notranslate nohighlight">\(m_0\)</span>
+is given to us an an initial condition,  <span class="math notranslate nohighlight">\(p_0\)</span> has to do all the adjusting to satisfy this equation.</p>
+<p>Sometimes this situation is described by saying that while <span class="math notranslate nohighlight">\(m_0\)</span>
+is truly a <strong>state</strong> variable, <span class="math notranslate nohighlight">\(p_0\)</span> is a <strong>jump</strong> variable that
+must adjust at <span class="math notranslate nohighlight">\(t=0\)</span> in order to satisfy the equation.</p>
+<p>Thus, in a nutshell the unique value of the vector <span class="math notranslate nohighlight">\(y_0\)</span> for which
+the paths of <span class="math notranslate nohighlight">\(y_t\)</span> do not diverge must have second component
+<span class="math notranslate nohighlight">\(p_0\)</span> that verifies equality <a class="reference internal" href="#equation-equation-11">(48.19)</a> by setting the second component
+of <span class="math notranslate nohighlight">\(y^*_0\)</span> equal to zero.</p>
+<p>The component <span class="math notranslate nohighlight">\(p_0\)</span> of the initial vector
+<span class="math notranslate nohighlight">\(y_0 = \begin{bmatrix} m_0 \cr p_0 \end{bmatrix}\)</span> must evidently
+satisfy</p>
+<div class="math notranslate nohighlight">
+\[
+Q^{\{2\}} y_0 =0
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(Q^{\{2\}}\)</span> denotes the second row of <span class="math notranslate nohighlight">\(Q^{-1}\)</span>, a
+restriction that is equivalent to</p>
+<div class="math notranslate nohighlight" id="equation-equation-12">
+<span class="eqno">(48.20)<a class="headerlink" href="#equation-equation-12" title="Permalink to this equation">¶</a></span>\[Q^{21} m_0 + Q^{22} p_0 = 0\]</div>
+<p>where <span class="math notranslate nohighlight">\(Q^{ij}\)</span> denotes the <span class="math notranslate nohighlight">\((i,j)\)</span> component of
+<span class="math notranslate nohighlight">\(Q^{-1}\)</span>.</p>
+<p>Solving this equation for <span class="math notranslate nohighlight">\(p_0\)</span>, we find</p>
+<div class="math notranslate nohighlight" id="equation-equation-13">
+<span class="eqno">(48.21)<a class="headerlink" href="#equation-equation-13" title="Permalink to this equation">¶</a></span>\[p_0 = - (Q^{22})^{-1} Q^{21} m_0.\]</div>
+<p>This is the unique <strong>stabilizing value</strong> of <span class="math notranslate nohighlight">\(p_0\)</span> expressed as a function of
+<span class="math notranslate nohighlight">\(m_0\)</span>.</p>
+<div class="section" id="refining-the-formula">
+<h3><span class="section-number">48.6.1. </span>Refining the formula<a class="headerlink" href="#refining-the-formula" title="Permalink to this headline">¶</a></h3>
+<p>We can get an even more convenient formula for <span class="math notranslate nohighlight">\(p_0\)</span> that is cast
+in terms of components of <span class="math notranslate nohighlight">\(Q\)</span> instead of components of
+<span class="math notranslate nohighlight">\(Q^{-1}\)</span>.</p>
+<p>To get this formula, first note that because <span class="math notranslate nohighlight">\((Q^{21}\ Q^{22})\)</span> is
+the second row of the inverse of <span class="math notranslate nohighlight">\(Q\)</span> and because
+<span class="math notranslate nohighlight">\(Q^{-1} Q = I\)</span>, it follows that</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{bmatrix} Q^{21} &amp; Q^{22} \end{bmatrix}  \begin{bmatrix} Q_{11}\cr Q_{21} \end{bmatrix} = 0
+\]</div>
+<p>which implies that</p>
+<div class="math notranslate nohighlight">
+\[
+Q^{21} Q_{11} + Q^{22} Q_{21} = 0.
+\]</div>
+<p>Therefore,</p>
+<div class="math notranslate nohighlight">
+\[
+-(Q^{22})^{-1} Q^{21} = Q_{21} Q^{-1}_{11}.
+\]</div>
+<p>So we can write</p>
+<div class="math notranslate nohighlight" id="equation-equation-14">
+<span class="eqno">(48.22)<a class="headerlink" href="#equation-equation-14" title="Permalink to this equation">¶</a></span>\[p_0 = Q_{21} Q_{11}^{-1} m_0 .\]</div>
+<p>It can be verified that this formula replicates itself over time in the sense  that</p>
+<div class="math notranslate nohighlight" id="equation-equation-15">
+<span class="eqno">(48.23)<a class="headerlink" href="#equation-equation-15" title="Permalink to this equation">¶</a></span>\[p_t = Q_{21} Q^{-1}_{11} m_t.\]</div>
+<p>To implement formula <a class="reference internal" href="#equation-equation-15">(48.23)</a>, we want to compute <span class="math notranslate nohighlight">\(Q_1\)</span> the
+eigenvector of <span class="math notranslate nohighlight">\(Q\)</span> associated with the stable eigenvalue
+<span class="math notranslate nohighlight">\(\rho\)</span> of <span class="math notranslate nohighlight">\(Q\)</span>.</p>
+<p>By hand it can be verified that the eigenvector associated with the
+stable eigenvalue <span class="math notranslate nohighlight">\(\rho\)</span> is proportional to</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q_1  = \begin{bmatrix} 1-\lambda  \rho \\ 1 - \lambda   \end{bmatrix}.
+\end{split}\]</div>
+<p>Notice that if we set <span class="math notranslate nohighlight">\(A=\rho\)</span> and <span class="math notranslate nohighlight">\(G=1\)</span> in our earlier
+formula for <span class="math notranslate nohighlight">\(p_t\)</span> we get</p>
+<div class="math notranslate nohighlight">
+\[
+p_t = G (I - \lambda A)^{-1} m_t =  (1-\lambda) (1 - \lambda \rho)^{-1} m_t ,
+\]</div>
+<p>a formula that is equivalent with</p>
+<div class="math notranslate nohighlight">
+\[
+p_t = Q_{21} Q_{11}^{-1}  m_t ,
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Q_1 = \begin{bmatrix} Q_{11} \\ Q_{21}  \end{bmatrix}.
+\end{split}\]</div>
+</div>
+<div class="section" id="some-remarks-about-feedback">
+<h3><span class="section-number">48.6.2. </span>Some remarks about feedback<a class="headerlink" href="#some-remarks-about-feedback" title="Permalink to this headline">¶</a></h3>
+<p>We have expressed <a class="reference internal" href="#equation-equation-8">(48.16)</a> in what superficially appears to be a form in
+which <span class="math notranslate nohighlight">\(y_{t+1}\)</span> feeds back on <span class="math notranslate nohighlight">\(y_t\)</span>, even though what we
+actually want to represent is that the component <span class="math notranslate nohighlight">\(p_t\)</span> feeds
+<strong>forward</strong> on <span class="math notranslate nohighlight">\(p_{t+1}\)</span>, and through it, on future
+<span class="math notranslate nohighlight">\(m_{t+j}\)</span>, <span class="math notranslate nohighlight">\(j = 0, 1, 2, \ldots\)</span>.</p>
+<p>A tell-tale sign that we should look beyond its superficial “feedback”
+form is that <span class="math notranslate nohighlight">\(\lambda^{-1} &gt; 1\)</span> so that the matrix <span class="math notranslate nohighlight">\(H\)</span> in
+<a class="reference internal" href="#equation-equation-8">(48.16)</a> is <strong>unstable</strong></p>
+<ul class="simple">
+<li><p>it has one eigenvalue <span class="math notranslate nohighlight">\(\rho\)</span> that is less than one in modulus
+that does not imperil stability, but <span class="math notranslate nohighlight">\(\ldots\)</span></p></li>
+<li><p>it has a second eigenvalue <span class="math notranslate nohighlight">\(\lambda^{-1}\)</span> that exceeds one in
+modulus and that makes <span class="math notranslate nohighlight">\(H\)</span> an unstable matrix</p></li>
+</ul>
+<p>We’ll keep these observations in mind as we turn now to a case in which
+the log money supply actually does feed back on the log of the price
+level.</p>
+</div>
+</div>
+<div class="section" id="log-money-supply-feeds-back-on-log-price-level">
+<h2><a class="toc-backref" href="#id15"><span class="section-number">48.7. </span>Log money supply feeds back on log price level</a><a class="headerlink" href="#log-money-supply-feeds-back-on-log-price-level" title="Permalink to this headline">¶</a></h2>
+<p>An arrangement of eigenvalues that split around unity, with one being
+below unity and another being greater than unity, sometimes prevails when there is  <em>feedback</em> from the log price level to the log
+money supply.</p>
+<p>Let the feedback rule be</p>
+<div class="math notranslate nohighlight" id="equation-equation-16">
+<span class="eqno">(48.24)<a class="headerlink" href="#equation-equation-16" title="Permalink to this equation">¶</a></span>\[m_{t+1} =  \rho m_t + \delta p_t\]</div>
+<p>where <span class="math notranslate nohighlight">\(\rho \in (0,1)\)</span>  and where we shall now allow
+<span class="math notranslate nohighlight">\(\delta \neq 0\)</span>.</p>
+<p><strong>Warning:</strong>  If things are to fit together as we
+wish to deliver a stable system for some initial value <span class="math notranslate nohighlight">\(p_0\)</span> that we want to determine uniquely, <span class="math notranslate nohighlight">\(\delta\)</span> cannot be too large.</p>
+<p>The forward-looking equation <a class="reference internal" href="#equation-equation-1">(48.8)</a> continues to describe equality between
+the demand and supply of money.</p>
+<p>We assume that equations <a class="reference internal" href="#equation-equation-1">(48.8)</a> and <a class="reference internal" href="#equation-equation-16">(48.24)</a> govern
+<span class="math notranslate nohighlight">\(y_t \equiv \begin{bmatrix} m_t \cr p_t \end{bmatrix}\)</span> for
+<span class="math notranslate nohighlight">\(t \geq 0\)</span>.</p>
+<p>The transition matrix <span class="math notranslate nohighlight">\(H\)</span> in the law of motion</p>
+<div class="math notranslate nohighlight">
+\[
+y_{t+1} = H y_t
+\]</div>
+<p>now becomes</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+H = \begin{bmatrix} \rho &amp; \delta \\ - (1-\lambda)/\lambda &amp; \lambda^{-1}  \end{bmatrix} .
+\end{split}\]</div>
+<p>We take <span class="math notranslate nohighlight">\(m_0\)</span> as a given intial condition and as before seek an
+initial value <span class="math notranslate nohighlight">\(p_0\)</span> that stabilizes the system in the sense that
+<span class="math notranslate nohighlight">\(y_t\)</span> converges as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>.</p>
+<p>Our approach is identical with the one  followed above and is based on an
+eigenvalue decomposition in which, cross our fingers, one eigenvalue
+exceeds unity and the other is less than unity in absolute value.</p>
+<p>When <span class="math notranslate nohighlight">\(\delta \neq 0\)</span> as we now assume, the eigenvalues of
+<span class="math notranslate nohighlight">\(H\)</span> will no longer be <span class="math notranslate nohighlight">\(\rho \in (0,1)\)</span> and
+<span class="math notranslate nohighlight">\(\lambda^{-1} &gt; 1\)</span></p>
+<p>We’ll just calculate them and apply the same algorithm that we used
+above.</p>
+<p>That algorithm remains valid so long as the eigenvalues split around
+unity as before.</p>
+<p>Again we assume that <span class="math notranslate nohighlight">\(m_0\)</span> is  an initial condition, but that
+<span class="math notranslate nohighlight">\(p_0\)</span> is not given but to be solved for.</p>
+<p>Let’s write and execute some Python code that will let us explore how outcomes depend on
+<span class="math notranslate nohighlight">\(\delta\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">construct_H</span><span class="p">(</span><span class="n">ρ</span><span class="p">,</span> <span class="n">λ</span><span class="p">,</span> <span class="n">δ</span><span class="p">):</span>
+    <span class="s2">&quot;contruct matrix H given parameters.&quot;</span>
+
+    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">ρ</span><span class="p">,</span><span class="n">δ</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">λ</span><span class="p">)</span> <span class="o">/</span> <span class="n">λ</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">λ</span>
+
+    <span class="k">return</span> <span class="n">H</span>
+
+<span class="k">def</span> <span class="nf">H_eigvals</span><span class="p">(</span><span class="n">ρ</span><span class="o">=.</span><span class="mi">9</span><span class="p">,</span> <span class="n">λ</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="s2">&quot;compute the eigenvalues of matrix H given parameters.&quot;</span>
+
+    <span class="c1"># construct H matrix</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">construct_H</span><span class="p">(</span><span class="n">ρ</span><span class="p">,</span> <span class="n">λ</span><span class="p">,</span> <span class="n">δ</span><span class="p">)</span>
+
+    <span class="c1"># compute eigenvalues</span>
+    <span class="n">eigvals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">eigvals</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H_eigvals</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2. , 0.9])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that a negative δ will not imperil the stability of the matrix
+<span class="math notranslate nohighlight">\(H\)</span>, even if it has a big absolute value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># small negative δ</span>
+<span class="n">H_eigvals</span><span class="p">(</span><span class="n">δ</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.8562829, 2.0437171])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># large negative δ</span>
+<span class="n">H_eigvals</span><span class="p">(</span><span class="n">δ</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.10742784, 2.79257216])
+</pre></div>
+</div>
+</div>
+</div>
+<p>A sufficiently small positive δ also causes no problem.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sufficiently small positive δ</span>
+<span class="n">H_eigvals</span><span class="p">(</span><span class="n">δ</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.94750622, 1.95249378])
+</pre></div>
+</div>
+</div>
+</div>
+<p>But a large enough positive δ makes both eigenvalues of <span class="math notranslate nohighlight">\(H\)</span>
+strictly greater than unity in modulus.</p>
+<p>For example,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H_eigvals</span><span class="p">(</span><span class="n">δ</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1.12984379, 1.77015621])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We want to study systems in which one eigenvalue exceeds unity in
+modulus while the other is less than unity in modulus, so we avoid
+values of <span class="math notranslate nohighlight">\(\delta\)</span> that are too.</p>
+<p>That is, we want to avoid too much positive feedback from <span class="math notranslate nohighlight">\(p_t\)</span> to <span class="math notranslate nohighlight">\(m_{t+1}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">magic_p0</span><span class="p">(</span><span class="n">m0</span><span class="p">,</span> <span class="n">ρ</span><span class="o">=.</span><span class="mi">9</span><span class="p">,</span> <span class="n">λ</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Use the magic formula (8) to compute the level of p0</span>
+<span class="sd">    that makes the system stable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">H</span> <span class="o">=</span> <span class="n">construct_H</span><span class="p">(</span><span class="n">ρ</span><span class="p">,</span> <span class="n">λ</span><span class="p">,</span> <span class="n">δ</span><span class="p">)</span>
+    <span class="n">eigvals</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+
+    <span class="c1"># find the index of the smaller eigenvalue</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">eigvals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">eigvals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="c1"># verify that the eigenvalue is less than unity</span>
+    <span class="k">if</span> <span class="n">eigvals</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;both eigenvalues exceed unity in modulus&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">ind</span><span class="p">]</span> <span class="o">/</span> <span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ind</span><span class="p">]</span> <span class="o">*</span> <span class="n">m0</span>
+
+    <span class="k">return</span> <span class="n">p0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot how the solution <span class="math notranslate nohighlight">\(p_0\)</span> changes as <span class="math notranslate nohighlight">\(m_0\)</span>
+changes for different settings of <span class="math notranslate nohighlight">\(\delta\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">δ</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">m_range</span><span class="p">,</span> <span class="p">[</span><span class="n">magic_p0</span><span class="p">(</span><span class="n">m0</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="n">δ</span><span class="p">)</span> <span class="k">for</span> <span class="n">m0</span> <span class="ow">in</span> <span class="n">m_range</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;δ=</span><span class="si">{</span><span class="n">δ</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$m_0$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$p_0$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/re_with_feedback_29_0.png" src="_images/re_with_feedback_29_0.png" />
+</div>
+</div>
+<p>To look at things from a different angle, we can fix the initial value <span class="math notranslate nohighlight">\(m_0\)</span> and
+see how <span class="math notranslate nohighlight">\(p_0\)</span> changes as <span class="math notranslate nohighlight">\(\delta\)</span> changes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m0</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">δ_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">δ_range</span><span class="p">,</span> <span class="p">[</span><span class="n">magic_p0</span><span class="p">(</span><span class="n">m0</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="n">δ</span><span class="p">)</span> <span class="k">for</span> <span class="n">δ</span> <span class="ow">in</span> <span class="n">δ_range</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$\delta$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$p_0$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;$m_0$=</span><span class="si">{</span><span class="n">m0</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/re_with_feedback_31_0.png" src="_images/re_with_feedback_31_0.png" />
+</div>
+</div>
+<p>Notice that when <span class="math notranslate nohighlight">\(\delta\)</span> is large enough, both eigenvalues exceed
+unity in modulus, causing a stabilizing value of <span class="math notranslate nohighlight">\(p_0\)</span> not to
+exist.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">magic_p0</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>both eigenvalues exceed unity in modulus
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="big-p-little-p-interpretation">
+<h2><a class="toc-backref" href="#id16"><span class="section-number">48.8. </span>Big <span class="math notranslate nohighlight">\(P\)</span>, little <span class="math notranslate nohighlight">\(p\)</span> interpretation</a><a class="headerlink" href="#big-p-little-p-interpretation" title="Permalink to this headline">¶</a></h2>
+<p>It is helpful to view our solutions of difference equations having  feedback from the price level or inflation to money or the rate of money
+creation in terms of the Big <span class="math notranslate nohighlight">\(K\)</span>, little <span class="math notranslate nohighlight">\(k\)</span> idea discussed in <a class="reference internal" href="rational_expectations.html"><span class="doc">Rational Expectations Models</span></a>.</p>
+<p>This will help us sort out what is taken as given by the decision makers who use the
+difference equation <a class="reference internal" href="#equation-equation-2">(48.9)</a> to determine <span class="math notranslate nohighlight">\(p_t\)</span> as a function of their forecasts of future values of
+<span class="math notranslate nohighlight">\(m_t\)</span>.</p>
+<p>Let’s write the stabilizing solution that we have computed using the eigenvector decomposition of <span class="math notranslate nohighlight">\(H\)</span> as
+<span class="math notranslate nohighlight">\(P_t = F^* m_t\)</span>, where</p>
+<div class="math notranslate nohighlight">
+\[
+F^* = Q_{21} Q_{11}^{-1} .
+\]</div>
+<p>Then from <span class="math notranslate nohighlight">\(P_{t+1} = F^* m_{t+1}\)</span> and <span class="math notranslate nohighlight">\(m_{t+1} = \rho m_t + \delta P_t\)</span> we can deduce the recursion <span class="math notranslate nohighlight">\(P_{t+1} = F^* \rho m_t + F^* \delta P_t\)</span> and create the stacked system</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{bmatrix} m_{t+1} \cr P_{t+1} \end{bmatrix}  =    \begin{bmatrix} \rho &amp; \delta \cr
+                F^* \rho &amp; F^* \delta   \end{bmatrix} \begin{bmatrix} m_t \cr P_t \end{bmatrix}
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[
+x_{t+1} = A x_t
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(x_t = \begin{bmatrix} m_t \cr P_t \end{bmatrix}\)</span>.</p>
+<p>Apply formula <a class="reference internal" href="#equation-equation-5">(48.13)</a> for <span class="math notranslate nohighlight">\(F\)</span> to deduce that</p>
+<div class="math notranslate nohighlight">
+\[
+p_t = F \begin{bmatrix} m_t \cr P_t \end{bmatrix} = F \begin{bmatrix} m_t \cr F^* m_t \end{bmatrix}
+\]</div>
+<p>which implies that</p>
+<div class="math notranslate nohighlight">
+\[
+p_t = \begin{bmatrix} F_1 &amp; F_2 \end{bmatrix}    \begin{bmatrix} m_t \cr F^* m_t \end{bmatrix} = F_1 m_t + F_2 F^* m_t
+\]</div>
+<p>so that we can anticipate that</p>
+<div class="math notranslate nohighlight">
+\[
+F^* = F_1 + F_2 F^*
+\]</div>
+<p>We shall verify this equality in the next block of Python code that implements the following
+computations.</p>
+<ol class="simple">
+<li><p>For the system with <span class="math notranslate nohighlight">\(\delta\neq 0\)</span> so that there is feedback,
+we compute the stabilizing solution for <span class="math notranslate nohighlight">\(p_t\)</span> in the form
+<span class="math notranslate nohighlight">\(p_t = F^* m_t\)</span> where <span class="math notranslate nohighlight">\(F^* = Q_{21}Q_{11}^{-1}\)</span> as above.</p></li>
+<li><p>Recalling the system <a class="reference internal" href="#equation-equation-3">(48.11)</a>, <a class="reference internal" href="#equation-equation-4">(48.12)</a>, and <a class="reference internal" href="#equation-equation-5">(48.13)</a> above, we define
+<span class="math notranslate nohighlight">\(x_t = \begin{bmatrix} m_t \cr P_t \end{bmatrix}\)</span> and notice
+that it is Big <span class="math notranslate nohighlight">\(P_t\)</span> and not little <span class="math notranslate nohighlight">\(p_t\)</span> here. Then we form <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(G\)</span> as
+<span class="math notranslate nohighlight">\(A = \begin{bmatrix}\rho &amp; \delta \cr F^* \rho &amp; F^*\delta \end{bmatrix}\)</span>
+and <span class="math notranslate nohighlight">\(G = \begin{bmatrix} 1 &amp; 0 \end{bmatrix}\)</span> and we compute
+<span class="math notranslate nohighlight">\(\begin{bmatrix}  F_1 &amp;  F_2 \end{bmatrix} \equiv F\)</span>
+from equation <a class="reference internal" href="#equation-equation-5">(48.13)</a> above.</p></li>
+<li><p>We compute <span class="math notranslate nohighlight">\(F_1 +  F_2 F^*\)</span> and compare it
+with <span class="math notranslate nohighlight">\(F^*\)</span> and check for the anticipated  equality.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set parameters</span>
+<span class="n">ρ</span> <span class="o">=</span> <span class="o">.</span><span class="mi">9</span>
+<span class="n">λ</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
+<span class="n">δ</span> <span class="o">=</span> <span class="o">.</span><span class="mi">05</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solve for F_star</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">construct_H</span><span class="p">(</span><span class="n">ρ</span><span class="p">,</span> <span class="n">λ</span><span class="p">,</span> <span class="n">δ</span><span class="p">)</span>
+<span class="n">eigvals</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+
+<span class="n">ind</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">eigvals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">eigvals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="mi">1</span>
+<span class="n">F_star</span> <span class="o">=</span> <span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">ind</span><span class="p">]</span> <span class="o">/</span> <span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ind</span><span class="p">]</span>
+<span class="n">F_star</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/re_with_feedback_36_0.png" src="_images/re_with_feedback_36_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># solve for F_check</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">δ</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">F_star</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+
+<span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+<span class="n">F_check</span><span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">λ</span><span class="p">)</span> <span class="o">*</span> <span class="n">G</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">λ</span> <span class="o">*</span> <span class="n">A</span><span class="p">)</span>
+<span class="n">F_check</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.92755597, 0.02375311])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compare <span class="math notranslate nohighlight">\(F^*\)</span> with <span class="math notranslate nohighlight">\(F_1 + F_2 F^*\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F_check</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">F_check</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">F_star</span><span class="p">,</span> <span class="n">F_star</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/re_with_feedback_39_0.png" src="_images/re_with_feedback_39_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="fun-with-sympy-code">
+<h2><a class="toc-backref" href="#id17"><span class="section-number">48.9. </span>Fun with SymPy code</a><a class="headerlink" href="#fun-with-sympy-code" title="Permalink to this headline">¶</a></h2>
+<p>This section is a  gift for readers who have made it this far.</p>
+<p>It puts SymPy to work on our model.</p>
+<p>Thus, we  use Sympy to compute some  key objects comprising the eigenvector decomposition of <span class="math notranslate nohighlight">\(H\)</span>.</p>
+<p>We start by generating an <span class="math notranslate nohighlight">\(H\)</span> with nonzero <span class="math notranslate nohighlight">\(\delta\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">λ</span><span class="p">,</span> <span class="n">δ</span><span class="p">,</span> <span class="n">ρ</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;λ, δ, ρ&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H1</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">([[</span><span class="n">ρ</span><span class="p">,</span><span class="n">δ</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">λ</span><span class="p">)</span> <span class="o">/</span> <span class="n">λ</span><span class="p">,</span> <span class="n">λ</span> <span class="o">**</span> <span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}ρ &amp; δ\\\frac{λ - 1}{λ} &amp; \frac{1}{λ}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H1</span><span class="o">.</span><span class="n">eigenvals</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/re_with_feedback_44_0.png" src="_images/re_with_feedback_44_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H1</span><span class="o">.</span><span class="n">eigenvects</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[ \left( \frac{λ ρ + 1}{2 λ} - \frac{\sqrt{4 δ λ^{2} - 4 δ λ + λ^{2} ρ^{2} - 2 λ ρ + 1}}{2 λ}, \  1, \  \left[ \left[\begin{matrix}- \frac{2 δ λ}{λ ρ + \sqrt{4 δ λ^{2} - 4 δ λ + λ^{2} ρ^{2} - 2 λ ρ + 1} - 1}\\1\end{matrix}\right]\right]\right), \  \left( \frac{λ ρ + 1}{2 λ} + \frac{\sqrt{4 δ λ^{2} - 4 δ λ + λ^{2} ρ^{2} - 2 λ ρ + 1}}{2 λ}, \  1, \  \left[ \left[\begin{matrix}\frac{2 δ λ}{- λ ρ + \sqrt{4 δ λ^{2} - 4 δ λ + λ^{2} ρ^{2} - 2 λ ρ + 1} + 1}\\1\end{matrix}\right]\right]\right)\right]\end{split}\]</div>
+</div>
+</div>
+<p>Now let’s compute <span class="math notranslate nohighlight">\(H\)</span> when  <span class="math notranslate nohighlight">\(\delta\)</span> is zero.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H2</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">([[</span><span class="n">ρ</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">λ</span><span class="p">)</span> <span class="o">/</span> <span class="n">λ</span><span class="p">,</span> <span class="n">λ</span> <span class="o">**</span> <span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}ρ &amp; 0\\\frac{λ - 1}{λ} &amp; \frac{1}{λ}\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H2</span><span class="o">.</span><span class="n">eigenvals</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/re_with_feedback_49_0.png" src="_images/re_with_feedback_49_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H2</span><span class="o">.</span><span class="n">eigenvects</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[ \left( \frac{1}{λ}, \  1, \  \left[ \left[\begin{matrix}0\\1\end{matrix}\right]\right]\right), \  \left( ρ, \  1, \  \left[ \left[\begin{matrix}\frac{λ ρ - 1}{λ - 1}\\1\end{matrix}\right]\right]\right)\right]\end{split}\]</div>
+</div>
+</div>
+<p>Below we do induce SymPy to do the following fun things for us analytically:</p>
+<ol class="simple">
+<li><p>We compute the matrix <span class="math notranslate nohighlight">\(Q\)</span> whose first column is
+the eigenvector associated with <span class="math notranslate nohighlight">\(\rho\)</span>. and whose second column
+is the eigenvector associated with <span class="math notranslate nohighlight">\(\lambda^{-1}\)</span>.</p></li>
+<li><p>We use SymPy to compute the inverse <span class="math notranslate nohighlight">\(Q^{-1}\)</span> of <span class="math notranslate nohighlight">\(Q\)</span>
+(both in symbols).</p></li>
+<li><p>We use SymPy to compute <span class="math notranslate nohighlight">\(Q_{21} Q_{11}^{-1}\)</span> (in symbols).</p></li>
+<li><p>Where <span class="math notranslate nohighlight">\(Q^{ij}\)</span> denotes the <span class="math notranslate nohighlight">\((i,j)\)</span> component of
+<span class="math notranslate nohighlight">\(Q^{-1}\)</span>, we use SymPy to compute
+<span class="math notranslate nohighlight">\(- (Q^{22})^{-1} Q^{21}\)</span> (again in symbols)</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct Q</span>
+<span class="n">vec</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">eigval</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">eigvec</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">H2</span><span class="o">.</span><span class="n">eigenvects</span><span class="p">()):</span>
+
+    <span class="n">vec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eigvec</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">eigval</span> <span class="o">==</span> <span class="n">ρ</span><span class="p">:</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">i</span>
+
+<span class="n">Q</span> <span class="o">=</span> <span class="n">vec</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">.</span><span class="n">col_insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">vec</span><span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="n">ind</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\frac{λ ρ - 1}{λ - 1} &amp; 0\\1 &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(Q^{-1}\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q_inv</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Q_inv</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split}\displaystyle \left[\begin{matrix}\frac{λ - 1}{λ ρ - 1} &amp; 0\\- \frac{λ - 1}{λ ρ - 1} &amp; 1\end{matrix}\right]\end{split}\]</div>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(Q_{21}Q_{11}^{-1}\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/re_with_feedback_57_0.png" src="_images/re_with_feedback_57_0.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(−(Q^{22})^{−1}Q^{21}\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">Q_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">Q_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/re_with_feedback_59_0.png" src="_images/re_with_feedback_59_0.png" />
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   6. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   7. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   8. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   10. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   11. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   12. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   13. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   14. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   15. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   16. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   17. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   18. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   19. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   20. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   21. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   22. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   23. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   24. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   25. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   26. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   27. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   28. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   29. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   30. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   31. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   32. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   33. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   34. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   35. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   36. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   37. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   38. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   39. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   40. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   41. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   42. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   43. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   44. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   45. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   46. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   47. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   48. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   49. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   50. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   51. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   52. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   53. Asset Pricing with Incomplete Markets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   54. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   55. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   56. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   57. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   58. References
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="_notebooks/re_with_feedback.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Launch Notebook"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/re_with_feedback.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
+                    <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lecture-python.myst/lectures/re_with_feedback.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+
+        </div> <!-- .toolbar -->
+
+    </div> <!-- .wrapper-->
+
+<script src="_static/plugins.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+
+    <script src=[></script>
+
+    <script src=]></script>
+
+<script src="_static/scripts.js"></script>
+<script>
+    feather.replace()
+    tippy('[data-tippy-content]');
+</script>
+
+
+  </body>
+</html>

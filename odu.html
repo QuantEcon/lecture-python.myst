@@ -1,0 +1,1812 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>36. Job Search VII: Search with Learning &#8212; Quantitative Economics with Python</title>
+    <link rel="stylesheet" href="_static/quantecon-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/odu.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="37. Likelihood Ratio Processes" href="likelihood_ratio_process.html" />
+    <link rel="prev" title="35. The Income Fluctuation Problem II: Stochastic Returns on Assets" href="ifp_advanced.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Job Search VII: Search with Learning"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Job Search VII: Search with Learning" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/odu.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+
+<meta name="theme-color" content="#ffffff" />
+
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page">
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+
+                            <ul class="nav section-nav flex-column">
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#overview" class="nav-link">Overview</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#model-features" class="nav-link">Model Features</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#model" class="nav-link">Model</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#the-basic-mccall-model" class="nav-link">The Basic McCall Model</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#offer-distribution-unknown" class="nav-link">Offer Distribution Unknown</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#parameterization" class="nav-link">Parameterization</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#looking-forward" class="nav-link">Looking Forward</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#take-1-solution-by-vfi" class="nav-link">Take 1: Solution by VFI</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#take-2-a-more-efficient-method" class="nav-link">Take 2: A More Efficient Method</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#another-functional-equation" class="nav-link">Another Functional Equation</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#solving-the-rwfe" class="nav-link">Solving the RWFE</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#implementation" class="nav-link">Implementation</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#exercises" class="nav-link">Exercises</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#exercise-1" class="nav-link">Exercise 1</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#solutions" class="nav-link">Solutions</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#id6" class="nav-link">Exercise 1</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#appendix-a" class="nav-link">Appendix A</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#appendix-b" class="nav-link">Appendix B</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#examples" class="nav-link">Examples</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#example-1-baseline" class="nav-link">Example 1 (Baseline)</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#example-2" class="nav-link">Example 2</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#example-3" class="nav-link">Example 3</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#example-4" class="nav-link">Example 4</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#example-5" class="nav-link">Example 5</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                            </ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">Job Search VII: Search with Learning</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div><div class="section" id="job-search-vii-search-with-learning">
+<h1><a class="toc-backref" href="#id7"><span class="section-number">36. </span>Job Search VII: Search with Learning</a><a class="headerlink" href="#job-search-vii-search-with-learning" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#job-search-vii-search-with-learning" id="id7">Job Search VII: Search with Learning</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id8">Overview</a></p></li>
+<li><p><a class="reference internal" href="#model" id="id9">Model</a></p></li>
+<li><p><a class="reference internal" href="#take-1-solution-by-vfi" id="id10">Take 1: Solution by VFI</a></p></li>
+<li><p><a class="reference internal" href="#take-2-a-more-efficient-method" id="id11">Take 2: A More Efficient Method</a></p></li>
+<li><p><a class="reference internal" href="#another-functional-equation" id="id12">Another Functional Equation</a></p></li>
+<li><p><a class="reference internal" href="#solving-the-rwfe" id="id13">Solving the RWFE</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id14">Implementation</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id15">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#solutions" id="id16">Solutions</a></p></li>
+<li><p><a class="reference internal" href="#appendix-a" id="id17">Appendix A</a></p></li>
+<li><p><a class="reference internal" href="#appendix-b" id="id18">Appendix B</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id19">Examples</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>In addition to what’s in Anaconda, this lecture deploys the libraries:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  !conda install -y quantecon
+  !pip install interpolation
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">36.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>In this lecture, we consider an extension of the <a class="reference external" href="https://python.quantecon.org/mccall_model.html">previously studied</a> job search model of McCall
+<a class="bibtex reference internal" href="zreferences.html#mccall1970" id="id1">[McC70]</a>.</p>
+<p>We’ll build on a model of Bayesian learning discussed in <a class="reference external" href="https://python.quantecon.org/exchangeable.html">this lecture</a> on the topic of exchangeability and its relationship to
+the concept of IID (identically and independently distributed) random variables and to  Bayesian updating.</p>
+<p>In the McCall model, an unemployed worker decides when to accept a
+permanent job at a specific fixed wage, given</p>
+<ul class="simple">
+<li><p>his or her discount factor</p></li>
+<li><p>the level of unemployment compensation</p></li>
+<li><p>the distribution from which wage offers are drawn</p></li>
+</ul>
+<p>In the version considered below, the wage distribution is unknown and
+must be learned.</p>
+<ul class="simple">
+<li><p>The following is based on the presentation in
+<a class="bibtex reference internal" href="zreferences.html#ljungqvist2012" id="id2">[LS18]</a>, section 6.6.</p></li>
+</ul>
+<p>Let’s start with some imports</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">vectorize</span>
+<span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">mlinterp</span><span class="p">,</span> <span class="n">interp</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">op</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">cumfreq</span><span class="p">,</span> <span class="n">beta</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="model-features">
+<h3><span class="section-number">36.1.1. </span>Model Features<a class="headerlink" href="#model-features" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Infinite horizon dynamic programming with two states and one binary
+control.</p></li>
+<li><p>Bayesian updating to learn the unknown distribution.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="model">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">36.2. </span>Model</a><a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<p>Let’s first review the basic McCall model
+<a class="bibtex reference internal" href="zreferences.html#mccall1970" id="id3">[McC70]</a> and then add the variation we
+want to consider.</p>
+<div class="section" id="the-basic-mccall-model">
+<h3><span class="section-number">36.2.1. </span>The Basic McCall Model<a class="headerlink" href="#the-basic-mccall-model" title="Permalink to this headline">¶</a></h3>
+<p>Recall that, in the baseline model &lt;mccall_model&gt;, an
+unemployed worker is presented in each period with a permanent job offer
+at wage <span class="math notranslate nohighlight">\(W_t\)</span>.</p>
+<p>At time <span class="math notranslate nohighlight">\(t\)</span>, our worker either</p>
+<ol class="simple">
+<li><p>accepts the offer and works permanently at constant wage <span class="math notranslate nohighlight">\(W_t\)</span></p></li>
+<li><p>rejects the offer, receives unemployment compensation <span class="math notranslate nohighlight">\(c\)</span> and
+reconsiders next period</p></li>
+</ol>
+<p>The wage sequence <span class="math notranslate nohighlight">\({W_t}\)</span> is IID and generated from known density <span class="math notranslate nohighlight">\(q\)</span>.</p>
+<p>The worker aims to maximize the expected discounted sum of earnings
+<span class="math notranslate nohighlight">\(\mathbb{E} \sum_{t=0}^{\infty}\beta^t y_t\)</span> The function <span class="math notranslate nohighlight">\(V\)</span> satisfies the recursion</p>
+<div class="math notranslate nohighlight" id="equation-odu-odu-pv">
+<span class="eqno">(36.1)<a class="headerlink" href="#equation-odu-odu-pv" title="Permalink to this equation">¶</a></span>\[v(w)
+= \max \left\{
+\frac{w}{1 - \beta}, \, c + \beta \int v(w')q(w') dw'
+\right\}\]</div>
+<p>The optimal policy has the form <span class="math notranslate nohighlight">\(\mathbf{1}\{w \geq \bar w\}\)</span>, where
+<span class="math notranslate nohighlight">\(\bar w\)</span> is a constant called the <em>reservation wage</em>.</p>
+</div>
+<div class="section" id="offer-distribution-unknown">
+<h3><span class="section-number">36.2.2. </span>Offer Distribution Unknown<a class="headerlink" href="#offer-distribution-unknown" title="Permalink to this headline">¶</a></h3>
+<p>Now let’s extend the model by considering the variation presented in
+<a class="bibtex reference internal" href="zreferences.html#ljungqvist2012" id="id4">[LS18]</a>, section 6.6.</p>
+<p>The model is as above, apart from the fact that</p>
+<ul class="simple">
+<li><p>the density <span class="math notranslate nohighlight">\(q\)</span> is unknown</p></li>
+<li><p>the worker learns about <span class="math notranslate nohighlight">\(q\)</span> by starting with a prior and updating
+based on wage offers that he/she observes</p></li>
+</ul>
+<p>The worker knows there are two possible distributions <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(G\)</span> —
+with densities <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>At the start of time, “nature” selects <span class="math notranslate nohighlight">\(q\)</span> to be either <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>
+— the wage distribution from which the entire sequence <span class="math notranslate nohighlight">\({W_t}\)</span> will be
+drawn.</p>
+<p>This choice is not observed by the worker, who puts prior probability <span class="math notranslate nohighlight">\(\pi_0\)</span> on <span class="math notranslate nohighlight">\(f\)</span> being chosen.</p>
+<p>Update rule: worker’s time <span class="math notranslate nohighlight">\(t\)</span> estimate of the distribution is <span class="math notranslate nohighlight">\(\pi_t f + (1 - \pi_t) g\)</span>,
+where <span class="math notranslate nohighlight">\(\pi_t\)</span> updates via</p>
+<div class="math notranslate nohighlight" id="equation-odu-pi-rec-2">
+<span class="eqno">(36.2)<a class="headerlink" href="#equation-odu-pi-rec-2" title="Permalink to this equation">¶</a></span>\[\pi_{t+1}
+= \frac{\pi_t f(w_{t+1})}{\pi_t f(w_{t+1}) + (1 - \pi_t) g(w_{t+1})}\]</div>
+<p>This last expression follows from Bayes’ rule, which tells us that</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}\{q = f \,|\, W = w\}
+= \frac{\mathbb{P}\{W = w \,|\, q = f\}\mathbb{P}\{q = f\}}
+{\mathbb{P}\{W = w\}}
+\quad \text{and} \quad
+\mathbb{P}\{W = w\} = \sum_{\omega \in \{f, g\}} \mathbb{P}\{W = w \,|\, q = \omega\} \mathbb{P}\{q = \omega\}
+\]</div>
+<p>The fact that <a class="reference internal" href="#equation-odu-pi-rec-2">(36.2)</a> is recursive allows us to
+progress to a recursive solution method.</p>
+<p>Letting</p>
+<div class="math notranslate nohighlight">
+\[
+q_{\pi}(w) := \pi f(w) + (1 - \pi) g(w)
+\quad \text{and} \quad
+\kappa(w, \pi) := \frac{\pi f(w)}{\pi f(w) + (1 - \pi) g(w)}
+\]</div>
+<p>we can express the value function for the unemployed worker recursively
+as follows</p>
+<div class="math notranslate nohighlight" id="equation-odu-mvf">
+<span class="eqno">(36.3)<a class="headerlink" href="#equation-odu-mvf" title="Permalink to this equation">¶</a></span>\[v(w, \pi)
+= \max \left\{
+\frac{w}{1 - \beta}, \, c + \beta \int v(w', \pi') \, q_{\pi}(w') \, dw'
+\right\}
+\quad \text{where} \quad
+\pi' = \kappa(w', \pi)\]</div>
+<p>Notice that the current guess <span class="math notranslate nohighlight">\(\pi\)</span> is a state variable,
+since it affects the worker’s perception of probabilities for future
+rewards.</p>
+</div>
+<div class="section" id="parameterization">
+<h3><span class="section-number">36.2.3. </span>Parameterization<a class="headerlink" href="#parameterization" title="Permalink to this headline">¶</a></h3>
+<p>Following section 6.6 of <a class="bibtex reference internal" href="zreferences.html#ljungqvist2012" id="id5">[LS18]</a>,
+our baseline parameterization will be</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\operatorname{Beta}(1, 1)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(g\)</span> is <span class="math notranslate nohighlight">\(\operatorname{Beta}(3, 1.2)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta = 0.95\)</span> and <span class="math notranslate nohighlight">\(c = 0.3\)</span></p></li>
+</ul>
+<p>The densities <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> have the following shape</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@vectorize</span>
+<span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">gamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="n">x_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x_grid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$f$&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">g</span><span class="p">(</span><span class="n">x_grid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$g$&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="looking-forward">
+<h3><span class="section-number">36.2.4. </span>Looking Forward<a class="headerlink" href="#looking-forward" title="Permalink to this headline">¶</a></h3>
+<p>What kind of optimal policy might result from
+<a class="reference internal" href="#equation-odu-mvf">(36.3)</a> and the parameterization specified above?</p>
+<p>Intuitively, if we accept at <span class="math notranslate nohighlight">\(w_a\)</span> and <span class="math notranslate nohighlight">\(w_a\leq w_b\)</span>,
+then — all other things being given — we should also accept at <span class="math notranslate nohighlight">\(w_b\)</span>.</p>
+<p>This suggests a policy of accepting whenever <span class="math notranslate nohighlight">\(w\)</span> exceeds some
+threshold value <span class="math notranslate nohighlight">\(\bar w\)</span>.</p>
+<p>But <span class="math notranslate nohighlight">\(\bar w\)</span> should depend on <span class="math notranslate nohighlight">\(\pi\)</span> — in
+fact, it should be decreasing in <span class="math notranslate nohighlight">\(\pi\)</span> because</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(f\)</span> is a less attractive offer distribution than <span class="math notranslate nohighlight">\(g\)</span></p></li>
+<li><p>larger <span class="math notranslate nohighlight">\(\pi\)</span> means more weight on <span class="math notranslate nohighlight">\(f\)</span> and less on
+<span class="math notranslate nohighlight">\(g\)</span></p></li>
+</ul>
+<p>Thus larger <span class="math notranslate nohighlight">\(\pi\)</span> depresses the worker’s assessment of
+her future prospects, and relatively low current offers become more
+attractive.</p>
+<p><strong>Summary:</strong> We conjecture that the optimal policy is of the form
+<span class="math notranslate nohighlight">\(\mathbb 1{w\geq \bar w(\pi) }\)</span> for some
+decreasing function <span class="math notranslate nohighlight">\(\bar w\)</span>.</p>
+</div>
+</div>
+<div class="section" id="take-1-solution-by-vfi">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">36.3. </span>Take 1: Solution by VFI</a><a class="headerlink" href="#take-1-solution-by-vfi" title="Permalink to this headline">¶</a></h2>
+<p>Let’s set about solving the model and see how our results match with our
+intuition.</p>
+<p>We begin by solving via value function iteration (VFI), which is natural
+but ultimately turns out to be second best.</p>
+<p>The class <code class="docutils literal notranslate"><span class="pre">SearchProblem</span></code> is used to store parameters and methods
+needed to compute optimal actions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SearchProblem</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to store a given parameterization of the &quot;offer distribution</span>
+<span class="sd">    unknown&quot; model.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">β</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>            <span class="c1"># Discount factor</span>
+                 <span class="n">c</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>             <span class="c1"># Unemployment compensation</span>
+                 <span class="n">F_a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">F_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">G_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                 <span class="n">G_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
+                 <span class="n">w_max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>           <span class="c1"># Maximum wage possible</span>
+                 <span class="n">w_grid_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                 <span class="n">π_grid_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                 <span class="n">mc_size</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_max</span> <span class="o">=</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">w_max</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">π_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">π_max</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-3</span>    <span class="c1"># Avoids instability</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">w_max</span><span class="p">,</span> <span class="n">w_grid_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">π_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">π_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">π_max</span><span class="p">,</span> <span class="n">π_grid_size</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mc_size</span> <span class="o">=</span> <span class="n">mc_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="n">mc_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">,</span> <span class="n">mc_size</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following function takes an instance of this class and returns
+jitted versions of the Bellman operator <code class="docutils literal notranslate"><span class="pre">T</span></code>, and a <code class="docutils literal notranslate"><span class="pre">get_greedy()</span></code>
+function to compute the approximate optimal policy from a guess <code class="docutils literal notranslate"><span class="pre">v</span></code> of
+the value function</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">operator_factory</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">parallel_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+    <span class="n">f</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">g</span>
+    <span class="n">w_f</span><span class="p">,</span> <span class="n">w_g</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_f</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_g</span>
+    <span class="n">β</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">c</span>
+    <span class="n">mc_size</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">mc_size</span>
+    <span class="n">w_grid</span><span class="p">,</span> <span class="n">π_grid</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_grid</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span>
+
+    <span class="nd">@njit</span>
+    <span class="k">def</span> <span class="nf">v_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">mlinterp</span><span class="p">((</span><span class="n">w_grid</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">),</span> <span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+
+    <span class="nd">@njit</span>
+    <span class="k">def</span> <span class="nf">κ</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates π using Bayes&#39; rule and the current wage observation w.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pf</span><span class="p">,</span> <span class="n">pg</span> <span class="o">=</span> <span class="n">π</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="n">π_new</span> <span class="o">=</span> <span class="n">pf</span> <span class="o">/</span> <span class="p">(</span><span class="n">pf</span> <span class="o">+</span> <span class="n">pg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">π_new</span>
+
+    <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The Bellman operator.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">v_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w_grid</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">π_grid</span><span class="p">)):</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">w_grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">π</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+                <span class="n">v_1</span> <span class="o">=</span> <span class="n">w</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span>
+
+                <span class="n">integral_f</span><span class="p">,</span> <span class="n">integral_g</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">mc_size</span><span class="p">):</span>
+                    <span class="n">integral_f</span> <span class="o">+=</span> <span class="n">v_func</span><span class="p">(</span><span class="n">w_f</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">κ</span><span class="p">(</span><span class="n">w_f</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">π</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
+                    <span class="n">integral_g</span> <span class="o">+=</span> <span class="n">v_func</span><span class="p">(</span><span class="n">w_g</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">κ</span><span class="p">(</span><span class="n">w_g</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">π</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
+                <span class="n">integral</span> <span class="o">=</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="n">integral_f</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">integral_g</span><span class="p">)</span> <span class="o">/</span> <span class="n">mc_size</span>
+
+                <span class="n">v_2</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">integral</span>
+                <span class="n">v_new</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">v_1</span><span class="p">,</span> <span class="n">v_2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">v_new</span>
+
+    <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;</span>
+<span class="sd">        Compute optimal actions taking v as the value function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">σ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w_grid</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">π_grid</span><span class="p">)):</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">w_grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">π</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+                <span class="n">v_1</span> <span class="o">=</span> <span class="n">w</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span>
+
+                <span class="n">integral_f</span><span class="p">,</span> <span class="n">integral_g</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">mc_size</span><span class="p">):</span>
+                    <span class="n">integral_f</span> <span class="o">+=</span> <span class="n">v_func</span><span class="p">(</span><span class="n">w_f</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">κ</span><span class="p">(</span><span class="n">w_f</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">π</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
+                    <span class="n">integral_g</span> <span class="o">+=</span> <span class="n">v_func</span><span class="p">(</span><span class="n">w_g</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">κ</span><span class="p">(</span><span class="n">w_g</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">π</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
+                <span class="n">integral</span> <span class="o">=</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="n">integral_f</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">integral_g</span><span class="p">)</span> <span class="o">/</span> <span class="n">mc_size</span>
+
+                <span class="n">v_2</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">integral</span>
+
+                <span class="n">σ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">v_1</span> <span class="o">&gt;</span> <span class="n">v_2</span>  <span class="c1"># Evaluates to 1 or 0</span>
+
+        <span class="k">return</span> <span class="n">σ</span>
+
+    <span class="k">return</span> <span class="n">T</span><span class="p">,</span> <span class="n">get_greedy</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will omit a detailed discussion of the code because there is a more
+efficient solution method that we will use later.</p>
+<p>To solve the model we will use the following function that iterates
+using T to find a fixed point</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve_model</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span>
+                <span class="n">use_parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+                <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">print_skip</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solves for the value function</span>
+
+<span class="sd">    * sp is an instance of SearchProblem</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">T</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">operator_factory</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">use_parallel</span><span class="p">)</span>
+
+    <span class="c1"># Set up loop</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">w_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">)</span>
+
+    <span class="c1"># Initialize v</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">c</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">sp</span><span class="o">.</span><span class="n">β</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span> <span class="ow">and</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="n">v_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">v_new</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="n">print_skip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error at iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v_new</span>
+
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to converge!&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Converged in </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
+
+
+    <span class="k">return</span> <span class="n">v_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s look at solutions computed from value function iteration</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span> <span class="o">=</span> <span class="n">SearchProblem</span><span class="p">()</span>
+<span class="n">v_star</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_grid</span><span class="p">,</span> <span class="n">v_star</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_grid</span><span class="p">,</span> <span class="n">v_star</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;$\pi$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;$w$&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will also plot the optimal policy</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="p">,</span> <span class="n">get_greedy</span> <span class="o">=</span> <span class="n">operator_factory</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+<span class="n">σ_star</span> <span class="o">=</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v_star</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_grid</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_grid</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;$\pi$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;$w$&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;reject&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;accept&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The results fit well with our intuition from section <a class="reference external" href="#looking-forward">looking
+forward</a>.</p>
+<ul class="simple">
+<li><p>The black line in the figure above corresponds to the function
+<span class="math notranslate nohighlight">\(\bar w(\pi)\)</span> introduced there.</p></li>
+<li><p>It is decreasing as expected.</p></li>
+</ul>
+</div>
+<div class="section" id="take-2-a-more-efficient-method">
+<h2><a class="toc-backref" href="#id11"><span class="section-number">36.4. </span>Take 2: A More Efficient Method</a><a class="headerlink" href="#take-2-a-more-efficient-method" title="Permalink to this headline">¶</a></h2>
+<p>Let’s consider another method to solve for the optimal policy.</p>
+<p>We will use iteration with an operator that has the same contraction
+rate as the Bellman operator, but</p>
+<ul class="simple">
+<li><p>one dimensional rather than two dimensional</p></li>
+<li><p>no maximization step</p></li>
+</ul>
+<p>As a consequence, the algorithm is orders of magnitude faster than VFI.</p>
+<p>This section illustrates the point that when it comes to programming, a
+bit of mathematical analysis goes a long way.</p>
+</div>
+<div class="section" id="another-functional-equation">
+<h2><a class="toc-backref" href="#id12"><span class="section-number">36.5. </span>Another Functional Equation</a><a class="headerlink" href="#another-functional-equation" title="Permalink to this headline">¶</a></h2>
+<p>To begin, note that when <span class="math notranslate nohighlight">\(w = \bar w(\pi)\)</span>, the worker is indifferent
+between accepting and rejecting.</p>
+<p>Hence the two choices on the right-hand side of <a class="reference internal" href="#equation-odu-mvf">(36.3)</a> have equal value:</p>
+<div class="math notranslate nohighlight" id="equation-odu-mvf2">
+<span class="eqno">(36.4)<a class="headerlink" href="#equation-odu-mvf2" title="Permalink to this equation">¶</a></span>\[\frac{\bar w(\pi)}{1 - \beta}
+= c + \beta \int v(w', \pi') \, q_{\pi}(w') \, dw'\]</div>
+<p>Together, <a class="reference internal" href="#equation-odu-mvf">(36.3)</a> and <a class="reference internal" href="#equation-odu-mvf2">(36.4)</a> give</p>
+<div class="math notranslate nohighlight" id="equation-odu-mvf3">
+<span class="eqno">(36.5)<a class="headerlink" href="#equation-odu-mvf3" title="Permalink to this equation">¶</a></span>\[v(w, \pi) =
+\max
+\left\{
+    \frac{w}{1 - \beta} ,\, \frac{\bar w(\pi)}{1 - \beta}
+\right\}\]</div>
+<p>Combining <a class="reference internal" href="#equation-odu-mvf2">(36.4)</a> and <a class="reference internal" href="#equation-odu-mvf3">(36.5)</a>, we obtain</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\bar w(\pi)}{1 - \beta}
+= c + \beta \int \max \left\{
+    \frac{w'}{1 - \beta} ,\, \frac{\bar w(\pi')}{1 - \beta}
+\right\}
+\, q_{\pi}(w') \, dw'
+\]</div>
+<p>Multiplying by <span class="math notranslate nohighlight">\(1 - \beta\)</span>, substituting in <span class="math notranslate nohighlight">\(\pi' = \kappa(w', \pi)\)</span>
+and using <span class="math notranslate nohighlight">\(\circ\)</span> for composition of functions yields</p>
+<div class="math notranslate nohighlight" id="equation-odu-mvf4">
+<span class="eqno">(36.6)<a class="headerlink" href="#equation-odu-mvf4" title="Permalink to this equation">¶</a></span>\[\bar w(\pi)
+= (1 - \beta) c +
+\beta \int \max \left\{ w', \bar w \circ \kappa(w', \pi) \right\} \, q_{\pi}(w') \, dw'\]</div>
+<p>Equation <a class="reference internal" href="#equation-odu-mvf4">(36.6)</a> can be understood as a functional equation, where <span class="math notranslate nohighlight">\(\bar w\)</span> is the unknown function.</p>
+<ul class="simple">
+<li><p>Let’s call it the <em>reservation wage functional equation</em> (RWFE).</p></li>
+<li><p>The solution <span class="math notranslate nohighlight">\(\bar w\)</span> to the RWFE is the object that we wish to compute.</p></li>
+</ul>
+</div>
+<div class="section" id="solving-the-rwfe">
+<h2><a class="toc-backref" href="#id13"><span class="section-number">36.6. </span>Solving the RWFE</a><a class="headerlink" href="#solving-the-rwfe" title="Permalink to this headline">¶</a></h2>
+<p>To solve the RWFE, we will first show that its solution is the
+fixed point of a <a class="reference external" href="https://en.wikipedia.org/wiki/Contraction_mapping">contraction mapping</a>.</p>
+<p>To this end, let</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(b[0,1]\)</span> be the bounded real-valued functions on <span class="math notranslate nohighlight">\([0,1]\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\| \omega \| := \sup_{x \in [0,1]} | \omega(x) |\)</span></p></li>
+</ul>
+<p>Consider the operator <span class="math notranslate nohighlight">\(Q\)</span> mapping <span class="math notranslate nohighlight">\(\omega \in b[0,1]\)</span> into <span class="math notranslate nohighlight">\(Q\omega \in b[0,1]\)</span> via</p>
+<div class="math notranslate nohighlight" id="equation-odu-dq">
+<span class="eqno">(36.7)<a class="headerlink" href="#equation-odu-dq" title="Permalink to this equation">¶</a></span>\[(Q \omega)(\pi)
+= (1 - \beta) c +
+\beta \int \max \left\{ w', \omega \circ \kappa(w', \pi) \right\} \, q_{\pi}(w') \, dw'\]</div>
+<p>Comparing <a class="reference internal" href="#equation-odu-mvf4">(36.6)</a> and <a class="reference internal" href="#equation-odu-dq">(36.7)</a>, we see that the set of fixed points of <span class="math notranslate nohighlight">\(Q\)</span> exactly coincides with the set of solutions to the RWFE.</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(Q \bar w = \bar w\)</span> then <span class="math notranslate nohighlight">\(\bar w\)</span> solves <a class="reference internal" href="#equation-odu-mvf4">(36.6)</a> and vice versa.</p></li>
+</ul>
+<p>Moreover, for any <span class="math notranslate nohighlight">\(\omega, \omega' \in b[0,1]\)</span>, basic algebra and the
+triangle inequality for integrals tells us that</p>
+<div class="math notranslate nohighlight" id="equation-odu-nt">
+<span class="eqno">(36.8)<a class="headerlink" href="#equation-odu-nt" title="Permalink to this equation">¶</a></span>\[|(Q \omega)(\pi) - (Q \omega')(\pi)|
+\leq \beta \int
+\left|
+\max \left\{w', \omega \circ \kappa(w', \pi) \right\} -
+\max \left\{w', \omega' \circ \kappa(w', \pi) \right\}
+\right|
+\, q_{\pi}(w') \, dw'\]</div>
+<p>Working case by case, it is easy to check that for real numbers <span class="math notranslate nohighlight">\(a, b, c\)</span> we always have</p>
+<div class="math notranslate nohighlight" id="equation-odu-nt2">
+<span class="eqno">(36.9)<a class="headerlink" href="#equation-odu-nt2" title="Permalink to this equation">¶</a></span>\[| \max\{a, b\} - \max\{a, c\}| \leq | b - c|\]</div>
+<p>Combining <a class="reference internal" href="#equation-odu-nt">(36.8)</a> and <a class="reference internal" href="#equation-odu-nt2">(36.9)</a> yields</p>
+<div class="math notranslate nohighlight" id="equation-odu-nt3">
+<span class="eqno">(36.10)<a class="headerlink" href="#equation-odu-nt3" title="Permalink to this equation">¶</a></span>\[|(Q \omega)(\pi) - (Q \omega')(\pi)|
+\leq \beta \int
+\left| \omega \circ \kappa(w', \pi) -  \omega' \circ \kappa(w', \pi) \right|
+\, q_{\pi}(w') \, dw'
+\leq \beta \| \omega - \omega' \|\]</div>
+<p>Taking the supremum over <span class="math notranslate nohighlight">\(\pi\)</span> now gives us</p>
+<div class="math notranslate nohighlight" id="equation-odu-rwc">
+<span class="eqno">(36.11)<a class="headerlink" href="#equation-odu-rwc" title="Permalink to this equation">¶</a></span>\[\|Q \omega - Q \omega'\|
+\leq \beta \| \omega - \omega' \|\]</div>
+<p>In other words, <span class="math notranslate nohighlight">\(Q\)</span> is a contraction of modulus <span class="math notranslate nohighlight">\(\beta\)</span> on the
+complete metric space <span class="math notranslate nohighlight">\((b[0,1], \| \cdot \|)\)</span>.</p>
+<p>Hence</p>
+<ul class="simple">
+<li><p>A unique solution <span class="math notranslate nohighlight">\(\bar w\)</span> to the RWFE exists in <span class="math notranslate nohighlight">\(b[0,1]\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(Q^k \omega \to \bar w\)</span> uniformly as <span class="math notranslate nohighlight">\(k \to \infty\)</span>, for any <span class="math notranslate nohighlight">\(\omega \in b[0,1]\)</span>.</p></li>
+</ul>
+</div>
+<div class="section" id="implementation">
+<h2><a class="toc-backref" href="#id14"><span class="section-number">36.7. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>The following function takes an instance of <code class="docutils literal notranslate"><span class="pre">SearchProblem</span></code> and
+returns the operator <code class="docutils literal notranslate"><span class="pre">Q</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">Q_factory</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">parallel_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+    <span class="n">f</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">g</span>
+    <span class="n">w_f</span><span class="p">,</span> <span class="n">w_g</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_f</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_g</span>
+    <span class="n">β</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">c</span>
+    <span class="n">mc_size</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">mc_size</span>
+    <span class="n">w_grid</span><span class="p">,</span> <span class="n">π_grid</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_grid</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span>
+
+    <span class="nd">@njit</span>
+    <span class="k">def</span> <span class="nf">ω_func</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">ω</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">interp</span><span class="p">(</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">ω</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+    <span class="nd">@njit</span>
+    <span class="k">def</span> <span class="nf">κ</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates π using Bayes&#39; rule and the current wage observation w.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pf</span><span class="p">,</span> <span class="n">pg</span> <span class="o">=</span> <span class="n">π</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="n">π_new</span> <span class="o">=</span> <span class="n">pf</span> <span class="o">/</span> <span class="p">(</span><span class="n">pf</span> <span class="o">+</span> <span class="n">pg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">π_new</span>
+
+    <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">Q</span><span class="p">(</span><span class="n">ω</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Updates the reservation wage function guess ω via the operator</span>
+<span class="sd">        Q.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ω_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">ω</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">π_grid</span><span class="p">)):</span>
+            <span class="n">π</span> <span class="o">=</span> <span class="n">π_grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">integral_f</span><span class="p">,</span> <span class="n">integral_g</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">mc_size</span><span class="p">):</span>
+                <span class="n">integral_f</span> <span class="o">+=</span> <span class="nb">max</span><span class="p">(</span><span class="n">w_f</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">ω_func</span><span class="p">(</span><span class="n">κ</span><span class="p">(</span><span class="n">w_f</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">π</span><span class="p">),</span> <span class="n">ω</span><span class="p">))</span>
+                <span class="n">integral_g</span> <span class="o">+=</span> <span class="nb">max</span><span class="p">(</span><span class="n">w_g</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">ω_func</span><span class="p">(</span><span class="n">κ</span><span class="p">(</span><span class="n">w_g</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="n">π</span><span class="p">),</span> <span class="n">ω</span><span class="p">))</span>
+            <span class="n">integral</span> <span class="o">=</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="n">integral_f</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">integral_g</span><span class="p">)</span> <span class="o">/</span> <span class="n">mc_size</span>
+
+            <span class="n">ω_new</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span> <span class="o">*</span> <span class="n">c</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">integral</span>
+
+        <span class="k">return</span> <span class="n">ω_new</span>
+
+    <span class="k">return</span> <span class="n">Q</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the next exercise, you are asked to compute an approximation to
+<span class="math notranslate nohighlight">\(\bar w\)</span>.</p>
+</div>
+<div class="section" id="exercises">
+<h2><a class="toc-backref" href="#id15"><span class="section-number">36.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="exercise-1">
+<h3><span class="section-number">36.8.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<p>Use the default parameters and <code class="docutils literal notranslate"><span class="pre">Q_factory</span></code> to compute an optimal
+policy.</p>
+<p>Your result should coincide closely with the figure for the optimal
+policy <a class="reference external" href="#odu-pol-vfi">shown above</a>.</p>
+<p>Try experimenting with different parameters, and confirm that the change
+in the optimal policy coincides with your intuition.</p>
+</div>
+</div>
+<div class="section" id="solutions">
+<h2><a class="toc-backref" href="#id16"><span class="section-number">36.9. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h3><span class="section-number">36.9.1. </span>Exercise 1<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>This code solves the “Offer Distribution Unknown” model by iterating on
+a guess of the reservation wage function.</p>
+<p>You should find that the run time is shorter than that of the value
+function approach.</p>
+<p>Similar to above, we set up a function to iterate with <code class="docutils literal notranslate"><span class="pre">Q</span></code> to find the
+fixed point</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve_wbar</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span>
+               <span class="n">use_parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+               <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+               <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+               <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+               <span class="n">print_skip</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">Q_factory</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">use_parallel</span><span class="p">)</span>
+
+    <span class="c1"># Set up loop</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">w_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">)</span>
+
+    <span class="c1"># Initialize w</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span> <span class="ow">and</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="n">w_new</span> <span class="o">=</span> <span class="n">Q</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">w</span> <span class="o">-</span> <span class="n">w_new</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="n">print_skip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error at iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">w_new</span>
+
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to converge!&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Converged in </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">w_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The solution can be plotted as follows</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span> <span class="o">=</span> <span class="n">SearchProblem</span><span class="p">()</span>
+<span class="n">w_bar</span> <span class="o">=</span> <span class="n">solve_wbar</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_max</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;reject&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;accept&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;$\pi$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;$w$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="appendix-a">
+<h2><a class="toc-backref" href="#id17"><span class="section-number">36.10. </span>Appendix A</a><a class="headerlink" href="#appendix-a" title="Permalink to this headline">¶</a></h2>
+<p>The next piece of code generates a fun simulation to see what the effect
+of a change in the underlying distribution on the unemployment rate is.</p>
+<p>At a point in the simulation, the distribution becomes significantly
+worse.</p>
+<p>It takes a while for agents to learn this, and in the meantime, they are
+too optimistic and turn down too many jobs.</p>
+<p>As a result, the unemployment rate spikes</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span>
+
+<span class="n">sp</span> <span class="o">=</span> <span class="n">SearchProblem</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="n">F_b</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="n">G_b</span><span class="p">)</span>
+<span class="n">f</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">g</span>
+
+<span class="c1"># Solve for reservation wage</span>
+<span class="n">w_bar</span> <span class="o">=</span> <span class="n">solve_wbar</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Interpolate reservation wage function</span>
+<span class="n">π_grid</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span>
+<span class="n">w_func</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">interp</span><span class="p">(</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
+    <span class="s2">&quot;Update e and π by drawing wage offer from beta distribution with parameters a and b&quot;</span>
+
+    <span class="k">if</span> <span class="n">e</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>       <span class="c1"># Draw random wage</span>
+        <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="n">w_func</span><span class="p">(</span><span class="n">π</span><span class="p">):</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="kc">True</span>                   <span class="c1"># Take new job</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">π</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">e</span><span class="p">,</span> <span class="n">π</span>
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">simulate_path</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="n">F_a</span><span class="p">,</span>
+                  <span class="n">F_b</span><span class="o">=</span><span class="n">F_b</span><span class="p">,</span>
+                  <span class="n">G_a</span><span class="o">=</span><span class="n">G_a</span><span class="p">,</span>
+                  <span class="n">G_b</span><span class="o">=</span><span class="n">G_b</span><span class="p">,</span>
+                  <span class="n">N</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>       <span class="c1"># Number of agents</span>
+                  <span class="n">T</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>        <span class="c1"># Simulation length</span>
+                  <span class="n">d</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>        <span class="c1"># Change date</span>
+                  <span class="n">s</span><span class="o">=</span><span class="mf">0.025</span><span class="p">):</span>     <span class="c1"># Separation rate</span>
+
+    <span class="sd">&quot;&quot;&quot;Simulates path of employment for N number of works over T periods&quot;&quot;&quot;</span>
+
+    <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">π</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1e-3</span>
+
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span>   <span class="c1"># Initial distribution parameters</span>
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">d</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span>  <span class="c1"># Change distribution parameters</span>
+
+        <span class="c1"># Update each agent</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">e</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>                    <span class="c1"># If agent is currently employment</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">p</span> <span class="o">&lt;=</span> <span class="n">s</span><span class="p">:</span>                      <span class="c1"># Randomly separate with probability s</span>
+                    <span class="n">e</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="n">new_e</span><span class="p">,</span> <span class="n">new_π</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">],</span> <span class="n">π</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span>
+            <span class="n">e</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_e</span>
+            <span class="n">π</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_π</span>
+
+    <span class="k">return</span> <span class="n">e</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="mi">200</span>  <span class="c1"># Change distribution at time d</span>
+<span class="n">unemployment_rate</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">simulate_path</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unemployment_rate</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Change date&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Unemployment rate&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="appendix-b">
+<h2><a class="toc-backref" href="#id18"><span class="section-number">36.11. </span>Appendix B</a><a class="headerlink" href="#appendix-b" title="Permalink to this headline">¶</a></h2>
+<p>In this appendix we provide more details about how Bayes’ Law contributes to the workings of the model.</p>
+<p>We present some graphs that bring out additional insights about how learning works.</p>
+<p>We build on graphs proposed in <a class="reference external" href="https://python.quantecon.org/exchangeable.html">this lecture</a>.</p>
+<p>In particular, we’ll add actions of  our searching worker to a key graph
+presented in that lecture.</p>
+<p>To begin, we first define two functions for computing the
+empirical distributions of unemployment duration and π at the time of
+employment.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">empirical_dist</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">,</span>
+                   <span class="n">N</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">600</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulates population for computing empirical cumulative</span>
+<span class="sd">    distribution of unemployment duration and π at time when</span>
+<span class="sd">    the worker accepts the wage offer. For each job searching</span>
+<span class="sd">    problem, we simulate for two cases that either f or g is</span>
+<span class="sd">    the true offer distribution.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    F_a, F_b, G_a, G_b : parameters of beta distributions F and G.</span>
+<span class="sd">    w_bar : the reservation wage</span>
+<span class="sd">    π_grid : grid points of π, for interpolation</span>
+<span class="sd">    N : number of workers for simulation, optional</span>
+<span class="sd">    T : maximum of time periods for simulation, optional</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    accpet_t : 2 by N ndarray. the empirical distribution of</span>
+<span class="sd">               unemployment duration when f or g generates offers.</span>
+<span class="sd">    accept_π : 2 by N ndarray. the empirical distribution of</span>
+<span class="sd">               π at the time of employment when f or g generates offers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">accept_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+    <span class="n">accept_π</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+
+    <span class="c1"># f or g generates offers</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">),</span> <span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">)]):</span>
+        <span class="c1"># update each agent</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+
+            <span class="c1"># initial priori</span>
+            <span class="n">π</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+
+                <span class="c1"># Draw random wage</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+                <span class="n">lw</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">)</span> <span class="o">/</span> <span class="n">p</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">)</span>
+                <span class="n">π</span> <span class="o">=</span> <span class="n">π</span> <span class="o">*</span> <span class="n">lw</span> <span class="o">/</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="n">lw</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span>
+
+                <span class="c1"># move to next agent if accepts</span>
+                <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="n">interp</span><span class="p">(</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
+                    <span class="k">break</span>
+
+            <span class="c1"># record the unemployment duration</span>
+            <span class="c1"># and π at the time of acceptance</span>
+            <span class="n">accept_t</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+            <span class="n">accept_π</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">π</span>
+
+    <span class="k">return</span> <span class="n">accept_t</span><span class="p">,</span> <span class="n">accept_π</span>
+
+<span class="k">def</span> <span class="nf">cumfreq_x</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A helper function for calculating the x grids of</span>
+<span class="sd">    the cumulative frequency histogram.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cumcount</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">cumcount</span>
+    <span class="n">lowerlimit</span><span class="p">,</span> <span class="n">binsize</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">lowerlimit</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">binsize</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">lowerlimit</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">binsize</span><span class="o">*</span><span class="n">cumcount</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">cumcount</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we define a wrapper function for analyzing job search models with
+learning under different parameterizations.</p>
+<p>The wrapper takes parameters of beta distributions and  unemployment
+compensation as inputs  and then displays various things we want to know
+to interpret the solution of our search model.</p>
+<p>In addition, it computes empirical cumulative distributions of two key objects.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">job_search_example</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">0.3</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given the parameters that specify F and G distributions,</span>
+<span class="sd">    calculate and display the rejection and acceptance area,</span>
+<span class="sd">    the evolution of belief π, and the probability of accepting</span>
+<span class="sd">    an offer at different π level, and simulate and calculate</span>
+<span class="sd">    the empirical cumulative distribution of the duration of</span>
+<span class="sd">    unemployment and π at the time the worker accepts the offer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># construct a search problem</span>
+    <span class="n">sp</span> <span class="o">=</span> <span class="n">SearchProblem</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="n">F_b</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="n">G_b</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">g</span>
+    <span class="n">π_grid</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span>
+
+    <span class="c1"># Solve for reservation wage</span>
+    <span class="n">w_bar</span> <span class="o">=</span> <span class="n">solve_wbar</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># l(w) = f(w) / g(w)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="c1"># objective function for solving l(w) = 1</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">l</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.</span>
+
+    <span class="c1"># the mode of beta distribution</span>
+    <span class="c1"># use this to divide w into two intervals for root finding</span>
+    <span class="n">G_mode</span> <span class="o">=</span> <span class="p">(</span><span class="n">G_a</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">G_a</span> <span class="o">+</span> <span class="n">G_b</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">roots</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">roots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">root_scalar</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">bracket</span><span class="o">=</span><span class="p">[</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">G_mode</span><span class="p">])</span><span class="o">.</span><span class="n">root</span>
+    <span class="n">roots</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">root_scalar</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">bracket</span><span class="o">=</span><span class="p">[</span><span class="n">G_mode</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-10</span><span class="p">])</span><span class="o">.</span><span class="n">root</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+
+    <span class="c1"># part 1: display the details of the model settings and some results</span>
+    <span class="n">w_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-12</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-12</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">l</span><span class="p">(</span><span class="n">w_grid</span><span class="p">),</span> <span class="n">w_grid</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$l$&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">])</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;$l(w)=f(w)/g(w)$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;$w$&#39;</span><span class="p">)</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">w_max</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;reject&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;accept&#39;</span><span class="p">)</span>
+
+    <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">)</span>
+    <span class="n">Π</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">)</span>
+
+    <span class="n">ΔW</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">Π</span><span class="p">)))</span>
+    <span class="n">ΔΠ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">Π</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">π</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Π</span><span class="p">):</span>
+            <span class="n">lw</span> <span class="o">=</span> <span class="n">l</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+            <span class="n">ΔΠ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">π</span> <span class="o">*</span> <span class="p">(</span><span class="n">lw</span> <span class="o">/</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="n">lw</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">q</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">Π</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">ΔΠ</span><span class="p">,</span> <span class="n">ΔW</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;$\pi$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;$w$&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x_grid</span><span class="p">),</span> <span class="n">x_grid</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$f$&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">x_grid</span><span class="p">),</span> <span class="n">x_grid</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$g$&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">roots</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;$f(w), g(w)$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;$w$&#39;</span><span class="p">)</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">beta</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">w_bar</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$f$&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">π_grid</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">beta</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">w_bar</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$g$&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;$\pi$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;$\mathbb</span><span class="si">{P}</span><span class="s1">\{w &gt; \overline</span><span class="si">{w}</span><span class="s1"> (\pi)\}$&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1"># part 2: simulate empirical cumulative distribution</span>
+    <span class="n">accept_t</span><span class="p">,</span> <span class="n">accept_π</span> <span class="o">=</span> <span class="n">empirical_dist</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">accept_t</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">cfq_t_F</span> <span class="o">=</span> <span class="n">cumfreq</span><span class="p">(</span><span class="n">accept_t</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">numbins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">cfq_π_F</span> <span class="o">=</span> <span class="n">cumfreq</span><span class="p">(</span><span class="n">accept_π</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">numbins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="n">cfq_t_G</span> <span class="o">=</span> <span class="n">cumfreq</span><span class="p">(</span><span class="n">accept_t</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">numbins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">cfq_π_G</span> <span class="o">=</span> <span class="n">cumfreq</span><span class="p">(</span><span class="n">accept_π</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">numbins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cumfreq_x</span><span class="p">(</span><span class="n">cfq_t_F</span><span class="p">),</span> <span class="n">cfq_t_F</span><span class="o">.</span><span class="n">cumcount</span><span class="o">/</span><span class="n">N</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;f generates&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cumfreq_x</span><span class="p">(</span><span class="n">cfq_t_G</span><span class="p">),</span> <span class="n">cfq_t_G</span><span class="o">.</span><span class="n">cumcount</span><span class="o">/</span><span class="n">N</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;g generates&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s1">&#39;CDF of duration of unemployment&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Prob(time)&#39;</span><span class="p">)</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cumfreq_x</span><span class="p">(</span><span class="n">cfq_π_F</span><span class="p">),</span> <span class="n">cfq_π_F</span><span class="o">.</span><span class="n">cumcount</span><span class="o">/</span><span class="n">N</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;f generates&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cumfreq_x</span><span class="p">(</span><span class="n">cfq_π_G</span><span class="p">),</span> <span class="n">cfq_π_G</span><span class="o">.</span><span class="n">cumcount</span><span class="o">/</span><span class="n">N</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;g generates&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s1">&#39;CDF of π at time worker accepts wage and leaves unemployment&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;π&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Prob(π)&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now provide some examples that provide insights about how the model works.</p>
+</div>
+<div class="section" id="examples">
+<h2><a class="toc-backref" href="#id19"><span class="section-number">36.12. </span>Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="example-1-baseline">
+<h3><span class="section-number">36.12.1. </span>Example 1 (Baseline)<a class="headerlink" href="#example-1-baseline" title="Permalink to this headline">¶</a></h3>
+<p><span class="math notranslate nohighlight">\(F\)</span> ~ Beta(1, 1), <span class="math notranslate nohighlight">\(G\)</span> ~ Beta(3, 1.2), <span class="math notranslate nohighlight">\(c\)</span>=0.3.</p>
+<p>In the graphs below, the red arrows in the upper right figure show how <span class="math notranslate nohighlight">\(\pi_t\)</span> is updated in response to the
+new information <span class="math notranslate nohighlight">\(w_t\)</span>.</p>
+<p>Recall the following formula from <a class="reference external" href="https://python.quantecon.org/exchangeable.html">this lecture</a></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\frac{\pi_{t+1}}{\pi_{t}}=\frac{l\left(w_{t+1}\right)}{\pi_{t}l\left(w_{t+1}\right)+\left(1-\pi_{t}\right)}\begin{cases}
+&gt;1 &amp; \text{if }l\left(w_{t+1}\right)&gt;1\\
+\leq1 &amp; \text{if }l\left(w_{t+1}\right)\leq1
+\end{cases}
+\end{split}\]</div>
+<p>The formula implies that  the direction of motion of <span class="math notranslate nohighlight">\(\pi_t\)</span> is determined by the relationship between
+<span class="math notranslate nohighlight">\(l(w_t)\)</span> and <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>The magnitude is small if</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(l(w)\)</span> is close to <span class="math notranslate nohighlight">\(1\)</span>, which means the new <span class="math notranslate nohighlight">\(w\)</span> is
+not very informative for distinguishing two distributions,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\pi_{t-1}\)</span> is close to either <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>, which
+means the priori is strong.</p></li>
+</ul>
+<p>Will an unemployed  worker accept an offer earlier or
+not, when the actual ruling distribution is <span class="math notranslate nohighlight">\(g\)</span> instead of
+<span class="math notranslate nohighlight">\(f\)</span>?</p>
+<p>Two countervailing effects are at work.</p>
+<ul class="simple">
+<li><p>if f generates successive wage offers, then <span class="math notranslate nohighlight">\(w\)</span> is more likely to be low, but
+<span class="math notranslate nohighlight">\(\pi\)</span> is moving up toward to 1, which lowers the reservation wage,
+i.e., the worker becomes  less selective the longer he or she remains unemployed.</p></li>
+<li><p>if g generates wage offers, then <span class="math notranslate nohighlight">\(w\)</span> is more likely to be high, but
+<span class="math notranslate nohighlight">\(\pi\)</span> is moving downward toward 0, increasing the reservation wage, i.e., the worker becomes  more selective
+the longer he or she remains unemployed.</p></li>
+</ul>
+<p>Quantitatively, the lower right figure sheds light on which effect dominates in this example.</p>
+<p>It shows the probability that a previously unemployed  worker
+accepts an offer at different values of <span class="math notranslate nohighlight">\(\pi\)</span> when <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> generates
+wage offers.</p>
+<p>That graph shows that for the particular <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> in this example, the
+worker is always more likely to accept an offer when <span class="math notranslate nohighlight">\(f\)</span> generates the data  even when <span class="math notranslate nohighlight">\(\pi\)</span> is close to zero so
+that  the worker believes the true distribution is <span class="math notranslate nohighlight">\(g\)</span> and therefore is relatively
+more selective.</p>
+<p>The empirical cumulative distribution of the duration of
+unemployment verifies our conjecture.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job_search_example</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="example-2">
+<h3><span class="section-number">36.12.2. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h3>
+<p><span class="math notranslate nohighlight">\(F\)</span> ~ Beta(1, 1), <span class="math notranslate nohighlight">\(G\)</span> ~ Beta(1.2, 1.2), <span class="math notranslate nohighlight">\(c\)</span>=0.3.</p>
+<p>Now <span class="math notranslate nohighlight">\(G\)</span> has the same mean as <span class="math notranslate nohighlight">\(F\)</span> with a smaller variance.</p>
+<p>Since the unemployment compensation <span class="math notranslate nohighlight">\(c\)</span> serves as a lower bound
+for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is now an “inferior” distribution to
+<span class="math notranslate nohighlight">\(F\)</span>.</p>
+<p>Consequently, we observe that the optimal policy
+<span class="math notranslate nohighlight">\(\overline{w}(\pi)\)</span> is increasing in <span class="math notranslate nohighlight">\(\pi\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job_search_example</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="example-3">
+<h3><span class="section-number">36.12.3. </span>Example 3<a class="headerlink" href="#example-3" title="Permalink to this headline">¶</a></h3>
+<p><span class="math notranslate nohighlight">\(F\)</span> ~ Beta(1, 1), <span class="math notranslate nohighlight">\(G\)</span> ~ Beta(2, 2), <span class="math notranslate nohighlight">\(c\)</span>=0.3.</p>
+<p>If the variance of <span class="math notranslate nohighlight">\(G\)</span> is smaller, we observe in the result that
+<span class="math notranslate nohighlight">\(G\)</span> is even more “inferior” and the slope of
+<span class="math notranslate nohighlight">\(\overline{w}(\pi)\)</span> is larger.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job_search_example</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="example-4">
+<h3><span class="section-number">36.12.4. </span>Example 4<a class="headerlink" href="#example-4" title="Permalink to this headline">¶</a></h3>
+<p><span class="math notranslate nohighlight">\(F\)</span> ~ Beta(1, 1), <span class="math notranslate nohighlight">\(G\)</span> ~ Beta(3, 1.2), and <span class="math notranslate nohighlight">\(c\)</span>=0.8.</p>
+<p>In this example, we keep the parameters of beta distributions to be the
+same with the baseline case but increase the unemployment compensation
+<span class="math notranslate nohighlight">\(c\)</span>.</p>
+<p>Comparing outcomes to the baseline case (example 1) in which
+unemployment compensation if low (<span class="math notranslate nohighlight">\(c\)</span>=0.3), now the worker can
+afford a longer  learning period.</p>
+<p>As a result, the worker tends to accept
+wage offers much later.</p>
+<p>Furthermore, at the time of accepting employment, the belief
+<span class="math notranslate nohighlight">\(\pi\)</span> is closer to either <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>That means that
+the worker has a better  idea about what the true distribution is
+when he eventually chooses to accept a wage offer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job_search_example</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="example-5">
+<h3><span class="section-number">36.12.5. </span>Example 5<a class="headerlink" href="#example-5" title="Permalink to this headline">¶</a></h3>
+<p><span class="math notranslate nohighlight">\(F\)</span> ~ Beta(1, 1), <span class="math notranslate nohighlight">\(G\)</span> ~ Beta(3, 1.2), and <span class="math notranslate nohighlight">\(c\)</span>=0.1.</p>
+<p>As expected, a smaller <span class="math notranslate nohighlight">\(c\)</span> makes an unemployed worker  accept wage offers earlier
+after having acquired less information about the wage distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">job_search_example</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   6. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   7. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   8. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   10. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   11. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   12. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   13. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   14. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   15. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   16. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   17. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   18. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   19. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   20. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   21. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   22. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   23. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   24. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   25. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   26. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   27. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   28. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   29. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   30. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   31. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   32. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   33. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   34. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   35. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   36. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   37. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   38. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   39. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   40. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   41. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   42. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   43. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   44. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   45. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   46. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   47. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   48. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   49. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   50. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   51. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   52. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   53. Asset Pricing with Incomplete Markets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   54. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   55. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   56. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   57. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   58. References
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="_notebooks/odu.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Launch Notebook"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/odu.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
+                    <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lecture-python.myst/lectures/odu.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+
+        </div> <!-- .toolbar -->
+
+    </div> <!-- .wrapper-->
+
+<script src="_static/plugins.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+
+    <script src=[></script>
+
+    <script src=]></script>
+
+<script src="_static/scripts.js"></script>
+<script>
+    feather.replace()
+    tippy('[data-tippy-content]');
+</script>
+
+
+  </body>
+</html>

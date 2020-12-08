@@ -1,0 +1,3109 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>54. Pandas for Panel Data &#8212; Quantitative Economics with Python</title>
+    <link rel="stylesheet" href="_static/quantecon-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/pandas_panel.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="55. Linear Regression in Python" href="ols.html" />
+    <link rel="prev" title="53. Asset Pricing with Incomplete Markets" href="harrison_kreps.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Pandas for Panel Data"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Pandas for Panel Data" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/pandas_panel.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+
+<meta name="theme-color" content="#ffffff" />
+
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page">
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+
+                            <ul class="nav section-nav flex-column">
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#overview" class="nav-link">Overview</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#slicing-and-reshaping-data" class="nav-link">Slicing and Reshaping Data</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#merging-dataframes-and-filling-nans" class="nav-link">Merging Dataframes and Filling NaNs</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#grouping-and-summarizing-data" class="nav-link">Grouping and Summarizing Data</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#final-remarks" class="nav-link">Final Remarks</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#exercises" class="nav-link">Exercises</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#exercise-1" class="nav-link">Exercise 1</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#exercise-2" class="nav-link">Exercise 2</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#solutions" class="nav-link">Solutions</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#id1" class="nav-link">Exercise 1</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#id2" class="nav-link">Exercise 2</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                            </ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">Pandas for Panel Data</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div><div class="section" id="pandas-for-panel-data">
+<h1><a class="toc-backref" href="#id3"><span class="section-number">54. </span><span class="target" id="index-0"></span>Pandas for Panel Data</a><a class="headerlink" href="#pandas-for-panel-data" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<span id="index-1"></span><p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pandas-for-panel-data" id="id3">Pandas for Panel Data</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id4">Overview</a></p></li>
+<li><p><a class="reference internal" href="#slicing-and-reshaping-data" id="id5">Slicing and Reshaping Data</a></p></li>
+<li><p><a class="reference internal" href="#merging-dataframes-and-filling-nans" id="id6">Merging Dataframes and Filling NaNs</a></p></li>
+<li><p><a class="reference internal" href="#grouping-and-summarizing-data" id="id7">Grouping and Summarizing Data</a></p></li>
+<li><p><a class="reference internal" href="#final-remarks" id="id8">Final Remarks</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id9">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#solutions" id="id10">Solutions</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">54.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>In an <a class="reference external" href="https://python-programming.quantecon.org/pandas.html">earlier lecture on pandas</a>, we looked at working with simple data sets.</p>
+<p>Econometricians often need to work with more complex data sets, such as panels.</p>
+<p>Common tasks include</p>
+<ul class="simple">
+<li><p>Importing data, cleaning it and reshaping it across several axes.</p></li>
+<li><p>Selecting a time series or cross-section from a panel.</p></li>
+<li><p>Grouping and summarizing data.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">pandas</span></code> (derived from ‘panel’ and ‘data’) contains powerful and
+easy-to-use tools for solving exactly these kinds of problems.</p>
+<p>In what follows, we will use a panel data set of real minimum wages from the OECD to create:</p>
+<ul class="simple">
+<li><p>summary statistics over multiple dimensions of our data</p></li>
+<li><p>a time series of the average minimum wage of countries in the dataset</p></li>
+<li><p>kernel density estimates of wages by continent</p></li>
+</ul>
+<p>We will begin by reading in our long format panel data from a CSV file and
+reshaping the resulting <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> with <code class="docutils literal notranslate"><span class="pre">pivot_table</span></code> to build a <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code>.</p>
+<p>Additional detail will be added to our <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> using pandas’
+<code class="docutils literal notranslate"><span class="pre">merge</span></code> function, and data will be summarized with the <code class="docutils literal notranslate"><span class="pre">groupby</span></code>
+function.</p>
+</div>
+<div class="section" id="slicing-and-reshaping-data">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">54.2. </span>Slicing and Reshaping Data</a><a class="headerlink" href="#slicing-and-reshaping-data" title="Permalink to this headline">¶</a></h2>
+<p>We will read in a dataset from the OECD of real minimum wages in 32
+countries and assign it to <code class="docutils literal notranslate"><span class="pre">realwage</span></code>.</p>
+<p>The dataset can be accessed with the following link:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url1</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/QuantEcon/lecture-python/master/source/_static/lecture_specific/pandas_panel/realwage.csv&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Display 6 columns for viewing purposes</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+
+<span class="c1"># Reduce decimal points to 2</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span>
+
+<span class="n">realwage</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s have a look at what we’ve got to work with</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">realwage</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>  <span class="c1"># Show first 5 rows</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>Time</th>
+      <th>Country</th>
+      <th>Series</th>
+      <th>Pay period</th>
+      <th>value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>2006-01-01</td>
+      <td>Ireland</td>
+      <td>In 2015 constant prices at 2015 USD PPPs</td>
+      <td>Annual</td>
+      <td>17,132.44</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2007-01-01</td>
+      <td>Ireland</td>
+      <td>In 2015 constant prices at 2015 USD PPPs</td>
+      <td>Annual</td>
+      <td>18,100.92</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>2008-01-01</td>
+      <td>Ireland</td>
+      <td>In 2015 constant prices at 2015 USD PPPs</td>
+      <td>Annual</td>
+      <td>17,747.41</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>2009-01-01</td>
+      <td>Ireland</td>
+      <td>In 2015 constant prices at 2015 USD PPPs</td>
+      <td>Annual</td>
+      <td>18,580.14</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>2010-01-01</td>
+      <td>Ireland</td>
+      <td>In 2015 constant prices at 2015 USD PPPs</td>
+      <td>Annual</td>
+      <td>18,755.83</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The data is currently in long format, which is difficult to analyze when there are several dimensions to the data.</p>
+<p>We will use <code class="docutils literal notranslate"><span class="pre">pivot_table</span></code> to create a wide format panel, with a <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> to handle higher dimensional data.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pivot_table</span></code> arguments should specify the data (values), the index, and the columns we want in our resulting dataframe.</p>
+<p>By passing a list in columns, we can create a <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> in our column axis</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">realwage</span> <span class="o">=</span> <span class="n">realwage</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span>
+                                <span class="n">index</span><span class="o">=</span><span class="s1">&#39;Time&#39;</span><span class="p">,</span>
+                                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;Series&#39;</span><span class="p">,</span> <span class="s1">&#39;Pay period&#39;</span><span class="p">])</span>
+<span class="n">realwage</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>Country</th>
+      <th colspan="3" halign="left">Australia</th>
+      <th>...</th>
+      <th colspan="3" halign="left">United States</th>
+    </tr>
+    <tr>
+      <th>Series</th>
+      <th colspan="2" halign="left">In 2015 constant prices at 2015 USD PPPs</th>
+      <th>In 2015 constant prices at 2015 USD exchange rates</th>
+      <th>...</th>
+      <th>In 2015 constant prices at 2015 USD PPPs</th>
+      <th colspan="2" halign="left">In 2015 constant prices at 2015 USD exchange rates</th>
+    </tr>
+    <tr>
+      <th>Pay period</th>
+      <th>Annual</th>
+      <th>Hourly</th>
+      <th>Annual</th>
+      <th>...</th>
+      <th>Hourly</th>
+      <th>Annual</th>
+      <th>Hourly</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2006-01-01</th>
+      <td>20,410.65</td>
+      <td>10.33</td>
+      <td>23,826.64</td>
+      <td>...</td>
+      <td>6.05</td>
+      <td>12,594.40</td>
+      <td>6.05</td>
+    </tr>
+    <tr>
+      <th>2007-01-01</th>
+      <td>21,087.57</td>
+      <td>10.67</td>
+      <td>24,616.84</td>
+      <td>...</td>
+      <td>6.24</td>
+      <td>12,974.40</td>
+      <td>6.24</td>
+    </tr>
+    <tr>
+      <th>2008-01-01</th>
+      <td>20,718.24</td>
+      <td>10.48</td>
+      <td>24,185.70</td>
+      <td>...</td>
+      <td>6.78</td>
+      <td>14,097.56</td>
+      <td>6.78</td>
+    </tr>
+    <tr>
+      <th>2009-01-01</th>
+      <td>20,984.77</td>
+      <td>10.62</td>
+      <td>24,496.84</td>
+      <td>...</td>
+      <td>7.58</td>
+      <td>15,756.42</td>
+      <td>7.58</td>
+    </tr>
+    <tr>
+      <th>2010-01-01</th>
+      <td>20,879.33</td>
+      <td>10.57</td>
+      <td>24,373.76</td>
+      <td>...</td>
+      <td>7.88</td>
+      <td>16,391.31</td>
+      <td>7.88</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 128 columns</p>
+</div></div></div>
+</div>
+<p>To more easily filter our time series data, later on, we will convert the index into a <code class="docutils literal notranslate"><span class="pre">DateTimeIndex</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">realwage</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">realwage</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">realwage</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas.core.indexes.datetimes.DatetimeIndex
+</pre></div>
+</div>
+</div>
+</div>
+<p>The columns contain multiple levels of indexing, known as a
+<code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code>, with levels being ordered hierarchically (Country &gt;
+Series &gt; Pay period).</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> is the simplest and most flexible way to manage panel
+data in pandas</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">realwage</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas.core.indexes.multi.MultiIndex
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">realwage</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">names</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FrozenList([&#39;Country&#39;, &#39;Series&#39;, &#39;Pay period&#39;])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Like before, we can select the country (the top level of our
+<code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code>)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">realwage</span><span class="p">[</span><span class="s1">&#39;United States&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>Series</th>
+      <th colspan="2" halign="left">In 2015 constant prices at 2015 USD PPPs</th>
+      <th colspan="2" halign="left">In 2015 constant prices at 2015 USD exchange rates</th>
+    </tr>
+    <tr>
+      <th>Pay period</th>
+      <th>Annual</th>
+      <th>Hourly</th>
+      <th>Annual</th>
+      <th>Hourly</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2006-01-01</th>
+      <td>12,594.40</td>
+      <td>6.05</td>
+      <td>12,594.40</td>
+      <td>6.05</td>
+    </tr>
+    <tr>
+      <th>2007-01-01</th>
+      <td>12,974.40</td>
+      <td>6.24</td>
+      <td>12,974.40</td>
+      <td>6.24</td>
+    </tr>
+    <tr>
+      <th>2008-01-01</th>
+      <td>14,097.56</td>
+      <td>6.78</td>
+      <td>14,097.56</td>
+      <td>6.78</td>
+    </tr>
+    <tr>
+      <th>2009-01-01</th>
+      <td>15,756.42</td>
+      <td>7.58</td>
+      <td>15,756.42</td>
+      <td>7.58</td>
+    </tr>
+    <tr>
+      <th>2010-01-01</th>
+      <td>16,391.31</td>
+      <td>7.88</td>
+      <td>16,391.31</td>
+      <td>7.88</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Stacking and unstacking levels of the <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> will be used
+throughout this lecture to reshape our dataframe into a format we need.</p>
+<p><code class="docutils literal notranslate"><span class="pre">.stack()</span></code> rotates the lowest level of the column <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> to
+the row index (<code class="docutils literal notranslate"><span class="pre">.unstack()</span></code> works in the opposite direction - try it
+out)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">realwage</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Country</th>
+      <th colspan="2" halign="left">Australia</th>
+      <th>Belgium</th>
+      <th>...</th>
+      <th>United Kingdom</th>
+      <th colspan="2" halign="left">United States</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>Series</th>
+      <th>In 2015 constant prices at 2015 USD PPPs</th>
+      <th>In 2015 constant prices at 2015 USD exchange rates</th>
+      <th>In 2015 constant prices at 2015 USD PPPs</th>
+      <th>...</th>
+      <th>In 2015 constant prices at 2015 USD exchange rates</th>
+      <th>In 2015 constant prices at 2015 USD PPPs</th>
+      <th>In 2015 constant prices at 2015 USD exchange rates</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th>Pay period</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">2006-01-01</th>
+      <th>Annual</th>
+      <td>20,410.65</td>
+      <td>23,826.64</td>
+      <td>21,042.28</td>
+      <td>...</td>
+      <td>20,376.32</td>
+      <td>12,594.40</td>
+      <td>12,594.40</td>
+    </tr>
+    <tr>
+      <th>Hourly</th>
+      <td>10.33</td>
+      <td>12.06</td>
+      <td>10.09</td>
+      <td>...</td>
+      <td>9.81</td>
+      <td>6.05</td>
+      <td>6.05</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">2007-01-01</th>
+      <th>Annual</th>
+      <td>21,087.57</td>
+      <td>24,616.84</td>
+      <td>21,310.05</td>
+      <td>...</td>
+      <td>20,954.13</td>
+      <td>12,974.40</td>
+      <td>12,974.40</td>
+    </tr>
+    <tr>
+      <th>Hourly</th>
+      <td>10.67</td>
+      <td>12.46</td>
+      <td>10.22</td>
+      <td>...</td>
+      <td>10.07</td>
+      <td>6.24</td>
+      <td>6.24</td>
+    </tr>
+    <tr>
+      <th>2008-01-01</th>
+      <th>Annual</th>
+      <td>20,718.24</td>
+      <td>24,185.70</td>
+      <td>21,416.96</td>
+      <td>...</td>
+      <td>20,902.87</td>
+      <td>14,097.56</td>
+      <td>14,097.56</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 64 columns</p>
+</div></div></div>
+</div>
+<p>We can also pass in an argument to select the level we would like to
+stack</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">realwage</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;Country&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Series</th>
+      <th colspan="2" halign="left">In 2015 constant prices at 2015 USD PPPs</th>
+      <th colspan="2" halign="left">In 2015 constant prices at 2015 USD exchange rates</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>Pay period</th>
+      <th>Annual</th>
+      <th>Hourly</th>
+      <th>Annual</th>
+      <th>Hourly</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th>Country</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">2006-01-01</th>
+      <th>Australia</th>
+      <td>20,410.65</td>
+      <td>10.33</td>
+      <td>23,826.64</td>
+      <td>12.06</td>
+    </tr>
+    <tr>
+      <th>Belgium</th>
+      <td>21,042.28</td>
+      <td>10.09</td>
+      <td>20,228.74</td>
+      <td>9.70</td>
+    </tr>
+    <tr>
+      <th>Brazil</th>
+      <td>3,310.51</td>
+      <td>1.41</td>
+      <td>2,032.87</td>
+      <td>0.87</td>
+    </tr>
+    <tr>
+      <th>Canada</th>
+      <td>13,649.69</td>
+      <td>6.56</td>
+      <td>14,335.12</td>
+      <td>6.89</td>
+    </tr>
+    <tr>
+      <th>Chile</th>
+      <td>5,201.65</td>
+      <td>2.22</td>
+      <td>3,333.76</td>
+      <td>1.42</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Using a <code class="docutils literal notranslate"><span class="pre">DatetimeIndex</span></code> makes it easy to select a particular time
+period.</p>
+<p>Selecting one year and stacking the two lower levels of the
+<code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> creates a cross-section of our panel data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">realwage</span><span class="p">[</span><span class="s1">&#39;2015&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th colspan="4" halign="left">2015-01-01</th>
+    </tr>
+    <tr>
+      <th>Series</th>
+      <th colspan="2" halign="left">In 2015 constant prices at 2015 USD PPPs</th>
+      <th colspan="2" halign="left">In 2015 constant prices at 2015 USD exchange rates</th>
+    </tr>
+    <tr>
+      <th>Pay period</th>
+      <th>Annual</th>
+      <th>Hourly</th>
+      <th>Annual</th>
+      <th>Hourly</th>
+    </tr>
+    <tr>
+      <th>Country</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Australia</th>
+      <td>21,715.53</td>
+      <td>10.99</td>
+      <td>25,349.90</td>
+      <td>12.83</td>
+    </tr>
+    <tr>
+      <th>Belgium</th>
+      <td>21,588.12</td>
+      <td>10.35</td>
+      <td>20,753.48</td>
+      <td>9.95</td>
+    </tr>
+    <tr>
+      <th>Brazil</th>
+      <td>4,628.63</td>
+      <td>2.00</td>
+      <td>2,842.28</td>
+      <td>1.21</td>
+    </tr>
+    <tr>
+      <th>Canada</th>
+      <td>16,536.83</td>
+      <td>7.95</td>
+      <td>17,367.24</td>
+      <td>8.35</td>
+    </tr>
+    <tr>
+      <th>Chile</th>
+      <td>6,633.56</td>
+      <td>2.80</td>
+      <td>4,251.49</td>
+      <td>1.81</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>For the rest of lecture, we will work with a dataframe of the hourly
+real minimum wages across countries and time, measured in 2015 US
+dollars.</p>
+<p>To create our filtered dataframe (<code class="docutils literal notranslate"><span class="pre">realwage_f</span></code>), we can use the <code class="docutils literal notranslate"><span class="pre">xs</span></code>
+method to select values at lower levels in the multiindex, while keeping
+the higher levels (countries in this case)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">realwage_f</span> <span class="o">=</span> <span class="n">realwage</span><span class="o">.</span><span class="n">xs</span><span class="p">((</span><span class="s1">&#39;Hourly&#39;</span><span class="p">,</span> <span class="s1">&#39;In 2015 constant prices at 2015 USD exchange rates&#39;</span><span class="p">),</span>
+                         <span class="n">level</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Pay period&#39;</span><span class="p">,</span> <span class="s1">&#39;Series&#39;</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">realwage_f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Country</th>
+      <th>Australia</th>
+      <th>Belgium</th>
+      <th>Brazil</th>
+      <th>...</th>
+      <th>Turkey</th>
+      <th>United Kingdom</th>
+      <th>United States</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2006-01-01</th>
+      <td>12.06</td>
+      <td>9.70</td>
+      <td>0.87</td>
+      <td>...</td>
+      <td>2.27</td>
+      <td>9.81</td>
+      <td>6.05</td>
+    </tr>
+    <tr>
+      <th>2007-01-01</th>
+      <td>12.46</td>
+      <td>9.82</td>
+      <td>0.92</td>
+      <td>...</td>
+      <td>2.26</td>
+      <td>10.07</td>
+      <td>6.24</td>
+    </tr>
+    <tr>
+      <th>2008-01-01</th>
+      <td>12.24</td>
+      <td>9.87</td>
+      <td>0.96</td>
+      <td>...</td>
+      <td>2.22</td>
+      <td>10.04</td>
+      <td>6.78</td>
+    </tr>
+    <tr>
+      <th>2009-01-01</th>
+      <td>12.40</td>
+      <td>10.21</td>
+      <td>1.03</td>
+      <td>...</td>
+      <td>2.28</td>
+      <td>10.15</td>
+      <td>7.58</td>
+    </tr>
+    <tr>
+      <th>2010-01-01</th>
+      <td>12.34</td>
+      <td>10.05</td>
+      <td>1.08</td>
+      <td>...</td>
+      <td>2.30</td>
+      <td>9.96</td>
+      <td>7.88</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 32 columns</p>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="merging-dataframes-and-filling-nans">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">54.3. </span>Merging Dataframes and Filling NaNs</a><a class="headerlink" href="#merging-dataframes-and-filling-nans" title="Permalink to this headline">¶</a></h2>
+<p>Similar to relational databases like SQL, pandas has built in methods to
+merge datasets together.</p>
+<p>Using country information from
+<a class="reference external" href="https://www.worlddata.info/downloads/">WorldData.info</a>, we’ll add
+the continent of each country to <code class="docutils literal notranslate"><span class="pre">realwage_f</span></code> with the <code class="docutils literal notranslate"><span class="pre">merge</span></code>
+function.</p>
+<p>The dataset can be accessed with the following link:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url2</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/QuantEcon/lecture-python/master/source/_static/lecture_specific/pandas_panel/countries.csv&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">worlddata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url2</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+<span class="n">worlddata</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Country (en)</th>
+      <th>Country (de)</th>
+      <th>Country (local)</th>
+      <th>...</th>
+      <th>Deathrate</th>
+      <th>Life expectancy</th>
+      <th>Url</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Afghanistan</td>
+      <td>Afghanistan</td>
+      <td>Afganistan/Afqanestan</td>
+      <td>...</td>
+      <td>13.70</td>
+      <td>51.30</td>
+      <td>https://www.laenderdaten.info/Asien/Afghanista...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Egypt</td>
+      <td>Ägypten</td>
+      <td>Misr</td>
+      <td>...</td>
+      <td>4.70</td>
+      <td>72.70</td>
+      <td>https://www.laenderdaten.info/Afrika/Aegypten/...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Åland Islands</td>
+      <td>Ålandinseln</td>
+      <td>Åland</td>
+      <td>...</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>https://www.laenderdaten.info/Europa/Aland/ind...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Albania</td>
+      <td>Albanien</td>
+      <td>Shqipëria</td>
+      <td>...</td>
+      <td>6.70</td>
+      <td>78.30</td>
+      <td>https://www.laenderdaten.info/Europa/Albanien/...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Algeria</td>
+      <td>Algerien</td>
+      <td>Al-Jaza’ir/Algérie</td>
+      <td>...</td>
+      <td>4.30</td>
+      <td>76.80</td>
+      <td>https://www.laenderdaten.info/Afrika/Algerien/...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 17 columns</p>
+</div></div></div>
+</div>
+<p>First, we’ll select just the country and continent variables from
+<code class="docutils literal notranslate"><span class="pre">worlddata</span></code> and rename the column to ‘Country’</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">worlddata</span> <span class="o">=</span> <span class="n">worlddata</span><span class="p">[[</span><span class="s1">&#39;Country (en)&#39;</span><span class="p">,</span> <span class="s1">&#39;Continent&#39;</span><span class="p">]]</span>
+<span class="n">worlddata</span> <span class="o">=</span> <span class="n">worlddata</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Country (en)&#39;</span><span class="p">:</span> <span class="s1">&#39;Country&#39;</span><span class="p">})</span>
+<span class="n">worlddata</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Country</th>
+      <th>Continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Egypt</td>
+      <td>Africa</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Åland Islands</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Albania</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Algeria</td>
+      <td>Africa</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We want to merge our new dataframe, <code class="docutils literal notranslate"><span class="pre">worlddata</span></code>, with <code class="docutils literal notranslate"><span class="pre">realwage_f</span></code>.</p>
+<p>The pandas <code class="docutils literal notranslate"><span class="pre">merge</span></code> function allows dataframes to be joined together by
+rows.</p>
+<p>Our dataframes will be merged using country names, requiring us to use
+the transpose of <code class="docutils literal notranslate"><span class="pre">realwage_f</span></code> so that rows correspond to country names
+in both dataframes</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">realwage_f</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Time</th>
+      <th>2006-01-01</th>
+      <th>2007-01-01</th>
+      <th>2008-01-01</th>
+      <th>...</th>
+      <th>2014-01-01</th>
+      <th>2015-01-01</th>
+      <th>2016-01-01</th>
+    </tr>
+    <tr>
+      <th>Country</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Australia</th>
+      <td>12.06</td>
+      <td>12.46</td>
+      <td>12.24</td>
+      <td>...</td>
+      <td>12.67</td>
+      <td>12.83</td>
+      <td>12.98</td>
+    </tr>
+    <tr>
+      <th>Belgium</th>
+      <td>9.70</td>
+      <td>9.82</td>
+      <td>9.87</td>
+      <td>...</td>
+      <td>10.01</td>
+      <td>9.95</td>
+      <td>9.76</td>
+    </tr>
+    <tr>
+      <th>Brazil</th>
+      <td>0.87</td>
+      <td>0.92</td>
+      <td>0.96</td>
+      <td>...</td>
+      <td>1.21</td>
+      <td>1.21</td>
+      <td>1.24</td>
+    </tr>
+    <tr>
+      <th>Canada</th>
+      <td>6.89</td>
+      <td>6.96</td>
+      <td>7.24</td>
+      <td>...</td>
+      <td>8.22</td>
+      <td>8.35</td>
+      <td>8.48</td>
+    </tr>
+    <tr>
+      <th>Chile</th>
+      <td>1.42</td>
+      <td>1.45</td>
+      <td>1.44</td>
+      <td>...</td>
+      <td>1.76</td>
+      <td>1.81</td>
+      <td>1.91</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 11 columns</p>
+</div></div></div>
+</div>
+<p>We can use either left, right, inner, or outer join to merge our
+datasets:</p>
+<ul class="simple">
+<li><p>left join includes only countries from the left dataset</p></li>
+<li><p>right join includes only countries from the right dataset</p></li>
+<li><p>outer join includes countries that are in either the left and right datasets</p></li>
+<li><p>inner join includes only countries common to both the left and right datasets</p></li>
+</ul>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">merge</span></code> will use an inner join.</p>
+<p>Here we will pass <code class="docutils literal notranslate"><span class="pre">how='left'</span></code> to keep all countries in
+<code class="docutils literal notranslate"><span class="pre">realwage_f</span></code>, but discard countries in <code class="docutils literal notranslate"><span class="pre">worlddata</span></code> that do not have
+a corresponding data entry <code class="docutils literal notranslate"><span class="pre">realwage_f</span></code>.</p>
+<p>This is illustrated by the red shading in the following diagram</p>
+<div class="figure align-default">
+<img alt="_images/venn_diag.png" src="_images/venn_diag.png" />
+</div>
+<p>We will also need to specify where the country name is located in each
+dataframe, which will be the <code class="docutils literal notranslate"><span class="pre">key</span></code> that is used to merge the
+dataframes ‘on’.</p>
+<p>Our ‘left’ dataframe (<code class="docutils literal notranslate"><span class="pre">realwage_f.transpose()</span></code>) contains countries in
+the index, so we set <code class="docutils literal notranslate"><span class="pre">left_index=True</span></code>.</p>
+<p>Our ‘right’ dataframe (<code class="docutils literal notranslate"><span class="pre">worlddata</span></code>) contains countries in the
+‘Country’ column, so we set <code class="docutils literal notranslate"><span class="pre">right_on='Country'</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">realwage_f</span><span class="o">.</span><span class="n">transpose</span><span class="p">(),</span> <span class="n">worlddata</span><span class="p">,</span>
+                  <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;Country&#39;</span><span class="p">)</span>
+<span class="n">merged</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>2006-01-01 00:00:00</th>
+      <th>2007-01-01 00:00:00</th>
+      <th>2008-01-01 00:00:00</th>
+      <th>...</th>
+      <th>2016-01-01 00:00:00</th>
+      <th>Country</th>
+      <th>Continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>17.00</th>
+      <td>12.06</td>
+      <td>12.46</td>
+      <td>12.24</td>
+      <td>...</td>
+      <td>12.98</td>
+      <td>Australia</td>
+      <td>Australia</td>
+    </tr>
+    <tr>
+      <th>23.00</th>
+      <td>9.70</td>
+      <td>9.82</td>
+      <td>9.87</td>
+      <td>...</td>
+      <td>9.76</td>
+      <td>Belgium</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>32.00</th>
+      <td>0.87</td>
+      <td>0.92</td>
+      <td>0.96</td>
+      <td>...</td>
+      <td>1.24</td>
+      <td>Brazil</td>
+      <td>South America</td>
+    </tr>
+    <tr>
+      <th>100.00</th>
+      <td>6.89</td>
+      <td>6.96</td>
+      <td>7.24</td>
+      <td>...</td>
+      <td>8.48</td>
+      <td>Canada</td>
+      <td>North America</td>
+    </tr>
+    <tr>
+      <th>38.00</th>
+      <td>1.42</td>
+      <td>1.45</td>
+      <td>1.44</td>
+      <td>...</td>
+      <td>1.91</td>
+      <td>Chile</td>
+      <td>South America</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 13 columns</p>
+</div></div></div>
+</div>
+<p>Countries that appeared in <code class="docutils literal notranslate"><span class="pre">realwage_f</span></code> but not in <code class="docutils literal notranslate"><span class="pre">worlddata</span></code> will
+have <code class="docutils literal notranslate"><span class="pre">NaN</span></code> in the Continent column.</p>
+<p>To check whether this has occurred, we can use <code class="docutils literal notranslate"><span class="pre">.isnull()</span></code> on the
+continent column and filter the merged dataframe</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="p">[</span><span class="s1">&#39;Continent&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>2006-01-01 00:00:00</th>
+      <th>2007-01-01 00:00:00</th>
+      <th>2008-01-01 00:00:00</th>
+      <th>...</th>
+      <th>2016-01-01 00:00:00</th>
+      <th>Country</th>
+      <th>Continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>nan</th>
+      <td>3.42</td>
+      <td>3.74</td>
+      <td>3.87</td>
+      <td>...</td>
+      <td>5.28</td>
+      <td>Korea</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>nan</th>
+      <td>0.23</td>
+      <td>0.45</td>
+      <td>0.39</td>
+      <td>...</td>
+      <td>0.55</td>
+      <td>Russian Federation</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>nan</th>
+      <td>1.50</td>
+      <td>1.64</td>
+      <td>1.71</td>
+      <td>...</td>
+      <td>2.08</td>
+      <td>Slovak Republic</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>3 rows × 13 columns</p>
+</div></div></div>
+</div>
+<p>We have three missing values!</p>
+<p>One option to deal with NaN values is to create a dictionary containing
+these countries and their respective continents.</p>
+<p><code class="docutils literal notranslate"><span class="pre">.map()</span></code> will match countries in <code class="docutils literal notranslate"><span class="pre">merged['Country']</span></code> with their
+continent from the dictionary.</p>
+<p>Notice how countries not in our dictionary are mapped with <code class="docutils literal notranslate"><span class="pre">NaN</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">missing_continents</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Korea&#39;</span><span class="p">:</span> <span class="s1">&#39;Asia&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;Russian Federation&#39;</span><span class="p">:</span> <span class="s1">&#39;Europe&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;Slovak Republic&#39;</span><span class="p">:</span> <span class="s1">&#39;Europe&#39;</span><span class="p">}</span>
+
+<span class="n">merged</span><span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">missing_continents</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>17.00        NaN
+23.00        NaN
+32.00        NaN
+100.00       NaN
+38.00        NaN
+108.00       NaN
+41.00        NaN
+225.00       NaN
+53.00        NaN
+58.00        NaN
+45.00        NaN
+68.00        NaN
+233.00       NaN
+86.00        NaN
+88.00        NaN
+91.00        NaN
+nan         Asia
+117.00       NaN
+122.00       NaN
+123.00       NaN
+138.00       NaN
+153.00       NaN
+151.00       NaN
+174.00       NaN
+175.00       NaN
+nan       Europe
+nan       Europe
+198.00       NaN
+200.00       NaN
+227.00       NaN
+241.00       NaN
+240.00       NaN
+Name: Country, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>We don’t want to overwrite the entire series with this mapping.</p>
+<p><code class="docutils literal notranslate"><span class="pre">.fillna()</span></code> only fills in <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values in <code class="docutils literal notranslate"><span class="pre">merged['Continent']</span></code>
+with the mapping, while leaving other values in the column unchanged</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="p">[</span><span class="s1">&#39;Continent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;Continent&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">merged</span><span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">missing_continents</span><span class="p">))</span>
+
+<span class="c1"># Check for whether continents were correctly mapped</span>
+
+<span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Korea&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>2006-01-01 00:00:00</th>
+      <th>2007-01-01 00:00:00</th>
+      <th>2008-01-01 00:00:00</th>
+      <th>...</th>
+      <th>2016-01-01 00:00:00</th>
+      <th>Country</th>
+      <th>Continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>nan</th>
+      <td>3.42</td>
+      <td>3.74</td>
+      <td>3.87</td>
+      <td>...</td>
+      <td>5.28</td>
+      <td>Korea</td>
+      <td>Asia</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 13 columns</p>
+</div></div></div>
+</div>
+<p>We will also combine the Americas into a single continent - this will make our visualization nicer later on.</p>
+<p>To do this, we will use <code class="docutils literal notranslate"><span class="pre">.replace()</span></code> and loop through a list of the continent values we want to replace</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">replace</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Central America&#39;</span><span class="p">,</span> <span class="s1">&#39;North America&#39;</span><span class="p">,</span> <span class="s1">&#39;South America&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">country</span> <span class="ow">in</span> <span class="n">replace</span><span class="p">:</span>
+    <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;Continent&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="n">country</span><span class="p">,</span>
+                                <span class="n">value</span><span class="o">=</span><span class="s1">&#39;America&#39;</span><span class="p">,</span>
+                                <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now that we have all the data we want in a single <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>, we will
+reshape it back into panel form with a <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code>.</p>
+<p>We should also ensure to sort the index using <code class="docutils literal notranslate"><span class="pre">.sort_index()</span></code> so that we
+can efficiently filter our dataframe later on.</p>
+<p>By default, levels will be sorted top-down</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Continent&#39;</span><span class="p">,</span> <span class="s1">&#39;Country&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+<span class="n">merged</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>2006-01-01</th>
+      <th>2007-01-01</th>
+      <th>2008-01-01</th>
+      <th>...</th>
+      <th>2014-01-01</th>
+      <th>2015-01-01</th>
+      <th>2016-01-01</th>
+    </tr>
+    <tr>
+      <th>Continent</th>
+      <th>Country</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">America</th>
+      <th>Brazil</th>
+      <td>0.87</td>
+      <td>0.92</td>
+      <td>0.96</td>
+      <td>...</td>
+      <td>1.21</td>
+      <td>1.21</td>
+      <td>1.24</td>
+    </tr>
+    <tr>
+      <th>Canada</th>
+      <td>6.89</td>
+      <td>6.96</td>
+      <td>7.24</td>
+      <td>...</td>
+      <td>8.22</td>
+      <td>8.35</td>
+      <td>8.48</td>
+    </tr>
+    <tr>
+      <th>Chile</th>
+      <td>1.42</td>
+      <td>1.45</td>
+      <td>1.44</td>
+      <td>...</td>
+      <td>1.76</td>
+      <td>1.81</td>
+      <td>1.91</td>
+    </tr>
+    <tr>
+      <th>Colombia</th>
+      <td>1.01</td>
+      <td>1.02</td>
+      <td>1.01</td>
+      <td>...</td>
+      <td>1.13</td>
+      <td>1.13</td>
+      <td>1.12</td>
+    </tr>
+    <tr>
+      <th>Costa Rica</th>
+      <td>nan</td>
+      <td>nan</td>
+      <td>nan</td>
+      <td>...</td>
+      <td>2.41</td>
+      <td>2.56</td>
+      <td>2.63</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 11 columns</p>
+</div></div></div>
+</div>
+<p>While merging, we lost our <code class="docutils literal notranslate"><span class="pre">DatetimeIndex</span></code>, as we merged columns that
+were not in datetime format</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([2006-01-01 00:00:00, 2007-01-01 00:00:00, 2008-01-01 00:00:00,
+       2009-01-01 00:00:00, 2010-01-01 00:00:00, 2011-01-01 00:00:00,
+       2012-01-01 00:00:00, 2013-01-01 00:00:00, 2014-01-01 00:00:00,
+       2015-01-01 00:00:00, 2016-01-01 00:00:00],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now that we have set the merged columns as the index, we can recreate a
+<code class="docutils literal notranslate"><span class="pre">DatetimeIndex</span></code> using <code class="docutils literal notranslate"><span class="pre">.to_datetime()</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">merged</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">merged</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">merged</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DatetimeIndex([&#39;2006-01-01&#39;, &#39;2007-01-01&#39;, &#39;2008-01-01&#39;, &#39;2009-01-01&#39;,
+               &#39;2010-01-01&#39;, &#39;2011-01-01&#39;, &#39;2012-01-01&#39;, &#39;2013-01-01&#39;,
+               &#39;2014-01-01&#39;, &#39;2015-01-01&#39;, &#39;2016-01-01&#39;],
+              dtype=&#39;datetime64[ns]&#39;, name=&#39;Time&#39;, freq=None)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">DatetimeIndex</span></code> tends to work more smoothly in the row axis, so we
+will go ahead and transpose <code class="docutils literal notranslate"><span class="pre">merged</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">merged</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>Continent</th>
+      <th colspan="3" halign="left">America</th>
+      <th>...</th>
+      <th colspan="3" halign="left">Europe</th>
+    </tr>
+    <tr>
+      <th>Country</th>
+      <th>Brazil</th>
+      <th>Canada</th>
+      <th>Chile</th>
+      <th>...</th>
+      <th>Slovenia</th>
+      <th>Spain</th>
+      <th>United Kingdom</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2006-01-01</th>
+      <td>0.87</td>
+      <td>6.89</td>
+      <td>1.42</td>
+      <td>...</td>
+      <td>3.92</td>
+      <td>3.99</td>
+      <td>9.81</td>
+    </tr>
+    <tr>
+      <th>2007-01-01</th>
+      <td>0.92</td>
+      <td>6.96</td>
+      <td>1.45</td>
+      <td>...</td>
+      <td>3.88</td>
+      <td>4.10</td>
+      <td>10.07</td>
+    </tr>
+    <tr>
+      <th>2008-01-01</th>
+      <td>0.96</td>
+      <td>7.24</td>
+      <td>1.44</td>
+      <td>...</td>
+      <td>3.96</td>
+      <td>4.14</td>
+      <td>10.04</td>
+    </tr>
+    <tr>
+      <th>2009-01-01</th>
+      <td>1.03</td>
+      <td>7.67</td>
+      <td>1.52</td>
+      <td>...</td>
+      <td>4.08</td>
+      <td>4.32</td>
+      <td>10.15</td>
+    </tr>
+    <tr>
+      <th>2010-01-01</th>
+      <td>1.08</td>
+      <td>7.94</td>
+      <td>1.56</td>
+      <td>...</td>
+      <td>4.81</td>
+      <td>4.30</td>
+      <td>9.96</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 32 columns</p>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="grouping-and-summarizing-data">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">54.4. </span>Grouping and Summarizing Data</a><a class="headerlink" href="#grouping-and-summarizing-data" title="Permalink to this headline">¶</a></h2>
+<p>Grouping and summarizing data can be particularly useful for
+understanding large panel datasets.</p>
+<p>A simple way to summarize data is to call an <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/getting_started/intro_tutorials/06_calculate_statistics.html">aggregation
+method</a>
+on the dataframe, such as <code class="docutils literal notranslate"><span class="pre">.mean()</span></code> or <code class="docutils literal notranslate"><span class="pre">.max()</span></code>.</p>
+<p>For example, we can calculate the average real minimum wage for each
+country over the period 2006 to 2016 (the default is to aggregate over
+rows)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Continent  Country      
+America    Brazil          1.09
+           Canada          7.82
+           Chile           1.62
+           Colombia        1.07
+           Costa Rica      2.53
+           Mexico          0.53
+           United States   7.15
+Asia       Israel          5.95
+           Japan           6.18
+           Korea           4.22
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using this series, we can plot the average real minimum wage over the
+past decade for each country in our data set</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn&#39;</span><span class="p">)</span>
+
+<span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Average real minimum wage 2006 - 2016&quot;</span><span class="p">)</span>
+
+<span class="c1">#Set country labels</span>
+<span class="n">country_labels</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">&#39;Country&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">country_labels</span><span class="p">)),</span> <span class="n">country_labels</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Country&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/pandas_panel_50_0.png" src="_images/pandas_panel_50_0.png" />
+</div>
+</div>
+<p>Passing in <code class="docutils literal notranslate"><span class="pre">axis=1</span></code> to <code class="docutils literal notranslate"><span class="pre">.mean()</span></code> will aggregate over columns (giving
+the average minimum wage for all countries over time)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time
+2006-01-01   4.69
+2007-01-01   4.84
+2008-01-01   4.90
+2009-01-01   5.08
+2010-01-01   5.11
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can plot this time series as a line graph</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Average real minimum wage 2006 - 2016&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;2015 USD&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/pandas_panel_54_0.png" src="_images/pandas_panel_54_0.png" />
+</div>
+</div>
+<p>We can also specify a level of the <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> (in the column axis)
+to aggregate over</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;Continent&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Continent</th>
+      <th>America</th>
+      <th>Asia</th>
+      <th>Australia</th>
+      <th>Europe</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2006-01-01</th>
+      <td>2.80</td>
+      <td>4.29</td>
+      <td>10.25</td>
+      <td>4.80</td>
+    </tr>
+    <tr>
+      <th>2007-01-01</th>
+      <td>2.85</td>
+      <td>4.44</td>
+      <td>10.73</td>
+      <td>4.94</td>
+    </tr>
+    <tr>
+      <th>2008-01-01</th>
+      <td>2.99</td>
+      <td>4.45</td>
+      <td>10.76</td>
+      <td>4.99</td>
+    </tr>
+    <tr>
+      <th>2009-01-01</th>
+      <td>3.23</td>
+      <td>4.53</td>
+      <td>10.97</td>
+      <td>5.16</td>
+    </tr>
+    <tr>
+      <th>2010-01-01</th>
+      <td>3.34</td>
+      <td>4.53</td>
+      <td>10.95</td>
+      <td>5.17</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We can plot the average minimum wages in each continent as a time series</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;Continent&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Average real minimum wage&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;2015 USD&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/pandas_panel_58_0.png" src="_images/pandas_panel_58_0.png" />
+</div>
+</div>
+<p>We will drop Australia as a continent for plotting purposes</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Australia&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;Continent&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;Continent&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Average real minimum wage&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;2015 USD&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/pandas_panel_60_0.png" src="_images/pandas_panel_60_0.png" />
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">.describe()</span></code> is useful for quickly retrieving a number of common
+summary statistics</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Continent</th>
+      <th>America</th>
+      <th>Asia</th>
+      <th>Europe</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>69.00</td>
+      <td>44.00</td>
+      <td>200.00</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>3.19</td>
+      <td>4.70</td>
+      <td>5.15</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>3.02</td>
+      <td>1.56</td>
+      <td>3.82</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.52</td>
+      <td>2.22</td>
+      <td>0.23</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>1.03</td>
+      <td>3.37</td>
+      <td>2.02</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>1.44</td>
+      <td>5.48</td>
+      <td>3.54</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>6.96</td>
+      <td>5.95</td>
+      <td>9.70</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>8.48</td>
+      <td>6.65</td>
+      <td>12.39</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>This is a simplified way to use <code class="docutils literal notranslate"><span class="pre">groupby</span></code>.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">groupby</span></code> generally follows a ‘split-apply-combine’ process:</p>
+<ul class="simple">
+<li><p>split: data is grouped based on one or more keys</p></li>
+<li><p>apply: a function is called on each group independently</p></li>
+<li><p>combine: the results of the function calls are combined into a new data structure</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">groupby</span></code> method achieves the first step of this process, creating
+a new <code class="docutils literal notranslate"><span class="pre">DataFrameGroupBy</span></code> object with data split into groups.</p>
+<p>Let’s split <code class="docutils literal notranslate"><span class="pre">merged</span></code> by continent again, this time using the
+<code class="docutils literal notranslate"><span class="pre">groupby</span></code> function, and name the resulting object <code class="docutils literal notranslate"><span class="pre">grouped</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grouped</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;Continent&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">grouped</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f33e5c01e20&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Calling an aggregation method on the object applies the function to each
+group, the results of which are combined in a new data structure.</p>
+<p>For example, we can return the number of countries in our dataset for
+each continent using <code class="docutils literal notranslate"><span class="pre">.size()</span></code>.</p>
+<p>In this case, our new data structure is a <code class="docutils literal notranslate"><span class="pre">Series</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grouped</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Continent
+America     7
+Asia        4
+Europe     19
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">.get_group()</span></code> to return just the countries in a single group,
+we can create a kernel density estimate of the distribution of real
+minimum wages in 2016 for each continent.</p>
+<p><code class="docutils literal notranslate"><span class="pre">grouped.groups.keys()</span></code> will return the keys from the <code class="docutils literal notranslate"><span class="pre">groupby</span></code>
+object</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">continent</span> <span class="ow">in</span> <span class="n">continents</span><span class="p">:</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">grouped</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">continent</span><span class="p">)[</span><span class="s1">&#39;2015&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="n">continent</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Real minimum wages in 2015&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;US dollars&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/pandas_panel_68_0.png" src="_images/pandas_panel_68_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="final-remarks">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">54.5. </span>Final Remarks</a><a class="headerlink" href="#final-remarks" title="Permalink to this headline">¶</a></h2>
+<p>This lecture has provided an introduction to some of pandas’ more
+advanced features, including multiindices, merging, grouping and
+plotting.</p>
+<p>Other tools that may be useful in panel data analysis include <a class="reference external" href="http://xarray.pydata.org/en/stable/">xarray</a>, a python package that
+extends pandas to N-dimensional data structures.</p>
+</div>
+<div class="section" id="exercises">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">54.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="exercise-1">
+<h3><span class="section-number">54.6.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<p>In these exercises, you’ll work with a dataset of employment rates
+in Europe by age and sex from <a class="reference external" href="http://ec.europa.eu/eurostat/data/database">Eurostat</a>.</p>
+<p>The dataset can be accessed with the following link:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url3</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/QuantEcon/lecture-python/master/source/_static/lecture_specific/pandas_panel/employ.csv&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Reading in the CSV file returns a panel dataset in long format. Use <code class="docutils literal notranslate"><span class="pre">.pivot_table()</span></code> to construct
+a wide format dataframe with a <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> in the columns.</p>
+<p>Start off by exploring the dataframe and the variables available in the
+<code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> levels.</p>
+<p>Write a program that quickly returns all values in the <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code>.</p>
+</div>
+<div class="section" id="exercise-2">
+<h3><span class="section-number">54.6.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
+<p>Filter the above dataframe to only include employment as a percentage of
+‘active population’.</p>
+<p>Create a grouped boxplot using <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> of employment rates in 2015
+by age group and sex.</p>
+<p><strong>Hint:</strong> <code class="docutils literal notranslate"><span class="pre">GEO</span></code> includes both areas and countries.</p>
+</div>
+</div>
+<div class="section" id="solutions">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">54.7. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3><span class="section-number">54.7.1. </span>Exercise 1<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">employ</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url3</span><span class="p">)</span>
+<span class="n">employ</span> <span class="o">=</span> <span class="n">employ</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="s1">&#39;Value&#39;</span><span class="p">,</span>
+                            <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DATE&#39;</span><span class="p">],</span>
+                            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;UNIT&#39;</span><span class="p">,</span><span class="s1">&#39;AGE&#39;</span><span class="p">,</span> <span class="s1">&#39;SEX&#39;</span><span class="p">,</span> <span class="s1">&#39;INDIC_EM&#39;</span><span class="p">,</span> <span class="s1">&#39;GEO&#39;</span><span class="p">])</span>
+<span class="n">employ</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">employ</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="c1"># ensure that dates are datetime format</span>
+<span class="n">employ</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>UNIT</th>
+      <th colspan="3" halign="left">Percentage of total population</th>
+      <th>...</th>
+      <th colspan="3" halign="left">Thousand persons</th>
+    </tr>
+    <tr>
+      <th>AGE</th>
+      <th colspan="3" halign="left">From 15 to 24 years</th>
+      <th>...</th>
+      <th colspan="3" halign="left">From 55 to 64 years</th>
+    </tr>
+    <tr>
+      <th>SEX</th>
+      <th colspan="3" halign="left">Females</th>
+      <th>...</th>
+      <th colspan="3" halign="left">Total</th>
+    </tr>
+    <tr>
+      <th>INDIC_EM</th>
+      <th colspan="3" halign="left">Active population</th>
+      <th>...</th>
+      <th colspan="3" halign="left">Total employment (resident population concept - LFS)</th>
+    </tr>
+    <tr>
+      <th>GEO</th>
+      <th>Austria</th>
+      <th>Belgium</th>
+      <th>Bulgaria</th>
+      <th>...</th>
+      <th>Switzerland</th>
+      <th>Turkey</th>
+      <th>United Kingdom</th>
+    </tr>
+    <tr>
+      <th>DATE</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2007-01-01</th>
+      <td>56.00</td>
+      <td>31.60</td>
+      <td>26.00</td>
+      <td>...</td>
+      <td>nan</td>
+      <td>1,282.00</td>
+      <td>4,131.00</td>
+    </tr>
+    <tr>
+      <th>2008-01-01</th>
+      <td>56.20</td>
+      <td>30.80</td>
+      <td>26.10</td>
+      <td>...</td>
+      <td>nan</td>
+      <td>1,354.00</td>
+      <td>4,204.00</td>
+    </tr>
+    <tr>
+      <th>2009-01-01</th>
+      <td>56.20</td>
+      <td>29.90</td>
+      <td>24.80</td>
+      <td>...</td>
+      <td>nan</td>
+      <td>1,449.00</td>
+      <td>4,193.00</td>
+    </tr>
+    <tr>
+      <th>2010-01-01</th>
+      <td>54.00</td>
+      <td>29.80</td>
+      <td>26.60</td>
+      <td>...</td>
+      <td>640.00</td>
+      <td>1,583.00</td>
+      <td>4,186.00</td>
+    </tr>
+    <tr>
+      <th>2011-01-01</th>
+      <td>54.80</td>
+      <td>29.80</td>
+      <td>24.80</td>
+      <td>...</td>
+      <td>661.00</td>
+      <td>1,760.00</td>
+      <td>4,164.00</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 1440 columns</p>
+</div></div></div>
+</div>
+<p>This is a large dataset so it is useful to explore the levels and
+variables available</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">employ</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">names</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FrozenList([&#39;UNIT&#39;, &#39;AGE&#39;, &#39;SEX&#39;, &#39;INDIC_EM&#39;, &#39;GEO&#39;])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Variables within levels can be quickly retrieved with a loop</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">employ</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">employ</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UNIT Index([&#39;Percentage of total population&#39;, &#39;Thousand persons&#39;], dtype=&#39;object&#39;, name=&#39;UNIT&#39;)
+AGE Index([&#39;From 15 to 24 years&#39;, &#39;From 25 to 54 years&#39;, &#39;From 55 to 64 years&#39;], dtype=&#39;object&#39;, name=&#39;AGE&#39;)
+SEX Index([&#39;Females&#39;, &#39;Males&#39;, &#39;Total&#39;], dtype=&#39;object&#39;, name=&#39;SEX&#39;)
+INDIC_EM Index([&#39;Active population&#39;, &#39;Total employment (resident population concept - LFS)&#39;], dtype=&#39;object&#39;, name=&#39;INDIC_EM&#39;)
+GEO Index([&#39;Austria&#39;, &#39;Belgium&#39;, &#39;Bulgaria&#39;, &#39;Croatia&#39;, &#39;Cyprus&#39;, &#39;Czech Republic&#39;,
+       &#39;Denmark&#39;, &#39;Estonia&#39;, &#39;Euro area (17 countries)&#39;,
+       &#39;Euro area (18 countries)&#39;, &#39;Euro area (19 countries)&#39;,
+       &#39;European Union (15 countries)&#39;, &#39;European Union (27 countries)&#39;,
+       &#39;European Union (28 countries)&#39;, &#39;Finland&#39;,
+       &#39;Former Yugoslav Republic of Macedonia, the&#39;, &#39;France&#39;,
+       &#39;France (metropolitan)&#39;,
+       &#39;Germany (until 1990 former territory of the FRG)&#39;, &#39;Greece&#39;, &#39;Hungary&#39;,
+       &#39;Iceland&#39;, &#39;Ireland&#39;, &#39;Italy&#39;, &#39;Latvia&#39;, &#39;Lithuania&#39;, &#39;Luxembourg&#39;,
+       &#39;Malta&#39;, &#39;Netherlands&#39;, &#39;Norway&#39;, &#39;Poland&#39;, &#39;Portugal&#39;, &#39;Romania&#39;,
+       &#39;Slovakia&#39;, &#39;Slovenia&#39;, &#39;Spain&#39;, &#39;Sweden&#39;, &#39;Switzerland&#39;, &#39;Turkey&#39;,
+       &#39;United Kingdom&#39;],
+      dtype=&#39;object&#39;, name=&#39;GEO&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3><span class="section-number">54.7.2. </span>Exercise 2<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>To easily filter by country, swap <code class="docutils literal notranslate"><span class="pre">GEO</span></code> to the top level and sort the
+<code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">employ</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">employ</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">swaplevel</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">employ</span> <span class="o">=</span> <span class="n">employ</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We need to get rid of a few items in <code class="docutils literal notranslate"><span class="pre">GEO</span></code> which are not countries.</p>
+<p>A fast way to get rid of the EU areas is to use a list comprehension to
+find the level values in <code class="docutils literal notranslate"><span class="pre">GEO</span></code> that begin with ‘Euro’</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">geo_list</span> <span class="o">=</span> <span class="n">employ</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">&#39;GEO&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">countries</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">geo_list</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Euro&#39;</span><span class="p">)]</span>
+<span class="n">employ</span> <span class="o">=</span> <span class="n">employ</span><span class="p">[</span><span class="n">countries</span><span class="p">]</span>
+<span class="n">employ</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">&#39;GEO&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;Austria&#39;, &#39;Belgium&#39;, &#39;Bulgaria&#39;, &#39;Croatia&#39;, &#39;Cyprus&#39;, &#39;Czech Republic&#39;,
+       &#39;Denmark&#39;, &#39;Estonia&#39;, &#39;Finland&#39;,
+       &#39;Former Yugoslav Republic of Macedonia, the&#39;, &#39;France&#39;,
+       &#39;France (metropolitan)&#39;,
+       &#39;Germany (until 1990 former territory of the FRG)&#39;, &#39;Greece&#39;, &#39;Hungary&#39;,
+       &#39;Iceland&#39;, &#39;Ireland&#39;, &#39;Italy&#39;, &#39;Latvia&#39;, &#39;Lithuania&#39;, &#39;Luxembourg&#39;,
+       &#39;Malta&#39;, &#39;Netherlands&#39;, &#39;Norway&#39;, &#39;Poland&#39;, &#39;Portugal&#39;, &#39;Romania&#39;,
+       &#39;Slovakia&#39;, &#39;Slovenia&#39;, &#39;Spain&#39;, &#39;Sweden&#39;, &#39;Switzerland&#39;, &#39;Turkey&#39;,
+       &#39;United Kingdom&#39;],
+      dtype=&#39;object&#39;, name=&#39;GEO&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Select only percentage employed in the active population from the
+dataframe</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">employ_f</span> <span class="o">=</span> <span class="n">employ</span><span class="o">.</span><span class="n">xs</span><span class="p">((</span><span class="s1">&#39;Percentage of total population&#39;</span><span class="p">,</span> <span class="s1">&#39;Active population&#39;</span><span class="p">),</span>
+                     <span class="n">level</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;UNIT&#39;</span><span class="p">,</span> <span class="s1">&#39;INDIC_EM&#39;</span><span class="p">),</span>
+                     <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">employ_f</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>GEO</th>
+      <th colspan="3" halign="left">Austria</th>
+      <th>...</th>
+      <th colspan="3" halign="left">United Kingdom</th>
+    </tr>
+    <tr>
+      <th>AGE</th>
+      <th colspan="3" halign="left">From 15 to 24 years</th>
+      <th>...</th>
+      <th colspan="3" halign="left">From 55 to 64 years</th>
+    </tr>
+    <tr>
+      <th>SEX</th>
+      <th>Females</th>
+      <th>Males</th>
+      <th>Total</th>
+      <th>...</th>
+      <th>Females</th>
+      <th>Males</th>
+      <th>Total</th>
+    </tr>
+    <tr>
+      <th>DATE</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2007-01-01</th>
+      <td>56.00</td>
+      <td>62.90</td>
+      <td>59.40</td>
+      <td>...</td>
+      <td>49.90</td>
+      <td>68.90</td>
+      <td>59.30</td>
+    </tr>
+    <tr>
+      <th>2008-01-01</th>
+      <td>56.20</td>
+      <td>62.90</td>
+      <td>59.50</td>
+      <td>...</td>
+      <td>50.20</td>
+      <td>69.80</td>
+      <td>59.80</td>
+    </tr>
+    <tr>
+      <th>2009-01-01</th>
+      <td>56.20</td>
+      <td>62.90</td>
+      <td>59.50</td>
+      <td>...</td>
+      <td>50.60</td>
+      <td>70.30</td>
+      <td>60.30</td>
+    </tr>
+    <tr>
+      <th>2010-01-01</th>
+      <td>54.00</td>
+      <td>62.60</td>
+      <td>58.30</td>
+      <td>...</td>
+      <td>51.10</td>
+      <td>69.20</td>
+      <td>60.00</td>
+    </tr>
+    <tr>
+      <th>2011-01-01</th>
+      <td>54.80</td>
+      <td>63.60</td>
+      <td>59.20</td>
+      <td>...</td>
+      <td>51.30</td>
+      <td>68.40</td>
+      <td>59.70</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 306 columns</p>
+</div></div></div>
+</div>
+<p>Drop the ‘Total’ value before creating the grouped boxplot</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">employ_f</span> <span class="o">=</span> <span class="n">employ_f</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Total&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;SEX&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">box</span> <span class="o">=</span> <span class="n">employ_f</span><span class="p">[</span><span class="s1">&#39;2015&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;AGE&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;SEX&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;husl&quot;</span><span class="p">),</span> <span class="n">showfliers</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Percentage of population (%)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Employment in Europe (2015)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/pandas_panel_85_0.png" src="_images/pandas_panel_85_0.png" />
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   6. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   7. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   8. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   10. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   11. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   12. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   13. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   14. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   15. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   16. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   17. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   18. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   19. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   20. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   21. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   22. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   23. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   24. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   25. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   26. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   27. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   28. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   29. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   30. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   31. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   32. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   33. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   34. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   35. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   36. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   37. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   38. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   39. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   40. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   41. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   42. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   43. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   44. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   45. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   46. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   47. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   48. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   49. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   50. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   51. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   52. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   53. Asset Pricing with Incomplete Markets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   54. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   55. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   56. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   57. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   58. References
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="_notebooks/pandas_panel.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Launch Notebook"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/pandas_panel.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
+                    <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lecture-python.myst/lectures/pandas_panel.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+
+        </div> <!-- .toolbar -->
+
+    </div> <!-- .wrapper-->
+
+<script src="_static/plugins.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+
+    <script src=[></script>
+
+    <script src=]></script>
+
+<script src="_static/scripts.js"></script>
+<script>
+    feather.replace()
+    tippy('[data-tippy-content]');
+</script>
+
+
+  </body>
+</html>

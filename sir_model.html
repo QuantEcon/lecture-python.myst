@@ -1,0 +1,1105 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3. Modeling COVID 19 &#8212; Quantitative Economics with Python</title>
+    <link rel="stylesheet" href="_static/quantecon-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/quantecon-book-theme.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/sir_model.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4. Linear Algebra" href="linear_algebra.html" />
+    <link rel="prev" title="2. Multivariate Hypergeometric Distribution" href="multi_hyper.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Modeling COVID 19"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Modeling COVID 19" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/sir_model.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+
+<meta name="theme-color" content="#ffffff" />
+
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page">
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+
+                            <ul class="nav section-nav flex-column">
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#overview" class="nav-link">Overview</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#the-sir-model" class="nav-link">The SIR Model</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#time-path" class="nav-link">Time Path</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#parameters" class="nav-link">Parameters</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#implementation" class="nav-link">Implementation</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#experiments" class="nav-link">Experiments</a><ul class="nav section-nav flex-column">
+                                        
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#experiment-1-constant-r0-case" class="nav-link">Experiment 1: Constant R0 Case</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h3">
+                                    <a href="#experiment-2-changing-mitigation" class="nav-link">Experiment 2: Changing Mitigation</a>
+                                </li>
+                                
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
+                                    <a href="#ending-lockdown" class="nav-link">Ending Lockdown</a>
+                                </li>
+                                
+                            </ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">Modeling COVID 19</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div><div class="section" id="modeling-covid-19">
+<h1><a class="toc-backref" href="#id1"><span class="section-number">3. </span><span class="target" id="index-0"></span>Modeling COVID 19</a><a class="headerlink" href="#modeling-covid-19" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#modeling-covid-19" id="id1">Modeling COVID 19</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p></li>
+<li><p><a class="reference internal" href="#the-sir-model" id="id3">The SIR Model</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id4">Implementation</a></p></li>
+<li><p><a class="reference internal" href="#experiments" id="id5">Experiments</a></p></li>
+<li><p><a class="reference internal" href="#ending-lockdown" id="id6">Ending Lockdown</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id2"><span class="section-number">3.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This is a Python version of the code for analyzing the COVID-19 pandemic
+provided by <a class="reference external" href="https://sites.google.com/site/andyatkeson/">Andrew Atkeson</a>.</p>
+<p>See, in particular</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.nber.org/papers/w26867">NBER Working Paper No. 26867</a></p></li>
+<li><p><a class="reference external" href="https://sites.google.com/site/andyatkeson/home?authuser=0">COVID-19 Working papers and code</a></p></li>
+</ul>
+<p>The purpose of his notes is to introduce economists to quantitative modeling
+of infectious disease dynamics.</p>
+<p>Dynamics are modeled using a standard SIR (Susceptible-Infected-Removed) model
+of disease spread.</p>
+<p>The model dynamics are represented by a system of ordinary differential
+equations.</p>
+<p>The main objective is to study the impact of suppression through social
+distancing on the spread of the infection.</p>
+<p>The focus is on US outcomes but the parameters can be adjusted to study
+other countries.</p>
+<p>We will use the following standard imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">exp</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will also use SciPy’s numerical routine odeint for solving differential
+equations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">odeint</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This routine calls into compiled code from the FORTRAN library odepack.</p>
+</div>
+<div class="section" id="the-sir-model">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">3.2. </span>The SIR Model</a><a class="headerlink" href="#the-sir-model" title="Permalink to this headline">¶</a></h2>
+<p>In the version of the SIR model we will analyze there are four states.</p>
+<p>All individuals in the population are assumed to be in one of these four states.</p>
+<p>The states are: susceptible (S), exposed (E), infected (I) and removed (R).</p>
+<p>Comments:</p>
+<ul class="simple">
+<li><p>Those in state R have been infected and either recovered or died.</p></li>
+<li><p>Those who have recovered are assumed to have acquired immunity.</p></li>
+<li><p>Those in the exposed group are not yet infectious.</p></li>
+</ul>
+<div class="section" id="time-path">
+<h3><span class="section-number">3.2.1. </span>Time Path<a class="headerlink" href="#time-path" title="Permalink to this headline">¶</a></h3>
+<p>The flow across states follows the path <span class="math notranslate nohighlight">\(S \to E \to I \to R\)</span>.</p>
+<p>All individuals in the population are eventually infected when
+the transmission rate is positive and <span class="math notranslate nohighlight">\(i(0) &gt; 0\)</span>.</p>
+<p>The interest is primarily in</p>
+<ul class="simple">
+<li><p>the number of infections at a given time (which determines whether or not the health care system is overwhelmed) and</p></li>
+<li><p>how long the caseload can be deferred (hopefully until a vaccine arrives)</p></li>
+</ul>
+<p>Using lower case letters for the fraction of the population in each state, the
+dynamics are</p>
+<div class="math notranslate nohighlight" id="equation-sir-system">
+<span class="eqno">(3.1)<a class="headerlink" href="#equation-sir-system" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+     \dot s(t)  &amp; = - \beta(t) \, s(t) \,  i(t)
+     \\
+     \dot e(t)  &amp; = \beta(t) \,  s(t) \,  i(t)  - σ e(t)
+     \\
+     \dot i(t)  &amp; = σ e(t)  - γ i(t)
+\end{aligned}\end{split}\]</div>
+<p>In these equations,</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta(t)\)</span> is called the <em>transmission rate</em> (the rate at which individuals bump into others and expose them to the virus).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is called the <em>infection rate</em> (the rate at which those who are exposed become infected)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma\)</span> is called the <em>recovery rate</em> (the rate at which infected people recover or die).</p></li>
+<li><p>the dot symbol <span class="math notranslate nohighlight">\(\dot y\)</span> represents the time derivative <span class="math notranslate nohighlight">\(dy/dt\)</span>.</p></li>
+</ul>
+<p>We do not need to model the fraction <span class="math notranslate nohighlight">\(r\)</span> of the population in state <span class="math notranslate nohighlight">\(R\)</span> separately because the states form a partition.</p>
+<p>In particular, the “removed” fraction of the population is <span class="math notranslate nohighlight">\(r = 1 - s - e - i\)</span>.</p>
+<p>We will also track <span class="math notranslate nohighlight">\(c = i + r\)</span>, which is the cumulative caseload
+(i.e., all those who have or have had the infection).</p>
+<p>The system <a class="reference internal" href="#equation-sir-system">(3.1)</a> can be written in vector form as</p>
+<div class="math notranslate nohighlight" id="equation-dfcv">
+<span class="eqno">(3.2)<a class="headerlink" href="#equation-dfcv" title="Permalink to this equation">¶</a></span>\[\dot x = F(x, t),  \qquad x := (s, e, i)\]</div>
+<p>for suitable definition of <span class="math notranslate nohighlight">\(F\)</span> (see the code below).</p>
+</div>
+<div class="section" id="parameters">
+<h3><span class="section-number">3.2.2. </span>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<p>Both <span class="math notranslate nohighlight">\(\sigma\)</span> and <span class="math notranslate nohighlight">\(\gamma\)</span> are thought of as fixed, biologically determined parameters.</p>
+<p>As in Atkeson’s note, we set</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\sigma = 1/5.2\)</span> to reflect an average incubation period of 5.2 days.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma = 1/18\)</span> to match an average illness duration of 18 days.</p></li>
+</ul>
+<p>The transmission rate is modeled as</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta(t) := R(t) \gamma\)</span> where <span class="math notranslate nohighlight">\(R(t)\)</span> is the <em>effective reproduction number</em> at time <span class="math notranslate nohighlight">\(t\)</span>.</p></li>
+</ul>
+<p>(The notation is slightly confusing, since <span class="math notranslate nohighlight">\(R(t)\)</span> is different to
+<span class="math notranslate nohighlight">\(R\)</span>, the symbol that represents the removed state.)</p>
+</div>
+</div>
+<div class="section" id="implementation">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">3.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>First we set the population size to match the US.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pop_size</span> <span class="o">=</span> <span class="mf">3.3e8</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next we fix parameters as described above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">γ</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span>
+<span class="n">σ</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">5.2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we construct a function that represents <span class="math notranslate nohighlight">\(F\)</span> in <a class="reference internal" href="#equation-dfcv">(3.2)</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="mf">1.6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Time derivative of the state vector.</span>
+
+<span class="sd">        * x is the state vector (array_like)</span>
+<span class="sd">        * t is time (scalar)</span>
+<span class="sd">        * R0 is the effective transmission rate, defaulting to a constant</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="n">x</span>
+
+    <span class="c1"># New exposure of susceptibles</span>
+    <span class="n">β</span> <span class="o">=</span> <span class="n">R0</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">γ</span> <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">R0</span><span class="p">)</span> <span class="k">else</span> <span class="n">R0</span> <span class="o">*</span> <span class="n">γ</span>
+    <span class="n">ne</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">s</span> <span class="o">*</span> <span class="n">i</span>
+
+    <span class="c1"># Time derivatives</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="o">-</span> <span class="n">ne</span>
+    <span class="n">de</span> <span class="o">=</span> <span class="n">ne</span> <span class="o">-</span> <span class="n">σ</span> <span class="o">*</span> <span class="n">e</span>
+    <span class="n">di</span> <span class="o">=</span> <span class="n">σ</span> <span class="o">*</span> <span class="n">e</span> <span class="o">-</span> <span class="n">γ</span> <span class="o">*</span> <span class="n">i</span>
+
+    <span class="k">return</span> <span class="n">ds</span><span class="p">,</span> <span class="n">de</span><span class="p">,</span> <span class="n">di</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">R0</span></code> can be either constant or a given function of time.</p>
+<p>The initial conditions are set to</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># initial conditions of s, e, i</span>
+<span class="n">i_0</span> <span class="o">=</span> <span class="mf">1e-7</span>
+<span class="n">e_0</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">i_0</span>
+<span class="n">s_0</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i_0</span> <span class="o">-</span> <span class="n">e_0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In vector form the initial condition is</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_0</span> <span class="o">=</span> <span class="n">s_0</span><span class="p">,</span> <span class="n">e_0</span><span class="p">,</span> <span class="n">i_0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We solve for the time path numerically using odeint, at a sequence of dates
+<code class="docutils literal notranslate"><span class="pre">t_vec</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve_path</span><span class="p">(</span><span class="n">R0</span><span class="p">,</span> <span class="n">t_vec</span><span class="p">,</span> <span class="n">x_init</span><span class="o">=</span><span class="n">x_0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve for i(t) and c(t) via numerical integration,</span>
+<span class="sd">    given the time path for R0.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">F</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">R0</span><span class="p">)</span>
+    <span class="n">s_path</span><span class="p">,</span> <span class="n">e_path</span><span class="p">,</span> <span class="n">i_path</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">x_init</span><span class="p">,</span> <span class="n">t_vec</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+    <span class="n">c_path</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">s_path</span> <span class="o">-</span> <span class="n">e_path</span>       <span class="c1"># cumulative cases</span>
+    <span class="k">return</span> <span class="n">i_path</span><span class="p">,</span> <span class="n">c_path</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="experiments">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">3.4. </span>Experiments</a><a class="headerlink" href="#experiments" title="Permalink to this headline">¶</a></h2>
+<p>Let’s run some experiments using this code.</p>
+<p>The time period we investigate will be 550 days, or around 18 months:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_length</span> <span class="o">=</span> <span class="mi">550</span>
+<span class="n">grid_size</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">t_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t_length</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="experiment-1-constant-r0-case">
+<h3><span class="section-number">3.4.1. </span>Experiment 1: Constant R0 Case<a class="headerlink" href="#experiment-1-constant-r0-case" title="Permalink to this headline">¶</a></h3>
+<p>Let’s start with the case where <code class="docutils literal notranslate"><span class="pre">R0</span></code> is constant.</p>
+<p>We calculate the time path of infected people under different assumptions for <code class="docutils literal notranslate"><span class="pre">R0</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R0_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1.6</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;$R0 = </span><span class="si">{</span><span class="n">r</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">$&#39;</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">R0_vals</span><span class="p">]</span>
+<span class="n">i_paths</span><span class="p">,</span> <span class="n">c_paths</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">R0_vals</span><span class="p">:</span>
+    <span class="n">i_path</span><span class="p">,</span> <span class="n">c_path</span> <span class="o">=</span> <span class="n">solve_path</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">t_vec</span><span class="p">)</span>
+    <span class="n">i_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i_path</span><span class="p">)</span>
+    <span class="n">c_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s some code to plot the time paths.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_paths</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">t_vec</span><span class="p">):</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot current cases as a fraction of the population.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_paths</span><span class="p">(</span><span class="n">i_paths</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/sir_model_23_0.png" src="_images/sir_model_23_0.png" />
+</div>
+</div>
+<p>As expected, lower effective transmission rates defer the peak of infections.</p>
+<p>They also lead to a lower peak in current cases.</p>
+<p>Here is cumulative cases, as a fraction of population:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_paths</span><span class="p">(</span><span class="n">c_paths</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/sir_model_25_0.png" src="_images/sir_model_25_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="experiment-2-changing-mitigation">
+<h3><span class="section-number">3.4.2. </span>Experiment 2: Changing Mitigation<a class="headerlink" href="#experiment-2-changing-mitigation" title="Permalink to this headline">¶</a></h3>
+<p>Let’s look at a scenario where mitigation (e.g., social distancing) is
+successively imposed.</p>
+<p>Here’s a specification for <code class="docutils literal notranslate"><span class="pre">R0</span></code> as a function of time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">R0_mitigating</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">r0</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">η</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">r_bar</span><span class="o">=</span><span class="mf">1.6</span><span class="p">):</span>
+    <span class="n">R0</span> <span class="o">=</span> <span class="n">r0</span> <span class="o">*</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">η</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">η</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span> <span class="o">*</span> <span class="n">r_bar</span>
+    <span class="k">return</span> <span class="n">R0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The idea is that <code class="docutils literal notranslate"><span class="pre">R0</span></code> starts off at 3 and falls to 1.6.</p>
+<p>This is due to progressive adoption of stricter mitigation measures.</p>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">η</span></code> controls the rate, or the speed at which restrictions are
+imposed.</p>
+<p>We consider several different rates:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">η_vals</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">100</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">fr</span><span class="s1">&#39;$\eta = </span><span class="si">{</span><span class="n">η</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">$&#39;</span> <span class="k">for</span> <span class="n">η</span> <span class="ow">in</span> <span class="n">η_vals</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is what the time path of <code class="docutils literal notranslate"><span class="pre">R0</span></code> looks like at these alternative rates:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">η</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">η_vals</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_vec</span><span class="p">,</span> <span class="n">R0_mitigating</span><span class="p">(</span><span class="n">t_vec</span><span class="p">,</span> <span class="n">η</span><span class="o">=</span><span class="n">η</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/sir_model_31_0.png" src="_images/sir_model_31_0.png" />
+</div>
+</div>
+<p>Let’s calculate the time path of infected people:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">i_paths</span><span class="p">,</span> <span class="n">c_paths</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">η</span> <span class="ow">in</span> <span class="n">η_vals</span><span class="p">:</span>
+    <span class="n">R0</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">R0_mitigating</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">η</span><span class="o">=</span><span class="n">η</span><span class="p">)</span>
+    <span class="n">i_path</span><span class="p">,</span> <span class="n">c_path</span> <span class="o">=</span> <span class="n">solve_path</span><span class="p">(</span><span class="n">R0</span><span class="p">,</span> <span class="n">t_vec</span><span class="p">)</span>
+    <span class="n">i_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i_path</span><span class="p">)</span>
+    <span class="n">c_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is current cases under the different scenarios:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_paths</span><span class="p">(</span><span class="n">i_paths</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/sir_model_35_0.png" src="_images/sir_model_35_0.png" />
+</div>
+</div>
+<p>Here are cumulative cases, as a fraction of population:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_paths</span><span class="p">(</span><span class="n">c_paths</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/sir_model_37_0.png" src="_images/sir_model_37_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="ending-lockdown">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">3.5. </span>Ending Lockdown</a><a class="headerlink" href="#ending-lockdown" title="Permalink to this headline">¶</a></h2>
+<p>The following replicates <a class="reference external" href="https://drive.google.com/file/d/1uS7n-7zq5gfSgrL3S0HByExmpq4Bn3oh/view">additional results</a> by Andrew Atkeson on the timing of lifting lockdown.</p>
+<p>Consider these two mitigation scenarios:</p>
+<ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(R_t = 0.5\)</span> for 30 days and then <span class="math notranslate nohighlight">\(R_t = 2\)</span> for the remaining 17 months. This corresponds to lifting lockdown in 30 days.</p></li>
+<li><p><span class="math notranslate nohighlight">\(R_t = 0.5\)</span> for 120 days and then <span class="math notranslate nohighlight">\(R_t = 2\)</span> for the remaining 14 months. This corresponds to lifting lockdown in 4 months.</p></li>
+</ol>
+<p>The parameters considered here start the model with 25,000 active infections
+and 75,000 agents already exposed to the virus and thus soon to be contagious.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># initial conditions</span>
+<span class="n">i_0</span> <span class="o">=</span> <span class="mi">25_000</span> <span class="o">/</span> <span class="n">pop_size</span>
+<span class="n">e_0</span> <span class="o">=</span> <span class="mi">75_000</span> <span class="o">/</span> <span class="n">pop_size</span>
+<span class="n">s_0</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i_0</span> <span class="o">-</span> <span class="n">e_0</span>
+<span class="n">x_0</span> <span class="o">=</span> <span class="n">s_0</span><span class="p">,</span> <span class="n">e_0</span><span class="p">,</span> <span class="n">i_0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s calculate the paths:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R0_paths</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mf">0.5</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="mi">30</span> <span class="k">else</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mf">0.5</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="mi">120</span> <span class="k">else</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;scenario </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+
+<span class="n">i_paths</span><span class="p">,</span> <span class="n">c_paths</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">R0</span> <span class="ow">in</span> <span class="n">R0_paths</span><span class="p">:</span>
+    <span class="n">i_path</span><span class="p">,</span> <span class="n">c_path</span> <span class="o">=</span> <span class="n">solve_path</span><span class="p">(</span><span class="n">R0</span><span class="p">,</span> <span class="n">t_vec</span><span class="p">,</span> <span class="n">x_init</span><span class="o">=</span><span class="n">x_0</span><span class="p">)</span>
+    <span class="n">i_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i_path</span><span class="p">)</span>
+    <span class="n">c_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is the number of active infections:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_paths</span><span class="p">(</span><span class="n">i_paths</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/sir_model_43_0.png" src="_images/sir_model_43_0.png" />
+</div>
+</div>
+<p>What kind of mortality can we expect under these scenarios?</p>
+<p>Suppose that 1% of cases result in death</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ν</span> <span class="o">=</span> <span class="mf">0.01</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is the cumulative number of deaths:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span> <span class="o">*</span> <span class="n">ν</span> <span class="o">*</span> <span class="n">pop_size</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">c_paths</span><span class="p">]</span>
+<span class="n">plot_paths</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/sir_model_47_0.png" src="_images/sir_model_47_0.png" />
+</div>
+</div>
+<p>This is the daily death rate:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span> <span class="o">*</span> <span class="n">ν</span> <span class="o">*</span> <span class="n">γ</span> <span class="o">*</span> <span class="n">pop_size</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">i_paths</span><span class="p">]</span>
+<span class="n">plot_paths</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/sir_model_49_0.png" src="_images/sir_model_49_0.png" />
+</div>
+</div>
+<p>Pushing the peak of curve further into the future may reduce cumulative deaths
+if a vaccine is found.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   6. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   7. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   8. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   10. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   11. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   12. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   13. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   14. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   15. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   16. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   17. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   18. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   19. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   20. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   21. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   22. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   23. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   24. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   25. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   26. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   27. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   28. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   29. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   30. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   31. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   32. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   33. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   34. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   35. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   36. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   37. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   38. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   39. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   40. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   41. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   42. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   43. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   44. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   45. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   46. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   47. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   48. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   49. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   50. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   51. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   52. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   53. Asset Pricing with Incomplete Markets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   54. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   55. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   56. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   57. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   58. References
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="_notebooks/sir_model.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Launch Notebook"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/sir_model.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
+                    <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lecture-python.myst/lectures/sir_model.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+
+        </div> <!-- .toolbar -->
+
+    </div> <!-- .wrapper-->
+
+<script src="_static/plugins.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+
+    <script src=[></script>
+
+    <script src=]></script>
+
+<script src="_static/scripts.js"></script>
+<script>
+    feather.replace()
+    tippy('[data-tippy-content]');
+</script>
+
+
+  </body>
+</html>
