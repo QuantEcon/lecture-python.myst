@@ -1,13 +1,17 @@
 title: Quantitative Economics with Python
 author: Thomas J. Sargent & John Stachurski
 logo: _static/qe-logo-large.png
+description: This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.
 
 execute:
   execute_notebooks: "cache"
   timeout: 60
 
+html:
+  baseurl: https://python.quantecon.org/
+
 sphinx:
-  extra_extensions: [sphinx_multitoc_numbering, sphinxext.rediraffe]
+  extra_extensions: [sphinx_multitoc_numbering, sphinxext.rediraffe, sphinx_tojupyter]
   config:
     html_favicon: _static/lectures-favicon.ico
     html_theme: quantecon_book_theme
@@ -16,11 +20,24 @@ sphinx:
       header_organisation_url: https://quantecon.org
       header_organisation: QuantEcon
       repository_url: https://github.com/QuantEcon/lecture-python.myst
+      nb_repository_url: https://github.com/QuantEcon/lecture-python.notebooks
       twitter: quantecon
       twitter_logo_url: https://assets.quantecon.org/img/qe-twitter-logo.png
       og_logo_url: https://assets.quantecon.org/img/qe-og-logo.png
-      description: This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski
+      description: This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.
       keywords: Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski
-      # google_analytics_id: UA-54984338-9
     rediraffe_redirects:
       index_toc.md: intro.md
+    tojupyter_static_file_path: ["source/_static", "_static"]
+    tojupyter_target_html: true
+    tojupyter_urlpath: "https://python.quantecon.org/"
+    tojupyter_image_urlpath: "https://python.quantecon.org/_static/"
+    tojupyter_lang_synonyms: ["ipython", "ipython3", "python"]
+    tojupyter_kernels:
+      python3:
+        kernelspec:
+          display_name: "Python"
+          language: python3
+          name: python3
+        file_extension: ".py"
+    tojupyter_images_markdown: true
