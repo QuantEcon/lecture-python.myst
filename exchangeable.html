@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>38. Exchangeability and Bayesian Updating &#8212; Quantitative Economics with Python</title>
+    <title>39. Exchangeability and Bayesian Updating &#8212; Quantitative Economics with Python</title>
     <link rel="stylesheet" href="_static/quantecon-book-theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
@@ -39,8 +39,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="39. Likelihood Ratio Processes and Bayesian Learning" href="likelihood_bayes.html" />
-    <link rel="prev" title="37. Likelihood Ratio Processes" href="likelihood_ratio_process.html" />
+    <link rel="next" title="40. Likelihood Ratio Processes and Bayesian Learning" href="likelihood_bayes.html" />
+    <link rel="prev" title="38. A Problem that Stumped Milton Friedman" href="wald_friedman.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -198,7 +198,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="exchangeability-and-bayesian-updating">
-<h1><a class="toc-backref" href="#id5"><span class="section-number">38. </span>Exchangeability and Bayesian Updating</a><a class="headerlink" href="#exchangeability-and-bayesian-updating" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id5"><span class="section-number">39. </span>Exchangeability and Bayesian Updating</a><a class="headerlink" href="#exchangeability-and-bayesian-updating" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -218,7 +218,7 @@
 </ul>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">38.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">39.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture studies an example  of learning
 via Bayes’ Law.</p>
 <p>We touch on foundations of Bayesian statistical inference invented by Bruno DeFinetti <a class="bibtex reference internal" href="zreferences.html#definetti" id="id1">[dF37]</a>.</p>
@@ -261,7 +261,7 @@ works in our example.</p>
 </div>
 </div>
 <div class="section" id="independently-and-identically-distributed">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">38.2. </span>Independently and Identically Distributed</a><a class="headerlink" href="#independently-and-identically-distributed" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">39.2. </span>Independently and Identically Distributed</a><a class="headerlink" href="#independently-and-identically-distributed" title="Permalink to this headline">¶</a></h2>
 <p>We begin by looking at the notion of an  <strong>independently and identically  distributed sequence</strong> of random variables.</p>
 <p>An independently and identically distributed sequence is often abbreviated as IID.</p>
 <p>Two notions are involved, <strong>independently</strong> and <strong>identically</strong> distributed.</p>
@@ -278,7 +278,7 @@ p(W_0, W_1, \ldots) =  p(W_0) p(W_1) \cdots
 \]</div>
 <p>so that the joint density is the product of a sequence of identical marginal densities.</p>
 <div class="section" id="iid-means-past-observations-don-t-tell-us-anything-about-future-observations">
-<h3><span class="section-number">38.2.1. </span>IID Means Past Observations Don’t Tell Us Anything About Future Observations<a class="headerlink" href="#iid-means-past-observations-don-t-tell-us-anything-about-future-observations" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">39.2.1. </span>IID Means Past Observations Don’t Tell Us Anything About Future Observations<a class="headerlink" href="#iid-means-past-observations-don-t-tell-us-anything-about-future-observations" title="Permalink to this headline">¶</a></h3>
 <p>If a sequence is random variables is IID, past information provides no information about future realizations.</p>
 <p>In this sense, there is <strong>nothing to learn</strong>  about the future from the past.</p>
 <p>To understand these statements, let the joint distribution of a sequence of random variables <span class="math notranslate nohighlight">\(\{W_t\}_{t=0}^T\)</span>
@@ -314,7 +314,7 @@ p(W_t | W_{t-1}, \ldots, W_0)   =  p(W_t)
 </div>
 </div>
 <div class="section" id="a-setting-in-which-past-observations-are-informative">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">38.3. </span>A Setting in Which Past Observations Are Informative</a><a class="headerlink" href="#a-setting-in-which-past-observations-are-informative" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">39.3. </span>A Setting in Which Past Observations Are Informative</a><a class="headerlink" href="#a-setting-in-which-past-observations-are-informative" title="Permalink to this headline">¶</a></h2>
 <p>We now turn to a setting in which there <strong>is</strong> something to learn.</p>
 <p>Let <span class="math notranslate nohighlight">\(\{W_t\}_{t=0}^\infty\)</span> be a sequence of nonnegative
 scalar random variables with a joint probability distribution
@@ -350,7 +350,7 @@ density of the partial history</p></li>
 <p>We’ll discuss that next and in the process describe the concept of <strong>exchangeability</strong>.</p>
 </div>
 <div class="section" id="relationship-between-iid-and-exchangeable">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">38.4. </span>Relationship Between IID and Exchangeable</a><a class="headerlink" href="#relationship-between-iid-and-exchangeable" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">39.4. </span>Relationship Between IID and Exchangeable</a><a class="headerlink" href="#relationship-between-iid-and-exchangeable" title="Permalink to this headline">¶</a></h2>
 <p>Conditional on nature selecting <span class="math notranslate nohighlight">\(F\)</span>, the joint density of the
 sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -373,7 +373,7 @@ independently and identically distributed.</p>
 <p>The unconditional distribution of <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is
 evidently</p>
 <div class="math notranslate nohighlight" id="equation-eq-definetti">
-<span class="eqno">(38.1)<a class="headerlink" href="#equation-eq-definetti" title="Permalink to this equation">¶</a></span>\[h(W_0, W_1, \ldots ) \equiv \tilde \pi [f(W_0) f(W_1) \cdots ] + ( 1- \tilde \pi) [g(W_0) g(W_1) \cdots ]\]</div>
+<span class="eqno">(39.1)<a class="headerlink" href="#equation-eq-definetti" title="Permalink to this equation">¶</a></span>\[h(W_0, W_1, \ldots ) \equiv \tilde \pi [f(W_0) f(W_1) \cdots ] + ( 1- \tilde \pi) [g(W_0) g(W_1) \cdots ]\]</div>
 <p>Under the unconditional distribution <span class="math notranslate nohighlight">\(h(W_0, W_1, \ldots )\)</span>, the
 sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is <strong>not</strong> independently and
 identically distributed.</p>
@@ -395,7 +395,7 @@ h(w_1 | w_0) \equiv \frac{h(w_0, w_1)}{(\tilde \pi f(w_0) + (1-\tilde \pi) g(w_0
 <p>But what and how?</p>
 </div>
 <div class="section" id="exchangeability">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">38.5. </span>Exchangeability</a><a class="headerlink" href="#exchangeability" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">39.5. </span>Exchangeability</a><a class="headerlink" href="#exchangeability" title="Permalink to this headline">¶</a></h2>
 <p>While the sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is not IID, it can be verified that it is
 <strong>exchangeable</strong>, which means that</p>
 <div class="math notranslate nohighlight">
@@ -406,7 +406,7 @@ h(w_0, w_1) = h(w_1, w_0)
 <p>More generally, a sequence of random variables is said to be <strong>exchangeable</strong> if  the  joint probability distribution
 for the sequence does not change when the positions in the sequence in which finitely many of the random variables
 appear are altered.</p>
-<p>Equation <a class="reference internal" href="#equation-eq-definetti">(38.1)</a> represents our instance of an exchangeable joint density over a sequence of random
+<p>Equation <a class="reference internal" href="#equation-eq-definetti">(39.1)</a> represents our instance of an exchangeable joint density over a sequence of random
 variables  as a <strong>mixture</strong>  of  two IID joint densities over a sequence of random variables.</p>
 <p>For a Bayesian statistician, the mixing parameter <span class="math notranslate nohighlight">\(\tilde \pi \in (0,1)\)</span> has a special interpretation
 as a <strong>prior probability</strong> that nature selected probability distribution <span class="math notranslate nohighlight">\(F\)</span>.</p>
@@ -416,7 +416,7 @@ for a density <span class="math notranslate nohighlight">\(\pi(\theta)\)</span> 
 Bernoulli paramter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 </div>
 <div class="section" id="bayes-law">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">38.6. </span>Bayes’ Law</a><a class="headerlink" href="#bayes-law" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">39.6. </span>Bayes’ Law</a><a class="headerlink" href="#bayes-law" title="Permalink to this headline">¶</a></h2>
 <p>We noted above that in our example model there is something to learn about about the future from past data drawn
 from our particular instance of a process that is exchangeable but not IID.</p>
 <p>But how can we learn?</p>
@@ -451,7 +451,7 @@ from our particular instance of a process that is exchangeable but not IID.</p>
 \]</div>
 <p>Bayes’ rule for updating <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-eq-bayes102">
-<span class="eqno">(38.2)<a class="headerlink" href="#equation-eq-bayes102" title="Permalink to this equation">¶</a></span>\[\pi_{t+1}
+<span class="eqno">(39.2)<a class="headerlink" href="#equation-eq-bayes102" title="Permalink to this equation">¶</a></span>\[\pi_{t+1}
 = \frac{\pi_t f(w_{t+1})}{\pi_t f(w_{t+1}) + (1 - \pi_t) g(w_{t+1})}\]</div>
 <p>The last expression follows from Bayes’ rule, which
 tells us that</p>
@@ -465,14 +465,14 @@ tells us that</p>
 \]</div>
 </div>
 <div class="section" id="more-details-about-bayesian-updating">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">38.7. </span>More Details about Bayesian Updating</a><a class="headerlink" href="#more-details-about-bayesian-updating" title="Permalink to this headline">¶</a></h2>
-<p>Let’s stare at and rearrange Bayes’ Law as represented in equation <a class="reference internal" href="#equation-eq-bayes102">(38.2)</a> with the aim of understanding
+<h2><a class="toc-backref" href="#id12"><span class="section-number">39.7. </span>More Details about Bayesian Updating</a><a class="headerlink" href="#more-details-about-bayesian-updating" title="Permalink to this headline">¶</a></h2>
+<p>Let’s stare at and rearrange Bayes’ Law as represented in equation <a class="reference internal" href="#equation-eq-bayes102">(39.2)</a> with the aim of understanding
 how the <strong>posterior</strong> <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span> is influenced by the <strong>prior</strong> <span class="math notranslate nohighlight">\(\pi_t\)</span> and the <strong>likelihood ratio</strong></p>
 <div class="math notranslate nohighlight">
 \[
 l(w) = \frac{f(w)}{g(w)}
 \]</div>
-<p>It is convenient for us to rewrite the updating rule <a class="reference internal" href="#equation-eq-bayes102">(38.2)</a> as</p>
+<p>It is convenient for us to rewrite the updating rule <a class="reference internal" href="#equation-eq-bayes102">(39.2)</a> as</p>
 <div class="math notranslate nohighlight">
 \[
 \pi_{t+1}   =\frac{\pi_{t}f\left(w_{t+1}\right)}{\pi_{t}f\left(w_{t+1}\right)+\left(1-\pi_{t}\right)g\left(w_{t+1}\right)}
@@ -481,7 +481,7 @@ l(w) = \frac{f(w)}{g(w)}
 \]</div>
 <p>This implies that</p>
 <div class="math notranslate nohighlight" id="equation-eq-bayes103">
-<span class="eqno">(38.3)<a class="headerlink" href="#equation-eq-bayes103" title="Permalink to this equation">¶</a></span>\[\begin{split}\frac{\pi_{t+1}}{\pi_{t}}=\frac{l\left(w_{t+1}\right)}{\pi_{t}l\left(w_{t+1}\right)+\left(1-\pi_{t}\right)}\begin{cases} &gt;1 &amp;
+<span class="eqno">(39.3)<a class="headerlink" href="#equation-eq-bayes103" title="Permalink to this equation">¶</a></span>\[\begin{split}\frac{\pi_{t+1}}{\pi_{t}}=\frac{l\left(w_{t+1}\right)}{\pi_{t}l\left(w_{t+1}\right)+\left(1-\pi_{t}\right)}\begin{cases} &gt;1 &amp;
 \text{if }l\left(w_{t+1}\right)&gt;1\\
 \leq1 &amp; \text{if }l\left(w_{t+1}\right)\leq1
 \end{cases}\end{split}\]</div>
@@ -490,7 +490,7 @@ to increase or decrease the subjective probability he/she attaches to distributi
 <p>When the likelihood ratio <span class="math notranslate nohighlight">\(l(w_{t+1})\)</span> exceeds one, the observation <span class="math notranslate nohighlight">\(w_{t+1}\)</span> nudges the probability
 <span class="math notranslate nohighlight">\(\pi\)</span> put on distribution <span class="math notranslate nohighlight">\(F\)</span> upward,
 and when the likelihood ratio <span class="math notranslate nohighlight">\(l(w_{t+1})\)</span> is less that  one, the observation <span class="math notranslate nohighlight">\(w_{t+1}\)</span> nudges <span class="math notranslate nohighlight">\(\pi\)</span> downward.</p>
-<p>Representation <a class="reference internal" href="#equation-eq-bayes103">(38.3)</a> is the foundation of the graphs that we’ll use to display the dynamics of
+<p>Representation <a class="reference internal" href="#equation-eq-bayes103">(39.3)</a> is the foundation of the graphs that we’ll use to display the dynamics of
 <span class="math notranslate nohighlight">\(\{\pi_t\}_{t=0}^\infty\)</span> that are  induced by
 Bayes’ Law.</p>
 <p>We’ll plot <span class="math notranslate nohighlight">\(l\left(w\right)\)</span> as a way to enlighten us about how
@@ -633,9 +633,9 @@ is a Beta distribution with parameters <span class="math notranslate nohighlight
 <p>Notice how the likelihood ratio, the middle graph, and the arrows compare with the previous instance of our example.</p>
 </div>
 <div class="section" id="appendix">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">38.8. </span>Appendix</a><a class="headerlink" href="#appendix" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">39.8. </span>Appendix</a><a class="headerlink" href="#appendix" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="sample-paths-of-pi-t">
-<h3><span class="section-number">38.8.1. </span>Sample Paths of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#sample-paths-of-pi-t" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">39.8.1. </span>Sample Paths of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#sample-paths-of-pi-t" title="Permalink to this headline">¶</a></h3>
 <p>Now we’ll have some fun by plotting multiple realizations of sample paths of <span class="math notranslate nohighlight">\(\pi_t\)</span> under two possible
 assumptions about nature’s choice of distribution:</p>
 <ul class="simple">
@@ -746,7 +746,7 @@ periods when the sequence is truly IID draws from <span class="math notranslate 
 <p>In the above graph we observe that now  most paths <span class="math notranslate nohighlight">\(\pi_t \rightarrow 0\)</span>.</p>
 </div>
 <div class="section" id="rates-of-convergence">
-<h3><span class="section-number">38.8.2. </span>Rates of convergence<a class="headerlink" href="#rates-of-convergence" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">39.8.2. </span>Rates of convergence<a class="headerlink" href="#rates-of-convergence" title="Permalink to this headline">¶</a></h3>
 <p>We study rates of  convergence of <span class="math notranslate nohighlight">\(\pi_t\)</span> to <span class="math notranslate nohighlight">\(1\)</span> when nature generates the data as IID draws from <span class="math notranslate nohighlight">\(F\)</span>
 and of <span class="math notranslate nohighlight">\(\pi_t\)</span> to <span class="math notranslate nohighlight">\(0\)</span> when nature generates the data as IID draws from <span class="math notranslate nohighlight">\(G\)</span>.</p>
 <p>We do this by averaging across simulated paths of <span class="math notranslate nohighlight">\(\{\pi_t\}_{t=0}^T\)</span>.</p>
@@ -769,7 +769,7 @@ and compute <span class="math notranslate nohighlight">\(\sum_{i=1}^{N}\pi_{i,t}
 <p>From the above graph, rates of convergence appear not to depend on whether <span class="math notranslate nohighlight">\(F\)</span> or <span class="math notranslate nohighlight">\(G\)</span> generates the data.</p>
 </div>
 <div class="section" id="another-graph-of-population-dynamics-of-pi-t">
-<h3><span class="section-number">38.8.3. </span>Another Graph of Population Dynamics of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#another-graph-of-population-dynamics-of-pi-t" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">39.8.3. </span>Another Graph of Population Dynamics of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#another-graph-of-population-dynamics-of-pi-t" title="Permalink to this headline">¶</a></h3>
 <p>More insights about the dynamics of <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span> can be gleaned by computing the following
 conditional expectations of <span class="math notranslate nohighlight">\(\frac{\pi_{t+1}}{\pi_{t}}\)</span> as functions of <span class="math notranslate nohighlight">\(\pi_t\)</span> via integration with respect
 to the pertinent probability distribution:</p>
@@ -857,7 +857,7 @@ different nor identical, in particular one in which  <span class="math notransla
 </div>
 </div>
 <div class="section" id="sequels">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">38.9. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">39.9. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this headline">¶</a></h2>
 <p>We’ll dig deeper into some of the ideas used here in the following lectures:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a> describes <strong>likelihood ratio processes</strong>
@@ -1136,19 +1136,24 @@ Wald designed</p></li>
    37. Likelihood Ratio Processes
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   38. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   38. Exchangeability and Bayesian Updating
+   39. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   39. Likelihood Ratio Processes and Bayesian Learning
+   40. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   40. Bayesian versus Frequentist Decision Rules
+   41. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1160,22 +1165,22 @@ Wald designed</p></li>
 <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   41. LQ Control: Foundations
+   42. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   42. The Permanent Income Model
+   43. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   43. Permanent Income II: LQ Techniques
+   44. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   44. Production Smoothing via Inventories
+   45. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1187,37 +1192,37 @@ Wald designed</p></li>
 <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   45. Schelling’s Segregation Model
+   46. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   46. A Lake Model of Employment and Unemployment
+   47. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   47. Rational Expectations Equilibrium
+   48. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   48. Stability in Linear Rational Expectations Models
+   49. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   49. Markov Perfect Equilibrium
+   50. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   50. Uncertainty Traps
+   51. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   51. The Aiyagari Model
+   52. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1229,12 +1234,12 @@ Wald designed</p></li>
 <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   52. Asset Pricing: Finite State Models
+   53. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   53. Asset Pricing with Incomplete Markets
+   54. Asset Pricing with Incomplete Markets
   </a>
  </li>
 </ul>
@@ -1246,17 +1251,17 @@ Wald designed</p></li>
 <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   54. Pandas for Panel Data
+   55. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   55. Linear Regression in Python
+   56. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   56. Maximum Likelihood Estimation
+   57. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1268,12 +1273,12 @@ Wald designed</p></li>
 <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   57. Troubleshooting
+   58. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   58. References
+   59. References
   </a>
  </li>
 </ul>
