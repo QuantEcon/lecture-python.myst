@@ -1290,7 +1290,7 @@ $$
 (Q + B'PB)u + B'PAx = 0
 $$
 
-which is the first-order condition for maximizing L w.r.t. u.
+which is the first-order condition for maximizing $L$ w.r.t. $u$.
 
 Thus, the optimal choice of u must satisfy
 

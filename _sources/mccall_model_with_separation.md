@@ -124,7 +124,7 @@ If he rejects, then he receives unemployment compensation $c$.
 
 The process then repeats.
 
-(Note: we do not allow for job search while employed---this topic is taken up in a {doc}`later lecture <jv>`)
+(Note: we do not allow for job search while employed---this topic is taken up in a {doc}`later lecture <jv>`.)
 
 ## Solving the Model
 

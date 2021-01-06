@@ -250,7 +250,7 @@ It can be shown that
 
 We now have a clear path to successfully approximating the optimal policy:
 choose some $\sigma \in \mathscr C$ and then iterate with $K$ until
-convergence (as measured by the distance $\rho$)
+convergence (as measured by the distance $\rho$).
 
 ### Using an Endogenous Grid
 
@@ -325,7 +325,7 @@ $$
 L(z, \hat z) := P(z, \hat z) \int R(\hat z, x) \phi(x) dx
 $$
 
-This indentity is proved in {cite}`ma2020income`, where $\phi$ is the
+This identity is proved in {cite}`ma2020income`, where $\phi$ is the
 density of the innovation $\zeta_t$ to returns on assets.
 
 (Remember that $\mathsf Z$ is a finite set, so this expression defines a matrix.)
@@ -618,7 +618,7 @@ For example, we will pass in the solutions `a_star, σ_star` along with
 `ifp`, even though it would be more natural to just pass in `ifp` and then
 solve inside the function.
 
-The reason we do this is because `solve_model_time_iter` is not
+The reason we do this is that `solve_model_time_iter` is not
 JIT-compiled.
 
 ```{code-cell} python3

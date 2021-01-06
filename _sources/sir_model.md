@@ -276,7 +276,7 @@ As expected, lower effective transmission rates defer the peak of infections.
 
 They also lead to a lower peak in current cases.
 
-Here is cumulative cases, as a fraction of population:
+Here are cumulative cases, as a fraction of population:
 
 ```{code-cell} ipython3
 plot_paths(c_paths, labels)
@@ -333,7 +333,7 @@ for η in η_vals:
     c_paths.append(c_path)
 ```
 
-This is current cases under the different scenarios:
+These are current cases under the different scenarios:
 
 ```{code-cell} ipython3
 plot_paths(i_paths, labels)

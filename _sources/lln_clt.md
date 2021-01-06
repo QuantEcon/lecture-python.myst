@@ -385,7 +385,7 @@ To this end, we now perform the following simulation
 Here's some code that does exactly this for the exponential distribution
 $F(x) = 1 - e^{- \lambda x}$.
 
-(Please experiment with other choices of $F$, but remember that, to conform with the conditions of the CLT, the distribution must have a finite second moment)
+(Please experiment with other choices of $F$, but remember that, to conform with the conditions of the CLT, the distribution must have a finite second moment.)
 
 (sim_one)=
 ```{code-cell} python3
@@ -437,7 +437,7 @@ random variable, the distribution of $Y_n$ will smooth out into a bell-shaped cu
 The next figure shows this process for $X_i \sim f$, where $f$ was
 specified as the convex combination of three different beta densities.
 
-(Taking a convex combination is an easy way to produce an irregular shape for $f$)
+(Taking a convex combination is an easy way to produce an irregular shape for $f$.)
 
 In the figure, the closest density is that of $Y_1$, while the furthest is that of
 $Y_5$
@@ -650,7 +650,7 @@ n \to \infty
 
 This theorem is used frequently in statistics to obtain the asymptotic distribution of estimators --- many of which can be expressed as functions of sample means.
 
-(These kinds of results are often said to use the "delta method")
+(These kinds of results are often said to use the "delta method".)
 
 The proof is based on a Taylor expansion of $g$ around the point $\mu$.
 
@@ -741,7 +741,7 @@ n \| \mathbf Q ( \bar{\mathbf X}_n - \boldsymbol \mu ) \|^2
 where $\chi^2(k)$ is the chi-squared distribution with $k$ degrees
 of freedom.
 
-(Recall that $k$ is the dimension of $\mathbf X_i$, the underlying random vectors)
+(Recall that $k$ is the dimension of $\mathbf X_i$, the underlying random vectors.)
 
 Your second exercise is to illustrate the convergence in {eq}`lln_ctc` with a simulation.
 

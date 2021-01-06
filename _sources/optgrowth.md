@@ -771,7 +771,7 @@ utility specification.
 
 Setting $\gamma = 1.5$, compute and plot an estimate of the optimal policy.
 
-Time how long this function takes to run, so you can compare it to faster code developed in the {doc}`next lecture <optgrowth_fast>`
+Time how long this function takes to run, so you can compare it to faster code developed in the {doc}`next lecture <optgrowth_fast>`.
 
 (og_ex2)=
 ### Exercise 2

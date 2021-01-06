@@ -67,7 +67,7 @@ We wish to travel from node (vertex) A to node G at minimum cost
 * Arrows (edges) indicate the movements we can take.
 * Numbers on edges indicate the cost of traveling that edge.
 
-(Graphs such as the one above are called **weighted directed graphs**)
+(Graphs such as the one above are called **weighted `directed graphs <https://en.wikipedia.org/wiki/Directed_graph>`_**.)
 
 Possible interpretations of the graph include
 
