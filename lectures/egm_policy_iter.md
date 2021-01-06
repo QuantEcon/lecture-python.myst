@@ -160,12 +160,14 @@ where
 
 This will allow us to make comparisons with the analytical solutions
 
-```{literalinclude} _static/lecture_specific/optgrowth/cd_analytical.py
+```{code-cell} python3
+:file: _static/lecture_specific/optgrowth/cd_analytical.py
 ```
 
 We reuse the `OptimalGrowthModel` class
 
-```{literalinclude} _static/lecture_specific/optgrowth_fast/ogm.py
+```{code-cell} python3
+:file: _static/lecture_specific/optgrowth_fast/ogm.py
 ```
 
 ### The Operator
@@ -216,7 +218,8 @@ grid = og.grid
 
 Here's our solver routine:
 
-```{literalinclude} _static/lecture_specific/coleman_policy_iter/solve_time_iter.py
+```{code-cell} python3
+:file: _static/lecture_specific/coleman_policy_iter/solve_time_iter.py
 ```
 
 Let's call it:

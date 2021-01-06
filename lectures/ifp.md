@@ -24,7 +24,7 @@ kernelspec:
 ```
 
 ```{code-cell} ipython
-%load _static/lecture_specific/cake_eating_numerical/analytical.py
+:file: _static/lecture_specific/cake_eating_numerical/analytical.py
 ```
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
@@ -481,7 +481,7 @@ The following function iterates to convergence and returns the approximate
 optimal policy.
 
 ```{code-cell} python3
-%load _static/lecture_specific/coleman_policy_iter/solve_time_iter.py
+:file: _static/lecture_specific/coleman_policy_iter/solve_time_iter.py
 ```
 
 Let's carry this out using the default parameters of the `IFP` class:
@@ -525,7 +525,7 @@ We know that, in this case, the value function and optimal consumption policy
 are given by
 
 ```{code-cell} python3
-%load _static/lecture_specific/cake_eating_numerical/analytical.py
+:file: _static/lecture_specific/cake_eating_numerical/analytical.py
 ```
 
 Let's see if we match up:

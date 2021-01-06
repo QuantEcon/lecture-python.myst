@@ -72,7 +72,8 @@ where $u$ is the CRRA utility function.
 The analytical solutions for the value function and optimal policy were found
 to be as follows.
 
-```{literalinclude} _static/lecture_specific/cake_eating_numerical/analytical.py
+```{code-cell} python3
+:file: _static/lecture_specific/cake_eating_numerical/analytical.py
 ```
 
 Our first aim is to obtain these analytical solutions numerically.
