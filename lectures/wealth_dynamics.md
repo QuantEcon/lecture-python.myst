@@ -545,7 +545,7 @@ For the values of the tail index, use `a_vals = np.linspace(1, 10, 25)`.
 
 Use sample of size 1,000 for each $a$ and the sampling method for generating Pareto draws employed in the discussion of Lorenz curves for the Pareto distribution.
 
-To the extend that you can, interpret the monotone relationship between the
+To the extent that you can, interpret the monotone relationship between the
 Gini index and $a$.
 
 ### Exercise 2

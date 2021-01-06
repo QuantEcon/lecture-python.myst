@@ -499,7 +499,7 @@ Conditions under which a fixed point exists and the sequence $\{\Sigma_t\}$ conv
 
 A sufficient (but not necessary) condition is that all the eigenvalues $\lambda_i$ of $A$ satisfy $|\lambda_i| < 1$ (cf. e.g., {cite}`AndersonMoore2005`, p. 77).
 
-(This strong condition assures that the unconditional  distribution of $x_t$  converges as $t \rightarrow + \infty$)
+(This strong condition assures that the unconditional  distribution of $x_t$  converges as $t \rightarrow + \infty$.)
 
 In this case, for any initial choice of $\Sigma_0$ that is both non-negative and symmetric, the sequence $\{\Sigma_t\}$ in {eq}`kalman_sdy` converges to a non-negative symmetric matrix $\Sigma$ that solves {eq}`kalman_dare`.
 

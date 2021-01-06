@@ -48,7 +48,7 @@ model <optgrowth>` and yet differs in important ways.
 
 For example, the choice problem for the agent includes an additive income term that leads to an occasionally binding constraint.
 
-Moreover, in this and the following lectures, we will inject more realisitic
+Moreover, in this and the following lectures, we will inject more realistic
 features such as correlated shocks.
 
 To solve the model we will use Euler equation based time iteration, which proved
@@ -194,7 +194,7 @@ strict inequality $u' (c_t) > \beta R \,  \mathbb{E}_t  u'(c_{t+1})$
 can occur because $c_t$ cannot increase sufficiently to attain equality.
 
 (The lower boundary case $c_t = 0$ never arises at the optimum because
-$u'(0) = \infty$)
+$u'(0) = \infty$.)
 
 With some thought, one can show that {eq}`ee00` and {eq}`ee01` are
 equivalent to
@@ -409,8 +409,7 @@ Next we provide a function to compute the difference
 ```{math}
 :label: euler_diff_eq
 
-u'(c)
-- \max \left\{
+u'(c) - \max \left\{
            \beta R \, \mathbb E_z (u' \circ \sigma) \,
            [R (a - c) + \hat Y, \, \hat Z]
            \, , \;
@@ -629,7 +628,7 @@ shocks.
 Your task is to investigate how this measure of aggregate capital varies with
 the interest rate.
 
-Following tradition, put the price (i.e., interest rate) is on the vertical axis.
+Following tradition, put the price (i.e., interest rate) on the vertical axis.
 
 On the horizontal axis put aggregate capital, computed as the mean of the
 stationary distribution given the interest rate.

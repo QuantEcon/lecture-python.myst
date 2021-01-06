@@ -223,7 +223,7 @@ class JVWorker:
 ```
 
 The function `operator_factory` takes an instance of this class and returns a
-jitted version of the Bellman operator `T`, ie.
+jitted version of the Bellman operator `T`, i.e.
 
 $$
 Tv(x)

@@ -397,7 +397,7 @@ verify** approach.
 In this lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>`, we  computed an allocation $\{\vec{C}, \vec{K}, \vec{N}\}$
 that solves the planning problem.
 
-(This allocation will constitute the **Big** $K$  to be in the presence instance of the *Big** $K$ **, little** $k$ trick
+(This allocation will constitute the **Big** $K$  to be in the present instance of the *Big** $K$ **, little** $k$ trick
 that we'll apply to  a competitive equilibrium in the spirit of [this lecture](https://lectures.quantecon.org/py/rational_expectations.html#)
 and  [this lecture](https://lectures.quantecon.org/py/dyn_stack.html#).)
 
@@ -597,7 +597,7 @@ representative household living in a competitive equilibrium.
 We now turn to  the problem faced by a firm in a competitive
 equilibrium:
 
-If we plug in {eq}`eq-pl` into {eq}`Zero-profits` for all t, we
+If we plug {eq}`eq-pl` into {eq}`Zero-profits` for all t, we
 get
 
 $$

@@ -76,11 +76,12 @@ represent a model of national output based on three components:
   $t$ equals a constant called the *accelerator coefficient*
   times the difference in output between period $t-1$ and
   $t-2$.
-- the idea that consumption plus investment plus government purchases
-  constitute *aggregate demand,* which automatically calls forth an
-  equal amount of *aggregate supply*.
 
-(To read about linear difference equations see [here](https://en.wikipedia.org/wiki/Linear_difference_equation) or chapter IX of {cite}`Sargent1987`)
+Consumption plus investment plus government purchases
+constitute *aggregate demand,* which automatically calls forth an
+equal amount of *aggregate supply*.
+
+(To read about linear difference equations see [here](https://en.wikipedia.org/wiki/Linear_difference_equation) or chapter IX of {cite}`Sargent1987`.)
 
 Samuelson used the model to analyze how particular values of the
 marginal propensity to consume and the accelerator coefficient might
@@ -102,7 +103,7 @@ This modification makes national output become governed by a second-order
 gives rise to recurrent irregular business cycles.
 
 (To read about stochastic linear difference equations see chapter XI of
-{cite}`Sargent1987`)
+{cite}`Sargent1987`.)
 
 ## Details
 
@@ -284,7 +285,7 @@ $$
 $$
 
 (To read about the polar form, see
-[here](https://www.varsitytutors.com/hotmath/hotmath_help/topics/polar-form-of-a-complex-number))
+[here](https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf:complex/x9e81a4f98389efdf:complex-mul-div-polar/a/complex-number-polar-form-review))
 
 Given **initial conditions** $Y_{-1}, Y_{-2}$, we want to generate
 a **solution** of the difference equation {eq}`second_stochastic2`.
