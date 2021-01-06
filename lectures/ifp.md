@@ -23,10 +23,6 @@ kernelspec:
 :depth: 2
 ```
 
-```{code-cell} ipython
-:file: _static/lecture_specific/cake_eating_numerical/analytical.py
-```
-
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython
