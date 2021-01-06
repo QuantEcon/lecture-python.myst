@@ -496,7 +496,7 @@ s_{t+1} = e_{t+1} \mathbb{1}\{s_t < \bar s\} +
 
 Here
 
-* the state variable $s_t$ is represents productivity (which is a proxy
+* the state variable $s_t$ represents productivity (which is a proxy
   for output and hence firm size),
 * the IID sequence $\{ e_t \}$ is thought of as a productivity draw for a new
   entrant and

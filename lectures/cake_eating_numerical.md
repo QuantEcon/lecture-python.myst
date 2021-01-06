@@ -101,7 +101,7 @@ Let's write this a bit more mathematically.
 ### The Bellman Operator
 
 We introduce the **Bellman operator** $T$ that takes a function v as an
-argument and returns a new function $Tv$ defined by.
+argument and returns a new function $Tv$ defined by
 
 $$
 Tv(x) = \max_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
@@ -119,7 +119,7 @@ v$ converges to the solution to the Bellman equation.
 
 ### Fitted Value Function Iteration
 
-Both consumption $c$ and the state variable $x$ are continous.
+Both consumption $c$ and the state variable $x$ are continuous.
 
 This causes complications when it comes to numerical work.
 
@@ -420,7 +420,7 @@ ax.legend()
 plt.show()
 ```
 
-The fit is reasoable but not perfect.
+The fit is reasonable but not perfect.
 
 We can improve it by increasing the grid size or reducing the
 error tolerance in the value function iteration routine.
@@ -510,7 +510,7 @@ modification in the exercise above).
 
 ### Exercise 1
 
-We need to create a class to hold our primitives and return the right hand side of the bellman equation.
+We need to create a class to hold our primitives and return the right hand side of the Bellman equation.
 
 We will use [inheritance](https://en.wikipedia.org/wiki/Inheritance_%28object-oriented_programming%29) to maximize code reuse.
 

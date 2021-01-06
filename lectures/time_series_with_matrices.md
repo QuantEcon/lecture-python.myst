@@ -75,7 +75,7 @@ But actually, it is a collection of $T$ simultaneous linear
 equations in the $T$ variables $y_1, y_2, \ldots, y_T$.
 
 **Note:** To be able to solve a second-order linear difference
-equations, we require two **boundary conditions** that can take the form
+equation, we require two **boundary conditions** that can take the form
 either of two **initial conditions** or two **terminal conditions** or
 possibly one of each.
 
@@ -219,7 +219,7 @@ plt.show()
 ## Adding a random term
 
 To generate some excitement, we'll follow in the spirit of the great economists
-Eugen Slusky and Ragnar Frisch and replace our original second-order difference
+Eugen Slutsky and Ragnar Frisch and replace our original second-order difference
 equation with the following **second-order stochastic linear difference
 equation**:
 

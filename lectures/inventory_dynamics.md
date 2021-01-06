@@ -34,7 +34,7 @@ follow so-called s-S inventory dynamics.
 Such firms
 
 1. wait until inventory falls below some level $s$ and then
-1. order sufficent quantities to bring their inventory back up to capacity $S$.
+1. order sufficient quantities to bring their inventory back up to capacity $S$.
 
 These kinds of policies are common in practice and also optimal in certain circumstances.
 
@@ -176,7 +176,7 @@ fixed $T$.
 We will do this by generating many draws of $X_T$ given initial
 condition $X_0$.
 
-With these draws of $X_T$ we can build up a picture of its distribution $\psi_T$
+With these draws of $X_T$ we can build up a picture of its distribution $\psi_T$.
 
 Here's one visualization, with $T=50$.
 
