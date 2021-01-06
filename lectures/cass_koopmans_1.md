@@ -26,14 +26,14 @@ kernelspec:
 
 ## Overview
 
-This lecture and in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` describe a model that Tjalling Koopmans {cite}`Koopmans`
+This lecture and lecture {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` describe a model that Tjalling Koopmans {cite}`Koopmans`
 and David Cass {cite}`Cass` used to analyze optimal growth.
 
 The model can be viewed as an extension of the model of Robert Solow
 described in [an earlier lecture](https://lectures.quantecon.org/py/python_oop.html)
 but adapted to make the saving rate the outcome of an optimal choice.
 
-(Solow assumed a constant saving rate determined outside the model).
+(Solow assumed a constant saving rate determined outside the model.)
 
 We describe two versions of the model, one in this lecture and the other in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
 
@@ -696,7 +696,7 @@ its steady state value most of the time.
 plot_paths(pp, 0.3, k_ss/3, [250, 150, 50, 25], k_ss=k_ss);
 ```
 
-Different colors in the above graphs are associated
+Different colors in the above graphs are associated with
 different horizons $T$.
 
 Notice that as the horizon increases, the planner puts $K_t$
