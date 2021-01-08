@@ -376,12 +376,12 @@ c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', 
 can be understood as a functional equation, where $h$ is the unknown.
 
 Using the functional equation, {eq}`funceq`, for the continuation value, we can back out
-optimal choices using the RHS of {eq}`optdec`.
+optimal choices using the right side of {eq}`optdec`.
 
 This functional equation can be solved by taking an initial guess and iterating
-to find the fixed point.
+to find a fixed point.
 
-In other words, we iterate with an operator $Q$, where
+Thus, we iterate with an operator $Q$, where
 
 $$
 Q h(\pi) =
@@ -529,7 +529,7 @@ def solve_model(wf, tol=1e-4, max_iter=1000):
 
 ## Analysis
 
-Let's inspect the model's solutions.
+Let's inspect outcomes.
 
 We will be using the default parameterization with distributions like so
 
@@ -747,7 +747,7 @@ simulation_plot(wf)
 
 Increased cost per draw has induced the decision-maker to take fewer draws before deciding.
 
-Because he decides with less, the percentage of time he is correct drops.
+Because he decides with fewer draws, the percentage of time he is correct drops.
 
 This leads to him having a higher expected loss when he puts equal weight on both models.
 
@@ -940,3 +940,4 @@ We'll dig deeper into some of the ideas used here in the following lectures:
 * {doc}`this lecture <likelihood_bayes>` discusses the role of likelihood ratio processes in **Bayesian learning**
 * {doc}`this lecture <navy_captain>` returns to the subject of this lecture and studies whether the Captain's hunch that the (frequentist) decision rule
   that the Navy had ordered him to use can be expected to be better or worse than the rule sequential rule that Abraham Wald designed
+

@@ -140,15 +140,13 @@ and partial history $W_{t-1}, \ldots, W_0$ contains no information about the pro
 
 So in the IID case, there is **nothing to learn** about the densities of future random variables from past data.
 
-In the general case, there is something go learn from past data.
+In the general case, there is something to learn from past data.
 
-We turn next to an instance of this general case in which there is something to learn from past data.
+We turn next to an instance of this general case.
 
 Please keep your eye out for **what** there is to learn from past data.
 
 ## A Setting in Which Past Observations Are Informative
-
-We now turn to a setting in which there **is** something to learn.
 
 Let $\{W_t\}_{t=0}^\infty$ be a sequence of nonnegative
 scalar random variables with a joint probability distribution
@@ -174,7 +172,7 @@ of them once and for all and then drew an IID sequence of draws from that distri
 
 But our decision maker does not know which of the two distributions nature selected.
 
-The decision maker summarizes his ignorance about this by picking a **subjective probability**
+The decision maker summarizes his ignorance with a **subjective probability**
 $\tilde \pi$ and reasons as if  nature had selected $F$ with probability
 $\tilde \pi \in (0,1)$ and
 $G$ with probability $1 - \tilde \pi$.
@@ -276,7 +274,7 @@ as a **prior probability** that nature selected probability distribution $F$.
 DeFinetti {cite}`definetti` established a related representation of an exchangeable process created by mixing
 sequences of IID Bernoulli random variables with parameters $\theta$ and mixing probability $\pi(\theta)$
 for a density $\pi(\theta)$ that a Bayesian statistician would interpret as a prior over the unknown
-Bernoulli paramter $\theta$.
+Bernoulli parameter $\theta$.
 
 ## Bayes' Law
 
@@ -287,7 +285,7 @@ But how can we learn?
 
 And about what?
 
-The answer to the *about what* question is about $\tilde pi$.
+The answer to the *about what* question is about $\tilde \pi$.
 
 The answer to the *how* question is to use  Bayes' Law.
 
@@ -302,7 +300,7 @@ $$
 \pi = \mathbb{P}\{q = f \}
 $$
 
-where we regard $\pi$ as the decision maker's **subjective probability**  (also called a **personal probability**.
+where we regard $\pi$ as the decision maker's **subjective probability**  (also called a **personal probability**).
 
 Suppose that at $t \geq 0$, the decision maker has  observed a history
 $w^t \equiv [w_t, w_{t-1}, \ldots, w_0]$.
@@ -486,12 +484,12 @@ learning_example()
 Please look at the three graphs above created for an instance in which $f$ is a uniform distribution on $[0,1]$
 (i.e., a Beta distribution with parameters $F_a=1, F_b=1$, while  $g$ is a Beta distribution with the default parameter values $G_a=3, G_b=1.2$.
 
-The graph in the left  plots the likehood ratio $l(w)$ on the coordinate axis against $w$ on the coordinate axis.
+The graph on the left  plots the likehood ratio $l(w)$ on the coordinate axis against $w$ on the ordinate axis.
 
 The middle graph plots both $f(w)$ and $g(w)$  against $w$, with the horizontal dotted lines showing values
 of $w$ at which the likelihood ratio equals $1$.
 
-The graph on the right side plots arrows to the right that show when Bayes' Law  makes $\pi$ increase and arrows
+The graph on the right plots arrows to the right that show when Bayes' Law  makes $\pi$ increase and arrows
 to the left that show when Bayes' Law make $\pi$ decrease.
 
 Notice how the length of the arrows, which show the magnitude of the force from Bayes' Law impelling $\pi$ to change,
