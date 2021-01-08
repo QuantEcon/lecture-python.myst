@@ -203,10 +203,10 @@
 <h2><a class="toc-backref" href="#id5"><span class="section-number">37.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture describes likelihood ratio processes and some of their uses.</p>
 <p>We’ll use a setting described in <a class="reference internal" href="exchangeable.html"><span class="doc">this lecture</span></a>.</p>
-<p>Among the things that we’ll learn about are</p>
+<p>Among  things that we’ll learn  are</p>
 <ul class="simple">
 <li><p>A peculiar property of likelihood ratio processes</p></li>
-<li><p>How a likelihood ratio process is the key ingredient in frequentist hypothesis testing</p></li>
+<li><p>How a likelihood ratio process is a key ingredient in frequentist hypothesis testing</p></li>
 <li><p>How a <strong>receiver operator characteristic curve</strong> summarizes information about a false alarm probability and power in frequentist hypothesis testing</p></li>
 <li><p>How during World War II the United States Navy devised a decision rule that Captain Garret L. Schyler challenged and asked Milton Friedman to justify to him, a topic to be studied in  <a class="reference internal" href="wald_friedman.html"><span class="doc">this lecture</span></a></p></li>
 </ul>
@@ -259,8 +259,8 @@ inferences using a classic frequentist approach due to Neyman and
 Pearson <a class="bibtex reference internal" href="zreferences.html#neyman-pearson" id="id2">[NP33]</a>.</p>
 <p>To help us appreciate how things work, the following Python code evaluates <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> as two different
 beta distributions, then computes and simulates an associated likelihood
-ratio process by generating a sequence <span class="math notranslate nohighlight">\(w^t\)</span> from <em>some</em>
-probability distribution, for example, a sequence of  IID draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
+ratio process by generating a sequence <span class="math notranslate nohighlight">\(w^t\)</span> from one of the two
+probability distributionss, for example, a sequence of  IID draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameters in the two beta distributions.</span>
@@ -344,7 +344,7 @@ paths <span class="math notranslate nohighlight">\(L\left(w^{t}\right)\)</span> 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f3aad8c5f40&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f2da30b3d00&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_9_1.png" src="_images/likelihood_ratio_process_9_1.png" />
@@ -427,7 +427,7 @@ of variability.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.LineCollection at 0x7f3aad8a3340&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.LineCollection at 0x7f2da3091310&gt;
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_13_1.png" src="_images/likelihood_ratio_process_13_1.png" />
@@ -472,7 +472,7 @@ diverges toward <span class="math notranslate nohighlight">\(+ \infty\)</span>.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f3aada893a0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f2da3277730&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_16_1.png" src="_images/likelihood_ratio_process_16_1.png" />
@@ -488,7 +488,7 @@ fast probability mass diverges  to <span class="math notranslate nohighlight">\(
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f3aad8a9fd0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f2da308d190&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_18_1.png" src="_images/likelihood_ratio_process_18_1.png" />
@@ -503,7 +503,7 @@ IID draws from density <span class="math notranslate nohighlight">\(g\)</span>.<
 <p>Denote <span class="math notranslate nohighlight">\(q\)</span> as the data generating process, so that
 <span class="math notranslate nohighlight">\(q=f \text{ or } g\)</span>.</p>
 <p>Upon observing a sample <span class="math notranslate nohighlight">\(\{W_i\}_{i=1}^t\)</span>, we want to decide
-which one is the data generating process by performing  a (frequentist)
+whether nature is drawing from <span class="math notranslate nohighlight">\(g\)</span> or from <span class="math notranslate nohighlight">\(f\)</span> by performing  a (frequentist)
 hypothesis test.</p>
 <p>We specify</p>
 <ul class="simple">
@@ -519,7 +519,7 @@ form:</p>
 <p>where <span class="math notranslate nohighlight">\(c\)</span> is a given  discrimination threshold, to be chosen in a way we’ll soon describe.</p>
 <p>This test is <em>best</em> in the sense that it is a <strong>uniformly most powerful</strong> test.</p>
 <p>To understand what this means, we have to define probabilities of two important events that
-allow us to characterize a test associated with given
+allow us to characterize a test associated with a given
 threshold <span class="math notranslate nohighlight">\(c\)</span>.</p>
 <p>The two probabilities are:</p>
 <ul>
@@ -545,7 +545,7 @@ maximizes the probability of detection for a given probability of false
 alarm.</p>
 <p>Another way to say the same thing is that  among all possible tests, a likelihood ratio test
 maximizes <strong>power</strong> for a given <strong>significance level</strong>.</p>
-<p>To have made a confident inference, we want a small probability of
+<p>To have made a good inference, we want a small probability of
 false alarm and a large probability of detection.</p>
 <p>With sample size <span class="math notranslate nohighlight">\(t\)</span> fixed, we can change our two probabilities by
 adjusting <span class="math notranslate nohighlight">\(c\)</span>.</p>
@@ -578,7 +578,8 @@ errors both decrease, which is good.</p>
 moves toward <span class="math notranslate nohighlight">\(-\infty\)</span> when <span class="math notranslate nohighlight">\(g\)</span> is the data generating
 process, ; while log<span class="math notranslate nohighlight">\((L(w^t))\)</span> goes to
 <span class="math notranslate nohighlight">\(\infty\)</span> when data are generated by <span class="math notranslate nohighlight">\(f\)</span>.</p>
-<p>This diverse behavior is what makes it possible to distinguish
+<p>That disparate  behavior of log<span class="math notranslate nohighlight">\((L(w^t))\)</span> under <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(q\)</span>
+is what makes it possible to distinguish
 <span class="math notranslate nohighlight">\(q=f\)</span> from <span class="math notranslate nohighlight">\(q=g\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -676,8 +677,8 @@ sample sizes <span class="math notranslate nohighlight">\(t\)</span>.</p>
 of detection and a smaller probability of false alarm associated with
 a given discrimination threshold <span class="math notranslate nohighlight">\(c\)</span>.</p>
 <p>As <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>, we approach the perfect detection
-curve that is indicated by a right angle hinging on the green dot.</p>
-<p>For a given sample size <span class="math notranslate nohighlight">\(t\)</span>, a value discrimination threshold <span class="math notranslate nohighlight">\(c\)</span> determines a point on the receiver operating
+curve that is indicated by a right angle hinging on the blue dot.</p>
+<p>For a given sample size <span class="math notranslate nohighlight">\(t\)</span>, the discrimination threshold <span class="math notranslate nohighlight">\(c\)</span> determines a point on the receiver operating
 characteristic curve.</p>
 <p>It is up to the test designer to trade off probabilities of
 making the two types of errors.</p>
@@ -715,7 +716,7 @@ target probability of detection, for example, <span class="math notranslate nohi
 </div>
 <p>The United States Navy evidently used a procedure like this to select a sample size <span class="math notranslate nohighlight">\(t\)</span> for doing quality
 control tests during World War II.</p>
-<p>A Navy Captain who had been ordered to perform tests of this kind had second thoughts about it that he
+<p>A Navy Captain who had been ordered to perform tests of this kind had doubts about it that he
 presented to Milton Friedman, as we describe in  <a class="reference internal" href="wald_friedman.html"><span class="doc">this lecture</span></a>.</p>
 </div>
 <div class="section" id="sequels">
