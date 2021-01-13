@@ -940,3 +940,4 @@ We'll dig deeper into some of the ideas used here in the following lectures:
 * {doc}`this lecture <likelihood_bayes>` discusses the role of likelihood ratio processes in **Bayesian learning**
 * {doc}`this lecture <navy_captain>` returns to the subject of this lecture and studies whether the Captain's hunch that the (frequentist) decision rule
   that the Navy had ordered him to use can be expected to be better or worse than the rule sequential rule that Abraham Wald designed
+
