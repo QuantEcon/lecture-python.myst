@@ -32,6 +32,11 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter
+          zip -r download-notebooks.zip _build/jupyter
+      - uses: actions/upload-artifact@v2
+        with:
+          name: download-notebooks
+          path: download-notebooks.zip
       - name: Copy Download Notebooks for GH-PAGES
         shell: bash -l {0}
         run: |
@@ -48,6 +53,7 @@ jobs:
       #   run: |
       #     mkdir -p _build/lecture-python.notebooks
       #     cp -a _notebook_repo/. _build/lecture-python.notebooks
+      #     cp environment.yml _build/lecture-python.notebooks
       #     cp _build/jupyter/*.ipynb _build/lecture-python.notebooks
       #     ls -a _build/lecture-python.notebooks
       # - name: Commit latest notebooks to lecture-python.notebooks
