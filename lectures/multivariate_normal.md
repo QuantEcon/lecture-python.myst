@@ -33,7 +33,7 @@ In this lecture, you will learn formulas for
 
 * the joint distribution of a random vector $x$ of length $N$
 * marginal distributions for all subvectors of $x$
-* conditional distributions for subvectors of 'math:x conditional on other subvectors of $x$
+* conditional distributions for subvectors of $x$ conditional on other subvectors of $x$
 
 We will use  the multivariate normal distribution to formulate some classic models:
 
