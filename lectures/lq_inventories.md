@@ -140,8 +140,6 @@ To form the matrices $R, Q, H$, we note that the firm’s profits at
 time $t$ function can be expressed
 
 $$
-\begin{equation}
-\begin{split}
 \pi_{t} =&p_{t}S_{t}-c\left(Q_{t}\right)-d\left(I_{t},S_{t}\right)  \\
     =&\left(a_{0}-a_{1}S_{t}+v_{t}\right)S_{t}-c_{1}Q_{t}-c_{2}Q_{t}^{2}-d_{1}I_{t}-d_{2}\left(S_{t}-I_{t}\right)^{2}  \\
     =&a_{0}S_{t}-a_{1}S_{t}^{2}+Gz_{t}S_{t}-c_{1}Q_{t}-c_{2}Q_{t}^{2}-d_{1}I_{t}-d_{2}S_{t}^{2}-d_{2}I_{t}^{2}+2d_{2}S_{t}I_{t}  \\
@@ -168,8 +166,6 @@ Q_{t} & S_{t}\end{array}\right]\underset{\equiv N}{\underbrace{\left[\begin{arra
 I_{t}\\
 z_{t}
 \end{array}\right]\right)
-\end{split}
-\end{equation}
 $$
 
 where $S_{c}=\left[1,0\right]$.
