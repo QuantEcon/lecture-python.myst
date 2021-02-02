@@ -194,28 +194,28 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="cass-koopmans-planning-problem">
-<h1><a class="toc-backref" href="#id3"><span class="section-number">20. </span>Cass-Koopmans Planning Problem</a><a class="headerlink" href="#cass-koopmans-planning-problem" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id5"><span class="section-number">20. </span>Cass-Koopmans Planning Problem</a><a class="headerlink" href="#cass-koopmans-planning-problem" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#cass-koopmans-planning-problem" id="id3">Cass-Koopmans Planning Problem</a></p>
+<li><p><a class="reference internal" href="#cass-koopmans-planning-problem" id="id5">Cass-Koopmans Planning Problem</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id4">Overview</a></p></li>
-<li><p><a class="reference internal" href="#the-model" id="id5">The Model</a></p></li>
-<li><p><a class="reference internal" href="#planning-problem" id="id6">Planning Problem</a></p></li>
-<li><p><a class="reference internal" href="#shooting-algorithm" id="id7">Shooting Algorithm</a></p></li>
-<li><p><a class="reference internal" href="#setting-initial-capital-to-steady-state-capital" id="id8">Setting Initial Capital to Steady State Capital</a></p></li>
-<li><p><a class="reference internal" href="#a-turnpike-property" id="id9">A Turnpike Property</a></p></li>
-<li><p><a class="reference internal" href="#a-limiting-economy" id="id10">A Limiting Economy</a></p></li>
-<li><p><a class="reference internal" href="#concluding-remarks" id="id11">Concluding Remarks</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id6">Overview</a></p></li>
+<li><p><a class="reference internal" href="#the-model" id="id7">The Model</a></p></li>
+<li><p><a class="reference internal" href="#planning-problem" id="id8">Planning Problem</a></p></li>
+<li><p><a class="reference internal" href="#shooting-algorithm" id="id9">Shooting Algorithm</a></p></li>
+<li><p><a class="reference internal" href="#setting-initial-capital-to-steady-state-capital" id="id10">Setting Initial Capital to Steady State Capital</a></p></li>
+<li><p><a class="reference internal" href="#a-turnpike-property" id="id11">A Turnpike Property</a></p></li>
+<li><p><a class="reference internal" href="#a-limiting-economy" id="id12">A Limiting Economy</a></p></li>
+<li><p><a class="reference internal" href="#concluding-remarks" id="id13">Concluding Remarks</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">20.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>This lecture and lecture <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> describe a model that Tjalling Koopmans <a class="bibtex reference internal" href="zreferences.html#koopmans" id="id1">[Koo65]</a>
-and David Cass <a class="bibtex reference internal" href="zreferences.html#cass" id="id2">[Cas65]</a> used to analyze optimal growth.</p>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">20.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This lecture and lecture <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> describe a model that Tjalling Koopmans <a href="#id1"><span class="problematic" id="id2">:cite:`Koopmans`</span></a>
+and David Cass <a href="#id3"><span class="problematic" id="id4">:cite:`Cass`</span></a> used to analyze optimal growth.</p>
 <p>The model can be viewed as an extension of the model of Robert Solow
 described in <a class="reference external" href="https://lectures.quantecon.org/py/python_oop.html">an earlier lecture</a>
 but adapted to make the saving rate the outcome of an optimal choice.</p>
@@ -247,7 +247,7 @@ long but finite-horizon economies.</p></li>
 </div>
 </div>
 <div class="section" id="the-model">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">20.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">20.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
 <p>Time is discrete and takes values <span class="math notranslate nohighlight">\(t = 0, 1 , \ldots, T\)</span> where <span class="math notranslate nohighlight">\(T\)</span> is  finite.</p>
 <p>(We’ll study a limiting case in which  <span class="math notranslate nohighlight">\(T = + \infty\)</span> before concluding).</p>
 <p>A single good can either be consumed or invested in physical capital.</p>
@@ -288,7 +288,7 @@ capital stock.</p>
 <p>where <span class="math notranslate nohighlight">\(\delta \in (0,1)\)</span> is a depreciation rate of capital.</p>
 </div>
 <div class="section" id="planning-problem">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">20.3. </span>Planning Problem</a><a class="headerlink" href="#planning-problem" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">20.3. </span>Planning Problem</a><a class="headerlink" href="#planning-problem" title="Permalink to this headline">¶</a></h2>
 <p>A planner chooses an allocation <span class="math notranslate nohighlight">\(\{\vec{C},\vec{K}\}\)</span> to
 maximize <a class="reference internal" href="#equation-utility-functional">(20.1)</a> subject to <a class="reference internal" href="#equation-allocation">(20.4)</a>.</p>
 <p>Let <span class="math notranslate nohighlight">\(\vec{\mu}=\{\mu_0,\dots,\mu_T\}\)</span> be a sequence of
@@ -492,7 +492,7 @@ that define our economy.</p>
 </div>
 </div>
 <div class="section" id="shooting-algorithm">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">20.4. </span>Shooting Algorithm</a><a class="headerlink" href="#shooting-algorithm" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">20.4. </span>Shooting Algorithm</a><a class="headerlink" href="#shooting-algorithm" title="Permalink to this headline">¶</a></h2>
 <p>We use  <strong>shooting</strong> to compute an optimal allocation
 <span class="math notranslate nohighlight">\(\vec{C}, \vec{K}\)</span> and an associated Lagrange multiplier sequence
 <span class="math notranslate nohighlight">\(\vec{\mu}\)</span>.</p>
@@ -706,7 +706,7 @@ tolerance bounds), we stop.</p>
 </div>
 </div>
 <div class="section" id="setting-initial-capital-to-steady-state-capital">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">20.5. </span>Setting Initial Capital to Steady State Capital</a><a class="headerlink" href="#setting-initial-capital-to-steady-state-capital" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">20.5. </span>Setting Initial Capital to Steady State Capital</a><a class="headerlink" href="#setting-initial-capital-to-steady-state-capital" title="Permalink to this headline">¶</a></h2>
 <p>When  <span class="math notranslate nohighlight">\(T \rightarrow +\infty\)</span>, the optimal allocation converges to
 steady state values of <span class="math notranslate nohighlight">\(C_t\)</span> and <span class="math notranslate nohighlight">\(K_t\)</span>.</p>
 <p>It is instructive to set <span class="math notranslate nohighlight">\(K_0\)</span> equal
@@ -807,7 +807,7 @@ value <span class="math notranslate nohighlight">\(K_{T+1} =0\)</span> when <spa
 </div>
 </div>
 <div class="section" id="a-turnpike-property">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">20.6. </span>A Turnpike Property</a><a class="headerlink" href="#a-turnpike-property" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">20.6. </span>A Turnpike Property</a><a class="headerlink" href="#a-turnpike-property" title="Permalink to this headline">¶</a></h2>
 <p>The following calculation indicates that when  <span class="math notranslate nohighlight">\(T\)</span> is very large,
 the optimal capital stock stays close to
 its steady state value most of the time.</p>
@@ -878,7 +878,7 @@ over time.</p>
 </div>
 </div>
 <div class="section" id="a-limiting-economy">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">20.7. </span>A Limiting Economy</a><a class="headerlink" href="#a-limiting-economy" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">20.7. </span>A Limiting Economy</a><a class="headerlink" href="#a-limiting-economy" title="Permalink to this headline">¶</a></h2>
 <p>We want to set <span class="math notranslate nohighlight">\(T = +\infty\)</span>.</p>
 <p>The appropriate thing to do is to replace terminal condition
 <a class="reference internal" href="#equation-constraint4">(20.10)</a> with</p>
@@ -947,7 +947,7 @@ as we shoot towards the steady state at <span class="math notranslate nohighligh
 </div>
 </div>
 <div class="section" id="concluding-remarks">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">20.8. </span>Concluding Remarks</a><a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">20.8. </span>Concluding Remarks</a><a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
 <p>In <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a>,  we study a decentralized version of an economy with exactly the same
 technology and preference structure as deployed here.</p>
 <p>In that lecture, we replace the  planner of this lecture with Adam Smith’s <strong>invisible hand</strong></p>

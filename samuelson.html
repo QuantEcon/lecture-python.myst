@@ -252,21 +252,21 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="application-the-samuelson-multiplier-accelerator">
-<h1><a class="toc-backref" href="#id7"><span class="section-number">15. </span>Application: The Samuelson Multiplier-Accelerator</a><a class="headerlink" href="#application-the-samuelson-multiplier-accelerator" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id13"><span class="section-number">15. </span>Application: The Samuelson Multiplier-Accelerator</a><a class="headerlink" href="#application-the-samuelson-multiplier-accelerator" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#application-the-samuelson-multiplier-accelerator" id="id7">Application: The Samuelson Multiplier-Accelerator</a></p>
+<li><p><a class="reference internal" href="#application-the-samuelson-multiplier-accelerator" id="id13">Application: The Samuelson Multiplier-Accelerator</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id8">Overview</a></p></li>
-<li><p><a class="reference internal" href="#details" id="id9">Details</a></p></li>
-<li><p><a class="reference internal" href="#implementation" id="id10">Implementation</a></p></li>
-<li><p><a class="reference internal" href="#stochastic-shocks" id="id11">Stochastic Shocks</a></p></li>
-<li><p><a class="reference internal" href="#government-spending" id="id12">Government Spending</a></p></li>
-<li><p><a class="reference internal" href="#wrapping-everything-into-a-class" id="id13">Wrapping Everything Into a Class</a></p></li>
-<li><p><a class="reference internal" href="#using-the-linearstatespace-class" id="id14">Using the LinearStateSpace Class</a></p></li>
-<li><p><a class="reference internal" href="#pure-multiplier-model" id="id15">Pure Multiplier Model</a></p></li>
-<li><p><a class="reference internal" href="#summary" id="id16">Summary</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id14">Overview</a></p></li>
+<li><p><a class="reference internal" href="#details" id="id15">Details</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id16">Implementation</a></p></li>
+<li><p><a class="reference internal" href="#stochastic-shocks" id="id17">Stochastic Shocks</a></p></li>
+<li><p><a class="reference internal" href="#government-spending" id="id18">Government Spending</a></p></li>
+<li><p><a class="reference internal" href="#wrapping-everything-into-a-class" id="id19">Wrapping Everything Into a Class</a></p></li>
+<li><p><a class="reference internal" href="#using-the-linearstatespace-class" id="id20">Using the LinearStateSpace Class</a></p></li>
+<li><p><a class="reference internal" href="#pure-multiplier-model" id="id21">Pure Multiplier Model</a></p></li>
+<li><p><a class="reference internal" href="#summary" id="id22">Summary</a></p></li>
 </ul>
 </li>
 </ul>
@@ -361,6 +361,15 @@ Solving environment: /
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
@@ -370,8 +379,8 @@ Solving environment: /
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">15.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>This lecture creates non-stochastic and stochastic versions of Paul Samuelson’s celebrated multiplier accelerator model <a class="bibtex reference internal" href="zreferences.html#samuelson1939" id="id1">[Sam39]</a>.</p>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">15.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This lecture creates non-stochastic and stochastic versions of Paul Samuelson’s celebrated multiplier accelerator model <a href="#id1"><span class="problematic" id="id2">:cite:`Samuelson1939`</span></a>.</p>
 <p>In doing so, we extend the example of the Solow model class in <a class="reference external" href="https://python-programming.quantecon.org/python_oop.html">our second OOP lecture</a>.</p>
 <p>Our objectives are to</p>
 <ul class="simple">
@@ -419,7 +428,7 @@ times the difference in output between period <span class="math notranslate nohi
 <p>Consumption plus investment plus government purchases
 constitute <em>aggregate demand,</em> which automatically calls forth an
 equal amount of <em>aggregate supply</em>.</p>
-<p>(To read about linear difference equations see <a class="reference external" href="https://en.wikipedia.org/wiki/Linear_difference_equation">here</a> or chapter IX of <a class="bibtex reference internal" href="zreferences.html#sargent1987" id="id2">[Sar87]</a>.)</p>
+<p>(To read about linear difference equations see <a class="reference external" href="https://en.wikipedia.org/wiki/Linear_difference_equation">here</a> or chapter IX of <a href="#id3"><span class="problematic" id="id4">:cite:`Sargent1987`</span></a>.)</p>
 <p>Samuelson used the model to analyze how particular values of the
 marginal propensity to consume and the accelerator coefficient might
 give rise to transient <em>business cycles</em> in national output.</p>
@@ -437,11 +446,11 @@ identity representing random fluctuations in aggregate demand.</p>
 <em>stochastic linear difference equation</em> that, with appropriate parameter values,
 gives rise to recurrent irregular business cycles.</p>
 <p>(To read about stochastic linear difference equations see chapter XI of
-<a class="bibtex reference internal" href="zreferences.html#sargent1987" id="id3">[Sar87]</a>.)</p>
+<a href="#id5"><span class="problematic" id="id6">:cite:`Sargent1987`</span></a>.)</p>
 </div>
 </div>
 <div class="section" id="details">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">15.2. </span>Details</a><a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">15.2. </span>Details</a><a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
 <p>Let’s assume that</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\{G_t\}\)</span> is a sequence of levels of government expenditures –
@@ -609,7 +618,7 @@ oscillations with <strong>period</strong> <span class="math notranslate nohighli
 \frac{2 \pi}{\omega}\)</span> and <strong>damping factor</strong> <span class="math notranslate nohighlight">\(r\)</span>.</p>
 <p>We say that <span class="math notranslate nohighlight">\(\check p\)</span> is the <strong>period</strong> because in that amount of time the cosine wave <span class="math notranslate nohighlight">\(\cos(\omega t + \theta)\)</span> goes through exactly one complete cycles.</p>
 <p>(Draw a cosine function to convince yourself of this please)</p>
-<p><strong>Remark:</strong> Following <a class="bibtex reference internal" href="zreferences.html#samuelson1939" id="id4">[Sam39]</a>, we want to choose the parameters
+<p><strong>Remark:</strong> Following <a href="#id7"><span class="problematic" id="id8">:cite:`Samuelson1939`</span></a>, we want to choose the parameters
 <span class="math notranslate nohighlight">\(a, b\)</span> of the model so that the absolute values (of the possibly
 complex) roots <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2\)</span> of the characteristic
 polynomial are both strictly less than one:</p>
@@ -654,8 +663,8 @@ A = \begin{bmatrix} 1 &amp; 0 &amp; 0 \cr
 </div>
 </div>
 <div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">15.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
-<p>We’ll start by drawing an informative graph from page 189 of <a class="bibtex reference internal" href="zreferences.html#sargent1987" id="id5">[Sar87]</a></p>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">15.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>We’ll start by drawing an informative graph from page 189 of <a href="#id9"><span class="problematic" id="id10">:cite:`Sargent1987`</span></a></p>
 <div class="cell tag_output_scroll docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">param_plot</span><span class="p">():</span>
@@ -1142,7 +1151,7 @@ Roots are less than one
 </div>
 </div>
 <div class="section" id="stochastic-shocks">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">15.4. </span>Stochastic Shocks</a><a class="headerlink" href="#stochastic-shocks" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id17"><span class="section-number">15.4. </span>Stochastic Shocks</a><a class="headerlink" href="#stochastic-shocks" title="Permalink to this headline">¶</a></h2>
 <p>Now we’ll construct some code to simulate the stochastic version of the
 model that emerges when we add a random shock process to aggregate
 demand</p>
@@ -1242,7 +1251,7 @@ Roots are less than one
 </div>
 </div>
 <div class="section" id="government-spending">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">15.5. </span>Government Spending</a><a class="headerlink" href="#government-spending" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id18"><span class="section-number">15.5. </span>Government Spending</a><a class="headerlink" href="#government-spending" title="Permalink to this headline">¶</a></h2>
 <p>This function computes a response to either a permanent or one-off increase
 in government expenditures</p>
 <div class="cell docutils container">
@@ -1368,7 +1377,7 @@ Roots are less than one
 </div>
 </div>
 <div class="section" id="wrapping-everything-into-a-class">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">15.6. </span>Wrapping Everything Into a Class</a><a class="headerlink" href="#wrapping-everything-into-a-class" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id19"><span class="section-number">15.6. </span>Wrapping Everything Into a Class</a><a class="headerlink" href="#wrapping-everything-into-a-class" title="Permalink to this headline">¶</a></h2>
 <p>Up to now, we have written functions to do the work.</p>
 <p>Now we’ll roll up our sleeves and write a Python class called <code class="docutils literal notranslate"><span class="pre">Samuelson</span></code>
 for the Samuelson model</p>
@@ -1624,7 +1633,7 @@ is consistent with the behavior of the path just graphed.</p>
 </div>
 </div>
 <div class="section" id="using-the-linearstatespace-class">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">15.7. </span>Using the LinearStateSpace Class</a><a class="headerlink" href="#using-the-linearstatespace-class" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id20"><span class="section-number">15.7. </span>Using the LinearStateSpace Class</a><a class="headerlink" href="#using-the-linearstatespace-class" title="Permalink to this headline">¶</a></h2>
 <p>It turns out that we can use the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>
 <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class to do
 much of the work that we have done from scratch above.</p>
@@ -1888,7 +1897,7 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 <div class="section" id="pure-multiplier-model">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">15.8. </span>Pure Multiplier Model</a><a class="headerlink" href="#pure-multiplier-model" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id21"><span class="section-number">15.8. </span>Pure Multiplier Model</a><a class="headerlink" href="#pure-multiplier-model" title="Permalink to this headline">¶</a></h2>
 <p>Let’s shut down the accelerator by setting <span class="math notranslate nohighlight">\(b=0\)</span> to get a pure
 multiplier model</p>
 <ul class="simple">
@@ -1947,10 +1956,10 @@ accelerator</p></li>
 </div>
 </div>
 <div class="section" id="summary">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">15.9. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id22"><span class="section-number">15.9. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we wrote functions and classes to represent non-stochastic and
 stochastic versions of the Samuelson (1939) multiplier-accelerator model, described
-in <a class="bibtex reference internal" href="zreferences.html#samuelson1939" id="id6">[Sam39]</a>.</p>
+in <a href="#id11"><span class="problematic" id="id12">:cite:`Samuelson1939`</span></a>.</p>
 <p>We saw that different parameter values led to different output paths, which
 could either be stationary, explosive, or oscillating.</p>
 <p>We also were able to represent the model using the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>

@@ -166,15 +166,15 @@
                                     <a href="#solutions" class="nav-link">Solutions</a><ul class="nav section-nav flex-column">
                                         
                                 <li class="nav-item toc-entry toc-h3">
-                                    <a href="#id16" class="nav-link">Exercise 1</a>
+                                    <a href="#id31" class="nav-link">Exercise 1</a>
                                 </li>
                                 
                                 <li class="nav-item toc-entry toc-h3">
-                                    <a href="#id17" class="nav-link">Exercise 2</a>
+                                    <a href="#id32" class="nav-link">Exercise 2</a>
                                 </li>
                                 
                                 <li class="nav-item toc-entry toc-h3">
-                                    <a href="#id18" class="nav-link">Exercise 3</a>
+                                    <a href="#id33" class="nav-link">Exercise 3</a>
                                 </li>
                                 
                                     </ul>
@@ -230,18 +230,18 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="the-income-fluctuation-problem-i-basic-model">
-<h1><a class="toc-backref" href="#id19"><span class="section-number">34. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem I: Basic Model</a><a class="headerlink" href="#the-income-fluctuation-problem-i-basic-model" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id34"><span class="section-number">34. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem I: Basic Model</a><a class="headerlink" href="#the-income-fluctuation-problem-i-basic-model" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#the-income-fluctuation-problem-i-basic-model" id="id19">The Income Fluctuation Problem I: Basic Model</a></p>
+<li><p><a class="reference internal" href="#the-income-fluctuation-problem-i-basic-model" id="id34">The Income Fluctuation Problem I: Basic Model</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id20">Overview</a></p></li>
-<li><p><a class="reference internal" href="#the-optimal-savings-problem" id="id21">The Optimal Savings Problem</a></p></li>
-<li><p><a class="reference internal" href="#computation" id="id22">Computation</a></p></li>
-<li><p><a class="reference internal" href="#implementation" id="id23">Implementation</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id24">Exercises</a></p></li>
-<li><p><a class="reference internal" href="#solutions" id="id25">Solutions</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id35">Overview</a></p></li>
+<li><p><a class="reference internal" href="#the-optimal-savings-problem" id="id36">The Optimal Savings Problem</a></p></li>
+<li><p><a class="reference internal" href="#computation" id="id37">Computation</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id38">Implementation</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id39">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#solutions" id="id40">Solutions</a></p></li>
 </ul>
 </li>
 </ul>
@@ -256,12 +256,12 @@
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id20"><span class="section-number">34.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>In this lecture, we study an optimal savings problem for an infinitely lived consumer—the “common ancestor” described in <a class="bibtex reference internal" href="zreferences.html#ljungqvist2012" id="id1">[LS18]</a>, section 1.3.</p>
+<h2><a class="toc-backref" href="#id35"><span class="section-number">34.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>In this lecture, we study an optimal savings problem for an infinitely lived consumer—the “common ancestor” described in <a href="#id1"><span class="problematic" id="id2">:cite:`Ljungqvist2012`</span></a>, section 1.3.</p>
 <p>This is an essential sub-problem for many representative macroeconomic models</p>
 <ul class="simple">
-<li><p><a class="bibtex reference internal" href="zreferences.html#aiyagari1994" id="id2">[Aiy94]</a></p></li>
-<li><p><a class="bibtex reference internal" href="zreferences.html#huggett1993" id="id3">[Hug93]</a></p></li>
+<li><p><a href="#id3"><span class="problematic" id="id4">:cite:`Aiyagari1994`</span></a></p></li>
+<li><p><a href="#id5"><span class="problematic" id="id6">:cite:`Huggett1993`</span></a></p></li>
 <li><p>etc.</p></li>
 </ul>
 <p>It is related to the decision problem in the {doc}<code class="docutils literal notranslate"><span class="pre">stochastic</span> <span class="pre">optimal</span> <span class="pre">growth</span> <span class="pre">model</span> <span class="pre">&lt;optgrowth&gt;</span></code> and yet differs in important ways.</p>
@@ -289,14 +289,14 @@ the <a class="reference internal" href="optgrowth.html"><span class="doc">stocha
 </div>
 <div class="section" id="references">
 <h3><span class="section-number">34.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
-<p>Our presentation is a simplified version of <a class="bibtex reference internal" href="zreferences.html#ma2020income" id="id4">[MST20]</a>.</p>
-<p>Other references include <a class="bibtex reference internal" href="zreferences.html#deaton1991" id="id5">[Dea91]</a>, <a class="bibtex reference internal" href="zreferences.html#denhaan2010" id="id6">[DH10]</a>,
-<a class="bibtex reference internal" href="zreferences.html#kuhn2013" id="id7">[Kuh13]</a>, <a class="bibtex reference internal" href="zreferences.html#rabault2002" id="id8">[Rab02]</a>,  <a class="bibtex reference internal" href="zreferences.html#reiter2009" id="id9">[Rei09]</a>  and
-<a class="bibtex reference internal" href="zreferences.html#schechtmanescudero1977" id="id10">[SE77]</a>.</p>
+<p>Our presentation is a simplified version of <a href="#id7"><span class="problematic" id="id8">:cite:`ma2020income`</span></a>.</p>
+<p>Other references include <a href="#id9"><span class="problematic" id="id10">:cite:`Deaton1991`</span></a>, <a href="#id11"><span class="problematic" id="id12">:cite:`DenHaan2010`</span></a>,
+<a href="#id13"><span class="problematic" id="id14">:cite:`Kuhn2013`</span></a>, <a href="#id15"><span class="problematic" id="id16">:cite:`Rabault2002`</span></a>,  <a href="#id17"><span class="problematic" id="id18">:cite:`Reiter2009`</span></a>  and
+<a href="#id19"><span class="problematic" id="id20">:cite:`SchechtmanEscudero1977`</span></a>.</p>
 </div>
 </div>
 <div class="section" id="the-optimal-savings-problem">
-<h2><a class="toc-backref" href="#id21"><span class="section-number">34.2. </span>The Optimal Savings Problem</a><a class="headerlink" href="#the-optimal-savings-problem" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id36"><span class="section-number">34.2. </span>The Optimal Savings Problem</a><a class="headerlink" href="#the-optimal-savings-problem" title="Permalink to this headline">¶</a></h2>
 <p id="index-1">Let’s write down the model and then discuss how to solve it.</p>
 <div class="section" id="set-up">
 <h3><span class="section-number">34.2.1. </span>Set-Up<a class="headerlink" href="#set-up" title="Permalink to this headline">¶</a></h3>
@@ -388,7 +388,7 @@ equivalent to</p>
 </div>
 <div class="section" id="optimality-results">
 <h3><span class="section-number">34.2.3. </span>Optimality Results<a class="headerlink" href="#optimality-results" title="Permalink to this headline">¶</a></h3>
-<p>As shown in <a class="bibtex reference internal" href="zreferences.html#ma2020income" id="id11">[MST20]</a>,</p>
+<p>As shown in <a href="#id21"><span class="problematic" id="id22">:cite:`ma2020income`</span></a>,</p>
 <ol class="simple">
 <li><p>For each <span class="math notranslate nohighlight">\((a,z) \in \mathsf S\)</span>, a unique optimal consumption path from <span class="math notranslate nohighlight">\((a,z)\)</span> exists</p></li>
 <li><p>This path is the unique feasible path from <span class="math notranslate nohighlight">\((a,z)\)</span> satisfying the
@@ -413,7 +413,7 @@ path from <span class="math notranslate nohighlight">\((a,z)\)</span>.</p>
 </div>
 </div>
 <div class="section" id="computation">
-<span id="ifp-computation"></span><h2><a class="toc-backref" href="#id22"><span class="section-number">34.3. </span>Computation</a><a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h2>
+<span id="ifp-computation"></span><h2><a class="toc-backref" href="#id37"><span class="section-number">34.3. </span>Computation</a><a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h2>
 <p id="index-2">There are two standard ways to solve for <span class="math notranslate nohighlight">\(\sigma^*\)</span></p>
 <ol class="simple">
 <li><p>time iteration using the Euler equality and</p></li>
@@ -466,7 +466,7 @@ follows.</p>
 <p>We refer to <span class="math notranslate nohighlight">\(K\)</span> as the Coleman–Reffett operator.</p>
 <p>The operator <span class="math notranslate nohighlight">\(K\)</span> is constructed so that fixed points of <span class="math notranslate nohighlight">\(K\)</span>
 coincide with solutions to the functional equation <a class="reference internal" href="#equation-eqeul1">(34.7)</a>.</p>
-<p>It is shown in <a class="bibtex reference internal" href="zreferences.html#ma2020income" id="id12">[MST20]</a> that the unique optimal policy can be
+<p>It is shown in <a href="#id23"><span class="problematic" id="id24">:cite:`ma2020income`</span></a> that the unique optimal policy can be
 computed by picking any <span class="math notranslate nohighlight">\(\sigma \in \mathscr{C}\)</span> and iterating with the
 operator <span class="math notranslate nohighlight">\(K\)</span> defined in <a class="reference internal" href="#equation-eqsifc">(34.9)</a>.</p>
 </div>
@@ -474,7 +474,7 @@ operator <span class="math notranslate nohighlight">\(K\)</span> defined in <a c
 <h3><span class="section-number">34.3.2. </span>Some Technical Details<a class="headerlink" href="#some-technical-details" title="Permalink to this headline">¶</a></h3>
 <p>The proof of the last statement is somewhat technical but here is a quick
 summary:</p>
-<p>It is shown in <a class="bibtex reference internal" href="zreferences.html#ma2020income" id="id13">[MST20]</a> that <span class="math notranslate nohighlight">\(K\)</span> is a contraction mapping on
+<p>It is shown in <a href="#id25"><span class="problematic" id="id26">:cite:`ma2020income`</span></a> that <span class="math notranslate nohighlight">\(K\)</span> is a contraction mapping on
 <span class="math notranslate nohighlight">\(\mathscr{C}\)</span> under the metric</p>
 <div class="math notranslate nohighlight">
 \[
@@ -493,7 +493,7 @@ S\)</span> using policy function <span class="math notranslate nohighlight">\(\s
 </div>
 </div>
 <div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id23"><span class="section-number">34.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id38"><span class="section-number">34.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p id="index-3">We use the CRRA utility specification</p>
 <div class="math notranslate nohighlight">
 \[
@@ -711,7 +711,7 @@ are given by</p>
 </div>
 </div>
 <div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id24"><span class="section-number">34.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id39"><span class="section-number">34.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="exercise-1">
 <h3><span class="section-number">34.5.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>Let’s consider how the interest rate affects consumption.</p>
@@ -762,7 +762,7 @@ a \mapsto R (a - \sigma^*(a, z)) + y(z)
 diverge even in the highest state.</p>
 <p>In fact there is a unique stationary distribution of assets that we can calculate by simulation</p>
 <ul class="simple">
-<li><p>Can be proved via theorem 2 of <a class="bibtex reference internal" href="zreferences.html#hopenhaynprescott1992" id="id14">[HP92]</a>.</p></li>
+<li><p>Can be proved via theorem 2 of <a href="#id27"><span class="problematic" id="id28">:cite:`HopenhaynPrescott1992`</span></a>.</p></li>
 <li><p>It represents the long run dispersion of assets across households when households have idiosyncratic shocks.</p></li>
 </ul>
 <p>Ergodicity is valid here, so stationary probabilities can be calculated by averaging over a single long time series.</p>
@@ -781,7 +781,7 @@ z_0)\)</span> will not matter.</p></li>
 <p>Following on from exercises 1 and 2, let’s look at how savings and aggregate
 asset holdings vary with the interest rate</p>
 <ul class="simple">
-<li><p>Note: <a class="bibtex reference internal" href="zreferences.html#ljungqvist2012" id="id15">[LS18]</a> section 18.6 can be consulted for more
+<li><p>Note: <a href="#id29"><span class="problematic" id="id30">:cite:`Ljungqvist2012`</span></a> section 18.6 can be consulted for more
 background on the topic treated in this exercise.</p></li>
 </ul>
 <p>For a given parameterization of the model, the mean of the stationary
@@ -796,9 +796,9 @@ stationary distribution given the interest rate.</p>
 </div>
 </div>
 <div class="section" id="solutions">
-<h2><a class="toc-backref" href="#id25"><span class="section-number">34.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id16">
-<h3><span class="section-number">34.6.1. </span>Exercise 1<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<h2><a class="toc-backref" href="#id40"><span class="section-number">34.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id31">
+<h3><span class="section-number">34.6.1. </span>Exercise 1<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h3>
 <p>Here’s one solution:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -818,8 +818,8 @@ stationary distribution given the interest rate.</p>
 </div>
 </div>
 </div>
-<div class="section" id="id17">
-<h3><span class="section-number">34.6.2. </span>Exercise 2<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id32">
+<h3><span class="section-number">34.6.2. </span>Exercise 2<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h3>
 <p>First we write a function to compute a long asset series.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -869,8 +869,8 @@ stationary distribution given the interest rate.</p>
 <p>In a <a class="reference internal" href="ifp_advanced.html"><span class="doc">subsequent lecture</span></a> we will rectify this by adding
 more realistic features to the model.</p>
 </div>
-<div class="section" id="id18">
-<h3><span class="section-number">34.6.3. </span>Exercise 3<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id33">
+<h3><span class="section-number">34.6.3. </span>Exercise 3<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h3>
 <p>Here’s one solution</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
