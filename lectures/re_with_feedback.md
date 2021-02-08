@@ -325,7 +325,7 @@ obeys the system comprised of {eq}`equation_1`-{eq}`equation_3`.
 By stable or non-explosive, we mean that neither $m_t$ nor $p_t$
 diverges as $t \rightarrow + \infty$.
 
-This requirees  that we  shut down the term $c \lambda^{-t}$ in equation {eq}`equation_1a` above by setting $c=0$
+This requires  that we  shut down the term $c \lambda^{-t}$ in equation {eq}`equation_1a` above by setting $c=0$
 
 The solution we are after is
 
@@ -573,7 +573,7 @@ $y_0 = \begin{bmatrix} m_0 \\ p_0 \end{bmatrix}$ with $m_0 >0, p_0 >0$, we disco
 in general absolute values of both components of $y_t$ diverge
 toward $+\infty$ as $t \rightarrow + \infty$.
 
-To substantiate this claim, we can use the eigenector matrix
+To substantiate this claim, we can use the eigenvector matrix
 decomposition of $H$ that is available to us because the
 eigenvalues of $H$ are distinct
 
@@ -640,7 +640,7 @@ $$
 
 But note that since
 $y_0 = \begin{bmatrix} m_0 \cr p_0 \end{bmatrix}$ and $m_0$
-is given to us an an initial condition,  $p_0$ has to do all the adjusting to satisfy this equation.
+is given to us an initial condition,  $p_0$ has to do all the adjusting to satisfy this equation.
 
 Sometimes this situation is described by saying that while $m_0$
 is truly a **state** variable, $p_0$ is a **jump** variable that
@@ -814,7 +814,7 @@ $$
 H = \begin{bmatrix} \rho & \delta \\ - (1-\lambda)/\lambda & \lambda^{-1}  \end{bmatrix} .
 $$
 
-We take $m_0$ as a given intial condition and as before seek an
+We take $m_0$ as a given initial condition and as before seek an
 initial value $p_0$ that stabilizes the system in the sense that
 $y_t$ converges as $t \rightarrow + \infty$.
 
@@ -864,7 +864,7 @@ def H_eigvals(ρ=.9, λ=.5, δ=0):
 H_eigvals()
 ```
 
-Notice that a negative δ will not imperil the stability of the matrix
+Notice that a negative $\delta$ will not imperil the stability of the matrix
 $H$, even if it has a big absolute value.
 
 ```{code-cell} python3
@@ -877,14 +877,14 @@ H_eigvals(δ=-0.05)
 H_eigvals(δ=-1.5)
 ```
 
-A sufficiently small positive δ also causes no problem.
+A sufficiently small positive $\delta$ also causes no problem.
 
 ```{code-cell} python3
 # sufficiently small positive δ
 H_eigvals(δ=0.05)
 ```
 
-But a large enough positive δ makes both eigenvalues of $H$
+But a large enough positive $\delta$ makes both eigenvalues of $H$
 strictly greater than unity in modulus.
 
 For example,
