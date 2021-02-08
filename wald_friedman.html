@@ -263,8 +263,44 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: / 
+Solving environment: - 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
@@ -331,12 +367,12 @@ Solving environment: /
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (2.1.6)
-Requirement already satisfied: scipy&gt;=1.4.1 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (1.5.2)
 Requirement already satisfied: tempita&gt;=0.5.2 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (0.5.2)
 Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (0.51.2)
+Requirement already satisfied: scipy&gt;=1.4.1 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (1.5.2)
 Requirement already satisfied: numpy&gt;=1.18.1 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (1.19.2)
-Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (50.3.1.post20201107)
 Requirement already satisfied: llvmlite&lt;0.35,&gt;=0.34.0.dev0 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.34.0)
+Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (50.3.1.post20201107)
 </pre></div>
 </div>
 </div>
@@ -369,7 +405,8 @@ an approach to statistical decision problems intimately related to dynamic progr
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">jitclass</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">int64</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">int64</span>
+<span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
 <span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">interp</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
 </pre></div>
@@ -431,10 +468,10 @@ random variables is independently and identically distributed (IID).</p>
 <p>Conditional on knowing that successive observations are drawn from distribution <span class="math notranslate nohighlight">\(f_1\)</span>, the sequence of
 random variables is also independently and identically distributed (IID).</p>
 <p>But the observer does not know which of the two distributions generated the sequence.</p>
-<p>For reasons explained  <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a>, this means that the sequence is not
+<p>For reasons explained in  <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a>, this means that the sequence is not
 IID and that the observer has something to learn, even though he knows both <span class="math notranslate nohighlight">\(f_0\)</span> and <span class="math notranslate nohighlight">\(f_1\)</span>.</p>
-<p>After a number of draws, also to be determined, he makes a decision about
-which of the distributions is generating the draws he observes.</p>
+<p>The decision maker   chooses a number of draws (i.e., random samples from the unknown distribution) and uses them to decide
+which of the  two distributions is generating outcomes.</p>
 <p>He starts with prior</p>
 <div class="math notranslate nohighlight">
 \[
@@ -456,11 +493,11 @@ which of the distributions is generating the draws he observes.</p>
 that <span class="math notranslate nohighlight">\(z_{k+1}\)</span> has probability distribution</p>
 <div class="math notranslate nohighlight">
 \[
-f_{{\pi}_k} (v) = \pi_k f_0(v) + (1-\pi_k) f_1 (v)
+f_{{\pi}_k} (v) = \pi_k f_0(v) + (1-\pi_k) f_1 (v) ,
 \]</div>
-<p>This is a mixture of distributions <span class="math notranslate nohighlight">\(f_0\)</span> and <span class="math notranslate nohighlight">\(f_1\)</span>, with the weight
+<p>which  is a mixture of distributions <span class="math notranslate nohighlight">\(f_0\)</span> and <span class="math notranslate nohighlight">\(f_1\)</span>, with the weight
 on <span class="math notranslate nohighlight">\(f_0\)</span> being the posterior probability that <span class="math notranslate nohighlight">\(f = f_0\)</span> <a class="footnote-reference brackets" href="#f1" id="id9">1</a>.</p>
-<p>To help illustrate this kind of distribution, let’s inspect some mixtures of beta distributions.</p>
+<p>To  illustrate such a distribution, let’s inspect some mixtures of beta distributions.</p>
 <p>The density of a beta probability distribution with parameters <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -570,7 +607,7 @@ parameter such as <span class="math notranslate nohighlight">\(c\)</span> or <sp
         (1-\pi) L_0, \; \pi L_1, \;
         c + \mathbb E [ J (\pi') ]
     \right\}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\pi'\)</span> is the random variable defined by</p>
+<p>where <span class="math notranslate nohighlight">\(\pi'\)</span> is the random variable defined by Bayes’ Law</p>
 <div class="math notranslate nohighlight">
 \[
 \pi' = \kappa(z', \pi) = \frac{ \pi f_0(z')}{ \pi f_0(z') + (1-\pi) f_1 (z') }
@@ -719,12 +756,6 @@ c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ipython-input-5-bdf37a902f3d&gt;:1: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">The &#39;numba.jitclass&#39; decorator has moved to &#39;numba.experimental.jitclass&#39; to better reflect the experimental nature of the functionality. Please update your imports to accommodate this change and see https://numba.pydata.org/numba-doc/latest/reference/deprecation.html#change-of-jitclass-location for the time frame.</span>
-  @jitclass(wf_data)
-</pre></div>
-</div>
-</div>
 </div>
 <p>As in the <a class="reference internal" href="optgrowth.html"><span class="doc">optimal growth lecture</span></a>, to approximate a continuous value function</p>
 <ul class="simple">
@@ -810,7 +841,7 @@ c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">f0</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$f_0$&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">f1</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">π_grid</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$f_1$&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;probability of $z_k$&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;$k$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Distributions&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;probability of $z_k$&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;$z_k$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Distributions&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1214,7 +1245,7 @@ observations.</p>
 <li><p><a class="reference internal" href="navy_captain.html"><span class="doc">this lecture</span></a> returns to the subject of this lecture and studies whether the Captain’s hunch that the (frequentist) decision rule
 that the Navy had ordered him to use can be expected to be better or worse than the rule sequential rule that Abraham Wald designed</p></li>
 </ul>
-<hr class="docutils" />
+<hr class="footnotes docutils" />
 <dl class="footnote brackets">
 <dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id9">1</a></span></dt>
 <dd><p>The decision maker acts as if he believes that the sequence of random variables

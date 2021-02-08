@@ -67,7 +67,8 @@ We'll begin with some imports:
 ```{code-cell} ipython
 import numpy as np
 import matplotlib.pyplot as plt
-from numba import jit, prange, jitclass, float64, int64
+from numba import jit, prange, float64, int64
+from numba.experimental import jitclass
 from interpolation import interp
 from math import gamma
 ```
@@ -134,11 +135,11 @@ random variables is also independently and identically distributed (IID).
 
 But the observer does not know which of the two distributions generated the sequence.
 
-For reasons explained  [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html), this means that the sequence is not
+For reasons explained in  [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html), this means that the sequence is not
 IID and that the observer has something to learn, even though he knows both $f_0$ and $f_1$.
 
-After a number of draws, also to be determined, he makes a decision about
-which of the distributions is generating the draws he observes.
+The decision maker   chooses a number of draws (i.e., random samples from the unknown distribution) and uses them to decide
+which of the  two distributions is generating outcomes.
 
 He starts with prior
 
@@ -164,13 +165,13 @@ After observing $z_k, z_{k-1}, \ldots, z_0$, the decision-maker believes
 that $z_{k+1}$ has probability distribution
 
 $$
-f_{{\pi}_k} (v) = \pi_k f_0(v) + (1-\pi_k) f_1 (v)
+f_{{\pi}_k} (v) = \pi_k f_0(v) + (1-\pi_k) f_1 (v) ,
 $$
 
-This is a mixture of distributions $f_0$ and $f_1$, with the weight
+which  is a mixture of distributions $f_0$ and $f_1$, with the weight
 on $f_0$ being the posterior probability that $f = f_0$ [^f1].
 
-To help illustrate this kind of distribution, let's inspect some mixtures of beta distributions.
+To  illustrate such a distribution, let's inspect some mixtures of beta distributions.
 
 The density of a beta probability distribution with parameters $a$ and $b$ is
 
@@ -291,7 +292,7 @@ J(\pi) =
     \right\}
 ```
 
-where $\pi'$ is the random variable defined by
+where $\pi'$ is the random variable defined by Bayes' Law
 
 $$
 \pi' = \kappa(z', \pi) = \frac{ \pi f_0(z')}{ \pi f_0(z') + (1-\pi) f_1 (z') }
@@ -539,7 +540,7 @@ wf = WaldFriedman()
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.plot(wf.f0(wf.π_grid), label="$f_0$")
 ax.plot(wf.f1(wf.π_grid), label="$f_1$")
-ax.set(ylabel="probability of $z_k$", xlabel="$k$", title="Distributions")
+ax.set(ylabel="probability of $z_k$", xlabel="$z_k$", title="Distributions")
 ax.legend()
 
 plt.show()

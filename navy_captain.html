@@ -231,8 +231,44 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 Solving environment: | 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
@@ -714,7 +750,7 @@ consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{f
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The above graph indicates that minimizing over t tells the frequentist to draw 8 observations and then decide.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The above graph indicates that minimizing over t tells the frequentist to draw 9 observations and then decide.
 </pre></div>
 </div>
 </div>
@@ -938,31 +974,31 @@ maker’s Bayesian posterior.</p>
 <li><p>delay deciding and draw another <span class="math notranslate nohighlight">\(z\)</span> if
 <span class="math notranslate nohighlight">\(\beta \leq \pi \leq \alpha\)</span></p></li>
 </ul>
-<p>We can calculate two ‘’objective’’ loss functions under this situation
+<p>We can calculate two “objective” loss functions under this situation
 conditioning on knowing for sure that nature has selected <span class="math notranslate nohighlight">\(f_{0}\)</span>,
 in the first case, or <span class="math notranslate nohighlight">\(f_{1}\)</span>, in the second case.</p>
-<ol class="simple">
-<li><p>under <span class="math notranslate nohighlight">\(f_{0}\)</span>,</p></li>
-</ol>
+<ol>
+<li><p>under <span class="math notranslate nohighlight">\(f_{0}\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-V^{0}\left(\pi\right)=\begin{cases}
-0 &amp; \text{if }\alpha\leq\pi,\\
-c+EV^{0}\left(\pi^{\prime}\right) &amp; \text{if }\beta\leq\pi&lt;\alpha,\\
-\bar L_{1} &amp; \text{if }\pi&lt;\beta.
-\end{cases}
-\end{split}\]</div>
-<ol class="simple">
-<li><p>under <span class="math notranslate nohighlight">\(f_{1}\)</span></p></li>
-</ol>
+   V^{0}\left(\pi\right)=\begin{cases}
+   0 &amp; \text{if }\alpha\leq\pi,\\
+   c+EV^{0}\left(\pi^{\prime}\right) &amp; \text{if }\beta\leq\pi&lt;\alpha,\\
+   \bar L_{1} &amp; \text{if }\pi&lt;\beta.
+   \end{cases}
+   \end{split}\]</div>
+</li>
+<li><p>under <span class="math notranslate nohighlight">\(f_{1}\)</span></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-V^{1}\left(\pi\right)=\begin{cases}
-\bar L_{0} &amp; \text{if }\alpha\leq\pi,\\
-c+EV^{1}\left(\pi^{\prime}\right) &amp; \text{if }\beta\leq\pi&lt;\alpha,\\
-0 &amp; \text{if }\pi&lt;\beta.
-\end{cases}
-\end{split}\]</div>
+   V^{1}\left(\pi\right)=\begin{cases}
+   \bar L_{0} &amp; \text{if }\alpha\leq\pi,\\
+   c+EV^{1}\left(\pi^{\prime}\right) &amp; \text{if }\beta\leq\pi&lt;\alpha,\\
+   0 &amp; \text{if }\pi&lt;\beta.
+   \end{cases}
+   \end{split}\]</div>
+</li>
+</ol>
 <p>where
 <span class="math notranslate nohighlight">\(\pi^{\prime}=\frac{\pi f_{0}\left(z^{\prime}\right)}{\pi f_{0}\left(z^{\prime}\right)+\left(1-\pi\right)f_{1}\left(z^{\prime}\right)}\)</span>.</p>
 <p>Given a prior probability <span class="math notranslate nohighlight">\(\pi_{0}\)</span>, the expected loss for the
@@ -1207,7 +1243,7 @@ rule does better on average for all values of <span class="math notranslate nohi
 </div>
 </div>
 <p>Recall that when <span class="math notranslate nohighlight">\(\pi^*=0.5\)</span>, the frequentist decision rule sets a
-sample size <code class="docutils literal notranslate"><span class="pre">t_optimal</span></code> <strong>ex ante</strong></p>
+sample size <code class="docutils literal notranslate"><span class="pre">t_optimal</span></code> <strong>ex ante</strong>.</p>
 <p>For our parameter settings, we can compute its value:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1216,7 +1252,7 @@ sample size <code class="docutils literal notranslate"><span class="pre">t_optim
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9
 </pre></div>
 </div>
 </div>
