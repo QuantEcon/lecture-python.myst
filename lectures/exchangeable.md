@@ -53,7 +53,7 @@ that are
 Understanding the distinction between these concepts is essential for appreciating how Bayesian updating
 works in our example.
 
-You can read about exchangeability [here](https://en.wikipedia.org/wiki/Exchangeable_random_variables)
+You can read about exchangeability [here](https://en.wikipedia.org/wiki/Exchangeable_random_variables).
 
 Below, we'll often use
 
@@ -117,8 +117,8 @@ Using the laws of probability, we can always factor such a joint density into a 
 
 $$
 \begin{align}
-  p(W_T, W_{T-1}, \ldots, W_1, W_0)    = & p(W_T | W_{t-1}, \ldots, W_0) p(W_{T-1} | W_{T-2}, \ldots, W_0) \cdots  \cr
-  & p(W_1 | W_0) p(W_0)
+  p(W_T, W_{T-1}, \ldots, W_1, W_0)    = & p(W_T | W_{T-1}, \ldots, W_0) p(W_{T-1} | W_{T-2}, \ldots, W_0) \cdots  \cr
+  & \quad \quad \cdots p(W_1 | W_0) p(W_0)
 \end{align}
 $$
 
@@ -180,7 +180,7 @@ $G$ with probability $1 - \tilde \pi$.
 Thus, we  assume that the decision maker
 
 - **knows** both $F$ and $G$
-- **doesnt't know** which of these two distributions that nature has drawn
+- **doesn't know** which of these two distributions that nature has drawn
 - summarizing his ignorance by acting  as if or **thinking** that nature chose distribution $F$ with probability $\tilde \pi \in (0,1)$ and distribution
   $G$ with probability $1 - \tilde \pi$
 - at date $t \geq 0$ has observed  the partial history $w_t, w_{t-1}, \ldots, w_0$ of draws from the appropriate joint
@@ -482,9 +482,9 @@ learning_example()
 ```
 
 Please look at the three graphs above created for an instance in which $f$ is a uniform distribution on $[0,1]$
-(i.e., a Beta distribution with parameters $F_a=1, F_b=1$, while  $g$ is a Beta distribution with the default parameter values $G_a=3, G_b=1.2$.
+(i.e., a Beta distribution with parameters $F_a=1, F_b=1$), while  $g$ is a Beta distribution with the default parameter values $G_a=3, G_b=1.2$.
 
-The graph on the left  plots the likehood ratio $l(w)$ on the coordinate axis against $w$ on the ordinate axis.
+The graph on the left  plots the likelihood ratio $l(w)$ on the coordinate axis against $w$ on the ordinate axis.
 
 The middle graph plots both $f(w)$ and $g(w)$  against $w$, with the horizontal dotted lines showing values
 of $w$ at which the likelihood ratio equals $1$.
@@ -493,7 +493,7 @@ The graph on the right plots arrows to the right that show when Bayes' Law  make
 to the left that show when Bayes' Law make $\pi$ decrease.
 
 Notice how the length of the arrows, which show the magnitude of the force from Bayes' Law impelling $\pi$ to change,
-depend on both the prior probability $\pi$ on the ordinate axis and the evidence in the form of the current draw of
+depends on both the prior probability $\pi$ on the ordinate axis and the evidence in the form of the current draw of
 $w$ on the coordinate axis.
 
 The fractions in the colored areas of the middle graphs are probabilities under $F$ and $G$, respectively,
@@ -530,7 +530,7 @@ assumptions about nature's choice of distribution:
 - that nature permanently draws from $G$
 
 Outcomes depend on a peculiar property of likelihood ratio processes that are discussed in
-[this lecture](https://python-advanced.quantecon.org/additive_functionals.html)
+[this lecture](https://python-advanced.quantecon.org/additive_functionals.html).
 
 To do this, we create some Python code.
 

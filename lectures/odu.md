@@ -83,7 +83,7 @@ want to consider.
 
 ### The Basic McCall Model
 
-Recall that, in the baseline model <mccall_model>, an
+Recall that, {doc}`in the baseline model <mccall_model>`, an
 unemployed worker is presented in each period with a permanent job offer
 at wage $W_t$.
 
@@ -659,7 +659,7 @@ Use the default parameters and `Q_factory` to compute an optimal
 policy.
 
 Your result should coincide closely with the figure for the optimal
-policy [shown above](#odu-pol-vfi).
+policy [shown above](#Take-1:-Solution-by-VFI).
 
 Try experimenting with different parameters, and confirm that the change
 in the optimal policy coincides with your intuition.

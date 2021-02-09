@@ -35,7 +35,8 @@ tags: [hide-output]
 
 ## Overview
 
-This lecture can be viewed as an application of the {doc}`quantecon lecture <lqcontrol>`.
+This lecture can be viewed as an application of this {doc}`quantecon lecture <lqcontrol>` about linear quadratic control
+theory.
 
 It formulates a discounted dynamic program for a firm that
 chooses a production schedule to balance
@@ -46,19 +47,19 @@ chooses a production schedule to balance
 In the tradition of a classic book by Holt, Modigliani, Muth, and
 Simon {cite}`Holt_Modigliani_Muth_Simon`, we simplify the
 firm’s problem by formulating it as a linear quadratic discounted
-dynamic programming problem of the type studied in this {doc}`quantecon <lqcontrol>`.
+dynamic programming problem of the type studied in this {doc}`quantecon lecture <lqcontrol>`.
 
 Because its costs of production are increasing and quadratic in
-production, the firm wants to smooth production across time provided
+production, the firm holds inventories as a buffer stock in order to smooth production across time, provided
 that holding inventories is not too costly.
 
-But the firm also prefers to sell out of existing inventories, a
+But the firm also wants to make its sales  out of existing inventories, a
 preference that we represent by a cost that is quadratic in the
 difference between sales in a period and the firm’s beginning of period
 inventories.
 
-We compute examples designed to indicate how the firm optimally chooses
-to smooth production and manage inventories while keeping inventories
+We compute examples designed to indicate how the firm optimally
+smooths production  while keeping inventories
 close to sales.
 
 To introduce components of the model, let
@@ -72,7 +73,7 @@ To introduce components of the model, let
 - $d(I_t, S_t) = d_1 I_t + d_2 (S_t - I_t)^2$, where
   $d_1>0, d_2 >0$, be a cost-of-holding-inventories function,
   consisting of two components:
-    - a cost $d_1 t$ of carrying inventories, and
+    - a cost $d_1 I_t$ of carrying inventories, and
     - a cost $d_2 (S_t - I_t)^2$ of having inventories deviate
       from sales
 - $p_t = a_0 - a_1 S_t + v_t$ be an inverse demand function for a
@@ -84,7 +85,7 @@ To introduce components of the model, let
   be the present value of the firm’s profits at
   time $0$
 - $I_{t+1} = I_t + Q_t - S_t$ be the law of motion of inventories
-- $z_{t+1} = A_{22} z_t + C_2 \epsilon_{t+1}$ be the law
+- $z_{t+1} = A_{22} z_t + C_2 \epsilon_{t+1}$ be a law
   of motion for an exogenous state vector $z_t$ that contains
   time $t$ information useful for predicting the demand shock
   $v_t$
@@ -133,10 +134,10 @@ appears in the firm’s one-period profit function)
 We can express the firm’s profit as a function of states and controls as
 
 $$
-\pi_t =  - (x_t' R x_t + u_t' Q u_t + 2 u_t' H x_t )
+\pi_t =  - (x_t' R x_t + u_t' Q u_t + 2 u_t' N x_t )
 $$
 
-To form the matrices $R, Q, H$, we note that the firm’s profits at
+To form the matrices $R, Q, N$ in an LQ dynamic programming problem, we note that the firm’s profits at
 time $t$ function can be expressed
 
 $$
@@ -145,7 +146,8 @@ $$
 \pi_{t} =&p_{t}S_{t}-c\left(Q_{t}\right)-d\left(I_{t},S_{t}\right)  \\
     =&\left(a_{0}-a_{1}S_{t}+v_{t}\right)S_{t}-c_{1}Q_{t}-c_{2}Q_{t}^{2}-d_{1}I_{t}-d_{2}\left(S_{t}-I_{t}\right)^{2}  \\
     =&a_{0}S_{t}-a_{1}S_{t}^{2}+Gz_{t}S_{t}-c_{1}Q_{t}-c_{2}Q_{t}^{2}-d_{1}I_{t}-d_{2}S_{t}^{2}-d_{2}I_{t}^{2}+2d_{2}S_{t}I_{t}  \\
-    =&-\left(\underset{x_{t}^{\prime}Rx_{t}}{\underbrace{d_{1}I_{t}+d_{2}I_{t}^{2}}}\underset{u_{t}^{\prime}Qu_{t}}{\underbrace{+a_{1}S_{t}^{2}+d_{2}S_{t}^{2}+c_{2}Q_{t}^{2}}}\underset{2u_{t}^{\prime}Hx_{t}}{\underbrace{-a_{0}S_{t}-Gz_{t}S_{t}+c_{1}Q_{t}-2d_{2}S_{t}I_{t}}}\right) \\
+    =&-\left(\underset{x_{t}^{\prime}Rx_{t}}{\underbrace{d_{1}I_{t}+d_{2}I_{t}^{2}}}\underset{u_{t}^{\prime}Qu_{t}}{\underbrace{+a_{1}S_{t}^{2}+d_{2}S_{t}^{2}+c_{2}Q_{t}^{2}}}
+    \underset{2u_{t}^{\prime}N x_{t}}{\underbrace{-a_{0}S_{t}-Gz_{t}S_{t}+c_{1}Q_{t}-2d_{2}S_{t}I_{t}}}\right) \\
     =&-\left(\left[\begin{array}{cc}
 I_{t} & z_{t}^{\prime}\end{array}\right]\underset{\equiv R}{\underbrace{\left[\begin{array}{cc}
 d_{2} & \frac{d_{1}}{2}S_{c}\\
@@ -175,7 +177,7 @@ $$
 where $S_{c}=\left[1,0\right]$.
 
 **Remark on notation:** The notation for cross product term in the
-QuantEcon library is $N$ instead of $H$.
+QuantEcon library is $N$.
 
 The firms’ optimum decision rule takes the form
 
@@ -188,6 +190,16 @@ and the evolution of the state under the optimal decision rule is
 $$
 x_{t+1} = (A - BF ) x_t + C \epsilon_{t+1}
 $$
+
+The firm chooses a decision rule for $u_t$ that maximizes
+
+$$
+E_0 \sum_{t=0}^\infty \beta^t \pi_t
+$$
+
+subject to a given $x_0$.
+
+This is a stochastic discounted LQ dynamic program.
 
 Here is code for computing an optimal decision rule and for analyzing
 its consequences.
@@ -334,7 +346,7 @@ class SmoothingExample:
 Notice that the above code sets parameters at the following default
 values
 
-- discount factor β=0.96,
+- discount factor $\beta=0.96$,
 - inverse demand function: $a0=10, a1=1$
 - cost of production $c1=1, c2=1$
 - costs of holding inventories $d1=1, d2=1$
@@ -469,7 +481,7 @@ We introduce this $I_t$ **is hardwired to zero** specification in
 order to shed light on the role that inventories play by comparing outcomes
 with those under our two other versions of the problem.
 
-The bottom right panel displays an production path for the original
+The bottom right panel displays a production path for the original
 problem that we are interested in (the blue line) as well with an
 optimal production path for the model in which inventories are not
 useful (the green path) and also for the model in which, although
