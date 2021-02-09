@@ -15,9 +15,6 @@ jobs:
           python-version: 3.8
           environment-file: environment.yml
           activate-environment: lecture-python
-      - name: Install myst_nb (from branch for testing)
-        shell: bash -l {0}
-        run: python -m pip install git+https://github.com/executablebooks/MyST-NB.git@code-from-file
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
