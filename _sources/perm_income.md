@@ -177,7 +177,7 @@ $$
 u(c_t) =  - (c_t - \gamma)^2
 $$
 
-where $\gamma$ is a bliss level of consumption.
+where $\gamma$ is a bliss level of consumption
 
 ```{note}
 Along with this quadratic utility specification, we allow consumption to be negative.  However, by choosing parameters appropriately, we can make the probability that the model generates negative consumption paths over finite time horizons as low as desired.
@@ -216,7 +216,7 @@ With our quadratic preference specification, {eq}`sprob4` has the striking impli
 \mathbb{E}_t [c_{t+1}] = c_t
 ```
 
-(In fact, quadratic preferences are *necessary* for this conclusion [^f2].)
+(In fact, quadratic preferences are *necessary* for this conclusion [^f2])
 
 One way to interpret {eq}`sprob5` is that consumption will change only when
 "new information" about permanent income is revealed.
@@ -226,7 +226,7 @@ These ideas will be clarified below.
 (odr_pi)=
 ### The Optimal Decision Rule
 
-Now let's deduce the optimal decision rule [^fod].
+Now let's deduce the optimal decision rule [^fod]
 
 ```{note}
 One way to solve the consumer's problem is to apply *dynamic programming*
@@ -432,7 +432,7 @@ We can then compute the mean and covariance of $\tilde y_t$ from
 
 To gain some preliminary intuition on the implications of {eq}`pi_ssr`, let's look at a highly stylized example where income is just IID.
 
-(Later examples will investigate more realistic income streams.)
+(Later examples will investigate more realistic income streams)
 
 In particular, let $\{w_t\}_{t = 1}^{\infty}$ be IID and scalar standard normal, and let
 
@@ -994,7 +994,7 @@ $$
 
 Using $\beta R = 1$ gives {eq}`sprob4` in the two-period case.
 
-The proof for the general case is similar.
+The proof for the general case is similar
 
 [^f2]: A linear marginal utility is essential for deriving {eq}`sprob5` from {eq}`sprob4`.  Suppose instead that we had imposed the following more standard assumptions on the utility function: $u'(c) >0, u''(c)<0, u'''(c) > 0$ and required that $c \geq 0$.  The Euler equation remains {eq}`sprob4`. But the fact that $u''' <0$ implies via Jensen's inequality that $\mathbb{E}_t [u'(c_{t+1})] >  u'(\mathbb{E}_t [c_{t+1}])$.  This inequality together with {eq}`sprob4` implies that $\mathbb{E}_t [c_{t+1}] > c_t$ (consumption is said to be a 'submartingale'), so that consumption stochastically diverges to $+\infty$.  The consumer's savings also diverge to $+\infty$.
 

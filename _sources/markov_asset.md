@@ -281,12 +281,12 @@ where
 
 1. $\{X_t\}$ is a finite Markov chain with state space $S$ and
    transition probabilities
-   
-   $$
-   P(x, y) := \mathbb P \{ X_{t+1} = y \,|\, X_t = x \}
-   \qquad (x, y \in S)
-   $$
-   
+
+$$
+P(x, y) := \mathbb P \{ X_{t+1} = y \,|\, X_t = x \}
+\qquad (x, y \in S)
+$$
+
 1. $g$ is a given function on $S$ taking positive values
 
 You can think of

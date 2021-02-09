@@ -258,11 +258,11 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: / 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+Solving environment: - 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
@@ -317,6 +317,12 @@ Solving environment: /
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -329,8 +335,7 @@ Solving environment: /
 </div>
 <div class="section" id="overview">
 <h2><a class="toc-backref" href="#id3"><span class="section-number">45.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>This lecture can be viewed as an application of this <a class="reference internal" href="lqcontrol.html"><span class="doc">quantecon lecture</span></a> about linear quadratic control
-theory.</p>
+<p>This lecture can be viewed as an application of the <a class="reference internal" href="lqcontrol.html"><span class="doc">quantecon lecture</span></a>.</p>
 <p>It formulates a discounted dynamic program for a firm that
 chooses a production schedule to balance</p>
 <ul class="simple">
@@ -340,16 +345,16 @@ chooses a production schedule to balance</p>
 <p>In the tradition of a classic book by Holt, Modigliani, Muth, and
 Simon <span id="id1">[<a class="reference internal" href="zreferences.html#id4"><span>HMMS60</span></a>]</span>, we simplify the
 firm’s problem by formulating it as a linear quadratic discounted
-dynamic programming problem of the type studied in this <a class="reference internal" href="lqcontrol.html"><span class="doc">quantecon lecture</span></a>.</p>
+dynamic programming problem of the type studied in this <a class="reference internal" href="lqcontrol.html"><span class="doc">quantecon</span></a>.</p>
 <p>Because its costs of production are increasing and quadratic in
-production, the firm holds inventories as a buffer stock in order to smooth production across time, provided
+production, the firm wants to smooth production across time provided
 that holding inventories is not too costly.</p>
-<p>But the firm also wants to make its sales  out of existing inventories, a
+<p>But the firm also prefers to sell out of existing inventories, a
 preference that we represent by a cost that is quadratic in the
 difference between sales in a period and the firm’s beginning of period
 inventories.</p>
-<p>We compute examples designed to indicate how the firm optimally
-smooths production  while keeping inventories
+<p>We compute examples designed to indicate how the firm optimally chooses
+to smooth production and manage inventories while keeping inventories
 close to sales.</p>
 <p>To introduce components of the model, let</p>
 <ul class="simple">
@@ -363,7 +368,7 @@ function, where <span class="math notranslate nohighlight">\(c_1&gt;0, c_2&gt;0\
 <span class="math notranslate nohighlight">\(d_1&gt;0, d_2 &gt;0\)</span>, be a cost-of-holding-inventories function,
 consisting of two components:</p>
 <ul>
-<li><p>a cost <span class="math notranslate nohighlight">\(d_1 I_t\)</span> of carrying inventories, and</p></li>
+<li><p>a cost <span class="math notranslate nohighlight">\(d_1 t\)</span> of carrying inventories, and</p></li>
 <li><p>a cost <span class="math notranslate nohighlight">\(d_2 (S_t - I_t)^2\)</span> of having inventories deviate
 from sales</p></li>
 </ul>
@@ -377,7 +382,7 @@ profits at time <span class="math notranslate nohighlight">\(t\)</span></p></li>
 be the present value of the firm’s profits at
 time <span class="math notranslate nohighlight">\(0\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(I_{t+1} = I_t + Q_t - S_t\)</span> be the law of motion of inventories</p></li>
-<li><p><span class="math notranslate nohighlight">\(z_{t+1} = A_{22} z_t + C_2 \epsilon_{t+1}\)</span> be a law
+<li><p><span class="math notranslate nohighlight">\(z_{t+1} = A_{22} z_t + C_2 \epsilon_{t+1}\)</span> be the law
 of motion for an exogenous state vector <span class="math notranslate nohighlight">\(z_t\)</span> that contains
 time <span class="math notranslate nohighlight">\(t\)</span> information useful for predicting the demand shock
 <span class="math notranslate nohighlight">\(v_t\)</span></p></li>
@@ -421,19 +426,16 @@ appears in the firm’s one-period profit function)</p>
 <p>We can express the firm’s profit as a function of states and controls as</p>
 <div class="math notranslate nohighlight">
 \[
-\pi_t =  - (x_t' R x_t + u_t' Q u_t + 2 u_t' N x_t )
+\pi_t =  - (x_t' R x_t + u_t' Q u_t + 2 u_t' H x_t )
 \]</div>
-<p>To form the matrices <span class="math notranslate nohighlight">\(R, Q, N\)</span> in an LQ dynamic programming problem, we note that the firm’s profits at
+<p>To form the matrices <span class="math notranslate nohighlight">\(R, Q, H\)</span>, we note that the firm’s profits at
 time <span class="math notranslate nohighlight">\(t\)</span> function can be expressed</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{equation}
-\begin{split}
 \pi_{t} =&amp;p_{t}S_{t}-c\left(Q_{t}\right)-d\left(I_{t},S_{t}\right)  \\
     =&amp;\left(a_{0}-a_{1}S_{t}+v_{t}\right)S_{t}-c_{1}Q_{t}-c_{2}Q_{t}^{2}-d_{1}I_{t}-d_{2}\left(S_{t}-I_{t}\right)^{2}  \\
     =&amp;a_{0}S_{t}-a_{1}S_{t}^{2}+Gz_{t}S_{t}-c_{1}Q_{t}-c_{2}Q_{t}^{2}-d_{1}I_{t}-d_{2}S_{t}^{2}-d_{2}I_{t}^{2}+2d_{2}S_{t}I_{t}  \\
-    =&amp;-\left(\underset{x_{t}^{\prime}Rx_{t}}{\underbrace{d_{1}I_{t}+d_{2}I_{t}^{2}}}\underset{u_{t}^{\prime}Qu_{t}}{\underbrace{+a_{1}S_{t}^{2}+d_{2}S_{t}^{2}+c_{2}Q_{t}^{2}}}
-    \underset{2u_{t}^{\prime}N x_{t}}{\underbrace{-a_{0}S_{t}-Gz_{t}S_{t}+c_{1}Q_{t}-2d_{2}S_{t}I_{t}}}\right) \\
+    =&amp;-\left(\underset{x_{t}^{\prime}Rx_{t}}{\underbrace{d_{1}I_{t}+d_{2}I_{t}^{2}}}\underset{u_{t}^{\prime}Qu_{t}}{\underbrace{+a_{1}S_{t}^{2}+d_{2}S_{t}^{2}+c_{2}Q_{t}^{2}}}\underset{2u_{t}^{\prime}Hx_{t}}{\underbrace{-a_{0}S_{t}-Gz_{t}S_{t}+c_{1}Q_{t}-2d_{2}S_{t}I_{t}}}\right) \\
     =&amp;-\left(\left[\begin{array}{cc}
 I_{t} &amp; z_{t}^{\prime}\end{array}\right]\underset{\equiv R}{\underbrace{\left[\begin{array}{cc}
 d_{2} &amp; \frac{d_{1}}{2}S_{c}\\
@@ -456,12 +458,10 @@ Q_{t} &amp; S_{t}\end{array}\right]\underset{\equiv N}{\underbrace{\left[\begin{
 I_{t}\\
 z_{t}
 \end{array}\right]\right)
-\end{split}
-\end{equation}
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(S_{c}=\left[1,0\right]\)</span>.</p>
 <p><strong>Remark on notation:</strong> The notation for cross product term in the
-QuantEcon library is <span class="math notranslate nohighlight">\(N\)</span>.</p>
+QuantEcon library is <span class="math notranslate nohighlight">\(N\)</span> instead of <span class="math notranslate nohighlight">\(H\)</span>.</p>
 <p>The firms’ optimum decision rule takes the form</p>
 <div class="math notranslate nohighlight">
 \[
@@ -472,13 +472,6 @@ u_t = - F x_t
 \[
 x_{t+1} = (A - BF ) x_t + C \epsilon_{t+1}
 \]</div>
-<p>The firm chooses a decision rule for <span class="math notranslate nohighlight">\(u_t\)</span> that maximizes</p>
-<div class="math notranslate nohighlight">
-\[
-E_0 \sum_{t=0}^\infty \beta^t \pi_t
-\]</div>
-<p>subject to a given <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
-<p>This is a stochastic discounted LQ dynamic program.</p>
 <p>Here is code for computing an optimal decision rule and for analyzing
 its consequences.</p>
 <div class="cell docutils container">
@@ -629,7 +622,7 @@ its consequences.</p>
 <p>Notice that the above code sets parameters at the following default
 values</p>
 <ul class="simple">
-<li><p>discount factor <span class="math notranslate nohighlight">\(\beta=0.96\)</span>,</p></li>
+<li><p>discount factor β=0.96,</p></li>
 <li><p>inverse demand function: <span class="math notranslate nohighlight">\(a0=10, a1=1\)</span></p></li>
 <li><p>cost of production <span class="math notranslate nohighlight">\(c1=1, c2=1\)</span></p></li>
 <li><p>costs of holding inventories <span class="math notranslate nohighlight">\(d1=1, d2=1\)</span></p></li>
@@ -750,7 +743,7 @@ Q_{t}^{h}=\frac{a_{0}+\nu_{t}-c_{1}}{c_{2}+a_{1}+d_{2}}.
 <p>We introduce this <span class="math notranslate nohighlight">\(I_t\)</span> <strong>is hardwired to zero</strong> specification in
 order to shed light on the role that inventories play by comparing outcomes
 with those under our two other versions of the problem.</p>
-<p>The bottom right panel displays a production path for the original
+<p>The bottom right panel displays an production path for the original
 problem that we are interested in (the blue line) as well with an
 optimal production path for the model in which inventories are not
 useful (the green path) and also for the model in which, although

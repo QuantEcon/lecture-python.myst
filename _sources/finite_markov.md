@@ -1218,23 +1218,22 @@ Let $F$ be the cumulative distribution function of the normal distribution $N(0,
 The values $P(x_i, x_j)$ are computed to approximate the AR(1) process --- omitting the derivation, the rules are as follows:
 
 1. If $j = 0$, then set
-   
-   $$
-   P(x_i, x_j) = P(x_i, x_0) = F(x_0-\rho x_i + s/2)
-   $$
-   
+
+$$
+P(x_i, x_j) = P(x_i, x_0) = F(x_0-\rho x_i + s/2)
+$$
+
 1. If $j = n-1$, then set
-   
-   $$
-   P(x_i, x_j) = P(x_i, x_{n-1}) = 1 - F(x_{n-1} - \rho x_i - s/2)
-   $$
-   
+
+$$
+P(x_i, x_j) = P(x_i, x_{n-1}) = 1 - F(x_{n-1} - \rho x_i - s/2)
+$$
+
 1. Otherwise, set
-   
-   $$
-   P(x_i, x_j) = F(x_j - \rho x_i + s/2) - F(x_j - \rho x_i - s/2)
-   $$
-   
+
+$$
+P(x_i, x_j) = F(x_j - \rho x_i + s/2) - F(x_j - \rho x_i - s/2)
+$$
 
 The exercise is to write a function `approx_markov(rho, sigma_u, m=3, n=7)` that returns
 $\{x_0, \ldots, x_{n-1}\} \subset \mathbb R$ and $n \times n$ matrix

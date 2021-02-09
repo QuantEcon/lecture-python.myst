@@ -64,7 +64,7 @@ In this lecture, we'll
 We'll then use these characterizations to construct a simple model of cross-section wealth and
 consumption dynamics in the spirit of Truman Bewley {cite}`Bewley86`.
 
-(Later we'll study other Bewley models---see {doc}`this lecture <aiyagari>`.)
+(Later we'll study other Bewley models---see {doc}`this lecture <aiyagari>`)
 
 The model will prove useful for illustrating concepts such as
 
@@ -750,7 +750,7 @@ Across the group of people being analyzed, risk-free loans are in zero excess su
 
 We have arranged primitives so that $R = \beta^{-1}$ clears the market for risk-free loans at zero aggregate excess supply.
 
-So the risk-free loans are being made from one person to another within our closed set of agents.
+So the risk-free loans are being made from one person to another within our closed set of agent.
 
 There is no need for foreigners to lend to our group.
 
