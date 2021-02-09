@@ -153,7 +153,7 @@ Y_t = C_t + I_t + G_t
 
 - The parameter $a$ is peoples' *marginal propensity to consume*
   out of income - equation {eq}`consumption` asserts that people consume a fraction of
-  math:a in (0,1) of each additional dollar of income.
+  $a \in (0,1)$ of each additional dollar of income.
 - The parameter $b > 0$ is the investment accelerator coefficient - equation
   {eq}`accelerator` asserts that people invest in physical capital when
   income is increasing and disinvest when it is decreasing.
@@ -772,11 +772,6 @@ z = Symbol("z")
 sympy.solve(z**2 - r1*z - r2, z)
 ```
 
-$$
-\left [ \frac{\rho_{1}}{2} - \frac{1}{2} \sqrt{\rho_{1}^{2} + 4 \rho_{2}},
-\quad \frac{\rho_{1}}{2} + \frac{1}{2} \sqrt{\rho_{1}^{2} + 4 \rho_{2}}\right ]
-$$
-
 ```{code-cell} python3
 a = Symbol("α")
 b = Symbol("β")
@@ -785,13 +780,6 @@ r2 = -b
 
 sympy.solve(z**2 - r1*z - r2, z)
 ```
-
-$$
-\left [ \frac{\alpha}{2} + \frac{\beta}{2} - \frac{1}{2} \sqrt{\alpha^{2} +
-2 \alpha \beta + \beta^{2} - 4 \beta}, \quad \frac{\alpha}{2} +
-\frac{\beta}{2} + \frac{1}{2} \sqrt{\alpha^{2} + 2 \alpha \beta +
-\beta^{2} - 4 \beta}\right ]
-$$
 
 ## Stochastic Shocks
 
@@ -1260,10 +1248,6 @@ y1 = imres[:, :, 0]
 y2 = imres[:, :, 1]
 y1.shape
 ```
-
-$$
-\left ( 2, \quad 6, \quad 1\right )
-$$
 
 Now let's compute the zeros of the characteristic polynomial by simply
 calculating the eigenvalues of $A$
