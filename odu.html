@@ -158,7 +158,7 @@
                                     <a href="#solutions" class="nav-link">Solutions</a><ul class="nav section-nav flex-column">
                                         
                                 <li class="nav-item toc-entry toc-h3">
-                                    <a href="#id11" class="nav-link">Exercise 1</a>
+                                    <a href="#id6" class="nav-link">Exercise 1</a>
                                 </li>
                                 
                                     </ul>
@@ -248,24 +248,24 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="job-search-vii-search-with-learning">
-<h1><a class="toc-backref" href="#id12"><span class="section-number">36. </span>Job Search VII: Search with Learning</a><a class="headerlink" href="#job-search-vii-search-with-learning" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id7"><span class="section-number">36. </span>Job Search VII: Search with Learning</a><a class="headerlink" href="#job-search-vii-search-with-learning" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#job-search-vii-search-with-learning" id="id12">Job Search VII: Search with Learning</a></p>
+<li><p><a class="reference internal" href="#job-search-vii-search-with-learning" id="id7">Job Search VII: Search with Learning</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id13">Overview</a></p></li>
-<li><p><a class="reference internal" href="#model" id="id14">Model</a></p></li>
-<li><p><a class="reference internal" href="#take-1-solution-by-vfi" id="id15">Take 1: Solution by VFI</a></p></li>
-<li><p><a class="reference internal" href="#take-2-a-more-efficient-method" id="id16">Take 2: A More Efficient Method</a></p></li>
-<li><p><a class="reference internal" href="#another-functional-equation" id="id17">Another Functional Equation</a></p></li>
-<li><p><a class="reference internal" href="#solving-the-rwfe" id="id18">Solving the RWFE</a></p></li>
-<li><p><a class="reference internal" href="#implementation" id="id19">Implementation</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id20">Exercises</a></p></li>
-<li><p><a class="reference internal" href="#solutions" id="id21">Solutions</a></p></li>
-<li><p><a class="reference internal" href="#appendix-a" id="id22">Appendix A</a></p></li>
-<li><p><a class="reference internal" href="#appendix-b" id="id23">Appendix B</a></p></li>
-<li><p><a class="reference internal" href="#examples" id="id24">Examples</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id8">Overview</a></p></li>
+<li><p><a class="reference internal" href="#model" id="id9">Model</a></p></li>
+<li><p><a class="reference internal" href="#take-1-solution-by-vfi" id="id10">Take 1: Solution by VFI</a></p></li>
+<li><p><a class="reference internal" href="#take-2-a-more-efficient-method" id="id11">Take 2: A More Efficient Method</a></p></li>
+<li><p><a class="reference internal" href="#another-functional-equation" id="id12">Another Functional Equation</a></p></li>
+<li><p><a class="reference internal" href="#solving-the-rwfe" id="id13">Solving the RWFE</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id14">Implementation</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id15">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#solutions" id="id16">Solutions</a></p></li>
+<li><p><a class="reference internal" href="#appendix-a" id="id17">Appendix A</a></p></li>
+<li><p><a class="reference internal" href="#appendix-b" id="id18">Appendix B</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id19">Examples</a></p></li>
 </ul>
 </li>
 </ul>
@@ -280,9 +280,9 @@
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">36.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">36.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we consider an extension of the <a class="reference external" href="https://python.quantecon.org/mccall_model.html">previously studied</a> job search model of McCall
-<a href="#id1"><span class="problematic" id="id2">:cite:`McCall1970`</span></a>.</p>
+<span id="id1">[<a class="reference internal" href="zreferences.html#id151"><span>McC70</span></a>]</span>.</p>
 <p>We’ll build on a model of Bayesian learning discussed in <a class="reference external" href="https://python.quantecon.org/exchangeable.html">this lecture</a> on the topic of exchangeability and its relationship to
 the concept of IID (identically and independently distributed) random variables and to  Bayesian updating.</p>
 <p>In the McCall model, an unemployed worker decides when to accept a
@@ -296,7 +296,7 @@ permanent job at a specific fixed wage, given</p>
 must be learned.</p>
 <ul class="simple">
 <li><p>The following is based on the presentation in
-<a href="#id3"><span class="problematic" id="id4">:cite:`Ljungqvist2012`</span></a>, section 6.6.</p></li>
+<span id="id2">[<a class="reference internal" href="zreferences.html#id143"><span>LS18</span></a>]</span>, section 6.6.</p></li>
 </ul>
 <p>Let’s start with some imports</p>
 <div class="cell docutils container">
@@ -324,9 +324,9 @@ control.</p></li>
 </div>
 </div>
 <div class="section" id="model">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">36.2. </span>Model</a><a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">36.2. </span>Model</a><a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
 <p>Let’s first review the basic McCall model
-<a href="#id5"><span class="problematic" id="id6">:cite:`McCall1970`</span></a> and then add the variation we
+<span id="id3">[<a class="reference internal" href="zreferences.html#id151"><span>McC70</span></a>]</span> and then add the variation we
 want to consider.</p>
 <div class="section" id="the-basic-mccall-model">
 <h3><span class="section-number">36.2.1. </span>The Basic McCall Model<a class="headerlink" href="#the-basic-mccall-model" title="Permalink to this headline">¶</a></h3>
@@ -353,7 +353,7 @@ reconsiders next period</p></li>
 <div class="section" id="offer-distribution-unknown">
 <h3><span class="section-number">36.2.2. </span>Offer Distribution Unknown<a class="headerlink" href="#offer-distribution-unknown" title="Permalink to this headline">¶</a></h3>
 <p>Now let’s extend the model by considering the variation presented in
-<a href="#id7"><span class="problematic" id="id8">:cite:`Ljungqvist2012`</span></a>, section 6.6.</p>
+<span id="id4">[<a class="reference internal" href="zreferences.html#id143"><span>LS18</span></a>]</span>, section 6.6.</p>
 <p>The model is as above, apart from the fact that</p>
 <ul class="simple">
 <li><p>the density <span class="math notranslate nohighlight">\(q\)</span> is unknown</p></li>
@@ -404,7 +404,7 @@ rewards.</p>
 </div>
 <div class="section" id="parameterization">
 <h3><span class="section-number">36.2.3. </span>Parameterization<a class="headerlink" href="#parameterization" title="Permalink to this headline">¶</a></h3>
-<p>Following section 6.6 of <a href="#id9"><span class="problematic" id="id10">:cite:`Ljungqvist2012`</span></a>,
+<p>Following section 6.6 of <span id="id5">[<a class="reference internal" href="zreferences.html#id143"><span>LS18</span></a>]</span>,
 our baseline parameterization will be</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(f\)</span> is <span class="math notranslate nohighlight">\(\operatorname{Beta}(1, 1)\)</span></p></li>
@@ -459,7 +459,7 @@ decreasing function <span class="math notranslate nohighlight">\(\bar w\)</span>
 </div>
 </div>
 <div class="section" id="take-1-solution-by-vfi">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">36.3. </span>Take 1: Solution by VFI</a><a class="headerlink" href="#take-1-solution-by-vfi" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">36.3. </span>Take 1: Solution by VFI</a><a class="headerlink" href="#take-1-solution-by-vfi" title="Permalink to this headline">¶</a></h2>
 <p>Let’s set about solving the model and see how our results match with our
 intuition.</p>
 <p>We begin by solving via value function iteration (VFI), which is natural
@@ -683,7 +683,7 @@ forward</a>.</p>
 </ul>
 </div>
 <div class="section" id="take-2-a-more-efficient-method">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">36.4. </span>Take 2: A More Efficient Method</a><a class="headerlink" href="#take-2-a-more-efficient-method" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">36.4. </span>Take 2: A More Efficient Method</a><a class="headerlink" href="#take-2-a-more-efficient-method" title="Permalink to this headline">¶</a></h2>
 <p>Let’s consider another method to solve for the optimal policy.</p>
 <p>We will use iteration with an operator that has the same contraction
 rate as the Bellman operator, but</p>
@@ -696,7 +696,7 @@ rate as the Bellman operator, but</p>
 bit of mathematical analysis goes a long way.</p>
 </div>
 <div class="section" id="another-functional-equation">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">36.5. </span>Another Functional Equation</a><a class="headerlink" href="#another-functional-equation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">36.5. </span>Another Functional Equation</a><a class="headerlink" href="#another-functional-equation" title="Permalink to this headline">¶</a></h2>
 <p>To begin, note that when <span class="math notranslate nohighlight">\(w = \bar w(\pi)\)</span>, the worker is indifferent
 between accepting and rejecting.</p>
 <p>Hence the two choices on the right-hand side of <a class="reference internal" href="#equation-odu-mvf">(36.3)</a> have equal value:</p>
@@ -732,7 +732,7 @@ and using <span class="math notranslate nohighlight">\(\circ\)</span> for compos
 </ul>
 </div>
 <div class="section" id="solving-the-rwfe">
-<h2><a class="toc-backref" href="#id18"><span class="section-number">36.6. </span>Solving the RWFE</a><a class="headerlink" href="#solving-the-rwfe" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">36.6. </span>Solving the RWFE</a><a class="headerlink" href="#solving-the-rwfe" title="Permalink to this headline">¶</a></h2>
 <p>To solve the RWFE, we will first show that its solution is the
 fixed point of a <a class="reference external" href="https://en.wikipedia.org/wiki/Contraction_mapping">contraction mapping</a>.</p>
 <p>To this end, let</p>
@@ -782,7 +782,7 @@ complete metric space <span class="math notranslate nohighlight">\((b[0,1], \| \
 </ul>
 </div>
 <div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id19"><span class="section-number">36.7. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">36.7. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>The following function takes an instance of <code class="docutils literal notranslate"><span class="pre">SearchProblem</span></code> and
 returns the operator <code class="docutils literal notranslate"><span class="pre">Q</span></code></p>
 <div class="cell docutils container">
@@ -841,7 +841,7 @@ returns the operator <code class="docutils literal notranslate"><span class="pre
 <span class="math notranslate nohighlight">\(\bar w\)</span>.</p>
 </div>
 <div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id20"><span class="section-number">36.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">36.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="exercise-1">
 <h3><span class="section-number">36.8.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>Use the default parameters and <code class="docutils literal notranslate"><span class="pre">Q_factory</span></code> to compute an optimal
@@ -853,9 +853,9 @@ in the optimal policy coincides with your intuition.</p>
 </div>
 </div>
 <div class="section" id="solutions">
-<h2><a class="toc-backref" href="#id21"><span class="section-number">36.9. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id11">
-<h3><span class="section-number">36.9.1. </span>Exercise 1<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">36.9. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h3><span class="section-number">36.9.1. </span>Exercise 1<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>This code solves the “Offer Distribution Unknown” model by iterating on
 a guess of the reservation wage function.</p>
 <p>You should find that the run time is shorter than that of the value
@@ -923,7 +923,7 @@ fixed point</p>
 </div>
 </div>
 <div class="section" id="appendix-a">
-<h2><a class="toc-backref" href="#id22"><span class="section-number">36.10. </span>Appendix A</a><a class="headerlink" href="#appendix-a" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id17"><span class="section-number">36.10. </span>Appendix A</a><a class="headerlink" href="#appendix-a" title="Permalink to this headline">¶</a></h2>
 <p>The next piece of code generates a fun simulation to see what the effect
 of a change in the underlying distribution on the unemployment rate is.</p>
 <p>At a point in the simulation, the distribution becomes significantly
@@ -1009,7 +1009,7 @@ too optimistic and turn down too many jobs.</p>
 </div>
 </div>
 <div class="section" id="appendix-b">
-<h2><a class="toc-backref" href="#id23"><span class="section-number">36.11. </span>Appendix B</a><a class="headerlink" href="#appendix-b" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id18"><span class="section-number">36.11. </span>Appendix B</a><a class="headerlink" href="#appendix-b" title="Permalink to this headline">¶</a></h2>
 <p>In this appendix we provide more details about how Bayes’ Law contributes to the workings of the model.</p>
 <p>We present some graphs that bring out additional insights about how learning works.</p>
 <p>We build on graphs proposed in <a class="reference external" href="https://python.quantecon.org/exchangeable.html">this lecture</a>.</p>
@@ -1214,7 +1214,7 @@ to interpret the solution of our search model.</p>
 <p>We now provide some examples that provide insights about how the model works.</p>
 </div>
 <div class="section" id="examples">
-<h2><a class="toc-backref" href="#id24"><span class="section-number">36.12. </span>Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id19"><span class="section-number">36.12. </span>Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="example-1-baseline">
 <h3><span class="section-number">36.12.1. </span>Example 1 (Baseline)<a class="headerlink" href="#example-1-baseline" title="Permalink to this headline">¶</a></h3>
 <p><span class="math notranslate nohighlight">\(F\)</span> ~ Beta(1, 1), <span class="math notranslate nohighlight">\(G\)</span> ~ Beta(3, 1.2), <span class="math notranslate nohighlight">\(c\)</span>=0.3.</p>

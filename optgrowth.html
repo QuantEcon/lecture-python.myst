@@ -150,7 +150,7 @@
                                 </li>
                                 
                                 <li class="nav-item toc-entry toc-h3">
-                                    <a href="#id15" class="nav-link">The Bellman Operator</a>
+                                    <a href="#id8" class="nav-link">The Bellman Operator</a>
                                 </li>
                                 
                                 <li class="nav-item toc-entry toc-h3">
@@ -186,11 +186,11 @@
                                     <a href="#solutions" class="nav-link">Solutions</a><ul class="nav section-nav flex-column">
                                         
                                 <li class="nav-item toc-entry toc-h3">
-                                    <a href="#id18" class="nav-link">Exercise 1</a>
+                                    <a href="#id10" class="nav-link">Exercise 1</a>
                                 </li>
                                 
                                 <li class="nav-item toc-entry toc-h3">
-                                    <a href="#id19" class="nav-link">Exercise 2</a>
+                                    <a href="#id11" class="nav-link">Exercise 2</a>
                                 </li>
                                 
                                     </ul>
@@ -246,32 +246,32 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="optimal-growth-i-the-stochastic-optimal-growth-model">
-<h1><a class="toc-backref" href="#id20"><span class="section-number">30. </span><span class="target" id="index-0"></span>Optimal Growth I: The Stochastic Optimal Growth Model</a><a class="headerlink" href="#optimal-growth-i-the-stochastic-optimal-growth-model" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id12"><span class="section-number">30. </span><span class="target" id="index-0"></span>Optimal Growth I: The Stochastic Optimal Growth Model</a><a class="headerlink" href="#optimal-growth-i-the-stochastic-optimal-growth-model" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#optimal-growth-i-the-stochastic-optimal-growth-model" id="id20">Optimal Growth I: The Stochastic Optimal Growth Model</a></p>
+<li><p><a class="reference internal" href="#optimal-growth-i-the-stochastic-optimal-growth-model" id="id12">Optimal Growth I: The Stochastic Optimal Growth Model</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id21">Overview</a></p></li>
-<li><p><a class="reference internal" href="#the-model" id="id22">The Model</a></p></li>
-<li><p><a class="reference internal" href="#computation" id="id23">Computation</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id24">Exercises</a></p></li>
-<li><p><a class="reference internal" href="#solutions" id="id25">Solutions</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id13">Overview</a></p></li>
+<li><p><a class="reference internal" href="#the-model" id="id14">The Model</a></p></li>
+<li><p><a class="reference internal" href="#computation" id="id15">Computation</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id16">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#solutions" id="id17">Solutions</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id21"><span class="section-number">30.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">30.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we’re going to study a simple optimal growth model with one
 agent.</p>
 <p>The model is a version of the standard one sector infinite horizon growth
 model studied in</p>
 <ul class="simple">
-<li><p><a href="#id1"><span class="problematic" id="id2">:cite:`StokeyLucas1989`</span></a>, chapter 2</p></li>
-<li><p><a href="#id3"><span class="problematic" id="id4">:cite:`Ljungqvist2012`</span></a>, section 3.1</p></li>
+<li><p><span id="id1">[<a class="reference internal" href="zreferences.html#id179"><span>SLP89</span></a>]</span>, chapter 2</p></li>
+<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id143"><span>LS18</span></a>]</span>, section 3.1</p></li>
 <li><p><a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a>, chapter 1</p></li>
-<li><p><a href="#id5"><span class="problematic" id="id6">:cite:`Sundaram1996`</span></a>, chapter 12</p></li>
+<li><p><span id="id3">[<a class="reference internal" href="zreferences.html#id181"><span>Sun96</span></a>]</span>, chapter 12</p></li>
 </ul>
 <p>It is an extension of the simple <a class="reference internal" href="cake_eating_problem.html"><span class="doc">cake eating problem</span></a> we looked at earlier.</p>
 <p>The extension involves</p>
@@ -302,7 +302,7 @@ techniques to drastically improve execution time over the next few lectures.</p>
 </div>
 </div>
 <div class="section" id="the-model">
-<h2><a class="toc-backref" href="#id22"><span class="section-number">30.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">30.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
 <p id="index-1">Consider an agent who owns an amount <span class="math notranslate nohighlight">\(y_t \in \mathbb R_+ := [0, \infty)\)</span> of a consumption good at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>This output can either be consumed or invested.</p>
 <p>When the good is invested, it is transformed one-for-one into capital.</p>
@@ -370,7 +370,7 @@ observable outcomes, not on future outcomes such as <span class="math notranslat
 <p>For dynamic programming problems such as this one (in fact for any <a class="reference external" href="https://en.wikipedia.org/wiki/Markov_decision_process">Markov decision process</a>), the optimal policy is always a Markov policy.</p>
 <p>In other words, the current state <span class="math notranslate nohighlight">\(y_t\)</span> provides a <a class="reference external" href="https://en.wikipedia.org/wiki/Sufficient_statistic">sufficient statistic</a>
 for the history in terms of making an optimal decision today.</p>
-<p>This is quite intuitive, but if you wish you can find proofs in texts such as <a href="#id7"><span class="problematic" id="id8">:cite:`StokeyLucas1989`</span></a> (section 4.1).</p>
+<p>This is quite intuitive, but if you wish you can find proofs in texts such as <span id="id4">[<a class="reference internal" href="zreferences.html#id179"><span>SLP89</span></a>]</span> (section 4.1).</p>
 <p>Hereafter we focus on finding the best Markov policy.</p>
 <p>In our context, a Markov policy is a function <span class="math notranslate nohighlight">\(\sigma \colon
 \mathbb R_+ \to \mathbb R_+\)</span>, with the understanding that states are mapped to actions via</p>
@@ -537,11 +537,11 @@ generated by iteratively applying <span class="math notranslate nohighlight">\(T
 <p>Unfortunately, they tend to be case-specific, as opposed to valid for a large range of applications.</p>
 <p>Nevertheless, their main conclusions are usually in line with those stated for
 the bounded case just above (as long as we drop the word “bounded”).</p>
-<p>Consult,  for example, section 12.2 of <a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a>, <a href="#id9"><span class="problematic" id="id10">:cite:`Kamihigashi2012`</span></a> or <a href="#id11"><span class="problematic" id="id12">:cite:`MV2010`</span></a>.</p>
+<p>Consult,  for example, section 12.2 of <a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a>, <span id="id5">[<a class="reference internal" href="zreferences.html#id138"><span>Kam12</span></a>]</span> or <span id="id6">[<a class="reference internal" href="zreferences.html#id149"><span>MdRV10</span></a>]</span>.</p>
 </div>
 </div>
 <div class="section" id="computation">
-<h2><a class="toc-backref" href="#id23"><span class="section-number">30.3. </span>Computation</a><a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">30.3. </span>Computation</a><a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h2>
 <p id="index-6">Let’s now look at computing the value function and the optimal policy.</p>
 <p>Our implementation in this lecture will focus on clarity and
 flexibility.</p>
@@ -654,10 +654,10 @@ computed via <a class="reference external" href="https://en.wikipedia.org/wiki/M
 <p>where <span class="math notranslate nohighlight">\(\{\xi_i\}_{i=1}^n\)</span> are IID draws from <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
 <p>Monte Carlo is not always the most efficient way to compute integrals numerically
 but it does have some theoretical advantages in the present setting.</p>
-<p>(For example, it preserves the contraction mapping property of the Bellman operator — see, e.g., <a href="#id13"><span class="problematic" id="id14">:cite:`pal2013`</span></a>.)</p>
+<p>(For example, it preserves the contraction mapping property of the Bellman operator — see, e.g., <span id="id7">[<a class="reference internal" href="zreferences.html#id88"><span>PalS13</span></a>]</span>.)</p>
 </div>
-<div class="section" id="id15">
-<h3><span class="section-number">30.3.3. </span>The Bellman Operator<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h3><span class="section-number">30.3.3. </span>The Bellman Operator<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <p>The next function implements the Bellman operator.</p>
 <p>(We could have added it as a method to the <code class="docutils literal notranslate"><span class="pre">OptimalGrowthModel</span></code> class, but we
 prefer small classes rather than monolithic ones for this kind of
@@ -699,7 +699,7 @@ f(k) = k^{\alpha}
 \quad \text{and} \quad
 u(c) = \ln c
 \]</div>
-<p>For this particular problem, an exact analytical solution is available (see <a href="#id16"><span class="problematic" id="id17">:cite:`Ljungqvist2012`</span></a>, section 3.1.2), with</p>
+<p>For this particular problem, an exact analytical solution is available (see <span id="id9">[<a class="reference internal" href="zreferences.html#id143"><span>LS18</span></a>]</span>, section 3.1.2), with</p>
 <div class="math notranslate nohighlight" id="equation-dpi-tv">
 <span class="eqno">(30.12)<a class="headerlink" href="#equation-dpi-tv" title="Permalink to this equation">¶</a></span>\[v^*(y) =
 \frac{\ln (1 - \alpha \beta) }{ 1 - \beta} +
@@ -894,7 +894,7 @@ the true policy.</p>
 </div>
 </div>
 <div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id24"><span class="section-number">30.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">30.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="exercise-1">
 <span id="ogex1"></span><h3><span class="section-number">30.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>A common choice for utility function in this kind of work is the CRRA
@@ -918,9 +918,9 @@ utility specification.</p>
 </div>
 </div>
 <div class="section" id="solutions">
-<h2><a class="toc-backref" href="#id25"><span class="section-number">30.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id18">
-<h3><span class="section-number">30.5.1. </span>Exercise 1<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<h2><a class="toc-backref" href="#id17"><span class="section-number">30.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id10">
+<h3><span class="section-number">30.5.1. </span>Exercise 1<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <p>Here we set up the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -958,8 +958,8 @@ utility specification.</p>
 </div>
 </div>
 </div>
-<div class="section" id="id19">
-<h3><span class="section-number">30.5.2. </span>Exercise 2<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id11">
+<h3><span class="section-number">30.5.2. </span>Exercise 2<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <p>Let’s set up:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

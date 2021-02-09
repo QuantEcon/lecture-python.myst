@@ -138,7 +138,7 @@
                                     <a href="#solutions" class="nav-link">Solutions</a><ul class="nav section-nav flex-column">
                                         
                                 <li class="nav-item toc-entry toc-h3">
-                                    <a href="#id5" class="nav-link">Exercise 1</a>
+                                    <a href="#id3" class="nav-link">Exercise 1</a>
                                 </li>
                                 
                                     </ul>
@@ -194,17 +194,17 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="optimal-growth-iii-time-iteration">
-<h1><a class="toc-backref" href="#id6"><span class="section-number">32. </span><span class="target" id="index-0"></span>Optimal Growth III: Time Iteration</a><a class="headerlink" href="#optimal-growth-iii-time-iteration" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id4"><span class="section-number">32. </span><span class="target" id="index-0"></span>Optimal Growth III: Time Iteration</a><a class="headerlink" href="#optimal-growth-iii-time-iteration" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#optimal-growth-iii-time-iteration" id="id6">Optimal Growth III: Time Iteration</a></p>
+<li><p><a class="reference internal" href="#optimal-growth-iii-time-iteration" id="id4">Optimal Growth III: Time Iteration</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id7">Overview</a></p></li>
-<li><p><a class="reference internal" href="#the-euler-equation" id="id8">The Euler Equation</a></p></li>
-<li><p><a class="reference internal" href="#implementation" id="id9">Implementation</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id10">Exercises</a></p></li>
-<li><p><a class="reference internal" href="#solutions" id="id11">Solutions</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id5">Overview</a></p></li>
+<li><p><a class="reference internal" href="#the-euler-equation" id="id6">The Euler Equation</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id7">Implementation</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id8">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#solutions" id="id9">Solutions</a></p></li>
 </ul>
 </li>
 </ul>
@@ -219,7 +219,7 @@
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">32.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">32.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we’ll continue our <a class="reference internal" href="optgrowth.html"><span class="doc">earlier</span></a> study of the stochastic optimal growth model.</p>
 <p>In that lecture, we solved the associated dynamic programming
 problem using value function iteration.</p>
@@ -253,7 +253,7 @@ iteration can be further adjusted to obtain even more efficiency.</p>
 </div>
 </div>
 <div class="section" id="the-euler-equation">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">32.2. </span>The Euler Equation</a><a class="headerlink" href="#the-euler-equation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">32.2. </span>The Euler Equation</a><a class="headerlink" href="#the-euler-equation" title="Permalink to this headline">¶</a></h2>
 <p>Our first step is to derive the Euler equation, which is a generalization of
 the Euler equation we obtained in the <a class="reference internal" href="cake_eating_problem.html"><span class="doc">lecture on cake eating</span></a>.</p>
 <p>We take the model set out in <a class="reference internal" href="optgrowth.html"><span class="doc">the stochastic growth model lecture</span></a> and add the following assumptions:</p>
@@ -331,7 +331,7 @@ that are continuous, strictly increasing and interior.</p>
 <span class="eqno">(32.7)<a class="headerlink" href="#equation-cpi-coledef" title="Permalink to this equation">¶</a></span>\[u'(c)
 = \beta \int (u' \circ \sigma) (f(y - c) z ) f'(y - c) z \phi(dz)\]</div>
 <p>We call this operator the <strong>Coleman-Reffett operator</strong> to acknowledge the work of
-<a href="#id1"><span class="problematic" id="id2">:cite:`Coleman1990`</span></a> and <a href="#id3"><span class="problematic" id="id4">:cite:`Reffett1996`</span></a>.</p>
+<span id="id1">[<a class="reference internal" href="zreferences.html#id112"><span>Col90</span></a>]</span> and <span id="id2">[<a class="reference internal" href="zreferences.html#id44"><span>Ref96</span></a>]</span>.</p>
 <p>In essence, <span class="math notranslate nohighlight">\(K\sigma\)</span> is the consumption policy that the Euler equation tells
 you to choose today when your future consumption policy is <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
 <p>The  important thing to note about <span class="math notranslate nohighlight">\(K\)</span> is that, by
@@ -381,7 +381,7 @@ and hence more efficient in the applications we consider.</p>
 </div>
 </div>
 <div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">32.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">32.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>As in our <a class="reference internal" href="optgrowth_fast.html"><span class="doc">previous study</span></a>, we continue to assume that</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(u(c) = \ln c\)</span></p></li>
@@ -640,7 +640,7 @@ and accuracy, at least for this model.</p>
 </div>
 </div>
 <div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">32.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">32.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="exercise-1">
 <h3><span class="section-number">32.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>Solve the model with CRRA utility</p>
@@ -653,9 +653,9 @@ u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
 </div>
 </div>
 <div class="section" id="solutions">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">32.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id5">
-<h3><span class="section-number">32.5.1. </span>Exercise 1<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">32.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3><span class="section-number">32.5.1. </span>Exercise 1<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>We use the class <code class="docutils literal notranslate"><span class="pre">OptimalGrowthModel_CRRA</span></code> from our <a class="reference internal" href="optgrowth_fast.html"><span class="doc">VFI lecture</span></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
 

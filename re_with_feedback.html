@@ -204,21 +204,21 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="stability-in-linear-rational-expectations-models">
-<h1><a class="toc-backref" href="#id15"><span class="section-number">49. </span>Stability in Linear Rational Expectations Models</a><a class="headerlink" href="#stability-in-linear-rational-expectations-models" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id8"><span class="section-number">49. </span>Stability in Linear Rational Expectations Models</a><a class="headerlink" href="#stability-in-linear-rational-expectations-models" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#stability-in-linear-rational-expectations-models" id="id15">Stability in Linear Rational Expectations Models</a></p>
+<li><p><a class="reference internal" href="#stability-in-linear-rational-expectations-models" id="id8">Stability in Linear Rational Expectations Models</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id16">Overview</a></p></li>
-<li><p><a class="reference internal" href="#linear-difference-equations" id="id17">Linear difference equations</a></p></li>
-<li><p><a class="reference internal" href="#illustration-cagan-s-model" id="id18">Illustration: Cagan’s Model</a></p></li>
-<li><p><a class="reference internal" href="#some-python-code" id="id19">Some Python code</a></p></li>
-<li><p><a class="reference internal" href="#alternative-code" id="id20">Alternative code</a></p></li>
-<li><p><a class="reference internal" href="#another-perspective" id="id21">Another perspective</a></p></li>
-<li><p><a class="reference internal" href="#log-money-supply-feeds-back-on-log-price-level" id="id22">Log money supply feeds back on log price level</a></p></li>
-<li><p><a class="reference internal" href="#big-p-little-p-interpretation" id="id23">Big <span class="math notranslate nohighlight">\(P\)</span>, little <span class="math notranslate nohighlight">\(p\)</span> interpretation</a></p></li>
-<li><p><a class="reference internal" href="#fun-with-sympy-code" id="id24">Fun with SymPy code</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id9">Overview</a></p></li>
+<li><p><a class="reference internal" href="#linear-difference-equations" id="id10">Linear difference equations</a></p></li>
+<li><p><a class="reference internal" href="#illustration-cagan-s-model" id="id11">Illustration: Cagan’s Model</a></p></li>
+<li><p><a class="reference internal" href="#some-python-code" id="id12">Some Python code</a></p></li>
+<li><p><a class="reference internal" href="#alternative-code" id="id13">Alternative code</a></p></li>
+<li><p><a class="reference internal" href="#another-perspective" id="id14">Another perspective</a></p></li>
+<li><p><a class="reference internal" href="#log-money-supply-feeds-back-on-log-price-level" id="id15">Log money supply feeds back on log price level</a></p></li>
+<li><p><a class="reference internal" href="#big-p-little-p-interpretation" id="id16">Big <span class="math notranslate nohighlight">\(P\)</span>, little <span class="math notranslate nohighlight">\(p\)</span> interpretation</a></p></li>
+<li><p><a class="reference internal" href="#fun-with-sympy-code" id="id17">Fun with SymPy code</a></p></li>
 </ul>
 </li>
 </ul>
@@ -261,32 +261,8 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: | 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+Solving environment: / 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
@@ -370,11 +346,11 @@ Solving environment: |
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">49.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">49.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture studies stability in the context of an elementary rational expectations model.</p>
-<p>We study a rational expectations version of Philip Cagan’s model <a href="#id1"><span class="problematic" id="id2">:cite:`Cagan`</span></a> linking
+<p>We study a rational expectations version of Philip Cagan’s model <span id="id1">[<a class="reference internal" href="zreferences.html#id50"><span>Cag56</span></a>]</span> linking
 the price level to the money supply.</p>
-<p>Cagan did not use a rational expectations version of his model, but Sargent <a href="#id3"><span class="problematic" id="id4">:cite:`Sargent77hyper`</span></a> did.</p>
+<p>Cagan did not use a rational expectations version of his model, but Sargent <span id="id2">[<a class="reference internal" href="zreferences.html#id51"><span>Sar77</span></a>]</span> did.</p>
 <p>We study a rational expectations version of this model because it is intrinsically interesting and  because it
 has a mathematical structure that
 appears in virtually all  linear rational expectations model, namely, that a key  endogenous variable equals
@@ -385,7 +361,7 @@ a mathematical expectation of a geometric sum of future values of another variab
 <li><p>a convenient formula for the expectation of geometric sum of future values of a variable</p></li>
 <li><p>a way of solving an expectational difference equation by mapping it into a vector first-order difference equation and appropriately manipulating an eigen decomposition of the transition matrix in order to impose stability</p></li>
 <li><p>a way to use a Big <span class="math notranslate nohighlight">\(K\)</span>, little <span class="math notranslate nohighlight">\(k\)</span> argument to allow apparent feedback from endogenous to exogenous variables within a rational expectations equilibrium</p></li>
-<li><p>a use of eigenvector decompositions of matrices that allowed Blanchard and Khan (1981) <a href="#id5"><span class="problematic" id="id6">:cite:`Blanchard_Khan`</span></a> and Whiteman (1983) <a href="#id7"><span class="problematic" id="id8">:cite:`Whiteman`</span></a> to solve a class of linear rational expectations models</p></li>
+<li><p>a use of eigenvector decompositions of matrices that allowed Blanchard and Khan (1981) <span id="id3">[<a class="reference internal" href="zreferences.html#id209"><span>BK80</span></a>]</span> and Whiteman (1983) <span id="id4">[<a class="reference internal" href="zreferences.html#id210"><span>Whi83</span></a>]</span> to solve a class of linear rational expectations models</p></li>
 <li><p>how to use <strong>SymPy</strong> to get analytical formulas for some key objects comprising a rational expectations equilibrium</p></li>
 </ul>
 <p>We formulate a version of  Cagan’s model under  rational expectations
@@ -394,7 +370,7 @@ as an <strong>expectational difference equation</strong> whose solution is a rat
 first-order and second-order linear difference equations.</p>
 </div>
 <div class="section" id="linear-difference-equations">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">49.2. </span>Linear difference equations</a><a class="headerlink" href="#linear-difference-equations" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">49.2. </span>Linear difference equations</a><a class="headerlink" href="#linear-difference-equations" title="Permalink to this headline">¶</a></h2>
 <p>We’ll use the <em>backward shift</em> or <em>lag</em> operator <span class="math notranslate nohighlight">\(L\)</span>.</p>
 <p>The lag operator <span class="math notranslate nohighlight">\(L\)</span>  maps a sequence <span class="math notranslate nohighlight">\(\{x_t\}_{t=0}^\infty\)</span> into the sequence <span class="math notranslate nohighlight">\(\{x_{t-1}\}_{t=0}^\infty\)</span></p>
 <p>We’ll deploy  <span class="math notranslate nohighlight">\(L\)</span>  by using the equality
@@ -481,10 +457,10 @@ unstable root (in this case <span class="math notranslate nohighlight">\(\lambda
 </div>
 </div>
 <div class="section" id="illustration-cagan-s-model">
-<h2><a class="toc-backref" href="#id18"><span class="section-number">49.3. </span>Illustration: Cagan’s Model</a><a class="headerlink" href="#illustration-cagan-s-model" title="Permalink to this headline">¶</a></h2>
-<p>Now let’s use linear difference equations to represent and solve Sargent’s  <a href="#id9"><span class="problematic" id="id10">:cite:`Sargent77hyper`</span></a> rational expectations version of
-Cagan’s model <a href="#id11"><span class="problematic" id="id12">:cite:`Cagan`</span></a> that connects the price level to the public’s anticipations of future money supplies.</p>
-<p>Cagan did not use a rational expectations version of his model, but Sargent <a href="#id13"><span class="problematic" id="id14">:cite:`Sargent77hyper`</span></a></p>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">49.3. </span>Illustration: Cagan’s Model</a><a class="headerlink" href="#illustration-cagan-s-model" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s use linear difference equations to represent and solve Sargent’s  <span id="id5">[<a class="reference internal" href="zreferences.html#id51"><span>Sar77</span></a>]</span> rational expectations version of
+Cagan’s model <span id="id6">[<a class="reference internal" href="zreferences.html#id50"><span>Cag56</span></a>]</span> that connects the price level to the public’s anticipations of future money supplies.</p>
+<p>Cagan did not use a rational expectations version of his model, but Sargent <span id="id7">[<a class="reference internal" href="zreferences.html#id51"><span>Sar77</span></a>]</span></p>
 <p>Let</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(m_t^d\)</span> be the log of the demand for money</p></li>
@@ -563,7 +539,7 @@ sequence <span class="math notranslate nohighlight">\(c \lambda^{-t}\)</span> wh
 constant.</p>
 </div>
 <div class="section" id="some-python-code">
-<h2><a class="toc-backref" href="#id19"><span class="section-number">49.4. </span>Some Python code</a><a class="headerlink" href="#some-python-code" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">49.4. </span>Some Python code</a><a class="headerlink" href="#some-python-code" title="Permalink to this headline">¶</a></h2>
 <p>We’ll construct examples that illustrate <a class="reference internal" href="#equation-equation-3">(49.11)</a>.</p>
 <p>Our first example takes as the law of motion for the log money supply
 the second order difference equation</p>
@@ -698,7 +674,7 @@ than the current <span class="math notranslate nohighlight">\(m\)</span></p></li
 </ul>
 </div>
 <div class="section" id="alternative-code">
-<h2><a class="toc-backref" href="#id20"><span class="section-number">49.5. </span>Alternative code</a><a class="headerlink" href="#alternative-code" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">49.5. </span>Alternative code</a><a class="headerlink" href="#alternative-code" title="Permalink to this headline">¶</a></h2>
 <p>We could also have run the simulation using the quantecon
 <strong>LinearStateSpace</strong> code.</p>
 <p>The following code block performs the calculation with that code.</p>
@@ -768,7 +744,7 @@ route to and interpretation of our formula for <span class="math notranslate noh
 </div>
 </div>
 <div class="section" id="another-perspective">
-<h2><a class="toc-backref" href="#id21"><span class="section-number">49.6. </span>Another perspective</a><a class="headerlink" href="#another-perspective" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">49.6. </span>Another perspective</a><a class="headerlink" href="#another-perspective" title="Permalink to this headline">¶</a></h2>
 <p>Above, we imposed stability or non-explosiveness on the solution of the key difference equation <a class="reference internal" href="#equation-equation-1">(49.8)</a>
 in Cagan’s model by solving the  unstable root of the characteristic polynomial forward.</p>
 <p>To shed light on the mechanics involved in imposing stability on a
@@ -945,7 +921,7 @@ level.</p>
 </div>
 </div>
 <div class="section" id="log-money-supply-feeds-back-on-log-price-level">
-<h2><a class="toc-backref" href="#id22"><span class="section-number">49.7. </span>Log money supply feeds back on log price level</a><a class="headerlink" href="#log-money-supply-feeds-back-on-log-price-level" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">49.7. </span>Log money supply feeds back on log price level</a><a class="headerlink" href="#log-money-supply-feeds-back-on-log-price-level" title="Permalink to this headline">¶</a></h2>
 <p>An arrangement of eigenvalues that split around unity, with one being
 below unity and another being greater than unity, sometimes prevails when there is  <em>feedback</em> from the log price level to the log
 money supply.</p>
@@ -1170,7 +1146,7 @@ exist.</p>
 </div>
 </div>
 <div class="section" id="big-p-little-p-interpretation">
-<h2><a class="toc-backref" href="#id23"><span class="section-number">49.8. </span>Big <span class="math notranslate nohighlight">\(P\)</span>, little <span class="math notranslate nohighlight">\(p\)</span> interpretation</a><a class="headerlink" href="#big-p-little-p-interpretation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">49.8. </span>Big <span class="math notranslate nohighlight">\(P\)</span>, little <span class="math notranslate nohighlight">\(p\)</span> interpretation</a><a class="headerlink" href="#big-p-little-p-interpretation" title="Permalink to this headline">¶</a></h2>
 <p>It is helpful to view our solutions of difference equations having  feedback from the price level or inflation to money or the rate of money
 creation in terms of the Big <span class="math notranslate nohighlight">\(K\)</span>, little <span class="math notranslate nohighlight">\(k\)</span> idea discussed in <a class="reference internal" href="rational_expectations.html"><span class="doc">Rational Expectations Models</span></a>.</p>
 <p>This will help us sort out what is taken as given by the decision makers who use the
@@ -1284,7 +1260,7 @@ with <span class="math notranslate nohighlight">\(F^*\)</span> and check for the
 </div>
 </div>
 <div class="section" id="fun-with-sympy-code">
-<h2><a class="toc-backref" href="#id24"><span class="section-number">49.9. </span>Fun with SymPy code</a><a class="headerlink" href="#fun-with-sympy-code" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id17"><span class="section-number">49.9. </span>Fun with SymPy code</a><a class="headerlink" href="#fun-with-sympy-code" title="Permalink to this headline">¶</a></h2>
 <p>This section is a  gift for readers who have made it this far.</p>
 <p>It puts SymPy to work on our model.</p>
 <p>Thus, we  use Sympy to compute some  key objects comprising the eigenvector decomposition of <span class="math notranslate nohighlight">\(H\)</span>.</p>

@@ -178,15 +178,15 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="optimal-growth-iv-the-endogenous-grid-method">
-<h1><a class="toc-backref" href="#id5"><span class="section-number">33. </span><span class="target" id="index-0"></span>Optimal Growth IV: The Endogenous Grid Method</a><a class="headerlink" href="#optimal-growth-iv-the-endogenous-grid-method" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id3"><span class="section-number">33. </span><span class="target" id="index-0"></span>Optimal Growth IV: The Endogenous Grid Method</a><a class="headerlink" href="#optimal-growth-iv-the-endogenous-grid-method" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#optimal-growth-iv-the-endogenous-grid-method" id="id5">Optimal Growth IV: The Endogenous Grid Method</a></p>
+<li><p><a class="reference internal" href="#optimal-growth-iv-the-endogenous-grid-method" id="id3">Optimal Growth IV: The Endogenous Grid Method</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id6">Overview</a></p></li>
-<li><p><a class="reference internal" href="#key-idea" id="id7">Key Idea</a></p></li>
-<li><p><a class="reference internal" href="#implementation" id="id8">Implementation</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id4">Overview</a></p></li>
+<li><p><a class="reference internal" href="#key-idea" id="id5">Key Idea</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id6">Implementation</a></p></li>
 </ul>
 </li>
 </ul>
@@ -201,7 +201,7 @@
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">33.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">33.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Previously, we solved the stochastic optimal growth model using</p>
 <ol class="simple">
 <li><p><a class="reference internal" href="optgrowth_fast.html"><span class="doc">value function iteration</span></a></p></li>
@@ -210,7 +210,7 @@
 <p>We found time iteration to be significantly more accurate and efficient.</p>
 <p>In this lecture, we’ll look at a clever twist on time iteration called the <strong>endogenous grid method</strong> (EGM).</p>
 <p>EGM is a numerical method for implementing policy iteration invented by <a class="reference external" href="http://www.econ2.jhu.edu/people/ccarroll/">Chris Carroll</a>.</p>
-<p>The original reference is <a href="#id1"><span class="problematic" id="id2">:cite:`Carroll2006`</span></a>.</p>
+<p>The original reference is <span id="id1">[<a class="reference internal" href="zreferences.html#id111"><span>Car06</span></a>]</span>.</p>
 <p>Let’s start with some standard imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -228,7 +228,7 @@
 </div>
 </div>
 <div class="section" id="key-idea">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">33.2. </span>Key Idea</a><a class="headerlink" href="#key-idea" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">33.2. </span>Key Idea</a><a class="headerlink" href="#key-idea" title="Permalink to this headline">¶</a></h2>
 <p>Let’s start by reminding ourselves of the theory and then see how the numerics fit in.</p>
 <div class="section" id="theory">
 <h3><span class="section-number">33.2.1. </span>Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h3>
@@ -265,7 +265,7 @@
 <span class="math notranslate nohighlight">\(c_i\)</span> corresponding to a given income value <span class="math notranslate nohighlight">\(y_i\)</span>.</p>
 <p>Root-finding is costly because it typically involves a significant number of
 function evaluations.</p>
-<p>As pointed out by Carroll <a href="#id3"><span class="problematic" id="id4">:cite:`Carroll2006`</span></a>, we can avoid this if
+<p>As pointed out by Carroll <span id="id2">[<a class="reference internal" href="zreferences.html#id111"><span>Car06</span></a>]</span>, we can avoid this if
 <span class="math notranslate nohighlight">\(y_i\)</span> is chosen endogenously.</p>
 <p>The only assumption required is that <span class="math notranslate nohighlight">\(u'\)</span> is invertible on <span class="math notranslate nohighlight">\((0, \infty)\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\((u')^{-1}\)</span> be the inverse function of <span class="math notranslate nohighlight">\(u'\)</span>.</p>
@@ -289,7 +289,7 @@ function evaluations.</p>
 </div>
 </div>
 <div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">33.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">33.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>As <a class="reference internal" href="coleman_policy_iter.html"><span class="doc">before</span></a>, we will start with a simple setting
 where</p>
 <ul class="simple">
