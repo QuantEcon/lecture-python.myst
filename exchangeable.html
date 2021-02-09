@@ -239,7 +239,7 @@ that are</p>
 </ul>
 <p>Understanding the distinction between these concepts is essential for appreciating how Bayesian updating
 works in our example.</p>
-<p>You can read about exchangeability <a class="reference external" href="https://en.wikipedia.org/wiki/Exchangeable_random_variables">here</a></p>
+<p>You can read about exchangeability <a class="reference external" href="https://en.wikipedia.org/wiki/Exchangeable_random_variables">here</a>.</p>
 <p>Below, we’ll often use</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(W\)</span> to denote a random variable</p></li>
@@ -290,8 +290,10 @@ p(W_T, W_{T-1}, \ldots, W_1, W_0)
 <p>Using the laws of probability, we can always factor such a joint density into a product of conditional densities:</p>
 <div class="math notranslate nohighlight">
 \[
-  p(W_T, W_{T-1}, \ldots, W_1, W_0)    = &amp; p(W_T | W_{t-1}, \ldots, W_0) p(W_{T-1} | W_{T-2}, \ldots, W_0) \cdots  \cr
-  &amp; p(W_1 | W_0) p(W_0)
+\begin{align}
+  p(W_T, W_{T-1}, \ldots, W_1, W_0)    = &amp; p(W_T | W_{T-1}, \ldots, W_0) p(W_{T-1} | W_{T-2}, \ldots, W_0) \cdots  \cr
+  &amp; \quad \quad \cdots p(W_1 | W_0) p(W_0)
+\end{align}
 \]</div>
 <p>In general,</p>
 <div class="math notranslate nohighlight">
@@ -337,7 +339,7 @@ of them once and for all and then drew an IID sequence of draws from that distri
 <p>Thus, we  assume that the decision maker</p>
 <ul class="simple">
 <li><p><strong>knows</strong> both <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(G\)</span></p></li>
-<li><p><strong>doesnt’t know</strong> which of these two distributions that nature has drawn</p></li>
+<li><p><strong>doesn’t know</strong> which of these two distributions that nature has drawn</p></li>
 <li><p>summarizing his ignorance by acting  as if or <strong>thinking</strong> that nature chose distribution <span class="math notranslate nohighlight">\(F\)</span> with probability <span class="math notranslate nohighlight">\(\tilde \pi \in (0,1)\)</span> and distribution
 <span class="math notranslate nohighlight">\(G\)</span> with probability <span class="math notranslate nohighlight">\(1 - \tilde \pi\)</span></p></li>
 <li><p>at date <span class="math notranslate nohighlight">\(t \geq 0\)</span> has observed  the partial history <span class="math notranslate nohighlight">\(w_t, w_{t-1}, \ldots, w_0\)</span> of draws from the appropriate joint
@@ -595,14 +597,14 @@ given parameters of <span class="math notranslate nohighlight">\(f\)</span> and 
 </div>
 </div>
 <p>Please look at the three graphs above created for an instance in which <span class="math notranslate nohighlight">\(f\)</span> is a uniform distribution on <span class="math notranslate nohighlight">\([0,1]\)</span>
-(i.e., a Beta distribution with parameters <span class="math notranslate nohighlight">\(F_a=1, F_b=1\)</span>, while  <span class="math notranslate nohighlight">\(g\)</span> is a Beta distribution with the default parameter values <span class="math notranslate nohighlight">\(G_a=3, G_b=1.2\)</span>.</p>
-<p>The graph on the left  plots the likehood ratio <span class="math notranslate nohighlight">\(l(w)\)</span> on the coordinate axis against <span class="math notranslate nohighlight">\(w\)</span> on the ordinate axis.</p>
+(i.e., a Beta distribution with parameters <span class="math notranslate nohighlight">\(F_a=1, F_b=1\)</span>), while  <span class="math notranslate nohighlight">\(g\)</span> is a Beta distribution with the default parameter values <span class="math notranslate nohighlight">\(G_a=3, G_b=1.2\)</span>.</p>
+<p>The graph on the left  plots the likelihood ratio <span class="math notranslate nohighlight">\(l(w)\)</span> on the coordinate axis against <span class="math notranslate nohighlight">\(w\)</span> on the ordinate axis.</p>
 <p>The middle graph plots both <span class="math notranslate nohighlight">\(f(w)\)</span> and <span class="math notranslate nohighlight">\(g(w)\)</span>  against <span class="math notranslate nohighlight">\(w\)</span>, with the horizontal dotted lines showing values
 of <span class="math notranslate nohighlight">\(w\)</span> at which the likelihood ratio equals <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <p>The graph on the right plots arrows to the right that show when Bayes’ Law  makes <span class="math notranslate nohighlight">\(\pi\)</span> increase and arrows
 to the left that show when Bayes’ Law make <span class="math notranslate nohighlight">\(\pi\)</span> decrease.</p>
 <p>Notice how the length of the arrows, which show the magnitude of the force from Bayes’ Law impelling <span class="math notranslate nohighlight">\(\pi\)</span> to change,
-depend on both the prior probability <span class="math notranslate nohighlight">\(\pi\)</span> on the ordinate axis and the evidence in the form of the current draw of
+depends on both the prior probability <span class="math notranslate nohighlight">\(\pi\)</span> on the ordinate axis and the evidence in the form of the current draw of
 <span class="math notranslate nohighlight">\(w\)</span> on the coordinate axis.</p>
 <p>The fractions in the colored areas of the middle graphs are probabilities under <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(G\)</span>, respectively,
 that  realizations of <span class="math notranslate nohighlight">\(w\)</span> fall
@@ -640,7 +642,7 @@ assumptions about nature’s choice of distribution:</p>
 <li><p>that nature permanently draws from <span class="math notranslate nohighlight">\(G\)</span></p></li>
 </ul>
 <p>Outcomes depend on a peculiar property of likelihood ratio processes that are discussed in
-<a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html">this lecture</a></p>
+<a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html">this lecture</a>.</p>
 <p>To do this, we create some Python code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

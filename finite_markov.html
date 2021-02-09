@@ -425,6 +425,15 @@ Solving environment: \
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
@@ -595,7 +604,7 @@ P =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 0, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 1, 1, 1])
 </pre></div>
 </div>
 </div>
@@ -655,7 +664,7 @@ P =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.24985
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.2514
 </pre></div>
 </div>
 </div>
@@ -678,7 +687,7 @@ always close to 0.25.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.249692
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.249996
 </pre></div>
 </div>
 </div>
@@ -691,11 +700,11 @@ always close to 0.25.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 869 ms, sys: 0 ns, total: 869 ms
-Wall time: 869 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 894 ms, sys: 3.68 ms, total: 897 ms
+Wall time: 898 ms
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 0, ..., 0, 0, 0])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, ..., 0, 0, 1])
 </pre></div>
 </div>
 </div>
@@ -707,11 +716,11 @@ Wall time: 869 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 34.2 ms, sys: 112 µs, total: 34.3 ms
-Wall time: 34.1 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 31.8 ms, sys: 4.02 ms, total: 35.8 ms
+Wall time: 35.7 ms
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 1, ..., 1, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 0, ..., 0, 0, 0])
 </pre></div>
 </div>
 </div>
@@ -729,7 +738,7 @@ Wall time: 34.1 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;employed&#39;, &#39;unemployed&#39;, &#39;unemployed&#39;, &#39;employed&#39;], dtype=&#39;&lt;U10&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;employed&#39;, &#39;unemployed&#39;, &#39;employed&#39;, &#39;employed&#39;], dtype=&#39;&lt;U10&#39;)
 </pre></div>
 </div>
 </div>
@@ -753,7 +762,7 @@ Wall time: 34.1 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;unemployed&#39;, &#39;employed&#39;, &#39;employed&#39;, &#39;employed&#39;], dtype=&#39;&lt;U10&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;unemployed&#39;, &#39;unemployed&#39;, &#39;employed&#39;, &#39;employed&#39;], dtype=&#39;&lt;U10&#39;)
 </pre></div>
 </div>
 </div>
@@ -766,7 +775,7 @@ Wall time: 34.1 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 1, 0])
 </pre></div>
 </div>
 </div>
@@ -1516,27 +1525,26 @@ and a stochastic <span class="math notranslate nohighlight">\(n \times n\)</span
 </ul>
 <p>Let <span class="math notranslate nohighlight">\(F\)</span> be the cumulative distribution function of the normal distribution <span class="math notranslate nohighlight">\(N(0, \sigma_u^2)\)</span>.</p>
 <p>The values <span class="math notranslate nohighlight">\(P(x_i, x_j)\)</span> are computed to approximate the AR(1) process — omitting the derivation, the rules are as follows:</p>
-<ol class="simple">
-<li><p>If <span class="math notranslate nohighlight">\(j = 0\)</span>, then set</p></li>
-</ol>
+<ol>
+<li><p>If <span class="math notranslate nohighlight">\(j = 0\)</span>, then set</p>
 <div class="math notranslate nohighlight">
 \[
-P(x_i, x_j) = P(x_i, x_0) = F(x_0-\rho x_i + s/2)
-\]</div>
-<ol class="simple">
-<li><p>If <span class="math notranslate nohighlight">\(j = n-1\)</span>, then set</p></li>
-</ol>
+   P(x_i, x_j) = P(x_i, x_0) = F(x_0-\rho x_i + s/2)
+   \]</div>
+</li>
+<li><p>If <span class="math notranslate nohighlight">\(j = n-1\)</span>, then set</p>
 <div class="math notranslate nohighlight">
 \[
-P(x_i, x_j) = P(x_i, x_{n-1}) = 1 - F(x_{n-1} - \rho x_i - s/2)
-\]</div>
-<ol class="simple">
-<li><p>Otherwise, set</p></li>
-</ol>
+   P(x_i, x_j) = P(x_i, x_{n-1}) = 1 - F(x_{n-1} - \rho x_i - s/2)
+   \]</div>
+</li>
+<li><p>Otherwise, set</p>
 <div class="math notranslate nohighlight">
 \[
-P(x_i, x_j) = F(x_j - \rho x_i + s/2) - F(x_j - \rho x_i - s/2)
-\]</div>
+   P(x_i, x_j) = F(x_j - \rho x_i + s/2) - F(x_j - \rho x_i - s/2)
+   \]</div>
+</li>
+</ol>
 <p>The exercise is to write a function <code class="docutils literal notranslate"><span class="pre">approx_markov(rho,</span> <span class="pre">sigma_u,</span> <span class="pre">m=3,</span> <span class="pre">n=7)</span></code> that returns
 <span class="math notranslate nohighlight">\(\{x_0, \ldots, x_{n-1}\} \subset \mathbb R\)</span> and <span class="math notranslate nohighlight">\(n \times n\)</span> matrix
 <span class="math notranslate nohighlight">\(P\)</span> as described above.</p>

@@ -99,7 +99,7 @@ We begin by applying the  Big $Y$, little $y$ trick in a very simple static cont
 
 Consider a static model in which a collection of $n$ firms produce a homogeneous good that is sold in a competitive market.
 
-Each of these $n$ firms sell output $y$.
+Each of these $n$ firms sells output $y$.
 
 The price $p$ of the good lies on an inverse demand curve
 
