@@ -134,15 +134,8 @@ Let's have a look at the distribution of the data we'll be working with in this 
 
 Treisman's main source of data is *Forbes'* annual rankings of billionaires and their estimated net worth.
 
-```{only} html
-The dataset `mle/fp.dta` can be downloaded <a href=/_static/lecture_specific/mle/fp.dta download>here</a>
-or from its [AER page](https://www.aeaweb.org/articles?id=10.1257/aer.p20161068).
-```
-
-```{only} latex
 The dataset `mle/fp.dta` can be downloaded from [here](https://lectures.quantecon.org/_downloads/mle/fp.dta)
 or its [AER page](https://www.aeaweb.org/articles?id=10.1257/aer.p20161068).
-```
 
 ```{code-cell} python3
 pd.options.display.max_columns = 10
