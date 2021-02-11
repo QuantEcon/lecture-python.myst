@@ -456,7 +456,7 @@ condition:</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ω = </span><span class="si">{</span><span class="n">ω</span><span class="si">:</span><span class="s1">1.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="c1"># Solve for p</span>
-<span class="n">eq2</span> <span class="o">=</span> <span class="n">Eq</span><span class="p">(</span><span class="n">x0</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">ω</span><span class="p">))</span>
+<span class="n">eq2</span> <span class="o">=</span> <span class="n">Eq</span><span class="p">(</span><span class="n">x0</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">ω</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">nsolve</span><span class="p">(</span><span class="n">eq2</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;p = </span><span class="si">{</span><span class="n">p</span><span class="si">:</span><span class="s1">1.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -466,15 +466,6 @@ condition:</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ω = 0.000
 p = 2.000
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages/sympy/core/relational.py:486: SymPyDeprecationWarning: 
-
-Eq(expr) with rhs default to 0 has been deprecated since SymPy 1.5.
-Use Eq(expr, 0) instead. See
-https://github.com/sympy/sympy/issues/16587 for more info.
-
-  SymPyDeprecationWarning(
 </pre></div>
 </div>
 </div>

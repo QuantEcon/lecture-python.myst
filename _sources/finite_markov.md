@@ -376,7 +376,6 @@ all  ways this can happen and sum their probabilities.
 
 Rewriting this statement in terms of  marginal and conditional probabilities gives
 
-(mc_fdd)=
 $$
 \psi_{t+1}(y) = \sum_{x \in S} P(x,y) \psi_t(x)
 $$
@@ -385,7 +384,6 @@ There are $n$ such equations, one for each $y \in S$.
 
 If we think of $\psi_{t+1}$ and $\psi_t$ as *row vectors* (as is traditional in this literature), these $n$ equations are summarized by the matrix expression
 
-(mc_fddv)=
 ```{math}
 :label: fin_mc_fr
 
@@ -398,7 +396,6 @@ By repeating this $m$ times we move forward $m$ steps into the future.
 
 Hence, iterating on {eq}`fin_mc_fr`, the expression $\psi_{t+m} = \psi_t P^m$ is also valid --- here $P^m$ is the $m$-th power of $P$.
 
-(mc_exfmar)=
 As a special case, we see that if $\psi_0$ is the initial distribution from
 which $X_0$ is drawn, then $\psi_0 P^m$ is the distribution of
 $X_m$.

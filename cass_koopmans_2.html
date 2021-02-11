@@ -927,9 +927,9 @@ out to be the allocation associated with a competitive equilibium.</p>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="s1">&#39;Capital&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Capital&#39;</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">k_ss</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="s1">&#39;Consumption&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Consumption&#39;</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">c_ss</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -938,17 +938,7 @@ out to be the allocation associated with a competitive equilibium.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:20: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?
-&lt;&gt;:22: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?
-&lt;&gt;:20: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?
-&lt;&gt;:22: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?
-&lt;ipython-input-8-05fc71d34123&gt;:20: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?
-  if titles[i] is &#39;Capital&#39;:
-&lt;ipython-input-8-05fc71d34123&gt;:22: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?
-  if titles[i] is &#39;Consumption&#39;:
-</pre></div>
-</div>
-<img alt="_images/cass_koopmans_2_11_1.png" src="_images/cass_koopmans_2_11_1.png" />
+<img alt="_images/cass_koopmans_2_11_0.png" src="_images/cass_koopmans_2_11_0.png" />
 </div>
 </div>
 <div class="section" id="varying-curvature">
@@ -977,9 +967,9 @@ with <span class="math notranslate nohighlight">\(K_0\)</span> below the steady 
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$\gamma = </span><span class="si">{</span><span class="n">γ</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="s1">&#39;Capital&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Capital&#39;</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">k_ss</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="s1">&#39;Consumption&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Consumption&#39;</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">c_ss</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
 
 <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -989,17 +979,7 @@ with <span class="math notranslate nohighlight">\(K_0\)</span> below the steady 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:19: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?
-&lt;&gt;:21: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?
-&lt;&gt;:19: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?
-&lt;&gt;:21: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?
-&lt;ipython-input-9-a7897fad9f87&gt;:19: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?
-  if titles[i] is &#39;Capital&#39;:
-&lt;ipython-input-9-a7897fad9f87&gt;:21: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?
-  if titles[i] is &#39;Consumption&#39;:
-</pre></div>
-</div>
-<img alt="_images/cass_koopmans_2_13_1.png" src="_images/cass_koopmans_2_13_1.png" />
+<img alt="_images/cass_koopmans_2_13_0.png" src="_images/cass_koopmans_2_13_0.png" />
 </div>
 </div>
 <p>Adjusting <span class="math notranslate nohighlight">\(\gamma\)</span> means adjusting how much individuals prefer

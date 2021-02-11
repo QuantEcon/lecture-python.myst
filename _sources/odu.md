@@ -445,7 +445,7 @@ plt.show()
 ```
 
 The results fit well with our intuition from section [looking
-forward](#looking-forward).
+forward](#Looking-Forward).
 
 - The black line in the figure above corresponds to the function
   $\bar w(\pi)$ introduced there.
@@ -1057,10 +1057,10 @@ $f$?
 
 Two countervailing effects are at work.
 
-- if f generates successive wage offers, then $w$ is more likely to be low, but
+- if $f$ generates successive wage offers, then $w$ is more likely to be low, but
   $\pi$ is moving up toward to 1, which lowers the reservation wage,
   i.e., the worker becomes  less selective the longer he or she remains unemployed.
-- if g generates wage offers, then $w$ is more likely to be high, but
+- if $g$ generates wage offers, then $w$ is more likely to be high, but
   $\pi$ is moving downward toward 0, increasing the reservation wage, i.e., the worker becomes  more selective
   the longer he or she remains unemployed.
 
