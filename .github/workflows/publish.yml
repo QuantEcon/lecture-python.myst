@@ -43,6 +43,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: _build/html/
           # cname: python.quantecon.org
+      - name: Upload "_build" folder (cache)
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-folder
+          path: _build
       # - name: Prepare lecture-python.notebooks sync
       #   shell: bash -l {0}
       #   run: |
