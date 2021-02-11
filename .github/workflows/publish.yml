@@ -24,6 +24,10 @@ jobs:
       - name: Display Pip Versions
         shell: bash -l {0}
         run: pip list
+      - name: Download "build" folder (cache)
+        uses: actions/download-artifact@v2
+        with:
+          name: build-cache
       - name: Build HTML
         shell: bash -l {0}
         run: |
@@ -46,7 +50,7 @@ jobs:
       - name: Upload "_build" folder (cache)
         uses: actions/upload-artifact@v2
         with:
-          name: build-folder
+          name: build-cache
           path: _build
       # - name: Prepare lecture-python.notebooks sync
       #   shell: bash -l {0}
