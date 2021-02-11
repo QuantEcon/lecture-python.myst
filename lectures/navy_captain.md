@@ -70,8 +70,8 @@ this lecture {doc}`Exchangeability and Bayesian Updating <exchangeable>` and in 
 {doc}`Likelihood Ratio Processes <likelihood_ratio_process>`, which describes the link between Bayesian
 updating and likelihood ratio processes.
 
-The present lecture  uses Python to generate simulations that   evaluate expected losses under  **frequentist** and **Bayesian**
-decision rules for a instances of the Navy Captain's decision problem.
+The present lecture uses Python to generate simulations that evaluate expected losses under **frequentist** and **Bayesian**
+decision rules for an instance of the Navy Captain's decision problem.
 
 The simulations validate the Navy Captain's hunch that there is a better rule than the one the Navy had ordered him
 to use.
@@ -130,7 +130,7 @@ def p(x, a, b):
 ```
 
 We start with defining a `jitclass` that stores parameters and
-functions we need to solve problems for both the bayesian and
+functions we need to solve problems for both the Bayesian and
 frequentist Navy Captains.
 
 ```{code-cell} python3
