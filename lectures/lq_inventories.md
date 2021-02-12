@@ -140,7 +140,6 @@ $$
 To form the matrices $R, Q, N$ in an LQ dynamic programming problem, we note that the firm’s profits at
 time $t$ function can be expressed
 
-$$
 \begin{equation}
 \begin{split}
 \pi_{t} =&p_{t}S_{t}-c\left(Q_{t}\right)-d\left(I_{t},S_{t}\right)  \\
@@ -172,7 +171,6 @@ z_{t}
 \end{array}\right]\right)
 \end{split}
 \end{equation}
-$$
 
 where $S_{c}=\left[1,0\right]$.
 
