@@ -563,7 +563,7 @@ In the module, the various updating, simulation and fixed point methods
 are wrapped in a class  called `LQ`, which includes
 
 * Instance data:
-    * The required parameters $Q, R, A, B$ and optional parameters C, β, T, R_f, N specifying a given LQ model
+    * The required parameters $Q, R, A, B$ and optional parameters $C, \beta, T, R_f, N$ specifying a given LQ model
         * set $T$ and $R_f$ to `None` in the infinite horizon case
         * set `C = None` (or zero) in the deterministic case
     * the value function and policy data
