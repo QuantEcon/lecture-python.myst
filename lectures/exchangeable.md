@@ -116,10 +116,10 @@ $$
 Using the laws of probability, we can always factor such a joint density into a product of conditional densities:
 
 $$
-\begin{align}
+\begin{aligned}
   p(W_T, W_{T-1}, \ldots, W_1, W_0)    = & p(W_T | W_{T-1}, \ldots, W_0) p(W_{T-1} | W_{T-2}, \ldots, W_0) \cdots  \cr
   & \quad \quad \cdots p(W_1 | W_0) p(W_0)
-\end{align}
+\end{aligned}
 $$
 
 In general,
