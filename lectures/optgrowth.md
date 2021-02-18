@@ -625,7 +625,7 @@ whether our code works for this particular case.
 In Python, the functions above can be expressed as:
 
 ```{code-cell} python3
-:file: _static/lecture_specific/optgrowth/cd_analytical.py
+:load: _static/lecture_specific/optgrowth/cd_analytical.py
 ```
 
 Next let's create an instance of the model with the above primitives and assign it to the variable `og`.
@@ -702,7 +702,7 @@ We can write a function that iterates until the difference is below a particular
 tolerance level.
 
 ```{code-cell} python3
-:file: _static/lecture_specific/optgrowth/solve_model.py
+:load: _static/lecture_specific/optgrowth/solve_model.py
 ```
 
 Let's use this function to compute an approximate solution at the defaults.

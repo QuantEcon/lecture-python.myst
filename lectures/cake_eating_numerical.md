@@ -73,7 +73,7 @@ The analytical solutions for the value function and optimal policy were found
 to be as follows.
 
 ```{code-cell} python3
-:file: _static/lecture_specific/cake_eating_numerical/analytical.py
+:load: _static/lecture_specific/cake_eating_numerical/analytical.py
 ```
 
 Our first aim is to obtain these analytical solutions numerically.

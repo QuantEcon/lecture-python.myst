@@ -268,7 +268,7 @@ As in our {doc}`previous study <optgrowth_fast>`, we continue to assume that
 This will allow us to compare our results to the analytical solutions
 
 ```{code-cell} python3
-:file: _static/lecture_specific/optgrowth/cd_analytical.py
+:load: _static/lecture_specific/optgrowth/cd_analytical.py
 ```
 
 As discussed above, our plan is to solve the model using time iteration, which
@@ -280,7 +280,7 @@ These are available in a class called `OptimalGrowthModel` that we
 constructed in an {doc}`earlier lecture <optgrowth_fast>`.
 
 ```{code-cell} python3
-:file: _static/lecture_specific/optgrowth_fast/ogm.py
+:load: _static/lecture_specific/optgrowth_fast/ogm.py
 ```
 
 Now we implement a method called `euler_diff`, which returns
@@ -377,7 +377,7 @@ Here is a function called `solve_model_time_iter` that takes an instance of
 using time iteration.
 
 ```{code-cell} python3
-:file: _static/lecture_specific/coleman_policy_iter/solve_time_iter.py
+:load: _static/lecture_specific/coleman_policy_iter/solve_time_iter.py
 ```
 
 Let's call it:
@@ -443,7 +443,7 @@ Compute and plot the optimal policy.
 We use the class `OptimalGrowthModel_CRRA` from our {doc}`VFI lecture <optgrowth_fast>`.
 
 ```{code-cell} python3
-:file: _static/lecture_specific/optgrowth_fast/ogm_crra.py
+:load: _static/lecture_specific/optgrowth_fast/ogm_crra.py
 ```
 
 Let's create an instance:
