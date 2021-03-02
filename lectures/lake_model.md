@@ -80,8 +80,8 @@ from numba import jit
 
 ### Prerequisites
 
-Before working through what follows, we recommend you read the {doc}`lecture
-on finite Markov chains <finite_markov>`.
+Before working through what follows, we recommend you read the
+{doc}`lecture on finite Markov chains <finite_markov>`.
 
 You will also need some basic {doc}`linear algebra <linear_algebra>` and probability.
 
@@ -378,7 +378,7 @@ there exists an $\bar x$  such that
 
 This equation tells us that a steady state level $\bar x$ is an  eigenvector of $\hat A$ associated with a unit eigenvalue.
 
-We also have $x_t \to \bar x$ as $t \to \infty$ provided that the remaining eigenvalue of $\hat A$ has modulus less that 1.
+We also have $x_t \to \bar x$ as $t \to \infty$ provided that the remaining eigenvalue of $\hat A$ has modulus less than 1.
 
 This is the case for our default parameters:
 

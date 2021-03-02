@@ -175,7 +175,7 @@ Remember that state $1$ is the high dividend state.
 * In state $0$, a type $a$ agent is more optimistic about next period's dividend than a type $b$ agent.
 * In state $1$, a type $b$ agent is more optimistic about next period's dividend.
 
-However, the stationary distributions $\pi_A = \begin{bmatrix} .57 & .43 \end{bmatrix}$ and $\pi_B = \begin{bmatrix} .43 & .57 \end{bmatrix}$ tell us that a type $B$ person is more optimistic about the dividend process in the long run than is a type A person.
+However, the stationary distributions $\pi_A = \begin{bmatrix} .57 & .43 \end{bmatrix}$ and $\pi_B = \begin{bmatrix} .43 & .57 \end{bmatrix}$ tell us that a type $B$ person is more optimistic about the dividend process in the long run than is a type $A$ person.
 
 Transition matrices for the temporarily optimistic and pessimistic investors are constructed as follows.
 
@@ -190,13 +190,13 @@ P_o =
     \end{bmatrix}
 $$
 
-Temporarily pessimistic believe the transition matrix
+Temporarily pessimistic investors believe the transition matrix
 
 $$
 P_p =
     \begin{bmatrix}
-        \frac{1}{2} & \frac{1}{2} \\
-        \frac{1}{4} & \frac{3}{4}
+        \frac{2}{3} & \frac{1}{3} \\
+        \frac{2}{3} & \frac{1}{3}
     \end{bmatrix}
 $$
 

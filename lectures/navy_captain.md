@@ -70,8 +70,8 @@ this lecture {doc}`Exchangeability and Bayesian Updating <exchangeable>` and in 
 {doc}`Likelihood Ratio Processes <likelihood_ratio_process>`, which describes the link between Bayesian
 updating and likelihood ratio processes.
 
-The present lecture  uses Python to generate simulations that   evaluate expected losses under  **frequentist** and **Bayesian**
-decision rules for a instances of the Navy Captain's decision problem.
+The present lecture uses Python to generate simulations that evaluate expected losses under **frequentist** and **Bayesian**
+decision rules for an instance of the Navy Captain's decision problem.
 
 The simulations validate the Navy Captain's hunch that there is a better rule than the one the Navy had ordered him
 to use.
@@ -130,7 +130,7 @@ def p(x, a, b):
 ```
 
 We start with defining a `jitclass` that stores parameters and
-functions we need to solve problems for both the bayesian and
+functions we need to solve problems for both the Bayesian and
 frequentist Navy Captains.
 
 ```{code-cell} python3
@@ -615,29 +615,30 @@ The Bayesian decision rule is:
 - delay deciding and draw another $z$ if
   $\beta \leq \pi \leq \alpha$
 
-We can calculate two ‘’objective’’ loss functions under this situation
+We can calculate two “objective” loss functions under this situation
 conditioning on knowing for sure that nature has selected $f_{0}$,
 in the first case, or $f_{1}$, in the second case.
 
 1. under $f_{0}$,
-
-$$
-V^{0}\left(\pi\right)=\begin{cases}
-0 & \text{if }\alpha\leq\pi,\\
-c+EV^{0}\left(\pi^{\prime}\right) & \text{if }\beta\leq\pi<\alpha,\\
-\bar L_{1} & \text{if }\pi<\beta.
-\end{cases}
-$$
-
+   
+   $$
+   V^{0}\left(\pi\right)=\begin{cases}
+   0 & \text{if }\alpha\leq\pi,\\
+   c+EV^{0}\left(\pi^{\prime}\right) & \text{if }\beta\leq\pi<\alpha,\\
+   \bar L_{1} & \text{if }\pi<\beta.
+   \end{cases}
+   $$
+   
 1. under $f_{1}$
-
-$$
-V^{1}\left(\pi\right)=\begin{cases}
-\bar L_{0} & \text{if }\alpha\leq\pi,\\
-c+EV^{1}\left(\pi^{\prime}\right) & \text{if }\beta\leq\pi<\alpha,\\
-0 & \text{if }\pi<\beta.
-\end{cases}
-$$
+   
+   $$
+   V^{1}\left(\pi\right)=\begin{cases}
+   \bar L_{0} & \text{if }\alpha\leq\pi,\\
+   c+EV^{1}\left(\pi^{\prime}\right) & \text{if }\beta\leq\pi<\alpha,\\
+   0 & \text{if }\pi<\beta.
+   \end{cases}
+   $$
+   
 
 where
 $\pi^{\prime}=\frac{\pi f_{0}\left(z^{\prime}\right)}{\pi f_{0}\left(z^{\prime}\right)+\left(1-\pi\right)f_{1}\left(z^{\prime}\right)}$.
@@ -852,7 +853,7 @@ $\pi^{*}=0.5=\pi_{0}$.
 ```
 
 Recall that when $\pi^*=0.5$, the frequentist decision rule sets a
-sample size `t_optimal` **ex ante**
+sample size `t_optimal` **ex ante**.
 
 For our parameter settings, we can compute its value:
 

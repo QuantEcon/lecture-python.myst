@@ -30,6 +30,7 @@ import matplotlib.pyplot as plt
 from numba import vectorize, njit
 from math import gamma
 %matplotlib inline
+from scipy.integrate import quad
 ```
 
 ## Overview
@@ -543,6 +544,148 @@ control tests during World War II.
 
 A Navy Captain who had been ordered to perform tests of this kind had doubts about it that he
 presented to Milton Friedman, as we describe in  {doc}`this lecture <wald_friedman>`.
+
+## Kullback–Leibler divergence
+
+Now let’s consider a case in which neither $g$ nor $f$
+generates the data.
+
+Instead, a third distribution $h$ does.
+
+Let’s watch how how the cumulated likelihood ratios $f/g$ behave
+when $h$ governs the data.
+
+A key tool here is called **Kullback–Leibler divergence**.
+
+It is also called **relative entropy**.
+
+It measures how one probability distribution differs from another.
+
+In our application, we want to measure how $f$ or $g$
+diverges from $h$
+
+The two Kullback–Leibler divergences pertinent for us are $K_f$
+and $K_g$ defined as
+
+$$
+\begin{aligned}
+K_{f}   &=E_{h}\left[\log\left(\frac{f\left(w\right)}{h\left(w\right)}\right)\frac{f\left(w\right)}{h\left(w\right)}\right] \\
+    &=\int\log\left(\frac{f\left(w\right)}{h\left(w\right)}\right)\frac{f\left(w\right)}{h\left(w\right)}h\left(w\right)dw \\
+    &=\int\log\left(\frac{f\left(w\right)}{h\left(w\right)}\right)f\left(w\right)dw
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+K_{g}   &=E_{h}\left[\log\left(\frac{g\left(w\right)}{h\left(w\right)}\right)\frac{g\left(w\right)}{h\left(w\right)}\right] \\
+    &=\int\log\left(\frac{g\left(w\right)}{h\left(w\right)}\right)\frac{g\left(w\right)}{h\left(w\right)}h\left(w\right)dw \\
+    &=\int\log\left(\frac{g\left(w\right)}{h\left(w\right)}\right)g\left(w\right)dw
+\end{aligned}
+$$
+
+When $K_g < K_f$, $g$ is closer to $h$ than $f$
+is.
+
+- In that case we’ll find that $L\left(w^t\right) \rightarrow 0$.
+
+When $K_g > K_f$, $f$ is closer to $h$ than $g$
+is.
+
+- In that case we’ll find that
+  $L\left(w^t\right) \rightarrow + \infty$
+
+We’ll now experiment with an $h$ is also a beta distribution
+
+We’ll start by setting parameters $G_a$ and $G_b$ so that
+$h$ is closer to $g$
+
+```{code-cell} python3
+H_a, H_b = 3.5, 1.8
+
+h = njit(lambda x: p(x, H_a, H_b))
+```
+
+```{code-cell} python3
+x_range = np.linspace(0, 1, 100)
+plt.plot(x_range, f(x_range), label='f')
+plt.plot(x_range, g(x_range), label='g')
+plt.plot(x_range, h(x_range), label='h')
+
+plt.legend()
+plt.show()
+```
+
+Let’s compute the Kullback–Leibler discrepancies by quadrature
+integration.
+
+```{code-cell} python3
+def KL_integrand(w, q, h):
+
+    m = q(w) / h(w)
+
+    return np.log(m) * q(w)
+```
+
+```{code-cell} python3
+def compute_KL(h, f, g):
+
+    Kf, _ = quad(KL_integrand, 0, 1, args=(f, h))
+    Kg, _ = quad(KL_integrand, 0, 1, args=(g, h))
+
+    return Kf, Kg
+```
+
+```{code-cell} python3
+Kf, Kg = compute_KL(h, f, g)
+Kf, Kg
+```
+
+We have $K_g < K_f$.
+
+Next, we can verify our conjecture about $L\left(w^t\right)$ by
+simulation.
+
+```{code-cell} python3
+l_arr_h = simulate(H_a, H_b)
+l_seq_h = np.cumprod(l_arr_h, axis=1)
+```
+
+The figure below plots over time the fraction of paths
+$L\left(w^t\right)$ that fall in the interval $[0,0.01]$.
+
+Notice that it converges to 1 as expected when $g$ is closer to
+$h$ than $f$ is.
+
+```{code-cell} python3
+N, T = l_arr_h.shape
+plt.plot(range(T), np.sum(l_seq_h <= 0.01, axis=0) / N)
+```
+
+We can also try an $h$ that is closer to $f$ than is
+$g$ so that now $K_g$ is larger than $K_f$.
+
+```{code-cell} python3
+H_a, H_b = 1.2, 1.2
+h = njit(lambda x: p(x, H_a, H_b))
+```
+
+```{code-cell} python3
+Kf, Kg = compute_KL(h, f, g)
+Kf, Kg
+```
+
+```{code-cell} python3
+l_arr_h = simulate(H_a, H_b)
+l_seq_h = np.cumprod(l_arr_h, axis=1)
+```
+
+Now probability mass of $L\left(w^t\right)$ falling above
+$10000$ diverges to $+\infty$.
+
+```{code-cell} python3
+N, T = l_arr_h.shape
+plt.plot(range(T), np.sum(l_seq_h > 10000, axis=0) / N)
+```
 
 ## Sequels
 

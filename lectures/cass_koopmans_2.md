@@ -195,7 +195,7 @@ all other dates $t=1, 2, \ldots, T$.
 There are  sequences of prices
 $\{w_t,\eta_t\}_{t=0}^T= \{\vec{w}, \vec{\eta} \}$
 where $w_t$ is a wage or rental rate for labor at time $t$ and
-$eta_t$ is a rental rate for capital at time $t$.
+$\eta_t$ is a rental rate for capital at time $t$.
 
 In addition there is are intertemporal prices that work as follows.
 
@@ -397,7 +397,7 @@ verify** approach.
 In this lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>`, we  computed an allocation $\{\vec{C}, \vec{K}, \vec{N}\}$
 that solves the planning problem.
 
-(This allocation will constitute the **Big** $K$  to be in the present instance of the *Big** $K$ **, little** $k$ trick
+(This allocation will constitute the **Big** $K$  to be in the present instance of the **Big** $K$ **, little** $k$ trick
 that we'll apply to  a competitive equilibrium in the spirit of [this lecture](https://lectures.quantecon.org/py/rational_expectations.html#)
 and  [this lecture](https://lectures.quantecon.org/py/dyn_stack.html#).)
 
@@ -835,9 +835,9 @@ for T in T_arr:
     for i, ax in enumerate(axs.flatten()):
         ax.plot(paths[i])
         ax.set(title=titles[i], ylabel=ylabels[i], xlabel='t')
-        if titles[i] is 'Capital':
+        if titles[i] == 'Capital':
             ax.axhline(k_ss, lw=1, ls='--', c='k')
-        if titles[i] is 'Consumption':
+        if titles[i] == 'Consumption':
             ax.axhline(c_ss, lw=1, ls='--', c='k')
 
 plt.tight_layout()
@@ -871,9 +871,9 @@ for γ in γ_arr:
     for i, ax in enumerate(axs.flatten()):
         ax.plot(paths[i], label=f'$\gamma = {γ}$')
         ax.set(title=titles[i], ylabel=ylabels[i], xlabel='t')
-        if titles[i] is 'Capital':
+        if titles[i] == 'Capital':
             ax.axhline(k_ss, lw=1, ls='--', c='k')
-        if titles[i] is 'Consumption':
+        if titles[i] == 'Consumption':
             ax.axhline(c_ss, lw=1, ls='--', c='k')
 
 axs[0, 0].legend()
@@ -893,7 +893,7 @@ Vice-versa for lower $\gamma$.
 
 We return to  Hicks-Arrow prices and  calculate how they are related to  **yields**  on loans of alternative maturities.
 
-This will let us plot a **yield curve** that graphs   yields  on bonds of  maturities $j=1, 2, \ldots$ against :math:j=1,2, ldots`.
+This will let us plot a **yield curve** that graphs   yields  on bonds of  maturities $j=1, 2, \ldots$ against $j=1,2, \ldots$.
 
 The formulas we want are:
 

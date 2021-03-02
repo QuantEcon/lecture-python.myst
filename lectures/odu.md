@@ -83,7 +83,7 @@ want to consider.
 
 ### The Basic McCall Model
 
-Recall that, in the baseline model <mccall_model>, an
+Recall that, {doc}`in the baseline model <mccall_model>`, an
 unemployed worker is presented in each period with a permanent job offer
 at wage $W_t$.
 
@@ -445,7 +445,7 @@ plt.show()
 ```
 
 The results fit well with our intuition from section [looking
-forward](#looking-forward).
+forward](#Looking-Forward).
 
 - The black line in the figure above corresponds to the function
   $\bar w(\pi)$ introduced there.
@@ -659,7 +659,7 @@ Use the default parameters and `Q_factory` to compute an optimal
 policy.
 
 Your result should coincide closely with the figure for the optimal
-policy [shown above](#odu-pol-vfi).
+policy [shown above](#Take-1:-Solution-by-VFI).
 
 Try experimenting with different parameters, and confirm that the change
 in the optimal policy coincides with your intuition.
@@ -1057,10 +1057,10 @@ $f$?
 
 Two countervailing effects are at work.
 
-- if f generates successive wage offers, then $w$ is more likely to be low, but
+- if $f$ generates successive wage offers, then $w$ is more likely to be low, but
   $\pi$ is moving up toward to 1, which lowers the reservation wage,
   i.e., the worker becomes  less selective the longer he or she remains unemployed.
-- if g generates wage offers, then $w$ is more likely to be high, but
+- if $g$ generates wage offers, then $w$ is more likely to be high, but
   $\pi$ is moving downward toward 0, increasing the reservation wage, i.e., the worker becomes  more selective
   the longer he or she remains unemployed.
 
