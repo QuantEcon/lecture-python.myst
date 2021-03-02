@@ -190,7 +190,7 @@ P_o =
     \end{bmatrix}
 $$
 
-Temporarily pessimistic believe the transition matrix
+Temporarily pessimistic investors believe the transition matrix
 
 $$
 P_p =

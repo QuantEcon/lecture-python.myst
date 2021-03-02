@@ -25,7 +25,7 @@
     <script src="_static/copybutton.js"></script>
     <script src="_static/quantecon-book-theme.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script src="_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
@@ -119,6 +119,10 @@
                                 </li>
                                 
                                 <li class="nav-item toc-entry toc-h2">
+                                    <a href="#kullbackleibler-divergence" class="nav-link">Kullback–Leibler divergence</a>
+                                </li>
+                                
+                                <li class="nav-item toc-entry toc-h2">
                                     <a href="#sequels" class="nav-link">Sequels</a>
                                 </li>
                                 
@@ -183,7 +187,8 @@
 <li><p><a class="reference internal" href="#nature-permanently-draws-from-density-g" id="id7">Nature Permanently Draws from Density g</a></p></li>
 <li><p><a class="reference internal" href="#nature-permanently-draws-from-density-f" id="id8">Nature Permanently Draws from Density f</a></p></li>
 <li><p><a class="reference internal" href="#likelihood-ratio-test" id="id9">Likelihood Ratio Test</a></p></li>
-<li><p><a class="reference internal" href="#sequels" id="id10">Sequels</a></p></li>
+<li><p><a class="reference internal" href="#kullbackleibler-divergence" id="id10">Kullback–Leibler divergence</a></p></li>
+<li><p><a class="reference internal" href="#sequels" id="id11">Sequels</a></p></li>
 </ul>
 </li>
 </ul>
@@ -195,6 +200,7 @@
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">njit</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
 </pre></div>
 </div>
 </div>
@@ -344,7 +350,7 @@ paths <span class="math notranslate nohighlight">\(L\left(w^{t}\right)\)</span> 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7ff37a185880&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f3ddd636610&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_9_1.png" src="_images/likelihood_ratio_process_9_1.png" />
@@ -427,7 +433,7 @@ of variability.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.LineCollection at 0x7ff37a155d30&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.LineCollection at 0x7f3ddd660d60&gt;
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_13_1.png" src="_images/likelihood_ratio_process_13_1.png" />
@@ -472,7 +478,7 @@ diverges toward <span class="math notranslate nohighlight">\(+ \infty\)</span>.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7ff37b0a5100&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f3dde55a250&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_16_1.png" src="_images/likelihood_ratio_process_16_1.png" />
@@ -488,7 +494,7 @@ fast probability mass diverges  to <span class="math notranslate nohighlight">\(
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7ff37b11a2b0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f3ddd570610&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_18_1.png" src="_images/likelihood_ratio_process_18_1.png" />
@@ -719,8 +725,192 @@ control tests during World War II.</p>
 <p>A Navy Captain who had been ordered to perform tests of this kind had doubts about it that he
 presented to Milton Friedman, as we describe in  <a class="reference internal" href="wald_friedman.html"><span class="doc">this lecture</span></a>.</p>
 </div>
+<div class="section" id="kullbackleibler-divergence">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">37.6. </span>Kullback–Leibler divergence</a><a class="headerlink" href="#kullbackleibler-divergence" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s consider a case in which neither <span class="math notranslate nohighlight">\(g\)</span> nor <span class="math notranslate nohighlight">\(f\)</span>
+generates the data.</p>
+<p>Instead, a third distribution <span class="math notranslate nohighlight">\(h\)</span> does.</p>
+<p>Let’s watch how how the cumulated likelihood ratios <span class="math notranslate nohighlight">\(f/g\)</span> behave
+when <span class="math notranslate nohighlight">\(h\)</span> governs the data.</p>
+<p>A key tool here is called <strong>Kullback–Leibler divergence</strong>.</p>
+<p>It is also called <strong>relative entropy</strong>.</p>
+<p>It measures how one probability distribution differs from another.</p>
+<p>In our application, we want to measure how <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>
+diverges from <span class="math notranslate nohighlight">\(h\)</span></p>
+<p>The two Kullback–Leibler divergences pertinent for us are <span class="math notranslate nohighlight">\(K_f\)</span>
+and <span class="math notranslate nohighlight">\(K_g\)</span> defined as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+K_{f}   &amp;=E_{h}\left[\log\left(\frac{f\left(w\right)}{h\left(w\right)}\right)\frac{f\left(w\right)}{h\left(w\right)}\right] \\
+    &amp;=\int\log\left(\frac{f\left(w\right)}{h\left(w\right)}\right)\frac{f\left(w\right)}{h\left(w\right)}h\left(w\right)dw \\
+    &amp;=\int\log\left(\frac{f\left(w\right)}{h\left(w\right)}\right)f\left(w\right)dw
+\end{aligned}
+\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+K_{g}   &amp;=E_{h}\left[\log\left(\frac{g\left(w\right)}{h\left(w\right)}\right)\frac{g\left(w\right)}{h\left(w\right)}\right] \\
+    &amp;=\int\log\left(\frac{g\left(w\right)}{h\left(w\right)}\right)\frac{g\left(w\right)}{h\left(w\right)}h\left(w\right)dw \\
+    &amp;=\int\log\left(\frac{g\left(w\right)}{h\left(w\right)}\right)g\left(w\right)dw
+\end{aligned}
+\end{split}\]</div>
+<p>When <span class="math notranslate nohighlight">\(K_g &lt; K_f\)</span>, <span class="math notranslate nohighlight">\(g\)</span> is closer to <span class="math notranslate nohighlight">\(h\)</span> than <span class="math notranslate nohighlight">\(f\)</span>
+is.</p>
+<ul class="simple">
+<li><p>In that case we’ll find that <span class="math notranslate nohighlight">\(L\left(w^t\right) \rightarrow 0\)</span>.</p></li>
+</ul>
+<p>When <span class="math notranslate nohighlight">\(K_g &gt; K_f\)</span>, <span class="math notranslate nohighlight">\(f\)</span> is closer to <span class="math notranslate nohighlight">\(h\)</span> than <span class="math notranslate nohighlight">\(g\)</span>
+is.</p>
+<ul class="simple">
+<li><p>In that case we’ll find that
+<span class="math notranslate nohighlight">\(L\left(w^t\right) \rightarrow + \infty\)</span></p></li>
+</ul>
+<p>We’ll now experiment with an <span class="math notranslate nohighlight">\(h\)</span> is also a beta distribution</p>
+<p>We’ll start by setting parameters <span class="math notranslate nohighlight">\(G_a\)</span> and <span class="math notranslate nohighlight">\(G_b\)</span> so that
+<span class="math notranslate nohighlight">\(h\)</span> is closer to <span class="math notranslate nohighlight">\(g\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span> <span class="o">=</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">1.8</span>
+
+<span class="n">h</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x_range</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="n">g</span><span class="p">(</span><span class="n">x_range</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="n">h</span><span class="p">(</span><span class="n">x_range</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/likelihood_ratio_process_31_0.png" src="_images/likelihood_ratio_process_31_0.png" />
+</div>
+</div>
+<p>Let’s compute the Kullback–Leibler discrepancies by quadrature
+integration.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">KL_integrand</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">h</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">q</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_KL</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+
+    <span class="n">Kf</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">KL_integrand</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+    <span class="n">Kg</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">KL_integrand</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">Kf</span><span class="p">,</span> <span class="n">Kg</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Kf</span><span class="p">,</span> <span class="n">Kg</span> <span class="o">=</span> <span class="n">compute_KL</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+<span class="n">Kf</span><span class="p">,</span> <span class="n">Kg</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.7902536603660161, 0.08554075759988769)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We have <span class="math notranslate nohighlight">\(K_g &lt; K_f\)</span>.</p>
+<p>Next, we can verify our conjecture about <span class="math notranslate nohighlight">\(L\left(w^t\right)\)</span> by
+simulation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l_arr_h</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span><span class="p">)</span>
+<span class="n">l_seq_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">l_arr_h</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The figure below plots over time the fraction of paths
+<span class="math notranslate nohighlight">\(L\left(w^t\right)\)</span> that fall in the interval <span class="math notranslate nohighlight">\([0,0.01]\)</span>.</p>
+<p>Notice that it converges to 1 as expected when <span class="math notranslate nohighlight">\(g\)</span> is closer to
+<span class="math notranslate nohighlight">\(h\)</span> than <span class="math notranslate nohighlight">\(f\)</span> is.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">l_arr_h</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">l_seq_h</span> <span class="o">&lt;=</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f3ddd570cd0&gt;]
+</pre></div>
+</div>
+<img alt="_images/likelihood_ratio_process_39_1.png" src="_images/likelihood_ratio_process_39_1.png" />
+</div>
+</div>
+<p>We can also try an <span class="math notranslate nohighlight">\(h\)</span> that is closer to <span class="math notranslate nohighlight">\(f\)</span> than is
+<span class="math notranslate nohighlight">\(g\)</span> so that now <span class="math notranslate nohighlight">\(K_g\)</span> is larger than <span class="math notranslate nohighlight">\(K_f\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.2</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Kf</span><span class="p">,</span> <span class="n">Kg</span> <span class="o">=</span> <span class="n">compute_KL</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span>
+<span class="n">Kf</span><span class="p">,</span> <span class="n">Kg</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.01239249754452668, 0.35377684280997646)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l_arr_h</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">H_a</span><span class="p">,</span> <span class="n">H_b</span><span class="p">)</span>
+<span class="n">l_seq_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">l_arr_h</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now probability mass of <span class="math notranslate nohighlight">\(L\left(w^t\right)\)</span> falling above
+<span class="math notranslate nohighlight">\(10000\)</span> diverges to <span class="math notranslate nohighlight">\(+\infty\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">l_arr_h</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">l_seq_h</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f3dde40be80&gt;]
+</pre></div>
+</div>
+<img alt="_images/likelihood_ratio_process_45_1.png" src="_images/likelihood_ratio_process_45_1.png" />
+</div>
+</div>
+</div>
 <div class="section" id="sequels">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">37.6. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">37.7. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this headline">¶</a></h2>
 <p>Likelihood processes play an important role in Bayesian learning, as described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this lecture</span></a>
 and as applied in <a class="reference internal" href="odu.html"><span class="doc">this lecture</span></a>.</p>
 <p>Likelihood ratio processes appear again in <a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html">this lecture</a>, which contains another illustration
