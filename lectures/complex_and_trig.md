@@ -310,7 +310,7 @@ eq1 = Eq(x1/x0 - r * cos(ω+θ) / cos(ω), 0)
 print(f'ω = {ω:1.3f}')
 
 # Solve for p
-eq2 = Eq(x0 - 2 * p * cos(ω))
+eq2 = Eq(x0 - 2 * p * cos(ω), 0)
 p = nsolve(eq2, p, 0)
 p = np.float(p)
 print(f'p = {p:1.3f}')

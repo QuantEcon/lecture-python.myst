@@ -109,7 +109,7 @@ series $\{ X_t\}$.
 
 To see this, we first note that $X_t$ is normally distributed for each $t$.
 
-This is immediate form {eq}`ar1_ma`, since linear combinations of independent
+This is immediate from {eq}`ar1_ma`, since linear combinations of independent
 normal random variables are normal.
 
 Given that $X_t$ is normally distributed, we will know the full distribution
@@ -212,7 +212,7 @@ In fact it's easy to show that such convergence will occur, regardless of the in
 To see this, we just have to look at the dynamics of the first two moments, as
 given in {eq}`dyn_tm`.
 
-When $|a| < 1$, these sequence converge to the respective limits
+When $|a| < 1$, these sequences converge to the respective limits
 
 ```{math}
 :label: mu_sig_star
@@ -302,8 +302,8 @@ whenever the integral on the right hand side is finite and well defined.
 
 Notes:
 
-`* In {eq}`ar1_ergo`, convergence holds with probability one.
-* The textbook by {cite}`MeynTweedie2009 is a classic reference on ergodicity.
+* In {eq}`ar1_ergo`, convergence holds with probability one.
+* The textbook by {cite}`MeynTweedie2009` is a classic reference on ergodicity.
 
 For example, if we consider the identity function $h(x) = x$, we get
 

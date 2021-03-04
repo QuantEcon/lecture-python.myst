@@ -68,7 +68,7 @@ from cmath import sqrt
 Samuelson used a *second-order linear difference equation* to
 represent a model of national output based on three components:
 
-- a *national output identity* asserting that national outcome is the
+- a *national output identity* asserting that national output or national income is the
   sum of consumption plus investment plus government purchases.
 - a Keynesian *consumption function* asserting that consumption at
   time $t$ is equal to a constant times national output at time $t-1$.
@@ -76,11 +76,12 @@ represent a model of national output based on three components:
   $t$ equals a constant called the *accelerator coefficient*
   times the difference in output between period $t-1$ and
   $t-2$.
-- the idea that consumption plus investment plus government purchases
-  constitute *aggregate demand,* which automatically calls forth an
-  equal amount of *aggregate supply*.
 
-(To read about linear difference equations see [here](https://en.wikipedia.org/wiki/Linear_difference_equation) or chapter IX of {cite}`Sargent1987`)
+Consumption plus investment plus government purchases
+constitute *aggregate demand,* which automatically calls forth an
+equal amount of *aggregate supply*.
+
+(To read about linear difference equations see [here](https://en.wikipedia.org/wiki/Linear_difference_equation) or chapter IX of {cite}`Sargent1987`.)
 
 Samuelson used the model to analyze how particular values of the
 marginal propensity to consume and the accelerator coefficient might
@@ -102,7 +103,7 @@ This modification makes national output become governed by a second-order
 gives rise to recurrent irregular business cycles.
 
 (To read about stochastic linear difference equations see chapter XI of
-{cite}`Sargent1987`)
+{cite}`Sargent1987`.)
 
 ## Details
 
@@ -152,7 +153,7 @@ Y_t = C_t + I_t + G_t
 
 - The parameter $a$ is peoples' *marginal propensity to consume*
   out of income - equation {eq}`consumption` asserts that people consume a fraction of
-  math:a in (0,1) of each additional dollar of income.
+  $a \in (0,1)$ of each additional dollar of income.
 - The parameter $b > 0$ is the investment accelerator coefficient - equation
   {eq}`accelerator` asserts that people invest in physical capital when
   income is increasing and disinvest when it is decreasing.
@@ -284,7 +285,7 @@ $$
 $$
 
 (To read about the polar form, see
-[here](https://www.varsitytutors.com/hotmath/hotmath_help/topics/polar-form-of-a-complex-number))
+[here](https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf:complex/x9e81a4f98389efdf:complex-mul-div-polar/a/complex-number-polar-form-review))
 
 Given **initial conditions** $Y_{-1}, Y_{-2}$, we want to generate
 a **solution** of the difference equation {eq}`second_stochastic2`.
@@ -402,6 +403,9 @@ $$
 We'll start by drawing an informative graph from page 189 of {cite}`Sargent1987`
 
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 def param_plot():
 
     """This function creates the graph on page 189 of
@@ -768,11 +772,6 @@ z = Symbol("z")
 sympy.solve(z**2 - r1*z - r2, z)
 ```
 
-$$
-\left [ \frac{\rho_{1}}{2} - \frac{1}{2} \sqrt{\rho_{1}^{2} + 4 \rho_{2}},
-\quad \frac{\rho_{1}}{2} + \frac{1}{2} \sqrt{\rho_{1}^{2} + 4 \rho_{2}}\right ]
-$$
-
 ```{code-cell} python3
 a = Symbol("α")
 b = Symbol("β")
@@ -781,13 +780,6 @@ r2 = -b
 
 sympy.solve(z**2 - r1*z - r2, z)
 ```
-
-$$
-\left [ \frac{\alpha}{2} + \frac{\beta}{2} - \frac{1}{2} \sqrt{\alpha^{2} +
-2 \alpha \beta + \beta^{2} - 4 \beta}, \quad \frac{\alpha}{2} +
-\frac{\beta}{2} + \frac{1}{2} \sqrt{\alpha^{2} + 2 \alpha \beta +
-\beta^{2} - 4 \beta}\right ]
-$$
 
 ## Stochastic Shocks
 
@@ -1256,10 +1248,6 @@ y1 = imres[:, :, 0]
 y2 = imres[:, :, 1]
 y1.shape
 ```
-
-$$
-\left ( 2, \quad 6, \quad 1\right )
-$$
 
 Now let's compute the zeros of the characteristic polynomial by simply
 calculating the eigenvalues of $A$

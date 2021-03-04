@@ -99,7 +99,7 @@ We begin by applying the  Big $Y$, little $y$ trick in a very simple static cont
 
 Consider a static model in which a collection of $n$ firms produce a homogeneous good that is sold in a competitive market.
 
-Each of these $n$ firms sell output $y$.
+Each of these $n$ firms sells output $y$.
 
 The price $p$ of the good lies on an inverse demand curve
 
@@ -165,9 +165,9 @@ After solving for $Y$, we can compute the competitive equilibrium price $p$ from
 
 References for this lecture include
 
-```* {cite}`LucasPrescott1971
-* {cite}`Sargent1987, chapter XIV
-* {cite}`Ljungqvist2012, chapter 7
+* {cite}`LucasPrescott1971`
+* {cite}`Sargent1987`, chapter XIV
+* {cite}`Ljungqvist2012`, chapter 7
 
 ## Defining Rational Expectations Equilibrium
 

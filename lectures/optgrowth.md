@@ -32,10 +32,10 @@ agent.
 The model is a version of the standard one sector infinite horizon growth
 model studied in
 
-```* {cite}`StokeyLucas1989, chapter 2
-* {cite}`Ljungqvist2012, section 3.1
+* {cite}`StokeyLucas1989`, chapter 2
+* {cite}`Ljungqvist2012`, section 3.1
 * [EDTC](http://johnstachurski.net/edtc.html), chapter 1
-* {cite}`Sundaram1996, chapter 12
+* {cite}`Sundaram1996`, chapter 12
 
 It is an extension of the simple {doc}`cake eating problem <cake_eating_problem>` we looked at earlier.
 
@@ -771,7 +771,7 @@ utility specification.
 
 Setting $\gamma = 1.5$, compute and plot an estimate of the optimal policy.
 
-Time how long this function takes to run, so you can compare it to faster code developed in the {doc}`next lecture <optgrowth_fast>`
+Time how long this function takes to run, so you can compare it to faster code developed in the {doc}`next lecture <optgrowth_fast>`.
 
 (og_ex2)=
 ### Exercise 2

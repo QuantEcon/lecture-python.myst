@@ -41,7 +41,7 @@ tags: [hide-output]
 
 In this section, we solve a simple on-the-job search model
 
-``* based on {cite}`Ljungqvist2012, exercise 6.18, and {cite}`Jovanovic1979
+* based on {cite}`Ljungqvist2012`, exercise 6.18, and {cite}`Jovanovic1979`
 
 Let's start with some imports:
 
@@ -223,7 +223,7 @@ class JVWorker:
 ```
 
 The function `operator_factory` takes an instance of this class and returns a
-jitted version of the Bellman operator `T`, ie.
+jitted version of the Bellman operator `T`, i.e.
 
 $$
 Tv(x)

@@ -155,8 +155,8 @@ One good choice from both respects is continuous piecewise linear interpolation.
 
 This method
 
-``1. combines well with value function iteration (see., e.g.,
-   {cite}`gordon1995stable or {cite}`stachurski2008continuous) and
+1. combines well with value function iteration (see., e.g.,
+   {cite}`gordon1995stable` or {cite}`stachurski2008continuous`) and
 1. preserves useful shape properties such as monotonicity and concavity/convexity.
 
 Linear interpolation will be implemented using a JIT-aware Python interpolation library called [interpolation.py](https://github.com/EconForge/interpolation.py).
@@ -320,7 +320,7 @@ The exercises ask you to explore the solution and how it changes with parameters
 Use the code above to explore what happens to the reservation wage when the wage parameter $\mu$
 changes.
 
-Use the default parameters and $\mu$ in `mu_vals = np.linspace(0.0, 2.0, 15)`
+Use the default parameters and $\mu$ in `mu_vals = np.linspace(0.0, 2.0, 15)`.
 
 Is the impact on the reservation wage as you expected?
 
@@ -338,7 +338,7 @@ support.
 
 Use `s_vals = np.linspace(1.0, 2.0, 15)` and `m = 2.0`.
 
-State how you expect the reservation wage vary with $s$.
+State how you expect the reservation wage to vary with $s$.
 
 Now compute it.  Is this as you expected?
 

@@ -61,9 +61,9 @@ In reading what follows, it will be useful to have some familiarity with
 
 For additional reading on LQ control, see, for example,
 
-```* {cite}`Ljungqvist2012, chapter 5
-* {cite}`HansenSargent2008, chapter 4
-* {cite}`HernandezLermaLasserre1996, section 3.5
+* {cite}`Ljungqvist2012`, chapter 5
+* {cite}`HansenSargent2008`, chapter 4
+* {cite}`HernandezLermaLasserre1996`, section 3.5
 
 In order to focus on computation, we leave longer proofs to these sources (while trying to provide as much intuition as possible).
 
@@ -140,7 +140,7 @@ Another alteration that's useful to introduce (we'll see why soon) is to
 change the control variable from consumption
 to the deviation of consumption from some "ideal" quantity $\bar c$.
 
-(Most parameterizations will be such that $\bar c$ is large relative to the amount of consumption that is attainable in each period, and hence the household wants to increase consumption)
+(Most parameterizations will be such that $\bar c$ is large relative to the amount of consumption that is attainable in each period, and hence the household wants to increase consumption.)
 
 For this reason, we now take our control to be $u_t := c_t - \bar c$.
 
@@ -275,7 +275,7 @@ $$
 Thus, for both the state and the control, loss is measured as squared distance from the origin.
 
 (In fact, the general case {eq}`lq_pref_flow` can also be understood in this
-way, but with $R$ and $Q$ identifying other -- non-Euclidean -- notions of "distance" from the zero vector).
+way, but with $R$ and $Q$ identifying other -- non-Euclidean -- notions of "distance" from the zero vector.)
 
 Intuitively, we can often think of the state $x_t$ as representing deviation from a target, such
 as
@@ -504,7 +504,7 @@ and
 d_{T-1} := \beta \mathop{\mathrm{trace}}(C' P_T C)
 ```
 
-(The algebra is a good exercise --- we'll leave it up to you)
+(The algebra is a good exercise --- we'll leave it up to you.)
 
 If we continue working backwards in this manner, it soon becomes clear that $J_t (x) = x' P_t x + d_t$ as claimed, where $\{P_t\}$ and $\{d_t\}$ satisfy the recursions
 
@@ -563,7 +563,7 @@ In the module, the various updating, simulation and fixed point methods
 are wrapped in a class  called `LQ`, which includes
 
 * Instance data:
-    * The required parameters $Q, R, A, B$ and optional parameters C, β, T, R_f, N specifying a given LQ model
+    * The required parameters $Q, R, A, B$ and optional parameters $C, \beta, T, R_f, N$ specifying a given LQ model
         * set $T$ and $R_f$ to `None` in the infinite horizon case
         * set `C = None` (or zero) in the deterministic case
     * the value function and policy data
@@ -585,7 +585,7 @@ Data contradicted the constancy of the marginal propensity to consume.
 In response, Milton Friedman, Franco Modigliani and others built models
 based on a consumer's preference for an intertemporally smooth consumption stream.
 
-(See, for example, {cite}`Friedman1956` or {cite}`ModiglianiBrumberg1954`)
+(See, for example, {cite}`Friedman1956` or {cite}`ModiglianiBrumberg1954`.)
 
 One property of those models is that households purchase and sell financial assets to make consumption streams smoother than income streams.
 
@@ -606,7 +606,7 @@ subject to the sequence of budget constraints $a_{t+1} = (1 + r) a_t - c_t + y_t
 
 Here $q$ is a large positive constant, the role of which is to induce the consumer to target zero debt at the end of her life.
 
-(Without such a constraint, the optimal choice is to choose $c_t = \bar c$ in each period, letting assets adjust accordingly)
+(Without such a constraint, the optimal choice is to choose $c_t = \bar c$ in each period, letting assets adjust accordingly.)
 
 As before we set $y_t = \sigma w_{t+1} + \mu$ and $u_t := c_t - \bar c$, after which the constraint can be written as in {eq}`lq_lomwc`.
 
@@ -712,7 +712,7 @@ As anticipated by the discussion on consumption smoothing, the time path of
 consumption is much smoother than that for income.
 
 (But note that  consumption becomes more irregular towards the end of life,
-when the zero final asset requirement impinges more on consumption choices).
+when the zero final asset requirement impinges more on consumption choices.)
 
 The second panel in the figure shows that the time path of assets $a_t$ is
 closely correlated with cumulative unanticipated income, where the latter is defined as
@@ -724,7 +724,7 @@ $$
 A key message is that unanticipated windfall gains are saved rather
 than consumed, while unanticipated negative shocks are met by reducing assets.
 
-(Again, this relationship breaks down towards the end of life due to the zero final asset requirement)
+(Again, this relationship breaks down towards the end of life due to the zero final asset requirement.)
 
 These results are relatively robust to changes in parameters.
 
@@ -734,6 +734,9 @@ This consumer is slightly more patient than the last one, and hence puts
 relatively more weight on later consumption values.
 
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 # Compute solutions and simulate
 lq = LQ(Q, R, A, B, C, beta=0.96, T=T, Rf=Rf)
 x0 = (0, 1)
@@ -943,7 +946,7 @@ subject to $a_{t+1} = (1 + r) a_t - c_t + y_t, \ t \geq 0$.
 
 For income we now take $y_t = p(t) + \sigma w_{t+1}$ where $p(t) := m_0 + m_1 t + m_2 t^2$.
 
-(In {ref}`the next section <lq_nsi2>` we employ some tricks to implement a more sophisticated model)
+(In {ref}`the next section <lq_nsi2>` we employ some tricks to implement a more sophisticated model.)
 
 The coefficients $m_0, m_1, m_2$ are chosen such that $p(0)=0, p(T/2) = \mu,$ and $p(T)=0$.
 
@@ -1099,7 +1102,7 @@ However, we can still use our LQ methods here by suitably linking two-component 
 These two LQ problems describe the consumer's behavior during her working life (`lq_working`) and retirement (`lq_retired`).
 
 (This is possible because, in the two separate periods of life, the respective income processes
-[polynomial trend and constant] each fit the LQ framework)
+[polynomial trend and constant] each fit the LQ framework.)
 
 The basic idea is that although the whole problem is not a single time-invariant LQ problem, it is
 still a dynamic programming problem, and hence we can use appropriate Bellman equations at
@@ -1218,7 +1221,7 @@ Let's now replace $\pi_t$ in {eq}`lq_object_mp` with $\hat \pi_t := \pi_t - a_1 
 
 This makes no difference to the solution, since $a_1 \bar q_t^2$ does not depend on the controls.
 
-(In fact, we are just adding a constant term to {eq}`lq_object_mp`, and optimizers are not affected by constant terms)
+(In fact, we are just adding a constant term to {eq}`lq_object_mp`, and optimizers are not affected by constant terms.)
 
 The reason for making this substitution is that, as you will be able to
 verify, $\hat \pi_t$ reduces to the simple quadratic

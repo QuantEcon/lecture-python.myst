@@ -70,8 +70,8 @@ this lecture {doc}`Exchangeability and Bayesian Updating <exchangeable>` and in 
 {doc}`Likelihood Ratio Processes <likelihood_ratio_process>`, which describes the link between Bayesian
 updating and likelihood ratio processes.
 
-The present lecture  uses Python to generate simulations that   evaluate expected losses under  **frequentist** and **Bayesian**
-decision rules for a instances of the Navy Captain's decision problem.
+The present lecture uses Python to generate simulations that evaluate expected losses under **frequentist** and **Bayesian**
+decision rules for an instance of the Navy Captain's decision problem.
 
 The simulations validate the Navy Captain's hunch that there is a better rule than the one the Navy had ordered him
 to use.
@@ -106,8 +106,8 @@ impose on him.
 The decision maker pays  a cost $c$ for drawing
 another  $z$
 
-We mainly borrow parameters from the quantecon lecture “A Problem that
-Stumped Milton Friedman” except that we increase both $\bar L_{0}$
+We mainly borrow parameters from the quantecon lecture
+{doc}`A Problem that Stumped Milton Friedman <wald_friedman>` except that we increase both $\bar L_{0}$
 and $\bar L_{1}$ from $25$ to $100$ to encourage the
 frequentist Navy Captain to take more draws before deciding.
 
@@ -130,7 +130,7 @@ def p(x, a, b):
 ```
 
 We start with defining a `jitclass` that stores parameters and
-functions we need to solve problems for both the bayesian and
+functions we need to solve problems for both the Bayesian and
 frequentist Navy Captains.
 
 ```{code-cell} python3
@@ -270,7 +270,7 @@ Here
   not rejecting $H_0$ when $H_1$ is true
 
 For a given sample size $t$, the pairs $\left(PFA,PD\right)$
-lie on a “receiver operating characteristic curve” and can be uniquely
+lie on a **receiver operating characteristic curve** and can be uniquely
 pinned down by choosing $d$.
 
 To see some receiver operating characteristic curves, please see this
@@ -297,7 +297,7 @@ plt.legend()
 plt.show()
 ```
 
-We can compute sequneces of likelihood ratios using simulated samples.
+We can compute sequences of likelihood ratios using simulated samples.
 
 ```{code-cell} python3
 l = lambda z: wf.f0(z) / wf.f1(z)
@@ -312,7 +312,7 @@ L1_arr = np.cumprod(l1_arr, 1)
 ```
 
 With an empirical distribution of likelihood ratios in hand, we can draw
-“receiver operating characteristic curves” by enumerating
+**receiver operating characteristic curves** by enumerating
 $\left(PFA,PD\right)$ pairs given each sample size $t$.
 
 ```{code-cell} python3
@@ -450,7 +450,7 @@ plt.title('$\overline{V}_{fre}$')
 plt.show()
 ```
 
-The following shows how do optimal sample size $t$ and targeted
+The following shows how optimal sample size $t$ and targeted
 $\left(PFA,PD\right)$ change as $\pi^{*}$ varies.
 
 ```{code-cell} python3
@@ -471,7 +471,7 @@ plt.show()
 
 ## Bayesian Decision Rule
 
-In this lecture {doc}`A Problem that Stumped Milton Friedman <wald_friedman>`,
+In  {doc}`A Problem that Stumped Milton Friedman <wald_friedman>`,
 we learned how Abraham Wald confirmed the Navy
 Captain’s hunch that there is a better decision rule.
 
@@ -603,7 +603,7 @@ plt.legend(borderpad=1.1)
 plt.show()
 ```
 
-The above figure portrays the value function plotted against decision
+The above figure portrays the value function plotted against the decision
 maker’s Bayesian posterior.
 
 It also shows the probabilities $\alpha$ and $\beta$.
@@ -615,32 +615,34 @@ The Bayesian decision rule is:
 - delay deciding and draw another $z$ if
   $\beta \leq \pi \leq \alpha$
 
-We can calculate two ‘’objective’’ loss functions under this situation
+We can calculate two “objective” loss functions under this situation
 conditioning on knowing for sure that nature has selected $f_{0}$,
 in the first case, or $f_{1}$, in the second case.
 
 1. under $f_{0}$,
-
-$$
-V^{0}\left(\pi\right)=\begin{cases}
-0 & \text{if }\alpha\leq\pi,\\
-c+EV^{0}\left(\pi^{\prime}\right) & \text{if }\beta\leq\pi<\alpha,\\
-\bar L_{1} & \text{if }\pi<\beta.
-\end{cases}
-$$
-
+   
+   $$
+   V^{0}\left(\pi\right)=\begin{cases}
+   0 & \text{if }\alpha\leq\pi,\\
+   c+EV^{0}\left(\pi^{\prime}\right) & \text{if }\beta\leq\pi<\alpha,\\
+   \bar L_{1} & \text{if }\pi<\beta.
+   \end{cases}
+   $$
+   
 1. under $f_{1}$
-
-$$
-V^{1}\left(\pi\right)=\begin{cases}
-\bar L_{0} & \text{if }\alpha\leq\pi,\\
-c+EV^{1}\left(\pi^{\prime}\right) & \text{if }\beta\leq\pi<\alpha,\\
-0 & \text{if }\pi<\beta.
-\end{cases}
-$$
+   
+   $$
+   V^{1}\left(\pi\right)=\begin{cases}
+   \bar L_{0} & \text{if }\alpha\leq\pi,\\
+   c+EV^{1}\left(\pi^{\prime}\right) & \text{if }\beta\leq\pi<\alpha,\\
+   0 & \text{if }\pi<\beta.
+   \end{cases}
+   $$
+   
 
 where
 $\pi^{\prime}=\frac{\pi f_{0}\left(z^{\prime}\right)}{\pi f_{0}\left(z^{\prime}\right)+\left(1-\pi\right)f_{1}\left(z^{\prime}\right)}$.
+
 Given a prior probability $\pi_{0}$, the expected loss for the
 Bayesian is
 
@@ -843,7 +845,7 @@ It is always positive.
 
 ## More details
 
-We can provide more insights by focusing soley the case in which
+We can provide more insights by focusing on the case in which
 $\pi^{*}=0.5=\pi_{0}$.
 
 ```{code-cell} python3
@@ -851,9 +853,9 @@ $\pi^{*}=0.5=\pi_{0}$.
 ```
 
 Recall that when $\pi^*=0.5$, the frequentist decision rule sets a
-sample size `t_optimal` **ex ante**
+sample size `t_optimal` **ex ante**.
 
-For our parameter settings, we can compute it’s value:
+For our parameter settings, we can compute its value:
 
 ```{code-cell} python3
 t_optimal
@@ -870,7 +872,7 @@ t_idx = t_optimal - 1
 
 By using simulations, we compute the frequency distribution of time to
 deciding for the Bayesian decision rule and compare that time to the
-frequentist rule’sfixed $t$.
+frequentist rule’s fixed $t$.
 
 The following Python code creates a graph that shows the frequency
 distribution of Bayesian times to decide of Bayesian decision maker,

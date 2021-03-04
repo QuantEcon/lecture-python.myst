@@ -59,10 +59,10 @@ frequently.
 Examples of heavy-tailed distributions observed in economic and financial
 settings include
 
-````````* the income distributions and the wealth distribution (see, e.g., {cite}`pareto1896cours, {cite}`benhabib2018skewed),
-* the firm size distribution ({cite}`axtell2001zipf, {cite}`gabaix2016power}),
-* the distribution of returns on holding assets over short time horizons ({cite}`mandelbrot1963variation, {cite}`rachev2003handbook), and
-* the distribution of city sizes ({cite}`rozenfeld2011area, {cite}`gabaix2016power).
+* the income distributions and the wealth distribution (see, e.g., {cite}`pareto1896cours`, {cite}`benhabib2018skewed`),
+* the firm size distribution ({cite}`axtell2001zipf`, {cite}`gabaix2016power`}),
+* the distribution of returns on holding assets over short time horizons ({cite}`mandelbrot1963variation`, {cite}`rachev2003handbook`), and
+* the distribution of city sizes ({cite}`rozenfeld2011area`, {cite}`gabaix2016power`).
 
 These heavy tails turn out to be important for our understanding of economic outcomes.
 
@@ -73,7 +73,7 @@ It matters for taxation and redistribution
 policies, as well as for flow-on effects for productivity growth, business
 cycles, and political economy
 
-````* see, e.g., {cite}`acemoglu2002political, {cite}`glaeser2003injustice, {cite}`bhandari2018inequality or {cite}`ahn2018inequality.
+* see, e.g., {cite}`acemoglu2002political`, {cite}`glaeser2003injustice`, {cite}`bhandari2018inequality` or {cite}`ahn2018inequality`.
 
 This lecture formalizes some of the concepts introduced above and reviews the
 key ideas.
@@ -186,7 +186,7 @@ where $\mu := \mathbb E X_i = \int x F(x)$ is the common mean of the sample.
 The condition $\mathbb E | X_i | = \int |x| F(x) < \infty$ holds
 in most cases but can fail if the distribution $F$ is very heavy tailed.
 
-For example, it fails for the Cauchy distribution
+For example, it fails for the Cauchy distribution.
 
 Let's have a look at the behavior of the sample mean in this case, and see
 whether or not the LLN is still valid.
@@ -590,7 +590,7 @@ $$
 2^{1/\alpha} = \exp(\mu)
 $$
 
-which we solve for $\mu$ and $\sigma$ given $\alpha = 1.05$
+which we solve for $\mu$ and $\sigma$ given $\alpha = 1.05$.
 
 Here is code that generates the two samples, produces the violin plot and
 prints the mean and standard deviation of the two samples.

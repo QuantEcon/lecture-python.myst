@@ -45,8 +45,8 @@ This lecture provides a simple and intuitive introduction to the Kalman filter, 
 
 For additional (more advanced) reading on the Kalman filter, see
 
-``* {cite}`Ljungqvist2012, section 2.7
-* {cite}`AndersonMoore2005
+* {cite}`Ljungqvist2012`, section 2.7
+* {cite}`AndersonMoore2005`
 
 The second reference presents a  comprehensive treatment of the Kalman filter.
 
@@ -124,6 +124,9 @@ $2 \times 2$ covariance matrix.  In our simulations, we will suppose that
 This density $p(x)$ is shown below as a contour map, with the center of the red ellipse being equal to $\hat x$.
 
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 # Set up the Gaussian prior density p
 Σ = [[0.4, 0.3], [0.3, 0.45]]
 Σ = np.matrix(Σ)
@@ -496,7 +499,7 @@ Conditions under which a fixed point exists and the sequence $\{\Sigma_t\}$ conv
 
 A sufficient (but not necessary) condition is that all the eigenvalues $\lambda_i$ of $A$ satisfy $|\lambda_i| < 1$ (cf. e.g., {cite}`AndersonMoore2005`, p. 77).
 
-(This strong condition assures that the unconditional  distribution of $x_t$  converges as $t \rightarrow + \infty$)
+(This strong condition assures that the unconditional  distribution of $x_t$  converges as $t \rightarrow + \infty$.)
 
 In this case, for any initial choice of $\Sigma_0$ that is both non-negative and symmetric, the sequence $\{\Sigma_t\}$ in {eq}`kalman_sdy` converges to a non-negative symmetric matrix $\Sigma$ that solves {eq}`kalman_dare`.
 

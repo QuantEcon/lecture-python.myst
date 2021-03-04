@@ -39,8 +39,8 @@ In this lecture, we study an optimal savings problem for an infinitely lived con
 
 This is an essential sub-problem for many representative macroeconomic models
 
-``* {cite}`Aiyagari1994
-* {cite}`Huggett1993
+* {cite}`Aiyagari1994`
+* {cite}`Huggett1993`
 * etc.
 
 It is related to the decision problem in the {doc}`stochastic optimal growth
@@ -48,7 +48,7 @@ model <optgrowth>` and yet differs in important ways.
 
 For example, the choice problem for the agent includes an additive income term that leads to an occasionally binding constraint.
 
-Moreover, in this and the following lectures, we will inject more realisitic
+Moreover, in this and the following lectures, we will inject more realistic
 features such as correlated shocks.
 
 To solve the model we will use Euler equation based time iteration, which proved
@@ -194,7 +194,7 @@ strict inequality $u' (c_t) > \beta R \,  \mathbb{E}_t  u'(c_{t+1})$
 can occur because $c_t$ cannot increase sufficiently to attain equality.
 
 (The lower boundary case $c_t = 0$ never arises at the optimum because
-$u'(0) = \infty$)
+$u'(0) = \infty$.)
 
 With some thought, one can show that {eq}`ee00` and {eq}`ee01` are
 equivalent to
@@ -409,8 +409,7 @@ Next we provide a function to compute the difference
 ```{math}
 :label: euler_diff_eq
 
-u'(c)
-- \max \left\{
+u'(c) - \max \left\{
            \beta R \, \mathbb E_z (u' \circ \sigma) \,
            [R (a - c) + \hat Y, \, \hat Z]
            \, , \;
@@ -598,7 +597,7 @@ diverge even in the highest state.
 
 In fact there is a unique stationary distribution of assets that we can calculate by simulation
 
-`* Can be proved via theorem 2 of {cite}`HopenhaynPrescott1992.
+* Can be proved via theorem 2 of {cite}`HopenhaynPrescott1992`.
 * It represents the long run dispersion of assets across households when households have idiosyncratic shocks.
 
 Ergodicity is valid here, so stationary probabilities can be calculated by averaging over a single long time series.
@@ -618,7 +617,7 @@ Your task is to generate such a histogram.
 Following on from exercises 1 and 2, let's look at how savings and aggregate
 asset holdings vary with the interest rate
 
-`* Note: {cite}`Ljungqvist2012 section 18.6 can be consulted for more
+* Note: {cite}`Ljungqvist2012` section 18.6 can be consulted for more
   background on the topic treated in this exercise.
 
 For a given parameterization of the model, the mean of the stationary
@@ -629,7 +628,7 @@ shocks.
 Your task is to investigate how this measure of aggregate capital varies with
 the interest rate.
 
-Following tradition, put the price (i.e., interest rate) is on the vertical axis.
+Following tradition, put the price (i.e., interest rate) on the vertical axis.
 
 On the horizontal axis put aggregate capital, computed as the mean of the
 stationary distribution given the interest rate.

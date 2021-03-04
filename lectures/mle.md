@@ -576,6 +576,9 @@ The iterative process can be visualized in the following diagram, where
 the maximum is found at $\beta = 10$
 
 ```{code-cell} python3
+---
+tags: [output_scroll]
+---
 logL = lambda x: -(x - 10) ** 2 - 10
 
 def find_tangent(β, a=0.01):
@@ -889,10 +892,10 @@ The Hessian of the Probit model is
 
 $$
 \frac {\partial^2 \log \mathcal{L}} {\partial \boldsymbol{\beta} \partial \boldsymbol{\beta}'} =
-- \sum_{i=1}^n \phi (\mathbf{x}_i' \boldsymbol{\beta})
+-\sum_{i=1}^n \phi (\mathbf{x}_i' \boldsymbol{\beta})
 \Big[
 y_i \frac{ \phi (\mathbf{x}_i' \boldsymbol{\beta}) + \mathbf{x}_i' \boldsymbol{\beta} \Phi (\mathbf{x}_i' \boldsymbol{\beta}) } { [\Phi (\mathbf{x}_i' \boldsymbol{\beta})]^2 } +
-(1 - y_i) \frac{ \phi_i (\mathbf{x}_i' \boldsymbol{\beta}) - \mathbf{x}_i' \boldsymbol{\beta} (1 - \Phi (\mathbf{x}_i' \boldsymbol{\beta})) } { [1 - \Phi (\mathbf{x}_i' \boldsymbol{\beta})]^2 }
+(1 - y_i) \frac{ \phi (\mathbf{x}_i' \boldsymbol{\beta}) - \mathbf{x}_i' \boldsymbol{\beta} (1 - \Phi (\mathbf{x}_i' \boldsymbol{\beta})) } { [1 - \Phi (\mathbf{x}_i' \boldsymbol{\beta})]^2 }
 \Big]
 \mathbf{x}_i \mathbf{x}_i'
 $$

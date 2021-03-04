@@ -46,8 +46,8 @@ tails.
 
 The wealth distribution in many countries exhibits a Pareto tail
 
-`* See {doc}`this lecture <heavy_tails>` for a definition.
-* For a review of the empirical evidence, see, for example, {cite}`benhabib2018skewed.
+* See {doc}`this lecture <heavy_tails>` for a definition.
+* For a review of the empirical evidence, see, for example, {cite}`benhabib2018skewed`.
 
 This is consistent with high concentration of wealth amongst the richest households.
 
@@ -545,7 +545,7 @@ For the values of the tail index, use `a_vals = np.linspace(1, 10, 25)`.
 
 Use sample of size 1,000 for each $a$ and the sampling method for generating Pareto draws employed in the discussion of Lorenz curves for the Pareto distribution.
 
-To the extend that you can, interpret the monotone relationship between the
+To the extent that you can, interpret the monotone relationship between the
 Gini index and $a$.
 
 ### Exercise 2

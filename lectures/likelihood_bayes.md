@@ -50,7 +50,7 @@ We'll study how, at least  in our setting, a Bayesian eventually learns the prob
 rests on the asymptotic behavior of likelihood ratio processes studied in {doc}`this lecture <likelihood_ratio_process>`.
 
 This lecture provides technical results that underly outcomes to be studied in {doc}`this lecture <odu>`
-and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`
+and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`.
 
 ## The Setting
 
@@ -59,15 +59,14 @@ We begin by reviewing the setting in {doc}`this lecture <likelihood_ratio_proces
 A nonnegative random variable $W$ has one of two probability density functions, either
 $f$ or $g$.
 
-Before the beginning of time, nature once and for all decides whether she will draw a sequence of IID draws from either
-$f$ or $g$.
+Before the beginning of time, nature once and for all decides whether she will draw a sequence of IID draws from $f$ or from $g$.
 
 We will sometimes let $q$ be the density that nature chose once and for all, so
 that $q$ is either $f$ or $g$, permanently.
 
 Nature knows which density it permanently draws from, but we the observers do not.
 
-We do know both $f$ and $g$ but we don’t know which density nature
+We do know both $f$ and $g$, but we don’t know which density nature
 chose.
 
 But we want to know.
@@ -263,7 +262,7 @@ and the initial prior $\pi_{0}$
 \pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}} .
 ```
 
-Formula {eq}`eq_Bayeslaw103` generalizes generalizes formula {eq}`eq_recur1`.
+Formula {eq}`eq_Bayeslaw103` generalizes formula {eq}`eq_recur1`.
 
 Formula {eq}`eq_Bayeslaw103`  can be regarded as a one step  revision of prior probability $\pi_0$ after seeing
 the batch of data $\left\{ w_{i}\right\} _{i=1}^{t+1}$.
@@ -277,8 +276,7 @@ limiting behavior of $\pi_t$.
 
 To illustrate this insight, below we will plot  graphs showing **one** simulated
 path of the  likelihood ratio process $L_t$ along with two paths of
-$\pi_t$ that are associated with the *same* realization of the likelihood ratio process but *different* initial prior probabilities
-probabilities $\pi_{0}$.
+$\pi_t$ that are associated with the *same* realization of the likelihood ratio process but *different* initial prior probabilities $\pi_{0}$.
 
 First, we tell Python two values of $\pi_0$.
 
@@ -375,5 +373,5 @@ $g$.
 This lecture has been devoted to building some useful infrastructure.
 
 We'll build on results highlighted in this lectures to understand inferences that are the foundations of
-results described  in {doc}`this lecture <odu>` and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`
+results described  in {doc}`this lecture <odu>` and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`.
 

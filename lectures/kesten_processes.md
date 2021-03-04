@@ -265,7 +265,7 @@ In particular, if
 
 then a unique stationary distribution exists on $\mathbb R_+$.
 
-`* See, for example, theorem 2.1.3 of {cite}`buraczewski2016stochastic, which provides slightly weaker conditions.
+* See, for example, theorem 2.1.3 of {cite}`buraczewski2016stochastic`, which provides slightly weaker conditions.
 
 As one application of this result, we see that the wealth process
 {eq}`wealth_dynam` will have a unique stationary distribution whenever
@@ -391,8 +391,8 @@ accumulated in the literature.
 
 For example, it is commonly found that, on average,
 
-```1. small firms grow faster than large firms (see, e.g., {cite}`evans1987relationship and {cite}`hall1987relationship) and
-1. the growth rate of small firms is more volatile than that of large firms {cite}`dunne1989growth.
+1. small firms grow faster than large firms (see, e.g., {cite}`evans1987relationship` and {cite}`hall1987relationship`) and
+1. the growth rate of small firms is more volatile than that of large firms {cite}`dunne1989growth`.
 
 On the other hand, Gibrat's law is generally found to be a reasonable
 approximation for large firms {cite}`evans1987relationship`.
@@ -496,7 +496,7 @@ s_{t+1} = e_{t+1} \mathbb{1}\{s_t < \bar s\} +
 
 Here
 
-* the state variable $s_t$ is represents productivity (which is a proxy
+* the state variable $s_t$ represents productivity (which is a proxy
   for output and hence firm size),
 * the IID sequence $\{ e_t \}$ is thought of as a productivity draw for a new
   entrant and
