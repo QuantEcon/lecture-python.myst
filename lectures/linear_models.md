@@ -1041,13 +1041,7 @@ $$
 
 regardless of the initial conditions $\mu_0$ and $\Sigma_0$.
 
-```{only} html
-This is the *globally stable case* --- see <a href=_static/lecture_specific/linear_models/iteration_notes.pdf download>these notes</a> for more a theoretical treatment.
-```
-
-```{only} latex
 This is the *globally stable case* --- see [these notes](https://lectures.quantecon.org/_downloads/iteration_notes.pdf) for more a theoretical treatment.
-```
 
 However, global stability is more than we need for stationary solutions, and often more than we want.
 
