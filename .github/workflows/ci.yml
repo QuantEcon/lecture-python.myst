@@ -32,6 +32,11 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./
+      - name: Save Build as Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: _build
+          path: _build
       - name: Preview Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.1
         with:

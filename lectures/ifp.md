@@ -475,7 +475,8 @@ start to iterate.
 The following function iterates to convergence and returns the approximate
 optimal policy.
 
-```{literalinclude} _static/lecture_specific/coleman_policy_iter/solve_time_iter.py
+```{code-cell} python3
+:load: _static/lecture_specific/coleman_policy_iter/solve_time_iter.py
 ```
 
 Let's carry this out using the default parameters of the `IFP` class:
@@ -518,7 +519,8 @@ In this case, our income fluctuation problem is just a cake eating problem.
 We know that, in this case, the value function and optimal consumption policy
 are given by
 
-```{literalinclude} _static/lecture_specific/cake_eating_numerical/analytical.py
+```{code-cell} python3
+:load: _static/lecture_specific/cake_eating_numerical/analytical.py
 ```
 
 Let's see if we match up:

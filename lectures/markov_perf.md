@@ -431,7 +431,8 @@ Consider the previously presented duopoly model with parameter values of:
 
 From these, we compute the infinite horizon MPE using the preceding code
 
-```{literalinclude} _static/lecture_specific/markov_perf/duopoly_mpe.py
+```{code-cell} python3
+:load: _static/lecture_specific/markov_perf/duopoly_mpe.py
 ```
 
 Running the code produces the following output.
