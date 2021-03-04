@@ -350,8 +350,8 @@ ax.legend(loc='lower right')
 plt.show()
 ```
 
-This matches the solution that we obtained in our non-jitted code,
-{ref}`in the exercises <ogex1>`.
+This matches the solution that we obtained in our non-jitted code, {ref}`in
+the exercises <ogex1>`.
 
 Execution time is an order of magnitude faster.
 
