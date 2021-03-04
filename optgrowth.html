@@ -26,7 +26,7 @@
     <script src="_static/quantecon-book-theme.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
@@ -290,12 +290,12 @@ techniques to drastically improve execution time over the next few lectures.</p>
 <p>Let’s start with some imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize_scalar</span>
 
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -575,7 +575,7 @@ maximizer of <span class="math notranslate nohighlight">\(g\)</span> on the inte
 in an outer function as follows:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">maximize</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">maximize</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Maximize the function g over the interval [a, b].</span>
 
@@ -608,7 +608,7 @@ in an outer function as follows:</p>
 right hand side of the Bellman equation <a class="reference internal" href="#equation-fpb30">(30.9)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">OptimalGrowthModel</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">OptimalGrowthModel</span><span class="p">:</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">u</span><span class="p">,</span>            <span class="c1"># utility function</span>
@@ -664,7 +664,7 @@ prefer small classes rather than monolithic ones for this kind of
 numerical work.)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">og</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">og</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Bellman operator.  Updates the guess of the value function</span>
 <span class="sd">    and also computes a v-greedy policy.</span>
@@ -716,8 +716,9 @@ u(c) = \ln c
 <p>It is valuable to have these closed-form solutions because it lets us check
 whether our code works for this particular case.</p>
 <p>In Python, the functions above can be expressed as:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
-<span class="k">def</span> <span class="nf">v_star</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="p">):</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">v_star</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    True value function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -732,13 +733,14 @@ whether our code works for this particular case.</p>
 <span class="sd">    True optimal policy</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span> <span class="o">*</span> <span class="n">β</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span>
-
 </pre></div>
+</div>
+</div>
 </div>
 <p>Next let’s create an instance of the model with the above primitives and assign it to the variable <code class="docutils literal notranslate"><span class="pre">og</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">α</span> <span class="o">=</span> <span class="mf">0.4</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">α</span> <span class="o">=</span> <span class="mf">0.4</span>
 <span class="k">def</span> <span class="nf">fcd</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">k</span><span class="o">**</span><span class="n">α</span>
 
@@ -753,7 +755,7 @@ solution <span class="math notranslate nohighlight">\(v^*\)</span> in this case.
 <p>In practice, we expect some small numerical error.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">grid</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">grid</span>
 
 <span class="n">v_init</span> <span class="o">=</span> <span class="n">v_star</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">og</span><span class="o">.</span><span class="n">μ</span><span class="p">)</span>    <span class="c1"># Start at the solution</span>
 <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v_init</span><span class="p">,</span> <span class="n">og</span><span class="p">)</span>             <span class="c1"># Apply T once</span>
@@ -767,6 +769,9 @@ solution <span class="math notranslate nohighlight">\(v^*\)</span> in this case.
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/optgrowth_13_0.png" src="_images/optgrowth_13_0.png" />
+</div>
 </div>
 <p>The two functions are essentially indistinguishable, so we are off to a good start.</p>
 <p>Now let’s have a look at iterating with the Bellman operator, starting
@@ -774,7 +779,7 @@ from an arbitrary initial condition.</p>
 <p>The initial condition we’ll start with is, somewhat arbitrarily, <span class="math notranslate nohighlight">\(v(y) = 5 \ln (y)\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>  <span class="c1"># An initial condition</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>  <span class="c1"># An initial condition</span>
 <span class="n">n</span> <span class="o">=</span> <span class="mi">35</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
@@ -795,6 +800,9 @@ from an arbitrary initial condition.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/optgrowth_15_0.png" src="_images/optgrowth_15_0.png" />
+</div>
 </div>
 <p>The figure shows</p>
 <ol class="simple">
@@ -808,7 +816,9 @@ from an arbitrary initial condition.</p>
 <h3><span class="section-number">30.3.5. </span>Iterating to Convergence<a class="headerlink" href="#iterating-to-convergence" title="Permalink to this headline">¶</a></h3>
 <p>We can write a function that iterates until the difference is below a particular
 tolerance level.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve_model</span><span class="p">(</span><span class="n">og</span><span class="p">,</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve_model</span><span class="p">(</span><span class="n">og</span><span class="p">,</span>
                 <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
                 <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
                 <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -840,10 +850,44 @@ tolerance level.</p>
     <span class="k">return</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_new</span>
 </pre></div>
 </div>
+</div>
+</div>
 <p>Let’s use this function to compute an approximate solution at the defaults.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_solution</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">og</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_solution</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">og</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.40975776844490497.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 50 is 0.1476753540823772.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 75 is 0.05322171277213883.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 100 is 0.019180930548646558.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 125 is 0.006912744396029069.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 150 is 0.002491330384817303.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 175 is 0.000897867291303811.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 200 is 0.00032358842396718046.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 225 is 0.00011662020561331587.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 229 iterations.
 </pre></div>
 </div>
 </div>
@@ -851,7 +895,7 @@ tolerance level.</p>
 <p>Now we check our result by plotting it against the true value:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_solution</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Approximate value function&#39;</span><span class="p">)</span>
@@ -865,6 +909,9 @@ tolerance level.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/optgrowth_21_0.png" src="_images/optgrowth_21_0.png" />
+</div>
 </div>
 <p>The figure shows that we are pretty much on the money.</p>
 </div>
@@ -875,7 +922,7 @@ tolerance level.</p>
 above, is <span class="math notranslate nohighlight">\(\sigma(y) = (1 - \alpha \beta) y\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;approximate policy function&#39;</span><span class="p">)</span>
@@ -887,6 +934,9 @@ above, is <span class="math notranslate nohighlight">\(\sigma(y) = (1 - \alpha \
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/optgrowth_23_0.png" src="_images/optgrowth_23_0.png" />
 </div>
 </div>
 <p>The figure shows that we’ve done a good job in this instance of approximating
@@ -924,7 +974,7 @@ utility specification.</p>
 <p>Here we set up the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">γ</span> <span class="o">=</span> <span class="mf">1.5</span>   <span class="c1"># Preference parameter</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">γ</span> <span class="o">=</span> <span class="mf">1.5</span>   <span class="c1"># Preference parameter</span>
 
 <span class="k">def</span> <span class="nf">u_crra</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span>
@@ -937,8 +987,42 @@ utility specification.</p>
 <p>Now let’s run it, with a timer.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
 <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_solution</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">og</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.5528151810417512.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 50 is 0.19923228425590978.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 75 is 0.07180266113800826.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 100 is 0.025877443335843964.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 125 is 0.009326145618970827.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 150 is 0.003361112262005861.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 175 is 0.0012113338243295857.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 200 is 0.0004365607333056687.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 225 is 0.00015733505506432266.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 237 iterations.
+CPU times: user 37.7 s, sys: 28 ms, total: 37.8 s
+Wall time: 37.7 s
 </pre></div>
 </div>
 </div>
@@ -946,7 +1030,7 @@ utility specification.</p>
 <p>Let’s plot the policy function just to see what it looks like:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Approximate optimal policy&#39;</span><span class="p">)</span>
@@ -956,6 +1040,9 @@ utility specification.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/optgrowth_29_0.png" src="_images/optgrowth_29_0.png" />
+</div>
 </div>
 </div>
 <div class="section" id="id11">
@@ -963,7 +1050,7 @@ utility specification.</p>
 <p>Let’s set up:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">og</span> <span class="o">=</span> <span class="n">OptimalGrowthModel</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="n">u_crra</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">fcd</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">og</span> <span class="o">=</span> <span class="n">OptimalGrowthModel</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="n">u_crra</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">fcd</span><span class="p">)</span>
 <span class="n">v</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="n">og</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -972,11 +1059,17 @@ utility specification.</p>
 <p>Here’s the timing:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
     <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">og</span><span class="p">)</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">v_new</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.24 s, sys: 0 ns, total: 3.24 s
+Wall time: 3.24 s
 </pre></div>
 </div>
 </div>
