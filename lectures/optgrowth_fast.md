@@ -103,7 +103,8 @@ In particular, the algorithm is unchanged, and the only difference is in the imp
 
 As before, we will be able to compare with the true solutions
 
-```{literalinclude} _static/lecture_specific/optgrowth/cd_analytical.py
+```{code-cell} python3
+:load: _static/lecture_specific/optgrowth/cd_analytical.py
 ```
 
 ## Computation
@@ -125,7 +126,8 @@ class.
 
 This is where we sacrifice flexibility in order to gain more speed.
 
-```{literalinclude} _static/lecture_specific/optgrowth_fast/ogm.py
+```{code-cell} python3
+:load: _static/lecture_specific/optgrowth_fast/ogm.py
 ```
 
 The class includes some methods such as `u_prime` that we do not need now
@@ -186,7 +188,8 @@ def T(v, og):
 
 We use the `solve_model` function to perform iteration until convergence.
 
-```{literalinclude} _static/lecture_specific/optgrowth/solve_model.py
+```{code-cell} python3
+:load: _static/lecture_specific/optgrowth/solve_model.py
 ```
 
 Let's compute the approximate solution at the default parameters.
@@ -317,7 +320,8 @@ value function iteration, the JIT-compiled code is usually an order of magnitude
 
 Here's our CRRA version of `OptimalGrowthModel`:
 
-```{literalinclude} _static/lecture_specific/optgrowth_fast/ogm_crra.py
+```{code-cell} python3
+:load: _static/lecture_specific/optgrowth_fast/ogm_crra.py
 ```
 
 Let's create an instance:
@@ -346,8 +350,8 @@ ax.legend(loc='lower right')
 plt.show()
 ```
 
-This matches the solution that we obtained in our non-jitted code, {ref}`in
-the exercises <ogex1>`.
+This matches the solution that we obtained in our non-jitted code,
+{ref}`in the exercises <ogex1>`.
 
 Execution time is an order of magnitude faster.
 

@@ -329,7 +329,7 @@ for c in c_vals:
     js = JobSearch(c=c)
     f_star = compute_fixed_point(js, verbose=False)
     res_wage_function = np.exp(f_star * (1 - js.β))
-    ax.plot(js.z_grid, res_wage_function, label=f"$\\bar w$ at $c = {c}$")
+    ax.plot(js.z_grid, res_wage_function, label=rf"$\bar w$ at $c = {c}$")
 
 ax.set(xlabel="$z$", ylabel="wage")
 ax.legend()
@@ -440,7 +440,7 @@ for i, β in enumerate(beta_vals):
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 ax.plot(beta_vals, durations)
-ax.set_xlabel("$\\beta$")
+ax.set_xlabel(r"$\beta$")
 ax.set_ylabel("mean unemployment duration")
 plt.show()
 ```

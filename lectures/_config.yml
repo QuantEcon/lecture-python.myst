@@ -5,7 +5,13 @@ description: This website presents a set of lectures on quantitative economic mo
 
 execute:
   execute_notebooks: "cache"
-  timeout: 60
+  timeout: 600
+
+bibtex_bibfiles:
+   - _static/quant-econ.bib
+
+bibtex_bibfiles:
+   - _static/quant-econ.bib
 
 html:
   baseurl: https://python.quantecon.org/
@@ -13,6 +19,27 @@ html:
 sphinx:
   extra_extensions: [sphinx_multitoc_numbering, sphinxext.rediraffe, sphinx_tojupyter]
   config:
+    nb_render_priority:
+      html:
+      - "application/vnd.jupyter.widget-view+json"
+      - "application/javascript"
+      - "text/html"
+      - "text/latex"
+      - "image/svg+xml"
+      - "image/png"
+      - "image/jpeg"
+      - "text/markdown"
+      - "text/plain"
+      jupyter:
+      - "application/vnd.jupyter.widget-view+json"
+      - "application/javascript"
+      - "text/html"
+      - "text/latex"
+      - "image/svg+xml"
+      - "image/png"
+      - "image/jpeg"
+      - "text/markdown"
+      - "text/plain"
     html_favicon: _static/lectures-favicon.ico
     html_theme: quantecon_book_theme
     html_static_path: ['_static']
@@ -31,6 +58,7 @@ sphinx:
         Macros:
           "argmax" : "arg\\,max"
           "argmin" : "arg\\,min"
+    mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
     rediraffe_redirects:
       index_toc.md: intro.md
     tojupyter_static_file_path: ["source/_static", "_static"]
