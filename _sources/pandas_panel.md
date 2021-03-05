@@ -361,8 +361,9 @@ Using this series, we can plot the average real minimum wage over the
 past decade for each country in our data set
 
 ```{code-cell} ipython
-import matplotlib.pyplot as plt
 %matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import matplotlib
 matplotlib.style.use('seaborn')
 

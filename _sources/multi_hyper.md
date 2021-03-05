@@ -111,13 +111,14 @@ The right tool for the administrator's job is the **multivariate hypergeometric 
 Let's start with some imports.
 
 ```{code-cell} ipython
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
+import matplotlib.cm as cm
 import numpy as np
 from scipy.special import comb
 from scipy.stats import normaltest
 from numba import njit, prange
-import matplotlib.pyplot as plt
-%matplotlib inline
-import matplotlib.cm as cm
 ```
 
 To recapitulate, we assume there are in total $c$ types of objects in an urn.

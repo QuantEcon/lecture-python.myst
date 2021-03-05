@@ -54,10 +54,10 @@ We will discuss these issues as we go along.
 Let's start with some imports:
 
 ```{code-cell} ipython
-import numpy as np
-import matplotlib.pyplot as plt
 %matplotlib inline
-
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
+import numpy as np
 import quantecon as qe
 ```
 
