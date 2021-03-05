@@ -51,10 +51,11 @@ other countries.
 We will use the following standard imports:
 
 ```{code-cell} ipython3
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from numpy import exp
-
-import matplotlib.pyplot as plt
 ```
 
 We will also use SciPy's numerical routine odeint for solving differential

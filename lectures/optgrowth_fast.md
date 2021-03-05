@@ -60,14 +60,14 @@ accelerate our code.
 Let's start with some imports:
 
 ```{code-cell} ipython
-import numpy as np
+%matplotlib inline
 import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
+import numpy as np
 from interpolation import interp
 from numba import jit, njit, prange, float64, int32
 from numba.experimental import jitclass
 from quantecon.optimize.scalar_maximization import brent_max
-
-%matplotlib inline
 ```
 
 We are using an interpolation function from

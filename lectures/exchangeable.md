@@ -66,13 +66,14 @@ Let’s start with some imports:
 ---
 tags: [hide-output]
 ---
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from numba import njit, vectorize
 from math import gamma
 import scipy.optimize as op
 from scipy.integrate import quad
 import numpy as np
-import matplotlib.pyplot as plt
-%matplotlib inline
 ```
 
 ## Independently and Identically Distributed

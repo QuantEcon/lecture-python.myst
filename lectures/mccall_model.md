@@ -60,11 +60,12 @@ As we'll see, McCall's model is not only interesting in its own right but also a
 Let's start with some imports:
 
 ```{code-cell} ipython
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from numba import jit, float64
 from numba.experimental import jitclass
-import matplotlib.pyplot as plt
-%matplotlib inline
 import quantecon as qe
 from quantecon.distributions import BetaBinomial
 ```

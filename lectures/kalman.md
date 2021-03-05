@@ -55,11 +55,12 @@ Required knowledge: Familiarity with matrix manipulations, multivariate normal d
 We'll need the following imports:
 
 ```{code-cell} ipython
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from scipy import linalg
 import numpy as np
 import matplotlib.cm as cm
-import matplotlib.pyplot as plt
-%matplotlib inline
 from quantecon import Kalman, LinearStateSpace
 from scipy.stats import norm
 from scipy.integrate import quad

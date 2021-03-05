@@ -25,11 +25,12 @@ kernelspec:
 ```
 
 ```{code-cell} ipython
-import numpy as np
+%matplotlib inline
 import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
+import numpy as np
 from numba import vectorize, njit
 from math import gamma
-%matplotlib inline
 from scipy.integrate import quad
 ```
 
