@@ -49,11 +49,12 @@ These and other applications prove the truth of the wise crack that
 Below we'll use the following imports:
 
 ```{code-cell} ipython
-import matplotlib.pyplot as plt
 %matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import sympy as sym
-from sympy import init_printing
+from sympy import init_printing, latex
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 ```
@@ -808,7 +809,7 @@ g, r, x0 = sym.symbols('g, r, x0')
 G = (1 + g)
 R = (1 + r)
 p0 = x0 / (1 - G * R**(-1))
-init_printing()
+init_printing(use_latex='mathjax')
 print('Our formula is:')
 p0
 ```
