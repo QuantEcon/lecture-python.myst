@@ -37,13 +37,7 @@ tags: [hide-output]
 
 In this lecture, we describe the structure of a class of models that build on work by Truman Bewley {cite}`Bewley1977`.
 
-```{only} html
-We begin by discussing an example of a Bewley model due to <a href=_static/lecture_specific/aiyagari/aiyagari_obit.pdf download>Rao Aiyagari</a>.
-```
-
-```{only} latex
 We begin by discussing an example of a Bewley model due to [Rao Aiyagari](https://lectures.quantecon.org/_downloads/aiyagari_obit.pdf).
-```
 
 The model features
 

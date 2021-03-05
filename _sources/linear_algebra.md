@@ -837,15 +837,7 @@ $x$ that makes the distance $\| y - Ax\|$ as small as possible.
 To solve this problem, one can use either calculus or the theory of orthogonal
 projections.
 
-```{only} html
-The solution is known to be $\hat x = (A'A)^{-1}A'y$ --- see for example
-chapter 3 of <a href=_static/lecture_specific/linear_algebra/course_notes.pdf download>these notes</a>.
-```
-
-```{only} latex
-The solution is known to be $\hat x = (A'A)^{-1}A'y$ --- see for example
-chapter 3 of [these notes](https://lectures.quantecon.org/_downloads/course_notes.pdf).
-```
+The solution is known to be $\hat x = (A'A)^{-1}A'y$ --- see for example chapter 3 of [these notes](https://lectures.quantecon.org/_downloads/course_notes.pdf).
 
 ### More Columns than Rows
 
