@@ -147,7 +147,7 @@
                                 </li>
                                 
                                 <li class="nav-item toc-entry toc-h2">
-                                    <a href="#asset-prices-under-risk-aversion" class="nav-link">Asset Prices under Risk Aversion</a><ul class="nav section-nav flex-column">
+                                    <a href="#risk-aversion-and-asset-prices" class="nav-link">Risk Aversion and Asset Prices</a><ul class="nav section-nav flex-column">
                                         
                                 <li class="nav-item toc-entry toc-h3">
                                     <a href="#pricing-a-lucas-tree" class="nav-link">Pricing a Lucas Tree</a><ul class="nav section-nav flex-column">
@@ -285,7 +285,7 @@
 <li><p><a class="reference internal" href="#overview" id="id10">Overview</a></p></li>
 <li><p><a class="reference internal" href="#pricing-models" id="id11">Pricing Models</a></p></li>
 <li><p><a class="reference internal" href="#prices-in-the-risk-neutral-case" id="id12">Prices in the Risk-Neutral Case</a></p></li>
-<li><p><a class="reference internal" href="#asset-prices-under-risk-aversion" id="id13">Asset Prices under Risk Aversion</a></p></li>
+<li><p><a class="reference internal" href="#risk-aversion-and-asset-prices" id="id13">Risk Aversion and Asset Prices</a></p></li>
 <li><p><a class="reference internal" href="#exercises" id="id14">Exercises</a></p></li>
 <li><p><a class="reference internal" href="#solutions" id="id15">Solutions</a></p></li>
 </ul>
@@ -339,20 +339,8 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: \ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+Solving environment: - 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
@@ -392,6 +380,33 @@ Solving environment: \
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -465,7 +480,7 @@ settings the price of an ex-dividend asset obeys</p>
 <p>The fixed discount factor <span class="math notranslate nohighlight">\(\beta\)</span> in <a class="reference internal" href="#equation-rnapex">(53.1)</a> has been replaced by the random variable <span class="math notranslate nohighlight">\(m_{t+1}\)</span>.</p>
 <p>The way anticipated future payoffs are evaluated can now depend on various random outcomes.</p>
 <p>One example of this idea is that assets that tend to have good payoffs in bad states of the world might be regarded as more valuable.</p>
-<p>This is because they pay well when the funds are more urgently needed.</p>
+<p>This is because they pay well when funds are more urgently wanted.</p>
 <p>We give examples of how the stochastic discount factor has been modeled below.</p>
 </div>
 <div class="section" id="asset-pricing-and-covariances">
@@ -480,6 +495,8 @@ settings the price of an ex-dividend asset obeys</p>
 <ul class="simple">
 <li><p>In equation <a class="reference internal" href="#equation-rnapex">(53.1)</a>, the stochastic discount factor <span class="math notranslate nohighlight">\(m_{t+1} = \beta\)</span>,  a constant.</p></li>
 <li><p>In equation <a class="reference internal" href="#equation-rnapex">(53.1)</a>, the covariance term <span class="math notranslate nohighlight">\({\rm cov}_t (m_{t+1}, d_{t+1}+ p_{t+1})\)</span> is zero because <span class="math notranslate nohighlight">\(m_{t+1} = \beta\)</span>.</p></li>
+<li><p>In equation <a class="reference internal" href="#equation-rnapex">(53.1)</a>, <span class="math notranslate nohighlight">\({\mathbb E}_t m_{t+1}\)</span> can be interpreted as the reciprocal of the one-period risk-free gross interest rate.</p></li>
+<li><p>When  <span class="math notranslate nohighlight">\(m_{t+1}\)</span> is covaries more negatively with the payout <span class="math notranslate nohighlight">\(p_{t+1} + d_{t+1}\)</span>, the price of the asset is lower.</p></li>
 </ul>
 <p>Equation <a class="reference internal" href="#equation-lteeqs102">(53.4)</a> asserts that the covariance of the stochastic discount factor with the one period payout <span class="math notranslate nohighlight">\(d_{t+1} + p_{t+1}\)</span> is an important determinant of the price <span class="math notranslate nohighlight">\(p_t\)</span>.</p>
 <p>We give examples of some models of stochastic discount factors that have been proposed later in this lecture and also in a <a class="reference external" href="https://python-advanced.quantecon.org/lucas_model.html">later lecture</a>.</p>
@@ -502,7 +519,8 @@ settings the price of an ex-dividend asset obeys</p>
 <li><p>the process we specify for dividends</p></li>
 <li><p>the stochastic discount factor and how it correlates with dividends</p></li>
 </ol>
-<p>For now let’s focus on the risk-neutral case, where the stochastic discount factor is constant, and study how prices depend on the dividend process.</p>
+<p>For now we’ll study  the risk-neutral case in which  the stochastic discount factor is constant.</p>
+<p>We’ll  focus on how the asset  prices depends on the dividend process.</p>
 <div class="section" id="example-1-constant-dividends">
 <h3><span class="section-number">53.3.1. </span>Example 1: Constant Dividends<a class="headerlink" href="#example-1-constant-dividends" title="Permalink to this headline">¶</a></h3>
 <p>The simplest case is risk-neutral pricing in the face of a constant, non-random dividend stream <span class="math notranslate nohighlight">\(d_t = d &gt; 0\)</span>.</p>
@@ -578,8 +596,8 @@ transition probabilities</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(S\)</span> as <span class="math notranslate nohighlight">\(n\)</span> possible “states of the world” and <span class="math notranslate nohighlight">\(X_t\)</span> as the
 current state.</p></li>
-<li><p><span class="math notranslate nohighlight">\(g\)</span> as a function that maps a given state <span class="math notranslate nohighlight">\(X_t\)</span> into a growth
-factor <span class="math notranslate nohighlight">\(g_t = g(X_t)\)</span> for the endowment.</p></li>
+<li><p><span class="math notranslate nohighlight">\(g\)</span> as a function that maps a given state <span class="math notranslate nohighlight">\(X_t\)</span> into a growth of dividends
+factor <span class="math notranslate nohighlight">\(g_t = g(X_t)\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\ln g_t = \ln (d_{t+1} / d_t)\)</span> is the growth rate of dividends.</p></li>
 </ul>
 <p>(For a refresher on notation and theory for finite Markov chains see <a class="reference internal" href="finite_markov.html"><span class="doc">this lecture</span></a>)</p>
@@ -691,12 +709,12 @@ current states suggest high future states.</p>
 <p>The anticipation of high future dividend growth leads to a high price-dividend ratio.</p>
 </div>
 </div>
-<div class="section" id="asset-prices-under-risk-aversion">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">53.4. </span>Asset Prices under Risk Aversion</a><a class="headerlink" href="#asset-prices-under-risk-aversion" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="risk-aversion-and-asset-prices">
+<h2><a class="toc-backref" href="#id13"><span class="section-number">53.4. </span>Risk Aversion and Asset Prices</a><a class="headerlink" href="#risk-aversion-and-asset-prices" title="Permalink to this headline">¶</a></h2>
 <p>Now let’s turn to the case where agents are risk averse.</p>
 <p>We’ll price several distinct assets, including</p>
 <ul class="simple">
-<li><p>The price of an endowment stream</p></li>
+<li><p>An endowment stream</p></li>
 <li><p>A consol (a type of bond issued by the UK government in the 19th century)</p></li>
 <li><p>Call options on a consol</p></li>
 </ul>
@@ -708,7 +726,7 @@ current states suggest high future states.</p>
 <span class="eqno">(53.11)<a class="headerlink" href="#equation-lucsdf" title="Permalink to this equation">¶</a></span>\[m_{t+1} = \beta \frac{u'(c_{t+1})}{u'(c_t)}\]</div>
 <p>where <span class="math notranslate nohighlight">\(u\)</span> is a concave utility function and <span class="math notranslate nohighlight">\(c_t\)</span> is time <span class="math notranslate nohighlight">\(t\)</span> consumption of a representative consumer.</p>
 <p>(A derivation of this expression is given in a <a class="reference external" href="https://python-advanced.quantecon.org/lucas_model.html">later lecture</a>)</p>
-<p>Assume the existence of an endowment that follows <a class="reference internal" href="#equation-mass-fmce">(53.7)</a>.</p>
+<p>Assume the existence of an endowment that follows growth process <a class="reference internal" href="#equation-mass-fmce">(53.7)</a>.</p>
 <p>The asset being priced is a claim on the endowment process.</p>
 <p>Following <span id="id5">[<a class="reference internal" href="zreferences.html#id144"><span>Luc78</span></a>]</span>, suppose further that in equilibrium, consumption
 is equal to the endowment, so that <span class="math notranslate nohighlight">\(d_t = c_t\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>.</p>
@@ -946,20 +964,21 @@ yields the solution</p>
 </div>
 <div class="section" id="pricing-an-option-to-purchase-the-consol">
 <h3><span class="section-number">53.4.3. </span>Pricing an Option to Purchase the Consol<a class="headerlink" href="#pricing-an-option-to-purchase-the-consol" title="Permalink to this headline">¶</a></h3>
-<p>Let’s now price options of varying maturity that give the right to purchase a consol at a price <span class="math notranslate nohighlight">\(p_S\)</span>.</p>
+<p>Let’s now price options of varying maturities.</p>
+<p>We’ll study an option that  gives the owner the  right to purchase a consol at a price <span class="math notranslate nohighlight">\(p_S\)</span>.</p>
 <div class="section" id="an-infinite-horizon-call-option">
 <h4><span class="section-number">53.4.3.1. </span>An Infinite Horizon Call Option<a class="headerlink" href="#an-infinite-horizon-call-option" title="Permalink to this headline">¶</a></h4>
 <p>We want to price an infinite horizon  option to purchase a consol at a price <span class="math notranslate nohighlight">\(p_S\)</span>.</p>
-<p>The option entitles the owner at the beginning of a period either to</p>
+<p>The option entitles the owner at the beginning of a period either</p>
 <ol class="simple">
-<li><p>purchase the bond at price <span class="math notranslate nohighlight">\(p_S\)</span> now, or</p></li>
-<li><p>Not to exercise the option now but to retain the right to exercise it later</p></li>
+<li><p>to purchase the bond at price <span class="math notranslate nohighlight">\(p_S\)</span> now, or</p></li>
+<li><p>not to exercise the option to purchase the asset now but to retain the right to exercise it later</p></li>
 </ol>
 <p>Thus, the owner either <em>exercises</em> the option now or chooses <em>not to exercise</em> and wait until next period.</p>
 <p>This is termed an infinite-horizon <em>call option</em> with <em>strike price</em> <span class="math notranslate nohighlight">\(p_S\)</span>.</p>
-<p>The owner of the option is entitled to purchase the consol at the price <span class="math notranslate nohighlight">\(p_S\)</span> at the beginning of any period, after the coupon has been paid to the previous owner of the bond.</p>
+<p>The owner of the option is entitled to purchase the consol at  price <span class="math notranslate nohighlight">\(p_S\)</span> at the beginning of any period, after the coupon has been paid to the previous owner of the bond.</p>
 <p>The fundamentals of the economy are identical with the one above, including the stochastic discount factor and the process for consumption.</p>
-<p>Let <span class="math notranslate nohighlight">\(w(X_t, p_S)\)</span> be the value of the option when the time <span class="math notranslate nohighlight">\(t\)</span> growth state is known to be <span class="math notranslate nohighlight">\(X_t\)</span> but <em>before</em> the owner has decided whether or not to exercise the option
+<p>Let <span class="math notranslate nohighlight">\(w(X_t, p_S)\)</span> be the value of the option when the time <span class="math notranslate nohighlight">\(t\)</span> growth state is known to be <span class="math notranslate nohighlight">\(X_t\)</span> but <em>before</em> the owner has decided whether to exercise the option
 at time <span class="math notranslate nohighlight">\(t\)</span> (i.e., today).</p>
 <p>Recalling that <span class="math notranslate nohighlight">\(p(X_t)\)</span> is the value of the consol when the initial growth state is <span class="math notranslate nohighlight">\(X_t\)</span>, the value of the option satisfies</p>
 <div class="math notranslate nohighlight">
@@ -990,7 +1009,7 @@ into vector <span class="math notranslate nohighlight">\(Tw\)</span> via</p>
 T w
 = \max \{ \beta M w,\; p - p_S {\mathbb 1} \}
 \]</div>
-<p>Start at some initial <span class="math notranslate nohighlight">\(w\)</span> and iterate to convergence with <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>Start at some initial <span class="math notranslate nohighlight">\(w\)</span> and iterate with <span class="math notranslate nohighlight">\(T\)</span> to convergence .</p>
 <p>We can find the solution with the following function call_option</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1065,10 +1084,10 @@ T w
 <img alt="_images/markov_asset_17_0.png" src="_images/markov_asset_17_0.png" />
 </div>
 </div>
-<p>In large states, the value of the option is close to zero.</p>
-<p>This is despite the fact the Markov chain is irreducible and low states —
-where the consol prices are high — will eventually be visited.</p>
-<p>The reason is that <span class="math notranslate nohighlight">\(\beta=0.9\)</span>, so the future is discounted relatively rapidly.</p>
+<p>In high values of the Markov growth state, the value of the option is close to zero.</p>
+<p>This is despite the facts that the Markov chain is irreducible and that low states —
+where the consol prices are high — will be visited recurrently.</p>
+<p>The reason for low valuations in high Markov growth states is that <span class="math notranslate nohighlight">\(\beta=0.9\)</span>, so  future payoffs are  discounted substantially.</p>
 </div>
 </div>
 <div class="section" id="risk-free-rates">
