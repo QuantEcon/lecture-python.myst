@@ -52,11 +52,12 @@ Prerequisite knowledge is basic probability and linear algebra.
 Let's start with some standard imports:
 
 ```{code-cell} ipython
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import quantecon as qe
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
-%matplotlib inline
 ```
 
 ## Definitions

@@ -61,11 +61,11 @@ iteration can be further adjusted to obtain even more efficiency.
 Let's start with some imports:
 
 ```{code-cell} ipython
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import quantecon as qe
-import matplotlib.pyplot as plt
-%matplotlib inline
-
 from interpolation import interp
 from quantecon.optimize import brentq
 from numba import njit, float64

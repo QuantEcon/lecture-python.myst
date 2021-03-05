@@ -43,10 +43,11 @@ economic factors such as market size and tax rate predict.
 We'll require the following imports:
 
 ```{code-cell} ipython
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from numpy import exp
-import matplotlib.pyplot as plt
-%matplotlib inline
 from scipy.special import factorial
 import pandas as pd
 from mpl_toolkits.mplot3d import Axes3D

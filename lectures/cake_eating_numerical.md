@@ -46,10 +46,10 @@ accuracy of alternative numerical methods.
 We will use the following imports:
 
 ```{code-cell} ipython
-import numpy as np
-import matplotlib.pyplot as plt
 %matplotlib inline
-
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
+import numpy as np
 from interpolation import interp
 from scipy.optimize import minimize_scalar, bisect
 ```
