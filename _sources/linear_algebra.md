@@ -73,10 +73,9 @@ material that will be used in applications as we go along.
 Let's start with some imports:
 
 ```{code-cell} ipython
-%matplotlib inline
-import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.interpolate import interp2d

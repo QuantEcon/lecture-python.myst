@@ -60,12 +60,12 @@ techniques to drastically improve execution time over the next few lectures.
 Let's start with some imports:
 
 ```{code-cell} ipython
-%matplotlib inline
-import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
+import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 from scipy.optimize import minimize_scalar
+
+%matplotlib inline
 ```
 
 ## The Model

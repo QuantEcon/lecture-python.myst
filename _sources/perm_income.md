@@ -56,9 +56,8 @@ Background readings on the linear-quadratic-Gaussian permanent income model are 
 Let's start with some imports
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
+%matplotlib inline
 import numpy as np
 import random
 from numba import njit

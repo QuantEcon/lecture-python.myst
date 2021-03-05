@@ -55,10 +55,10 @@ worker preferences slightly more sophisticated.
 We'll need the following imports
 
 ```{code-cell} ipython
-%matplotlib inline
-import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
 from numba import njit, float64
 from numba.experimental import jitclass
 from quantecon.distributions import BetaBinomial

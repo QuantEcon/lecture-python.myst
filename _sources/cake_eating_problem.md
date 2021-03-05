@@ -40,10 +40,9 @@ Readers might find it helpful to review the following lectures before reading th
 In what follows, we require the following imports:
 
 ```{code-cell} ipython
-%matplotlib inline
-import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
 ```
 
 ## The Model

@@ -61,12 +61,11 @@ We apply our Python class to some classic examples.
 We will use the following imports:
 
 ```{code-cell} ipython
-%matplotlib inline
-import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from numba import njit
 import statsmodels.api as sm
+import matplotlib.pyplot as plt
+%matplotlib inline
 ```
 
 Assume that an $N \times 1$ random vector $z$ has a

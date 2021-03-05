@@ -66,12 +66,11 @@ The present lecture uses  additional  ideas including
 Let's start with some standard imports:
 
 ```{code-cell} ipython
-%matplotlib inline
-import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from numba import njit, float64
 from numba.experimental import jitclass
 import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
 ```
 
 ## Review of Cass-Koopmans Model

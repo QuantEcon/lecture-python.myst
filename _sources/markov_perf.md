@@ -58,11 +58,10 @@ Other references include chapter 7 of {cite}`Ljungqvist2012`.
 Let's start with some standard imports:
 
 ```{code-cell} ipython
-%matplotlib inline
-import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import quantecon as qe
+import matplotlib.pyplot as plt
+%matplotlib inline
 ```
 
 ## Background

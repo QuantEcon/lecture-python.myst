@@ -312,18 +312,6 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 Solving environment: - 
 </pre></div>
@@ -391,6 +379,12 @@ Solving environment: -
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
@@ -398,9 +392,9 @@ Solving environment: -
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (2.2.1)
-Requirement already satisfied: numpy&gt;=1.18.1 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (1.19.2)
 Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (0.51.2)
 Requirement already satisfied: tempita&gt;=0.5.2 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (0.5.2)
+Requirement already satisfied: numpy&gt;=1.18.1 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (1.19.2)
 Requirement already satisfied: scipy&gt;=1.4.1 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (1.5.2)
 Requirement already satisfied: llvmlite&lt;0.35,&gt;=0.34.0.dev0 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.34.0)
 Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (50.3.1.post20201107)
@@ -430,13 +424,12 @@ must be learned.</p>
 <p>Let’s start with some imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">vectorize</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">vectorize</span>
 <span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">mlinterp</span><span class="p">,</span> <span class="n">interp</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
 <span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">op</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">cumfreq</span><span class="p">,</span> <span class="n">beta</span>
@@ -788,25 +781,25 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.6382185029682468.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.6276744607132194.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.1003055170522611.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.09289636225744147.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.021606688858987866.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.018824400036551836.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.005046900736074278.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.00404891129616658.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0011815317251588908.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0008711130809313516.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.00027663451109383175.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.00018740271998751723.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 34 iterations.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 33 iterations.
 </pre></div>
 </div>
 <img alt="_images/odu_13_7.png" src="_images/odu_13_7.png" />
@@ -1080,15 +1073,14 @@ fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.021972319962134446.
-Error at iteration 10 is 0.006870222541197291.
-Error at iteration 15 is 0.001627998282357046.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.02155065633776787.
+Error at iteration 10 is 0.006288218429418513.
+Error at iteration 15 is 0.0013205121371406836.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.0003470130912411884.
-Error at iteration 25 is 7.348660750061686e-05.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.0002537342653684549.
 
-Converged in 25 iterations.
+Converged in 23 iterations.
 </pre></div>
 </div>
 <img alt="_images/odu_21_2.png" src="_images/odu_21_2.png" />

@@ -66,10 +66,9 @@ Except that for us
 Let's start with some standard imports:
 
 ```{code-cell} ipython
-%matplotlib inline
-import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
 ```
 
 We'll also use the LQ class from QuantEcon.py.

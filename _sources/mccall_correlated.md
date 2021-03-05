@@ -47,10 +47,10 @@ This is to keep the model relatively simple as we study the impact of correlatio
 We will use the following imports:
 
 ```{code-cell} ipython3
-%matplotlib inline
-import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
 import quantecon as qe
 from interpolation import interp
 from numpy.random import randn
