@@ -59,13 +59,14 @@ Time iteration is globally convergent under mild assumptions, even when utility 
 We'll need the following imports:
 
 ```{code-cell} ipython
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from quantecon.optimize import brent_max, brentq
 from interpolation import interp
 from numba import njit, float64
 from numba.experimental import jitclass
-import matplotlib.pyplot as plt
-%matplotlib inline
 from quantecon import MarkovChain
 ```
 

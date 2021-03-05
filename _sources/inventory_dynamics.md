@@ -47,10 +47,10 @@ While our Markov environment and many of the concepts we consider are related to
 Let's start with some imports
 
 ```{code-cell} ipython3
-import numpy as np
-import matplotlib.pyplot as plt
 %matplotlib inline
-
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
+import numpy as np
 from numba import njit, float64, prange
 from numba.experimental import jitclass
 ```

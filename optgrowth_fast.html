@@ -308,27 +308,6 @@ Solving environment: \
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
@@ -336,12 +315,14 @@ Solving environment: \
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (2.2.1)
-Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (0.51.2)
-Requirement already satisfied: scipy&gt;=1.4.1 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (1.5.2)
-Requirement already satisfied: tempita&gt;=0.5.2 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (0.5.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.4.1 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (1.5.2)
 Requirement already satisfied: numpy&gt;=1.18.1 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (1.19.2)
-Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (50.3.1.post20201107)
+Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (0.51.2)
+Requirement already satisfied: tempita&gt;=0.5.2 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from interpolation) (0.5.2)
 Requirement already satisfied: llvmlite&lt;0.35,&gt;=0.34.0.dev0 in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.34.0)
+Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/lecture-python/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (50.3.1.post20201107)
 </pre></div>
 </div>
 </div>
@@ -365,14 +346,14 @@ accelerate our code.</p>
 <p>Let’s start with some imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">interp</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">int32</span>
 <span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
 <span class="kn">from</span> <span class="nn">quantecon.optimize.scalar_maximization</span> <span class="kn">import</span> <span class="n">brent_max</span>
-
-<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
@@ -632,8 +613,8 @@ takes.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 225 is 0.00011662021094238639.
 
 Converged in 229 iterations.
-CPU times: user 8.6 s, sys: 20.7 ms, total: 8.62 s
-Wall time: 8.61 s
+CPU times: user 6.02 s, sys: 22 ms, total: 6.04 s
+Wall time: 6.03 s
 </pre></div>
 </div>
 </div>
@@ -744,8 +725,8 @@ different discount factors (and hence three different policies).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 551 ms, sys: 74 µs, total: 551 ms
-Wall time: 553 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 378 ms, sys: 32 µs, total: 378 ms
+Wall time: 377 ms
 </pre></div>
 </div>
 </div>
@@ -862,8 +843,8 @@ takes.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 250 is 0.00013063602790452933.
 
 Converged in 257 iterations.
-CPU times: user 8.77 s, sys: 16.1 ms, total: 8.78 s
-Wall time: 8.77 s
+CPU times: user 6.22 s, sys: 4.07 ms, total: 6.23 s
+Wall time: 6.21 s
 </pre></div>
 </div>
 </div>

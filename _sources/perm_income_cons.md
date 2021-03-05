@@ -75,11 +75,12 @@ The model will prove useful for illustrating concepts such as
 Let's start with some imports:
 
 ```{code-cell} ipython
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import quantecon as qe
 import numpy as np
 import scipy.linalg as la
-import matplotlib.pyplot as plt
-%matplotlib inline
 ```
 
 ## Setup
