@@ -140,7 +140,7 @@ The way anticipated future payoffs are evaluated can now depend on various rando
 
 One example of this idea is that assets that tend to have good payoffs in bad states of the world might be regarded as more valuable.
 
-This is because they pay well when the funds are more urgently needed.
+This is because they pay well when funds are more urgently wanted.
 
 We give examples of how the stochastic discount factor has been modeled below.
 
@@ -166,6 +166,8 @@ It is useful to regard equation {eq}`lteeqs102`   as a generalization of equatio
 
 * In equation {eq}`rnapex`, the stochastic discount factor $m_{t+1} = \beta$,  a constant.
 * In equation {eq}`rnapex`, the covariance term ${\rm cov}_t (m_{t+1}, d_{t+1}+ p_{t+1})$ is zero because $m_{t+1} = \beta$.
+* In equation {eq}`rnapex`, ${\mathbb E}_t m_{t+1}$ can be interpreted as the reciprocal of the one-period risk-free gross interest rate.
+* When  $m_{t+1}$ is covaries more negatively with the payout $p_{t+1} + d_{t+1}$, the price of the asset is lower.
 
 Equation {eq}`lteeqs102` asserts that the covariance of the stochastic discount factor with the one period payout $d_{t+1} + p_{t+1}$ is an important determinant of the price $p_t$.
 
@@ -196,7 +198,9 @@ The answer to this question depends on
 1. the process we specify for dividends
 1. the stochastic discount factor and how it correlates with dividends
 
-For now let's focus on the risk-neutral case, where the stochastic discount factor is constant, and study how prices depend on the dividend process.
+For now we'll study  the risk-neutral case in which  the stochastic discount factor is constant.
+
+We'll  focus on how the asset  prices depends on the dividend process.
 
 ### Example 1: Constant Dividends
 
@@ -294,8 +298,8 @@ You can think of
 
 * $S$ as $n$ possible "states of the world" and $X_t$ as the
   current state.
-* $g$ as a function that maps a given state $X_t$ into a growth
-  factor $g_t = g(X_t)$ for the endowment.
+* $g$ as a function that maps a given state $X_t$ into a growth of dividends
+  factor $g_t = g(X_t)$.
 * $\ln g_t = \ln (d_{t+1} / d_t)$ is the growth rate of dividends.
 
 (For a refresher on notation and theory for finite Markov chains see {doc}`this lecture <finite_markov>`)
@@ -424,13 +428,13 @@ Moreover, dividend growth is increasing in the state.
 
 The anticipation of high future dividend growth leads to a high price-dividend ratio.
 
-## Asset Prices under Risk Aversion
+## Risk Aversion and Asset Prices
 
 Now let's turn to the case where agents are risk averse.
 
 We'll price several distinct assets, including
 
-* The price of an endowment stream
+* An endowment stream
 * A consol (a type of bond issued by the UK government in the 19th century)
 * Call options on a consol
 
@@ -453,7 +457,7 @@ where $u$ is a concave utility function and $c_t$ is time $t$ consumption of a r
 
 (A derivation of this expression is given in a [later lecture](https://python-advanced.quantecon.org/lucas_model.html))
 
-Assume the existence of an endowment that follows {eq}`mass_fmce`.
+Assume the existence of an endowment that follows growth process {eq}`mass_fmce`.
 
 The asset being priced is a claim on the endowment process.
 
@@ -725,26 +729,28 @@ def consol_price(ap, ζ):
 
 ### Pricing an Option to Purchase the Consol
 
-Let's now price options of varying maturity that give the right to purchase a consol at a price $p_S$.
+Let's now price options of varying maturities.
+
+We'll study an option that  gives the owner the  right to purchase a consol at a price $p_S$.
 
 #### An Infinite Horizon Call Option
 
 We want to price an infinite horizon  option to purchase a consol at a price $p_S$.
 
-The option entitles the owner at the beginning of a period either to
+The option entitles the owner at the beginning of a period either
 
-1. purchase the bond at price $p_S$ now, or
-1. Not to exercise the option now but to retain the right to exercise it later
+1. to purchase the bond at price $p_S$ now, or
+1. not to exercise the option to purchase the asset now but to retain the right to exercise it later
 
 Thus, the owner either *exercises* the option now or chooses *not to exercise* and wait until next period.
 
 This is termed an infinite-horizon *call option* with *strike price* $p_S$.
 
-The owner of the option is entitled to purchase the consol at the price $p_S$ at the beginning of any period, after the coupon has been paid to the previous owner of the bond.
+The owner of the option is entitled to purchase the consol at  price $p_S$ at the beginning of any period, after the coupon has been paid to the previous owner of the bond.
 
 The fundamentals of the economy are identical with the one above, including the stochastic discount factor and the process for consumption.
 
-Let $w(X_t, p_S)$ be the value of the option when the time $t$ growth state is known to be $X_t$ but *before* the owner has decided whether or not to exercise the option
+Let $w(X_t, p_S)$ be the value of the option when the time $t$ growth state is known to be $X_t$ but *before* the owner has decided whether to exercise the option
 at time $t$ (i.e., today).
 
 Recalling that $p(X_t)$ is the value of the consol when the initial growth state is $X_t$, the value of the option satisfies
@@ -789,7 +795,7 @@ T w
 = \max \{ \beta M w,\; p - p_S {\mathbb 1} \}
 $$
 
-Start at some initial $w$ and iterate to convergence with $T$.
+Start at some initial $w$ and iterate with $T$ to convergence .
 
 We can find the solution with the following function call_option
 
@@ -858,12 +864,12 @@ ax.legend(loc='upper right')
 plt.show()
 ```
 
-In large states, the value of the option is close to zero.
+In high values of the Markov growth state, the value of the option is close to zero.
 
-This is despite the fact the Markov chain is irreducible and low states ---
-where the consol prices are high --- will eventually be visited.
+This is despite the facts that the Markov chain is irreducible and that low states ---
+where the consol prices are high --- will be visited recurrently.
 
-The reason is that $\beta=0.9$, so the future is discounted relatively rapidly.
+The reason for low valuations in high Markov growth states is that $\beta=0.9$, so  future payoffs are  discounted substantially.
 
 ### Risk-Free Rates
 
