@@ -216,57 +216,14 @@ The table reports  implications of Harrison and Kreps's specifications of $P_a, 
 ```{raw} html
 <div class="content-table"></div>
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-|$|s_t|$|0|1|
+|$ s_t $|0|1|
 |:---------------------:|:----:|:----:|
-|$|p_a|$|1.33|1.22|
-|$|p_b|$|1.45|1.91|
-|$|p_o|$|1.85|2.08|
-|$|p_p|$|1|1|
-|$|\hat{p}_a|$|1.85|1.69|
-|$|\hat{p}_b|$|1.69|2.08|
+|$ p_a $|1.33|1.22|
+|$ p_b $|1.45|1.91|
+|$ p_o $|1.85|2.08|
+|$ p_p $|1|1|
+|$ \hat{p}_a $|1.85|1.69|
+|$ \hat{p}_b $|1.69|2.08|
 
 Here
 
@@ -562,56 +519,14 @@ He emphasizes how limiting short sales and limiting leverage have opposite effec
 
 This exercise invites you to recreate the summary table using the functions we have built above.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-|$|s_t|$|0|1|
+|$s_t$|0|1|
 |:---------------------:|:----:|:----:|
-|$|p_a|$|1.33|1.22|
-|$|p_b|$|1.45|1.91|
-|$|p_o|$|1.85|2.08|
-|$|p_p|$|1|1|
-|$|\hat{p}_a|$|1.85|1.69|
-|$|\hat{p}_b|$|1.69|2.08|
+|$p_a$|1.33|1.22|
+|$p_b$|1.45|1.91|
+|$p_o$|1.85|2.08|
+|$p_p$|1|1|
+|$\hat{p}_a$|1.85|1.69|
+|$\hat{p}_b$|1.69|2.08|
 
 You will want first  to define the transition matrices and dividend payoff vector.
 
