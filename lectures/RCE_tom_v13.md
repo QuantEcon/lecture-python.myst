@@ -169,10 +169,10 @@ c + \sum_{s'} \hat a(s') Q(s' | s)
      
 and also 
 
-\begin{align*}
+\begin{aligned}
 c & \geq 0, \\
            -   \hat a(s') & \leq \bar A^i(s'), \hskip.5cm \forall s'.
-\end{align*}
+\end{aligned}
 
 with the second constraint evidently being a set of state-by-state debt limits.
 
@@ -1177,12 +1177,12 @@ $$
 
 Continuation wealths  $\psi^k$ of consumer $k$ satisfy
 
-\begin{align*}
+\begin{aligned}
 \psi_T^k & =  \left[\alpha_k y - y^k\right] \cr
 \psi_{T-1}^k &=  \left[I + Q \right] \left[\alpha_k y - y^k\right] \cr
 \vdots \quad  & \quad \quad \quad \vdots \cr
 \psi_0^k  & = \left[I + Q + Q^2 + \cdots + Q^T \right] \left[\alpha_k y - y^k\right]
-\end{align*}
+\end{aligned}
 
 where
 
