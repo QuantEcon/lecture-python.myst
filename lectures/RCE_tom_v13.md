@@ -169,10 +169,12 @@ c + \sum_{s'} \hat a(s') Q(s' | s)
      
 and also 
 
+$$
 \begin{aligned}
 c & \geq 0, \\
            -   \hat a(s') & \leq \bar A^i(s'), \hskip.5cm \forall s'.
 \end{aligned}
+$$
 
 with the second constraint evidently being a set of state-by-state debt limits.
 
@@ -372,14 +374,15 @@ We can use this recursion to verify the law of iterated expectations applied
 to computing the conditional expectation of a random variable $d(s_{t+j})$ conditioned
 on $s_t$ via the following string of equalities
 
-
-\begin{align}
+$$
+\begin{aligned}
 E \left[ E d(s_{t+j}) | s_{t+1} \right] | s_t 
     & = \sum_{s_{t+1}} \left[ \sum_{s_{t+j}} d(s_{t+j}) P_{j-1}(s_{t+j}| s_{t+1} ) \right]         P(s_{t+1} | s_t) \\
  & = \sum_{s_{t+j}}  d(s_{t+j}) \left[ \sum_{s_{t+1}} P_{j-1} ( s_{t+j} |s_{t+1}) P(s_{t+1}| s_t) \right] \\
  & = \sum_{s_{t+j}} d(s_{t+j}) P_j (s_{t+j} | s_t ) \\
  & = E d(s_{t+j})| s_t
-    \end{align}
+    \end{aligned}
+$$
 
 The pricing kernel for $j$ step ahead Arrow securities satisfies the recursion
 
@@ -405,13 +408,15 @@ $$
 We verify it by pursuing the following a string of inequalities that are counterparts to those we used
 to verify the law of iterated expectations:
 
-\begin{align}
+$$
+\begin{aligned}
 V \left[ V  ( d(s_{t+j}) | s_{t+1} ) \right] | s_t 
     & = \sum_{s_{t+1}} \left[ \sum_{s_{t+j}} d(s_{t+j}) Q_{j-1}(s_{t+j}| s_{t+1} ) \right]         Q(s_{t+1} | s_t) \\
  & = \sum_{s_{t+j}}  d(s_{t+j}) \left[ \sum_{s_{t+1}} Q_{j-1} ( s_{t+j} |s_{t+1}) Q(s_{t+1}| s_t) \right] \\
  & = \sum_{s_{t+j}} d(s_{t+j}) Q_j (s_{t+j} | s_t ) \\
  & = E V(d(s_{t+j}))| s_t
-    \end{align}
+    \end{aligned}
+$$
 
 +++
 
@@ -1177,12 +1182,14 @@ $$
 
 Continuation wealths  $\psi^k$ of consumer $k$ satisfy
 
+$$
 \begin{aligned}
 \psi_T^k & =  \left[\alpha_k y - y^k\right] \cr
-\psi_{T-1}^k &=  \left[I + Q \right] \left[\alpha_k y - y^k\right] \cr
+\psi_{T-1}^k & =  \left[I + Q \right] \left[\alpha_k y - y^k\right] \cr
 \vdots \quad  & \quad \quad \quad \vdots \cr
 \psi_0^k  & = \left[I + Q + Q^2 + \cdots + Q^T \right] \left[\alpha_k y - y^k\right]
 \end{aligned}
+$$
 
 where
 
