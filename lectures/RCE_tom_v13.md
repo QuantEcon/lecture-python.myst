@@ -18,9 +18,9 @@ kernelspec:
 
 ## Bellmanizing and Computing
 
-This notebook implements a Python version of  the model presented in section 9.3.3 of RMT5 chapter 9.
+This lecture implements a Python version of  the model presented in section 9.3.3 of RMT5 chapter 9.
 
-This notebook is a laboratory for experimenting with instances of a competitive equilibrium of  a pure exchange economy with
+This lecture is a laboratory for experimenting with instances of a competitive equilibrium of  a pure exchange economy with
 
 * Markov endowments
 
@@ -74,7 +74,7 @@ observing $s_0$,
 which we capture by setting $\pi_0(s_0)=1$ for the initially
 given value of $s_0$.
 
-In this notebook we shall follow much of the
+In this lecture we shall follow much of the
 literatures in macroeconomics and econometrics and assume that
 $\pi_t(s^t)$ is induced by  a Markov process. 
  
