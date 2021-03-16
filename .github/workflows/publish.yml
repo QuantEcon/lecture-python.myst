@@ -1,10 +1,11 @@
-name: Build & Publish to GH Pages
+name: Build & Publish to GH-PAGES
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'publish*'
 jobs:
   publish:
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
