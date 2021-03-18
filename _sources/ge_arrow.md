@@ -12,19 +12,17 @@ kernelspec:
   name: python3
 ---
 
-# Competitive equilibrium with one-period Arrow securities
+# Competitive equilibria with Arrow securities
 
 +++
 
-## Bellmanizing and Computing
+## Introduction
 
-This notebook implements a Python version of  the model presented in section 9.3.3 of RMT5 chapter 9.
-
-This notebook is a laboratory for experimenting with instances of a competitive equilibrium of  a pure exchange economy with
+This lecture is a laboratory for experimenting with instances of competitive equilibria of  an infinite-horizon pure exchange economy with
 
 * Markov endowments
 
-* Complete markets in one period Arrow state-contingent securities
+* Complete markets in one-period Arrow state-contingent securities
 
 * Discounted expected utility preferences  of a kind often specified in macro and finance
 
@@ -32,7 +30,7 @@ This notebook is a laboratory for experimenting with instances of a competitive 
 
 * Common beliefs across agents
 
-* A CRRA one-period utility function that implies the existence of a representative consumer whose consumption process can be plugged into a formula for the pricing kernel for  one-step Arrow securities and thereby determine equilbrium prices before determing an equilibrium distribution of wealth
+* A constant relative risk aversion (CRRA)  one-period utility function that implies the existence of a representative consumer whose consumption process can be plugged into a formula for the pricing kernel for  one-step Arrow securities and thereby determine equilbrium prices before determing an equilibrium distribution of wealth
 
 * Diverse endowments across agents that provide motivations for reallocating goods across time and Markov states
 
@@ -44,12 +42,27 @@ We use  Bellman equations  to describe
 
 * continuation wealths
 
-* state-by-state natural debt limits 
+* state-by-state natural debt limits
+
+
+In the course of presenting the model we shall describe these important ideas
+
+* the  widespread use a **resolvent operator** in this class of models
+
+* the necessity of state-by-state **borrowing limits** in infinite horizon economies
+
+* the absence of any required **borrowing limits** in finite horizon economies
+
+* a counterpart of the law of iterated expectations known as a **law of iterated values**
+
+* a notion of **state-variable degeneracy** that prevails within a competitive equilibrium and that explains repeated  appearances of resolvent operators 
 
 
 +++
 
 ## The setting
+
+In effect, this lecture implements a Python version of  the model presented in section 9.3.3 of Ljungqvist and Sargent {cite}`Ljungqvist2012`.
 
 ### Preferences and endowments
 
@@ -74,7 +87,7 @@ observing $s_0$,
 which we capture by setting $\pi_0(s_0)=1$ for the initially
 given value of $s_0$.
 
-In this notebook we shall follow much of the
+In this lecture we shall follow much of the
 literatures in macroeconomics and econometrics and assume that
 $\pi_t(s^t)$ is induced by  a Markov process. 
  
@@ -130,14 +143,18 @@ that  consumers share   probabilities $\pi_t(s^t)$ for all $t$ and $s^t$.
 
 
 A **feasible allocation** satisfies
-$$\sum_i c_t^i(s^t) \leq \sum_i y_t^i(s^t)  $$
+
+$$
+\sum_i c_t^i(s^t) \leq \sum_i y_t^i(s^t) 
+$$
+
 for all $t$ and for all $s^t$.
 
 +++
 
 ### Recursive formulation
 
-Following descriptions in section 9.3.3 of RMT5 chapter 9, we  set up  a competitive equilibrium of a pure exchange economy with complete markets in one-period Arrow securities.
+Following descriptions in section 9.3.3 of Ljungqvist and Sargent {cite}`Ljungqvist2012` chapter 9, we  set up  a competitive equilibrium of a pure exchange economy with complete markets in one-period Arrow securities.
 
 When  endowments $y^i(s)$ are all functions of a common Markov state $s$,
 the pricing kernel takes the form $Q(s'|s)$.
@@ -237,7 +254,7 @@ the  single  budget constraint in   arrangement with all trades occurring at tim
 
 
 
-Starting the system off with $a_0^i =0 \ \forall i$ has a striking implication that we can call **state variable degeneracy**.
+Starting the system off with $a_0^i =0$ forall $i$ has a striking implication that we can call **state variable degeneracy**.
 
 
 Thus, although there are two state variables in the value function $v^i(a,s)$, within a recursive competitive equilibrium
@@ -251,9 +268,9 @@ starting from $a_0^i = 0 \ \forall i$  at the starting  Markov state  $s_0$, two
 The first finding  asserts that each household  recurrently visits the zero financial wealth state with which he began life.
 
 
-The second finding  asserts that   the exogenous Markov state is all we require to track an individual.  
+The second finding  asserts that   the exogenous Markov state is all we require to track an individual within a competitive equilibrium.  
 
-Financial wealth turns out to be redundant.
+Financial wealth turns out to be redundant because it is an exact function of the Markov state for each individual.
 
 
 This outcome depends critically on there being complete markets in Arrow securities.
@@ -519,7 +536,7 @@ Note that $Q_{ij}$ is independent of vector $\alpha$.
 
 Thus, we have the
 
-**Key finding:** We can compute competitive equilibrium prices prior to computing a distribution of wealth.
+**Key finding:** We can compute competitive equilibrium **prices** prior to computing a **distribution of wealth**.
 
 +++
 
@@ -630,7 +647,7 @@ y\left(\bar{s}_{n}\right)
 \end{array}\right]
 $$
 
-Note that $\sum_{k=1}^K \psi^k = \boldsymbol{0}_{n \times 1}$.
+Note that $\sum_{k=1}^K \psi^k = {0}_{n \times 1}$.
 
 **Remark:** At the initial state $s_0 \in \begin{bmatrix} \bar s_1, \ldots, \bar s_n \end{bmatrix}$
 the continuation wealth $\psi^k(s_0) = 0$ for all agents $k = 1, \ldots, K$.  This indicates that
@@ -655,7 +672,8 @@ $$ a_k(s) = \psi^k(s), \quad s \in \left[\bar s_1, \ldots, \bar s_n \right] $$
 ### Equilibrium wealth distribution $\alpha$
 
 
-With the initial state being  a particular state $s_0 \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]$, we must have
+With the initial state being  a particular state $s_0 \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]$, 
+we must have
 
 $$
 \psi^k\left(s_0\right) = 0, \quad k=1, \ldots, K
@@ -1146,7 +1164,8 @@ for i in range(1, 4):
 The Python class **RecurCompetitive** provided above also can be used to compute competitive equilibrium
 allocations and Arrow securities prices for finite horizon economies.  
 
-The setting is a finite-horizon version of  the one above except that time now runs for $T+1$ periods from $t \in {\bf T} = \{ 0, 1, \ldots, T\}$.  
+The setting is a finite-horizon version of  the one above except that time now runs for $T+1$ periods 
+$t \in {\bf T} = \{ 0, 1, \ldots, T\}$.  
 
 Consequently, we want  $T+1$ counterparts to objects described above, with one important exception:
 we won't need **borrowing limits** because they aren't required for a finite horizon economy in which a
@@ -1205,7 +1224,7 @@ y\left(\bar{s}_{n}\right)
 \end{array}\right]
 $$
 
-Note that $\sum_{k=1}^K \psi_t^k = \boldsymbol{0}_{n \times 1}$ for all $t \in {\bf T}$.
+Note that $\sum_{k=1}^K \psi_t^k = {0}_{n \times 1}$ for all $t \in {\bf T}$.
 
 **Remark:** At the initial state $s_0 \in \begin{bmatrix} \bar s_1, \ldots, \bar s_n \end{bmatrix}$, 
  for all agents $k = 1, \ldots, K$, continuation wealth $\psi_0^k(s_0) = 0$.  This indicates that
