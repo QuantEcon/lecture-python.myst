@@ -18,23 +18,23 @@ kernelspec:
 
 ## Introduction
 
-This lecture is a laboratory for experimenting with instances of competitive equilibria of  an infinite-horizon pure exchange economy with
+This lecture is a laboratory for experimenting with  competitive equilibria of  an infinite-horizon pure exchange economy with
 
 * Markov endowments
 
 * Complete markets in one-period Arrow state-contingent securities
 
-* Discounted expected utility preferences  of a kind often specified in macro and finance
+* Discounted expected utility preferences  of a kind often used in macroeconomics and finance
 
 * Common expected utility preferences across agents
 
 * Common beliefs across agents
 
-* A constant relative risk aversion (CRRA)  one-period utility function that implies the existence of a representative consumer whose consumption process can be plugged into a formula for the pricing kernel for  one-step Arrow securities and thereby determine equilbrium prices before determing an equilibrium distribution of wealth
+* A constant relative risk aversion (CRRA)  one-period utility function that implies the existence of a representative consumer whose consumption process can be plugged into a formula for the pricing kernel for  one-step Arrow securities and thereby determine equilbrium prices before determining an equilibrium distribution of wealth
 
-* Diverse endowments across agents that provide motivations for reallocating goods across time and Markov states
+* Diverse endowments across agents that provide motivations to reallocate across time and Markov states
 
-We impose  enough restrictions to allow us to **Bellmanize** competitive equilibrium prices and quantities
+We impose  restrictions that allow us to **Bellmanize** competitive equilibrium prices and quantities
 
 We use  Bellman equations  to describe
 
@@ -47,15 +47,15 @@ We use  Bellman equations  to describe
 
 In the course of presenting the model we shall describe these important ideas
 
-* the  widespread use a **resolvent operator** in this class of models
+*  a **resolvent operator**   widely  used in this class of models
 
-* the necessity of state-by-state **borrowing limits** in infinite horizon economies
+* state-by-state **borrowing limits** required in infinite horizon economies
 
-* the absence of any required **borrowing limits** in finite horizon economies
+* absence of  **borrowing limits** in finite horizon economies
 
 * a counterpart of the law of iterated expectations known as a **law of iterated values**
 
-* a notion of **state-variable degeneracy** that prevails within a competitive equilibrium and that explains repeated  appearances of resolvent operators 
+* a  **state-variable degeneracy** that prevails within a competitive equilibrium and that explains many appearances of resolvent operators 
 
 
 +++
@@ -89,7 +89,7 @@ given value of $s_0$.
 
 In this lecture we shall follow much of the
 literatures in macroeconomics and econometrics and assume that
-$\pi_t(s^t)$ is induced by  a Markov process. 
+$\pi_t(s^t)$  is induced by  a Markov process. 
  
 
 There are $I$ consumers named $i=1, \ldots , I$.
@@ -104,9 +104,9 @@ The history $s^t$ is publicly observable.
 
 Consumer $i$
 purchases a history-dependent  consumption plan $c^i =
- \{c_t^i(s^t)\}_{t=0}^\infty$ and
-orders these
-consumption streams by
+ \{c_t^i(s^t)\}_{t=0}^\infty$ 
+ 
+Consumer $i$  orders consumption plans by
 
 $$ U_i(c^i) =
    \sum_{t=0}^\infty \sum_{s^t} \beta^t u_i[c_t^i(s^t)]
@@ -139,7 +139,7 @@ sequential trading of Arrow securities.
 
 We adopt the assumption, routinely
 employed in much of macroeconomics,
-that  consumers share   probabilities $\pi_t(s^t)$ for all $t$ and $s^t$.
+that  consumers share   probabilities $\pi_t(s^t)$  for all $t$ and $s^t$.
 
 
 A **feasible allocation** satisfies
@@ -170,7 +170,7 @@ starting from state $(a, s)$.
 
  * $v^i(a,s)$ is the maximum expected discounted utility  that consumer $i$ with current financial wealth $a$ can attain in state $s$.
  
-The value function satisfies the Bellman equation
+The optimal  value function satisfies the Bellman equation
 
 $$
 v^i(a, s) = \max_{c, \hat a(s')} \left\{ u_i(c) + \beta \sum_{s'} v^i[\hat a(s'),s'] \pi (s' | s) \right\}
@@ -184,7 +184,7 @@ c + \sum_{s'} \hat a(s') Q(s' | s)
      \leq  y^i(s) + a    
      $$
      
-and also 
+and also the constraints
 
 $$
 \begin{aligned}
@@ -239,7 +239,7 @@ for all $t$ and $s'$.
  
 The third condition asserts that there are  zero net aggregate claims in all Markov states.
 
-The fourth condition asserts that the economy is closed and  starts off from a position in which there 
+The fourth condition asserts that the economy is closed and  starts  from a situation in which there 
 are  zero net claims in the aggregate.
 
 If  an allocation and prices in   a recursive competitive equilibrium are to be
@@ -254,10 +254,12 @@ the  single  budget constraint in   arrangement with all trades occurring at tim
 
 
 
-Starting the system off with $a_0^i =0$ forall $i$ has a striking implication that we can call **state variable degeneracy**.
+Starting the system  with $a_0^i =0$ forall $i$ has a striking implication that we can call **state variable degeneracy**.
 
 
-Thus, although there are two state variables in the value function $v^i(a,s)$, within a recursive competitive equilibrium
+Here is  what we mean by **state variable degeneracy**:
+
+Notice that  although there are two state variables in the value function $v^i(a,s)$, within a recursive competitive equilibrium
 starting from $a_0^i = 0 \ \forall i$  at the starting  Markov state  $s_0$, two outcomes  prevail:
 
 
@@ -265,7 +267,7 @@ starting from $a_0^i = 0 \ \forall i$  at the starting  Markov state  $s_0$, two
 
 * Financial wealth $a$ is an exact function of the Markov state $s$.  
 
-The first finding  asserts that each household  recurrently visits the zero financial wealth state with which he began life.
+The first finding  asserts that each household  recurrently visits the zero financial wealth state with which it began life.
 
 
 The second finding  asserts that   the exogenous Markov state is all we require to track an individual within a competitive equilibrium.  
@@ -276,22 +278,6 @@ Financial wealth turns out to be redundant because it is an exact function of th
 This outcome depends critically on there being complete markets in Arrow securities.
 
 +++
-
-
-We are ready to dive into some Bellman equations and some Python code.
-
-
-As usual, we start with Python imports
-
-```{code-cell} ipython3
-import numpy as np
-import matplotlib.pyplot as plt
-%matplotlib inline
-```
-
-```{code-cell} ipython3
-np.set_printoptions(suppress=True)
-```
 
 ### Markov asset prices primer
 
@@ -371,7 +357,7 @@ Q^{(k)}(s_{t+k} = \bar s_j | s_t = \bar s_i)   = Q^{k}_{i,j}
 $$
 
 
-We'll use these objects to state the following useful facts
+We'll use these objects to state a useful property in asset pricing theory.
 
 ### Laws of iterated expectations and iterated values
 
@@ -416,7 +402,7 @@ $$
 V(d(s_{t+j})|s_t) = \sum_{s_{t+j}} d(s_{t+j}) Q_j(s_{t+j}| s_t) 
 $$
 
-The law of iterated values states
+The **law of iterated values** states
 
 $$
 V \left[ V (d(s_{t+j}) | s_{t+1}) \right] | s_t  =   V(d(s_{t+j}))| s_t
@@ -717,15 +703,32 @@ $$ J^k = (I - \beta P)^{-1} u(\alpha_k y)  , \quad u(c) = \frac{c^{1-\gamma}}{1-
 
 where it is understood that $ u(\alpha_k y)$ is a vector. 
 
+
+
 +++
 
-Below we solve several fun examples with Python code.
+We are ready to dive into some Python code.
+
+
+As usual, we start with Python imports.
+
+```{code-cell} ipython3
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+```{code-cell} ipython3
+np.set_printoptions(suppress=True)
+```
+
 
 First, we create a Python class to compute  the objects that comprise a competitive equilibrium
 with sequential trading of one-period Arrow securities.
 
-(The reader will notice that the code is set up to handle finite-horizon economies indexed by horizon $T$. 
-We'll study some finite horizon economies after we look at some infinite-horizon economies.)
+The reader will notice that the code is set up to handle finite-horizon economies indexed by horizon $T$. 
+
+We'll study some finite horizon economies after we look at some infinite-horizon economies.
 
 ```{code-cell} ipython3
 class RecurCompetitive:
