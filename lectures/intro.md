@@ -19,8 +19,6 @@ This website presents a set of lectures on quantitative economic modeling, desig
 build system for all of its projects. We are a founding member of the
 [Executable Books Project](https://github.com/executablebooks) and this
 is the first in the QuantEcon lecture series to migrate. Please send feedback to [contact@quantecon.org](mailto:contact@quantecon.org)
-
-This new site will receive all future updates, however, if needed you may still view the [old site here](https://python.quantecon.org).
 ```
 
 For an overview of the series, see [this page](https://quantecon.org/python-lectures/)
@@ -28,3 +26,7 @@ For an overview of the series, see [this page](https://quantecon.org/python-lect
 ```{tableofcontents}
 ```
 
+
+```{admonition} Previous website
+While this new site will receive all future updates, you may still view the [old site here](https://python-rst.quantecon.org) for the next month.
+```
