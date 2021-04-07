@@ -20,7 +20,7 @@ build system for all of its projects. We are a founding member of the
 [Executable Books Project](https://github.com/executablebooks) and this
 is the first in the QuantEcon lecture series to migrate. Please send feedback to [contact@quantecon.org](mailto:contact@quantecon.org)
 
-This new site will receive all future updates, however, if you need to you may still view the [old site here](https://python.quantecon.org). 
+This new site will receive all future updates, however, if needed you may still view the [old site here](https://python.quantecon.org).
 ```
 
 For an overview of the series, see [this page](https://quantecon.org/python-lectures/)
