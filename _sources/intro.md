@@ -26,3 +26,7 @@ For an overview of the series, see [this page](https://quantecon.org/python-lect
 ```{tableofcontents}
 ```
 
+
+```{admonition} Previous website
+While this new site will receive all future updates, you may still view the [old site here](https://rst-python.quantecon.org) for the next month.
+```
