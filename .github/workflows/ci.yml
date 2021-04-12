@@ -72,10 +72,10 @@ jobs:
           latexmk                   \
           xindy
 
-    - name: Build PDF from LaTeX (Docs)
+    - name: Build PDF from LaTeX (Lectures)
       run: |
         jb build lectures --builder pdflatex -n -W --keep-going
     - uses: actions/upload-artifact@v2
       with:
         name: PDF_LATEX
-        path: jupyter-book/docs/_build/latex/book.pdf
+        path: lecture-python.myst/lectures/_build/latex/book.pdf
