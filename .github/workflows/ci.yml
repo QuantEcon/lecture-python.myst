@@ -74,8 +74,14 @@ jobs:
 
     - name: Build PDF from LaTeX (Lectures)
       run: |
-        jb build lectures --builder pdflatex -n -W --keep-going
+        jb build lectures --builder pdflatex --path-output ./ -n -W --keep-going
     - uses: actions/upload-artifact@v2
       with:
         name: PDF_LATEX
-        path: lecture-python.myst/lectures/_build/latex/book.pdf
+        path: _build/latex/*.pdf
+
+    - name: Copy Download Notebooks for GH-PAGES
+        shell: bash -l {0}
+        run: |
+          mkdir _build/html/_pdf
+          cp _build/latex/*.pdf _build/html/_pdf
