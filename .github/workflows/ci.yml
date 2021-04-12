@@ -32,6 +32,31 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./
+      - name: Install latex dependencies
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y     \
+            texlive-latex-recommended \
+            texlive-latex-extra       \
+            texlive-fonts-recommended \
+            texlive-fonts-extra       \
+            texlive-xetex             \
+            latexmk                   \
+            xindy
+
+      - name: Build PDF from LaTeX
+        run: |
+          jb build lectures --builder pdflatex --path-output ./ -n -W --keep-going
+      - uses: actions/upload-artifact@v2
+        with:
+          name: PDF_LATEX
+          path: _build/latex/*.pdf
+
+      - name: Copy pdf assets
+        shell: bash -l {0}
+        run: |
+          mkdir _build/html/_pdf
+          cp _build/latex/*.pdf _build/html/_pdf
       - name: Save Build as Artifact
         uses: actions/upload-artifact@v1
         with:
@@ -47,41 +72,3 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-
-  pdflatex:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8]
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install latex dependencies
-      run: |
-        sudo apt-get -qq update
-        sudo apt-get install -y     \
-          texlive-latex-recommended \
-          texlive-latex-extra       \
-          texlive-fonts-recommended \
-          texlive-fonts-extra       \
-          texlive-xetex             \
-          latexmk                   \
-          xindy
-
-    - name: Build PDF from LaTeX (Lectures)
-      run: |
-        jb build lectures --builder pdflatex --path-output ./ -n -W --keep-going
-    - uses: actions/upload-artifact@v2
-      with:
-        name: PDF_LATEX
-        path: _build/latex/*.pdf
-
-    - name: Copy pdf assets
-      shell: bash -l {0}
-      run: |
-        mkdir _build/html/_pdf
-        cp _build/latex/*.pdf _build/html/_pdf
