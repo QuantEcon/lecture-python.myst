@@ -54,22 +54,21 @@ jobs:
         with:
           name: build-cache
           path: _build
-      # - name: Prepare lecture-python.notebooks sync
-      #   shell: bash -l {0}
-      #   run: |
-      #     mkdir -p _build/lecture-python.notebooks
-      #     cp -a _notebook_repo/. _build/lecture-python.notebooks
-      #     cp environment.yml _build/lecture-python.notebooks
-      #     cp _build/jupyter/*.ipynb _build/lecture-python.notebooks
-      #     ls -a _build/lecture-python.notebooks
-      # - name: Commit latest notebooks to lecture-python.notebooks
-      #   uses: cpina/github-action-push-to-another-repository@master
-      #   env:
-      #     API_TOKEN_GITHUB: ${{ secrets.QUANTECON_SERVICES_PAT }}
-      #   with:
-      #     source-directory: '_build/lecture-python.notebooks/'
-      #     destination-repository-username: 'QuantEcon'
-      #     destination-repository-name: 'lecture-python.notebooks'
-      #     commit-message: 'auto publishing updates to notebooks'
-      #     destination-github-username: 'quantecon-services'
-      #     user-email: services@quantecon.org
+      - name: Prepare lecture-python.notebooks sync
+        shell: bash -l {0}
+        run: |
+          mkdir -p _build/lecture-python.notebooks
+          cp -a _notebook_repo/. _build/lecture-python.notebooks
+          cp _build/jupyter/*.ipynb _build/lecture-python.notebooks
+          ls -a _build/lecture-python.notebooks
+      - name: Commit latest notebooks to lecture-python.notebooks
+        uses: cpina/github-action-push-to-another-repository@master
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.QUANTECON_SERVICES_PAT }}
+        with:
+          source-directory: '_build/lecture-python.notebooks/'
+          destination-repository-username: 'QuantEcon'
+          destination-repository-name: 'lecture-python.notebooks'
+          commit-message: 'auto publishing updates to notebooks'
+          destination-github-username: 'quantecon-services'
+          user-email: services@quantecon.org
