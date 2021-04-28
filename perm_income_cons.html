@@ -25,7 +25,7 @@
     <script src="_static/copybutton.js"></script>
     <script src="_static/quantecon-book-theme.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
@@ -268,11 +268,23 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: - 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+Solving environment: \ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
@@ -336,6 +348,15 @@ Solving environment: -
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -593,7 +614,7 @@ on the debt sequence <span class="math notranslate nohighlight">\(\{b_t\}\)</spa
 <span class="n">μ_z0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]])</span>
 <span class="n">Σ_z0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="n">Lz</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">LinearStateSpace</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">mu_0</span><span class="o">=</span><span class="n">μ_z0</span><span class="p">,</span> <span class="n">Sigma_0</span><span class="o">=</span><span class="n">Σ_z0</span><span class="p">)</span>
-<span class="n">μ_z</span><span class="p">,</span> <span class="n">μ_y</span><span class="p">,</span> <span class="n">Σ_z</span><span class="p">,</span> <span class="n">Σ_y</span> <span class="o">=</span> <span class="n">Lz</span><span class="o">.</span><span class="n">stationary_distributions</span><span class="p">()</span>
+<span class="n">μ_z</span><span class="p">,</span> <span class="n">μ_y</span><span class="p">,</span> <span class="n">Σ_z</span><span class="p">,</span> <span class="n">Σ_y</span><span class="p">,</span> <span class="n">Σ_yx</span> <span class="o">=</span> <span class="n">Lz</span><span class="o">.</span><span class="n">stationary_distributions</span><span class="p">()</span>
 
 <span class="c1"># Mean vector of state for the savings problem</span>
 <span class="n">mxo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">μ_z</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
@@ -746,7 +767,7 @@ income problem we used a different solution method.</p>
          0.00000000e+00],
        [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
          0.00000000e+00],
-       [-9.51248178e-06,  9.51247915e-08,  0.00000000e+00,
+       [-9.51248175e-06,  9.51247915e-08,  0.00000000e+00,
         -1.99999923e-08]])
 </pre></div>
 </div>

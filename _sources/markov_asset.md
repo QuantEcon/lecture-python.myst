@@ -320,7 +320,7 @@ d_series = np.cumprod(g_series) # Assumes d_0 = 1
 series = [x_series, g_series, d_series, np.log(d_series)]
 labels = ['$X_t$', '$g_t$', '$d_t$', r'$\log \, d_t$']
 
-fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+fig, axes = plt.subplots(2, 2)
 for ax, s, label in zip(axes.flatten(), series, labels):
     ax.plot(s, 'b-', lw=2, label=label)
     ax.legend(loc='upper left', frameon=False)
@@ -411,7 +411,7 @@ assert np.max(np.abs(eigvals(K))) < 1 / β,  warning_message
 I = np.identity(n)
 v = solve(I - β * K, β * K @ np.ones(n))
 
-fig, ax = plt.subplots(figsize=(12, 8))
+fig, ax = plt.subplots()
 ax.plot(mc.state_values, v, 'g-o', lw=2, alpha=0.7, label='$v$')
 ax.set_ylabel("price-dividend ratio")
 ax.set_xlabel("state")
@@ -606,7 +606,7 @@ with a positively correlated Markov process and $g(x) = \exp(x)$
 ap = AssetPriceModel()
 states = ap.mc.state_values
 
-fig, ax = plt.subplots(figsize=(12, 8))
+fig, ax = plt.subplots()
 
 for γ in γs:
     ap.γ = γ
@@ -856,7 +856,7 @@ x = ap.mc.state_values
 p = consol_price(ap, ζ)
 w = call_option(ap, ζ, strike_price)
 
-fig, ax = plt.subplots(figsize=(12, 8))
+fig, ax = plt.subplots()
 ax.plot(x, p, 'b-', lw=2, label='consol price')
 ax.plot(x, w, 'g-', lw=2, label='value of call option')
 ax.set_xlabel("state")

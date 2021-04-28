@@ -25,7 +25,7 @@
     <script src="_static/copybutton.js"></script>
     <script src="_static/quantecon-book-theme.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
@@ -379,11 +379,35 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: - 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+Solving environment: \ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
@@ -450,6 +474,12 @@ Solving environment: -
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -1043,7 +1073,7 @@ that shows relative frequencies from our sample of 20 <span class="math notransl
 <span class="n">ar</span> <span class="o">=</span> <span class="n">LinearStateSpace</span><span class="p">(</span><span class="n">A_2</span><span class="p">,</span> <span class="n">C_2</span><span class="p">,</span> <span class="n">G_2</span><span class="p">,</span> <span class="n">mu_0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ar</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">sample_size</span><span class="p">)</span>
-<span class="n">mu_x</span><span class="p">,</span> <span class="n">mu_y</span><span class="p">,</span> <span class="n">Sigma_x</span><span class="p">,</span> <span class="n">Sigma_y</span> <span class="o">=</span> <span class="n">ar</span><span class="o">.</span><span class="n">stationary_distributions</span><span class="p">()</span>
+<span class="n">mu_x</span><span class="p">,</span> <span class="n">mu_y</span><span class="p">,</span> <span class="n">Sigma_x</span><span class="p">,</span> <span class="n">Sigma_y</span><span class="p">,</span> <span class="n">Sigma_yx</span> <span class="o">=</span> <span class="n">ar</span><span class="o">.</span><span class="n">stationary_distributions</span><span class="p">()</span>
 <span class="n">f_y</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">mu_y</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Sigma_y</span><span class="p">)))</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 <span class="n">ygrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
@@ -1206,7 +1236,7 @@ p(x_{t+1} \,|\, x_t) = N(Ax_t, C C')
     <span class="n">ar</span> <span class="o">=</span> <span class="n">LinearStateSpace</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">mu_0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">steady_state</span> <span class="o">==</span> <span class="s1">&#39;True&#39;</span><span class="p">:</span>
-        <span class="n">μ_x</span><span class="p">,</span> <span class="n">μ_y</span><span class="p">,</span> <span class="n">Σ_x</span><span class="p">,</span> <span class="n">Σ_y</span> <span class="o">=</span> <span class="n">ar</span><span class="o">.</span><span class="n">stationary_distributions</span><span class="p">()</span>
+        <span class="n">μ_x</span><span class="p">,</span> <span class="n">μ_y</span><span class="p">,</span> <span class="n">Σ_x</span><span class="p">,</span> <span class="n">Σ_y</span><span class="p">,</span> <span class="n">Σ_yx</span> <span class="o">=</span> <span class="n">ar</span><span class="o">.</span><span class="n">stationary_distributions</span><span class="p">()</span>
         <span class="n">ar_state</span> <span class="o">=</span> <span class="n">LinearStateSpace</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">mu_0</span><span class="o">=</span><span class="n">μ_x</span><span class="p">,</span> <span class="n">Sigma_0</span><span class="o">=</span><span class="n">Σ_x</span><span class="p">)</span>
 
     <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.6</span>
