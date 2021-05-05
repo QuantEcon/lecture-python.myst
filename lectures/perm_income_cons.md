@@ -345,7 +345,7 @@ G = np.array([[0., 1., 0.]])
 μ_z0 = np.array([[1.0], [0.0], [0.0]])
 Σ_z0 = np.zeros((3, 3))
 Lz = qe.LinearStateSpace(A, C, G, mu_0=μ_z0, Sigma_0=Σ_z0)
-μ_z, μ_y, Σ_z, Σ_y = Lz.stationary_distributions()
+μ_z, μ_y, Σ_z, Σ_y, Σ_yx = Lz.stationary_distributions()
 
 # Mean vector of state for the savings problem
 mxo = np.vstack([μ_z, 0.0])
