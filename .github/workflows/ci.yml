@@ -39,22 +39,24 @@ jobs:
           branch: main
           name: build-cache
           path: _build
-      - name: Build HTML
+      # Build Assets (Download Notebooks and PDF via LaTeX)
+      - name: Build PDF from LaTeX
         shell: bash -l {0}
         run: |
-          jb build -W --keep-going lectures --path-output ./
+          jb build lectures --builder pdflatex --path-output ./ -n --keep-going
+          mkdir -p _build/html/_pdf
+          cp -u _build/latex/*.pdf _build/html/_pdf
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter
           mkdir -p _build/html/_notebooks
           cp -u _build/jupyter/*.ipynb _build/html/_notebooks
-      - name: Build PDF from LaTeX
+      # Build HTML (Website)
+      - name: Build HTML
         shell: bash -l {0}
         run: |
-          jb build lectures --builder pdflatex --path-output ./ -n --keep-going
-          mkdir _build/html/_pdf
-          cp -u _build/latex/*.pdf _build/html/_pdf
+          jb build -W --keep-going lectures --path-output ./
       - name: Save Build as Artifact
         uses: actions/upload-artifact@v1
         with:
