@@ -44,8 +44,8 @@ jobs:
       - name: Copy LaTeX PDF for GH-PAGES
         shell: bash -l {0}
         run: |
-          mkdir _build/html/_pdf
-          cp _build/latex/*.pdf _build/html/_pdf
+          mkdir -p _build/html/_pdf
+          cp -u _build/latex/*.pdf _build/html/_pdf
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
         run: |
