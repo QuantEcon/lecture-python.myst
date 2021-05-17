@@ -6,7 +6,27 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>4. Linear Algebra &#8212; Quantitative Economics with Python</title>
-    <link rel="stylesheet" href="_static/quantecon-book-theme.css" type="text/css" />
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/quantecon-book-theme.9deb0a26de8466f54124a1959c24cd33.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -14,8 +34,11 @@
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/quantecon-book-theme.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -23,10 +46,10 @@
     <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/quantecon-book-theme.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/quantecon-book-theme.43eb86aa48ec3aed660cb313c38068cd.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
@@ -62,9 +85,7 @@
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
 <meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
 <meta property="og:site_name" content="Quantitative Economics with Python" />
-
 <meta name="theme-color" content="#ffffff" />
-
 
   </head>
 <body>
@@ -76,7 +97,7 @@
 
         <div class="main">
 
-            <div class="page">
+            <div class="page" id=linear_algebra>
 
                 <div class="page__toc">
 
@@ -89,162 +110,193 @@
 
 
                         <nav id="bd-toc-nav" class="page__toc-nav">
-
-                            <ul class="nav section-nav flex-column">
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#overview" class="nav-link">Overview</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#vectors" class="nav-link">Vectors</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#vector-operations" class="nav-link">Vector Operations</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#inner-product-and-norm" class="nav-link">Inner Product and Norm</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#span" class="nav-link">Span</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h4">
-                                    <a href="#examples" class="nav-link">Examples</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#linear-independence" class="nav-link">Linear Independence</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#unique-representations" class="nav-link">Unique Representations</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#matrices" class="nav-link">Matrices</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#matrix-operations" class="nav-link">Matrix Operations</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#matrices-in-numpy" class="nav-link">Matrices in NumPy</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#matrices-as-maps" class="nav-link">Matrices as Maps</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#solving-systems-of-equations" class="nav-link">Solving Systems of Equations</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#the-square-matrix-case" class="nav-link">The Square Matrix Case</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h4">
-                                    <a href="#inverse-matrices" class="nav-link">Inverse Matrices</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h4">
-                                    <a href="#determinants" class="nav-link">Determinants</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#more-rows-than-columns" class="nav-link">More Rows than Columns</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#more-columns-than-rows" class="nav-link">More Columns than Rows</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#linear-equations-with-scipy" class="nav-link">Linear Equations with SciPy</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#eigenvalues-and-eigenvectors" class="nav-link">Eigenvalues and Eigenvectors</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#generalized-eigenvalues" class="nav-link">Generalized Eigenvalues</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#further-topics" class="nav-link">Further Topics</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#series-expansions" class="nav-link">Series Expansions</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h4">
-                                    <a href="#matrix-norms" class="nav-link">Matrix Norms</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h4">
-                                    <a href="#neumann-s-theorem" class="nav-link">Neumann’s Theorem</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h4">
-                                    <a href="#spectral-radius" class="nav-link">Spectral Radius</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#positive-definite-matrices" class="nav-link">Positive Definite Matrices</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#differentiating-linear-and-quadratic-forms" class="nav-link">Differentiating Linear and Quadratic Forms</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#further-reading" class="nav-link">Further Reading</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#exercises" class="nav-link">Exercises</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#exercise-1" class="nav-link">Exercise 1</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#solutions" class="nav-link">Solutions</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#solution-to-exercise-1" class="nav-link">Solution to Exercise 1</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                            </ul>
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   4.1. Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#vectors">
+   4.2. Vectors
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vector-operations">
+     4.2.1. Vector Operations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#inner-product-and-norm">
+     4.2.2. Inner Product and Norm
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#span">
+     4.2.3. Span
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#examples">
+       4.2.3.1. Examples
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linear-independence">
+     4.2.4. Linear Independence
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unique-representations">
+     4.2.5. Unique Representations
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matrices">
+   4.3. Matrices
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#matrix-operations">
+     4.3.1. Matrix Operations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#matrices-in-numpy">
+     4.3.2. Matrices in NumPy
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#matrices-as-maps">
+     4.3.3. Matrices as Maps
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#solving-systems-of-equations">
+   4.4. Solving Systems of Equations
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-square-matrix-case">
+     4.4.1. The Square Matrix Case
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#inverse-matrices">
+       4.4.1.1. Inverse Matrices
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#determinants">
+       4.4.1.2. Determinants
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#more-rows-than-columns">
+     4.4.2. More Rows than Columns
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#more-columns-than-rows">
+     4.4.3. More Columns than Rows
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linear-equations-with-scipy">
+     4.4.4. Linear Equations with SciPy
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#eigenvalues-and-eigenvectors">
+   4.5. Eigenvalues and Eigenvectors
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#generalized-eigenvalues">
+     4.5.1. Generalized Eigenvalues
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#further-topics">
+   4.6. Further Topics
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#series-expansions">
+     4.6.1. Series Expansions
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#matrix-norms">
+       4.6.1.1. Matrix Norms
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#neumann-s-theorem">
+       4.6.1.2. Neumann’s Theorem
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#spectral-radius">
+       4.6.1.3. Spectral Radius
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#positive-definite-matrices">
+     4.6.2. Positive Definite Matrices
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#differentiating-linear-and-quadratic-forms">
+     4.6.3. Differentiating Linear and Quadratic Forms
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#further-reading">
+     4.6.4. Further Reading
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exercises">
+   4.7. Exercises
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-1">
+     4.7.1. Exercise 1
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#solutions">
+   4.8. Solutions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#solution-to-exercise-1">
+     4.8.1. Solution to Exercise 1
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
 
                             <p class="logo">
                                 
@@ -1586,7 +1638,7 @@ See <a class="reference external" href="https://python-programming.quantecon.org
   Tools and Techniques
  </span>
 </p>
-<ul class="current nav sidenav_l1">
+<ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="geom_series.html">
    1. Geometric Series for Elementary Economics
@@ -1602,7 +1654,7 @@ See <a class="reference external" href="https://python-programming.quantecon.org
    3. Modeling COVID 19
   </a>
  </li>
- <li class="toctree-l1 current active">
+ <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
    4. Linear Algebra
   </a>
@@ -1638,7 +1690,7 @@ See <a class="reference external" href="https://python-programming.quantecon.org
   Introduction to Dynamics
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
    10. Dynamics in One Dimension
@@ -1705,7 +1757,7 @@ See <a class="reference external" href="https://python-programming.quantecon.org
   Search
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
    22. Job Search I: The McCall Search Model
@@ -1742,7 +1794,7 @@ See <a class="reference external" href="https://python-programming.quantecon.org
   Consumption, Savings and Growth
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    28. Cake Eating I: Introduction to Optimal Saving
@@ -1789,7 +1841,7 @@ See <a class="reference external" href="https://python-programming.quantecon.org
   Information
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
    36. Job Search VII: Search with Learning
@@ -1826,7 +1878,7 @@ See <a class="reference external" href="https://python-programming.quantecon.org
   LQ Control
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
    42. LQ Control: Foundations
@@ -1853,7 +1905,7 @@ See <a class="reference external" href="https://python-programming.quantecon.org
   Multiple Agent Models
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
    46. Schelling’s Segregation Model
@@ -1895,7 +1947,7 @@ See <a class="reference external" href="https://python-programming.quantecon.org
   Asset Pricing and Finance
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
    53. Asset Pricing: Finite State Models
@@ -1917,7 +1969,7 @@ See <a class="reference external" href="https://python-programming.quantecon.org
   Data and Empirics
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
    56. Pandas for Panel Data
@@ -1939,7 +1991,7 @@ See <a class="reference external" href="https://python-programming.quantecon.org
   Other
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
    59. Troubleshooting
@@ -1989,48 +2041,50 @@ See <a class="reference external" href="https://python-programming.quantecon.org
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="_notebooks/linear_algebra.ipynb" download><i data-feather="download-cloud"></i></a></li>
-                    <li data-tippy-content="Launch Notebook"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/linear_algebra.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
-                    <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="Launch Notebook" id="launchButton"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/linear_algebra.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/linear_algebra.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
 
-
         </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="_pdf/quantecon-python.pdf" download><p style="color: white;">Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title">QuantEcon Notebook Launcher</p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input" onchange="onChangeListener()">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/linear_algebra.ipynb">BinderHub</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <!-- <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" onchange="onChangeListener()">
+                <i class="fas fa-check-circle"></i>
+            </li> -->
+            </ul>
+        </div>
 
     </div> <!-- .wrapper-->
-
-<script src="_static/plugins.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-<script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/tippy.js@6"></script>
-
-
-    <script src=[></script>
-
-    <script src=]></script>
-
-<script src="_static/scripts.js"></script>
-<script>
-    feather.replace()
-    tippy('[data-tippy-content]');
-</script>
-
-
-<script>
-    window.ga = function () {
-        ga.q.push(arguments);
-    };
-    ga.q = [];
-    ga.l = +new Date();
-    ga("create", "UA-54984338-10", "auto");
-    ga("set", "anonymizeIp", true);
-    ga("set", "transport", "beacon");
-    ga("send", "pageview");
-</script>
-<script src="https://www.google-analytics.com/analytics.js" async></script>
-
   </body>
 </html>

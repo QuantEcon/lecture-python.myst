@@ -6,7 +6,27 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>57. Linear Regression in Python &#8212; Quantitative Economics with Python</title>
-    <link rel="stylesheet" href="_static/quantecon-book-theme.css" type="text/css" />
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/quantecon-book-theme.9deb0a26de8466f54124a1959c24cd33.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -14,8 +34,11 @@
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/quantecon-book-theme.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -23,10 +46,10 @@
     <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/quantecon-book-theme.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/quantecon-book-theme.43eb86aa48ec3aed660cb313c38068cd.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
@@ -62,9 +85,7 @@
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
 <meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
 <meta property="og:site_name" content="Quantitative Economics with Python" />
-
 <meta name="theme-color" content="#ffffff" />
-
 
   </head>
 <body>
@@ -76,7 +97,7 @@
 
         <div class="main">
 
-            <div class="page">
+            <div class="page" id=ols>
 
                 <div class="page__toc">
 
@@ -89,64 +110,74 @@
 
 
                         <nav id="bd-toc-nav" class="page__toc-nav">
-
-                            <ul class="nav section-nav flex-column">
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#overview" class="nav-link">Overview</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#prerequisites" class="nav-link">Prerequisites</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#simple-linear-regression" class="nav-link">Simple Linear Regression</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#extending-the-linear-regression-model" class="nav-link">Extending the Linear Regression Model</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#endogeneity" class="nav-link">Endogeneity</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#summary" class="nav-link">Summary</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#exercises" class="nav-link">Exercises</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#exercise-1" class="nav-link">Exercise 1</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#exercise-2" class="nav-link">Exercise 2</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#solutions" class="nav-link">Solutions</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#id11" class="nav-link">Exercise 1</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#id12" class="nav-link">Exercise 2</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                            </ul>
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   57.1. Overview
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#prerequisites">
+     57.1.1. Prerequisites
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#simple-linear-regression">
+   57.2. Simple Linear Regression
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extending-the-linear-regression-model">
+   57.3. Extending the Linear Regression Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#endogeneity">
+   57.4. Endogeneity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   57.5. Summary
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exercises">
+   57.6. Exercises
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-1">
+     57.6.1. Exercise 1
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-2">
+     57.6.2. Exercise 2
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#solutions">
+   57.7. Solutions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id11">
+     57.7.1. Exercise 1
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id12">
+     57.7.2. Exercise 2
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
 
                             <p class="logo">
                                 
@@ -226,184 +257,188 @@
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading linearmodels-4.24-cp38-cp38-manylinux1_x86_64.whl (1.5 MB)
 ?25l
-     |▎                               | 10 kB 29.4 MB/s eta 0:00:01
-     |▌                               | 20 kB 34.7 MB/s eta 0:00:01
-     |▊                               | 30 kB 26.1 MB/s eta 0:00:01
-     |█                               | 40 kB 11.0 MB/s eta 0:00:01
+     |▎                               | 10 kB 25.7 MB/s eta 0:00:01
+     |▌                               | 20 kB 21.6 MB/s eta 0:00:01
+     |▊                               | 30 kB 10.7 MB/s eta 0:00:01
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |█▏                              | 51 kB 12.9 MB/s eta 0:00:01
-     |█▍                              | 61 kB 14.5 MB/s eta 0:00:01
-     |█▋                              | 71 kB 12.7 MB/s eta 0:00:01
-     |█▉                              | 81 kB 14.0 MB/s eta 0:00:01
-     |██                              | 92 kB 13.8 MB/s eta 0:00:01
-     |██▎                             | 102 kB 12.4 MB/s eta 0:00:01
-     |██▌                             | 112 kB 12.4 MB/s eta 0:00:01
-     |██▊                             | 122 kB 12.4 MB/s eta 0:00:01
-     |███                             | 133 kB 12.4 MB/s eta 0:00:01
-     |███▏                            | 143 kB 12.4 MB/s eta 0:00:01
-     |███▍                            | 153 kB 12.4 MB/s eta 0:00:01
-     |███▋                            | 163 kB 12.4 MB/s eta 0:00:01
-     |███▉                            | 174 kB 12.4 MB/s eta 0:00:01
-     |████                            | 184 kB 12.4 MB/s eta 0:00:01
-     |████▎                           | 194 kB 12.4 MB/s eta 0:00:01
-     |████▌                           | 204 kB 12.4 MB/s eta 0:00:01
-     |████▊                           | 215 kB 12.4 MB/s eta 0:00:01
-     |█████                           | 225 kB 12.4 MB/s eta 0:00:01
-     |█████▏                          | 235 kB 12.4 MB/s eta 0:00:01
-     |█████▍                          | 245 kB 12.4 MB/s eta 0:00:01
-     |█████▋                          | 256 kB 12.4 MB/s eta 0:00:01
-     |█████▉                          | 266 kB 12.4 MB/s eta 0:00:01
-     |██████                          | 276 kB 12.4 MB/s eta 0:00:01
-     |██████▎                         | 286 kB 12.4 MB/s eta 0:00:01
-     |██████▌                         | 296 kB 12.4 MB/s eta 0:00:01
-     |██████▊                         | 307 kB 12.4 MB/s eta 0:00:01
-     |███████                         | 317 kB 12.4 MB/s eta 0:00:01
-     |███████▏                        | 327 kB 12.4 MB/s eta 0:00:01
-     |███████▍                        | 337 kB 12.4 MB/s eta 0:00:01
-     |███████▋                        | 348 kB 12.4 MB/s eta 0:00:01
-     |███████▉                        | 358 kB 12.4 MB/s eta 0:00:01
-     |████████                        | 368 kB 12.4 MB/s eta 0:00:01
-     |████████▎                       | 378 kB 12.4 MB/s eta 0:00:01
-     |████████▌                       | 389 kB 12.4 MB/s eta 0:00:01
-     |████████▊                       | 399 kB 12.4 MB/s eta 0:00:01
-     |█████████                       | 409 kB 12.4 MB/s eta 0:00:01
-     |█████████▏                      | 419 kB 12.4 MB/s eta 0:00:01
-     |█████████▍                      | 430 kB 12.4 MB/s eta 0:00:01
-     |█████████▋                      | 440 kB 12.4 MB/s eta 0:00:01
-     |█████████▉                      | 450 kB 12.4 MB/s eta 0:00:01
-     |██████████                      | 460 kB 12.4 MB/s eta 0:00:01
-     |██████████▎                     | 471 kB 12.4 MB/s eta 0:00:01
-     |██████████▌                     | 481 kB 12.4 MB/s eta 0:00:01
-     |██████████▊                     | 491 kB 12.4 MB/s eta 0:00:01
-     |███████████                     | 501 kB 12.4 MB/s eta 0:00:01
-     |███████████▏                    | 512 kB 12.4 MB/s eta 0:00:01
-     |███████████▍                    | 522 kB 12.4 MB/s eta 0:00:01
-     |███████████▋                    | 532 kB 12.4 MB/s eta 0:00:01
-     |███████████▉                    | 542 kB 12.4 MB/s eta 0:00:01
-     |████████████                    | 552 kB 12.4 MB/s eta 0:00:01
-     |████████████▎                   | 563 kB 12.4 MB/s eta 0:00:01
-     |████████████▌                   | 573 kB 12.4 MB/s eta 0:00:01
-     |████████████▊                   | 583 kB 12.4 MB/s eta 0:00:01
-     |█████████████                   | 593 kB 12.4 MB/s eta 0:00:01
-     |█████████████▏                  | 604 kB 12.4 MB/s eta 0:00:01
-     |█████████████▍                  | 614 kB 12.4 MB/s eta 0:00:01
-     |█████████████▋                  | 624 kB 12.4 MB/s eta 0:00:01
-     |█████████████▉                  | 634 kB 12.4 MB/s eta 0:00:01
-     |██████████████                  | 645 kB 12.4 MB/s eta 0:00:01
-     |██████████████▎                 | 655 kB 12.4 MB/s eta 0:00:01
-     |██████████████▌                 | 665 kB 12.4 MB/s eta 0:00:01
-     |██████████████▊                 | 675 kB 12.4 MB/s eta 0:00:01
-     |███████████████                 | 686 kB 12.4 MB/s eta 0:00:01
-     |███████████████▏                | 696 kB 12.4 MB/s eta 0:00:01
-     |███████████████▍                | 706 kB 12.4 MB/s eta 0:00:01
-     |███████████████▋                | 716 kB 12.4 MB/s eta 0:00:01
-     |███████████████▉                | 727 kB 12.4 MB/s eta 0:00:01
-     |████████████████                | 737 kB 12.4 MB/s eta 0:00:01
-     |████████████████▎               | 747 kB 12.4 MB/s eta 0:00:01
-     |████████████████▌               | 757 kB 12.4 MB/s eta 0:00:01
-     |████████████████▊               | 768 kB 12.4 MB/s eta 0:00:01
-     |█████████████████               | 778 kB 12.4 MB/s eta 0:00:01
-     |█████████████████▏              | 788 kB 12.4 MB/s eta 0:00:01
-     |█████████████████▍              | 798 kB 12.4 MB/s eta 0:00:01
-     |█████████████████▋              | 808 kB 12.4 MB/s eta 0:00:01
-     |█████████████████▉              | 819 kB 12.4 MB/s eta 0:00:01
-     |██████████████████              | 829 kB 12.4 MB/s eta 0:00:01
-     |██████████████████▎             | 839 kB 12.4 MB/s eta 0:00:01
-     |██████████████████▌             | 849 kB 12.4 MB/s eta 0:00:01
-     |██████████████████▊             | 860 kB 12.4 MB/s eta 0:00:01
-     |███████████████████             | 870 kB 12.4 MB/s eta 0:00:01
-     |███████████████████▏            | 880 kB 12.4 MB/s eta 0:00:01
-     |███████████████████▍            | 890 kB 12.4 MB/s eta 0:00:01
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |█                               | 40 kB 4.2 MB/s eta 0:00:01
+     |█▏                              | 51 kB 5.2 MB/s eta 0:00:01
+     |█▍                              | 61 kB 5.8 MB/s eta 0:00:01
+     |█▋                              | 71 kB 5.9 MB/s eta 0:00:01
+     |█▉                              | 81 kB 5.8 MB/s eta 0:00:01
+     |██                              | 92 kB 5.9 MB/s eta 0:00:01
+     |██▎                             | 102 kB 4.9 MB/s eta 0:00:01
+     |██▌                             | 112 kB 4.9 MB/s eta 0:00:01
+     |██▊                             | 122 kB 4.9 MB/s eta 0:00:01
+     |███                             | 133 kB 4.9 MB/s eta 0:00:01
+     |███▏                            | 143 kB 4.9 MB/s eta 0:00:01
+     |███▍                            | 153 kB 4.9 MB/s eta 0:00:01
+     |███▋                            | 163 kB 4.9 MB/s eta 0:00:01
+     |███▉                            | 174 kB 4.9 MB/s eta 0:00:01
+     |████                            | 184 kB 4.9 MB/s eta 0:00:01
+     |████▎                           | 194 kB 4.9 MB/s eta 0:00:01
+     |████▌                           | 204 kB 4.9 MB/s eta 0:00:01
+     |████▊                           | 215 kB 4.9 MB/s eta 0:00:01
+     |█████                           | 225 kB 4.9 MB/s eta 0:00:01
+     |█████▏                          | 235 kB 4.9 MB/s eta 0:00:01
+     |█████▍                          | 245 kB 4.9 MB/s eta 0:00:01
+     |█████▋                          | 256 kB 4.9 MB/s eta 0:00:01
+     |█████▉                          | 266 kB 4.9 MB/s eta 0:00:01
+     |██████                          | 276 kB 4.9 MB/s eta 0:00:01
+     |██████▎                         | 286 kB 4.9 MB/s eta 0:00:01
+     |██████▌                         | 296 kB 4.9 MB/s eta 0:00:01
+     |██████▊                         | 307 kB 4.9 MB/s eta 0:00:01
+     |███████                         | 317 kB 4.9 MB/s eta 0:00:01
+     |███████▏                        | 327 kB 4.9 MB/s eta 0:00:01
+     |███████▍                        | 337 kB 4.9 MB/s eta 0:00:01
+     |███████▋                        | 348 kB 4.9 MB/s eta 0:00:01
+     |███████▉                        | 358 kB 4.9 MB/s eta 0:00:01
+     |████████                        | 368 kB 4.9 MB/s eta 0:00:01
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |███████████████████▋            | 901 kB 12.4 MB/s eta 0:00:01
-     |███████████████████▉            | 911 kB 12.4 MB/s eta 0:00:01
-     |████████████████████            | 921 kB 12.4 MB/s eta 0:00:01
-     |████████████████████▎           | 931 kB 12.4 MB/s eta 0:00:01
-     |████████████████████▌           | 942 kB 12.4 MB/s eta 0:00:01
-     |████████████████████▊           | 952 kB 12.4 MB/s eta 0:00:01
-     |█████████████████████           | 962 kB 12.4 MB/s eta 0:00:01
-     |█████████████████████▏          | 972 kB 12.4 MB/s eta 0:00:01
-     |█████████████████████▍          | 983 kB 12.4 MB/s eta 0:00:01
-     |█████████████████████▋          | 993 kB 12.4 MB/s eta 0:00:01
-     |█████████████████████▉          | 1.0 MB 12.4 MB/s eta 0:00:01
-     |██████████████████████          | 1.0 MB 12.4 MB/s eta 0:00:01
-     |██████████████████████▎         | 1.0 MB 12.4 MB/s eta 0:00:01
-     |██████████████████████▌         | 1.0 MB 12.4 MB/s eta 0:00:01
-     |██████████████████████▊         | 1.0 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████         | 1.1 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████▏        | 1.1 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████▍        | 1.1 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████▋        | 1.1 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████▉        | 1.1 MB 12.4 MB/s eta 0:00:01
-     |████████████████████████        | 1.1 MB 12.4 MB/s eta 0:00:01
-     |████████████████████████▎       | 1.1 MB 12.4 MB/s eta 0:00:01
-     |████████████████████████▌       | 1.1 MB 12.4 MB/s eta 0:00:01
-     |████████████████████████▊       | 1.1 MB 12.4 MB/s eta 0:00:01
-     |█████████████████████████       | 1.1 MB 12.4 MB/s eta 0:00:01
-     |█████████████████████████▏      | 1.2 MB 12.4 MB/s eta 0:00:01
-     |█████████████████████████▍      | 1.2 MB 12.4 MB/s eta 0:00:01
-     |█████████████████████████▋      | 1.2 MB 12.4 MB/s eta 0:00:01
-     |█████████████████████████▉      | 1.2 MB 12.4 MB/s eta 0:00:01
-     |██████████████████████████      | 1.2 MB 12.4 MB/s eta 0:00:01
-     |██████████████████████████▎     | 1.2 MB 12.4 MB/s eta 0:00:01
-     |██████████████████████████▌     | 1.2 MB 12.4 MB/s eta 0:00:01
-     |██████████████████████████▊     | 1.2 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████████     | 1.2 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████████▏    | 1.2 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████████▍    | 1.3 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████████▋    | 1.3 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████████▉    | 1.3 MB 12.4 MB/s eta 0:00:01
-     |████████████████████████████    | 1.3 MB 12.4 MB/s eta 0:00:01
-     |████████████████████████████▎   | 1.3 MB 12.4 MB/s eta 0:00:01
-     |████████████████████████████▌   | 1.3 MB 12.4 MB/s eta 0:00:01
-     |████████████████████████████▊   | 1.3 MB 12.4 MB/s eta 0:00:01
-     |█████████████████████████████   | 1.3 MB 12.4 MB/s eta 0:00:01
-     |█████████████████████████████▏  | 1.3 MB 12.4 MB/s eta 0:00:01
-     |█████████████████████████████▍  | 1.4 MB 12.4 MB/s eta 0:00:01
-     |█████████████████████████████▋  | 1.4 MB 12.4 MB/s eta 0:00:01
-     |█████████████████████████████▉  | 1.4 MB 12.4 MB/s eta 0:00:01
-     |██████████████████████████████  | 1.4 MB 12.4 MB/s eta 0:00:01
-     |██████████████████████████████▎ | 1.4 MB 12.4 MB/s eta 0:00:01
-     |██████████████████████████████▌ | 1.4 MB 12.4 MB/s eta 0:00:01
-     |██████████████████████████████▊ | 1.4 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████████████ | 1.4 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████████████▏| 1.4 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████████████▍| 1.4 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████████████▋| 1.5 MB 12.4 MB/s eta 0:00:01
-     |███████████████████████████████▉| 1.5 MB 12.4 MB/s eta 0:00:01
-     |████████████████████████████████| 1.5 MB 12.4 MB/s 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |████████▎                       | 378 kB 4.9 MB/s eta 0:00:01
+     |████████▌                       | 389 kB 4.9 MB/s eta 0:00:01
+     |████████▊                       | 399 kB 4.9 MB/s eta 0:00:01
+     |█████████                       | 409 kB 4.9 MB/s eta 0:00:01
+     |█████████▏                      | 419 kB 4.9 MB/s eta 0:00:01
+     |█████████▍                      | 430 kB 4.9 MB/s eta 0:00:01
+     |█████████▋                      | 440 kB 4.9 MB/s eta 0:00:01
+     |█████████▉                      | 450 kB 4.9 MB/s eta 0:00:01
+     |██████████                      | 460 kB 4.9 MB/s eta 0:00:01
+     |██████████▎                     | 471 kB 4.9 MB/s eta 0:00:01
+     |██████████▌                     | 481 kB 4.9 MB/s eta 0:00:01
+     |██████████▊                     | 491 kB 4.9 MB/s eta 0:00:01
+     |███████████                     | 501 kB 4.9 MB/s eta 0:00:01
+     |███████████▏                    | 512 kB 4.9 MB/s eta 0:00:01
+     |███████████▍                    | 522 kB 4.9 MB/s eta 0:00:01
+     |███████████▋                    | 532 kB 4.9 MB/s eta 0:00:01
+     |███████████▉                    | 542 kB 4.9 MB/s eta 0:00:01
+     |████████████                    | 552 kB 4.9 MB/s eta 0:00:01
+     |████████████▎                   | 563 kB 4.9 MB/s eta 0:00:01
+     |████████████▌                   | 573 kB 4.9 MB/s eta 0:00:01
+     |████████████▊                   | 583 kB 4.9 MB/s eta 0:00:01
+     |█████████████                   | 593 kB 4.9 MB/s eta 0:00:01
+     |█████████████▏                  | 604 kB 4.9 MB/s eta 0:00:01
+     |█████████████▍                  | 614 kB 4.9 MB/s eta 0:00:01
+     |█████████████▋                  | 624 kB 4.9 MB/s eta 0:00:01
+     |█████████████▉                  | 634 kB 4.9 MB/s eta 0:00:01
+     |██████████████                  | 645 kB 4.9 MB/s eta 0:00:01
+     |██████████████▎                 | 655 kB 4.9 MB/s eta 0:00:01
+     |██████████████▌                 | 665 kB 4.9 MB/s eta 0:00:01
+     |██████████████▊                 | 675 kB 4.9 MB/s eta 0:00:01
+     |███████████████                 | 686 kB 4.9 MB/s eta 0:00:01
+     |███████████████▏                | 696 kB 4.9 MB/s eta 0:00:01
+     |███████████████▍                | 706 kB 4.9 MB/s eta 0:00:01
+     |███████████████▋                | 716 kB 4.9 MB/s eta 0:00:01
+     |███████████████▉                | 727 kB 4.9 MB/s eta 0:00:01
+     |████████████████                | 737 kB 4.9 MB/s eta 0:00:01
+     |████████████████▎               | 747 kB 4.9 MB/s eta 0:00:01
+     |████████████████▌               | 757 kB 4.9 MB/s eta 0:00:01
+     |████████████████▊               | 768 kB 4.9 MB/s eta 0:00:01
+     |█████████████████               | 778 kB 4.9 MB/s eta 0:00:01
+     |█████████████████▏              | 788 kB 4.9 MB/s eta 0:00:01
+     |█████████████████▍              | 798 kB 4.9 MB/s eta 0:00:01
+     |█████████████████▋              | 808 kB 4.9 MB/s eta 0:00:01
+     |█████████████████▉              | 819 kB 4.9 MB/s eta 0:00:01
+     |██████████████████              | 829 kB 4.9 MB/s eta 0:00:01
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hCollecting property-cached&gt;=1.6.3
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |██████████████████▎             | 839 kB 4.9 MB/s eta 0:00:01
+     |██████████████████▌             | 849 kB 4.9 MB/s eta 0:00:01
+     |██████████████████▊             | 860 kB 4.9 MB/s eta 0:00:01
+     |███████████████████             | 870 kB 4.9 MB/s eta 0:00:01
+     |███████████████████▏            | 880 kB 4.9 MB/s eta 0:00:01
+     |███████████████████▍            | 890 kB 4.9 MB/s eta 0:00:01
+     |███████████████████▋            | 901 kB 4.9 MB/s eta 0:00:01
+     |███████████████████▉            | 911 kB 4.9 MB/s eta 0:00:01
+     |████████████████████            | 921 kB 4.9 MB/s eta 0:00:01
+     |████████████████████▎           | 931 kB 4.9 MB/s eta 0:00:01
+     |████████████████████▌           | 942 kB 4.9 MB/s eta 0:00:01
+     |████████████████████▊           | 952 kB 4.9 MB/s eta 0:00:01
+     |█████████████████████           | 962 kB 4.9 MB/s eta 0:00:01
+     |█████████████████████▏          | 972 kB 4.9 MB/s eta 0:00:01
+     |█████████████████████▍          | 983 kB 4.9 MB/s eta 0:00:01
+     |█████████████████████▋          | 993 kB 4.9 MB/s eta 0:00:01
+     |█████████████████████▉          | 1.0 MB 4.9 MB/s eta 0:00:01
+     |██████████████████████          | 1.0 MB 4.9 MB/s eta 0:00:01
+     |██████████████████████▎         | 1.0 MB 4.9 MB/s eta 0:00:01
+     |██████████████████████▌         | 1.0 MB 4.9 MB/s eta 0:00:01
+     |██████████████████████▊         | 1.0 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████         | 1.1 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████▏        | 1.1 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████▍        | 1.1 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████▋        | 1.1 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████▉        | 1.1 MB 4.9 MB/s eta 0:00:01
+     |████████████████████████        | 1.1 MB 4.9 MB/s eta 0:00:01
+     |████████████████████████▎       | 1.1 MB 4.9 MB/s eta 0:00:01
+     |████████████████████████▌       | 1.1 MB 4.9 MB/s eta 0:00:01
+     |████████████████████████▊       | 1.1 MB 4.9 MB/s eta 0:00:01
+     |█████████████████████████       | 1.1 MB 4.9 MB/s eta 0:00:01
+     |█████████████████████████▏      | 1.2 MB 4.9 MB/s eta 0:00:01
+     |█████████████████████████▍      | 1.2 MB 4.9 MB/s eta 0:00:01
+     |█████████████████████████▋      | 1.2 MB 4.9 MB/s eta 0:00:01
+     |█████████████████████████▉      | 1.2 MB 4.9 MB/s eta 0:00:01
+     |██████████████████████████      | 1.2 MB 4.9 MB/s eta 0:00:01
+     |██████████████████████████▎     | 1.2 MB 4.9 MB/s eta 0:00:01
+     |██████████████████████████▌     | 1.2 MB 4.9 MB/s eta 0:00:01
+     |██████████████████████████▊     | 1.2 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████████     | 1.2 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████████▏    | 1.2 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████████▍    | 1.3 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████████▋    | 1.3 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████████▉    | 1.3 MB 4.9 MB/s eta 0:00:01
+     |████████████████████████████    | 1.3 MB 4.9 MB/s eta 0:00:01
+     |████████████████████████████▎   | 1.3 MB 4.9 MB/s eta 0:00:01
+     |████████████████████████████▌   | 1.3 MB 4.9 MB/s eta 0:00:01
+     |████████████████████████████▊   | 1.3 MB 4.9 MB/s eta 0:00:01
+     |█████████████████████████████   | 1.3 MB 4.9 MB/s eta 0:00:01
+     |█████████████████████████████▏  | 1.3 MB 4.9 MB/s eta 0:00:01
+     |█████████████████████████████▍  | 1.4 MB 4.9 MB/s eta 0:00:01
+     |█████████████████████████████▋  | 1.4 MB 4.9 MB/s eta 0:00:01
+     |█████████████████████████████▉  | 1.4 MB 4.9 MB/s eta 0:00:01
+     |██████████████████████████████  | 1.4 MB 4.9 MB/s eta 0:00:01
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading property_cached-1.6.4-py2.py3-none-any.whl (7.8 kB)
-Requirement already satisfied: scipy&gt;=1.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from linearmodels) (1.5.2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |██████████████████████████████▎ | 1.4 MB 4.9 MB/s eta 0:00:01
+     |██████████████████████████████▌ | 1.4 MB 4.9 MB/s eta 0:00:01
+     |██████████████████████████████▊ | 1.4 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████████████ | 1.4 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████████████▏| 1.4 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████████████▍| 1.4 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████████████▋| 1.5 MB 4.9 MB/s eta 0:00:01
+     |███████████████████████████████▉| 1.5 MB 4.9 MB/s eta 0:00:01
+     |████████████████████████████████| 1.5 MB 4.9 MB/s 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: scipy&gt;=1.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from linearmodels) (1.5.2)
+Requirement already satisfied: statsmodels&gt;=0.11 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from linearmodels) (0.12.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pyhdfe&gt;=0.1
+  Downloading pyhdfe-0.1.0-py3-none-any.whl (18 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.16 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from linearmodels) (1.19.2)
+Requirement already satisfied: Cython&gt;=0.29.21 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from linearmodels) (0.29.21)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting mypy-extensions&gt;=0.4
   Downloading mypy_extensions-0.4.3-py2.py3-none-any.whl (4.5 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pyhdfe&gt;=0.1
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting property-cached&gt;=1.6.3
+  Downloading property_cached-1.6.4-py2.py3-none-any.whl (7.8 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading pyhdfe-0.1.0-py3-none-any.whl (18 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas&gt;=0.24 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from linearmodels) (1.1.3)
-Requirement already satisfied: numpy&gt;=1.16 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from linearmodels) (1.19.2)
-Requirement already satisfied: patsy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from linearmodels) (0.5.1)
-Requirement already satisfied: Cython&gt;=0.29.21 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from linearmodels) (0.29.21)
-Requirement already satisfied: statsmodels&gt;=0.11 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from linearmodels) (0.12.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: patsy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from linearmodels) (0.5.1)
+Requirement already satisfied: pandas&gt;=0.24 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from linearmodels) (1.1.3)
+Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from patsy-&gt;linearmodels) (1.15.0)
 Requirement already satisfied: python-dateutil&gt;=2.7.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.24-&gt;linearmodels) (2.8.1)
 Requirement already satisfied: pytz&gt;=2017.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.24-&gt;linearmodels) (2020.1)
-Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from patsy-&gt;linearmodels) (1.15.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: property-cached, mypy-extensions, pyhdfe, linearmodels
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: pyhdfe, mypy-extensions, property-cached, linearmodels
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed linearmodels-4.24 mypy-extensions-0.4.3 property-cached-1.6.4 pyhdfe-0.1.0
@@ -736,8 +771,8 @@ coefficients differ slightly.</p>
 Dep. Variable:               logpgp95   R-squared:                       0.611
 Model:                            OLS   Adj. R-squared:                  0.608
 Method:                 Least Squares   F-statistic:                     171.4
-Date:                Wed, 28 Apr 2021   Prob (F-statistic):           4.16e-24
-Time:                        06:16:15   Log-Likelihood:                -119.71
+Date:                Mon, 17 May 2021   Prob (F-statistic):           4.16e-24
+Time:                        04:57:34   Log-Likelihood:                -119.71
 No. Observations:                 111   AIC:                             243.4
 Df Residuals:                     109   BIC:                             248.8
 Df Model:                           1                                         
@@ -1080,8 +1115,8 @@ used for estimation)</p>
 Dep. Variable:                 avexpr   R-squared:                       0.270
 Model:                            OLS   Adj. R-squared:                  0.258
 Method:                 Least Squares   F-statistic:                     22.95
-Date:                Wed, 28 Apr 2021   Prob (F-statistic):           1.08e-05
-Time:                        06:16:17   Log-Likelihood:                -104.83
+Date:                Mon, 17 May 2021   Prob (F-statistic):           1.08e-05
+Time:                        04:57:36   Log-Likelihood:                -104.83
 No. Observations:                  64   AIC:                             213.7
 Df Residuals:                      62   BIC:                             218.0
 Df Model:                           1                                         
@@ -1130,8 +1165,8 @@ predicted values <span class="math notranslate nohighlight">\(\widehat{avexpr}_i
 Dep. Variable:               logpgp95   R-squared:                       0.477
 Model:                            OLS   Adj. R-squared:                  0.469
 Method:                 Least Squares   F-statistic:                     56.60
-Date:                Wed, 28 Apr 2021   Prob (F-statistic):           2.66e-10
-Time:                        06:16:17   Log-Likelihood:                -72.268
+Date:                Mon, 17 May 2021   Prob (F-statistic):           2.66e-10
+Time:                        04:57:36   Log-Likelihood:                -72.268
 No. Observations:                  64   AIC:                             148.5
 Df Residuals:                      62   BIC:                             152.9
 Df Model:                           1                                         
@@ -1183,8 +1218,8 @@ included exogenous variables)</p>
 Dep. Variable:               logpgp95   R-squared:                      0.1870
 Estimator:                    IV-2SLS   Adj. R-squared:                 0.1739
 No. Observations:                  64   F-statistic:                    37.568
-Date:                Wed, Apr 28 2021   P-value (F-stat)                0.0000
-Time:                        06:16:17   Distribution:                  chi2(1)
+Date:                Mon, May 17 2021   P-value (F-stat)                0.0000
+Time:                        04:57:36   Distribution:                  chi2(1)
 Cov. Estimator:            unadjusted                                         
                                                                               
                              Parameter Estimates                              
@@ -1322,8 +1357,8 @@ using <code class="docutils literal notranslate"><span class="pre">numpy</span><
 Dep. Variable:               logpgp95   R-squared:                       0.689
 Model:                            OLS   Adj. R-squared:                  0.679
 Method:                 Least Squares   F-statistic:                     74.05
-Date:                Wed, 28 Apr 2021   Prob (F-statistic):           1.07e-17
-Time:                        06:16:17   Log-Likelihood:                -62.031
+Date:                Mon, 17 May 2021   Prob (F-statistic):           1.07e-17
+Time:                        04:57:36   Log-Likelihood:                -62.031
 No. Observations:                  70   AIC:                             130.1
 Df Residuals:                      67   BIC:                             136.8
 Df Model:                           2                                         
@@ -1440,7 +1475,7 @@ computations.</p>
   Tools and Techniques
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="geom_series.html">
    1. Geometric Series for Elementary Economics
@@ -1492,7 +1527,7 @@ computations.</p>
   Introduction to Dynamics
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
    10. Dynamics in One Dimension
@@ -1559,7 +1594,7 @@ computations.</p>
   Search
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
    22. Job Search I: The McCall Search Model
@@ -1596,7 +1631,7 @@ computations.</p>
   Consumption, Savings and Growth
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    28. Cake Eating I: Introduction to Optimal Saving
@@ -1643,7 +1678,7 @@ computations.</p>
   Information
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
    36. Job Search VII: Search with Learning
@@ -1680,7 +1715,7 @@ computations.</p>
   LQ Control
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
    42. LQ Control: Foundations
@@ -1707,7 +1742,7 @@ computations.</p>
   Multiple Agent Models
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
    46. Schelling’s Segregation Model
@@ -1749,7 +1784,7 @@ computations.</p>
   Asset Pricing and Finance
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
    53. Asset Pricing: Finite State Models
@@ -1771,13 +1806,13 @@ computations.</p>
   Data and Empirics
  </span>
 </p>
-<ul class="current nav sidenav_l1">
+<ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
    56. Pandas for Panel Data
   </a>
  </li>
- <li class="toctree-l1 current active">
+ <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
    57. Linear Regression in Python
   </a>
@@ -1793,7 +1828,7 @@ computations.</p>
   Other
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
    59. Troubleshooting
@@ -1843,48 +1878,50 @@ computations.</p>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="_notebooks/ols.ipynb" download><i data-feather="download-cloud"></i></a></li>
-                    <li data-tippy-content="Launch Notebook"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/ols.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
-                    <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="Launch Notebook" id="launchButton"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/ols.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/ols.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
 
-
         </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="_pdf/quantecon-python.pdf" download><p style="color: white;">Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title">QuantEcon Notebook Launcher</p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input" onchange="onChangeListener()">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/ols.ipynb">BinderHub</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <!-- <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" onchange="onChangeListener()">
+                <i class="fas fa-check-circle"></i>
+            </li> -->
+            </ul>
+        </div>
 
     </div> <!-- .wrapper-->
-
-<script src="_static/plugins.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-<script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/tippy.js@6"></script>
-
-
-    <script src=[></script>
-
-    <script src=]></script>
-
-<script src="_static/scripts.js"></script>
-<script>
-    feather.replace()
-    tippy('[data-tippy-content]');
-</script>
-
-
-<script>
-    window.ga = function () {
-        ga.q.push(arguments);
-    };
-    ga.q = [];
-    ga.l = +new Date();
-    ga("create", "UA-54984338-10", "auto");
-    ga("set", "anonymizeIp", true);
-    ga("set", "transport", "beacon");
-    ga("send", "pageview");
-</script>
-<script src="https://www.google-analytics.com/analytics.js" async></script>
-
   </body>
 </html>

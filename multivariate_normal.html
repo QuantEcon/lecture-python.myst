@@ -6,7 +6,27 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>8. Multivariate Normal Distribution &#8212; Quantitative Economics with Python</title>
-    <link rel="stylesheet" href="_static/quantecon-book-theme.css" type="text/css" />
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/quantecon-book-theme.9deb0a26de8466f54124a1959c24cd33.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -14,8 +34,11 @@
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/quantecon-book-theme.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -23,10 +46,10 @@
     <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/quantecon-book-theme.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/quantecon-book-theme.43eb86aa48ec3aed660cb313c38068cd.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
@@ -62,9 +85,7 @@
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
 <meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
 <meta property="og:site_name" content="Quantitative Economics with Python" />
-
 <meta name="theme-color" content="#ffffff" />
-
 
   </head>
 <body>
@@ -76,7 +97,7 @@
 
         <div class="main">
 
-            <div class="page">
+            <div class="page" id=multivariate_normal>
 
                 <div class="page__toc">
 
@@ -89,98 +110,117 @@
 
 
                         <nav id="bd-toc-nav" class="page__toc-nav">
-
-                            <ul class="nav section-nav flex-column">
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#overview" class="nav-link">Overview</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#the-multivariate-normal-distribution" class="nav-link">The Multivariate Normal Distribution</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#bivariate-example" class="nav-link">Bivariate Example</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#trivariate-example" class="nav-link">Trivariate Example</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#one-dimensional-intelligence-iq" class="nav-link">One Dimensional Intelligence (IQ)</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#another-representation" class="nav-link">Another representation</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#magic-of-the-cholesky-factorization" class="nav-link">Magic of the Cholesky factorization</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#math-and-verbal-components-of-intelligence" class="nav-link">Math and Verbal Components of Intelligence</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#univariate-time-series-analysis" class="nav-link">Univariate Time Series Analysis</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#smoothing-example" class="nav-link">Smoothing Example</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#filtering-exercise" class="nav-link">Filtering Exercise</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#prediction-exercise" class="nav-link">Prediction Exercise</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#constructing-a-wold-representation" class="nav-link">Constructing a Wold Representation</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#classic-factor-analysis-model" class="nav-link">Classic Factor Analysis Model</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#pca-as-approximation-to-factor-analytic-model" class="nav-link">PCA as Approximation to Factor Analytic Model</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#stochastic-difference-equation" class="nav-link">Stochastic Difference Equation</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#application-to-stock-price-model" class="nav-link">Application to Stock Price Model</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h2">
-                                    <a href="#filtering-foundations" class="nav-link">Filtering Foundations</a><ul class="nav section-nav flex-column">
-                                        
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#step-toward-dynamics" class="nav-link">Step toward dynamics</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#dynamic-version" class="nav-link">Dynamic version</a>
-                                </li>
-                                
-                                <li class="nav-item toc-entry toc-h3">
-                                    <a href="#code-for-iterating" class="nav-link">Code for Iterating</a>
-                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                            </ul>
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   8.1. Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-multivariate-normal-distribution">
+   8.2. The Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bivariate-example">
+   8.3. Bivariate Example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#trivariate-example">
+   8.4. Trivariate Example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#one-dimensional-intelligence-iq">
+   8.5. One Dimensional Intelligence (IQ)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#another-representation">
+   8.6. Another representation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#magic-of-the-cholesky-factorization">
+   8.7. Magic of the Cholesky factorization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#math-and-verbal-components-of-intelligence">
+   8.8. Math and Verbal Components of Intelligence
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#univariate-time-series-analysis">
+   8.9. Univariate Time Series Analysis
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#smoothing-example">
+     8.9.1. Smoothing Example
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#filtering-exercise">
+     8.9.2. Filtering Exercise
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#prediction-exercise">
+     8.9.3. Prediction Exercise
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#constructing-a-wold-representation">
+     8.9.4. Constructing a Wold Representation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#classic-factor-analysis-model">
+   8.10. Classic Factor Analysis Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pca-as-approximation-to-factor-analytic-model">
+   8.11. PCA as Approximation to Factor Analytic Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#stochastic-difference-equation">
+   8.12. Stochastic Difference Equation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#application-to-stock-price-model">
+   8.13. Application to Stock Price Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#filtering-foundations">
+   8.14. Filtering Foundations
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-toward-dynamics">
+     8.14.1. Step toward dynamics
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dynamic-version">
+     8.14.2. Dynamic version
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code-for-iterating">
+     8.14.3. Code for Iterating
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
 
                             <p class="logo">
                                 
@@ -581,7 +621,7 @@ estimate on <span class="math notranslate nohighlight">\(z_2 - \mu_2\)</span></p
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.2]]), array([0.2000613]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.2]]), array([0.19983686]))
 </pre></div>
 </div>
 </div>
@@ -595,7 +635,7 @@ degrees-of-freedom adjusted estimate of the variance of <span class="math notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.96]]), 0.9594638439705631)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.96]]), 0.9590390780635881)
 </pre></div>
 </div>
 </div>
@@ -609,7 +649,7 @@ compare it with <span class="math notranslate nohighlight">\(\hat{\mu}_1\)</span
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([1.]), array([1.0003065]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([1.]), array([0.99918431]))
 </pre></div>
 </div>
 </div>
@@ -641,10 +681,10 @@ Numbers.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.52454919, 0.46588322, 0.9983582 ]),
- array([[1.09459359, 0.59694074, 1.2369739 ],
-        [0.59694074, 0.39715647, 0.80437878],
-        [1.2369739 , 0.80437878, 1.90461536]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.7802898 , 0.93387235, 0.8699295 ]),
+ array([[0.82547737, 0.62242281, 0.5203803 ],
+        [0.62242281, 1.31268833, 0.39388308],
+        [0.5203803 , 0.39388308, 0.33504239]]))
 </pre></div>
 </div>
 </div>
@@ -697,7 +737,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[1.29744351, 0.10151019]]), array([1.29662443, 0.10116736]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.01253775, 1.53843787]]), array([0.01251514, 1.53820913]))
 </pre></div>
 </div>
 </div>
@@ -709,7 +749,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.19453125]]), 0.19454758530032382)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.01710082]]), 0.0171181675942266)
 </pre></div>
 </div>
 </div>
@@ -721,7 +761,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([2.92118648]), array([2.91855804]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([7.1475135]), array([7.1465447]))
 </pre></div>
 </div>
 </div>
@@ -898,7 +938,7 @@ random vector from our distribution and then compute the distribution of
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>91.08567461181612
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>96.30797068908059
 </pre></div>
 </div>
 </div>
@@ -915,7 +955,7 @@ general case so we need to set <code class="docutils literal notranslate"><span 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([90.0023336]), array([[1.96078431]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([97.19917848]), array([[1.96078431]]))
 </pre></div>
 </div>
 </div>
@@ -1248,7 +1288,7 @@ the mean vector and covariance matrix of the joint normal distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(79.37273623419274, 90.74437673757345)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(108.6866837318477, 79.80302665936757)
 </pre></div>
 </div>
 </div>
@@ -1267,7 +1307,7 @@ the mean vector and covariance matrix of the joint normal distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([83.99719127, 94.65683149]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([111.08364469,  92.51684413]),
  array([[33.33333333,  0.        ],
         [ 0.        , 33.33333333]]))
 </pre></div>
@@ -1310,12 +1350,12 @@ separately conditional on various subsets of test scores.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean and variance of θ conditional on y1, y2, y3, y4  are 84.00 and 33.33 respectively
-The mean and variance of θ conditional on y1, y2          are 84.00 and 33.33 respectively
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean and variance of θ conditional on y1, y2, y3, y4  are 111.08 and 33.33 respectively
+The mean and variance of θ conditional on y1, y2          are 111.08 and 33.33 respectively
 The mean and variance of θ conditional on y3, y4          are 100.00 and 100.00 respectively
-The mean and variance of η conditional on y1, y2, y3, y4  are 94.66 and 33.33 respectively
+The mean and variance of η conditional on y1, y2, y3, y4  are 92.52 and 33.33 respectively
 The mean and variance of η conditional on y1, y2          are 100.00 and 100.00 respectively
-The mean and variance of η conditional on y3, y4          are 94.66 and 33.33 respectively
+The mean and variance of η conditional on y3, y4          are 92.52 and 33.33 respectively
 </pre></div>
 </div>
 </div>
@@ -1571,16 +1611,16 @@ information about the hidden state</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X =  [1.20324558 2.39400916 1.42160631 1.77262505]
-Y =  [1.25145275 2.40573016 1.34785437 1.82209174]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X =  [-1.17725569  0.42322787  1.04691737  2.34884407]
+Y =  [-1.16942744  0.30980557  1.02341082  2.3222491 ]
  E [ X | Y] = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([1.25119273, 2.40072236, 1.35123795, 1.82058057]),
- array([[2.48875094e-03, 5.57449314e-06, 1.24861729e-08, 2.80236945e-11],
-        [5.57449314e-06, 2.48876343e-03, 5.57452116e-06, 1.25113944e-08],
-        [1.24861728e-08, 5.57452116e-06, 2.48876346e-03, 5.58575339e-06],
-        [2.80236945e-11, 1.25113941e-08, 5.58575339e-06, 2.49377812e-03]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-1.16346952,  0.30809916,  1.02468456,  2.31875775]),
+ array([[2.48875094e-03, 5.57449314e-06, 1.24861729e-08, 2.80235835e-11],
+        [5.57449314e-06, 2.48876343e-03, 5.57452116e-06, 1.25113941e-08],
+        [1.24861729e-08, 5.57452116e-06, 2.48876346e-03, 5.58575339e-06],
+        [2.80235835e-11, 1.25113941e-08, 5.58575339e-06, 2.49377812e-03]]))
 </pre></div>
 </div>
 </div>
@@ -1649,7 +1689,7 @@ matrix of the subvector
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([1.21489316]), array([[1.00201996]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.91939514]), array([[1.00201996]]))
 </pre></div>
 </div>
 </div>
@@ -1714,7 +1754,7 @@ covariance matrix of the subvector
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([1.94605659]), array([[1.81413617]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.24820158]), array([[1.81413617]]))
 </pre></div>
 </div>
 </div>
@@ -1759,7 +1799,7 @@ y_{t} = h_{t,t} \epsilon_{t} + h_{t,t-1} \epsilon_{t-1} + \dots + h_{t,0} \epsil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1.24989136,  1.2793434 , -0.81259635,  0.60583096])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.16796839,  1.35660319,  0.74594737,  1.39969425])
 </pre></div>
 </div>
 </div>
@@ -1771,7 +1811,7 @@ y_{t} = h_{t,t} \epsilon_{t} + h_{t,t-1} \epsilon_{t-1} + \dots + h_{t,0} \epsil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1.25145275, 2.40573016, 1.34785437, 1.82209174])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.16942744,  0.30980557,  1.02341082,  2.3222491 ])
 </pre></div>
 </div>
 </div>
@@ -1925,7 +1965,7 @@ for the second column. <span class="math notranslate nohighlight">\(D\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.93012001,  1.03939627]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.69081516, -0.98865879]),
  array([[0.04761905, 0.        ],
         [0.        , 0.04761905]]))
 </pre></div>
@@ -1944,7 +1984,7 @@ for the second column. <span class="math notranslate nohighlight">\(D\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.93012001,  1.03939627])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.69081516, -0.98865879])
 </pre></div>
 </div>
 </div>
@@ -1957,8 +1997,8 @@ for the second column. <span class="math notranslate nohighlight">\(D\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.94833558, -0.94833558, -0.94833558, -0.94833558, -0.94833558,
-         1.11181232,  1.11181232,  1.11181232,  1.11181232,  1.11181232]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.29835682, -0.29835682, -0.29835682, -0.29835682, -0.29835682,
+        -0.88879132, -0.88879132, -0.88879132, -0.88879132, -0.88879132]),
  array([[0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
         [0.  , 0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
         [0.  , 0.  , 0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
@@ -1982,8 +2022,8 @@ for the second column. <span class="math notranslate nohighlight">\(D\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.94833558, -0.94833558, -0.94833558, -0.94833558, -0.94833558,
-        1.11181232,  1.11181232,  1.11181232,  1.11181232,  1.11181232])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.29835682, -0.29835682, -0.29835682, -0.29835682, -0.29835682,
+       -0.88879132, -0.88879132, -0.88879132, -0.88879132, -0.88879132])
 </pre></div>
 </div>
 </div>
@@ -2084,8 +2124,9 @@ Y = P \epsilon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ε =  [ 2.44036874 -2.18380215  0.25685762 -0.29056158 -0.1734027  -0.49574143
-  0.46376741  1.33526024  0.18957653 -0.16891241]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ε =  [-1.62194513e+00 -2.32124367e+00 -4.36560568e-01 -1.59806134e-01
+  1.33904313e-01 -5.40796969e-01  4.42799544e-01  5.88299370e-01
+ -1.35905339e-03  2.52835603e-01]
 </pre></div>
 </div>
 </div>
@@ -2099,7 +2140,7 @@ Y = P \epsilon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f =  [-0.94833558  1.11181232]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f =  [-0.29835682 -0.88879132]
 </pre></div>
 </div>
 </div>
@@ -2141,7 +2182,7 @@ largest two eigenvalues.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 2.44036874, -2.18380215])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.62194513, -2.32124367])
 </pre></div>
 </div>
 </div>
@@ -2154,7 +2195,7 @@ largest two eigenvalues.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.93012001,  1.03939627])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.69081516, -0.98865879])
 </pre></div>
 </div>
 </div>
@@ -2838,7 +2879,7 @@ equations, followed by an example.</p>
   Tools and Techniques
  </span>
 </p>
-<ul class="current nav sidenav_l1">
+<ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="geom_series.html">
    1. Geometric Series for Elementary Economics
@@ -2874,7 +2915,7 @@ equations, followed by an example.</p>
    7. Heavy-Tailed Distributions
   </a>
  </li>
- <li class="toctree-l1 current active">
+ <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
    8. Multivariate Normal Distribution
   </a>
@@ -2890,7 +2931,7 @@ equations, followed by an example.</p>
   Introduction to Dynamics
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
    10. Dynamics in One Dimension
@@ -2957,7 +2998,7 @@ equations, followed by an example.</p>
   Search
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
    22. Job Search I: The McCall Search Model
@@ -2994,7 +3035,7 @@ equations, followed by an example.</p>
   Consumption, Savings and Growth
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    28. Cake Eating I: Introduction to Optimal Saving
@@ -3041,7 +3082,7 @@ equations, followed by an example.</p>
   Information
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
    36. Job Search VII: Search with Learning
@@ -3078,7 +3119,7 @@ equations, followed by an example.</p>
   LQ Control
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
    42. LQ Control: Foundations
@@ -3105,7 +3146,7 @@ equations, followed by an example.</p>
   Multiple Agent Models
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
    46. Schelling’s Segregation Model
@@ -3147,7 +3188,7 @@ equations, followed by an example.</p>
   Asset Pricing and Finance
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
    53. Asset Pricing: Finite State Models
@@ -3169,7 +3210,7 @@ equations, followed by an example.</p>
   Data and Empirics
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
    56. Pandas for Panel Data
@@ -3191,7 +3232,7 @@ equations, followed by an example.</p>
   Other
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
    59. Troubleshooting
@@ -3241,48 +3282,50 @@ equations, followed by an example.</p>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="_notebooks/multivariate_normal.ipynb" download><i data-feather="download-cloud"></i></a></li>
-                    <li data-tippy-content="Launch Notebook"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/multivariate_normal.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
-                    <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="Launch Notebook" id="launchButton"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/multivariate_normal.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/multivariate_normal.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
 
-
         </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="_pdf/quantecon-python.pdf" download><p style="color: white;">Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title">QuantEcon Notebook Launcher</p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input" onchange="onChangeListener()">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/multivariate_normal.ipynb">BinderHub</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <!-- <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" onchange="onChangeListener()">
+                <i class="fas fa-check-circle"></i>
+            </li> -->
+            </ul>
+        </div>
 
     </div> <!-- .wrapper-->
-
-<script src="_static/plugins.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-<script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/tippy.js@6"></script>
-
-
-    <script src=[></script>
-
-    <script src=]></script>
-
-<script src="_static/scripts.js"></script>
-<script>
-    feather.replace()
-    tippy('[data-tippy-content]');
-</script>
-
-
-<script>
-    window.ga = function () {
-        ga.q.push(arguments);
-    };
-    ga.q = [];
-    ga.l = +new Date();
-    ga("create", "UA-54984338-10", "auto");
-    ga("set", "anonymizeIp", true);
-    ga("set", "transport", "beacon");
-    ga("send", "pageview");
-</script>
-<script src="https://www.google-analytics.com/analytics.js" async></script>
-
   </body>
 </html>
