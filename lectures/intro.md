@@ -26,9 +26,10 @@ ecosystem. Please send feedback to [contact@quantecon.org](mailto:contact@quante
 
 For an overview of the series, see [this page](https://quantecon.org/python-lectures/)
 
+````{only} html
 ```{tableofcontents}
 ```
-
+````
 
 ```{admonition} Previous website
 While this new site will receive all future updates, you may still view the [old site here](http://rst-python.quantecon.org) for the next month.
