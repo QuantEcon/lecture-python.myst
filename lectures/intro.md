@@ -11,8 +11,10 @@ kernelspec:
 
 # Quantitative Economics with Python
 
+```{only} html
 This website presents a set of lectures on quantitative economic modeling, designed and written by
 [Thomas J. Sargent](http://www.tomsargent.com/) and [John Stachurski](http://johnstachurski.net/).
+```
 
 ```{admonition} News
 [QuantEcon](https://quantecon.org) is moving to the [Jupyter Book](https://jupyterbook.org/intro.html)
