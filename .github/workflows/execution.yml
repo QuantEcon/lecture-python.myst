@@ -1,8 +1,8 @@
 name: Run Execution Tests [Latest Anaconda]
-on: push
-  # schedule:
-  #   # UTC 22:00 is early morning in Australia
-  #   - cron:  '0 22 * * *'
+on:
+  schedule:
+    # UTC 22:00 is early morning in Australia
+    - cron:  '0 22 * * *'
 jobs:
   execution-tests-linux-osx:
     name: Execution Tests (${{ matrix.python-version }}, ${{ matrix.os }})
