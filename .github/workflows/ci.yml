@@ -47,3 +47,40 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+  pdflatex:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install wheel
+        pip install -e .[testing]
+    - name: Install latex dependencies
+      run: |
+        sudo apt-get -qq update
+        sudo apt-get install -y     \
+          texlive-latex-recommended \
+          texlive-latex-extra       \
+          texlive-fonts-recommended \
+          texlive-fonts-extra       \
+          texlive-xetex             \
+          latexmk                   \
+          xindy
+
+    - name: Build PDF from LaTeX (Docs)
+      run: |
+        jb build lectures --builder pdflatex -n -W --keep-going
+    - uses: actions/upload-artifact@v2
+      with:
+        name: PDF_LATEX
+        path: jupyter-book/docs/_build/latex/book.pdf
