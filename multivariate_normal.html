@@ -9,6 +9,25 @@
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+        MathJax = {
+          loader: {load: ['[tex]/boldsymbol']},
+          tex: {
+            packages: {'[+]': ['boldsymbol']},
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            processEscapes: true,
+            macros: {
+                "argmax" : "arg\\,max",
+                "argmin" : "arg\\,min"
+            }
+          },
+          svg: {
+            fontCache: 'global',
+            scale: 0.92,
+            displayAlign: "center",
+          },
+        };
+    </script>
     
     
   <link href="_static/css/theme.css" rel="stylesheet" />
@@ -26,7 +45,7 @@
       
 
     
-    <link rel="stylesheet" href="_static/quantecon-book-theme.9deb0a26de8466f54124a1959c24cd33.css" type="text/css" />
+    <link rel="stylesheet" href="_static/quantecon-book-theme.b2c9c855ebbf206c0b4223812193cad1.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -48,7 +67,7 @@
     <script src="_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script src="_static/quantecon-book-theme.43eb86aa48ec3aed660cb313c38068cd.js"></script>
+    <script src="_static/quantecon-book-theme.a5462485f8dd312884626d20cc9f547c.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
@@ -621,7 +640,7 @@ estimate on <span class="math notranslate nohighlight">\(z_2 - \mu_2\)</span></p
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.2]]), array([0.19983686]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.2]]), array([0.1998306]))
 </pre></div>
 </div>
 </div>
@@ -635,7 +654,7 @@ degrees-of-freedom adjusted estimate of the variance of <span class="math notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.96]]), 0.9590390780635881)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.96]]), 0.9593939966829901)
 </pre></div>
 </div>
 </div>
@@ -649,7 +668,7 @@ compare it with <span class="math notranslate nohighlight">\(\hat{\mu}_1\)</span
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([1.]), array([0.99918431]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([1.]), array([0.999153]))
 </pre></div>
 </div>
 </div>
@@ -681,10 +700,10 @@ Numbers.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.7802898 , 0.93387235, 0.8699295 ]),
- array([[0.82547737, 0.62242281, 0.5203803 ],
-        [0.62242281, 1.31268833, 0.39388308],
-        [0.5203803 , 0.39388308, 0.33504239]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.39079259, 0.62077879, 0.81385771]),
+ array([[1.01798374, 1.21422933, 0.54653464],
+        [1.21422933, 1.8509796 , 1.08743501],
+        [0.54653464, 1.08743501, 1.0526241 ]]))
 </pre></div>
 </div>
 </div>
@@ -737,7 +756,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.01253775, 1.53843787]]), array([0.01251514, 1.53820913]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.89284787, -0.40316329]]), array([ 0.89369898, -0.40382689]))
 </pre></div>
 </div>
 </div>
@@ -749,7 +768,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.01710082]]), 0.0171181675942266)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.15420437]]), 0.153807970923319)
 </pre></div>
 </div>
 </div>
@@ -761,7 +780,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([7.1475135]), array([7.1465447]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.06547157]), array([-0.06707565]))
 </pre></div>
 </div>
 </div>
@@ -938,7 +957,7 @@ random vector from our distribution and then compute the distribution of
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>96.30797068908059
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>81.49805738000804
 </pre></div>
 </div>
 </div>
@@ -955,7 +974,7 @@ general case so we need to set <code class="docutils literal notranslate"><span 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([97.19917848]), array([[1.96078431]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([81.73191185]), array([[1.96078431]]))
 </pre></div>
 </div>
 </div>
@@ -1288,7 +1307,7 @@ the mean vector and covariance matrix of the joint normal distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(108.6866837318477, 79.80302665936757)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(103.6569520531216, 96.51246330481511)
 </pre></div>
 </div>
 </div>
@@ -1307,7 +1326,7 @@ the mean vector and covariance matrix of the joint normal distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([111.08364469,  92.51684413]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([103.31833685,  96.09828463]),
  array([[33.33333333,  0.        ],
         [ 0.        , 33.33333333]]))
 </pre></div>
@@ -1350,12 +1369,12 @@ separately conditional on various subsets of test scores.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean and variance of θ conditional on y1, y2, y3, y4  are 111.08 and 33.33 respectively
-The mean and variance of θ conditional on y1, y2          are 111.08 and 33.33 respectively
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean and variance of θ conditional on y1, y2, y3, y4  are 103.32 and 33.33 respectively
+The mean and variance of θ conditional on y1, y2          are 103.32 and 33.33 respectively
 The mean and variance of θ conditional on y3, y4          are 100.00 and 100.00 respectively
-The mean and variance of η conditional on y1, y2, y3, y4  are 92.52 and 33.33 respectively
+The mean and variance of η conditional on y1, y2, y3, y4  are 96.10 and 33.33 respectively
 The mean and variance of η conditional on y1, y2          are 100.00 and 100.00 respectively
-The mean and variance of η conditional on y3, y4          are 92.52 and 33.33 respectively
+The mean and variance of η conditional on y3, y4          are 96.10 and 33.33 respectively
 </pre></div>
 </div>
 </div>
@@ -1611,12 +1630,12 @@ information about the hidden state</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X =  [-1.17725569  0.42322787  1.04691737  2.34884407]
-Y =  [-1.16942744  0.30980557  1.02341082  2.3222491 ]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X =  [ 1.42392694  0.36007097 -0.24933777  1.47629331]
+Y =  [ 1.39160919  0.36095535 -0.28228584  1.4899794 ]
  E [ X | Y] = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-1.16346952,  0.30809916,  1.02468456,  2.31875775]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([ 1.38615093,  0.36181401, -0.2768762 ,  1.48564233]),
  array([[2.48875094e-03, 5.57449314e-06, 1.24861729e-08, 2.80235835e-11],
         [5.57449314e-06, 2.48876343e-03, 5.57452116e-06, 1.25113941e-08],
         [1.24861729e-08, 5.57452116e-06, 2.48876346e-03, 5.58575339e-06],
@@ -1689,7 +1708,7 @@ matrix of the subvector
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.91939514]), array([[1.00201996]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.25269287]), array([[1.00201996]]))
 </pre></div>
 </div>
 </div>
@@ -1754,7 +1773,7 @@ covariance matrix of the subvector
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.24820158]), array([[1.81413617]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.29416469]), array([[1.81413617]]))
 </pre></div>
 </div>
 </div>
@@ -1799,7 +1818,7 @@ y_{t} = h_{t,t} \epsilon_{t} + h_{t,t-1} \epsilon_{t-1} + \dots + h_{t,0} \epsil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.16796839,  1.35660319,  0.74594737,  1.39969425])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1.38987293, -0.88636869, -0.60776351,  1.73874717])
 </pre></div>
 </div>
 </div>
@@ -1811,7 +1830,7 @@ y_{t} = h_{t,t} \epsilon_{t} + h_{t,t-1} \epsilon_{t-1} + \dots + h_{t,0} \epsil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.16942744,  0.30980557,  1.02341082,  2.3222491 ])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1.39160919,  0.36095535, -0.28228584,  1.4899794 ])
 </pre></div>
 </div>
 </div>
@@ -1965,7 +1984,7 @@ for the second column. <span class="math notranslate nohighlight">\(D\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.69081516, -0.98865879]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-1.8489372 ,  1.22598628]),
  array([[0.04761905, 0.        ],
         [0.        , 0.04761905]]))
 </pre></div>
@@ -1984,7 +2003,7 @@ for the second column. <span class="math notranslate nohighlight">\(D\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.69081516, -0.98865879])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.8489372 ,  1.22598628])
 </pre></div>
 </div>
 </div>
@@ -1997,8 +2016,8 @@ for the second column. <span class="math notranslate nohighlight">\(D\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.29835682, -0.29835682, -0.29835682, -0.29835682, -0.29835682,
-        -0.88879132, -0.88879132, -0.88879132, -0.88879132, -0.88879132]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-2.42574495, -2.42574495, -2.42574495, -2.42574495, -2.42574495,
+         2.0289547 ,  2.0289547 ,  2.0289547 ,  2.0289547 ,  2.0289547 ]),
  array([[0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
         [0.  , 0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
         [0.  , 0.  , 0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
@@ -2022,8 +2041,8 @@ for the second column. <span class="math notranslate nohighlight">\(D\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.29835682, -0.29835682, -0.29835682, -0.29835682, -0.29835682,
-       -0.88879132, -0.88879132, -0.88879132, -0.88879132, -0.88879132])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-2.42574495, -2.42574495, -2.42574495, -2.42574495, -2.42574495,
+        2.0289547 ,  2.0289547 ,  2.0289547 ,  2.0289547 ,  2.0289547 ])
 </pre></div>
 </div>
 </div>
@@ -2124,9 +2143,8 @@ Y = P \epsilon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ε =  [-1.62194513e+00 -2.32124367e+00 -4.36560568e-01 -1.59806134e-01
-  1.33904313e-01 -5.40796969e-01  4.42799544e-01  5.88299370e-01
- -1.35905339e-03  2.52835603e-01]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ε =  [-4.34106673  2.87845808 -0.34058497 -0.2906493  -0.48535967 -0.71722805
+  0.12676095 -0.37250402  0.05686126  1.32704806]
 </pre></div>
 </div>
 </div>
@@ -2140,7 +2158,7 @@ Y = P \epsilon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f =  [-0.29835682 -0.88879132]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f =  [-2.42574495  2.0289547 ]
 </pre></div>
 </div>
 </div>
@@ -2182,7 +2200,7 @@ largest two eigenvalues.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.62194513, -2.32124367])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-4.34106673,  2.87845808])
 </pre></div>
 </div>
 </div>
@@ -2195,7 +2213,7 @@ largest two eigenvalues.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.69081516, -0.98865879])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.8489372 ,  1.22598628])
 </pre></div>
 </div>
 </div>
@@ -3281,8 +3299,8 @@ equations, followed by an example.</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/multivariate_normal.ipynb" download><i data-feather="download-cloud"></i></a></li>
-                    <li data-tippy-content="Launch Notebook" id="launchButton"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/multivariate_normal.ipynb" target="_blank"><i data-feather="play-circle"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/multivariate_normal.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/multivariate_normal.md" download><i data-feather="github"></i></a></li>
                 </ul>
@@ -3296,12 +3314,12 @@ equations, followed by an example.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p style="color: white;">Book (PDF)</p></a>
+                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>
         <div id="settingsModal" style="display: none;">
-            <p class="modal-title">QuantEcon Notebook Launcher</p>
+            <p class="modal-title"> Notebook Launcher </p>
             <div class="modal-desc">
             <p>
                 Choose public or private cloud service for "Launch" button.
@@ -3311,21 +3329,115 @@ equations, followed by an example.</p>
             <ul class="modal-servers">
             <li class="active launcher-public">
                 <span class="label">Public</span>
-                <select id="launcher-public-input" onchange="onChangeListener()">
+                <select id="launcher-public-input">
                 
                     <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/multivariate_normal.ipynb">BinderHub</option>
                 
                 </select>
                 <i class="fas fa-check-circle"></i>
             </li>
-            <!-- <li class="launcher-private">
+            <li class="launcher-private">
                 <span class="label">Private</span>
-                <input type="text" id="launcher-private-input" onchange="onChangeListener()">
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/multivariate_normal.ipynb" data-branch=master>
                 <i class="fas fa-check-circle"></i>
-            </li> -->
+            </li>
             </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/multivariate_normal.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "multivariate_normal";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/multivariate_normal.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
         </div>
 
     </div> <!-- .wrapper-->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-54984338-10', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
   </body>
 </html>
