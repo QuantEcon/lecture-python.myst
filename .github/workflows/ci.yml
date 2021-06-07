@@ -43,6 +43,7 @@ jobs:
       - name: Build PDF from LaTeX
         shell: bash -l {0}
         run: |
+          pip install git+https://github.com/executablebooks/jupyterbook-latex@tableofcontents-directive
           jb build lectures --builder pdflatex --path-output ./ -n --keep-going
           mkdir -p _build/html/_pdf
           cp -u _build/latex/*.pdf _build/html/_pdf
