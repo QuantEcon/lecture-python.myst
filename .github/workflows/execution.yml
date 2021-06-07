@@ -23,9 +23,9 @@ jobs:
         shell: bash -l {0}
         run: |
           conda install anaconda
-          pip install jupyter-book sphinx-multitoc-numbering quantecon-book-theme sphinxext-rediraffe sphinx_tojupyter
-          pip uninstall myst-nb
-          pip install git+https://github.com/executablebooks/MyST-NB@code-load-utf8-standard
+          pip install -y jupyter-book sphinx-multitoc-numbering quantecon-book-theme sphinxext-rediraffe sphinx_tojupyter
+          pip uninstall -y myst-nb
+          pip install -y git+https://github.com/executablebooks/MyST-NB@code-load-utf8-standard
       - name: Build Lectures (+ Execution Checks)
         shell: bash -l {0}
         run: jb build lectures --path-output=./ -W --keep-going
