@@ -1258,7 +1258,6 @@ p = β / (α + β)
 
 P = ((1 - α,       α),               # Careful: P and p are distinct
      (    β,   1 - β))
-P = np.array(P)
 mc = MarkovChain(P)
 
 fig, ax = plt.subplots(figsize=(9, 6))
