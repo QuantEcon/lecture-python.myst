@@ -21,7 +21,7 @@ jobs:
       - name: Build HTML
         shell: bash -l {0}
         run: |
-          jb build lectures --path-output ./
+          jb build lectures --path-output ./ -W --keep-going
       - name: Upload "_build" folder (cache)
         uses: actions/upload-artifact@v2
         with:
