@@ -428,6 +428,7 @@ def bellman(J, Q):
 
 
 def compute_cost_to_go(Q):
+    num_nodes = Q.shape[0]
     J = np.zeros(num_nodes)      # Initial guess
     next_J = np.empty(num_nodes)  # Stores updated guess
     max_iter = 500
