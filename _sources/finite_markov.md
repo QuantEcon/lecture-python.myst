@@ -767,7 +767,7 @@ One option is to regard this as an eigenvector problem: a vector
 $\psi$ such that $\psi = \psi P$ is a left eigenvector associated
 with the unit eigenvalue $\lambda = 1$.
 
-A more stable and sophisticated algorithm is implemented in [QuantEcon.py](http://quantecon.org/quantecon-py).
+A stable and sophisticated algorithm specialized for stochastic matrices is implemented in [QuantEcon.py](http://quantecon.org/quantecon-py).
 
 This is the one we recommend you to use:
 
@@ -1258,7 +1258,6 @@ p = β / (α + β)
 
 P = ((1 - α,       α),               # Careful: P and p are distinct
      (    β,   1 - β))
-P = np.array(P)
 mc = MarkovChain(P)
 
 fig, ax = plt.subplots(figsize=(9, 6))
