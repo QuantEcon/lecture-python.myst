@@ -58,8 +58,7 @@ The shortest path problem is one of finding how to traverse a [graph](https://en
 
 Consider the following graph
 
-```{figure} /_static/lecture_specific/short_path/graph.png
-
+```{figure} _static/lecture_specific/short_path/graph.png
 ```
 
 We wish to travel from node (vertex) A to node G at minimum cost
@@ -79,14 +78,12 @@ For this simple graph, a quick scan of the edges shows that the optimal paths ar
 
 * A, C, F, G at cost 8
 
-```{figure} /_static/lecture_specific/short_path/graph4.png
-
+```{figure} _static/lecture_specific/short_path/graph4.png
 ```
 
 * A, D, F, G at cost 8
 
-```{figure} /_static/lecture_specific/short_path/graph3.png
-
+```{figure} _static/lecture_specific/short_path/graph3.png
 ```
 
 ## Finding Least-Cost Paths
@@ -98,7 +95,6 @@ Let $J(v)$ denote the minimum cost-to-go from node $v$, understood as the total 
 Suppose that we know $J(v)$ for each node $v$, as shown below for the graph from the preceding example
 
 ```{figure} /_static/lecture_specific/short_path/graph2.png
-
 ```
 
 Note that $J(G) = 0$.
