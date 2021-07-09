@@ -222,8 +222,8 @@ Let's try with this example and see how we go:
 
 ```{code-cell} python3
 nodes = range(7)                              # Nodes = 0, 1, ..., 6
-J = np.zeros_like(nodes, dtype=np.int)        # Initial guess
-next_J = np.empty_like(nodes, dtype=np.int)   # Stores updated guess
+J = np.zeros_like(nodes, dtype=int)        # Initial guess
+next_J = np.empty_like(nodes, dtype=int)   # Stores updated guess
 
 max_iter = 500
 i = 0
