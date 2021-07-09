@@ -473,3 +473,8 @@ J = compute_cost_to_go(Q)
 print_best_path(J, Q)
 ```
 
+The total cost of the path should agree with $J[0]$ so let's check this.
+
+```{code-cell} python3
+J[0]
+```
