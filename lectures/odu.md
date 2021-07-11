@@ -783,7 +783,7 @@ def simulate_path(F_a=F_a,
     """Simulates path of employment for N number of works over T periods"""
 
     e = np.ones((N, T+1))
-    π = np.ones((N, T+1)) * 1e-3
+    π = np.full((N, T+1), 1e-3)
 
     a, b = G_a, G_b   # Initial distribution parameters
 

@@ -1470,7 +1470,7 @@ c = up.flatten() + c_bar           # Consumption
 
 time = np.arange(1, K+1)
 income_w = σ * wp_w[0, 1:K+1] + m1 * time + m2 * time**2  # Income
-income_r = np.ones(T-K) * s
+income_r = np.full(T-K, s)
 income = np.concatenate((income_w, income_r))
 
 # Plot results
