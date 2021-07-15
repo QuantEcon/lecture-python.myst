@@ -352,7 +352,7 @@ first_diffs = np.diff(sample_dates)
 
 fig, ax = plt.subplots()
 
-X = np.ones(num_firms) * x_init
+X = np.full(num_firms, x_init)
 
 current_date = 0
 for d in first_diffs:

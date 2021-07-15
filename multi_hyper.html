@@ -399,7 +399,7 @@ the total number of objects in the urn and <span class="math notranslate nohighl
         <span class="n">μ</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">K_arr</span> <span class="o">/</span> <span class="n">N</span>
 
         <span class="c1"># variance-covariance matrix</span>
-        <span class="n">Σ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span> <span class="o">*</span> <span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">Σ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
             <span class="n">Σ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*=</span> <span class="n">K_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="n">K_arr</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
@@ -625,7 +625,7 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3.9587235, 0.2770371, 1.1591928, 0.6050466])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3.9574451, 0.2773132, 1.1599817, 0.60526  ])
 </pre></div>
 </div>
 </div>
@@ -638,10 +638,10 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.31865308, -0.1789045 , -0.74919235, -0.39055623],
-       [-0.1789045 ,  0.25868917, -0.05253652, -0.02724816],
-       [-0.74919235, -0.05253652,  0.91622394, -0.11449507],
-       [-0.39055623, -0.02724816, -0.11449507,  0.53229947]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.31902831, -0.17885678, -0.74941377, -0.39075776],
+       [-0.17885678,  0.25884701, -0.05262474, -0.02736549],
+       [-0.74941377, -0.05262474,  0.91630065, -0.11426214],
+       [-0.39075776, -0.02736549, -0.11426214,  0.53238539]])
 </pre></div>
 </div>
 </div>
@@ -766,7 +766,7 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.89725878, 0.03904068, 0.81588336, 0.04143663])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.9083167 , 0.83964706, 0.32104432, 0.30069523])
 </pre></div>
 </div>
 </div>

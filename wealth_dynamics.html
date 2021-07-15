@@ -437,6 +437,12 @@ Solving environment: -
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
@@ -842,7 +848,7 @@ curve and Gini coefficient.</p>
 <span class="sd">    Generate the Lorenz curve data and gini coefficient corresponding to a</span>
 <span class="sd">    WealthDynamics mode by simulating num_households forward to time T.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ψ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_households</span><span class="p">)</span> <span class="o">*</span> <span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span>
+    <span class="n">ψ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">num_households</span><span class="p">,</span> <span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span><span class="p">)</span>
     <span class="n">z_0</span> <span class="o">=</span> <span class="n">wdy</span><span class="o">.</span><span class="n">z_mean</span>
 
     <span class="n">ψ_star</span> <span class="o">=</span> <span class="n">update_cross_section</span><span class="p">(</span><span class="n">wdy</span><span class="p">,</span> <span class="n">ψ_0</span><span class="p">,</span> <span class="n">shift_length</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
@@ -969,7 +975,7 @@ this what you see?</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_households</span> <span class="o">=</span> <span class="mi">250_000</span>
 <span class="n">T</span> <span class="o">=</span> <span class="mi">500</span>                                      <span class="c1"># shift forward T periods</span>
-<span class="n">ψ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_households</span><span class="p">)</span> <span class="o">*</span> <span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span>   <span class="c1"># initial distribution</span>
+<span class="n">ψ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">num_households</span><span class="p">,</span> <span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span><span class="p">)</span>   <span class="c1"># initial distribution</span>
 <span class="n">z_0</span> <span class="o">=</span> <span class="n">wdy</span><span class="o">.</span><span class="n">z_mean</span>
 </pre></div>
 </div>
@@ -1016,7 +1022,7 @@ in the right hand tail.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_households</span> <span class="o">=</span> <span class="mi">250_000</span>
 <span class="n">T</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># how far to shift forward in time</span>
-<span class="n">ψ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_households</span><span class="p">)</span> <span class="o">*</span> <span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span>
+<span class="n">ψ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">num_households</span><span class="p">,</span> <span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span><span class="p">)</span>
 <span class="n">z_0</span> <span class="o">=</span> <span class="n">wdy</span><span class="o">.</span><span class="n">z_mean</span>
 
 <span class="n">ψ_star</span> <span class="o">=</span> <span class="n">update_cross_section</span><span class="p">(</span><span class="n">wdy</span><span class="p">,</span> <span class="n">ψ_0</span><span class="p">,</span> <span class="n">shift_length</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>

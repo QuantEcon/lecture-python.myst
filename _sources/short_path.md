@@ -222,8 +222,8 @@ Let's try with this example and see how we go:
 
 ```{code-cell} python3
 nodes = range(7)                              # Nodes = 0, 1, ..., 6
-J = np.zeros_like(nodes, dtype=np.int)        # Initial guess
-next_J = np.empty_like(nodes, dtype=np.int)   # Stores updated guess
+J = np.zeros_like(nodes, dtype=int)        # Initial guess
+next_J = np.empty_like(nodes, dtype=int)   # Stores updated guess
 
 max_iter = 500
 i = 0
@@ -389,8 +389,7 @@ destination_node = 99
 def map_graph_to_distance_matrix(in_file):
 
     # First let's set of the distance matrix Q with inf everywhere
-    Q = np.ones((num_nodes, num_nodes))
-    Q = Q * np.inf
+    Q = np.full((num_nodes, num_nodes), np.inf)
 
     # Now we read in the data and modify Q
     infile = open(in_file)
@@ -473,3 +472,8 @@ J = compute_cost_to_go(Q)
 print_best_path(J, Q)
 ```
 
+The total cost of the path should agree with $J[0]$ so let's check this.
+
+```{code-cell} python3
+J[0]
+```

@@ -157,7 +157,7 @@ for i in range(T):
     if i-2 >= 0:
         A[i, i-2] = -𝛼2
 
-b = np.ones(T) * 𝛼0
+b = np.full(T, 𝛼0)
 b[0] = 𝛼0 + 𝛼1 * y0 + 𝛼2 * y_1
 b[1] = 𝛼0 + 𝛼2 * y0
 ```
@@ -200,7 +200,7 @@ then $y_{t}$ will be constant
 y_1_steady = 𝛼0 / (1 - 𝛼1 - 𝛼2) # y_{-1}
 y0_steady = 𝛼0 / (1 - 𝛼1 - 𝛼2)
 
-b_steady = np.ones(T) * 𝛼0
+b_steady = np.full(T, 𝛼0)
 b_steady[0] = 𝛼0 + 𝛼1 * y0_steady + 𝛼2 * y_1_steady
 b_steady[1] = 𝛼0 + 𝛼2 * y0_steady
 ```
