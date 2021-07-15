@@ -288,7 +288,7 @@ def solve_model(cw,
     T, _ = operator_factory(cw, parallel_flag=use_parallel)
 
     # Set up loop
-    v = np.ones((cw.grid_size, cw.grid_size)) * 100  # Initial guess
+    v = np.full((cw.grid_size, cw.grid_size), 100.)  # Initial guess
     i = 0
     error = tol + 1
 
@@ -519,4 +519,3 @@ In the new figure, you see that the region for which the worker
 stays put has grown because the distribution for $\epsilon$
 has become more concentrated around the mean, making high-paying jobs
 less realistic.
-

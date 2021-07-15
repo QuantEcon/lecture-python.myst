@@ -389,8 +389,7 @@ destination_node = 99
 def map_graph_to_distance_matrix(in_file):
 
     # First let's set of the distance matrix Q with inf everywhere
-    Q = np.ones((num_nodes, num_nodes))
-    Q = Q * np.inf
+    Q = np.full((num_nodes, num_nodes), np.inf)
 
     # Now we read in the data and modify Q
     infile = open(in_file)

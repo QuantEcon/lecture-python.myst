@@ -265,7 +265,7 @@ def compute_fixed_point(js,
                         verbose=True,
                         print_skip=25):
 
-    f_init = np.log(js.c) * np.ones(len(js.z_grid))
+    f_init = np.full(len(js.z_grid), np.log(js.c))
     f_out = np.empty_like(f_init)
 
     # Set up loop

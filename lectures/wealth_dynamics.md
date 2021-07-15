@@ -441,7 +441,7 @@ def generate_lorenz_and_gini(wdy, num_households=100_000, T=500):
     Generate the Lorenz curve data and gini coefficient corresponding to a
     WealthDynamics mode by simulating num_households forward to time T.
     """
-    ψ_0 = np.ones(num_households) * wdy.y_mean
+    ψ_0 = np.full(num_households, wdy.y_mean)
     z_0 = wdy.z_mean
 
     ψ_star = update_cross_section(wdy, ψ_0, shift_length=T)
@@ -576,7 +576,7 @@ For sample size and initial conditions, use
 ```{code-cell} ipython3
 num_households = 250_000
 T = 500                                      # shift forward T periods
-ψ_0 = np.ones(num_households) * wdy.y_mean   # initial distribution
+ψ_0 = np.full(num_households, wdy.y_mean)   # initial distribution
 z_0 = wdy.z_mean
 ```
 
@@ -616,7 +616,7 @@ First let's generate the distribution:
 ```{code-cell} ipython3
 num_households = 250_000
 T = 500  # how far to shift forward in time
-ψ_0 = np.ones(num_households) * wdy.y_mean
+ψ_0 = np.full(num_households, wdy.y_mean)
 z_0 = wdy.z_mean
 
 ψ_star = update_cross_section(wdy, ψ_0, shift_length=T)

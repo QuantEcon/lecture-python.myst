@@ -218,7 +218,7 @@ class Urn:
         μ = n * K_arr / N
 
         # variance-covariance matrix
-        Σ = np.ones((c, c)) * n * (N - n) / (N - 1) / N ** 2
+        Σ = np.full((c, c), n * (N - n) / (N - 1) / N ** 2)
         for i in range(c-1):
             Σ[i, i] *= K_arr[i] * (N - K_arr[i])
             for j in range(i+1, c):
