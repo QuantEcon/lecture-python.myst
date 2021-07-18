@@ -120,8 +120,7 @@ $z = 1 + \sqrt{3} i$.
 ```{code-cell} python3
 # Abbreviate useful values and functions
 π = np.pi
-zeros = np.zeros
-ones = np.ones
+
 
 # Set parameters
 r = 2
@@ -135,9 +134,9 @@ fig = plt.figure(figsize=(8, 8))
 ax = plt.subplot(111, projection='polar')
 
 ax.plot((0, θ), (0, r), marker='o', color='b')          # Plot r
-ax.plot(zeros(x_range.shape), x_range, color='b')       # Plot x
+ax.plot(np.zeros(x_range.shape), x_range, color='b')       # Plot x
 ax.plot(θ_range, x / np.cos(θ_range), color='b')        # Plot y
-ax.plot(θ_range, ones(θ_range.shape) * 0.1, color='r')  # Plot θ
+ax.plot(θ_range, np.full(θ_range.shape, 0.1), color='r')  # Plot θ
 
 ax.margins(0) # Let the plot starts at origin
 

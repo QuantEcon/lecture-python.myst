@@ -431,7 +431,7 @@ def param_plot():
     # Draw (t1, t2) points
     ρ1 = np.linspace(-2, 2, 100)
     ax.plot(ρ1, -abs(ρ1) + 1, c='black')
-    ax.plot(ρ1, np.ones_like(ρ1) * -1, c='black')
+    ax.plot(ρ1, np.full_like(ρ1, -1), c='black')
     ax.plot(ρ1, -(ρ1**2 / 4), c='black')
 
     # Turn normal axes off

@@ -265,7 +265,7 @@ class LakeModel:
         --------
         xbar : steady state vector of employment and unemployment rates
         """
-        x = 0.5 * np.ones(2)
+        x = np.full(2, 0.5)
         error = tol + 1
         while error > tol:
             new_x = self.A_hat @ x
@@ -1049,7 +1049,7 @@ class LakeModelModified:
         --------
         xbar : steady state vector of employment and unemployment rates
         """
-        x = 0.5 * np.ones(2)
+        x = np.full(2, 0.5)
         error = tol + 1
         while error > tol:
             new_x = self.A_hat @ x
