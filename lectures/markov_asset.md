@@ -923,7 +923,7 @@ Consider the following primitives
 ```{code-cell} python3
 n = 5
 P = np.full((n, n), 0.0125)
-P += np.diag(0.95 - 0.0125 * np.ones(5))
+P[range(n), range(n)] += 1 - P.sum(1)
 # State values of the Markov chain
 s = np.array([0.95, 0.975, 1.0, 1.025, 1.05])
 γ = 2.0
@@ -1011,7 +1011,7 @@ First, let's enter the parameters:
 ```{code-cell} python3
 n = 5
 P = np.full((n, n), 0.0125)
-P += np.diag(0.95 - 0.0125 * np.ones(5))
+P[range(n), range(n)] += 1 - P.sum(1)
 s = np.array([0.95, 0.975, 1.0, 1.025, 1.05])  # State values
 mc = qe.MarkovChain(P, state_values=s)
 

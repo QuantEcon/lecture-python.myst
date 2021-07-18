@@ -514,7 +514,7 @@ test scores $\sigma_{y}$.
 ```{code-cell} python3
 def construct_moments_IQ(n, μθ, σθ, σy):
 
-    μ_IQ = np.ones(n+1) * μθ
+    μ_IQ = np.full(n+1, μθ)
 
     D_IQ = np.zeros((n+1, n+1))
     D_IQ[range(n), range(n)] = σy
@@ -1710,7 +1710,7 @@ A_inv = np.linalg.inv(A)
 
 ```{code-cell} python3
 # compute the mean vectors of b and y
-μb = np.ones(T) * 𝛼0
+μb = np.full(T, 𝛼0)
 μb[0] += 𝛼1 * μy_tilde[1] + 𝛼2 * μy_tilde[0]
 μb[1] += 𝛼2 * μy_tilde[1]
 
