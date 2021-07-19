@@ -301,9 +301,11 @@ def solve_model(cw,
         v = v_new
 
     if i == max_iter and error > tol:
-        print("Failed to converge!"
-    elif verbose:
-        print(f"\nConverged in {i} iterations.")
+        print("Failed to converge!")
+
+    else:
+        if verbose:
+            print(f"\nConverged in {i} iterations.")
 
     return v_new
 ```
