@@ -433,9 +433,9 @@ def gen_path(optimal_policy, F, G, t=20):
         if greedy_star[i, j] == 1:       # Stay put
             pass
         elif greedy_star[i, j] == 2:     # New job
-            j = int(qe.random.draw(G))
+            j = qe.random.draw(G)
         else:                            # New life
-            i, j = int(qe.random.draw(F)), int(qe.random.draw(G))
+            i, j = qe.random.draw(F), qe.random.draw(G)
         θ_index.append(i)
         ϵ_index.append(j)
     return cw.θ[θ_index], cw.ϵ[ϵ_index]
@@ -472,9 +472,9 @@ def passage_time(optimal_policy, F, G):
         if optimal_policy[i, j] == 1:    # Stay put
             return t
         elif optimal_policy[i, j] == 2:  # New job
-            j = int(qe.random.draw(G))
+            j = qe.random.draw(G)
         else:                            # New life
-            i, j  = int(qe.random.draw(F)), int(qe.random.draw(G))
+            i, j  = qe.random.draw(F), qe.random.draw(G)
         t += 1
 
 @njit(parallel=True)
