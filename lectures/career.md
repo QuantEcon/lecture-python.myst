@@ -430,9 +430,9 @@ def gen_path(optimal_policy, F, G, t=20):
     θ_index = []
     ϵ_index = []
     for t in range(t):
-        if greedy_star[i, j] == 1:       # Stay put
+        if optimal_policy[i, j] == 1:       # Stay put
             pass
-        elif greedy_star[i, j] == 2:     # New job
+        elif optimal_policy[i, j] == 2:     # New job
             j = int(qe.random.draw(G))
         else:                            # New life
             i, j = int(qe.random.draw(F)), int(qe.random.draw(G))
