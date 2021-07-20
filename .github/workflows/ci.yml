@@ -48,6 +48,12 @@ jobs:
           jb build lectures --builder pdflatex --path-output ./ -n --keep-going
           mkdir -p _build/html/_pdf
           cp -u _build/latex/*.pdf _build/html/_pdf
+      - name: Upload LaTeX Logs (Failure)
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: latex-log
+          path: _build/latex/quantecon-python.log
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
         run: |
