@@ -6,17 +6,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup Anaconda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          # Install anaconda==2021.05 directly
-          installer-url: https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh
-          allow-softlinks: true
-          show-channel-urls: true
-          use-only-tar-bz2: true
+      # - name: Setup Anaconda
+      #   uses: conda-incubator/setup-miniconda@v2
+      #   with:
+      #     # Install anaconda==2021.05 directly
+      #     installer-url: https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh
+      #     allow-softlinks: true
+      #     show-channel-urls: true
+      #     use-only-tar-bz2: true
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: |
+          wget https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh
+          bash Anaconda3-2021.05-Linux-x86_64.sh -b -p $HOME/anaconda3
+          pwd
+          eval "$($HOME/anaconda3 shell.bash hook)"
           conda info
           conda list
           conda config --show-sources
