@@ -9,12 +9,25 @@ jobs:
       - name: Setup Anaconda
         uses: conda-incubator/setup-miniconda@v2
         with:
-          auto-update-conda: true
-          auto-activate-base: true
-          miniconda-version: 'latest'
-          python-version: 3.8
-          environment-file: environment.yml
-          activate-environment: quantecon
+          # Install anaconda==2021.05 directly
+          installer-url: https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh
+          allow-softlinks: true
+          show-channel-urls: true
+          use-only-tar-bz2: true
+      - name: Display Conda Environment Versions
+        shell: bash -l {0}
+        run: |
+          conda info
+          conda list
+          conda config --show-sources
+          conda config --show
+      - name: Install requirements via pip
+        shell: bash -l {0}
+        run: |
+          pip install -r requirements.txt
+      - name: Display Pip Versions
+        shell: bash -l {0}
+        run: pip list
       - name: Install latex dependencies
         run: |
           sudo apt-get -qq update
@@ -26,12 +39,6 @@ jobs:
             texlive-xetex             \
             latexmk                   \
             xindy
-      - name: Display Conda Environment Versions
-        shell: bash -l {0}
-        run: conda list
-      - name: Display Pip Versions
-        shell: bash -l {0}
-        run: pip list
       - name: Download "build" folder (cache)
         uses: dawidd6/action-download-artifact@v2
         with:
