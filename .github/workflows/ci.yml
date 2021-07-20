@@ -15,14 +15,16 @@ jobs:
       - name: Install Conda Dependencies
         shell: bash -l {0}
         run: |
-          conda env update --file environment.yml --name quantecon
+          # conda env update --file environment.yml --name quantecon
           conda info
           conda list
           conda config --show-sources
           conda config --show
       - name: Display Pip Versions
         shell: bash -l {0}
-        run: pip list
+        run: |
+          pip install -r requirements.txt
+          pip list
       - name: Install latex dependencies
         run: |
           sudo apt-get -qq update
