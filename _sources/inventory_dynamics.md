@@ -140,8 +140,8 @@ legend_args = {'ncol': 3,
                'mode': 'expand'}
 
 ax.plot(X, label="inventory")
-ax.plot(s * np.ones(sim_length), 'k--', label="$s$")
-ax.plot(S * np.ones(sim_length), 'k-', label="$S$")
+ax.plot(np.full(sim_length, s), 'k--', label="$s$")
+ax.plot(np.full(sim_length, S), 'k-', label="$S$")
 ax.set_ylim(0, S+10)
 ax.set_xlabel("time")
 ax.legend(**legend_args)
@@ -156,8 +156,8 @@ the probabilities of different outcomes:
 sim_length=200
 fig, ax = plt.subplots()
 
-ax.plot(s * np.ones(sim_length), 'k--', label="$s$")
-ax.plot(S * np.ones(sim_length), 'k-', label="$S$")
+ax.plot(np.full(sim_length, s), 'k--', label="$s$")
+ax.plot(np.full(sim_length, S), 'k-', label="$S$")
 ax.set_ylim(0, S+10)
 ax.legend(**legend_args)
 

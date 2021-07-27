@@ -324,6 +324,18 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 Solving environment: \ 
 </pre></div>
@@ -398,6 +410,15 @@ Solving environment: \
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -670,11 +691,12 @@ iterate using the Bellman operator to find the fixed point of the value function
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error at iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">v_new</span>
 
-    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">max_iter</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">max_iter</span> <span class="ow">and</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to converge!&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Converged in </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Converged in </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">v_new</span>
 </pre></div>
@@ -801,12 +823,14 @@ figure – interpret.</p>
     <span class="n">θ_index</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">ϵ_index</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">greedy_star</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>       <span class="c1"># Stay put</span>
+        <span class="k">if</span> <span class="n">optimal_policy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>       <span class="c1"># Stay put</span>
             <span class="k">pass</span>
+
         <span class="k">elif</span> <span class="n">greedy_star</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>     <span class="c1"># New job</span>
-            <span class="n">j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+
         <span class="k">else</span><span class="p">:</span>                            <span class="c1"># New life</span>
-            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">F</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">F</span><span class="p">),</span> <span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
         <span class="n">θ_index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="n">ϵ_index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cw</span><span class="o">.</span><span class="n">θ</span><span class="p">[</span><span class="n">θ_index</span><span class="p">],</span> <span class="n">cw</span><span class="o">.</span><span class="n">ϵ</span><span class="p">[</span><span class="n">ϵ_index</span><span class="p">]</span>
@@ -849,9 +873,9 @@ figure – interpret.</p>
         <span class="k">if</span> <span class="n">optimal_policy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>    <span class="c1"># Stay put</span>
             <span class="k">return</span> <span class="n">t</span>
         <span class="k">elif</span> <span class="n">optimal_policy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># New job</span>
-            <span class="n">j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>                            <span class="c1"># New life</span>
-            <span class="n">i</span><span class="p">,</span> <span class="n">j</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">F</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span>  <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">F</span><span class="p">),</span> <span class="n">qe</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
         <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
 
 <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
