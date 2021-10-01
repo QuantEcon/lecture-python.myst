@@ -24,15 +24,6 @@ kernelspec:
 :depth: 2
 ```
 
-```{code-cell} ipython
-%matplotlib inline
-import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
-import numpy as np
-from numba import vectorize, njit
-from math import gamma
-from scipy.integrate import quad
-```
 
 ## Overview
 
@@ -46,6 +37,20 @@ Among  things that we'll learn  are
 * How a likelihood ratio process is a key ingredient in frequentist hypothesis testing
 * How a **receiver operator characteristic curve** summarizes information about a false alarm probability and power in frequentist hypothesis testing
 * How during World War II the United States Navy devised a decision rule that Captain Garret L. Schyler challenged and asked Milton Friedman to justify to him, a topic to be studied in  {doc}`this lecture <wald_friedman>`
+
+
+Let's start  by importing some Python tools.
+
+
+```{code-cell} ipython
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
+import numpy as np
+from numba import vectorize, njit
+from math import gamma
+from scipy.integrate import quad
+```
 
 ## Likelihood Ratio Process
 
@@ -189,12 +194,12 @@ $L\left(w^t\right)$ under probability density $g$ is
 identically $1$ for all $t$.
 
 To verify this assertion, first notice that as mentioned earlier the unconditional mean
-$E_{0}\left[\ell \left(w_{t}\right)\bigm|q=g\right]$ is $1$ for
+$E\left[\ell \left(w_{t}\right)\bigm|q=g\right]$ is $1$ for
 all $t$:
 
 $$
 \begin{aligned}
-E_{0}\left[\ell \left(w_{t}\right)\bigm|q=g\right]  &=\int\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}g\left(w_{t}\right)dw_{t} \\
+E\left[\ell \left(w_{t}\right)\bigm|q=g\right]  &=\int\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}g\left(w_{t}\right)dw_{t} \\
     &=\int f\left(w_{t}\right)dw_{t} \\
     &=1,
 \end{aligned}
@@ -204,7 +209,7 @@ which immediately implies
 
 $$
 \begin{aligned}
-E_{0}\left[L\left(w^{1}\right)\bigm|q=g\right]  &=E_{0}\left[\ell \left(w_{1}\right)\bigm|q=g\right]\\
+E\left[L\left(w^{1}\right)\bigm|q=g\right]  &=E\left[\ell \left(w_{1}\right)\bigm|q=g\right]\\
     &=1.\\
 \end{aligned}
 $$
@@ -214,22 +219,22 @@ $\{w_t\}_{t=1}^t$ is an IID sequence, we have
 
 $$
 \begin{aligned}
-E_{0}\left[L\left(w^{t}\right)\bigm|q=g\right]  &=E_{0}\left[L\left(w^{t-1}\right)\ell \left(w_{t}\right)\bigm|q=g\right] \\
-    &=E_{0}\left[L\left(w^{t-1}\right)E\left[\ell \left(w_{t}\right)\bigm|q=g,w^{t-1}\right]\bigm|q=g\right] \\
-    &=E_{0}\left[L\left(w^{t-1}\right)E\left[\ell \left(w_{t}\right)\bigm|q=g\right]\bigm|q=g\right] \\
-    &=E_{0}\left[L\left(w^{t-1}\right)\bigm|q=g\right] \\
+E\left[L\left(w^{t}\right)\bigm|q=g\right]  &=E\left[L\left(w^{t-1}\right)\ell \left(w_{t}\right)\bigm|q=g\right] \\
+    &=E\left[L\left(w^{t-1}\right)E\left[\ell \left(w_{t}\right)\bigm|q=g,w^{t-1}\right]\bigm|q=g\right] \\
+    &=E\left[L\left(w^{t-1}\right)E\left[\ell \left(w_{t}\right)\bigm|q=g\right]\bigm|q=g\right] \\
+    &=E\left[L\left(w^{t-1}\right)\bigm|q=g\right] \\
 \end{aligned}
 $$
 
 for any $t \geq 1$.
 
 Mathematical induction implies
-$E_{0}\left[L\left(w^{t}\right)\bigm|q=g\right]=1$ for all
+$E\left[L\left(w^{t}\right)\bigm|q=g\right]=1$ for all
 $t \geq 1$.
 
-### Peculiar Property of Likelihood Ratio Process
+## Peculiar Property of Likelihood Ratio Process
 
-How can $E_{0}\left[L\left(w^{t}\right)\bigm|q=g\right]=1$ possibly be true when most  probability mass of the likelihood
+How can $E\left[L\left(w^{t}\right)\bigm|q=g\right]=1$ possibly be true when most  probability mass of the likelihood
 ratio process is piling up near $0$ as
 $t \rightarrow + \infty$?
 
@@ -249,25 +254,19 @@ l_seq_g = np.cumprod(l_arr_g, axis=1)
 ```
 
 It would be useful to use simulations to verify that  unconditional means
-$E_{0}\left[L\left(w^{t}\right)\right]$ equal unity by averaging across sample
+$E\left[L\left(w^{t}\right)\right]$ equal unity by averaging across sample
 paths.
 
-But it would be too challenging for us to that  here simply by applying a standard Monte Carlo simulation approach.
+But it would be too computer-time-consuming for us to that  here simply by applying a standard Monte Carlo simulation approach.
 
 The reason is that the distribution of $L\left(w^{t}\right)$ is extremely skewed for large values of  $t$.
 
 Because the probability density in the right tail is close to $0$,  it just takes too much computer time to sample enough points from the right tail.
 
-Instead, the following code just illustrates that the unconditional means of $l(w_t)$ are $1$.
+We explain the problem in more detail  in {doc}`this lecture <imp_sample>`.
 
-While   sample averages  hover around their population means of $1$, there is evidently  quite a bit
-of variability.
+There we describe a way to an alternative way to compute the mean of a likelihood ratio by computing the mean of a _different_ random variable by sampling from  a _different_ probability distribution.
 
-```{code-cell} python3
-N, T = l_arr_g.shape
-plt.plot(range(T), np.mean(l_arr_g, axis=0))
-plt.hlines(1, 0, T, linestyle='--')
-```
 
 ## Nature Permanently Draws from Density f
 
@@ -280,12 +279,12 @@ To see this, we compute
 
 $$
 \begin{aligned}
-E_{0}\left[\ell \left(w_{t}\right)\bigm|q=f\right]  &=\int\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}f\left(w_{t}\right)dw_{t} \\
+E\left[\ell \left(w_{t}\right)\bigm|q=f\right]  &=\int\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}f\left(w_{t}\right)dw_{t} \\
     &=\int\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}\frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}g\left(w_{t}\right)dw_{t} \\
     &=\int \ell \left(w_{t}\right)^{2}g\left(w_{t}\right)dw_{t} \\
-    &=E_{0}\left[\ell \left(w_{t}\right)^{2}\mid q=g\right] \\
-    &=E_{0}\left[\ell \left(w_{t}\right)\mid q=g\right]^{2}+Var\left(\ell \left(w_{t}\right)\mid q=g\right) \\
-    &>E_{0}\left[\ell \left(w_{t}\right)\mid q=g\right]^{2} = 1 \\
+    &=E\left[\ell \left(w_{t}\right)^{2}\mid q=g\right] \\
+    &=E\left[\ell \left(w_{t}\right)\mid q=g\right]^{2}+Var\left(\ell \left(w_{t}\right)\mid q=g\right) \\
+    &>E\left[\ell \left(w_{t}\right)\mid q=g\right]^{2} = 1 \\
        \end{aligned}
 $$
 

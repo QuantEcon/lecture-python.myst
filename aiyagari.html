@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>52. The Aiyagari Model &#8212; Quantitative Economics with Python</title>
+    <title>53. The Aiyagari Model &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -70,7 +70,7 @@
     <script src="_static/quantecon-book-theme.a5462485f8dd312884626d20cc9f547c.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
-    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
@@ -81,8 +81,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="53. Asset Pricing: Finite State Models" href="markov_asset.html" />
-    <link rel="prev" title="51. Uncertainty Traps" href="uncertainty_traps.html" />
+    <link rel="next" title="54. Asset Pricing: Finite State Models" href="markov_asset.html" />
+    <link rel="prev" title="52. Uncertainty Traps" href="uncertainty_traps.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -132,43 +132,43 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   52.1. Overview
+   53.1. Overview
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#references">
-     52.1.1. References
+     53.1.1. References
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-economy">
-   52.2. The Economy
+   53.2. The Economy
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#households">
-     52.2.1. Households
+     53.2.1. Households
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#firms">
-   52.3. Firms
+   53.3. Firms
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#equilibrium">
-     52.3.1. Equilibrium
+     53.3.1. Equilibrium
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#code">
-   52.4. Code
+   53.4. Code
   </a>
  </li>
 </ul>
@@ -221,7 +221,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="the-aiyagari-model">
-<h1><a class="toc-backref" href="#id7"><span class="section-number">52. </span>The Aiyagari Model</a><a class="headerlink" href="#the-aiyagari-model" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id7"><span class="section-number">53. </span>The Aiyagari Model</a><a class="headerlink" href="#the-aiyagari-model" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -343,6 +343,15 @@ Solving environment: \
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
@@ -352,7 +361,7 @@ Solving environment: \
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">52.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">53.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we describe the structure of a class of models that build on work by Truman Bewley <span id="id1">[<a class="reference internal" href="zreferences.html#id134">Bew77</a>]</span>.</p>
 <p>We begin by discussing an example of a Bewley model due to <a class="reference external" href="https://lectures.quantecon.org/_downloads/aiyagari_obit.pdf">Rao Aiyagari</a>.</p>
 <p>The model features</p>
@@ -383,16 +392,16 @@ Solving environment: \
 </div>
 </div>
 <div class="section" id="references">
-<h3><span class="section-number">52.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">53.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
 <p>The primary reference for this lecture is <span id="id5">[<a class="reference internal" href="zreferences.html#id98">Aiy94</a>]</span>.</p>
 <p>A textbook treatment is available in chapter 18 of <span id="id6">[<a class="reference internal" href="zreferences.html#id143">LS18</a>]</span>.</p>
 <p>A continuous time version of the model by SeHyoun Ahn and Benjamin Moll can be found <a class="reference external" href="http://nbviewer.jupyter.org/github/QuantEcon/QuantEcon.notebooks/blob/master/aiyagari_continuous_time.ipynb">here</a>.</p>
 </div>
 </div>
 <div class="section" id="the-economy">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">52.2. </span>The Economy</a><a class="headerlink" href="#the-economy" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">53.2. </span>The Economy</a><a class="headerlink" href="#the-economy" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="households">
-<h3><span class="section-number">52.2.1. </span>Households<a class="headerlink" href="#households" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">53.2.1. </span>Households<a class="headerlink" href="#households" title="Permalink to this headline">¶</a></h3>
 <p>Infinitely lived households / consumers face idiosyncratic income shocks.</p>
 <p>A unit interval of  <em>ex-ante</em> identical households face a common borrowing constraint.</p>
 <p>The savings problem faced by a typical  household is</p>
@@ -424,7 +433,7 @@ a_t \geq -B
 </div>
 </div>
 <div class="section" id="firms">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">52.3. </span>Firms</a><a class="headerlink" href="#firms" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">53.3. </span>Firms</a><a class="headerlink" href="#firms" title="Permalink to this headline">¶</a></h2>
 <p>Firms produce output by hiring capital and labor.</p>
 <p>Firms act competitively and face constant returns to scale.</p>
 <p>Since returns to scale are constant the number of firms does not matter.</p>
@@ -448,13 +457,13 @@ max_{K, N} \left\{ A K_t^{\alpha} N^{1 - \alpha} - (r + \delta) K - w N \right\}
 <p>The parameter <span class="math notranslate nohighlight">\(\delta\)</span> is the depreciation rate.</p>
 <p>From the first-order condition with respect to capital, the firm’s inverse demand for capital is</p>
 <div class="math notranslate nohighlight" id="equation-aiy-rgk">
-<span class="eqno">(52.1)<a class="headerlink" href="#equation-aiy-rgk" title="Permalink to this equation">¶</a></span>\[r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta\]</div>
+<span class="eqno">(53.1)<a class="headerlink" href="#equation-aiy-rgk" title="Permalink to this equation">¶</a></span>\[r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta\]</div>
 <p>Using this expression and the firm’s first-order condition for labor, we can pin down
 the equilibrium wage rate as a function of <span class="math notranslate nohighlight">\(r\)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-aiy-wgr">
-<span class="eqno">(52.2)<a class="headerlink" href="#equation-aiy-wgr" title="Permalink to this equation">¶</a></span>\[w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)}\]</div>
+<span class="eqno">(53.2)<a class="headerlink" href="#equation-aiy-wgr" title="Permalink to this equation">¶</a></span>\[w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)}\]</div>
 <div class="section" id="equilibrium">
-<h3><span class="section-number">52.3.1. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">53.3.1. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this headline">¶</a></h3>
 <p>We construct  a <em>stationary rational expectations equilibrium</em> (SREE).</p>
 <p>In such an equilibrium</p>
 <ul class="simple">
@@ -471,7 +480,7 @@ the equilibrium wage rate as a function of <span class="math notranslate nohighl
 <p>In practice, once parameter values are set, we can check for an SREE by the following steps</p>
 <ol class="simple">
 <li><p>pick a proposed quantity <span class="math notranslate nohighlight">\(K\)</span> for aggregate capital</p></li>
-<li><p>determine corresponding prices, with interest rate <span class="math notranslate nohighlight">\(r\)</span> determined by <a class="reference internal" href="#equation-aiy-rgk">(52.1)</a> and a wage rate <span class="math notranslate nohighlight">\(w(r)\)</span> as given in <a class="reference internal" href="#equation-aiy-wgr">(52.2)</a></p></li>
+<li><p>determine corresponding prices, with interest rate <span class="math notranslate nohighlight">\(r\)</span> determined by <a class="reference internal" href="#equation-aiy-rgk">(53.1)</a> and a wage rate <span class="math notranslate nohighlight">\(w(r)\)</span> as given in <a class="reference internal" href="#equation-aiy-wgr">(53.2)</a></p></li>
 <li><p>determine the common optimal savings policy of the households given these prices</p></li>
 <li><p>compute aggregate capital as the mean of steady state capital given this savings policy</p></li>
 </ol>
@@ -479,7 +488,7 @@ the equilibrium wage rate as a function of <span class="math notranslate nohighl
 </div>
 </div>
 <div class="section" id="code">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">52.4. </span>Code</a><a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">53.4. </span>Code</a><a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
 <p>Let’s look at how we might compute such an equilibrium in practice.</p>
 <p>To solve the household’s dynamic programming problem we’ll use the <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/markov/ddp.py">DiscreteDP</a> class from <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>.</p>
 <p>Our first task is the least exciting one: write code that maps parameters for a household problem into the <code class="docutils literal notranslate"><span class="pre">R</span></code> and <code class="docutils literal notranslate"><span class="pre">Q</span></code> matrices needed to generate an instance of <code class="docutils literal notranslate"><span class="pre">DiscreteDP</span></code>.</p>
@@ -1007,23 +1016,28 @@ when the parameters change.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   38. Computing Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   38. A Problem that Stumped Milton Friedman
+   39. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   39. Exchangeability and Bayesian Updating
+   40. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   40. Likelihood Ratio Processes and Bayesian Learning
+   41. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   41. Bayesian versus Frequentist Decision Rules
+   42. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1035,22 +1049,22 @@ when the parameters change.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   42. LQ Control: Foundations
+   43. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   43. The Permanent Income Model
+   44. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   44. Permanent Income II: LQ Techniques
+   45. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   45. Production Smoothing via Inventories
+   46. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1062,37 +1076,37 @@ when the parameters change.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   46. Schelling’s Segregation Model
+   47. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   47. A Lake Model of Employment and Unemployment
+   48. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   48. Rational Expectations Equilibrium
+   49. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   49. Stability in Linear Rational Expectations Models
+   50. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   50. Markov Perfect Equilibrium
+   51. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   51. Uncertainty Traps
+   52. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   52. The Aiyagari Model
+   53. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1104,17 +1118,17 @@ when the parameters change.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   53. Asset Pricing: Finite State Models
+   54. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   54. Competitive equilibria with Arrow securities
+   55. Competitive equilibria with Arrow securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   55. Heterogeneous Beliefs and Bubbles
+   56. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1126,17 +1140,17 @@ when the parameters change.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   56. Pandas for Panel Data
+   57. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   57. Linear Regression in Python
+   58. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   58. Maximum Likelihood Estimation
+   59. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1148,17 +1162,17 @@ when the parameters change.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   59. Troubleshooting
+   60. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   60. References
+   61. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   61. Execution Statistics
+   62. Execution Statistics
   </a>
  </li>
 </ul>

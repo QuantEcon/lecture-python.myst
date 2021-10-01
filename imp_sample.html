@@ -1,0 +1,1465 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>38. Computing Mean of a Likelihood Ratio Process &#8212; Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+        MathJax = {
+          loader: {load: ['[tex]/boldsymbol']},
+          tex: {
+            packages: {'[+]': ['boldsymbol']},
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            processEscapes: true,
+            macros: {
+                "argmax" : "arg\\,max",
+                "argmin" : "arg\\,min"
+            }
+          },
+          svg: {
+            fontCache: 'global',
+            scale: 0.92,
+            displayAlign: "center",
+          },
+        };
+    </script>
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/quantecon-book-theme.b2c9c855ebbf206c0b4223812193cad1.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="_static/quantecon-book-theme.a5462485f8dd312884626d20cc9f547c.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/imp_sample.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="39. A Problem that Stumped Milton Friedman" href="wald_friedman.html" />
+    <link rel="prev" title="37. Likelihood Ratio Processes" href="likelihood_ratio_process.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Computing Mean of a Likelihood Ratio Process"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Computing Mean of a Likelihood Ratio Process" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/imp_sample.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page" id=imp_sample>
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   38.1. Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mathematical-expectation-of-likelihood-ratio">
+   38.2. Mathematical Expectation of Likelihood Ratio
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#importance-sampling">
+   38.3. Importance sampling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#selecting-a-sampling-distribution">
+   38.4. Selecting a Sampling Distribution
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#approximating-a-cumulative-likelihood-ratio">
+   38.5. Approximating a cumulative likelihood ratio
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#distribution-of-sample-mean">
+   38.6. Distribution of  Sample Mean
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#more-thoughts-about-choice-of-sampling-distribution">
+   38.7. More Thoughts about Choice of Sampling Distribution
+  </a>
+ </li>
+</ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">Computing Mean of a Likelihood Ratio Process</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div class="section" id="computing-mean-of-a-likelihood-ratio-process">
+<h1><a class="toc-backref" href="#id1"><span class="section-number">38. </span>Computing Mean of a Likelihood Ratio Process</a><a class="headerlink" href="#computing-mean-of-a-likelihood-ratio-process" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#computing-mean-of-a-likelihood-ratio-process" id="id1">Computing Mean of a Likelihood Ratio Process</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p></li>
+<li><p><a class="reference internal" href="#mathematical-expectation-of-likelihood-ratio" id="id3">Mathematical Expectation of Likelihood Ratio</a></p></li>
+<li><p><a class="reference internal" href="#importance-sampling" id="id4">Importance sampling</a></p></li>
+<li><p><a class="reference internal" href="#selecting-a-sampling-distribution" id="id5">Selecting a Sampling Distribution</a></p></li>
+<li><p><a class="reference internal" href="#approximating-a-cumulative-likelihood-ratio" id="id6">Approximating a cumulative likelihood ratio</a></p></li>
+<li><p><a class="reference internal" href="#distribution-of-sample-mean" id="id7">Distribution of  Sample Mean</a></p></li>
+<li><p><a class="reference internal" href="#more-thoughts-about-choice-of-sampling-distribution" id="id8">More Thoughts about Choice of Sampling Distribution</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id2"><span class="section-number">38.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>In  <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a> we described a peculiar property of a likelihood ratio process, namely, that it’s mean equals one for all <span class="math notranslate nohighlight">\(t \geq 0\)</span> despite it’s converging to zero almost surely.</p>
+<p>While it is easy to verify that peculiar properly analytically (i.e., in population), it is challenging to use a computer simulation to verify it via an application of a law of large numbers that entails studying sample averages of repeated simulations.</p>
+<p>To confront this challenge, this lecture puts <strong>importance sampling</strong> to work to accelerate convergence of sample averages to population means.</p>
+<p>We use  importance sampling to estimate the mean of a cumulative likelihood ratio <span class="math notranslate nohighlight">\(L\left(\omega^t\right) = \prod_{i=1}^t \ell \left(\omega_i\right)\)</span>.</p>
+<p>We start by importing some Python packages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">prange</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">beta</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="mathematical-expectation-of-likelihood-ratio">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">38.2. </span>Mathematical Expectation of Likelihood Ratio</a><a class="headerlink" href="#mathematical-expectation-of-likelihood-ratio" title="Permalink to this headline">¶</a></h2>
+<p>In <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a>, we studied a likelihood ratio <span class="math notranslate nohighlight">\(\ell \left(\omega_t\right)\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\ell \left( \omega_t \right) = \frac{f\left(\omega_t\right)}{g\left(\omega_t\right)}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> are densities for Beta distributions with parameters <span class="math notranslate nohighlight">\(F_a\)</span>, <span class="math notranslate nohighlight">\(F_b\)</span>, <span class="math notranslate nohighlight">\(G_a\)</span>, <span class="math notranslate nohighlight">\(G_b\)</span>.</p>
+<p>Assume that an i.i.d. random variable <span class="math notranslate nohighlight">\(\omega_t \in \Omega\)</span> is generated by <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>The <strong>cumulative likelihood ratio</strong>  <span class="math notranslate nohighlight">\(L \left(\omega^t\right)\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+L\left(\omega^t\right) = \prod_{i=1}^t \ell \left(\omega_i\right)
+\]</div>
+<p>Our goal is to approximate the mathematical expectation <span class="math notranslate nohighlight">\(E \left[ L\left(\omega^t\right) \right]\)</span> well.</p>
+<p>In <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a>, we showed that  <span class="math notranslate nohighlight">\(E \left[ L\left(\omega^t\right) \right]\)</span>  equals <span class="math notranslate nohighlight">\(1\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>.
+We want to check out how well this holds if we replace <span class="math notranslate nohighlight">\(E\)</span> by with  sample averages from simulations.</p>
+<p>This turns out to be easier said than done because for
+Beta distributions assumed above, <span class="math notranslate nohighlight">\(L\left(\omega^t\right)\)</span> has
+a very skewed distribution with a very long tail as <span class="math notranslate nohighlight">\(t \rightarrow \infty\)</span>.</p>
+<p>This property makes it difficult  efficiently and accurately to estimate the mean by standard Monte Carlo simulation methods.</p>
+<p>In this lecture we explore how a standard Monte Carlo method fails and how <strong>importance sampling</strong>
+provides a more computationally efficient way to approximate the mean of the cumulative likelihood ratio.</p>
+<p>We first take a look at the density functions <code class="docutils literal notranslate"><span class="pre">f</span></code> and <code class="docutils literal notranslate"><span class="pre">g</span></code> .</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameters in the two beta distributions.</span>
+<span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span>
+
+<span class="nd">@vectorize</span>
+<span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">gamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">w</span> <span class="o">**</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># The two density functions.</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">g</span><span class="p">(</span><span class="n">w_range</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">w_range</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$\omega$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;density functions $f$ and $g$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/imp_sample_4_0.png" src="_images/imp_sample_4_0.png" />
+</div>
+</div>
+<p>The likelihood ratio is <code class="docutils literal notranslate"><span class="pre">l(w)=f(w)/g(w)</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">l</span><span class="p">(</span><span class="n">w_range</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;$\ell(\omega)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$\omega$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/imp_sample_7_0.png" src="_images/imp_sample_7_0.png" />
+</div>
+</div>
+<p>The above plots shows that as <span class="math notranslate nohighlight">\(\omega \rightarrow 0\)</span>, <span class="math notranslate nohighlight">\(f \left(\omega\right)\)</span> is unchanged and <span class="math notranslate nohighlight">\(g \left(\omega\right) \rightarrow 0\)</span>, so  the likelihood ratio approaches infinity.</p>
+<p>A Monte Carlo approximation of <span class="math notranslate nohighlight">\(\hat{E} \left[L\left(\omega^t\right)\right] = \hat{E} \left[\prod_{i=1}^t \ell \left(\omega_i\right)\right]\)</span>  would repeatedly draw <span class="math notranslate nohighlight">\(\omega\)</span> from <span class="math notranslate nohighlight">\(g\)</span>, calculate the likelihood ratio <span class="math notranslate nohighlight">\( \ell(\omega) = \frac{f(\omega)}{g(\omega)}\)</span> for each draw, then average these over all draws.</p>
+<p>Because <span class="math notranslate nohighlight">\(g(\omega) \rightarrow 0\)</span> as <span class="math notranslate nohighlight">\(\omega \rightarrow 0\)</span>, such a simulation procedure  undersamples a part of the sample space <span class="math notranslate nohighlight">\([0,1]\)</span> that it is important to visit often in order to do a good job of approximating the mathematical expectation of the likelihood ratio <span class="math notranslate nohighlight">\(\ell(\omega)\)</span>.</p>
+<p>We illustrate this numerically below.</p>
+</div>
+<div class="section" id="importance-sampling">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">38.3. </span>Importance sampling</a><a class="headerlink" href="#importance-sampling" title="Permalink to this headline">¶</a></h2>
+<p>We circumvent the issue by using a <em>change of distribution</em> called <strong>importance sampling</strong>.</p>
+<p>Instead of drawing from <span class="math notranslate nohighlight">\(g\)</span> to generate data during the simulation, we use  an alternative
+distribution <span class="math notranslate nohighlight">\(h\)</span> to generate draws of <span class="math notranslate nohighlight">\(\omega\)</span>.</p>
+<p>The idea is to design <span class="math notranslate nohighlight">\(h\)</span> so  that it oversamples the region of <span class="math notranslate nohighlight">\(\Omega\)</span> where
+<span class="math notranslate nohighlight">\(\ell \left(\omega_t\right)\)</span> has large values but  low density under <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>After we construct a sample in this way, we must then weight each realization by the likelihood ratio of <span class="math notranslate nohighlight">\(g\)</span> and <span class="math notranslate nohighlight">\(h\)</span> when we compute the empirical mean
+of the likelihood ratio.</p>
+<p>By doing this, we properly account for the fact that we are using <span class="math notranslate nohighlight">\(h\)</span> and not  <span class="math notranslate nohighlight">\(g\)</span> to simulate data.</p>
+<p>To illustrate, suppose were interested in <span class="math notranslate nohighlight">\({E}\left[\ell\left(\omega\right)\right]\)</span>.</p>
+<p>We could simply compute:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{E}^g \left[\ell\left(\omega\right)\right] = \frac{1}{N} \sum_{i=1}^{N} \ell(w_i^g)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\omega_i^g\)</span> indicates that  <span class="math notranslate nohighlight">\(\omega_i\)</span> is drawn from <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>But using our insight from importance sampling, we could instead calculate the object:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{E}^h \left[\ell\left(\omega\right) \frac{g(w)}{h(w)} \right] = \frac{1}{N} \sum_{i=1}^{N} \ell(w_i^h) \frac{g(w_i^h)}{h(w_i^h)}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(w_i\)</span> is now drawn from importance distribution <span class="math notranslate nohighlight">\(h\)</span>.</p>
+<p>Notice that the above two  are exactly the same population objects:</p>
+<div class="math notranslate nohighlight">
+\[
+E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\omega = \int_\Omega \ell(\omega) \frac{g(\omega)}{h(\omega)} h(\omega) d\omega = E^h\left[\ell\left(\omega\right) \frac{g(\omega)}{h(\omega)}\right]
+\]</div>
+</div>
+<div class="section" id="selecting-a-sampling-distribution">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">38.4. </span>Selecting a Sampling Distribution</a><a class="headerlink" href="#selecting-a-sampling-distribution" title="Permalink to this headline">¶</a></h2>
+<p>Since we must use an <span class="math notranslate nohighlight">\(h\)</span> that has larger mass in parts of the distribution to which  <span class="math notranslate nohighlight">\(g\)</span> puts low mass, we use <span class="math notranslate nohighlight">\(h=Beta(0.5, 0.5)\)</span> as our importance distribution.</p>
+<p>The  plots compare <span class="math notranslate nohighlight">\(g\)</span> and <span class="math notranslate nohighlight">\(h\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span> <span class="o">=</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span>
+<span class="n">h_a</span><span class="p">,</span> <span class="n">h_b</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">g</span><span class="p">(</span><span class="n">w_range</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;g=Beta(</span><span class="si">{</span><span class="n">g_a</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">g_b</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">p</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;h=Beta(</span><span class="si">{</span><span class="n">h_a</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">h_b</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;real data generating process $g$ and importance distribution $h$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/imp_sample_10_0.png" src="_images/imp_sample_10_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="approximating-a-cumulative-likelihood-ratio">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">38.5. </span>Approximating a cumulative likelihood ratio</a><a class="headerlink" href="#approximating-a-cumulative-likelihood-ratio" title="Permalink to this headline">¶</a></h2>
+<p>We now study how to use importance sampling to approximate
+<span class="math notranslate nohighlight">\({E} \left[L(\omega^t)\right] = \left[\prod_{i=1}^T \ell \left(\omega_i\right)\right]\)</span>.</p>
+<p>As above, our plan is to draw  sequences <span class="math notranslate nohighlight">\(\omega^t\)</span> from <span class="math notranslate nohighlight">\(q\)</span> and then re-weight the likelihood ratio appropriately:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{E}^p \left[L\left(\omega^t\right)\right] = \hat{E}^p \left[\prod_{t=1}^T \ell \left(\omega_t\right)\right] = \hat{E}^q \left[\prod_{t=1}^T \ell \left(\omega_t\right) \frac{p\left(\omega_{t}\right)}{q\left(\omega_{t}\right)}\right] =
+\frac{1}{N} \sum_{i=1}^{N}\left( \prod_{t=1}^{T} \ell(\omega_{i,t}^h)\frac{p\left(\omega_{i,t}^h\right)}{q\left(\omega_{i,t}^h\right)}\right)
+\]</div>
+<p>where the last equality uses <span class="math notranslate nohighlight">\(\omega_{i,t}^h\)</span> drawn from the importance distribution <span class="math notranslate nohighlight">\(q\)</span>.</p>
+<p>Here <span class="math notranslate nohighlight">\(\frac{p\left(\omega_{i,t}^q\right)}{q\left(\omega_{i,t}^q\right)}\)</span> is the weight we assign to each data point <span class="math notranslate nohighlight">\(\omega_{i,t}^q\)</span>.</p>
+<p>Below we prepare a Python function for computing the importance sampling estimates given any beta distributions <span class="math notranslate nohighlight">\(p\)</span>, <span class="math notranslate nohighlight">\(q\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">estimate</span><span class="p">(</span><span class="n">p_a</span><span class="p">,</span> <span class="n">p_b</span><span class="p">,</span> <span class="n">q_a</span><span class="p">,</span> <span class="n">q_b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+
+    <span class="n">μ_L</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+
+        <span class="n">L</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">q_a</span><span class="p">,</span> <span class="n">q_b</span><span class="p">)</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+            <span class="n">L</span> <span class="o">*=</span> <span class="n">l</span>
+            <span class="n">weight</span> <span class="o">*=</span> <span class="n">p</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">p_a</span><span class="p">,</span> <span class="n">p_b</span><span class="p">)</span> <span class="o">/</span> <span class="n">p</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">q_a</span><span class="p">,</span> <span class="n">q_b</span><span class="p">)</span>
+
+        <span class="n">μ_L</span> <span class="o">+=</span> <span class="n">L</span> <span class="o">*</span> <span class="n">weight</span>
+
+    <span class="n">μ_L</span> <span class="o">/=</span> <span class="n">N</span>
+
+    <span class="k">return</span> <span class="n">μ_L</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Consider the case when <span class="math notranslate nohighlight">\(T=1\)</span>, which amounts  to approximating <span class="math notranslate nohighlight">\(E_0\left[\ell\left(\omega\right)\right]\)</span></p>
+<p>For the standard Monte Carlo estimate, we can set <span class="math notranslate nohighlight">\(p=g\)</span> and <span class="math notranslate nohighlight">\(q=g\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">estimate</span><span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">,</span> <span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9925367357654752
+</pre></div>
+</div>
+</div>
+</div>
+<p>For our importance sampling estimate, we set <span class="math notranslate nohighlight">\(q = h\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">estimate</span><span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">,</span> <span class="n">h_a</span><span class="p">,</span> <span class="n">h_b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0000676415655478
+</pre></div>
+</div>
+</div>
+</div>
+<p>Evidently, even at T=1, our importance sampling  estimate is closer to <span class="math notranslate nohighlight">\(1\)</span> than is the Monte Carlo estimate.</p>
+<p>Bigger differences arise when computing expectations over longer sequences, <span class="math notranslate nohighlight">\(E_0\left[L\left(\omega^t\right)\right]\)</span>.</p>
+<p>Setting <span class="math notranslate nohighlight">\(T=10\)</span>, we find that the  Monte Carlo method severely underestimates the mean while importance sampling
+still produces an estimate close to its theoretical value of unity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">estimate</span><span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">,</span> <span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5739331178313043
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">estimate</span><span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">,</span> <span class="n">h_a</span><span class="p">,</span> <span class="n">h_b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9434015462758052
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="distribution-of-sample-mean">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">38.6. </span>Distribution of  Sample Mean</a><a class="headerlink" href="#distribution-of-sample-mean" title="Permalink to this headline">¶</a></h2>
+<p>We next study the bias and efficiency of the Monte Carlo and importance sampling approaches.</p>
+<p>The code  below produces distributions of estimates using both Monte Carlo and importance sampling methods.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">p_a</span><span class="p">,</span> <span class="n">p_b</span><span class="p">,</span> <span class="n">q_a</span><span class="p">,</span> <span class="n">q_b</span><span class="p">,</span> <span class="n">N_simu</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+    <span class="n">μ_L_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N_simu</span><span class="p">)</span>
+    <span class="n">μ_L_q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N_simu</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">N_simu</span><span class="p">):</span>
+        <span class="n">μ_L_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">estimate</span><span class="p">(</span><span class="n">p_a</span><span class="p">,</span> <span class="n">p_b</span><span class="p">,</span> <span class="n">p_a</span><span class="p">,</span> <span class="n">p_b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">μ_L_q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">estimate</span><span class="p">(</span><span class="n">p_a</span><span class="p">,</span> <span class="n">p_b</span><span class="p">,</span> <span class="n">q_a</span><span class="p">,</span> <span class="n">q_b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">μ_L_p</span><span class="p">,</span> <span class="n">μ_L_q</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again, we first consider estimating <span class="math notranslate nohighlight">\({E} \left[\ell\left(\omega\right)\right]\)</span> by setting T=1.</p>
+<p>We simulate <span class="math notranslate nohighlight">\(1000\)</span> times for each method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_simu</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">μ_L_p</span><span class="p">,</span> <span class="n">μ_L_q</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">,</span> <span class="n">h_a</span><span class="p">,</span> <span class="n">h_b</span><span class="p">,</span> <span class="n">N_simu</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># standard Monte Carlo (mean and std)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">μ_L_p</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanvar</span><span class="p">(</span><span class="n">μ_L_p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0026886188051063, 0.013721690295437029)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># importance sampling (mean and std)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">μ_L_q</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanvar</span><span class="p">(</span><span class="n">μ_L_q</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.9998556483959783, 2.5076775142749675e-05)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Although both methods tend to provide a mean estimate of <span class="math notranslate nohighlight">\({E} \left[\ell\left(\omega\right)\right]\)</span> close to <span class="math notranslate nohighlight">\(1\)</span>, the importance sampling estimates have  smaller variance.</p>
+<p>Next, we present distributions of estimates for <span class="math notranslate nohighlight">\(\hat{E} \left[L\left(\omega^t\right)\right]\)</span>, in cases for <span class="math notranslate nohighlight">\(T=1, 5, 10, 20\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="n">μ_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]):</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span>
+
+    <span class="n">μ_L_p</span><span class="p">,</span> <span class="n">μ_L_q</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">,</span> <span class="n">h_a</span><span class="p">,</span> <span class="n">h_b</span><span class="p">,</span> <span class="n">N_simu</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">μ_hat_p</span><span class="p">,</span> <span class="n">μ_hat_q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">μ_L_p</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">μ_L_q</span><span class="p">)</span>
+    <span class="n">σ_hat_p</span><span class="p">,</span> <span class="n">σ_hat_q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanvar</span><span class="p">(</span><span class="n">μ_L_p</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanvar</span><span class="p">(</span><span class="n">μ_L_q</span><span class="p">)</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$μ_L$&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;frequency&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;$T$=</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">n_p</span><span class="p">,</span> <span class="n">bins_p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">μ_L_p</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">μ_range</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$g$ generating&#39;</span><span class="p">)</span>
+    <span class="n">n_q</span><span class="p">,</span> <span class="n">bins_q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">μ_L_q</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">μ_range</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$h$ generating&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">μ_hat</span><span class="p">,</span> <span class="n">σ_hat</span> <span class="ow">in</span> <span class="p">[[</span><span class="n">n_p</span><span class="p">,</span> <span class="n">bins_p</span><span class="p">,</span> <span class="n">μ_hat_p</span><span class="p">,</span> <span class="n">σ_hat_p</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="n">n_q</span><span class="p">,</span> <span class="n">bins_q</span><span class="p">,</span> <span class="n">μ_hat_q</span><span class="p">,</span> <span class="n">σ_hat_q</span><span class="p">]]:</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">n</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s1">&#39;$\hat</span><span class="si">{μ}</span><span class="s1">$=&#39;</span><span class="o">+</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">μ_hat</span><span class="si">:</span><span class="s1">.4g</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">+</span><span class="s1">&#39;, $\hat</span><span class="si">{σ}</span><span class="s1">=$&#39;</span><span class="o">+</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">σ_hat</span><span class="si">:</span><span class="s1">.4g</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/imp_sample_27_0.png" src="_images/imp_sample_27_0.png" />
+</div>
+</div>
+<p>The simulation exercises above show that the importance sampling estimates are unbiased under all <span class="math notranslate nohighlight">\(T\)</span>
+while the standard Monte Carlo estimates are biased downwards.</p>
+<p>Evidently, the bias increases with increases in <span class="math notranslate nohighlight">\(T\)</span>.</p>
+</div>
+<div class="section" id="more-thoughts-about-choice-of-sampling-distribution">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">38.7. </span>More Thoughts about Choice of Sampling Distribution</a><a class="headerlink" href="#more-thoughts-about-choice-of-sampling-distribution" title="Permalink to this headline">¶</a></h2>
+<p>Above, we arbitraily chose <span class="math notranslate nohighlight">\(h = Beta(0.5,0.5)\)</span> as the importance distribution.</p>
+<p>Is there an optimal importance distribution?</p>
+<p>In our particular case, since we  know in advance that <span class="math notranslate nohighlight">\(E_0 \left[ L\left(\omega^t\right) \right] = 1\)</span>.</p>
+<p>We can use that knowledge to our advantage.</p>
+<p>Thus, suppose that we simply use  <span class="math notranslate nohighlight">\(h = f\)</span>.</p>
+<p>When estimating the mean of the likelihood ratio (T=1), we get:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{E}^f \left[\ell(\omega) \frac{g(\omega)}{f(\omega)} \right] = \hat{E}^f \left[\frac{f(\omega)}{g(\omega)} \frac{g(\omega)}{f(\omega)} \right] = \frac{1}{N} \sum_{i=1}^{N} \ell(w_i^f) \frac{g(w_i^f)}{f(w_i^f)} = 1
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">μ_L_p</span><span class="p">,</span> <span class="n">μ_L_q</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="n">N_simu</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># importance sampling (mean and std)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">μ_L_q</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanvar</span><span class="p">(</span><span class="n">μ_L_q</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0, 0.0)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We could also use other distributions as our importance distribution.</p>
+<p>Below we choose just a few and compare their sampling properties.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_list</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">]</span>
+<span class="n">b_list</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mf">5.</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">g</span><span class="p">(</span><span class="n">w_range</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;p=Beta(</span><span class="si">{</span><span class="n">g_a</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">g_b</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">p</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">a_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;g=Beta(</span><span class="si">{</span><span class="n">a_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">b_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">p</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">a_list</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">b_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;g=Beta(</span><span class="si">{</span><span class="n">a_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">b_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">p</span><span class="p">(</span><span class="n">w_range</span><span class="p">,</span> <span class="n">a_list</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">b_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;g=Beta(</span><span class="si">{</span><span class="n">a_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">b_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;real data generating process $g$ and importance distribution $h$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/imp_sample_34_0.png" src="_images/imp_sample_34_0.png" />
+</div>
+</div>
+<p>We consider two additonal distributions.</p>
+<p>As a reminder <span class="math notranslate nohighlight">\(h_1\)</span> is the original <span class="math notranslate nohighlight">\(Beta(0.5,0.5)\)</span> distribution that we used above.</p>
+<p><span class="math notranslate nohighlight">\(h_2\)</span> is the <span class="math notranslate nohighlight">\(Beta(1,1.2)\)</span> distribution.</p>
+<p>Note how <span class="math notranslate nohighlight">\(h_2\)</span> has a similar shape to <span class="math notranslate nohighlight">\(g\)</span> at higher values of distribution but more mass at lower values.</p>
+<p>Our hunch is that <span class="math notranslate nohighlight">\(h_2\)</span> should be a good importance sampling distribution.</p>
+<p><span class="math notranslate nohighlight">\(h_3\)</span> is the <span class="math notranslate nohighlight">\(Beta(2,5)\)</span> distribution.</p>
+<p>Note how <span class="math notranslate nohighlight">\(h_3\)</span> has zero mass at values very close to 0 and at values close to 1.</p>
+<p>Our hunch is that <span class="math notranslate nohighlight">\(h_3\)</span> will  be a poor importance sampling distribution.</p>
+<p>We first simulate a plot the distribution of estimates for <span class="math notranslate nohighlight">\(\hat{E} \left[L\left(\omega^t\right)\right]\)</span> using <span class="math notranslate nohighlight">\(h_2\)</span> as the importance sampling distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h_a</span> <span class="o">=</span> <span class="n">a_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">h_b</span> <span class="o">=</span> <span class="n">b_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="n">μ_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">]):</span>
+
+
+    <span class="n">μ_L_p</span><span class="p">,</span> <span class="n">μ_L_q</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">,</span> <span class="n">h_a</span><span class="p">,</span> <span class="n">h_b</span><span class="p">,</span> <span class="n">N_simu</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">μ_hat_p</span><span class="p">,</span> <span class="n">μ_hat_q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">μ_L_p</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">μ_L_q</span><span class="p">)</span>
+    <span class="n">σ_hat_p</span><span class="p">,</span> <span class="n">σ_hat_q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanvar</span><span class="p">(</span><span class="n">μ_L_p</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanvar</span><span class="p">(</span><span class="n">μ_L_q</span><span class="p">)</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$μ_L$&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;frequency&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;$T$=</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">n_p</span><span class="p">,</span> <span class="n">bins_p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">μ_L_p</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">μ_range</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$g$ generating&#39;</span><span class="p">)</span>
+    <span class="n">n_q</span><span class="p">,</span> <span class="n">bins_q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">μ_L_q</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">μ_range</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$h_2$ generating&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">μ_hat</span><span class="p">,</span> <span class="n">σ_hat</span> <span class="ow">in</span> <span class="p">[[</span><span class="n">n_p</span><span class="p">,</span> <span class="n">bins_p</span><span class="p">,</span> <span class="n">μ_hat_p</span><span class="p">,</span> <span class="n">σ_hat_p</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="n">n_q</span><span class="p">,</span> <span class="n">bins_q</span><span class="p">,</span> <span class="n">μ_hat_q</span><span class="p">,</span> <span class="n">σ_hat_q</span><span class="p">]]:</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">n</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s1">&#39;$\hat</span><span class="si">{μ}</span><span class="s1">$=&#39;</span><span class="o">+</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">μ_hat</span><span class="si">:</span><span class="s1">.4g</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">+</span><span class="s1">&#39;, $\hat</span><span class="si">{σ}</span><span class="s1">=$&#39;</span><span class="o">+</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">σ_hat</span><span class="si">:</span><span class="s1">.4g</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/imp_sample_36_0.png" src="_images/imp_sample_36_0.png" />
+</div>
+</div>
+<p>Our simulations suggest that indeed <span class="math notranslate nohighlight">\(h_2\)</span> is a quite  good importance sampling distribution for our problem.</p>
+<p>Even at <span class="math notranslate nohighlight">\(T=20\)</span>, the mean  is very close to <span class="math notranslate nohighlight">\(1\)</span> and the  variance is small.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">h_a</span> <span class="o">=</span> <span class="n">a_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">h_b</span> <span class="o">=</span> <span class="n">b_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="n">μ_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">]):</span>
+
+
+    <span class="n">μ_L_p</span><span class="p">,</span> <span class="n">μ_L_q</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">g_a</span><span class="p">,</span> <span class="n">g_b</span><span class="p">,</span> <span class="n">h_a</span><span class="p">,</span> <span class="n">h_b</span><span class="p">,</span> <span class="n">N_simu</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">μ_hat_p</span><span class="p">,</span> <span class="n">μ_hat_q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">μ_L_p</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">μ_L_q</span><span class="p">)</span>
+    <span class="n">σ_hat_p</span><span class="p">,</span> <span class="n">σ_hat_q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanvar</span><span class="p">(</span><span class="n">μ_L_p</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanvar</span><span class="p">(</span><span class="n">μ_L_q</span><span class="p">)</span>
+
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$μ_L$&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;frequency&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;$T$=</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">n_p</span><span class="p">,</span> <span class="n">bins_p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">μ_L_p</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">μ_range</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$g$ generating&#39;</span><span class="p">)</span>
+    <span class="n">n_q</span><span class="p">,</span> <span class="n">bins_q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">μ_L_q</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">μ_range</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$h_3$ generating&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">μ_hat</span><span class="p">,</span> <span class="n">σ_hat</span> <span class="ow">in</span> <span class="p">[[</span><span class="n">n_p</span><span class="p">,</span> <span class="n">bins_p</span><span class="p">,</span> <span class="n">μ_hat_p</span><span class="p">,</span> <span class="n">σ_hat_p</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="n">n_q</span><span class="p">,</span> <span class="n">bins_q</span><span class="p">,</span> <span class="n">μ_hat_q</span><span class="p">,</span> <span class="n">σ_hat_q</span><span class="p">]]:</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">n</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s1">&#39;$\hat</span><span class="si">{μ}</span><span class="s1">$=&#39;</span><span class="o">+</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">μ_hat</span><span class="si">:</span><span class="s1">.4g</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">+</span><span class="s1">&#39;, $\hat</span><span class="si">{σ}</span><span class="s1">=$&#39;</span><span class="o">+</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">σ_hat</span><span class="si">:</span><span class="s1">.4g</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/imp_sample_38_0.png" src="_images/imp_sample_38_0.png" />
+</div>
+</div>
+<p>However, <span class="math notranslate nohighlight">\(h_3\)</span> is evidently a poor importance sampling distribution forpir problem,
+with a mean estimate far away from <span class="math notranslate nohighlight">\(1\)</span> for <span class="math notranslate nohighlight">\(T = 20\)</span>.</p>
+<p>Notice that evan at <span class="math notranslate nohighlight">\(T = 1\)</span>, the mean estimate with importance sampling is more biased than just sampling with  <span class="math notranslate nohighlight">\(g\)</span> itself.</p>
+<p>Thus, our simulations suggest that we would be better off simply using Monte Carlo
+approximations under <span class="math notranslate nohighlight">\(g\)</span> than using <span class="math notranslate nohighlight">\(h_3\)</span> as an importance sampling distribution for our problem.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   6. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   7. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   8. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   10. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   11. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   12. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   13. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   14. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   15. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   16. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   17. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   18. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   19. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   20. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   21. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   22. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   23. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   24. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   25. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   26. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   27. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   28. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   29. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   30. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   31. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   32. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   33. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   34. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   35. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   36. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   37. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   38. Computing Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   39. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   40. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   41. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   42. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   43. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   44. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   45. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   46. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   47. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   48. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   49. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   50. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   51. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   52. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   53. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   54. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   55. Competitive equilibria with Arrow securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   56. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   57. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   58. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   59. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   60. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   61. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   62. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/imp_sample.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/imp_sample.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/imp_sample.ipynb">BinderHub</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/imp_sample.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/imp_sample.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "imp_sample";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/imp_sample.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-54984338-10', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </body>
+</html>
