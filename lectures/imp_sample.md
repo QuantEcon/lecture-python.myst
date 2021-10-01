@@ -19,7 +19,7 @@ kernelspec:
 
 ## Overview
 
-In this lecture {doc}`this lecture <likelihood_ratio_process>` we described a peculiar property of a likelihood ratio process, namely, that it's mean equals one for all $t \geq 0$ despite it's converging to zero almost surely.
+In  {doc}`this lecture <likelihood_ratio_process>` we described a peculiar property of a likelihood ratio process, namely, that it's mean equals one for all $t \geq 0$ despite it's converging to zero almost surely.
 
 While it is easy to verify that peculiar properly analytically (i.e., in population), it is challenging to use a computer simulation to verify it via an application of a law of large numbers that entails studying sample averages of repeated simulations.  
 
@@ -40,7 +40,7 @@ from scipy.stats import beta
 
 ## Mathematical Expectation of Likelihood Ratio
 
-In lecture XXXX, we studied a likelihood ratio $\ell \left(\omega_t\right)$
+In {doc}`this lecture <likelihood_ratio_process>`, we studied a likelihood ratio $\ell \left(\omega_t\right)$
 
 $$
 \ell \left( \omega_t \right) = \frac{f\left(\omega_t\right)}{g\left(\omega_t\right)}
@@ -58,7 +58,7 @@ $$
 
 Our goal is to approximate the mathematical expectation $E \left[ L\left(\omega^t\right) \right]$ well.
 
-In Quantecon Lecture XXXX, we showed that  $E \left[ L\left(\omega^t\right) \right]$  equals $1$ for all $t$.
+In {doc}`this lecture <likelihood_ratio_process>`, we showed that  $E \left[ L\left(\omega^t\right) \right]$  equals $1$ for all $t$.
 We want to check out how well this holds if we replace $E$ by with  sample averages from simulations.
 
 This turns out to be easier said than done because for
