@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Optimal Transport Problem
+# Optimal Transport 
 
 ## Overview
 
