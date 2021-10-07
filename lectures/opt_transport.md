@@ -26,12 +26,12 @@ The optimal transport problem was studied in early work about linear programming
 
 We shall  solve our problems first by using the scipy function *linprog* and then the quantecon program *linprog_simplex*.
 
-Let's start with some imports.
-
 ```{code-cell} ipython3
-# !pip list outdated
-# !pip install -- upgrade quantecon
+:tags: [hide-output]
+!pip install --upgrade quantecon
 ```
+
+Let's start with some imports.
 
 ```{code-cell} ipython3
 import numpy as np

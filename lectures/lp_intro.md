@@ -305,7 +305,7 @@ Here, $Ax = b$ means that  the $i$-th entry of $Ax$  equals the $i$-th entry of 
 
 Similarly, $x >= 0$ means that  $x_j$ is greater than $0$ for every $j$.
 
-#### Useful Transformations
+### Useful Transformations
 
 It is useful to know how to transform a problem that initially is not stated in the standard form into one that is.
 
@@ -319,7 +319,7 @@ By deploying the following steps, any linear programming problem can be transfor
 
 Let's apply the above steps to the two examples described above.
 
-#### Example 1: Production Problem
+### Example 1: Production Problem
 
 The original problem is:
 
@@ -343,7 +343,7 @@ $$
 \end{align*}
 $$
 
-#### Example 2: Investment Problem
+### Example 2: Investment Problem
 
 The original problem is:
 
