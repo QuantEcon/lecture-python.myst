@@ -26,12 +26,12 @@ The optimal transport problem was studied in early work about linear programming
 
 We shall  solve our problems first by using the scipy function *linprog* and then the quantecon program *linprog_simplex*.
 
-Let's start with some imports.
-
 ```{code-cell} ipython3
-# !pip list outdated
-# !pip install -- upgrade quantecon
+:tags: [hide-output]
+!pip install --upgrade quantecon
 ```
+
+Let's start with some imports.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -62,12 +62,12 @@ A planner wants to minimize  total transportation costs subject to the following
 The planner's problem can be expressed as the following constrained minimization problem:
 
 $$
-\begin{align*}
+\begin{aligned}
 \min_{x_{ij}} \ & \sum_{i=1}^m \sum_{j=1}^n c_{ij} x_{ij} \\
 \mbox{subject to } \ & \sum_{j=1}^n x_{ij} = p_i, & i = 1, 2, \dots, m \\
 & \sum_{i=1}^m x_{ij} = q_j, & j = 1, 2, \dots, n \\
 & x_{ij} \ge 0 \\
-\end{align*}
+\end{aligned}
 $$ (plannerproblem)
 
 This is an **optimal transport problem** with
@@ -105,12 +105,12 @@ Let
 Where $\mathbf{1}_n$ denotes $n$-dimensional column vector $(1, 1, \dots, 1)'$, our  problem can now be expressed compactly as:
 
 $$
-\begin{align*}
+\begin{aligned}
 \min_{X} \ & \operatorname{tr} (C' X) \\
 \mbox{subject to } \ & X \ \mathbf{1}_n = p \\
 & X' \ \mathbf{1}_m = q \\
 & X \ge 0 \\
-\end{align*}
+\end{aligned}
 $$
 
 We can convert the matrix $X$ into a vector by stacking all of its columns into a  column vector. 
@@ -176,11 +176,11 @@ $$
 Our problem can now be expressed in terms of an $mn$-dimensional vector of decision variables:
 
 $$
-\begin{align*}
+\begin{aligned}
 \min_{z} \ & \operatorname{vec}(C)' z \\
 \mbox{subject to } \ & A z = b \\
 & z \ge 0 \\
-\end{align*}
+\end{aligned}
 $$ (decisionvars)
 
 where
@@ -451,10 +451,10 @@ Let $u, v$ denotes vectors of dual decision variables with entries $(u_i), (v_j)
 The **dual** to  **minimization** problem {eq}`plannerproblem` is the **maximization** problem:
 
 $$
-\begin{align*}
+\begin{aligned}
 \max_{u_i, v_j} \ & \sum_{i=1}^m p_i u_i + \sum_{j=1}^n q_j v_j \\
 \mbox{subject to } \ & u_i + v_j \le c_{ij}, \ i = 1, 2, \dots, m;\ j = 1, 2, \dots, n \\
-\end{align*}
+\end{aligned}
 $$ (dualproblem)
 
 The dual problem is also a linear programming problem.
@@ -476,10 +476,10 @@ Components of the vectors $u$ and $v$ of **values**  are **shadow prices** of th
 We can write the dual problem as 
 
 $$
-\begin{align*}
+\begin{aligned}
 \max_{u_i, v_j} \ & p u + q v \\
 \mbox{subject to } \ & A' \begin{bmatrix} u \\ v \\ \end{bmatrix} = \operatorname{vec}(C) \\
-\end{align*}
+\end{aligned}
 $$ (dualproblem2)
 
 For the same numerical example described above, let's solve the dual problem.

@@ -118,12 +118,12 @@ Let $x_i$ denote the quantity of Product $i$ that the firm produces.
 This problem can be formulated as:
 
 $$
-\begin{align*}
+\begin{aligned}
 \max_{x_1,x_2} \ & z = 3 x_1 + 4 x_2 \\
 \mbox{subject to } \ & 2 x_1 + 5 x_2 \le 30 \\
 & 4 x_1 + 2 x_2 \le 20 \\
 & x_1, x_2 \ge 0 \\
-\end{align*}
+\end{aligned}
 $$
 
 The following graph illustrates the firm's constraints and iso-revenue lines.
@@ -240,7 +240,7 @@ $$
 Thus, the mutual fund confronts the linear program:
 
 $$
-\begin{align*}
+\begin{aligned}
 \max_{x} \ & 1.30 \cdot 3x_1 + 1.06 x_4 + 1.30 x_5 \\
 \mbox{subject to } \ & x_1 + x_2 = 100,000\\
  & x_1 - 1.06 x_2 + x_3 + x_5 = 0\\
@@ -251,7 +251,7 @@ $$
  & x_5 \le 50,000\\
  & x_j \ge 0, \quad j = 1,5\\
  & x_j \ \text{unrestricted}, \quad j = 2,3,4\\
-\end{align*}
+\end{aligned}
 $$
 
 ## Standard Form
@@ -267,14 +267,14 @@ it is useful to devote some effort to describe a **standard form**.
 Our standard form  is:
 
 $$
-\begin{align*}
+\begin{aligned}
 \min_{x} \ & c_1 x_1 + c_2 x_2 + \dots + c_n x_n  \\
 \mbox{subject to } \ & a_{11} x_1 + a_{12} x_2 + \dots + a_{1n} x_n = b_1 \\
  & a_{21} x_1 + a_{22} x_2 + \dots + a_{2n} x_n = b_2 \\
  & \quad \vdots \\
  & a_{m1} x_1 + a_{m2} x_2 + \dots + a_{mn} x_n = b_m \\
  & x_1, x_2, \dots, x_n \ge 0 \\
-\end{align*}
+\end{aligned}
 $$
 
 Let 
@@ -294,18 +294,18 @@ $$
 The standard form LP problem can be expressed concisely as:
 
 $$
-\begin{align*}
+\begin{aligned}
 \min_{x} \ & c'x \\
 \mbox{subject to } \ & Ax = b\\
  & x >= 0\\
-\end{align*}
+\end{aligned}
 $$ (lpproblem)
 
 Here, $Ax = b$ means that  the $i$-th entry of $Ax$  equals the $i$-th entry of $b$ for every $i$. 
 
 Similarly, $x >= 0$ means that  $x_j$ is greater than $0$ for every $j$.
 
-#### Useful Transformations
+### Useful Transformations
 
 It is useful to know how to transform a problem that initially is not stated in the standard form into one that is.
 
@@ -319,36 +319,36 @@ By deploying the following steps, any linear programming problem can be transfor
 
 Let's apply the above steps to the two examples described above.
 
-#### Example 1: Production Problem
+### Example 1: Production Problem
 
 The original problem is:
 
 $$
-\begin{align*}
+\begin{aligned}
 \max_{x_1,x_2} \ & 3 x_1 + 4 x_2 \\
 \mbox{subject to } \ & 2 x_1 + 5 x_2 \le 30 \\
 & 4 x_1 + 2 x_2 \le 20 \\
 & x_1, x_2 \ge 0 \\
-\end{align*}
+\end{aligned}
 $$
 
 This problem is equivalent to the following problem with a standard form:
 
 $$
-\begin{align*}
+\begin{aligned}
 \min_{x_1,x_2} \ & -(3 x_1 + 4 x_2) \\
 \mbox{subject to } \ & 2 x_1 + 5 x_2 + s_1 = 30 \\
 & 4 x_1 + 2 x_2 + s_2 = 20 \\
 & x_1, x_2, s_1, s_2 \ge 0 \\
-\end{align*}
+\end{aligned}
 $$
 
-#### Example 2: Investment Problem
+### Example 2: Investment Problem
 
 The original problem is:
 
 $$
-\begin{align*}
+\begin{aligned}
 \max_{x} \ & 1.30 \cdot 3x_1 + 1.06 x_4 + 1.30 x_5 \\
 \mbox{subject to } \ & x_1 + x_2 = 100,000\\
  & x_1 - 1.06 x_2 + x_3 + x_5 = 0\\
@@ -359,13 +359,13 @@ $$
  & x_5 \le 50,000\\
  & x_j \ge 0, \quad j = 1,5\\
  & x_j \ \text{unrestricted}, \quad j = 2,3,4\\
-\end{align*}
+\end{aligned}
 $$
 
 This problem is equivalent to the following problem with a standard form:
 
 $$
-\begin{align*}
+\begin{aligned}
 \min_{x} \ & -(1.30 \cdot 3x_1 + 1.06 x_4^+ - 1.06 x_4^- + 1.30 x_5) \\
 \mbox{subject to } \ & x_1 + x_2^+ - x_2^- = 100,000\\
  & x_1 - 1.06 (x_2^+ - x_2^-) + x_3^+ - x_3^- + x_5 = 0\\
@@ -377,7 +377,7 @@ $$
  & x_j \ge 0, \quad j = 1,5\\
  & x_j^+, x_j^- \ge 0, \quad j = 2,3,4\\
  & s_j \ge 0, \quad j = 1,2,3,4\\
-\end{align*}
+\end{aligned}
 $$
 
 ## Computations
@@ -385,12 +385,12 @@ $$
 The package *scipy.optimize* provides a function ***linprog*** to solve linear programming problems with a form below:
 
 $$
-\begin{align*}
+\begin{aligned}
 \min_{x} \ & c' x  \\
 \mbox{subject to } \ & A_{ub}x \le b_{ub} \\
  & A_{eq}x = b_{eq} \\
  & l \le x \le u \\
-\end{align*}
+\end{aligned}
 $$
 
 ```{note}
@@ -404,12 +404,12 @@ Let's apply this great Python tool to solve our two example problems.
 The problem is:
 
 $$
-\begin{align*}
+\begin{aligned}
 \max_{x_1,x_2} \ & 3 x_1 + 4 x_2 \\
 \mbox{subject to } \ & 2 x_1 + 5 x_2 \le 30 \\
 & 4 x_1 + 2 x_2 \le 20 \\
 & x_1, x_2 \ge 0 \\
-\end{align*}
+\end{aligned}
 $$
 
 ```{code-cell} ipython3
@@ -449,7 +449,7 @@ This problem is to maximize the objective, so that we need to put a minus sign i
 The problem is:
 
 $$
-\begin{align*}
+\begin{aligned}
 \max_{x} \ & 1.30 \cdot 3x_1 + 1.06 x_4 + 1.30 x_5 \\
 \mbox{subject to } \ & x_1 + x_2 = 100,000\\
  & x_1 - 1.06 x_2 + x_3 + x_5 = 0\\
@@ -460,7 +460,7 @@ $$
  & x_5 \le 50,000\\
  & x_j \ge 0, \quad j = 1,5\\
  & x_j \ \text{unrestricted}, \quad j = 2,3,4\\
-\end{align*}
+\end{aligned}
 $$
 
 Let's solve this problem using *linprog*.
@@ -508,7 +508,7 @@ Associated with a  linear programming of form {eq}`linprog` with $m$ constraints
 there is an **dual** linear programming problem that takes the form (please see {cite}`bertsimas_tsitsiklis1997`)
 
 $$
-\begin{align*}
+\begin{aligned}
 \max_{p} \ & b' p \\
 \mbox{subject to } \ & p_i \ge 0, & i \in M_1 \\
 & p_i \le 0, & i \in M_2  \\
@@ -516,7 +516,7 @@ $$
 & A_j' p \le c_j, & j \in N_1 \\
 & A_j' p \ge c_j, & j \in N_2 \\
 & A_j' p = c_j, & j \in N_3 \\
-\end{align*}
+\end{aligned}
 $$
 
 Where $A_j$ is $j$-th column of the $m$ by $n$ matrix $A$.
@@ -562,30 +562,30 @@ The following table summarizes relationships between objects in primal and dual 
 As an example, the dual problem of the standard form {eq}`lpproblem` is:
 
 $$
-\begin{align*}
+\begin{aligned}
 \max_{p} \ & b'p \\
 \mbox{subject to } \ & A'p \le c\\
-\end{align*}
+\end{aligned}
 $$
 
 As another example, consider a linear programming problem with form:
 
 $$
-\begin{align*}
+\begin{aligned}
 \max_{x} \ & c'x \\
 \mbox{subject to } \ & A x \le b\\
 & x \ge 0\\
-\end{align*}
+\end{aligned}
 $$ (linprog2)
 
 Its dual problem is:
 
 $$
-\begin{align*}
+\begin{aligned}
 \min_{p} \ & b'p \\
 \mbox{subject to } \ & A' p \ge c\\
 & p \ge 0\\
-\end{align*}
+\end{aligned}
 $$
 
 ## Duality Theorems
@@ -690,12 +690,12 @@ This problem is one specific instance of the problem {eq}`linprog2`, whose econo
 Its dual problem is:
 
 $$
-\begin{align*}
+\begin{aligned}
 \min_{x_1,x_2} \ & 30 p_1 + 20 p_2 \\
 \mbox{subject to } \ & 2 p_1 + 4 p_2 \ge 3 \\
 & 5 p_1 + 2 p_2 \ge 4 \\
 & p_1, p_2 \ge 0 \\
-\end{align*}
+\end{aligned}
 $$
 
 We then solve this dual problem by function *linprog*. Since parameters used here are defined before when solving the primal problem, we don't need to define them here.
@@ -714,7 +714,7 @@ The optimal of the dual problem is 27.5, which is the same as the primal problem
 The dual problem is:
 
 $$
-\begin{align*}
+\begin{aligned}
 \min_{p} \ & 100,000 p_1 - 20,000 p_4 - 20,000 p_5 - 20,000 p_6 + 50,000 p_7 \\
 \mbox{subject to } \ & p_1 + p_2 + p_3 \ge 1.30 \cdot 3 \\
 & p_1 - 1.06 p_2 + p_4 = 0 \\
@@ -724,7 +724,7 @@ $$
 & p_i \ \text{unrestricted}, \quad i = 1,2,3 \\
 & p_i \le 0, \quad i = 4,5,6 \\
 & p_7 \ge 0 \\
-\end{align*}
+\end{aligned}
 $$
 
 We then solve this dual problem by function *linprog*.
