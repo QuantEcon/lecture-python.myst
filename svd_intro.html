@@ -1,0 +1,1923 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>6. Singular Value Decomposition (SVD) &#8212; Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+        MathJax = {
+          loader: {load: ['[tex]/boldsymbol']},
+          tex: {
+            packages: {'[+]': ['boldsymbol']},
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            processEscapes: true,
+            macros: {
+                "argmax" : "arg\\,max",
+                "argmin" : "arg\\,min"
+            }
+          },
+          svg: {
+            fontCache: 'global',
+            scale: 0.92,
+            displayAlign: "center",
+          },
+        };
+    </script>
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/quantecon-book-theme.b2c9c855ebbf206c0b4223812193cad1.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="_static/quantecon-book-theme.a5462485f8dd312884626d20cc9f547c.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/svd_intro.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="7. Complex Numbers and Trigonometry" href="complex_and_trig.html" />
+    <link rel="prev" title="5. QR Decomposition" href="qr_decomp.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Singular Value Decomposition (SVD)"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Singular Value Decomposition (SVD)" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/svd_intro.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page" id=svd_intro>
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   6.1. Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-setup">
+   6.2. The Setup
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#singular-value-decomposition">
+   6.3. Singular Value Decomposition
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#digression-the-polar-decomposition">
+   6.4. Digression: the polar decomposition
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#principle-componenents-analysis-pca">
+   6.5. Principle Componenents Analysis (PCA)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relationship-of-pca-to-svd">
+   6.6. Relationship of PCA to SVD
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#digression-reduced-or-economy-versus-full-svd">
+   6.7. Digression: reduced (or economy) versus full SVD
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pca-with-eigenvalues-and-eigenvectors">
+   6.8. PCA with eigenvalues and eigenvectors
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary-of-connections">
+   6.9. Summary of  Connections
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dynamic-mode-decomposition-dmd">
+   6.10. Dynamic Mode Decomposition (DMD)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#source-for-some-python-code">
+   6.11. Source for some Python code
+  </a>
+ </li>
+</ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">Singular Value Decomposition (SVD)</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div class="section" id="singular-value-decomposition-svd">
+<h1><span class="section-number">6. </span>Singular Value Decomposition (SVD)<a class="headerlink" href="#singular-value-decomposition-svd" title="Permalink to this headline">¶</a></h1>
+<p>In addition to regular packages contained in Anaconda by default, this notebook also requires:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quandl
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quandl
+  Downloading Quandl-3.6.1-py2.py3-none-any.whl (26 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: python-dateutil in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.8.1)
+Requirement already satisfied: more-itertools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (8.6.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas&gt;=0.14 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.1.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting inflection&gt;=0.3.1
+  Downloading inflection-0.5.1-py2.py3-none-any.whl (9.5 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests&gt;=2.7.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.24.0)
+Requirement already satisfied: numpy&gt;=1.8 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.19.2)
+Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.15.0)
+Requirement already satisfied: pytz&gt;=2017.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.14-&gt;quandl) (2020.1)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2021.5.30)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: chardet&lt;4,&gt;=3.0.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.0.4)
+Requirement already satisfied: idna&lt;3,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.10)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,&lt;1.26,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (1.25.11)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: inflection, quandl
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed inflection-0.5.1 quandl-3.6.1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">LA</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">quandl</span> <span class="k">as</span> <span class="nn">ql</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="overview">
+<h2><span class="section-number">6.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>singular value decomposition</strong> is a work-horse in applications of least squares projection that
+form the backbone of important parts of modern machine learning methods.</p>
+<p>This lecture describes the singular value decomposition and two of its uses:</p>
+<ul class="simple">
+<li><p>principal components analysis (PCA)</p></li>
+<li><p>dynamic mode decomposition (DMD)</p></li>
+</ul>
+<p>Each of these can be thought of as data-reduction methods that are designed to capture principal patterns in data by projecting data onto a limited set of factors.</p>
+</div>
+<div class="section" id="the-setup">
+<h2><span class="section-number">6.2. </span>The Setup<a class="headerlink" href="#the-setup" title="Permalink to this headline">¶</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(X\)</span> be an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of rank <span class="math notranslate nohighlight">\(r\)</span>.</p>
+<p>In this notebook, we’ll think of <span class="math notranslate nohighlight">\(X\)</span> as a matrix of <strong>data</strong>.</p>
+<ul class="simple">
+<li><p>each column is an <strong>individual</strong> – a time period or person, depending on the application</p></li>
+<li><p>each row is a <strong>random variable</strong> measuring an attribute of a time period or a person, depending on the application</p></li>
+</ul>
+<p>We’ll be interested in  two distinct cases</p>
+<ul class="simple">
+<li><p>The <strong>short and fat</strong> case in which <span class="math notranslate nohighlight">\(m &lt;&lt; n\)</span>, so that there are many more columns than rows.</p></li>
+<li><p>The  <strong>tall and skinny</strong> case in which <span class="math notranslate nohighlight">\(m &gt;&gt; n\)</span>, so that there are many more rows than columns.</p></li>
+</ul>
+<p>We’ll apply a <strong>singular value decomposition</strong> of <span class="math notranslate nohighlight">\(X\)</span> in both situations.</p>
+<p>In the first case in which there are many more observations <span class="math notranslate nohighlight">\(n\)</span> than there are random variables <span class="math notranslate nohighlight">\(m\)</span>, we learn about the joint distribution of the  random variables by taking averages  across observations of functions of the observations. Here we’ll look for <strong>patterns</strong> by using a <strong>singular value decomosition</strong> to do a <strong>principal components analysis</strong> (PCA).</p>
+<p>In the second case in which there are many more random variables <span class="math notranslate nohighlight">\(m\)</span> than observations <span class="math notranslate nohighlight">\(n\)</span>, we’ll proceed in a different way.
+We’ll again use a <strong>singular value decomposition</strong>,  but now to do a <strong>dynamic mode decomposition</strong> (DMD)</p>
+</div>
+<div class="section" id="singular-value-decomposition">
+<h2><span class="section-number">6.3. </span>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>singular value decomposition</strong> of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span> of rank <span class="math notranslate nohighlight">\(r \leq \min(m,n)\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+X  = U \Sigma V^T
+\]</div>
+<p>where</p>
+<p>\begin{align*}
+UU^T &amp;  = I  &amp;  \quad U^T U = I \cr<br />
+VV^T &amp; = I &amp; \quad V^T V = I
+\end{align*}</p>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(U\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix whose columns are eigenvectors of <span class="math notranslate nohighlight">\(X^T X\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(V\)</span> is an <span class="math notranslate nohighlight">\(n \times n\)</span> matrix whose columns are eigenvectors of <span class="math notranslate nohighlight">\(X X^T\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\Sigma\)</span> is an <span class="math notranslate nohighlight">\(m \times r\)</span> matrix in which the first <span class="math notranslate nohighlight">\(r\)</span> places on its main diagonal are positive numbers <span class="math notranslate nohighlight">\(\sigma_1, \sigma_2, \ldots, \sigma_r\)</span> called <strong>singular values</strong>; remaining entries of <span class="math notranslate nohighlight">\(\Sigma\)</span> are all zero</p></li>
+<li><p>The <span class="math notranslate nohighlight">\(r\)</span> singular values are square roots of the eigenvalues of the <span class="math notranslate nohighlight">\(m \times m\)</span> matrix  <span class="math notranslate nohighlight">\(X X^T\)</span> and the <span class="math notranslate nohighlight">\(n \times n\)</span> matrix <span class="math notranslate nohighlight">\(X^T X\)</span></p></li>
+<li><p>When <span class="math notranslate nohighlight">\(U\)</span> is a complex valued matrix, <span class="math notranslate nohighlight">\(U^T\)</span> denotes the <strong>conjugate-transpose</strong> or <strong>Hermitian-transpose</strong> of <span class="math notranslate nohighlight">\(U\)</span>, meaning that
+<span class="math notranslate nohighlight">\(U_{ij}^T\)</span> is the complex conjugate of <span class="math notranslate nohighlight">\(U_{ji}\)</span>. Similarly, when <span class="math notranslate nohighlight">\(V\)</span> is a complex valued matrix, <span class="math notranslate nohighlight">\(V^T\)</span> denotes the <strong>conjugate-transpose</strong> or <strong>Hermitian-transpose</strong> of <span class="math notranslate nohighlight">\(V\)</span></p></li>
+</ul>
+<p>The shapes of <span class="math notranslate nohighlight">\(U\)</span>, <span class="math notranslate nohighlight">\(\Sigma\)</span>, and <span class="math notranslate nohighlight">\(V\)</span> are <span class="math notranslate nohighlight">\(\left(m, m\right)\)</span>, <span class="math notranslate nohighlight">\(\left(m, n\right)\)</span>, <span class="math notranslate nohighlight">\(\left(n, n\right)\)</span>, respectively.</p>
+<p>Below, we shall assume these shapes.</p>
+<p>However, there is an alternative shape convention that we could have used, though we chose not to.</p>
+<p>Thus, note that because we assume that <span class="math notranslate nohighlight">\(A\)</span> has rank <span class="math notranslate nohighlight">\(r\)</span>, there are only <span class="math notranslate nohighlight">\(r \)</span> nonzero singular values, where <span class="math notranslate nohighlight">\(r=rank(A)\leq\min\left(m, n\right)\)</span>.</p>
+<p>Therefore,  we could also write <span class="math notranslate nohighlight">\(U\)</span>, <span class="math notranslate nohighlight">\(\Sigma\)</span>, and <span class="math notranslate nohighlight">\(V\)</span> as matrices with shapes <span class="math notranslate nohighlight">\(\left(m, r\right)\)</span>, <span class="math notranslate nohighlight">\(\left(r, r\right)\)</span>, <span class="math notranslate nohighlight">\(\left(r, n\right)\)</span>.</p>
+<p>Sometimes, we will choose the former one to be consistent with what is adopted by <code class="docutils literal notranslate"><span class="pre">numpy</span></code>.</p>
+<p>At other times, we’ll use the latter convention in which <span class="math notranslate nohighlight">\(\Sigma\)</span> is an <span class="math notranslate nohighlight">\(r \times r\)</span>  diagonal matrix.</p>
+<p>Also, when we discuss the <strong>dynamic mode decomposition</strong> below, we’ll use a special case of the latter  convention in which it is understood that
+<span class="math notranslate nohighlight">\(r\)</span> is just a pre-specified small number of leading singular values that we think capture the  most interesting  dynamics.</p>
+</div>
+<div class="section" id="digression-the-polar-decomposition">
+<h2><span class="section-number">6.4. </span>Digression: the polar decomposition<a class="headerlink" href="#digression-the-polar-decomposition" title="Permalink to this headline">¶</a></h2>
+<p>Through  the following identities, the singular value decomposition (SVD) is related to the <strong>polar decomposition</strong> of <span class="math notranslate nohighlight">\(X\)</span></p>
+<p>\begin{align*}
+X &amp; = SQ  \cr<br />
+S &amp; = U\Sigma U^T \cr
+Q &amp; = U V^T
+\end{align*}</p>
+<p>where <span class="math notranslate nohighlight">\(S\)</span> is evidently a symmetric matrix and <span class="math notranslate nohighlight">\(Q\)</span> is an orthogonal matrix.</p>
+</div>
+<div class="section" id="principle-componenents-analysis-pca">
+<h2><span class="section-number">6.5. </span>Principle Componenents Analysis (PCA)<a class="headerlink" href="#principle-componenents-analysis-pca" title="Permalink to this headline">¶</a></h2>
+<p>Let’s begin with the case in which <span class="math notranslate nohighlight">\(n &gt;&gt; m\)</span>, so that we have many  more observations <span class="math notranslate nohighlight">\(n\)</span> than random variables <span class="math notranslate nohighlight">\(m\)</span>.</p>
+<p>The data matrix <span class="math notranslate nohighlight">\(X\)</span> is <strong>short and fat</strong>  in the  <span class="math notranslate nohighlight">\(n &gt;&gt; m\)</span> case as opposed to a <strong>tall and skinny</strong> case with <span class="math notranslate nohighlight">\(m &gt; &gt; n \)</span> to be discussed later in this notebook.</p>
+<p>We regard  <span class="math notranslate nohighlight">\(X\)</span> as an  <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of <strong>data</strong>:</p>
+<div class="math notranslate nohighlight">
+\[
+X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n\end{bmatrix}
+\]</div>
+<p>where for <span class="math notranslate nohighlight">\(j = 1, \ldots, n\)</span> the column vector <span class="math notranslate nohighlight">\(X_j = \begin{bmatrix}X_{1j}\\X_{2j}\\\vdots\\X_{mj}\end{bmatrix}\)</span> is a  vector of observations on variables <span class="math notranslate nohighlight">\(\begin{bmatrix}x_1\\x_2\\\vdots\\x_m\end{bmatrix}\)</span>.</p>
+<p>In a <strong>time series</strong> setting, we would think of columns <span class="math notranslate nohighlight">\(j\)</span> as indexing different <strong>times</strong> at which random variables are observed, while rows index different random variables.</p>
+<p>In a <strong>cross section</strong> setting, we would think of columns <span class="math notranslate nohighlight">\(j\)</span> as indexing different <strong>individuals</strong> for  which random variables are observed, while rows index different random variables.</p>
+<p>The number of singular values equals the rank of  matrix <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>Arrange the singular values  in decreasing order.</p>
+<p>Arrange   the positive singular values on the main diagonal of the matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> of into a vector <span class="math notranslate nohighlight">\(\sigma_R\)</span>.</p>
+<p>Set all other entries of <span class="math notranslate nohighlight">\(\Sigma\)</span> to zero.</p>
+</div>
+<div class="section" id="relationship-of-pca-to-svd">
+<h2><span class="section-number">6.6. </span>Relationship of PCA to SVD<a class="headerlink" href="#relationship-of-pca-to-svd" title="Permalink to this headline">¶</a></h2>
+<p>To relate a SVD to a PCA (principal component analysis) of data set <span class="math notranslate nohighlight">\(X\)</span>, first construct  the  SVD of the data matrix <span class="math notranslate nohighlight">\(X\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-pca1">
+<span class="eqno">(6.1)<a class="headerlink" href="#equation-eq-pca1" title="Permalink to this equation">¶</a></span>\[
+X = U \Sigma V^T = \sigma_1 U_1 V_1^T + \sigma_2 U_2 V_2^T + \cdots + \sigma_r U_r V_r^T
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+U=\begin{bmatrix}U_1|U_2|\ldots|U_m\end{bmatrix}
+\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+V^T = \begin{bmatrix}V_1^T\\V_2^T\\\ldots\\V_n^T\end{bmatrix}
+\end{split}\]</div>
+<p>In equation <a class="reference internal" href="#equation-eq-pca1">(6.1)</a>, each of the <span class="math notranslate nohighlight">\(m \times n\)</span> matrices <span class="math notranslate nohighlight">\(U_{j}V_{j}^T\)</span> is evidently
+of rank <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>Thus, we have</p>
+<div class="math notranslate nohighlight" id="equation-eq-pca2">
+<span class="eqno">(6.2)<a class="headerlink" href="#equation-eq-pca2" title="Permalink to this equation">¶</a></span>\[\begin{split}
+X = \sigma_1 \begin{pmatrix}U_{11}V_{1}^T\\U_{21}V_{1}^T\\\cdots\\U_{m1}V_{1}^T\\\end{pmatrix} + \sigma_2\begin{pmatrix}U_{12}V_{2}^T\\U_{22}V_{2}^T\\\cdots\\U_{m2}V_{2}^T\\\end{pmatrix}+\ldots + \sigma_r\begin{pmatrix}U_{1r}V_{r}^T\\U_{2r}V_{r}^T\\\cdots\\U_{mr}V_{r}^T\\\end{pmatrix}
+\end{split}\]</div>
+<p>Here is how we would interpret the objects in the  matrix equation <a class="reference internal" href="#equation-eq-pca2">(6.2)</a> in
+a time series context:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( V_{k}^T= \begin{bmatrix}V_{k1} &amp;  V_{k2} &amp; \ldots &amp; V_{kn}\end{bmatrix}  \quad \textrm{for each} \   k=1, \ldots, n \)</span> is a time series  <span class="math notranslate nohighlight">\(\lbrace V_{kj} \rbrace_{j=1}^n\)</span> for the <span class="math notranslate nohighlight">\(k\)</span>th principal component</p></li>
+<li><p><span class="math notranslate nohighlight">\(U_j = \begin{bmatrix}U_{1k}\\U_{2k}\\\ldots\\U_{mk}\end{bmatrix} \  k=1, \ldots, m\)</span>
+is a vector of loadings of variables <span class="math notranslate nohighlight">\(X_i\)</span> on the <span class="math notranslate nohighlight">\(k\)</span>th principle component,  <span class="math notranslate nohighlight">\(i=1, \ldots, m\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_k \)</span> for each <span class="math notranslate nohighlight">\(k=1, \ldots, r\)</span> is the strength of <span class="math notranslate nohighlight">\(k\)</span>th <strong>principal component</strong></p></li>
+</ul>
+</div>
+<div class="section" id="digression-reduced-or-economy-versus-full-svd">
+<h2><span class="section-number">6.7. </span>Digression: reduced (or economy) versus full SVD<a class="headerlink" href="#digression-reduced-or-economy-versus-full-svd" title="Permalink to this headline">¶</a></h2>
+<p>You can read about reduced and full SVD here
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html">https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html</a></p>
+<p>Let’s do a small experiment to see the difference</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">full_matrices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># full SVD</span>
+<span class="n">Uhat</span><span class="p">,</span> <span class="n">Shat</span><span class="p">,</span> <span class="n">Vhat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># economy SVD</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;U, S, V =&#39;</span><span class="p">),</span> <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U, S, V =
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
+ array([[-0.44001183,  0.74675094, -0.40132959,  0.0192523 , -0.29549371],
+        [-0.19356345, -0.31010806,  0.01996547, -0.73520809, -0.57047054],
+        [-0.41871908,  0.21027745,  0.8797327 ,  0.07273434, -0.03518258],
+        [-0.4108698 , -0.49742115, -0.14503514,  0.63000638, -0.40720385],
+        [-0.65175388, -0.23356288, -0.20873696, -0.23853741,  0.64822376]]),
+ array([1.87500521, 0.75576908]),
+ array([[-0.66574138, -0.74618256],
+        [-0.74618256,  0.66574138]]))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Uhat, Shat, Vhat = &#39;</span><span class="p">),</span> <span class="n">Uhat</span><span class="p">,</span> <span class="n">Shat</span><span class="p">,</span> <span class="n">Vhat</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uhat, Shat, Vhat = 
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
+ array([[-0.44001183,  0.74675094],
+        [-0.19356345, -0.31010806],
+        [-0.41871908,  0.21027745],
+        [-0.4108698 , -0.49742115],
+        [-0.65175388, -0.23356288]]),
+ array([1.87500521, 0.75576908]),
+ array([[-0.66574138, -0.74618256],
+        [-0.74618256,  0.66574138]]))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">rr</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="pca-with-eigenvalues-and-eigenvectors">
+<h2><span class="section-number">6.8. </span>PCA with eigenvalues and eigenvectors<a class="headerlink" href="#pca-with-eigenvalues-and-eigenvectors" title="Permalink to this headline">¶</a></h2>
+<p>We now  turn to using the eigen decomposition of a sample covariance matrix to do PCA.</p>
+<p>Let <span class="math notranslate nohighlight">\(X_{m \times n}\)</span> be our <span class="math notranslate nohighlight">\(m \times n\)</span> data matrix.</p>
+<p>Let’s assume that sample means of all variables are zero.</p>
+<p>We can make sure that this is true by <strong>pre-processing</strong> the data by substracting sample means appropriately.</p>
+<p>Define the sample covariance matrix <span class="math notranslate nohighlight">\(\Omega\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[
+\Omega = XX^T
+\]</div>
+<p>Then use an eigen decomposition to represent <span class="math notranslate nohighlight">\(\Omega\)</span> as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\Omega =P\Lambda P^T
+\]</div>
+<p>Here</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P\)</span> is <span class="math notranslate nohighlight">\(m×m\)</span> matrix of eigenvectors of <span class="math notranslate nohighlight">\(\Omega\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\Lambda\)</span> is a diagonal matrix of eigenvalues of <span class="math notranslate nohighlight">\(\Omega\)</span></p></li>
+</ul>
+<p>We can then represent <span class="math notranslate nohighlight">\(X\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[
+X=P\epsilon
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\epsilon\epsilon^T=\Lambda
+\]</div>
+<p>We can verify that</p>
+<div class="math notranslate nohighlight">
+\[
+XX^T=P\Lambda P^T
+\]</div>
+<p>It follows that we can represent the data matrix as</p>
+<p>\begin{equation*}
+X=\begin{bmatrix}X_1|X_2|\ldots|X_m\end{bmatrix} =\begin{bmatrix}P_1|P_2|\ldots|P_m\end{bmatrix}
+\begin{bmatrix}\epsilon_1\epsilon_2\ldots\epsilon_m\end{bmatrix}
+= P_1\epsilon_1+P_2\epsilon_2+\ldots+P_m\epsilon_m
+\end{equation*}</p>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\epsilon\epsilon^T=\Lambda
+\]</div>
+<p>To reconcile the preceding representation with the PCA that we obtained through the SVD above, we first note that <span class="math notranslate nohighlight">\(\epsilon_j^2=\lambda_j\equiv\sigma^2_j\)</span>.</p>
+<p>Now define  <span class="math notranslate nohighlight">\(\tilde{\epsilon_j} = \frac{\epsilon_j}{\sqrt{\lambda_j}}\)</span>
+which evidently implies that <span class="math notranslate nohighlight">\(\tilde{\epsilon}_j\tilde{\epsilon}_j^T=1\)</span>.</p>
+<p>Therefore</p>
+<p>\begin{aligned}
+X&amp;=\sqrt{\lambda_1}P_1\tilde{\epsilon_1}+\sqrt{\lambda_2}P_2\tilde{\epsilon_2}+\ldots+\sqrt{\lambda_m}P_m\tilde{\epsilon_m}\
+&amp;=\sigma_1P_1\tilde{\epsilon_2}+\sigma_2P_2\tilde{\epsilon_2}+\ldots+\sigma_mP_m\tilde{\epsilon_m}
+\end{aligned}</p>
+<p>which evidently agrees with</p>
+<div class="math notranslate nohighlight">
+\[
+X=\sigma_1U_1{V_1}^{T}+\sigma_2 U_2{V_2}^{T}+\ldots+\sigma_{r} U_{r}{V_{r}}^{T}
+\]</div>
+<p>provided that  we set</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(U_j=P_j\)</span> (the loadings of variables on principal components)</p></li>
+<li><p><span class="math notranslate nohighlight">\({V_k}^{T}=\tilde{\epsilon_k}\)</span> (the principal components)</p></li>
+</ul>
+<p>Since there are several possible ways of computing  <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(U\)</span> for  given a data matrix <span class="math notranslate nohighlight">\(X\)</span>, depending on  algorithms used, we might have sign differences or different orders between eigenvectors.</p>
+<p>We want a way that leads to the same <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p>In the following, we accomplish this by</p>
+<ol class="simple">
+<li><p>sorting eigenvalues and singular values in descending order</p></li>
+<li><p>imposing positive diagonals on <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(U\)</span> and adjusting signs in <span class="math notranslate nohighlight">\(V^T\)</span> accordingly</p></li>
+</ol>
+</div>
+<div class="section" id="summary-of-connections">
+<h2><span class="section-number">6.9. </span>Summary of  Connections<a class="headerlink" href="#summary-of-connections" title="Permalink to this headline">¶</a></h2>
+<p>To pull things together, it is useful to assemble and compare some formulas presented above.</p>
+<p>First, consider the following SVD of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix:</p>
+<div class="math notranslate nohighlight">
+\[
+X = U\Sigma V^T
+\]</div>
+<p>Compute:</p>
+<p>\begin{align*}
+XX^T&amp;=U\Sigma V^TV\Sigma^T U^T\cr
+&amp;\equiv U\Sigma\Sigma^TU^T\cr
+&amp;\equiv U\Lambda U^T
+\end{align*}</p>
+<p>Thus, <span class="math notranslate nohighlight">\(U\)</span> in the SVD is the matrix <span class="math notranslate nohighlight">\(P\)</span>  of
+eigenvectors of <span class="math notranslate nohighlight">\(XX^T\)</span> and <span class="math notranslate nohighlight">\(\Sigma \Sigma^T\)</span> is the matrix <span class="math notranslate nohighlight">\(\Lambda\)</span> of eigenvalues.</p>
+<p>Second, let’s compute</p>
+<p>\begin{align*}
+X^TX &amp;=V\Sigma^T U^TU\Sigma V^T\
+&amp;=V\Sigma^T{\Sigma}V^T
+\end{align*}</p>
+<p>Thus, the matrix <span class="math notranslate nohighlight">\(V\)</span> in the SVD is the matrix of eigenvectors of <span class="math notranslate nohighlight">\(X^TX\)</span></p>
+<p>Summarizing and fitting things together, we have the eigen decomposition of the sample
+covariance matrix</p>
+<div class="math notranslate nohighlight">
+\[
+X X^T = P \Lambda P^T
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(P\)</span> is an orthogonal matrix.</p>
+<p>Further, from the SVD of <span class="math notranslate nohighlight">\(X\)</span>, we know that</p>
+<div class="math notranslate nohighlight">
+\[
+X X^T = U \Sigma \Sigma^T U^T
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(U\)</span> is an orthonal matrix.</p>
+<p>Thus, <span class="math notranslate nohighlight">\(P = U\)</span> and we have the representation of <span class="math notranslate nohighlight">\(X\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+X = P \epsilon = U \Sigma V^T
+\]</div>
+<p>It follows that</p>
+<div class="math notranslate nohighlight">
+\[
+U^T X = \Sigma V^T = \epsilon
+\]</div>
+<p>Note that the preceding implies that</p>
+<div class="math notranslate nohighlight">
+\[
+\epsilon \epsilon^T = \Sigma V^T V \Sigma^T = \Sigma \Sigma^T = \Lambda ,
+\]</div>
+<p>so that everything fits together.</p>
+<p>Below we define a class <code class="docutils literal notranslate"><span class="pre">DecomAnalysis</span></code> that wraps  PCA and SVD for a given a data matrix <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DecomAnalysis</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for conducting PCA and SVD.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">n_component</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Ω</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">n_component</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_component</span> <span class="o">=</span> <span class="n">n_component</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_component</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
+
+    <span class="k">def</span> <span class="nf">pca</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">𝜆</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Ω</span><span class="p">)</span>    <span class="c1"># columns of P are eigenvectors</span>
+
+        <span class="n">ind</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">𝜆</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">𝜆</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># sort by eigenvalues</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">𝜆</span> <span class="o">=</span> <span class="n">𝜆</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="n">P</span><span class="p">[:,</span> <span class="n">ind</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="n">P</span> <span class="o">@</span> <span class="n">diag_sign</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Λ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">𝜆</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">explained_ratio_pca</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">𝜆</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">𝜆</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># compute the N by T matrix of principal components </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">𝜖</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span>
+
+        <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">[:,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_component</span><span class="p">]</span>
+        <span class="n">𝜖</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">𝜖</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_component</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="c1"># transform data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_pca</span> <span class="o">=</span> <span class="n">P</span> <span class="o">@</span> <span class="n">𝜖</span>
+
+    <span class="k">def</span> <span class="nf">svd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">U</span><span class="p">,</span> <span class="n">𝜎</span><span class="p">,</span> <span class="n">VT</span> <span class="o">=</span> <span class="n">LA</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="n">ind</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">𝜎</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">𝜎</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># sort by eigenvalues</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">𝜎</span> <span class="o">=</span> <span class="n">𝜎</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="n">ind</span><span class="p">]</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">diag_sign</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">U</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">D</span>
+        <span class="n">VT</span><span class="p">[:</span><span class="n">d</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">D</span> <span class="o">@</span> <span class="n">VT</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VT</span> <span class="o">=</span> <span class="n">VT</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Σ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Σ</span><span class="p">[:</span><span class="n">d</span><span class="p">,</span> <span class="p">:</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">𝜎</span><span class="p">)</span>
+
+        <span class="n">𝜎_sq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">𝜎</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explained_ratio_svd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">𝜎_sq</span><span class="p">)</span> <span class="o">/</span> <span class="n">𝜎_sq</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># slicing matrices by the number of components to use</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_component</span><span class="p">]</span>
+        <span class="n">Σ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Σ</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_component</span><span class="p">,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_component</span><span class="p">]</span>
+        <span class="n">VT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">VT</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_component</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="c1"># transform data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_svd</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">Σ</span> <span class="o">@</span> <span class="n">VT</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_component</span><span class="p">):</span>
+
+        <span class="c1"># pca</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n_component</span><span class="p">]</span>
+        <span class="n">𝜖</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">𝜖</span><span class="p">[:</span><span class="n">n_component</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="c1"># transform data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_pca</span> <span class="o">=</span> <span class="n">P</span> <span class="o">@</span> <span class="n">𝜖</span>
+
+        <span class="c1"># svd</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n_component</span><span class="p">]</span>
+        <span class="n">Σ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Σ</span><span class="p">[:</span><span class="n">n_component</span><span class="p">,</span> <span class="p">:</span><span class="n">n_component</span><span class="p">]</span>
+        <span class="n">VT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">VT</span><span class="p">[:</span><span class="n">n_component</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="c1"># transform data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_svd</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">Σ</span> <span class="o">@</span> <span class="n">VT</span>
+
+<span class="k">def</span> <span class="nf">diag_sign</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="s2">&quot;Compute the signs of the diagonal of matrix A&quot;</span>
+
+    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">A</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">D</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We also define a function that prints out information so that we can compare  decompositions
+obtained by different algorithms.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compare_pca_svd</span><span class="p">(</span><span class="n">da</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compare the outcomes of PCA and SVD.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">da</span><span class="o">.</span><span class="n">pca</span><span class="p">()</span>
+    <span class="n">da</span><span class="o">.</span><span class="n">svd</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Eigenvalues and Singular values</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;λ = </span><span class="si">{</span><span class="n">da</span><span class="o">.</span><span class="n">λ</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;σ^2 = </span><span class="si">{</span><span class="n">da</span><span class="o">.</span><span class="n">σ</span><span class="o">**</span><span class="mi">2</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># loading matrices</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;loadings&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">P</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">U</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;U&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1"># principal components</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;principal components&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">ε</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;ε&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">VT</span><span class="p">[:</span><span class="n">da</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">λ</span><span class="p">))</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;$V^T*\sqrt{\lambda}$&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="dynamic-mode-decomposition-dmd">
+<h2><span class="section-number">6.10. </span>Dynamic Mode Decomposition (DMD)<a class="headerlink" href="#dynamic-mode-decomposition-dmd" title="Permalink to this headline">¶</a></h2>
+<p>We now turn to the case in which <span class="math notranslate nohighlight">\(m &gt;&gt;n \)</span> so that there are many more random variables <span class="math notranslate nohighlight">\(m\)</span> than observations <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<p>This is the <strong>tall and skinny</strong> case associated with <strong>Dynamic Mode Decomposition</strong>.</p>
+<p>You can read about Dynamic Mode Decomposition here <span id="id2">[<a class="reference internal" href="zreferences.html#id5">KBBWP16</a>]</span>.</p>
+<p>Starting with an <span class="math notranslate nohighlight">\(m \times n \)</span> matrix of data <span class="math notranslate nohighlight">\(X\)</span>, we form two matrices</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_{n-1}\end{bmatrix}
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde X' =  \begin{bmatrix} X_2 \mid X_3 \mid \cdots \mid X_n\end{bmatrix}
+\]</div>
+<p>In forming <span class="math notranslate nohighlight">\(\tilde X\)</span> and <span class="math notranslate nohighlight">\(\tilde X'\)</span>, we have in each case  dropped a column from <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>Evidently, <span class="math notranslate nohighlight">\(\tilde X\)</span> and <span class="math notranslate nohighlight">\(\tilde X'\)</span> are both <span class="math notranslate nohighlight">\(m \times \tilde n\)</span> matrices where <span class="math notranslate nohighlight">\(\tilde n = n - 1\)</span>.</p>
+<p>We start with a system consisting of <span class="math notranslate nohighlight">\(m\)</span> least squares regressions of <em>everything on everything</em>:</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde X' = A \tilde X + \epsilon
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+A = \tilde X' \tilde X^{+}
+\]</div>
+<p>and where the (huge) <span class="math notranslate nohighlight">\(m \times m \)</span> matrix <span class="math notranslate nohighlight">\(X^{+}\)</span> is the Moore-Penrose generalize inverse of <span class="math notranslate nohighlight">\(X\)</span> that we could compute
+as</p>
+<div class="math notranslate nohighlight">
+\[
+X^{+} = V \Sigma^{-1} U^T
+\]</div>
+<p>where the matrix <span class="math notranslate nohighlight">\(\Sigma^{-1}\)</span> is constructed by replacing each non-zero element of <span class="math notranslate nohighlight">\(\Sigma\)</span> with <span class="math notranslate nohighlight">\(\sigma_j^{-1}\)</span>.</p>
+<p>The idea behind <strong>dynamic mode decomposition</strong> is to construct an approximation that</p>
+<ul class="simple">
+<li><p>sidesteps computing <span class="math notranslate nohighlight">\(X^{+}\)</span></p></li>
+<li><p>retains only the largest  <span class="math notranslate nohighlight">\(\tilde r&lt; &lt; r\)</span> eigenvalues and associated eigenvectors of <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V^T\)</span></p></li>
+<li><p>constructs an <span class="math notranslate nohighlight">\(m \times \tilde r\)</span> matrix <span class="math notranslate nohighlight">\(\Phi\)</span> that captures effects of <span class="math notranslate nohighlight">\(r\)</span> dynamic modes on all <span class="math notranslate nohighlight">\(m\)</span> variables</p></li>
+<li><p>uses <span class="math notranslate nohighlight">\(\Phi\)</span> and the <span class="math notranslate nohighlight">\(\tilde r\)</span> leading singular values to forecast <em>future</em> <span class="math notranslate nohighlight">\(X_t\)</span>’s</p></li>
+</ul>
+<p>The magic of <strong>dynamic mode decomposition</strong> is that we accomplish this without ever computing the regression coefficients <span class="math notranslate nohighlight">\(A = X' X^{+}\)</span>.</p>
+<p>To accomplish a DMD, we deploy the following steps:</p>
+<ul>
+<li><p>Compute the singular value decomposition</p>
+<div class="math notranslate nohighlight">
+\[ 
+  X = U \Sigma V^T
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(U\)</span> is <span class="math notranslate nohighlight">\(m \times r\)</span>, <span class="math notranslate nohighlight">\(\Sigma\)</span> is an <span class="math notranslate nohighlight">\(r \times r\)</span> diagonal  matrix, and <span class="math notranslate nohighlight">\(V^T\)</span> is an <span class="math notranslate nohighlight">\(r \times \tilde n\)</span> matrix.</p>
+</li>
+<li><p>Notice that (though it would be costly), we could compute <span class="math notranslate nohighlight">\(A\)</span> by solving</p>
+<div class="math notranslate nohighlight">
+\[
+  A = X' V \Sigma^{-1} U^T
+  \]</div>
+<p>But we won’t do that.</p>
+<p>Instead we’ll proceed as follows.</p>
+<p>Note that since,  <span class="math notranslate nohighlight">\(X' = A U \Sigma V^T\)</span>, we know that</p>
+<div class="math notranslate nohighlight">
+\[
+  A U  =  X' V \Sigma^{-1}
+  \]</div>
+<p>so that</p>
+<div class="math notranslate nohighlight">
+\[
+  U^T X' V \Sigma^{-1} = U^T A U \equiv \tilde A
+  \]</div>
+</li>
+<li><p>At this point, in constructing <span class="math notranslate nohighlight">\(\tilde A\)</span> according to the above formula,
+we take only the  columns of <span class="math notranslate nohighlight">\(U\)</span> corresponding to the <span class="math notranslate nohighlight">\(\tilde r\)</span> largest singular values.</p>
+<p>Tu et al. verify that eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(\tilde A\)</span> equal the leading eigenvalues and associated eigenvectors of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</li>
+<li><p>Construct an eigencomposition of <span class="math notranslate nohighlight">\(\tilde A\)</span> that satisfies</p>
+<div class="math notranslate nohighlight">
+\[ 
+  \tilde A W =  W \Lambda
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(\Lambda\)</span> is a <span class="math notranslate nohighlight">\(\tilde r \times \tilde r\)</span> diagonal matrix of eigenvalues and the columns of <span class="math notranslate nohighlight">\(W\)</span> are corresponding eigenvectors
+of <span class="math notranslate nohighlight">\(\tilde A\)</span>.
+Both <span class="math notranslate nohighlight">\(\Lambda\)</span> and <span class="math notranslate nohighlight">\(W\)</span> are <span class="math notranslate nohighlight">\(\tilde r \times \tilde r\)</span> matrices.</p>
+</li>
+<li><p>Construct the <span class="math notranslate nohighlight">\(m \times \tilde r\)</span> matrix</p>
+<div class="math notranslate nohighlight">
+\[
+  \Phi = X' V \Sigma^{-1} W
+  \]</div>
+<p>Let <span class="math notranslate nohighlight">\(\Phi^{+}\)</span> be a generalized inverse of <span class="math notranslate nohighlight">\(\Phi\)</span>; <span class="math notranslate nohighlight">\(\Phi^{+}\)</span> is an <span class="math notranslate nohighlight">\(\tilde r \times m\)</span> matrix.</p>
+</li>
+<li><p>Define an initial vector <span class="math notranslate nohighlight">\(b\)</span> of dominant modes by</p>
+<div class="math notranslate nohighlight">
+\[
+  b= \Phi^{+} X_1
+  \]</div>
+<p>where evidently <span class="math notranslate nohighlight">\(b\)</span> is an <span class="math notranslate nohighlight">\(\tilde r \times 1\)</span> vector.</p>
+</li>
+</ul>
+<p>With <span class="math notranslate nohighlight">\(\Lambda, \Phi\)</span> in hand, our least-squares fitted dynamics fitted to the <span class="math notranslate nohighlight">\(r\)</span> dominant modes
+are governed by</p>
+<div class="math notranslate nohighlight">
+\[
+X_{t+1} = \Phi \Lambda \Phi^{+} X_t
+\]</div>
+<p>Conditional on <span class="math notranslate nohighlight">\(X_t\)</span>, forecasts <span class="math notranslate nohighlight">\(\check X_{t+j} \)</span> of <span class="math notranslate nohighlight">\(X_{t+j}, j = 1, 2, \ldots, \)</span>  are evidently given by</p>
+<div class="math notranslate nohighlight">
+\[
+\check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
+\]</div>
+</div>
+<div class="section" id="source-for-some-python-code">
+<h2><span class="section-number">6.11. </span>Source for some Python code<a class="headerlink" href="#source-for-some-python-code" title="Permalink to this headline">¶</a></h2>
+<p>You can find a Python implementation of DMD here:</p>
+<p><a class="reference external" href="https://mathlab.github.io/PyDMD/">https://mathlab.github.io/PyDMD/</a></p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   5. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   6. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   7. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   8. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   9. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   10. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   11. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   12. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lp_intro.html">
+   13. Linear Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   14. Optimal Transport
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   15. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   16. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   17. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   18. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   19. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   20. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   21. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   22. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   23. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   24. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   25. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   26. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   27. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   28. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   29. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   30. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   31. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   32. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   33. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   34. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   35. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   36. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   37. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   38. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   39. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   40. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   41. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   42. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   43. Computing Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   44. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   45. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   46. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   47. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   48. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   49. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   50. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   51. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   52. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   53. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   54. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   55. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   56. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   57. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   58. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   59. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   60. Competitive equilibria with Arrow securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   61. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   62. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   63. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   64. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   65. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   66. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   67. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/svd_intro.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/svd_intro.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/svd_intro.ipynb">BinderHub</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/svd_intro.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/svd_intro.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "svd_intro";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/svd_intro.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-54984338-10', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </body>
+</html>

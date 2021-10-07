@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>44. The Permanent Income Model &#8212; Quantitative Economics with Python</title>
+    <title>49. The Permanent Income Model &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -406,12 +406,26 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/perm_income.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="45. Permanent Income II: LQ Techniques" href="perm_income_cons.html" />
-    <link rel="prev" title="43. LQ Control: Foundations" href="lqcontrol.html" />
+    <link rel="next" title="50. Permanent Income II: LQ Techniques" href="perm_income_cons.html" />
+    <link rel="prev" title="48. LQ Control: Foundations" href="lqcontrol.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -461,52 +475,52 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   44.1. Overview
+   49.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-savings-problem">
-   44.2. The Savings Problem
+   49.2. The Savings Problem
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#preliminaries">
-     44.2.1. Preliminaries
+     49.2.1. Preliminaries
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-decision-problem">
-     44.2.2. The Decision Problem
+     49.2.2. The Decision Problem
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#assumptions">
-     44.2.3. Assumptions
+     49.2.3. Assumptions
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#first-order-conditions">
-     44.2.4. First-Order Conditions
+     49.2.4. First-Order Conditions
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-optimal-decision-rule">
-     44.2.5. The Optimal Decision Rule
+     49.2.5. The Optimal Decision Rule
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#responding-to-the-state">
-       44.2.5.1. Responding to the State
+       49.2.5.1. Responding to the State
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#a-state-space-representation">
-       44.2.5.2. A State-Space Representation
+       49.2.5.2. A State-Space Representation
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#a-simple-example-with-iid-income">
-       44.2.5.3. A Simple Example with IID Income
+       49.2.5.3. A Simple Example with IID Income
       </a>
      </li>
     </ul>
@@ -515,61 +529,61 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#alternative-representations">
-   44.3. Alternative Representations
+   49.3. Alternative Representations
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#hall-s-representation">
-     44.3.1. Hall’s Representation
+     49.3.1. Hall’s Representation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#cointegration">
-     44.3.2. Cointegration
+     49.3.2. Cointegration
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#cross-sectional-implications">
-     44.3.3. Cross-Sectional Implications
+     49.3.3. Cross-Sectional Implications
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#impulse-response-functions">
-     44.3.4. Impulse Response Functions
+     49.3.4. Impulse Response Functions
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#moving-average-representation">
-     44.3.5. Moving Average Representation
+     49.3.5. Moving Average Representation
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#two-classic-examples">
-   44.4. Two Classic Examples
+   49.4. Two Classic Examples
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#example-1">
-     44.4.1. Example 1
+     49.4.1. Example 1
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#example-2">
-     44.4.2. Example 2
+     49.4.2. Example 2
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#further-reading">
-   44.5. Further Reading
+   49.5. Further Reading
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#appendix-the-euler-equation">
-   44.6. Appendix: The Euler Equation
+   49.6. Appendix: The Euler Equation
   </a>
  </li>
 </ul>
@@ -622,7 +636,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="the-permanent-income-model">
-<h1><a class="toc-backref" href="#id24"><span class="section-number">44. </span><span class="target" id="index-0"></span>The Permanent Income Model</a><a class="headerlink" href="#the-permanent-income-model" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id24"><span class="section-number">49. </span><span class="target" id="index-0"></span>The Permanent Income Model</a><a class="headerlink" href="#the-permanent-income-model" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-1"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -682,11 +696,11 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: \ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+Solving environment: | 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
@@ -750,6 +764,12 @@ Solving environment: \
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -761,9 +781,9 @@ Solving environment: \
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id25"><span class="section-number">44.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>This lecture describes a rational expectations version of the famous permanent income model of Milton Friedman <span id="id1">[<a class="reference internal" href="zreferences.html#id121">Fri56</a>]</span>.</p>
-<p>Robert Hall cast Friedman’s model within a linear-quadratic setting <span id="id2">[<a class="reference internal" href="zreferences.html#id122">Hal78</a>]</span>.</p>
+<h2><a class="toc-backref" href="#id25"><span class="section-number">49.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This lecture describes a rational expectations version of the famous permanent income model of Milton Friedman <span id="id1">[<a class="reference internal" href="zreferences.html#id126">Fri56</a>]</span>.</p>
+<p>Robert Hall cast Friedman’s model within a linear-quadratic setting <span id="id2">[<a class="reference internal" href="zreferences.html#id127">Hal78</a>]</span>.</p>
 <p>Like Hall, we formulate an infinite-horizon linear-quadratic savings problem.</p>
 <p>We use the model as a vehicle for illustrating</p>
 <ul class="simple">
@@ -772,7 +792,7 @@ Solving environment: \
 <li><p>impulse response functions</p></li>
 <li><p>the idea that changes in consumption are useful as predictors of movements in income</p></li>
 </ul>
-<p>Background readings on the linear-quadratic-Gaussian permanent income model are Hall’s  <span id="id3">[<a class="reference internal" href="zreferences.html#id122">Hal78</a>]</span>  and chapter 2 of  <span id="id4">[<a class="reference internal" href="zreferences.html#id143">LS18</a>]</span>.</p>
+<p>Background readings on the linear-quadratic-Gaussian permanent income model are Hall’s  <span id="id3">[<a class="reference internal" href="zreferences.html#id127">Hal78</a>]</span>  and chapter 2 of  <span id="id4">[<a class="reference internal" href="zreferences.html#id148">LS18</a>]</span>.</p>
 <p>Let’s start with some imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -788,11 +808,11 @@ Solving environment: \
 </div>
 </div>
 <div class="section" id="the-savings-problem">
-<h2><a class="toc-backref" href="#id26"><span class="section-number">44.2. </span>The Savings Problem</a><a class="headerlink" href="#the-savings-problem" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id26"><span class="section-number">49.2. </span>The Savings Problem</a><a class="headerlink" href="#the-savings-problem" title="Permalink to this headline">¶</a></h2>
 <p id="index-2">In this section, we state and solve the savings and consumption problem faced
 by the consumer.</p>
 <div class="section" id="preliminaries">
-<h3><span class="section-number">44.2.1. </span>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.2.1. </span>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this headline">¶</a></h3>
 <p>We use a class of stochastic processes called
 <a class="reference external" href="https://en.wikipedia.org/wiki/Martingale_%28probability_theory%29">martingales</a>.</p>
 <p>A discrete-time martingale is a stochastic process (i.e., a  sequence of random variables)
@@ -826,10 +846,10 @@ X_t = \sum_{j=1}^t w_j + X_0
 <p>Not every martingale arises as a random walk (see, for example, <a class="reference external" href="https://en.wikipedia.org/wiki/Wald%27s_martingale">Wald’s martingale</a>).</p>
 </div>
 <div class="section" id="the-decision-problem">
-<h3><span class="section-number">44.2.2. </span>The Decision Problem<a class="headerlink" href="#the-decision-problem" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.2.2. </span>The Decision Problem<a class="headerlink" href="#the-decision-problem" title="Permalink to this headline">¶</a></h3>
 <p>A consumer has preferences over consumption streams that are ordered by the utility functional</p>
 <div class="math notranslate nohighlight" id="equation-sprob1">
-<span class="eqno">(44.1)<a class="headerlink" href="#equation-sprob1" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_0 \left[ \sum_{t=0}^\infty \beta^t u(c_t) \right]\]</div>
+<span class="eqno">(49.1)<a class="headerlink" href="#equation-sprob1" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_0 \left[ \sum_{t=0}^\infty \beta^t u(c_t) \right]\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\mathbb{E}_t\)</span> is the mathematical expectation conditioned on the consumer’s time <span class="math notranslate nohighlight">\(t\)</span> information</p></li>
@@ -837,9 +857,9 @@ X_t = \sum_{j=1}^t w_j + X_0
 <li><p><span class="math notranslate nohighlight">\(u\)</span> is a strictly concave one-period utility function</p></li>
 <li><p><span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span> is a discount factor</p></li>
 </ul>
-<p>The consumer maximizes <a class="reference internal" href="#equation-sprob1">(44.1)</a> by choosing a consumption, borrowing plan <span class="math notranslate nohighlight">\(\{c_t, b_{t+1}\}_{t=0}^\infty\)</span> subject to the sequence of budget constraints</p>
+<p>The consumer maximizes <a class="reference internal" href="#equation-sprob1">(49.1)</a> by choosing a consumption, borrowing plan <span class="math notranslate nohighlight">\(\{c_t, b_{t+1}\}_{t=0}^\infty\)</span> subject to the sequence of budget constraints</p>
 <div class="math notranslate nohighlight" id="equation-sprob2">
-<span class="eqno">(44.2)<a class="headerlink" href="#equation-sprob2" title="Permalink to this equation">¶</a></span>\[c_t + b_t = \frac{1}{1 + r} b_{t+1} +  y_t   \quad t \geq 0\]</div>
+<span class="eqno">(49.2)<a class="headerlink" href="#equation-sprob2" title="Permalink to this equation">¶</a></span>\[c_t + b_t = \frac{1}{1 + r} b_{t+1} +  y_t   \quad t \geq 0\]</div>
 <p>Here</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(y_t\)</span> is an exogenous endowment process.</p></li>
@@ -849,11 +869,11 @@ X_t = \sum_{j=1}^t w_j + X_0
 <p>The consumer also faces initial conditions <span class="math notranslate nohighlight">\(b_0\)</span> and <span class="math notranslate nohighlight">\(y_0\)</span>, which can be fixed or random.</p>
 </div>
 <div class="section" id="assumptions">
-<h3><span class="section-number">44.2.3. </span>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.2.3. </span>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h3>
 <p>For the remainder of this lecture, we follow Friedman and Hall in assuming that <span class="math notranslate nohighlight">\((1 + r)^{-1} = \beta\)</span>.</p>
 <p>Regarding the endowment process, we assume it has the <a class="reference internal" href="linear_models.html"><span class="doc">state-space representation</span></a></p>
 <div class="math notranslate nohighlight" id="equation-sprob15ab">
-<span class="eqno">(44.3)<a class="headerlink" href="#equation-sprob15ab" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(49.3)<a class="headerlink" href="#equation-sprob15ab" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
     z_{t+1} &amp; = A z_t + C w_{t+1}
     \\
     y_t &amp; = U  z_t
@@ -877,27 +897,27 @@ u(c_t) =  - (c_t - \gamma)^2
 </div>
 <p>Finally, we impose the <em>no Ponzi scheme</em> condition</p>
 <div class="math notranslate nohighlight" id="equation-sprob3">
-<span class="eqno">(44.4)<a class="headerlink" href="#equation-sprob3" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_0 \left[ \sum_{t=0}^\infty \beta^t b_t^2 \right] &lt; \infty\]</div>
+<span class="eqno">(49.4)<a class="headerlink" href="#equation-sprob3" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_0 \left[ \sum_{t=0}^\infty \beta^t b_t^2 \right] &lt; \infty\]</div>
 <p>This condition rules out an always-borrow scheme that would allow the consumer to enjoy bliss consumption forever.</p>
 </div>
 <div class="section" id="first-order-conditions">
-<h3><span class="section-number">44.2.4. </span>First-Order Conditions<a class="headerlink" href="#first-order-conditions" title="Permalink to this headline">¶</a></h3>
-<p>First-order conditions for maximizing <a class="reference internal" href="#equation-sprob1">(44.1)</a> subject to <a class="reference internal" href="#equation-sprob2">(44.2)</a> are</p>
+<h3><span class="section-number">49.2.4. </span>First-Order Conditions<a class="headerlink" href="#first-order-conditions" title="Permalink to this headline">¶</a></h3>
+<p>First-order conditions for maximizing <a class="reference internal" href="#equation-sprob1">(49.1)</a> subject to <a class="reference internal" href="#equation-sprob2">(49.2)</a> are</p>
 <div class="math notranslate nohighlight" id="equation-sprob4">
-<span class="eqno">(44.5)<a class="headerlink" href="#equation-sprob4" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_t [u'(c_{t+1})] = u'(c_t) , \qquad t = 0, 1, \ldots\]</div>
+<span class="eqno">(49.5)<a class="headerlink" href="#equation-sprob4" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_t [u'(c_{t+1})] = u'(c_t) , \qquad t = 0, 1, \ldots\]</div>
 <p>These optimality conditions are also known as  <em>Euler equations</em>.</p>
 <p>If you’re not sure where they come from, you can find a proof sketch in the
 <a class="reference internal" href="#perm-income-appendix"><span class="std std-ref">appendix</span></a>.</p>
-<p>With our quadratic preference specification, <a class="reference internal" href="#equation-sprob4">(44.5)</a> has the striking implication that consumption follows a martingale:</p>
+<p>With our quadratic preference specification, <a class="reference internal" href="#equation-sprob4">(49.5)</a> has the striking implication that consumption follows a martingale:</p>
 <div class="math notranslate nohighlight" id="equation-sprob5">
-<span class="eqno">(44.6)<a class="headerlink" href="#equation-sprob5" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_t [c_{t+1}] = c_t\]</div>
+<span class="eqno">(49.6)<a class="headerlink" href="#equation-sprob5" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_t [c_{t+1}] = c_t\]</div>
 <p>(In fact, quadratic preferences are <em>necessary</em> for this conclusion <a class="footnote-reference brackets" href="#f2" id="id5">1</a>.)</p>
-<p>One way to interpret <a class="reference internal" href="#equation-sprob5">(44.6)</a> is that consumption will change only when
+<p>One way to interpret <a class="reference internal" href="#equation-sprob5">(49.6)</a> is that consumption will change only when
 “new information” about permanent income is revealed.</p>
 <p>These ideas will be clarified below.</p>
 </div>
 <div class="section" id="the-optimal-decision-rule">
-<span id="odr-pi"></span><h3><span class="section-number">44.2.5. </span>The Optimal Decision Rule<a class="headerlink" href="#the-optimal-decision-rule" title="Permalink to this headline">¶</a></h3>
+<span id="odr-pi"></span><h3><span class="section-number">49.2.5. </span>The Optimal Decision Rule<a class="headerlink" href="#the-optimal-decision-rule" title="Permalink to this headline">¶</a></h3>
 <p>Now let’s deduce the optimal decision rule <a class="footnote-reference brackets" href="#fod" id="id6">2</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -908,20 +928,20 @@ programming does for us behind the scenes.</p>
 </div>
 <p>In doing so, we need to combine</p>
 <ol class="simple">
-<li><p>the optimality condition <a class="reference internal" href="#equation-sprob5">(44.6)</a></p></li>
-<li><p>the period-by-period budget constraint <a class="reference internal" href="#equation-sprob2">(44.2)</a>, and</p></li>
-<li><p>the boundary condition <a class="reference internal" href="#equation-sprob3">(44.4)</a></p></li>
+<li><p>the optimality condition <a class="reference internal" href="#equation-sprob5">(49.6)</a></p></li>
+<li><p>the period-by-period budget constraint <a class="reference internal" href="#equation-sprob2">(49.2)</a>, and</p></li>
+<li><p>the boundary condition <a class="reference internal" href="#equation-sprob3">(49.4)</a></p></li>
 </ol>
-<p>To accomplish this, observe first that <a class="reference internal" href="#equation-sprob3">(44.4)</a> implies <span class="math notranslate nohighlight">\(\lim_{t \to \infty} \beta^{\frac{t}{2}} b_{t+1}= 0\)</span>.</p>
-<p>Using this restriction on the debt path and solving <a class="reference internal" href="#equation-sprob2">(44.2)</a> forward yields</p>
+<p>To accomplish this, observe first that <a class="reference internal" href="#equation-sprob3">(49.4)</a> implies <span class="math notranslate nohighlight">\(\lim_{t \to \infty} \beta^{\frac{t}{2}} b_{t+1}= 0\)</span>.</p>
+<p>Using this restriction on the debt path and solving <a class="reference internal" href="#equation-sprob2">(49.2)</a> forward yields</p>
 <div class="math notranslate nohighlight" id="equation-sprob6">
-<span class="eqno">(44.7)<a class="headerlink" href="#equation-sprob6" title="Permalink to this equation">¶</a></span>\[b_t = \sum_{j=0}^\infty \beta^j (y_{t+j} - c_{t+j})\]</div>
-<p>Take conditional expectations on both sides of <a class="reference internal" href="#equation-sprob6">(44.7)</a> and use the martingale property of consumption and the <em>law of iterated expectations</em> to deduce</p>
+<span class="eqno">(49.7)<a class="headerlink" href="#equation-sprob6" title="Permalink to this equation">¶</a></span>\[b_t = \sum_{j=0}^\infty \beta^j (y_{t+j} - c_{t+j})\]</div>
+<p>Take conditional expectations on both sides of <a class="reference internal" href="#equation-sprob6">(49.7)</a> and use the martingale property of consumption and the <em>law of iterated expectations</em> to deduce</p>
 <div class="math notranslate nohighlight" id="equation-sprob7">
-<span class="eqno">(44.8)<a class="headerlink" href="#equation-sprob7" title="Permalink to this equation">¶</a></span>\[b_t = \sum_{j=0}^\infty \beta^j \mathbb{E}_t [y_{t+j}] - \frac{c_t}{1-\beta}\]</div>
+<span class="eqno">(49.8)<a class="headerlink" href="#equation-sprob7" title="Permalink to this equation">¶</a></span>\[b_t = \sum_{j=0}^\infty \beta^j \mathbb{E}_t [y_{t+j}] - \frac{c_t}{1-\beta}\]</div>
 <p>Expressed in terms of <span class="math notranslate nohighlight">\(c_t\)</span> we get</p>
 <div class="math notranslate nohighlight" id="equation-sprob8">
-<span class="eqno">(44.9)<a class="headerlink" href="#equation-sprob8" title="Permalink to this equation">¶</a></span>\[c_t
+<span class="eqno">(49.9)<a class="headerlink" href="#equation-sprob8" title="Permalink to this equation">¶</a></span>\[c_t
  = (1-\beta) \left[ \sum_{j=0}^\infty \beta^j \mathbb{E}_t [y_{t+j}] - b_t\right]
  = {r \over 1+r} \left[ \sum_{j=0}^\infty \beta^j \mathbb{E}_t [y_{t+j}] - b_t\right]\]</div>
 <p>where the last equality uses <span class="math notranslate nohighlight">\((1 + r) \beta = 1\)</span>.</p>
@@ -939,7 +959,7 @@ programming does for us behind the scenes.</p>
 </li>
 </ul>
 <div class="section" id="responding-to-the-state">
-<h4><span class="section-number">44.2.5.1. </span>Responding to the State<a class="headerlink" href="#responding-to-the-state" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">49.2.5.1. </span>Responding to the State<a class="headerlink" href="#responding-to-the-state" title="Permalink to this headline">¶</a></h4>
 <p>The <em>state</em> vector confronting the consumer at <span class="math notranslate nohighlight">\(t\)</span> is <span class="math notranslate nohighlight">\(\begin{bmatrix} b_t &amp; z_t \end{bmatrix}\)</span>.</p>
 <p>Here</p>
 <ul class="simple">
@@ -957,14 +977,14 @@ be expressible as functions of <span class="math notranslate nohighlight">\(z_t\
 = \mathbb{E}_t \left[ \sum_{j=0}^\infty \beta^j y_{t+j} \right]
 = U(I - \beta A)^{-1} z_t
 \]</div>
-<p>Combining this with <a class="reference internal" href="#equation-sprob8">(44.9)</a> gives</p>
+<p>Combining this with <a class="reference internal" href="#equation-sprob8">(49.9)</a> gives</p>
 <div class="math notranslate nohighlight" id="equation-pi-cpa">
-<span class="eqno">(44.10)<a class="headerlink" href="#equation-pi-cpa" title="Permalink to this equation">¶</a></span>\[c_t
+<span class="eqno">(49.10)<a class="headerlink" href="#equation-pi-cpa" title="Permalink to this equation">¶</a></span>\[c_t
  = {r \over 1+r}
      \left[
          U(I - \beta A)^{-1} z_t - b_t
      \right]\]</div>
-<p>Using this equality to eliminate <span class="math notranslate nohighlight">\(c_t\)</span> in the budget constraint <a class="reference internal" href="#equation-sprob2">(44.2)</a> gives</p>
+<p>Using this equality to eliminate <span class="math notranslate nohighlight">\(c_t\)</span> in the budget constraint <a class="reference internal" href="#equation-sprob2">(49.2)</a> gives</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -983,10 +1003,10 @@ be expressible as functions of <span class="math notranslate nohighlight">\(z_t\
 <p>We’ve now successfully written <span class="math notranslate nohighlight">\(c_t\)</span> and <span class="math notranslate nohighlight">\(b_{t+1}\)</span> as functions of <span class="math notranslate nohighlight">\(b_t\)</span> and <span class="math notranslate nohighlight">\(z_t\)</span>.</p>
 </div>
 <div class="section" id="a-state-space-representation">
-<h4><span class="section-number">44.2.5.2. </span>A State-Space Representation<a class="headerlink" href="#a-state-space-representation" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">49.2.5.2. </span>A State-Space Representation<a class="headerlink" href="#a-state-space-representation" title="Permalink to this headline">¶</a></h4>
 <p>We can summarize our dynamics in the form of a linear state-space system governing consumption, debt and income:</p>
 <div class="math notranslate nohighlight" id="equation-pi-ssr">
-<span class="eqno">(44.11)<a class="headerlink" href="#equation-pi-ssr" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(49.11)<a class="headerlink" href="#equation-pi-ssr" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
   z_{t+1} &amp; = A z_t + C w_{t+1} \\
   b_{t+1} &amp; = b_t + U [ (I -\beta A)^{-1} (A - I) ] z_t \\
       y_t &amp; = U z_t \\
@@ -1027,29 +1047,29 @@ x_t =
       c_t
   \end{bmatrix}
 \end{split}\]</div>
-<p>Then we can express equation  <a class="reference internal" href="#equation-pi-ssr">(44.11)</a> as</p>
+<p>Then we can express equation  <a class="reference internal" href="#equation-pi-ssr">(49.11)</a> as</p>
 <div class="math notranslate nohighlight" id="equation-pi-stsp">
-<span class="eqno">(44.12)<a class="headerlink" href="#equation-pi-stsp" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(49.12)<a class="headerlink" href="#equation-pi-stsp" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
   x_{t+1} &amp; = \tilde A x_t + \tilde C w_{t+1} \\
   \tilde y_t &amp; = \tilde U x_t
 \end{aligned}\end{split}\]</div>
 <p>We can use the following formulas from <a class="reference internal" href="linear_models.html"><span class="doc">linear state space models</span></a> to compute population mean <span class="math notranslate nohighlight">\(\mu_t = \mathbb{E}    x_t\)</span> and covariance <span class="math notranslate nohighlight">\(\Sigma_t := \mathbb{E} [ (x_t - \mu_t) (x_t - \mu_t)']\)</span></p>
 <div class="math notranslate nohighlight" id="equation-lss-mut-perm-income">
-<span class="eqno">(44.13)<a class="headerlink" href="#equation-lss-mut-perm-income" title="Permalink to this equation">¶</a></span>\[\mu_{t+1} = \tilde A \mu_t
+<span class="eqno">(49.13)<a class="headerlink" href="#equation-lss-mut-perm-income" title="Permalink to this equation">¶</a></span>\[\mu_{t+1} = \tilde A \mu_t
 \quad \text{with} \quad \mu_0 \text{ given}\]</div>
 <div class="math notranslate nohighlight" id="equation-eqsigmalaw">
-<span class="eqno">(44.14)<a class="headerlink" href="#equation-eqsigmalaw" title="Permalink to this equation">¶</a></span>\[\Sigma_{t+1}  = \tilde A  \Sigma_t \tilde A' + \tilde C \tilde C'
+<span class="eqno">(49.14)<a class="headerlink" href="#equation-eqsigmalaw" title="Permalink to this equation">¶</a></span>\[\Sigma_{t+1}  = \tilde A  \Sigma_t \tilde A' + \tilde C \tilde C'
 \quad \text{with} \quad \Sigma_0 \text{ given}\]</div>
 <p>We can then compute the mean and covariance of <span class="math notranslate nohighlight">\(\tilde y_t\)</span> from</p>
 <div class="math notranslate nohighlight" id="equation-eqymoments">
-<span class="eqno">(44.15)<a class="headerlink" href="#equation-eqymoments" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(49.15)<a class="headerlink" href="#equation-eqymoments" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
 \mu_{y,t} = \tilde U \mu_t \\
 \Sigma_{y,t} = \tilde U \Sigma_t \tilde U'
 \end{aligned}\end{split}\]</div>
 </div>
 <div class="section" id="a-simple-example-with-iid-income">
-<h4><span class="section-number">44.2.5.3. </span>A Simple Example with IID Income<a class="headerlink" href="#a-simple-example-with-iid-income" title="Permalink to this headline">¶</a></h4>
-<p>To gain some preliminary intuition on the implications of <a class="reference internal" href="#equation-pi-ssr">(44.11)</a>, let’s look at a highly stylized example where income is just IID.</p>
+<h4><span class="section-number">49.2.5.3. </span>A Simple Example with IID Income<a class="headerlink" href="#a-simple-example-with-iid-income" title="Permalink to this headline">¶</a></h4>
+<p>To gain some preliminary intuition on the implications of <a class="reference internal" href="#equation-pi-ssr">(49.11)</a>, let’s look at a highly stylized example where income is just IID.</p>
 <p>(Later examples will investigate more realistic income streams.)</p>
 <p>In particular, let <span class="math notranslate nohighlight">\(\{w_t\}_{t = 1}^{\infty}\)</span> be IID and scalar standard normal, and let</p>
 <div class="math notranslate nohighlight">
@@ -1156,13 +1176,13 @@ C =
 </div>
 </div>
 <div class="section" id="alternative-representations">
-<h2><a class="toc-backref" href="#id27"><span class="section-number">44.3. </span>Alternative Representations</a><a class="headerlink" href="#alternative-representations" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id27"><span class="section-number">49.3. </span>Alternative Representations</a><a class="headerlink" href="#alternative-representations" title="Permalink to this headline">¶</a></h2>
 <p>In this section, we shed more light on the evolution of savings, debt and
 consumption by representing their dynamics in several different ways.</p>
 <div class="section" id="hall-s-representation">
-<h3><span class="section-number">44.3.1. </span>Hall’s Representation<a class="headerlink" href="#hall-s-representation" title="Permalink to this headline">¶</a></h3>
-<p id="index-3">Hall <span id="id7">[<a class="reference internal" href="zreferences.html#id122">Hal78</a>]</span> suggested an insightful way to summarize the implications of LQ permanent income theory.</p>
-<p>First, to represent the solution for <span class="math notranslate nohighlight">\(b_t\)</span>, shift <a class="reference internal" href="#equation-sprob8">(44.9)</a> forward one period and eliminate <span class="math notranslate nohighlight">\(b_{t+1}\)</span> by using <a class="reference internal" href="#equation-sprob2">(44.2)</a> to obtain</p>
+<h3><span class="section-number">49.3.1. </span>Hall’s Representation<a class="headerlink" href="#hall-s-representation" title="Permalink to this headline">¶</a></h3>
+<p id="index-3">Hall <span id="id7">[<a class="reference internal" href="zreferences.html#id127">Hal78</a>]</span> suggested an insightful way to summarize the implications of LQ permanent income theory.</p>
+<p>First, to represent the solution for <span class="math notranslate nohighlight">\(b_t\)</span>, shift <a class="reference internal" href="#equation-sprob8">(49.9)</a> forward one period and eliminate <span class="math notranslate nohighlight">\(b_{t+1}\)</span> by using <a class="reference internal" href="#equation-sprob2">(49.2)</a> to obtain</p>
 <div class="math notranslate nohighlight">
 \[
 c_{t+1} = (1-\beta)\sum_{j=0}^\infty \beta^j  \mathbb{E}_{t+1} [y_{t+j+1}] -
@@ -1170,13 +1190,13 @@ c_{t+1} = (1-\beta)\sum_{j=0}^\infty \beta^j  \mathbb{E}_{t+1} [y_{t+j+1}] -
 \]</div>
 <p>If we add and subtract <span class="math notranslate nohighlight">\(\beta^{-1} (1-\beta) \sum_{j=0}^\infty \beta^j \mathbb{E}_t y_{t+j}\)</span> from the right side of the preceding equation and rearrange, we obtain</p>
 <div class="math notranslate nohighlight" id="equation-sprob11">
-<span class="eqno">(44.16)<a class="headerlink" href="#equation-sprob11" title="Permalink to this equation">¶</a></span>\[c_{t+1} - c_t = (1-\beta) \sum_{j=0}^\infty \beta^j
+<span class="eqno">(49.16)<a class="headerlink" href="#equation-sprob11" title="Permalink to this equation">¶</a></span>\[c_{t+1} - c_t = (1-\beta) \sum_{j=0}^\infty \beta^j
     \left\{ \mathbb{E}_{t+1} [y_{t+j+1}] - \mathbb{E}_t [y_{t+j+1}] \right\}\]</div>
 <p>The right side is the time <span class="math notranslate nohighlight">\(t+1\)</span> <em>innovation to the expected present value</em> of the endowment process <span class="math notranslate nohighlight">\(\{y_t\}\)</span>.</p>
-<p>We can represent the optimal decision rule for <span class="math notranslate nohighlight">\((c_t, b_{t+1})\)</span> in the form of <a class="reference internal" href="#equation-sprob11">(44.16)</a> and <a class="reference internal" href="#equation-sprob7">(44.8)</a>, which we repeat:</p>
+<p>We can represent the optimal decision rule for <span class="math notranslate nohighlight">\((c_t, b_{t+1})\)</span> in the form of <a class="reference internal" href="#equation-sprob11">(49.16)</a> and <a class="reference internal" href="#equation-sprob7">(49.8)</a>, which we repeat:</p>
 <div class="math notranslate nohighlight" id="equation-sprob7aa">
-<span class="eqno">(44.17)<a class="headerlink" href="#equation-sprob7aa" title="Permalink to this equation">¶</a></span>\[b_t = \sum_{j=0}^\infty \beta^j \mathbb{E}_t [y_{t+j}] - {1 \over 1-\beta} c_t\]</div>
-<p>Equation <a class="reference internal" href="#equation-sprob7aa">(44.17)</a> asserts that the consumer’s debt due at <span class="math notranslate nohighlight">\(t\)</span> equals the expected present value of its endowment minus the expected present value of its consumption stream.</p>
+<span class="eqno">(49.17)<a class="headerlink" href="#equation-sprob7aa" title="Permalink to this equation">¶</a></span>\[b_t = \sum_{j=0}^\infty \beta^j \mathbb{E}_t [y_{t+j}] - {1 \over 1-\beta} c_t\]</div>
+<p>Equation <a class="reference internal" href="#equation-sprob7aa">(49.17)</a> asserts that the consumer’s debt due at <span class="math notranslate nohighlight">\(t\)</span> equals the expected present value of its endowment minus the expected present value of its consumption stream.</p>
 <p>A high debt thus indicates a large expected present value of surpluses <span class="math notranslate nohighlight">\(y_t - c_t\)</span>.</p>
 <p>Recalling again our discussion on <a class="reference internal" href="linear_models.html#lm-fgs"><span class="std std-ref">forecasting geometric sums</span></a>, we have</p>
 <div class="math notranslate nohighlight">
@@ -1187,15 +1207,15 @@ c_{t+1} = (1-\beta)\sum_{j=0}^\infty \beta^j  \mathbb{E}_{t+1} [y_{t+j+1}] -
     \mathbb{E}_t \sum_{j=0}^\infty \beta^j y_{t+j+1} &amp; = U (I - \beta A)^{-1} A z_t
 \end{aligned}
 \end{split}\]</div>
-<p>Using  these formulas together with <a class="reference internal" href="#equation-sprob15ab">(44.3)</a> and substituting  into <a class="reference internal" href="#equation-sprob11">(44.16)</a> and <a class="reference internal" href="#equation-sprob7aa">(44.17)</a>  gives the following representation for the consumer’s optimum decision rule:</p>
+<p>Using  these formulas together with <a class="reference internal" href="#equation-sprob15ab">(49.3)</a> and substituting  into <a class="reference internal" href="#equation-sprob11">(49.16)</a> and <a class="reference internal" href="#equation-sprob7aa">(49.17)</a>  gives the following representation for the consumer’s optimum decision rule:</p>
 <div class="math notranslate nohighlight" id="equation-sprob16abcd">
-<span class="eqno">(44.18)<a class="headerlink" href="#equation-sprob16abcd" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(49.18)<a class="headerlink" href="#equation-sprob16abcd" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
     c_{t+1} &amp; = c_t + (1-\beta) U  (I-\beta A)^{-1} C w_{t+1} \\
     b_t &amp; = U (I-\beta A)^{-1} z_t - {1 \over 1-\beta} c_t \\
     y_t &amp; = U z_t \\
     z_{t+1} &amp; = A z_t + C w_{t+1}
 \end{aligned}\end{split}\]</div>
-<p>Representation <a class="reference internal" href="#equation-sprob16abcd">(44.18)</a> makes clear that</p>
+<p>Representation <a class="reference internal" href="#equation-sprob16abcd">(49.18)</a> makes clear that</p>
 <ul class="simple">
 <li><p>The state can be taken as <span class="math notranslate nohighlight">\((c_t, z_t)\)</span>.</p>
 <ul>
@@ -1205,36 +1225,36 @@ c_{t+1} = (1-\beta)\sum_{j=0}^\infty \beta^j  \mathbb{E}_{t+1} [y_{t+j+1}] -
 </li>
 <li><p>Consumption is a random walk with innovation <span class="math notranslate nohighlight">\((1-\beta) U  (I-\beta A)^{-1} C w_{t+1}\)</span>.</p>
 <ul>
-<li><p>This is a more explicit representation of the martingale result in <a class="reference internal" href="#equation-sprob5">(44.6)</a>.</p></li>
+<li><p>This is a more explicit representation of the martingale result in <a class="reference internal" href="#equation-sprob5">(49.6)</a>.</p></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="cointegration">
-<span id="coint-pi"></span><h3><span class="section-number">44.3.2. </span>Cointegration<a class="headerlink" href="#cointegration" title="Permalink to this headline">¶</a></h3>
-<p>Representation <a class="reference internal" href="#equation-sprob16abcd">(44.18)</a> reveals that the joint process <span class="math notranslate nohighlight">\(\{c_t, b_t\}\)</span> possesses the property that Engle and Granger <span id="id8">[<a class="reference internal" href="zreferences.html#id119">EG87</a>]</span> called <a class="reference external" href="https://en.wikipedia.org/wiki/Cointegration">cointegration</a>.</p>
+<span id="coint-pi"></span><h3><span class="section-number">49.3.2. </span>Cointegration<a class="headerlink" href="#cointegration" title="Permalink to this headline">¶</a></h3>
+<p>Representation <a class="reference internal" href="#equation-sprob16abcd">(49.18)</a> reveals that the joint process <span class="math notranslate nohighlight">\(\{c_t, b_t\}\)</span> possesses the property that Engle and Granger <span id="id8">[<a class="reference internal" href="zreferences.html#id124">EG87</a>]</span> called <a class="reference external" href="https://en.wikipedia.org/wiki/Cointegration">cointegration</a>.</p>
 <p>Cointegration is a tool that allows us to apply powerful results from the theory of stationary stochastic processes to (certain transformations of) nonstationary models.</p>
 <p>To apply cointegration in the present context, suppose that <span class="math notranslate nohighlight">\(z_t\)</span> is asymptotically stationary <a class="footnote-reference brackets" href="#fn-as" id="id9">3</a>.</p>
-<p>Despite this, both <span class="math notranslate nohighlight">\(c_t\)</span> and <span class="math notranslate nohighlight">\(b_t\)</span> will be non-stationary because they have unit roots (see <a class="reference internal" href="#equation-pi-ssr">(44.11)</a> for <span class="math notranslate nohighlight">\(b_t\)</span>).</p>
+<p>Despite this, both <span class="math notranslate nohighlight">\(c_t\)</span> and <span class="math notranslate nohighlight">\(b_t\)</span> will be non-stationary because they have unit roots (see <a class="reference internal" href="#equation-pi-ssr">(49.11)</a> for <span class="math notranslate nohighlight">\(b_t\)</span>).</p>
 <p>Nevertheless, there is a linear combination of <span class="math notranslate nohighlight">\(c_t, b_t\)</span> that <em>is</em> asymptotically stationary.</p>
-<p>In particular, from the second equality in <a class="reference internal" href="#equation-sprob16abcd">(44.18)</a> we have</p>
+<p>In particular, from the second equality in <a class="reference internal" href="#equation-sprob16abcd">(49.18)</a> we have</p>
 <div class="math notranslate nohighlight" id="equation-pi-spr">
-<span class="eqno">(44.19)<a class="headerlink" href="#equation-pi-spr" title="Permalink to this equation">¶</a></span>\[(1-\beta) b_t + c_t = (1 - \beta) U (I-\beta A)^{-1} z_t\]</div>
+<span class="eqno">(49.19)<a class="headerlink" href="#equation-pi-spr" title="Permalink to this equation">¶</a></span>\[(1-\beta) b_t + c_t = (1 - \beta) U (I-\beta A)^{-1} z_t\]</div>
 <p>Hence the linear combination <span class="math notranslate nohighlight">\((1-\beta) b_t + c_t\)</span> is asymptotically stationary.</p>
 <p>Accordingly, Granger and Engle would call <span class="math notranslate nohighlight">\(\begin{bmatrix} (1-\beta) &amp; 1 \end{bmatrix}\)</span> a <strong>cointegrating vector</strong> for the state.</p>
 <p>When applied to the nonstationary vector process <span class="math notranslate nohighlight">\(\begin{bmatrix} b_t  &amp; c_t \end{bmatrix}'\)</span>, it yields a process that is asymptotically stationary.</p>
-<p>Equation <a class="reference internal" href="#equation-pi-spr">(44.19)</a> can be rearranged to take the form</p>
+<p>Equation <a class="reference internal" href="#equation-pi-spr">(49.19)</a> can be rearranged to take the form</p>
 <div class="math notranslate nohighlight" id="equation-sprob77">
-<span class="eqno">(44.20)<a class="headerlink" href="#equation-sprob77" title="Permalink to this equation">¶</a></span>\[(1-\beta) b_t + c_t = (1-\beta) \mathbb{E}_t \sum_{j=0}^\infty \beta^j y_{t+j}\]</div>
-<p>Equation <a class="reference internal" href="#equation-sprob77">(44.20)</a>  asserts that the <em>cointegrating residual</em>  on the left side equals the conditional expectation of the geometric sum of future incomes on the right <a class="footnote-reference brackets" href="#f8" id="id10">4</a>.</p>
+<span class="eqno">(49.20)<a class="headerlink" href="#equation-sprob77" title="Permalink to this equation">¶</a></span>\[(1-\beta) b_t + c_t = (1-\beta) \mathbb{E}_t \sum_{j=0}^\infty \beta^j y_{t+j}\]</div>
+<p>Equation <a class="reference internal" href="#equation-sprob77">(49.20)</a>  asserts that the <em>cointegrating residual</em>  on the left side equals the conditional expectation of the geometric sum of future incomes on the right <a class="footnote-reference brackets" href="#f8" id="id10">4</a>.</p>
 </div>
 <div class="section" id="cross-sectional-implications">
-<h3><span class="section-number">44.3.3. </span>Cross-Sectional Implications<a class="headerlink" href="#cross-sectional-implications" title="Permalink to this headline">¶</a></h3>
-<p>Consider again <a class="reference internal" href="#equation-sprob16abcd">(44.18)</a>, this time in light of our discussion of
+<h3><span class="section-number">49.3.3. </span>Cross-Sectional Implications<a class="headerlink" href="#cross-sectional-implications" title="Permalink to this headline">¶</a></h3>
+<p>Consider again <a class="reference internal" href="#equation-sprob16abcd">(49.18)</a>, this time in light of our discussion of
 distribution dynamics in the <a class="reference internal" href="linear_models.html"><span class="doc">lecture on linear systems</span></a>.</p>
 <p>The dynamics of <span class="math notranslate nohighlight">\(c_t\)</span> are given by</p>
 <div class="math notranslate nohighlight" id="equation-pi-crw">
-<span class="eqno">(44.21)<a class="headerlink" href="#equation-pi-crw" title="Permalink to this equation">¶</a></span>\[c_{t+1} = c_t + (1-\beta) U  (I-\beta A)^{-1} C w_{t+1}\]</div>
+<span class="eqno">(49.21)<a class="headerlink" href="#equation-pi-crw" title="Permalink to this equation">¶</a></span>\[c_{t+1} = c_t + (1-\beta) U  (I-\beta A)^{-1} C w_{t+1}\]</div>
 <p>or</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1245,7 +1265,7 @@ c_t = c_0 + \sum_{j=1}^t \hat w_j
 <p>The unit root affecting <span class="math notranslate nohighlight">\(c_t\)</span> causes the time <span class="math notranslate nohighlight">\(t\)</span> variance of <span class="math notranslate nohighlight">\(c_t\)</span> to grow linearly with <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>In particular, since <span class="math notranslate nohighlight">\(\{ \hat w_t \}\)</span> is IID, we have</p>
 <div class="math notranslate nohighlight" id="equation-pi-vt">
-<span class="eqno">(44.22)<a class="headerlink" href="#equation-pi-vt" title="Permalink to this equation">¶</a></span>\[\mathrm{Var}[c_t] = \mathrm{Var}[c_0] + t \, \hat \sigma^2\]</div>
+<span class="eqno">(49.22)<a class="headerlink" href="#equation-pi-vt" title="Permalink to this equation">¶</a></span>\[\mathrm{Var}[c_t] = \mathrm{Var}[c_0] + t \, \hat \sigma^2\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1254,22 +1274,22 @@ c_t = c_0 + \sum_{j=1}^t \hat w_j
 <p>When <span class="math notranslate nohighlight">\(\hat \sigma &gt; 0\)</span>, <span class="math notranslate nohighlight">\(\{c_t\}\)</span> has no asymptotic distribution.</p>
 <p>Let’s consider what this means for a cross-section of ex-ante identical consumers born at time <span class="math notranslate nohighlight">\(0\)</span>.</p>
 <p>Let the distribution of <span class="math notranslate nohighlight">\(c_0\)</span> represent the cross-section of initial consumption values.</p>
-<p>Equation <a class="reference internal" href="#equation-pi-vt">(44.22)</a> tells us that the variance of <span class="math notranslate nohighlight">\(c_t\)</span> increases over time at a rate proportional to <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Equation <a class="reference internal" href="#equation-pi-vt">(49.22)</a> tells us that the variance of <span class="math notranslate nohighlight">\(c_t\)</span> increases over time at a rate proportional to <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>A number of different studies have investigated this prediction and found some support for it
-(see, e.g., <span id="id11">[<a class="reference internal" href="zreferences.html#id115">DP94</a>]</span>, <span id="id12">[<a class="reference internal" href="zreferences.html#id180">STY04</a>]</span>).</p>
+(see, e.g., <span id="id11">[<a class="reference internal" href="zreferences.html#id120">DP94</a>]</span>, <span id="id12">[<a class="reference internal" href="zreferences.html#id185">STY04</a>]</span>).</p>
 </div>
 <div class="section" id="impulse-response-functions">
-<h3><span class="section-number">44.3.4. </span>Impulse Response Functions<a class="headerlink" href="#impulse-response-functions" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.3.4. </span>Impulse Response Functions<a class="headerlink" href="#impulse-response-functions" title="Permalink to this headline">¶</a></h3>
 <p>Impulse response functions measure responses  to various  impulses (i.e., temporary shocks).</p>
 <p>The impulse response function of <span class="math notranslate nohighlight">\(\{c_t\}\)</span> to the innovation <span class="math notranslate nohighlight">\(\{w_t\}\)</span> is a box.</p>
 <p>In particular, the response of <span class="math notranslate nohighlight">\(c_{t+j}\)</span> to a unit increase in the innovation <span class="math notranslate nohighlight">\(w_{t+1}\)</span> is <span class="math notranslate nohighlight">\((1-\beta) U (I -\beta A)^{-1} C\)</span> for all <span class="math notranslate nohighlight">\(j \geq 1\)</span>.</p>
 </div>
 <div class="section" id="moving-average-representation">
-<h3><span class="section-number">44.3.5. </span>Moving Average Representation<a class="headerlink" href="#moving-average-representation" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.3.5. </span>Moving Average Representation<a class="headerlink" href="#moving-average-representation" title="Permalink to this headline">¶</a></h3>
 <p>It’s useful to express the innovation to the expected present value of the endowment process in terms of a moving average representation for income <span class="math notranslate nohighlight">\(y_t\)</span>.</p>
-<p>The endowment process defined by <a class="reference internal" href="#equation-sprob15ab">(44.3)</a> has the moving average representation</p>
+<p>The endowment process defined by <a class="reference internal" href="#equation-sprob15ab">(49.3)</a> has the moving average representation</p>
 <div class="math notranslate nohighlight" id="equation-sprob12">
-<span class="eqno">(44.23)<a class="headerlink" href="#equation-sprob12" title="Permalink to this equation">¶</a></span>\[y_{t+1} = d(L) w_{t+1}\]</div>
+<span class="eqno">(49.23)<a class="headerlink" href="#equation-sprob12" title="Permalink to this equation">¶</a></span>\[y_{t+1} = d(L) w_{t+1}\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(d(L) = \sum_{j=0}^\infty d_j L^j\)</span> for some sequence <span class="math notranslate nohighlight">\(d_j\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the lag operator <a class="footnote-reference brackets" href="#f4" id="id13">5</a></p></li>
@@ -1282,15 +1302,15 @@ y_{t+j} - \mathbb{E}_t [y_{t+j}] = d_0 w_{t+j} + d_1 w_{t+j-1} + \cdots + d_{j-1
 \]</div>
 <p>It follows that</p>
 <div class="math notranslate nohighlight" id="equation-sprob120">
-<span class="eqno">(44.24)<a class="headerlink" href="#equation-sprob120" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_{t+1} [y_{t+j}] - \mathbb{E}_t [y_{t+j}] = d_{j-1} w_{t+1}\]</div>
-<p>Using <a class="reference internal" href="#equation-sprob120">(44.24)</a> in <a class="reference internal" href="#equation-sprob11">(44.16)</a> gives</p>
+<span class="eqno">(49.24)<a class="headerlink" href="#equation-sprob120" title="Permalink to this equation">¶</a></span>\[\mathbb{E}_{t+1} [y_{t+j}] - \mathbb{E}_t [y_{t+j}] = d_{j-1} w_{t+1}\]</div>
+<p>Using <a class="reference internal" href="#equation-sprob120">(49.24)</a> in <a class="reference internal" href="#equation-sprob11">(49.16)</a> gives</p>
 <div class="math notranslate nohighlight" id="equation-sprob13">
-<span class="eqno">(44.25)<a class="headerlink" href="#equation-sprob13" title="Permalink to this equation">¶</a></span>\[c_{t+1} - c_t = (1-\beta) d(\beta) w_{t+1}\]</div>
+<span class="eqno">(49.25)<a class="headerlink" href="#equation-sprob13" title="Permalink to this equation">¶</a></span>\[c_{t+1} - c_t = (1-\beta) d(\beta) w_{t+1}\]</div>
 <p>The object <span class="math notranslate nohighlight">\(d(\beta)\)</span> is the <strong>present value of the moving average coefficients</strong> in the representation for the endowment process <span class="math notranslate nohighlight">\(y_t\)</span>.</p>
 </div>
 </div>
 <div class="section" id="two-classic-examples">
-<span id="sub-classic-consumption"></span><h2><a class="toc-backref" href="#id28"><span class="section-number">44.4. </span>Two Classic Examples</a><a class="headerlink" href="#two-classic-examples" title="Permalink to this headline">¶</a></h2>
+<span id="sub-classic-consumption"></span><h2><a class="toc-backref" href="#id28"><span class="section-number">49.4. </span>Two Classic Examples</a><a class="headerlink" href="#two-classic-examples" title="Permalink to this headline">¶</a></h2>
 <p>We illustrate some of the preceding ideas with two examples.</p>
 <p>In both examples, the endowment follows the process <span class="math notranslate nohighlight">\(y_t = z_{1t} + z_{2t}\)</span> where</p>
 <div class="math notranslate nohighlight">
@@ -1322,21 +1342,21 @@ y_{t+j} - \mathbb{E}_t [y_{t+j}] = d_0 w_{t+j} + d_1 w_{t+j-1} + \cdots + d_{j-1
 <li><p><span class="math notranslate nohighlight">\(z_{2t}\)</span> is a purely transitory component of <span class="math notranslate nohighlight">\(y_t\)</span>.</p></li>
 </ul>
 <div class="section" id="example-1">
-<h3><span class="section-number">44.4.1. </span>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.4.1. </span>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h3>
 <p>Assume as before that the consumer observes the state <span class="math notranslate nohighlight">\(z_t\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>In view of <a class="reference internal" href="#equation-sprob16abcd">(44.18)</a> we have</p>
+<p>In view of <a class="reference internal" href="#equation-sprob16abcd">(49.18)</a> we have</p>
 <div class="math notranslate nohighlight" id="equation-consexample1">
-<span class="eqno">(44.26)<a class="headerlink" href="#equation-consexample1" title="Permalink to this equation">¶</a></span>\[c_{t+1} - c_t = \sigma_1 w_{1t+1} + (1-\beta) \sigma_2 w_{2t+1}\]</div>
-<p>Formula <a class="reference internal" href="#equation-consexample1">(44.26)</a> shows how an increment <span class="math notranslate nohighlight">\(\sigma_1 w_{1t+1}\)</span> to the permanent component of income <span class="math notranslate nohighlight">\(z_{1t+1}\)</span> leads to</p>
+<span class="eqno">(49.26)<a class="headerlink" href="#equation-consexample1" title="Permalink to this equation">¶</a></span>\[c_{t+1} - c_t = \sigma_1 w_{1t+1} + (1-\beta) \sigma_2 w_{2t+1}\]</div>
+<p>Formula <a class="reference internal" href="#equation-consexample1">(49.26)</a> shows how an increment <span class="math notranslate nohighlight">\(\sigma_1 w_{1t+1}\)</span> to the permanent component of income <span class="math notranslate nohighlight">\(z_{1t+1}\)</span> leads to</p>
 <ul class="simple">
 <li><p>a permanent one-for-one increase in consumption and</p></li>
 <li><p>no increase in savings <span class="math notranslate nohighlight">\(-b_{t+1}\)</span></p></li>
 </ul>
 <p>But the purely transitory component of income <span class="math notranslate nohighlight">\(\sigma_2 w_{2t+1}\)</span> leads to a permanent increment in consumption by a fraction <span class="math notranslate nohighlight">\(1-\beta\)</span> of transitory income.</p>
 <p>The remaining fraction <span class="math notranslate nohighlight">\(\beta\)</span> is saved, leading to a permanent increment in <span class="math notranslate nohighlight">\(-b_{t+1}\)</span>.</p>
-<p>Application of the formula for debt in <a class="reference internal" href="#equation-pi-ssr">(44.11)</a> to this example shows that</p>
+<p>Application of the formula for debt in <a class="reference internal" href="#equation-pi-ssr">(49.11)</a> to this example shows that</p>
 <div class="math notranslate nohighlight" id="equation-consexample1a">
-<span class="eqno">(44.27)<a class="headerlink" href="#equation-consexample1a" title="Permalink to this equation">¶</a></span>\[b_{t+1} - b_t = - z_{2t} = - \sigma_2 w_{2t}\]</div>
+<span class="eqno">(49.27)<a class="headerlink" href="#equation-consexample1a" title="Permalink to this equation">¶</a></span>\[b_{t+1} - b_t = - z_{2t} = - \sigma_2 w_{2t}\]</div>
 <p>This confirms that none of <span class="math notranslate nohighlight">\(\sigma_1 w_{1t}\)</span> is saved, while all of <span class="math notranslate nohighlight">\(\sigma_2 w_{2t}\)</span> is saved.</p>
 <p>The next figure illustrates these very different reactions to transitory and
 permanent income shocks using impulse-response functions</p>
@@ -1391,10 +1411,10 @@ permanent income shocks using impulse-response functions</p>
 </div>
 </div>
 <div class="section" id="example-2">
-<h3><span class="section-number">44.4.2. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.4.2. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h3>
 <p>Assume now that at time <span class="math notranslate nohighlight">\(t\)</span> the consumer observes <span class="math notranslate nohighlight">\(y_t\)</span>, and its history up to <span class="math notranslate nohighlight">\(t\)</span>, but not <span class="math notranslate nohighlight">\(z_t\)</span>.</p>
-<p>Under this assumption, it is appropriate to use an <em>innovation representation</em> to form <span class="math notranslate nohighlight">\(A, C, U\)</span> in <a class="reference internal" href="#equation-sprob16abcd">(44.18)</a>.</p>
-<p>The discussion in sections 2.9.1 and 2.11.3 of <span id="id15">[<a class="reference internal" href="zreferences.html#id143">LS18</a>]</span> shows that the pertinent state space representation for <span class="math notranslate nohighlight">\(y_t\)</span> is</p>
+<p>Under this assumption, it is appropriate to use an <em>innovation representation</em> to form <span class="math notranslate nohighlight">\(A, C, U\)</span> in <a class="reference internal" href="#equation-sprob16abcd">(49.18)</a>.</p>
+<p>The discussion in sections 2.9.1 and 2.11.3 of <span id="id15">[<a class="reference internal" href="zreferences.html#id148">LS18</a>]</span> shows that the pertinent state space representation for <span class="math notranslate nohighlight">\(y_t\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -1433,16 +1453,16 @@ permanent income shocks using impulse-response functions</p>
 <li><p><span class="math notranslate nohighlight">\(K :=\)</span> the stationary Kalman gain</p></li>
 <li><p><span class="math notranslate nohighlight">\(a_t := y_t - E [ y_t \,|\, y_{t-1}, \ldots, y_0]\)</span></p></li>
 </ul>
-<p>In the same discussion in <span id="id16">[<a class="reference internal" href="zreferences.html#id143">LS18</a>]</span> it is shown that <span class="math notranslate nohighlight">\(K \in [0,1]\)</span> and that <span class="math notranslate nohighlight">\(K\)</span> increases as <span class="math notranslate nohighlight">\(\sigma_1/\sigma_2\)</span> does.</p>
+<p>In the same discussion in <span id="id16">[<a class="reference internal" href="zreferences.html#id148">LS18</a>]</span> it is shown that <span class="math notranslate nohighlight">\(K \in [0,1]\)</span> and that <span class="math notranslate nohighlight">\(K\)</span> increases as <span class="math notranslate nohighlight">\(\sigma_1/\sigma_2\)</span> does.</p>
 <p>In other words, <span class="math notranslate nohighlight">\(K\)</span> increases as the ratio of the standard deviation of the permanent shock to that of the transitory shock increases.</p>
 <p>Please see  <a class="reference internal" href="kalman.html"><span class="doc">first look at the Kalman filter</span></a>.</p>
-<p>Applying formulas <a class="reference internal" href="#equation-sprob16abcd">(44.18)</a> implies</p>
+<p>Applying formulas <a class="reference internal" href="#equation-sprob16abcd">(49.18)</a> implies</p>
 <div class="math notranslate nohighlight" id="equation-consexample2">
-<span class="eqno">(44.28)<a class="headerlink" href="#equation-consexample2" title="Permalink to this equation">¶</a></span>\[c_{t+1} - c_t = [1-\beta(1-K) ] a_{t+1}\]</div>
+<span class="eqno">(49.28)<a class="headerlink" href="#equation-consexample2" title="Permalink to this equation">¶</a></span>\[c_{t+1} - c_t = [1-\beta(1-K) ] a_{t+1}\]</div>
 <p>where the endowment process can now be represented in terms of the univariate innovation to <span class="math notranslate nohighlight">\(y_t\)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-incomemaar">
-<span class="eqno">(44.29)<a class="headerlink" href="#equation-incomemaar" title="Permalink to this equation">¶</a></span>\[y_{t+1} - y_t = a_{t+1} - (1-K) a_t\]</div>
-<p>Equation <a class="reference internal" href="#equation-incomemaar">(44.29)</a> indicates that the consumer regards</p>
+<span class="eqno">(49.29)<a class="headerlink" href="#equation-incomemaar" title="Permalink to this equation">¶</a></span>\[y_{t+1} - y_t = a_{t+1} - (1-K) a_t\]</div>
+<p>Equation <a class="reference internal" href="#equation-incomemaar">(49.29)</a> indicates that the consumer regards</p>
 <ul class="simple">
 <li><p>fraction <span class="math notranslate nohighlight">\(K\)</span> of an innovation <span class="math notranslate nohighlight">\(a_{t+1}\)</span> to <span class="math notranslate nohighlight">\(y_{t+1}\)</span> as <em>permanent</em></p></li>
 <li><p>fraction <span class="math notranslate nohighlight">\(1-K\)</span> as purely transitory</p></li>
@@ -1450,30 +1470,30 @@ permanent income shocks using impulse-response functions</p>
 <p>The consumer permanently increases his consumption by the full amount of his estimate of the permanent part of <span class="math notranslate nohighlight">\(a_{t+1}\)</span>, but by only <span class="math notranslate nohighlight">\((1-\beta)\)</span> times his estimate of the purely transitory part of <span class="math notranslate nohighlight">\(a_{t+1}\)</span>.</p>
 <p>Therefore, in total, he permanently increments his consumption by a fraction <span class="math notranslate nohighlight">\(K + (1-\beta) (1-K) = 1 - \beta (1-K)\)</span> of <span class="math notranslate nohighlight">\(a_{t+1}\)</span>.</p>
 <p>He saves the remaining fraction <span class="math notranslate nohighlight">\(\beta (1-K)\)</span>.</p>
-<p>According to equation <a class="reference internal" href="#equation-incomemaar">(44.29)</a>, the first difference of income is a first-order moving average.</p>
-<p>Equation  <a class="reference internal" href="#equation-consexample2">(44.28)</a> asserts that the first difference of consumption is IID.</p>
+<p>According to equation <a class="reference internal" href="#equation-incomemaar">(49.29)</a>, the first difference of income is a first-order moving average.</p>
+<p>Equation  <a class="reference internal" href="#equation-consexample2">(49.28)</a> asserts that the first difference of consumption is IID.</p>
 <p>Application of formula to this example shows that</p>
 <div class="math notranslate nohighlight" id="equation-consexample1b">
-<span class="eqno">(44.30)<a class="headerlink" href="#equation-consexample1b" title="Permalink to this equation">¶</a></span>\[b_{t+1} - b_t = (K-1) a_t\]</div>
+<span class="eqno">(49.30)<a class="headerlink" href="#equation-consexample1b" title="Permalink to this equation">¶</a></span>\[b_{t+1} - b_t = (K-1) a_t\]</div>
 <p>This indicates how the fraction <span class="math notranslate nohighlight">\(K\)</span> of the innovation to <span class="math notranslate nohighlight">\(y_t\)</span> that is regarded as permanent influences the fraction of the innovation that is saved.</p>
 </div>
 </div>
 <div class="section" id="further-reading">
-<h2><a class="toc-backref" href="#id29"><span class="section-number">44.5. </span>Further Reading</a><a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id29"><span class="section-number">49.5. </span>Further Reading</a><a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
 <p>The model described above significantly changed how economists think about
 consumption.</p>
 <p>While Hall’s model does a remarkably good job as a first approximation to consumption data, it’s widely believed that it doesn’t capture important aspects of some consumption/savings data.</p>
 <p>For example, liquidity constraints and precautionary savings appear to be present sometimes.</p>
-<p>Further discussion can be found in, e.g., <span id="id17">[<a class="reference internal" href="zreferences.html#id123">HM82</a>]</span>, <span id="id18">[<a class="reference internal" href="zreferences.html#id158">Par99</a>]</span>, <span id="id19">[<a class="reference internal" href="zreferences.html#id114">Dea91</a>]</span>, <span id="id20">[<a class="reference internal" href="zreferences.html#id110">Car01</a>]</span>.</p>
+<p>Further discussion can be found in, e.g., <span id="id17">[<a class="reference internal" href="zreferences.html#id128">HM82</a>]</span>, <span id="id18">[<a class="reference internal" href="zreferences.html#id163">Par99</a>]</span>, <span id="id19">[<a class="reference internal" href="zreferences.html#id119">Dea91</a>]</span>, <span id="id20">[<a class="reference internal" href="zreferences.html#id115">Car01</a>]</span>.</p>
 </div>
 <div class="section" id="appendix-the-euler-equation">
-<span id="perm-income-appendix"></span><h2><a class="toc-backref" href="#id30"><span class="section-number">44.6. </span>Appendix: The Euler Equation</a><a class="headerlink" href="#appendix-the-euler-equation" title="Permalink to this headline">¶</a></h2>
-<p>Where does the first-order condition <a class="reference internal" href="#equation-sprob4">(44.5)</a> come from?</p>
+<span id="perm-income-appendix"></span><h2><a class="toc-backref" href="#id30"><span class="section-number">49.6. </span>Appendix: The Euler Equation</a><a class="headerlink" href="#appendix-the-euler-equation" title="Permalink to this headline">¶</a></h2>
+<p>Where does the first-order condition <a class="reference internal" href="#equation-sprob4">(49.5)</a> come from?</p>
 <p>Here we’ll give a proof for the two-period case, which is representative of
 the general argument.</p>
 <p>The finite horizon equivalent of the no-Ponzi condition is that the agent
 cannot end her life in debt, so <span class="math notranslate nohighlight">\(b_2 = 0\)</span>.</p>
-<p>From the budget constraint <a class="reference internal" href="#equation-sprob2">(44.2)</a> we then have</p>
+<p>From the budget constraint <a class="reference internal" href="#equation-sprob2">(49.2)</a> we then have</p>
 <div class="math notranslate nohighlight">
 \[
 c_0 = \frac{b_1}{1 + r} - b_0 + y_0
@@ -1495,12 +1515,12 @@ c_1 = y_1 - b_1
 \[
 u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
 \]</div>
-<p>Using <span class="math notranslate nohighlight">\(\beta R = 1\)</span> gives <a class="reference internal" href="#equation-sprob4">(44.5)</a> in the two-period case.</p>
+<p>Using <span class="math notranslate nohighlight">\(\beta R = 1\)</span> gives <a class="reference internal" href="#equation-sprob4">(49.5)</a> in the two-period case.</p>
 <p>The proof for the general case is similar.</p>
 <hr class="footnotes docutils" />
 <dl class="footnote brackets">
 <dt class="label" id="f2"><span class="brackets"><a class="fn-backref" href="#id5">1</a></span></dt>
-<dd><p>A linear marginal utility is essential for deriving <a class="reference internal" href="#equation-sprob5">(44.6)</a> from <a class="reference internal" href="#equation-sprob4">(44.5)</a>.  Suppose instead that we had imposed the following more standard assumptions on the utility function: <span class="math notranslate nohighlight">\(u'(c) &gt;0, u''(c)&lt;0, u'''(c) &gt; 0\)</span> and required that <span class="math notranslate nohighlight">\(c \geq 0\)</span>.  The Euler equation remains <a class="reference internal" href="#equation-sprob4">(44.5)</a>. But the fact that <span class="math notranslate nohighlight">\(u''' &lt;0\)</span> implies via Jensen’s inequality that <span class="math notranslate nohighlight">\(\mathbb{E}_t [u'(c_{t+1})] &gt;  u'(\mathbb{E}_t [c_{t+1}])\)</span>.  This inequality together with <a class="reference internal" href="#equation-sprob4">(44.5)</a> implies that <span class="math notranslate nohighlight">\(\mathbb{E}_t [c_{t+1}] &gt; c_t\)</span> (consumption is said to be a ‘submartingale’), so that consumption stochastically diverges to <span class="math notranslate nohighlight">\(+\infty\)</span>.  The consumer’s savings also diverge to <span class="math notranslate nohighlight">\(+\infty\)</span>.</p>
+<dd><p>A linear marginal utility is essential for deriving <a class="reference internal" href="#equation-sprob5">(49.6)</a> from <a class="reference internal" href="#equation-sprob4">(49.5)</a>.  Suppose instead that we had imposed the following more standard assumptions on the utility function: <span class="math notranslate nohighlight">\(u'(c) &gt;0, u''(c)&lt;0, u'''(c) &gt; 0\)</span> and required that <span class="math notranslate nohighlight">\(c \geq 0\)</span>.  The Euler equation remains <a class="reference internal" href="#equation-sprob4">(49.5)</a>. But the fact that <span class="math notranslate nohighlight">\(u''' &lt;0\)</span> implies via Jensen’s inequality that <span class="math notranslate nohighlight">\(\mathbb{E}_t [u'(c_{t+1})] &gt;  u'(\mathbb{E}_t [c_{t+1}])\)</span>.  This inequality together with <a class="reference internal" href="#equation-sprob4">(49.5)</a> implies that <span class="math notranslate nohighlight">\(\mathbb{E}_t [c_{t+1}] &gt; c_t\)</span> (consumption is said to be a ‘submartingale’), so that consumption stochastically diverges to <span class="math notranslate nohighlight">\(+\infty\)</span>.  The consumer’s savings also diverge to <span class="math notranslate nohighlight">\(+\infty\)</span>.</p>
 </dd>
 <dt class="label" id="fod"><span class="brackets"><a class="fn-backref" href="#id6">2</a></span></dt>
 <dd><p>An optimal decision rule is a map from the current state into current actions—in this case, consumption.</p>
@@ -1509,10 +1529,10 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
 <dd><p>This would be the case if, for example, the <a class="reference internal" href="linear_algebra.html#la-neumann-remarks"><span class="std std-ref">spectral radius</span></a> of <span class="math notranslate nohighlight">\(A\)</span> is strictly less than one.</p>
 </dd>
 <dt class="label" id="f8"><span class="brackets"><a class="fn-backref" href="#id10">4</a></span></dt>
-<dd><p>See <span id="id21">[<a class="reference internal" href="zreferences.html#id63">JYC88</a>]</span>, <span id="id22">[<a class="reference internal" href="zreferences.html#id62">LL01</a>]</span>, <span id="id23">[<a class="reference internal" href="zreferences.html#id61">LL04</a>]</span> for interesting applications of related ideas.</p>
+<dd><p>See <span id="id21">[<a class="reference internal" href="zreferences.html#id68">JYC88</a>]</span>, <span id="id22">[<a class="reference internal" href="zreferences.html#id67">LL01</a>]</span>, <span id="id23">[<a class="reference internal" href="zreferences.html#id66">LL04</a>]</span> for interesting applications of related ideas.</p>
 </dd>
 <dt class="label" id="f4"><span class="brackets"><a class="fn-backref" href="#id13">5</a></span></dt>
-<dd><p>Representation <a class="reference internal" href="#equation-sprob15ab">(44.3)</a> implies that <span class="math notranslate nohighlight">\(d(L) = U (I - A L)^{-1} C\)</span>.</p>
+<dd><p>Representation <a class="reference internal" href="#equation-sprob15ab">(49.3)</a> implies that <span class="math notranslate nohighlight">\(d(L) = U (I - A L)^{-1} C\)</span>.</p>
 </dd>
 <dt class="label" id="f5"><span class="brackets"><a class="fn-backref" href="#id14">6</a></span></dt>
 <dd><p>A moving average representation for a process <span class="math notranslate nohighlight">\(y_t\)</span> is said to be <strong>fundamental</strong> if the linear space spanned by <span class="math notranslate nohighlight">\(y^t\)</span> is equal to the linear space spanned by <span class="math notranslate nohighlight">\(w^t\)</span>.  A time-invariant innovations representation, attained via the Kalman filter, is by construction fundamental.</p>
@@ -1595,28 +1615,60 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   5. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   6. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="complex_and_trig.html">
-   5. Complex Numbers and Trigonometry
+   7. Complex Numbers and Trigonometry
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   6. LLN and CLT
+   8. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   9. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   7. Heavy-Tailed Distributions
+   10. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   8. Multivariate Normal Distribution
+   11. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   9. Univariate Time Series with Matrix Algebra
+   12. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lp_intro.html">
+   13. Linear Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   14. Optimal Transport
   </a>
  </li>
 </ul>
@@ -1628,62 +1680,62 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   10. Dynamics in One Dimension
+   15. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   11. AR1 Processes
+   16. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   12. Finite Markov Chains
+   17. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   13. Inventory Dynamics
+   18. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   14. Linear State Space Models
+   19. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   15. Application: The Samuelson Multiplier-Accelerator
+   20. Application: The Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   16. Kesten Processes and Firm Dynamics
+   21. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   17. Wealth Distribution Dynamics
+   22. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   18. A First Look at the Kalman Filter
+   23. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   19. Shortest Paths
+   24. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   20. Cass-Koopmans Planning Problem
+   25. Cass-Koopmans Planning Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   21. Cass-Koopmans Competitive Equilibrium
+   26. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
 </ul>
@@ -1695,32 +1747,32 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   22. Job Search I: The McCall Search Model
+   27. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   23. Job Search II: Search and Separation
+   28. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   24. Job Search III: Fitted Value Function Iteration
+   29. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   25. Job Search IV: Correlated Wage Offers
+   30. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   26. Job Search V: Modeling Career Choice
+   31. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   27. Job Search VI: On-the-Job Search
+   32. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -1732,42 +1784,42 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   28. Cake Eating I: Introduction to Optimal Saving
+   33. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   29. Cake Eating II: Numerical Methods
+   34. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   30. Optimal Growth I: The Stochastic Optimal Growth Model
+   35. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   31. Optimal Growth II: Accelerating the Code with Numba
+   36. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   32. Optimal Growth III: Time Iteration
+   37. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   33. Optimal Growth IV: The Endogenous Grid Method
+   38. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   34. The Income Fluctuation Problem I: Basic Model
+   39. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   35. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   40. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1779,37 +1831,37 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   36. Job Search VII: Search with Learning
+   41. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   37. Likelihood Ratio Processes
+   42. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   38. Computing Mean of a Likelihood Ratio Process
+   43. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   39. A Problem that Stumped Milton Friedman
+   44. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   40. Exchangeability and Bayesian Updating
+   45. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   41. Likelihood Ratio Processes and Bayesian Learning
+   46. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   42. Bayesian versus Frequentist Decision Rules
+   47. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1821,22 +1873,22 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   43. LQ Control: Foundations
+   48. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   44. The Permanent Income Model
+   49. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   45. Permanent Income II: LQ Techniques
+   50. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   46. Production Smoothing via Inventories
+   51. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1848,37 +1900,37 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   47. Schelling’s Segregation Model
+   52. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   48. A Lake Model of Employment and Unemployment
+   53. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   49. Rational Expectations Equilibrium
+   54. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   50. Stability in Linear Rational Expectations Models
+   55. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   51. Markov Perfect Equilibrium
+   56. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   52. Uncertainty Traps
+   57. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   53. The Aiyagari Model
+   58. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1890,17 +1942,17 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   54. Asset Pricing: Finite State Models
+   59. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   55. Competitive equilibria with Arrow securities
+   60. Competitive equilibria with Arrow securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   56. Heterogeneous Beliefs and Bubbles
+   61. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1912,17 +1964,17 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   57. Pandas for Panel Data
+   62. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   58. Linear Regression in Python
+   63. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   59. Maximum Likelihood Estimation
+   64. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1934,17 +1986,17 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   60. Troubleshooting
+   65. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   61. References
+   66. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   62. Execution Statistics
+   67. Execution Statistics
   </a>
  </li>
 </ul>

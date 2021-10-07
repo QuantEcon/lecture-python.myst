@@ -1,0 +1,1980 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>14. Optimal Transport &#8212; Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+        MathJax = {
+          loader: {load: ['[tex]/boldsymbol']},
+          tex: {
+            packages: {'[+]': ['boldsymbol']},
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            processEscapes: true,
+            macros: {
+                "argmax" : "arg\\,max",
+                "argmin" : "arg\\,min"
+            }
+          },
+          svg: {
+            fontCache: 'global',
+            scale: 0.92,
+            displayAlign: "center",
+          },
+        };
+    </script>
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/quantecon-book-theme.b2c9c855ebbf206c0b4223812193cad1.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="_static/quantecon-book-theme.a5462485f8dd312884626d20cc9f547c.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/opt_transport.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="15. Dynamics in One Dimension" href="scalar_dynam.html" />
+    <link rel="prev" title="13. Linear Programming" href="lp_intro.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Optimal Transport"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Optimal Transport" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/opt_transport.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page" id=opt_transport>
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   14.1. Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-linear-programming-problem">
+   14.2. The Linear Programming Problem
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vectorizing-a-matrix-of-decision-variables">
+     14.2.1. Vectorizing a Matrix of Decision Variables
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-dual-problem">
+   14.3. The Dual Problem
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#interpretation-of-dual-problem">
+     14.3.1. Interpretation of dual problem
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">Optimal Transport</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div class="section" id="optimal-transport">
+<h1><span class="section-number">14. </span>Optimal Transport<a class="headerlink" href="#optimal-transport" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2><span class="section-number">14.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>transportation</strong> or <strong>optimal transport</strong> problem is interesting both because of its many applications and its important role in the history of economic theory.</p>
+<p>In this lecture, we describe the problem, tell how <strong>linear programming</strong> is a key tool for solving it,
+then provide  some examples.</p>
+<p>We will provide other applications in followup lectures.</p>
+<p>The optimal transport problem was studied in early work about linear programming, as summarized for example by <span id="id1">[<a class="reference internal" href="zreferences.html#id3">DSS58</a>]</span>.  A modern reference about applications in economics is <span id="id2">[<a class="reference internal" href="zreferences.html#id4">Gal16</a>]</span>.</p>
+<p>We shall  solve our problems first by using the scipy function <em>linprog</em> and then the quantecon program <em>linprog_simplex</em>.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install --upgrade quantecon
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.5.1-py3-none-any.whl (240 kB)
+?25l
+     |█▍                              | 10 kB 34.3 MB/s eta 0:00:01
+     |██▊                             | 20 kB 21.7 MB/s eta 0:00:01
+     |████                            | 30 kB 11.3 MB/s eta 0:00:01
+     |█████▍                          | 40 kB 8.7 MB/s eta 0:00:01
+     |██████▉                         | 51 kB 10.5 MB/s eta 0:00:01
+     |████████▏                       | 61 kB 12.2 MB/s eta 0:00:01
+     |█████████▌                      | 71 kB 13.9 MB/s eta 0:00:01
+     |██████████▉                     | 81 kB 15.7 MB/s eta 0:00:01
+     |████████████▎                   | 92 kB 16.7 MB/s eta 0:00:01
+     |█████████████▋                  | 102 kB 16.9 MB/s eta 0:00:01
+     |███████████████                 | 112 kB 16.9 MB/s eta 0:00:01
+     |████████████████▎               | 122 kB 16.9 MB/s eta 0:00:01
+     |█████████████████▊              | 133 kB 16.9 MB/s eta 0:00:01
+     |███████████████████             | 143 kB 16.9 MB/s eta 0:00:01
+     |████████████████████▍           | 153 kB 16.9 MB/s eta 0:00:01
+     |█████████████████████▊          | 163 kB 16.9 MB/s eta 0:00:01
+     |███████████████████████▏        | 174 kB 16.9 MB/s eta 0:00:01
+     |████████████████████████▌       | 184 kB 16.9 MB/s eta 0:00:01
+     |█████████████████████████▉      | 194 kB 16.9 MB/s eta 0:00:01
+     |███████████████████████████▏    | 204 kB 16.9 MB/s eta 0:00:01
+     |████████████████████████████▋   | 215 kB 16.9 MB/s eta 0:00:01
+     |██████████████████████████████  | 225 kB 16.9 MB/s eta 0:00:01
+     |███████████████████████████████▎| 235 kB 16.9 MB/s eta 0:00:01
+     |████████████████████████████████| 240 kB 16.9 MB/s 
+?25hRequirement already satisfied, skipping upgrade: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.5.2)
+Requirement already satisfied, skipping upgrade: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (2.24.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied, skipping upgrade: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.19.2)
+Requirement already satisfied, skipping upgrade: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.6.2)
+Requirement already satisfied, skipping upgrade: numba&gt;=0.38 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (0.51.2)
+Requirement already satisfied, skipping upgrade: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (2021.5.30)
+Requirement already satisfied, skipping upgrade: urllib3!=1.25.0,!=1.25.1,&lt;1.26,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (1.25.11)
+Requirement already satisfied, skipping upgrade: chardet&lt;4,&gt;=3.0.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (3.0.4)
+Requirement already satisfied, skipping upgrade: idna&lt;3,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (2.10)
+Requirement already satisfied, skipping upgrade: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from sympy-&gt;quantecon) (1.1.0)
+Requirement already satisfied, skipping upgrade: llvmlite&lt;0.35,&gt;=0.34.0.dev0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.38-&gt;quantecon) (0.34.0)
+Requirement already satisfied, skipping upgrade: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.38-&gt;quantecon) (50.3.1.post20201107)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
+  Attempting uninstall: quantecon
+    Found existing installation: quantecon 0.5.0
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Uninstalling quantecon-0.5.0:
+      Successfully uninstalled quantecon-0.5.0
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed quantecon-0.5.1
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s start with some imports.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">linprog</span>
+<span class="kn">from</span> <span class="nn">quantecon.optimize</span> <span class="kn">import</span> <span class="n">linprog_simplex</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="the-linear-programming-problem">
+<h2><span class="section-number">14.2. </span>The Linear Programming Problem<a class="headerlink" href="#the-linear-programming-problem" title="Permalink to this headline">¶</a></h2>
+<p>Suppose that <span class="math notranslate nohighlight">\(m\)</span> factories produce goods that must be sent to <span class="math notranslate nohighlight">\(n\)</span> locations.</p>
+<p>Let</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_{ij}\)</span> denote the quantity  shipped from factory <span class="math notranslate nohighlight">\(i\)</span> to location  <span class="math notranslate nohighlight">\(j\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(c_{ij}\)</span> denote the cost of shipping one unit  from factory <span class="math notranslate nohighlight">\(i\)</span> to location <span class="math notranslate nohighlight">\(j\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p_i\)</span> denote the capacity of factory <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(q_j\)</span> denote the amount required at location <span class="math notranslate nohighlight">\(j\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(i = 1, 2, \dots, m\)</span> and <span class="math notranslate nohighlight">\(j = 1, 2, \dots, n\)</span>.</p></li>
+</ul>
+<p>A planner wants to minimize  total transportation costs subject to the following constraints:</p>
+<ul class="simple">
+<li><p>The amount shipped <strong>from</strong> each factory must equal  its capacity.</p></li>
+<li><p>The amount shipped <strong>to</strong> each location must equal the quantity required there.</p></li>
+</ul>
+<p>The planner’s problem can be expressed as the following constrained minimization problem:</p>
+<div class="math notranslate nohighlight" id="equation-plannerproblem">
+<span class="eqno">(14.1)<a class="headerlink" href="#equation-plannerproblem" title="Permalink to this equation">¶</a></span>\[\begin{split}
+\begin{aligned}
+\min_{x_{ij}} \ &amp; \sum_{i=1}^m \sum_{j=1}^n c_{ij} x_{ij} \\
+\mbox{subject to } \ &amp; \sum_{j=1}^n x_{ij} = p_i, &amp; i = 1, 2, \dots, m \\
+&amp; \sum_{i=1}^m x_{ij} = q_j, &amp; j = 1, 2, \dots, n \\
+&amp; x_{ij} \ge 0 \\
+\end{aligned}
+\end{split}\]</div>
+<p>This is an <strong>optimal transport problem</strong> with</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(mn\)</span> decision variables, namely, the entries <span class="math notranslate nohighlight">\(x_{ij}\)</span>   and</p></li>
+<li><p><span class="math notranslate nohighlight">\(m+n\)</span> constraints.</p></li>
+</ul>
+<p>Summing the <span class="math notranslate nohighlight">\(q_j\)</span>’s across all <span class="math notranslate nohighlight">\(j\)</span>’s and the <span class="math notranslate nohighlight">\(p_i\)</span>’s across all <span class="math notranslate nohighlight">\(i\)</span>’s indicates that the total capacity of all the factories  equals  total requirements at all locations:</p>
+<div class="math notranslate nohighlight" id="equation-sumconstraints">
+<span class="eqno">(14.2)<a class="headerlink" href="#equation-sumconstraints" title="Permalink to this equation">¶</a></span>\[
+\sum_{j=1}^n q_j = \sum_{j=1}^n \sum_{i=1}^m x_{ij} = \sum_{i=1}^m \sum_{j=1}^n x_{ij} = \sum_{i=1}^m p_i
+\]</div>
+<p>The presence of the restrictions in <a class="reference internal" href="#equation-sumconstraints">(14.2)</a> will be the source of one redundancy in the complete set of restrictions that we describe below.</p>
+<p>More about this later.</p>
+<div class="section" id="vectorizing-a-matrix-of-decision-variables">
+<h3><span class="section-number">14.2.1. </span>Vectorizing a Matrix of Decision Variables<a class="headerlink" href="#vectorizing-a-matrix-of-decision-variables" title="Permalink to this headline">¶</a></h3>
+<p>A <strong>matrix</strong> of decision variables <span class="math notranslate nohighlight">\(x_{ij}\)</span> appears in problem <a class="reference internal" href="#equation-plannerproblem">(14.1)</a>.</p>
+<p>The Scipy function <em>linprog</em> expects to see a <strong>vector</strong> of decision variables.</p>
+<p>This situation impels us to want to  rewrite our problem in terms of a <strong>vector</strong> of decision variables.</p>
+<p>Let</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(X, C\)</span> be <span class="math notranslate nohighlight">\(m \times n\)</span> matrices with entries <span class="math notranslate nohighlight">\(x_{ij}, c_{ij}\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> be <span class="math notranslate nohighlight">\(m\)</span>-dimensional vector with entries <span class="math notranslate nohighlight">\(p_i\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(q\)</span> be <span class="math notranslate nohighlight">\(n\)</span>-dimensional vector with entries <span class="math notranslate nohighlight">\(q_j\)</span>.</p></li>
+</ul>
+<p>Where <span class="math notranslate nohighlight">\(\mathbf{1}_n\)</span> denotes <span class="math notranslate nohighlight">\(n\)</span>-dimensional column vector <span class="math notranslate nohighlight">\((1, 1, \dots, 1)'\)</span>, our  problem can now be expressed compactly as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\min_{X} \ &amp; \operatorname{tr} (C' X) \\
+\mbox{subject to } \ &amp; X \ \mathbf{1}_n = p \\
+&amp; X' \ \mathbf{1}_m = q \\
+&amp; X \ge 0 \\
+\end{aligned}
+\end{split}\]</div>
+<p>We can convert the matrix <span class="math notranslate nohighlight">\(X\)</span> into a vector by stacking all of its columns into a  column vector.</p>
+<p>Doing this is called <strong>vectorization</strong>, an operation that we denote  <span class="math notranslate nohighlight">\(\operatorname{vec}(X)\)</span>.</p>
+<p>Similarly, we convert the matrix <span class="math notranslate nohighlight">\(C\)</span> into an <span class="math notranslate nohighlight">\(mn\)</span>-dimensional vector <span class="math notranslate nohighlight">\(\operatorname{vec}(C)\)</span>.</p>
+<p>The objective function can be expressed as the inner product between <span class="math notranslate nohighlight">\(\operatorname{vec}(C)\)</span> and <span class="math notranslate nohighlight">\(\operatorname{vec}(X)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{vec}(C)' \cdot \operatorname{vec}(X).
+\]</div>
+<p>To express the constraints in terms of <span class="math notranslate nohighlight">\(\operatorname{vec}(X)\)</span>, we use a <strong>Kronecker product</strong> denoted by <span class="math notranslate nohighlight">\(\otimes\)</span> and defined as follows.</p>
+<p>Suppose <span class="math notranslate nohighlight">\(A\)</span> is an <span class="math notranslate nohighlight">\(m \times s\)</span> matrix with entries <span class="math notranslate nohighlight">\((a_{ij})\)</span> and that <span class="math notranslate nohighlight">\(B\)</span> is an <span class="math notranslate nohighlight">\(n \times t\)</span> matrix.</p>
+<p>A <strong>Kronecker product</strong> of <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A \otimes B = 
+\begin{bmatrix}
+a_{11}B &amp; a_{12}B &amp; \dots &amp; a_{1s}B \\ 
+a_{21}B &amp; a_{22}B &amp; \dots &amp; a_{2s}B \\ 
+  &amp;   &amp; \vdots &amp;   \\ 
+a_{m1}B &amp; a_{m2}B &amp; \dots &amp; a_{ms}B \\ 
+\end{bmatrix}.
+\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(A \otimes B\)</span> is an <span class="math notranslate nohighlight">\(mn \times st\)</span> matrix.</p>
+<p>It has the property that for any <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span></p>
+<div class="math notranslate nohighlight" id="equation-kroneckerprop">
+<span class="eqno">(14.3)<a class="headerlink" href="#equation-kroneckerprop" title="Permalink to this equation">¶</a></span>\[
+\operatorname{vec}(A'XB) = (B' \otimes A') \operatorname{vec}(X).
+\]</div>
+<p>We can now express our constraints in terms of <span class="math notranslate nohighlight">\(\operatorname{vec}(X)\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(A = \mathbf{I}_m', B = \mathbf{1}_n\)</span>.</p>
+<p>By equation <a class="reference internal" href="#equation-kroneckerprop">(14.3)</a></p>
+<div class="math notranslate nohighlight">
+\[
+X \ \mathbf{1}_n = \operatorname{vec}(X \ \mathbf{1}_n) = \operatorname{vec}(\mathbf{I}_m X \ \mathbf{1}_n) = (\mathbf{1}_n' \otimes \mathbf{I}_m) \operatorname{vec}(X).
+\]</div>
+<p>where  <span class="math notranslate nohighlight">\(\mathbf{I}_m\)</span> denotes the <span class="math notranslate nohighlight">\(m \times m\)</span> identity matrix.</p>
+<p>Constraint <span class="math notranslate nohighlight">\(X \ \mathbf{1}_n = p\)</span> can now be written as:</p>
+<div class="math notranslate nohighlight">
+\[
+(\mathbf{1}_n' \otimes \mathbf{I}_m) \operatorname{vec}(X) = p.
+\]</div>
+<p>Similarly, the constraint <span class="math notranslate nohighlight">\(X' \ \mathbf{1}_m = q\)</span> can be rewriten as:</p>
+<div class="math notranslate nohighlight">
+\[
+(\mathbf{I}_n \otimes \mathbf{1}_m') \operatorname{vec}(X) = q.
+\]</div>
+<p>Our problem can now be expressed in terms of an <span class="math notranslate nohighlight">\(mn\)</span>-dimensional vector of decision variables:</p>
+<div class="math notranslate nohighlight" id="equation-decisionvars">
+<span class="eqno">(14.4)<a class="headerlink" href="#equation-decisionvars" title="Permalink to this equation">¶</a></span>\[\begin{split}
+\begin{aligned}
+\min_{z} \ &amp; \operatorname{vec}(C)' z \\
+\mbox{subject to } \ &amp; A z = b \\
+&amp; z \ge 0 \\
+\end{aligned}
+\end{split}\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = 
+\begin{bmatrix}
+\mathbf{1}_n' \otimes \mathbf{I}_m \\ 
+\mathbf{I}_n \otimes \mathbf{1}_m' \\ 
+\end{bmatrix},
+b = \begin{bmatrix} p \\ q \\ \end{bmatrix}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(z = \operatorname{vec}(X)\)</span>.</p>
+<p><strong>Example:</strong></p>
+<p>We now provide an example that takes the form <a class="reference internal" href="#equation-decisionvars">(14.4)</a> that we’ll solve by deploying the function <em>linprog</em>.</p>
+<p>The table below provides numbers for the requirements vector <span class="math notranslate nohighlight">\(q\)</span>, the capacity vector <span class="math notranslate nohighlight">\(p\)</span>,
+and entries <span class="math notranslate nohighlight">\(c_{ij}\)</span>  of the cost-of-shipping matrix <span class="math notranslate nohighlight">\(C\)</span>.</p>
+<table>
+    <tr>
+	    <th> </th>
+        <th colspan="3"><center>Factory</center></th>
+	    <th rowspan="2">Requirement</th>  
+	</tr >
+    <tr>
+        <th> Location </th> <th>1</th> <th>2</th> <th>3</th>
+	</tr>
+    <tr>
+	    <td>1</td>  <td>10</td> <td>20</td> <td>30</td> <td>25</td>
+	</tr>
+    <tr>
+	    <td>2</td> <td>15</td> <td>40</td> <td>35</td> <td>115</td>
+	</tr>
+    <tr>
+	    <td>3</td> <td>20</td> <td>15</td> <td>40</td> <td>60</td>
+	</tr>
+    <tr>
+	    <td>4</td> <td>20</td> <td>30</td> <td>55</td> <td>30</td>
+	</tr>
+    <tr>
+	    <td>5</td> <td>40</td> <td>30</td> <td>25</td> <td>70</td>
+	</tr>
+    <tr>
+	    <td>Capacity</td> <td>50</td> <td>100</td> <td>150</td> <td>300</td>
+	</tr>
+</table><p>The numbers in the above table tell us to construct the following objects:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+m = 3, n = 5, \\
+p = (50,100,150)', q = (25,115,60,30,70)', \\ 
+C = 
+\begin{bmatrix}
+10 &amp;15 &amp;20 &amp;20 &amp;40 \\
+20 &amp;40 &amp;15 &amp;30 &amp;30 \\
+30 &amp;35 &amp;40 &amp;55 &amp;25 \\
+\end{bmatrix}.
+\end{split}\]</div>
+<p>Let’s write Python code that sets up the problem and solves it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define parameters</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">])</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">25</span><span class="p">,</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">70</span><span class="p">])</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">25</span><span class="p">]])</span>
+
+<span class="c1"># Vectorize matrix C</span>
+<span class="n">C_vec</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">m</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+
+<span class="c1"># Construct matrix A by Kronecker product</span>
+<span class="n">A1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+<span class="n">A2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">)))</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">A1</span><span class="p">,</span> <span class="n">A2</span><span class="p">])</span>
+
+<span class="c1"># Construct vector b</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">])</span>
+
+<span class="c1"># Solve the primal problem</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">C_vec</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+
+<span class="c1"># Print results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;message:&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;nit:&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">nit</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;fun:&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">fun</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;z:&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X:&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>message: Optimization terminated successfully.
+nit: 12
+fun: 7225.0
+z: [15. 10.  0. 35.  0. 80.  0. 60.  0.  0. 30.  0.  0.  0. 70.]
+X: [[15. 35.  0.  0.  0.]
+ [10.  0. 60. 30.  0.]
+ [ 0. 80.  0.  0. 70.]]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ipython-input-3-ee1aac536182&gt;:24: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
+  res = linprog(C_vec, A_eq=A, b_eq=b, method=&#39;Revised simplex&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">m</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[10],
+       [20],
+       [30],
+       [15],
+       [40],
+       [35],
+       [20],
+       [15],
+       [40],
+       [20],
+       [30],
+       [55],
+       [40],
+       [30],
+       [25]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">m</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[10],
+       [15],
+       [20],
+       [20],
+       [40],
+       [20],
+       [40],
+       [15],
+       [30],
+       [30],
+       [30],
+       [35],
+       [40],
+       [55],
+       [25]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">m</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[10],
+       [15],
+       [20],
+       [20],
+       [40],
+       [20],
+       [40],
+       [15],
+       [30],
+       [30],
+       [30],
+       [35],
+       [40],
+       [55],
+       [25]])
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Interpreting the warning:</strong></p>
+<p>The above warning message from scipy pointing out that A is not full rank.</p>
+<p>This indicates that the problem has been set up to include one or more  redundant constraints.</p>
+<p>Here, the source of the redundancy is that the set of restrictions <a class="reference internal" href="#equation-sumconstraints">(14.2)</a>.</p>
+<p>Let’s explore this further by printing out <span class="math notranslate nohighlight">\(A\)</span> and staring at it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1., 0., 0., 1., 0., 0., 1., 0., 0., 1., 0., 0., 1., 0., 0.],
+       [0., 1., 0., 0., 1., 0., 0., 1., 0., 0., 1., 0., 0., 1., 0.],
+       [0., 0., 1., 0., 0., 1., 0., 0., 1., 0., 0., 1., 0., 0., 1.],
+       [1., 1., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 1., 1., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 1., 1., 1., 0., 0., 0., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 0., 0., 0.],
+       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1.]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The singularity of <span class="math notranslate nohighlight">\(A\)</span> reflects that the  first three constraints and the last five constraints  both require  that “total requirements equal total capacities” expressed in <a class="reference internal" href="#equation-sumconstraints">(14.2)</a>.</p>
+<p>One  equality constraint here is redundant.</p>
+<p>Below we drop one of the equality constraints, and use only  7 of them.</p>
+<p>After doing this, we attain the same minimized cost.</p>
+<p>However, we find a  different transportation plan.</p>
+<p>Though it is a different plan, it attains the same cost!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linprog</span><span class="p">(</span><span class="n">C_vec</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([0., 0., 0., 0., 0., 0., 0.])
+     fun: 7225.0
+ message: &#39;Optimization terminated successfully.&#39;
+     nit: 13
+   slack: array([], dtype=float64)
+  status: 0
+ success: True
+       x: array([ 0., 25.,  0., 35.,  0., 80.,  0., 60.,  0., 15., 15.,  0.,  0.,
+        0., 70.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> linprog(C_vec, A_eq=A[:-1], b_eq=b[:-1], method=&#39;Revised simplex&#39;)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.47 ms ± 9 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> linprog(C_vec, A_eq=A, b_eq=b, method=&#39;Revised simplex&#39;)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;magic-timeit&gt;:1: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.94 ms ± 177 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Evidently, it is slightly quicker to work with the system that removed a redundant constraint.</p>
+<p>Let’s drill down and do some more calculations to help us understand whether or not our finding <strong>two</strong> different optimal transport plans reflects our having dropped a redundant equality constraint.</p>
+<div class="admonition-hint admonition">
+<p class="admonition-title">Hint</p>
+<p>It will turn out that dropping a redundant equality isn’t really what mattered.</p>
+</div>
+<p>To verify our hint, we shall simply use <strong>all</strong> of  the original equality constraints (including a redundant one), but we’ll just shuffle the order of the constraints.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sol_found</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">cost</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># simulate 1000 times</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+    <span class="n">res_shuffle</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">C_vec</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">[</span><span class="n">arr</span><span class="p">],</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">[</span><span class="n">arr</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+
+    <span class="c1"># if find a new solution</span>
+    <span class="n">sol</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">res_shuffle</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sol_found</span><span class="p">:</span>
+        <span class="n">sol_found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span>
+        <span class="n">cost</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res_shuffle</span><span class="o">.</span><span class="n">fun</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ipython-input-12-4ae183291d9d&gt;:8: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
+  res_shuffle = linprog(C_vec, A_eq=A[arr], b_eq=b[arr], method=&#39;Revised simplex&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sol_found</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;transportation plan </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: &quot;</span><span class="p">,</span> <span class="n">sol_found</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     minimized cost </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: &quot;</span><span class="p">,</span> <span class="n">cost</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>transportation plan 0:  (15.0, 10.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 0.0, 30.0, 0.0, 0.0, 0.0, 70.0)
+     minimized cost 0:  7225.0
+transportation plan 1:  (0.0, 25.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 15.0, 15.0, 0.0, 0.0, 0.0, 70.0)
+     minimized cost 1:  7225.0
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Ah hah!</strong> As you can see, putting constraints in different orders in this case uncovers two optimal transportation plans that achieve the same minimized cost.</p>
+<p>These are the same two plans computed early.</p>
+<p>Next, we show that leaving out the first constraint “accidentally” leads to the initial plan that we computed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linprog</span><span class="p">(</span><span class="n">C_vec</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([0., 0., 0., 0., 0., 0., 0.])
+     fun: 7225.0
+ message: &#39;Optimization terminated successfully.&#39;
+     nit: 12
+   slack: array([], dtype=float64)
+  status: 0
+ success: True
+       x: array([15., 10.,  0., 35.,  0., 80.,  0., 60.,  0.,  0., 30.,  0.,  0.,
+        0., 70.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s compare this transport plan with</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([15., 10.,  0., 35.,  0., 80.,  0., 60.,  0.,  0., 30.,  0.,  0.,
+        0., 70.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here the matrix <span class="math notranslate nohighlight">\(X\)</span> contains entries <span class="math notranslate nohighlight">\(x_{ij}\)</span> that tell amounts shipped <strong>from</strong> factor <span class="math notranslate nohighlight">\(i = 1, 2, 3\)</span>
+<strong>to</strong> location <span class="math notranslate nohighlight">\(j=1,2, \ldots, 5\)</span>.</p>
+<p>The vector <span class="math notranslate nohighlight">\(z\)</span> evidently equals <span class="math notranslate nohighlight">\(\operatorname{vec}(X)\)</span>.</p>
+<p>The minimized cost from the optimal transport plan is given by the <span class="math notranslate nohighlight">\(fun\)</span> variable.</p>
+<p>We can also solve an optimal transportation problem using a powerful tool from <code class="docutils literal notranslate"><span class="pre">quantecon</span></code>, namely,<code class="docutils literal notranslate"><span class="pre">quantecon.optimize.linprog_simplex</span></code>.</p>
+<p>It uses the same simplex algorithm as <code class="docutils literal notranslate"><span class="pre">scipy.optimize.linprog</span></code>, but the program is accelerated by using <code class="docutils literal notranslate"><span class="pre">numba</span></code>.</p>
+<p>As you will see very soon, by using <code class="docutils literal notranslate"><span class="pre">scipy.optimize.linprog</span></code> the time required to solve an optimal transportation problem can be reduced significantly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct matrices/vectors for linprog_simplex</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># Equality constraints</span>
+<span class="n">A_eq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="o">*</span><span class="n">n</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">A_eq</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">A_eq</span><span class="p">[</span><span class="n">m</span><span class="o">+</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">b_eq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since <code class="docutils literal notranslate"><span class="pre">quantecon.optimize.linprog_simplex</span></code> does maximization instead of minimization, we need to put a negative sign before vector <code class="docutils literal notranslate"><span class="pre">c</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res_qe</span> <span class="o">=</span> <span class="n">linprog_simplex</span><span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A_eq</span><span class="p">,</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b_eq</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since the two LP solvers use the same simplex algorithm, we expect to get exactly the same solutions</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res_qe</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[15., 35.,  0.,  0.,  0.],
+       [10.,  0., 60., 30.,  0.],
+       [ 0., 80.,  0.,  0., 70.]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[15., 35.,  0.,  0.,  0.],
+       [10.,  0., 60., 30.,  0.],
+       [ 0., 80.,  0.,  0., 70.]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s do a speed comparison between <code class="docutils literal notranslate"><span class="pre">scipy.optimize.linprog</span></code> and <code class="docutils literal notranslate"><span class="pre">quantecon.optimize.linprog_simplex</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># scipy.optimize.linprog</span>
+<span class="o">%</span><span class="k">timeit</span> res = linprog(C_vec, A_eq=A[:-1, :], b_eq=b[:-1], method=&#39;Revised simplex&#39;)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.44 ms ± 21 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># quantecon.optimize.linprog_simplex</span>
+<span class="o">%</span><span class="k">timeit</span> out = linprog_simplex(-c, A_eq=A_eq, b_eq=b_eq)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>22.9 µs ± 134 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see, the <code class="docutils literal notranslate"><span class="pre">quantecon.optimize.linprog_simplex</span></code> is almost 200 times faster.</p>
+</div>
+</div>
+<div class="section" id="the-dual-problem">
+<h2><span class="section-number">14.3. </span>The Dual Problem<a class="headerlink" href="#the-dual-problem" title="Permalink to this headline">¶</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(u, v\)</span> denotes vectors of dual decision variables with entries <span class="math notranslate nohighlight">\((u_i), (v_j)\)</span>.</p>
+<p>The <strong>dual</strong> to  <strong>minimization</strong> problem <a class="reference internal" href="#equation-plannerproblem">(14.1)</a> is the <strong>maximization</strong> problem:</p>
+<div class="math notranslate nohighlight" id="equation-dualproblem">
+<span class="eqno">(14.5)<a class="headerlink" href="#equation-dualproblem" title="Permalink to this equation">¶</a></span>\[\begin{split}
+\begin{aligned}
+\max_{u_i, v_j} \ &amp; \sum_{i=1}^m p_i u_i + \sum_{j=1}^n q_j v_j \\
+\mbox{subject to } \ &amp; u_i + v_j \le c_{ij}, \ i = 1, 2, \dots, m;\ j = 1, 2, \dots, n \\
+\end{aligned}
+\end{split}\]</div>
+<p>The dual problem is also a linear programming problem.</p>
+<p>It has <span class="math notranslate nohighlight">\(m+n\)</span> dual variables and <span class="math notranslate nohighlight">\(mn\)</span> constraints.</p>
+<p>Vectors <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> of <strong>values</strong> are attached to the first and the second sets of primal constraits, respectively.</p>
+<p>Thus, <span class="math notranslate nohighlight">\(u\)</span> is attached to the constraints</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\((\mathbf{1}_n' \otimes \mathbf{I}_m) \operatorname{vec}(X) = p\)</span></p></li>
+</ul>
+<p>and  <span class="math notranslate nohighlight">\(v\)</span> is attached to constraints</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\((\mathbf{I}_n \otimes \mathbf{1}_m') \operatorname{vec}(X) = q.\)</span></p></li>
+</ul>
+<p>Components of the vectors <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> of <strong>values</strong>  are <strong>shadow prices</strong> of the quantities appearing on the right sides of those constraints.</p>
+<p>We can write the dual problem as</p>
+<div class="math notranslate nohighlight" id="equation-dualproblem2">
+<span class="eqno">(14.6)<a class="headerlink" href="#equation-dualproblem2" title="Permalink to this equation">¶</a></span>\[\begin{split}
+\begin{aligned}
+\max_{u_i, v_j} \ &amp; p u + q v \\
+\mbox{subject to } \ &amp; A' \begin{bmatrix} u \\ v \\ \end{bmatrix} = \operatorname{vec}(C) \\
+\end{aligned}
+\end{split}\]</div>
+<p>For the same numerical example described above, let’s solve the dual problem.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solve the dual problem</span>
+<span class="n">res_dual</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">A_ub</span><span class="o">=</span><span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">b_ub</span><span class="o">=</span><span class="n">C_vec</span><span class="p">,</span>
+                   <span class="n">bounds</span><span class="o">=</span><span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+
+<span class="c1">#Print results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;message:&quot;</span><span class="p">,</span> <span class="n">res_dual</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;nit:&quot;</span><span class="p">,</span> <span class="n">res_dual</span><span class="o">.</span><span class="n">nit</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;fun:&quot;</span><span class="p">,</span> <span class="n">res_dual</span><span class="o">.</span><span class="n">fun</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;u:&quot;</span><span class="p">,</span> <span class="n">res_dual</span><span class="o">.</span><span class="n">x</span><span class="p">[:</span><span class="n">m</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;v:&quot;</span><span class="p">,</span> <span class="n">res_dual</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">:])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>message: Optimization terminated successfully.
+nit: 7
+fun: -7225.0
+u: [ 5. 15. 25.]
+v: [ 5. 10.  0. 15.  0.]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also solve the dual problem using <a class="reference external" href="https://quanteconpy.readthedocs.io/en/latest/optimize/linprog_simplex.html">quantecon.optimize.linprog_simplex</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res_dual_qe</span> <span class="o">=</span> <span class="n">linprog_simplex</span><span class="p">(</span><span class="n">b_eq</span><span class="p">,</span> <span class="n">A_ub</span><span class="o">=</span><span class="n">A_eq</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">b_ub</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And the shadow prices computed by the two programs are identical.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res_dual_qe</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 5., 15., 25.,  5., 10.,  0., 15.,  0.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res_dual</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 5., 15., 25.,  5., 10.,  0., 15.,  0.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can compare computational times from using our two tools.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> linprog(-b, A_ub=A.T, b_ub=C_vec, bounds=[(None, None)]*(m+n), method=&#39;Revised simplex&#39;)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.64 ms ± 35.8 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> linprog_simplex(b_eq, A_ub=A_eq.T, b_ub=c)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>168 µs ± 591 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">quantecon.optimize.linprog_simplex</span></code> solves the dual problem 10 times faster.</p>
+<p>Just for completeness, let’s  solve the dual problems with nonsingular <span class="math notranslate nohighlight">\(A\)</span> matrices that we create by dropping a redundant equality constraint.</p>
+<p>Try first leaving out the first constraint:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linprog</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">A_ub</span><span class="o">=</span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">b_ub</span><span class="o">=</span><span class="n">C_vec</span><span class="p">,</span>
+        <span class="n">bounds</span><span class="o">=</span><span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([], dtype=float64)
+     fun: -7225.0
+ message: &#39;Optimization terminated successfully.&#39;
+     nit: 7
+   slack: array([ 0.,  0.,  0.,  0., 15.,  0., 15.,  0., 15.,  0.,  0., 15., 35.,
+       15.,  0.])
+  status: 0
+ success: True
+       x: array([10., 20., 10., 15.,  5., 20.,  5.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Not let’s instead leave out the last constraint:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linprog</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">A_ub</span><span class="o">=</span><span class="n">A</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">b_ub</span><span class="o">=</span><span class="n">C_vec</span><span class="p">,</span>
+        <span class="n">bounds</span><span class="o">=</span><span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([], dtype=float64)
+     fun: -7225.0
+ message: &#39;Optimization terminated successfully.&#39;
+     nit: 11
+   slack: array([ 0.,  0.,  0.,  0., 15.,  0., 15.,  0., 15.,  0.,  0., 15., 35.,
+       15.,  0.])
+  status: 0
+ success: True
+       x: array([ 5., 15., 25.,  5., 10.,  0., 15.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="interpretation-of-dual-problem">
+<h3><span class="section-number">14.3.1. </span>Interpretation of dual problem<a class="headerlink" href="#interpretation-of-dual-problem" title="Permalink to this headline">¶</a></h3>
+<p>By <strong>strong duality</strong>, we know that:</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_{i=1}^m \sum_{j=1}^n c_{ij} x_{ij}  = \sum_{i=1}^m p_i u_i + \sum_{j=1}^n q_j v_j
+\]</div>
+<p>One unit more  capacity in factory <span class="math notranslate nohighlight">\(i\)</span>, i.e. <span class="math notranslate nohighlight">\(p_i\)</span>,   results in <span class="math notranslate nohighlight">\(u_i\)</span> more transportation costs.</p>
+<p>Thus, <span class="math notranslate nohighlight">\(u_i\)</span> describes the  cost of shipping one unit  <strong>from</strong> factory <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Call this  the ship-out cost of one unit  shipped from factory <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Similarly, <span class="math notranslate nohighlight">\(v_j\)</span> is the  cost of shipping one unit <strong>to</strong> location <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>Call this  the ship-in cost of one unit  to location <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>Strong duality implies that  total transprotation costs  equals   total ship-out costs <strong>plus</strong>   total ship-in costs.</p>
+<p>It is reasonable that, for one unit of a product, ship-out cost <span class="math notranslate nohighlight">\(u_i\)</span> <strong>plus</strong> ship-in cost <span class="math notranslate nohighlight">\(v_j\)</span> should  equal transportation cost <span class="math notranslate nohighlight">\(c_{ij}\)</span>.</p>
+<p>This equality is assured by   <strong>complementary slackness</strong> conditions that state that whenever <span class="math notranslate nohighlight">\(x_{ij} &gt; 0\)</span>, meaning that there are positive shipments  from factory <span class="math notranslate nohighlight">\(i\)</span> to location <span class="math notranslate nohighlight">\(j\)</span>,    it must be true that  <span class="math notranslate nohighlight">\(u_i + v_j = c_{ij}\)</span>.</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   5. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   6. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   7. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   8. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   9. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   10. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   11. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   12. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lp_intro.html">
+   13. Linear Programming
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   14. Optimal Transport
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   15. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   16. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   17. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   18. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   19. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   20. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   21. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   22. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   23. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   24. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   25. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   26. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   27. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   28. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   29. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   30. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   31. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   32. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   33. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   34. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   35. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   36. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   37. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   38. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   39. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   40. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   41. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   42. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   43. Computing Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   44. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   45. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   46. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   47. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   48. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   49. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   50. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   51. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   52. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   53. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   54. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   55. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   56. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   57. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   58. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   59. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   60. Competitive equilibria with Arrow securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   61. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   62. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   63. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   64. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   65. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   66. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   67. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/opt_transport.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/opt_transport.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/opt_transport.ipynb">BinderHub</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/opt_transport.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/opt_transport.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "opt_transport";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/opt_transport.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-54984338-10', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </body>
+</html>

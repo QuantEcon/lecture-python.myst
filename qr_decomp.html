@@ -1,0 +1,1806 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>5. QR Decomposition &#8212; Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+        MathJax = {
+          loader: {load: ['[tex]/boldsymbol']},
+          tex: {
+            packages: {'[+]': ['boldsymbol']},
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            processEscapes: true,
+            macros: {
+                "argmax" : "arg\\,max",
+                "argmin" : "arg\\,min"
+            }
+          },
+          svg: {
+            fontCache: 'global',
+            scale: 0.92,
+            displayAlign: "center",
+          },
+        };
+    </script>
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/quantecon-book-theme.b2c9c855ebbf206c0b4223812193cad1.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="_static/quantecon-book-theme.a5462485f8dd312884626d20cc9f547c.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/qr_decomp.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="6. Singular Value Decomposition (SVD)" href="svd_intro.html" />
+    <link rel="prev" title="4. Linear Algebra" href="linear_algebra.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="QR Decomposition"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="QR Decomposition" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/qr_decomp.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page" id=qr_decomp>
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   5.1. Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matrix-factorization">
+   5.2. Matrix Factorization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gram-schmidt-process">
+   5.3. Gram-Schmidt process
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gram-schmidt-process-for-square-a">
+     5.3.1. Gram-Schmidt process for square
+     <span class="math notranslate nohighlight">
+      \(A\)
+     </span>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-not-square">
+     5.3.2.
+     <span class="math notranslate nohighlight">
+      \(A\)
+     </span>
+     not square
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#some-code">
+   5.4. Some Code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example">
+   5.5. Example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-qr-decomposition-to-compute-eigenvalues">
+   5.6. Using QR Decomposition to Compute Eigenvalues
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#qr-and-pca">
+   5.7.
+   <span class="math notranslate nohighlight">
+    \(QR\)
+   </span>
+   and PCA
+  </a>
+ </li>
+</ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">QR Decomposition</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div class="section" id="qr-decomposition">
+<h1><span class="section-number">5. </span>QR Decomposition<a class="headerlink" href="#qr-decomposition" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2><span class="section-number">5.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This lecture describes the QR decomposition and how it relates to</p>
+<ul class="simple">
+<li><p>Orthogonal projection and least squares</p></li>
+<li><p>A Gram-Schmidt process</p></li>
+<li><p>Eigenvalues and eigenvectors</p></li>
+</ul>
+<p>We’ll write some Python code to help consolidate our understandings.</p>
+</div>
+<div class="section" id="matrix-factorization">
+<h2><span class="section-number">5.2. </span>Matrix Factorization<a class="headerlink" href="#matrix-factorization" title="Permalink to this headline">¶</a></h2>
+<p>The QR decomposition (also called the QR factorization) of a matrix is a decomposition of a matrix into the product of  an orthogonal matrix and a triangular matrix.</p>
+<p>A QR decomposition of a real  matrix <span class="math notranslate nohighlight">\(A\)</span>
+takes the form</p>
+<div class="math notranslate nohighlight">
+\[
+A=QR
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Q\)</span> is an orthogonal matrix (so that  <span class="math notranslate nohighlight">\(Q^TQ = I\)</span>)</p></li>
+<li><p><span class="math notranslate nohighlight">\(R\)</span> is an upper triangular matrix</p></li>
+</ul>
+<p>We’ll use a <strong>Gram-Schmidt process</strong> to compute a  QR decomposition</p>
+<p>Because doing so is so educational, we’ll  write our own Python code to do the job</p>
+</div>
+<div class="section" id="gram-schmidt-process">
+<h2><span class="section-number">5.3. </span>Gram-Schmidt process<a class="headerlink" href="#gram-schmidt-process" title="Permalink to this headline">¶</a></h2>
+<p>We’ll start with a <strong>square</strong> matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>If a square matrix <span class="math notranslate nohighlight">\(A\)</span> is nonsingular, then a <span class="math notranslate nohighlight">\(QR\)</span> factorization is unique.</p>
+<p>We’ll deal with a rectangular matrix <span class="math notranslate nohighlight">\(A\)</span> later.</p>
+<p>Actually, our algorithm will work with a rectangular <span class="math notranslate nohighlight">\(A\)</span> that is not square.</p>
+<div class="section" id="gram-schmidt-process-for-square-a">
+<h3><span class="section-number">5.3.1. </span>Gram-Schmidt process for square <span class="math notranslate nohighlight">\(A\)</span><a class="headerlink" href="#gram-schmidt-process-for-square-a" title="Permalink to this headline">¶</a></h3>
+<p>Here we apply a Gram-Schmidt  process to the  <strong>columns</strong>  of matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>In particular, let</p>
+<div class="math notranslate nohighlight">
+\[
+A= \left[ \begin{array}{c|c|c|c} a_1 &amp; a_2 &amp; \cdots &amp; a_n \end{array} \right]
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(|| · ||\)</span> denote the L2 norm.</p>
+<p>The Gram-Schmidt algorithm repeatedly combines the following  two steps in a particular order</p>
+<ul class="simple">
+<li><p><strong>normalize</strong> a vector to have unit norm</p></li>
+<li><p><strong>orthogonalize</strong> the next vector</p></li>
+</ul>
+<p>To begin, we set <span class="math notranslate nohighlight">\(u_1 = a_1\)</span> and then <strong>normalize</strong>:</p>
+<div class="math notranslate nohighlight">
+\[
+u_1=a_1, \ \ \ e_1=\frac{u_1}{||u_1||}
+\]</div>
+<p>We <strong>orgonalize</strong> first to compute <span class="math notranslate nohighlight">\(u_2\)</span> and then <strong>normalize</strong> to create <span class="math notranslate nohighlight">\(e_2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+u_2=a_2-(a_2· e_1)e_1, \ \ \  e_2=\frac{u_2}{||u_2||}
+\]</div>
+<p>We invite the reader to verify that <span class="math notranslate nohighlight">\(e_1\)</span> is orthogonal to <span class="math notranslate nohighlight">\(e_2\)</span> by checking that
+<span class="math notranslate nohighlight">\(e_1 \cdot e_2 = 0\)</span>.</p>
+<p>The Gram-Schmidt procedure continues iterating.</p>
+<p>Thus,  for <span class="math notranslate nohighlight">\(k= 2, \ldots, n-1\)</span> we construct</p>
+<div class="math notranslate nohighlight">
+\[
+u_{k+1}=a_{k+1}-(a_{k+1}· e_1)e_1-\cdots-(a_{k+1}· e_k)e_k, \ \ \ e_{k+1}=\frac{u_{k+1}}{||u_{k+1}||}
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\((a_j \cdot e_i)\)</span> can be interpreted as the linear least squares <strong>regression coefficient</strong> of <span class="math notranslate nohighlight">\(a_j\)</span> on <span class="math notranslate nohighlight">\(e_i\)</span></p>
+<ul class="simple">
+<li><p>it is the inner product of <span class="math notranslate nohighlight">\(a_j\)</span> and <span class="math notranslate nohighlight">\(e_i\)</span> divided by the inner product of <span class="math notranslate nohighlight">\(e_i\)</span> where
+<span class="math notranslate nohighlight">\(e_i \cdot e_i = 1\)</span>, as <em>normalization</em> has assured us.</p></li>
+<li><p>this regression coefficient has an interpretation as being  a <strong>covariance</strong> divided by a <strong>variance</strong></p></li>
+</ul>
+<p>It can  be verified that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A= \left[ \begin{array}{c|c|c|c} a_1 &amp; a_2 &amp; \cdots &amp; a_n \end{array} \right]=
+\left[ \begin{array}{c|c|c|c} e_1 &amp; e_2 &amp; \cdots &amp; e_n \end{array} \right]
+\left[ \begin{matrix} a_1·e_1 &amp; a_2·e_1 &amp; \cdots &amp; a_n·e_1\\ 0 &amp; a_2·e_2 &amp; \cdots &amp; a_n·e_2 
+\\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ 0 &amp; 0 &amp; \cdots &amp; a_n·e_n \end{matrix} \right]
+\end{split}\]</div>
+<p>Thus, we have constructed the decomposision</p>
+<div class="math notranslate nohighlight">
+\[ 
+A = Q R
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[ 
+Q = \left[ \begin{array}{c|c|c|c} a_1 &amp; a_2 &amp; \cdots &amp; a_n \end{array} \right]=
+\left[ \begin{array}{c|c|c|c} e_1 &amp; e_2 &amp; \cdots &amp; e_n \end{array} \right]
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+R = \left[ \begin{matrix} a_1·e_1 &amp; a_2·e_1 &amp; \cdots &amp; a_n·e_1\\ 0 &amp; a_2·e_2 &amp; \cdots &amp; a_n·e_2 
+\\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ 0 &amp; 0 &amp; \cdots &amp; a_n·e_n \end{matrix} \right]
+\end{split}\]</div>
+</div>
+<div class="section" id="a-not-square">
+<h3><span class="section-number">5.3.2. </span><span class="math notranslate nohighlight">\(A\)</span> not square<a class="headerlink" href="#a-not-square" title="Permalink to this headline">¶</a></h3>
+<p>Now suppose that <span class="math notranslate nohighlight">\(A\)</span> is an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix where <span class="math notranslate nohighlight">\(m &gt; n\)</span>.</p>
+<p>Then a <span class="math notranslate nohighlight">\(QR\)</span> decomposition is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A= \left[ \begin{array}{c|c|c|c} a_1 &amp; a_2 &amp; \cdots &amp; a_m \end{array} \right]=\left[ \begin{array}{c|c|c|c} e_1 &amp; e_2 &amp; \cdots &amp; e_n \end{array} \right]
+\left[ \begin{matrix} a_1·e_1 &amp; a_2·e_1 &amp; \cdots &amp; a_n·e_1 &amp; a_{n+1}\cdot e_1 &amp; \cdots &amp; a_{m}\cdot e_1 \\
+0 &amp; a_2·e_2 &amp; \cdots &amp; a_n·e_2 &amp; a_{n+1}\cdot e_2 &amp; \cdots &amp; a_{m}\cdot e_2 \\ \vdots &amp; \vdots &amp; \ddots &amp; \quad  \vdots &amp; \vdots &amp; \ddots &amp; \vdots
+\\ 0 &amp; 0 &amp; \cdots &amp; a_n·e_n &amp; a_{n+1}\cdot e_n &amp; \cdots &amp; a_{m}\cdot e_n \end{matrix} \right]
+\end{split}\]</div>
+<p>which implies that</p>
+<p>\begin{align*}
+a_1 &amp; = (a_1\cdot e_1) e_1 \cr
+a_2 &amp; = (a_2\cdot e_1) e_1 + (a_2\cdot e_2) e_2 \cr
+\vdots &amp; \quad \vdots \cr
+a_n &amp; = (a_n\cdot e_1) e_1 + (a_n\cdot e_2) e_2 + \cdots + (a_n \cdot e_n) e_n  \cr
+a_{n+1} &amp; = (a_{n+1}\cdot e_1) e_1 + (a_{n+1}\cdot e_2) e_2 + \cdots + (a_{n+1}\cdot e_n) e_n  \cr
+\vdots &amp; \quad \vdots \cr
+a_m &amp; = (a_m\cdot e_1) e_1 + (a_m\cdot e_2) e_2 + \cdots + (a_m \cdot e_n) e_n  \cr
+\end{align*}</p>
+</div>
+</div>
+<div class="section" id="some-code">
+<h2><span class="section-number">5.4. </span>Some Code<a class="headerlink" href="#some-code" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s write some homemade Python code to implement a QR decomposition by deploying the  Gram-Schmidt process described above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">qr</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">QR_Decomposition</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span> <span class="c1"># get the shape of A</span>
+
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="c1"># initialize matrix Q</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="c1"># initialize matrix u</span>
+
+    <span class="n">u</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">Q</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+
+        <span class="n">u</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+            <span class="n">u</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">@</span> <span class="n">Q</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span> <span class="o">*</span> <span class="n">Q</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="c1"># get each u vector</span>
+
+        <span class="n">Q</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span> <span class="c1"># compute each e vetor</span>
+
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+            <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">@</span> <span class="n">Q</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The preceding code is fine but can benefit from some further housekeeping.</p>
+<p>We want to do this because later in this notebook we want to compare results from using our homemade code above with the code for a QR that the Python <code class="docutils literal notranslate"><span class="pre">scipy</span></code> package delivers.</p>
+<p>There can be be sign differences between the <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(R\)</span> matrices produced by different numerical algorithms.</p>
+<p>All of these are valid QR decompositions because of how the  sign differences cancel out when we compute <span class="math notranslate nohighlight">\(QR\)</span>.</p>
+<p>However, to make the results from  our homemade function and the QR module in <code class="docutils literal notranslate"><span class="pre">scipy</span></code> comparable, let’s require that <span class="math notranslate nohighlight">\(Q\)</span> have positive diagonal entries.</p>
+<p>We do this by adjusting  the signs of the columns in <span class="math notranslate nohighlight">\(Q\)</span> and the rows in <span class="math notranslate nohighlight">\(R\)</span> appropriately.</p>
+<p>To accomplish this we’ll define a pair of functions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">diag_sign</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="s2">&quot;Compute the signs of the diagonal of matrix A&quot;</span>
+
+    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">A</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">D</span>
+
+<span class="k">def</span> <span class="nf">adjust_sign</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adjust the signs of the columns in Q and rows in R to</span>
+<span class="sd">    impose positive diagonal of Q</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">D</span> <span class="o">=</span> <span class="n">diag_sign</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+
+    <span class="n">Q</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">@</span> <span class="n">D</span>
+    <span class="n">R</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">D</span> <span class="o">@</span> <span class="n">R</span>
+
+    <span class="k">return</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="example">
+<h2><span class="section-number">5.5. </span>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s do an example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]])</span>
+<span class="c1"># A = np.array([[1.0, 0.5, 0.2], [0.5, 0.5, 1.0], [0.0, 1.0, 1.0]])</span>
+<span class="c1"># A = np.array([[1.0, 0.5, 0.2], [0.5, 0.5, 1.0]])</span>
+
+<span class="n">A</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1., 1., 0.],
+       [1., 0., 1.],
+       [0., 1., 1.]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">adjust_sign</span><span class="p">(</span><span class="o">*</span><span class="n">QR_Decomposition</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0.70710678, -0.40824829, -0.57735027],
+       [ 0.70710678,  0.40824829,  0.57735027],
+       [ 0.        , -0.81649658,  0.57735027]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">R</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.41421356,  0.70710678,  0.70710678],
+       [ 0.        , -1.22474487, -0.40824829],
+       [ 0.        ,  0.        ,  1.15470054]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s compare outcomes  with what the <code class="docutils literal notranslate"><span class="pre">scipy</span></code> package produces</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q_scipy</span><span class="p">,</span> <span class="n">R_scipy</span> <span class="o">=</span> <span class="n">adjust_sign</span><span class="p">(</span><span class="o">*</span><span class="n">qr</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Our Q: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Scipy Q: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">Q_scipy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Our Q: 
+ [[ 0.70710678 -0.40824829 -0.57735027]
+ [ 0.70710678  0.40824829  0.57735027]
+ [ 0.         -0.81649658  0.57735027]]
+
+
+Scipy Q: 
+ [[ 0.70710678 -0.40824829 -0.57735027]
+ [ 0.70710678  0.40824829  0.57735027]
+ [ 0.         -0.81649658  0.57735027]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Our R: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Scipy R: </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">R_scipy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Our R: 
+ [[ 1.41421356  0.70710678  0.70710678]
+ [ 0.         -1.22474487 -0.40824829]
+ [ 0.          0.          1.15470054]]
+
+
+Scipy R: 
+ [[ 1.41421356  0.70710678  0.70710678]
+ [ 0.         -1.22474487 -0.40824829]
+ [ 0.          0.          1.15470054]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The above outcomes give us the good news that our homemade function agrees with what
+scipy produces.</p>
+<p>Now let’s do a QR decomposition for a rectangular matrix <span class="math notranslate nohighlight">\(A\)</span> that is <span class="math notranslate nohighlight">\(n \times m\)</span> with
+<span class="math notranslate nohighlight">\(m &gt; n\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">adjust_sign</span><span class="p">(</span><span class="o">*</span><span class="n">QR_Decomposition</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+<span class="n">Q</span><span class="p">,</span> <span class="n">R</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.4472136 , -0.89442719],
+        [ 0.89442719,  0.4472136 ]]),
+ array([[ 2.23606798,  1.34164079,  9.8386991 ],
+        [ 0.        , -2.68328157,  0.4472136 ]]))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q_scipy</span><span class="p">,</span> <span class="n">R_scipy</span> <span class="o">=</span> <span class="n">adjust_sign</span><span class="p">(</span><span class="o">*</span><span class="n">qr</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+<span class="n">Q_scipy</span><span class="p">,</span> <span class="n">R_scipy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.4472136 , -0.89442719],
+        [ 0.89442719,  0.4472136 ]]),
+ array([[ 2.23606798,  1.34164079,  9.8386991 ],
+        [ 0.        , -2.68328157,  0.4472136 ]]))
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="using-qr-decomposition-to-compute-eigenvalues">
+<h2><span class="section-number">5.6. </span>Using QR Decomposition to Compute Eigenvalues<a class="headerlink" href="#using-qr-decomposition-to-compute-eigenvalues" title="Permalink to this headline">¶</a></h2>
+<p>Now for a useful  fact about the QR algorithm.</p>
+<p>The following iterations on the QR decomposition can be used to compute <strong>eigenvalues</strong>
+of a <strong>square</strong> matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>Here is the algorithm:</p>
+<ol class="simple">
+<li><p>Set <span class="math notranslate nohighlight">\(A_0 = A\)</span> and form <span class="math notranslate nohighlight">\(A_0 = Q_0 R_0\)</span></p></li>
+<li><p>Form <span class="math notranslate nohighlight">\(A_1 = R_0 Q_0 \)</span> . Note that <span class="math notranslate nohighlight">\(A_1\)</span> is similar to <span class="math notranslate nohighlight">\(A_0\)</span> (easy to verify) and so has the same eigenvalues.</p></li>
+<li><p>Form <span class="math notranslate nohighlight">\(A_1 = Q_1 R_1\)</span> (i.e., form the <span class="math notranslate nohighlight">\(QR\)</span> decomposition of <span class="math notranslate nohighlight">\(A_1\)</span>).</p></li>
+<li><p>Form <span class="math notranslate nohighlight">\( A_2 = R_1 Q_1 \)</span> and then <span class="math notranslate nohighlight">\(A_2 = Q_2 R_2\)</span>  .</p></li>
+<li><p>Iterate to convergence.</p></li>
+<li><p>Compute eigenvalues of <span class="math notranslate nohighlight">\(A\)</span> and compare them to the diagonal values of the limiting <span class="math notranslate nohighlight">\(A_n\)</span> found from this process.</p></li>
+</ol>
+<p><strong>Remark:</strong> this algorithm is close to one of the most efficient ways of computing eigenvalues!</p>
+<p>Let’s write some Python code to try out the algorithm</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">QR_eigvals</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="s2">&quot;Find the eigenvalues of A using QR decomposition.&quot;</span>
+
+    <span class="n">A_old</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">A_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">diff</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">maxiter</span><span class="p">):</span>
+        <span class="n">A_old</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">A_new</span>
+        <span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">QR_Decomposition</span><span class="p">(</span><span class="n">A_old</span><span class="p">)</span>
+
+        <span class="n">A_new</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">R</span> <span class="o">@</span> <span class="n">Q</span>
+
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">A_new</span> <span class="o">-</span> <span class="n">A_old</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">eigvals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">A_new</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">eigvals</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s try the code and compare the results with what <code class="docutils literal notranslate"><span class="pre">scipy.linalg.eigvals</span></code> gives us</p>
+<p>Here goes</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># experiment this with one random A matrix</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">sorted</span><span class="p">(</span><span class="n">QR_eigvals</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-0.4195159288583088, 0.2735731573875565, 1.0463146934229766]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compare with the <code class="docutils literal notranslate"><span class="pre">scipy</span></code> package.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">sorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-0.41951592885830874, 0.27357315738755766, 1.0463146934229774]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="qr-and-pca">
+<h2><span class="section-number">5.7. </span><span class="math notranslate nohighlight">\(QR\)</span> and PCA<a class="headerlink" href="#qr-and-pca" title="Permalink to this headline">¶</a></h2>
+<p>There are interesting connections between the <span class="math notranslate nohighlight">\(QR\)</span> decomposition and principal components analysis (PCA).</p>
+<p>Here are  some.</p>
+<ol class="simple">
+<li><p>Let <span class="math notranslate nohighlight">\(X'\)</span> be a <span class="math notranslate nohighlight">\(k \times n\)</span> random matrix where the <span class="math notranslate nohighlight">\(j\)</span>th column is a random draw
+from <span class="math notranslate nohighlight">\({\mathcal N}(\mu, \Sigma)\)</span> where <span class="math notranslate nohighlight">\(\mu\)</span> is <span class="math notranslate nohighlight">\(k \times 1\)</span> vector of means and <span class="math notranslate nohighlight">\(\Sigma\)</span> is a <span class="math notranslate nohighlight">\(k \times k\)</span>
+covariance matrix.  We want <span class="math notranslate nohighlight">\(n &gt; &gt; k\)</span> – this is an “econometrics example”.</p></li>
+<li><p>Form <span class="math notranslate nohighlight">\(X' = Q R \)</span> where <span class="math notranslate nohighlight">\(Q \)</span> is <span class="math notranslate nohighlight">\(k \times k\)</span> and <span class="math notranslate nohighlight">\(R\)</span> is <span class="math notranslate nohighlight">\(k \times n\)</span>.</p></li>
+<li><p>Form the eigenvalues of <span class="math notranslate nohighlight">\( R R'\)</span>, i.e., we’ll compute <span class="math notranslate nohighlight">\(R R' = \tilde P \Lambda \tilde P' \)</span>.</p></li>
+<li><p>Form <span class="math notranslate nohighlight">\(X' X = Q \tilde P \Lambda \tilde P' Q'\)</span> and compare it with the eigen decomposition
+<span class="math notranslate nohighlight">\( X'X = P \hat \Lambda P'\)</span>.</p></li>
+<li><p>It will turn out that  that <span class="math notranslate nohighlight">\(\Lambda = \hat \Lambda\)</span> and that <span class="math notranslate nohighlight">\(P = Q \tilde P\)</span>.</p></li>
+</ol>
+<p>Let’s verify conjecture 5 with some Python code.</p>
+<p>Start by simulating a random <span class="math notranslate nohighlight">\(\left(n, k\right)\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># generate some random moments</span>
+<span class="n">𝜇</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+<span class="n">Σ</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">C</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># X is random matrix where each column follows multivariate normal dist.</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">𝜇</span><span class="p">,</span> <span class="n">Σ</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1000, 5)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s apply the QR decomposition to <span class="math notranslate nohighlight">\(X^{\prime}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">adjust_sign</span><span class="p">(</span><span class="o">*</span><span class="n">QR_Decomposition</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check the shapes of <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(R\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">R</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((5, 5), (5, 1000))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can construct <span class="math notranslate nohighlight">\(R R^{\prime}=\tilde{P} \Lambda \tilde{P}^{\prime}\)</span> and form an eigen decomposition.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">RR</span> <span class="o">=</span> <span class="n">R</span> <span class="o">@</span> <span class="n">R</span><span class="o">.</span><span class="n">T</span>
+
+<span class="n">𝜆</span><span class="p">,</span> <span class="n">P_tilde</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">RR</span><span class="p">)</span>
+<span class="n">Λ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">𝜆</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also apply the decomposition to <span class="math notranslate nohighlight">\(X^{\prime} X=P \hat{\Lambda} P^{\prime}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">XX</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span>
+
+<span class="n">𝜆_hat</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">XX</span><span class="p">)</span>
+<span class="n">Λ_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">𝜆_hat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compare the eigenvalues which are on the diagnoals of <span class="math notranslate nohighlight">\(\Lambda\)</span> and <span class="math notranslate nohighlight">\(\hat{\Lambda}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">𝜆</span><span class="p">,</span> <span class="n">𝜆_hat</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([4.23428303e+00, 1.27778266e+02, 4.12549109e+02, 6.05832289e+02,
+        1.29104394e+04]),
+ array([4.23428303e+00, 1.27778266e+02, 4.12549109e+02, 6.05832289e+02,
+        1.29104394e+04]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s compare <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q \tilde{P}\)</span>.</p>
+<p>Again we need to be careful about sign differences between the columns of <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\tilde{P}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">QP_tilde</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">@</span> <span class="n">P_tilde</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">P</span> <span class="o">@</span> <span class="n">diag_sign</span><span class="p">(</span><span class="n">P</span><span class="p">)</span> <span class="o">-</span> <span class="n">QP_tilde</span> <span class="o">@</span> <span class="n">diag_sign</span><span class="p">(</span><span class="n">QP_tilde</span><span class="p">))</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9.603429163007604e-15
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s verify that <span class="math notranslate nohighlight">\(X^{\prime}X\)</span> can be decomposed as <span class="math notranslate nohighlight">\(Q \tilde{P} \Lambda \tilde{P}^{\prime} Q^{\prime}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">QPΛPQ</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">@</span> <span class="n">P_tilde</span> <span class="o">@</span> <span class="n">Λ</span> <span class="o">@</span> <span class="n">P_tilde</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Q</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">QPΛPQ</span> <span class="o">-</span> <span class="n">XX</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.6834535421803594e-11
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   5. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   6. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   7. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   8. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   9. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   10. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   11. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   12. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lp_intro.html">
+   13. Linear Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   14. Optimal Transport
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   15. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   16. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   17. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   18. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   19. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   20. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   21. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   22. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   23. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   24. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   25. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   26. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   27. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   28. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   29. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   30. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   31. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   32. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   33. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   34. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   35. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   36. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   37. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   38. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   39. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   40. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   41. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   42. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   43. Computing Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   44. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   45. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   46. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   47. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   48. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   49. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   50. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   51. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   52. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   53. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   54. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   55. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   56. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   57. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   58. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   59. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   60. Competitive equilibria with Arrow securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   61. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   62. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   63. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   64. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   65. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   66. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   67. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/qr_decomp.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/qr_decomp.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/qr_decomp.ipynb">BinderHub</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/qr_decomp.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/qr_decomp.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "qr_decomp";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/qr_decomp.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-54984338-10', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </body>
+</html>

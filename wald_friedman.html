@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>39. A Problem that Stumped Milton Friedman &#8212; Quantitative Economics with Python</title>
+    <title>44. A Problem that Stumped Milton Friedman &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -497,12 +497,47 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/wald_friedman.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="40. Exchangeability and Bayesian Updating" href="exchangeable.html" />
-    <link rel="prev" title="38. Computing Mean of a Likelihood Ratio Process" href="imp_sample.html" />
+    <link rel="next" title="45. Exchangeability and Bayesian Updating" href="exchangeable.html" />
+    <link rel="prev" title="43. Computing Mean of a Likelihood Ratio Process" href="imp_sample.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -552,81 +587,81 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   39.1. Overview
+   44.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#origin-of-the-problem">
-   39.2. Origin of the Problem
+   44.2. Origin of the Problem
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-dynamic-programming-approach">
-   39.3. A Dynamic Programming Approach
+   44.3. A Dynamic Programming Approach
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#losses-and-costs">
-     39.3.1. Losses and Costs
+     44.3.1. Losses and Costs
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#digression-on-type-i-and-type-ii-errors">
-     39.3.2. Digression on Type I and Type II Errors
+     44.3.2. Digression on Type I and Type II Errors
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#intuition">
-     39.3.3. Intuition
+     44.3.3. Intuition
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#a-bellman-equation">
-     39.3.4. A Bellman Equation
+     44.3.4. A Bellman Equation
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#implementation">
-   39.4. Implementation
+   44.4. Implementation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#analysis">
-   39.5. Analysis
+   44.5. Analysis
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#value-function">
-     39.5.1. Value Function
+     44.5.1. Value Function
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#simulations">
-     39.5.2. Simulations
+     44.5.2. Simulations
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#comparative-statics">
-     39.5.3. Comparative Statics
+     44.5.3. Comparative Statics
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#a-notebook-implementation">
-     39.5.4. A Notebook Implementation
+     44.5.4. A Notebook Implementation
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#comparison-with-neyman-pearson-formulation">
-   39.6. Comparison with Neyman-Pearson Formulation
+   44.6. Comparison with Neyman-Pearson Formulation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sequels">
-   39.7. Sequels
+   44.7. Sequels
   </a>
  </li>
 </ul>
@@ -679,7 +714,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="a-problem-that-stumped-milton-friedman">
-<h1><a class="toc-backref" href="#id9"><span class="section-number">39. </span><span class="target" id="index-0"></span>A Problem that Stumped Milton Friedman</a><a class="headerlink" href="#a-problem-that-stumped-milton-friedman" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id9"><span class="section-number">44. </span><span class="target" id="index-0"></span>A Problem that Stumped Milton Friedman</a><a class="headerlink" href="#a-problem-that-stumped-milton-friedman" title="Permalink to this headline">¶</a></h1>
 <p>(and that Abraham Wald solved by inventing sequential analysis)</p>
 <div class="contents topic" id="contents">
 <span id="index-1"></span><p class="topic-title">Contents</p>
@@ -746,7 +781,9 @@
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: | 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving environment: | 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
@@ -813,6 +850,9 @@ Solving environment: |
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -821,48 +861,23 @@ Solving environment: |
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># All requested packages already installed.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting interpolation
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading interpolation-2.2.1-py3-none-any.whl (56 kB)
-?25l
-     |█████▉                          | 10 kB 20.2 MB/s eta 0:00:01
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |███████████▋                    | 20 kB 21.9 MB/s eta 0:00:01
-     |█████████████████▍              | 30 kB 25.3 MB/s eta 0:00:01
-     |███████████████████████▏        | 40 kB 15.3 MB/s eta 0:00:01
-     |█████████████████████████████   | 51 kB 8.4 MB/s eta 0:00:01
-     |████████████████████████████████| 56 kB 5.7 MB/s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (0.51.2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (2.2.1)
+Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (0.51.2)
+Requirement already satisfied: tempita&gt;=0.5.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (0.5.2)
 Requirement already satisfied: numpy&gt;=1.18.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (1.19.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting tempita&gt;=0.5.2
-  Downloading Tempita-0.5.2-py3-none-any.whl (12 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.4.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (1.5.2)
+Requirement already satisfied: scipy&gt;=1.4.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (1.5.2)
 Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (50.3.1.post20201107)
 Requirement already satisfied: llvmlite&lt;0.35,&gt;=0.34.0.dev0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.34.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: tempita, interpolation
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed interpolation-2.2.1 tempita-0.5.2
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">39.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">44.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture describes a statistical decision problem encountered  by Milton
 Friedman and W. Allen Wallis during World War II when they were analysts at
 the U.S. Government’s  Statistical Research Group at Columbia University.</p>
-<p>This problem led Abraham Wald <span id="id1">[<a class="reference internal" href="zreferences.html#id69">Wal47</a>]</span> to formulate <strong>sequential analysis</strong>,
+<p>This problem led Abraham Wald <span id="id1">[<a class="reference internal" href="zreferences.html#id74">Wal47</a>]</span> to formulate <strong>sequential analysis</strong>,
 an approach to statistical decision problems intimately related to dynamic programming.</p>
 <p>In this lecture, we apply dynamic programming algorithms to Friedman and Wallis and Wald’s problem.</p>
 <p>Key ideas in play will be:</p>
@@ -897,8 +912,8 @@ an approach to statistical decision problems intimately related to dynamic progr
 and <a class="reference internal" href="exchangeable.html"><span class="doc">this lecture</span></a>.</p>
 </div>
 <div class="section" id="origin-of-the-problem">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">39.2. </span>Origin of the Problem</a><a class="headerlink" href="#origin-of-the-problem" title="Permalink to this headline">¶</a></h2>
-<p>On pages 137-139 of his 1998 book <em>Two Lucky People</em> with Rose Friedman <span id="id2">[<a class="reference internal" href="zreferences.html#id64">FF98</a>]</span>,
+<h2><a class="toc-backref" href="#id11"><span class="section-number">44.2. </span>Origin of the Problem</a><a class="headerlink" href="#origin-of-the-problem" title="Permalink to this headline">¶</a></h2>
+<p>On pages 137-139 of his 1998 book <em>Two Lucky People</em> with Rose Friedman <span id="id2">[<a class="reference internal" href="zreferences.html#id69">FF98</a>]</span>,
 Milton Friedman described a problem presented to him and Allen Wallis
 during World War II, when they worked at the US Government’s
 Statistical Research Group at Columbia University.</p>
@@ -934,13 +949,13 @@ because it is obviously superior beyond what was hoped for
 </div></blockquote>
 <p>Friedman and Wallis struggled with the problem but, after realizing that
 they were not able to solve it,  described the problem to  Abraham Wald.</p>
-<p>That started Wald on the path that led him  to <em>Sequential Analysis</em> <span id="id3">[<a class="reference internal" href="zreferences.html#id69">Wal47</a>]</span>.</p>
+<p>That started Wald on the path that led him  to <em>Sequential Analysis</em> <span id="id3">[<a class="reference internal" href="zreferences.html#id74">Wal47</a>]</span>.</p>
 <p>We’ll formulate the problem using dynamic programming.</p>
 </div>
 <div class="section" id="a-dynamic-programming-approach">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">39.3. </span>A Dynamic Programming Approach</a><a class="headerlink" href="#a-dynamic-programming-approach" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">44.3. </span>A Dynamic Programming Approach</a><a class="headerlink" href="#a-dynamic-programming-approach" title="Permalink to this headline">¶</a></h2>
 <p>The following presentation of the problem closely follows Dmitri
-Berskekas’s treatment in <strong>Dynamic Programming and Stochastic Control</strong> <span id="id4">[<a class="reference internal" href="zreferences.html#id68">Ber75</a>]</span>.</p>
+Berskekas’s treatment in <strong>Dynamic Programming and Stochastic Control</strong> <span id="id4">[<a class="reference internal" href="zreferences.html#id73">Ber75</a>]</span>.</p>
 <p>A decision-maker observes a sequence of draws of a random variable <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <p>He (or she) wants to know which of two probability distributions <span class="math notranslate nohighlight">\(f_0\)</span> or <span class="math notranslate nohighlight">\(f_1\)</span> governs <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <p>Conditional on knowing that successive observations are drawn from distribution <span class="math notranslate nohighlight">\(f_0\)</span>, the sequence of
@@ -1023,7 +1038,7 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 </div>
 </div>
 <div class="section" id="losses-and-costs">
-<h3><span class="section-number">39.3.1. </span>Losses and Costs<a class="headerlink" href="#losses-and-costs" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">44.3.1. </span>Losses and Costs<a class="headerlink" href="#losses-and-costs" title="Permalink to this headline">¶</a></h3>
 <p>After observing <span class="math notranslate nohighlight">\(z_k, z_{k-1}, \ldots, z_0\)</span>, the decision-maker
 chooses among three distinct actions:</p>
 <ul class="simple">
@@ -1044,7 +1059,7 @@ another <span class="math notranslate nohighlight">\(z\)</span></p></li>
 </ul>
 </div>
 <div class="section" id="digression-on-type-i-and-type-ii-errors">
-<h3><span class="section-number">39.3.2. </span>Digression on Type I and Type II Errors<a class="headerlink" href="#digression-on-type-i-and-type-ii-errors" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">44.3.2. </span>Digression on Type I and Type II Errors<a class="headerlink" href="#digression-on-type-i-and-type-ii-errors" title="Permalink to this headline">¶</a></h3>
 <p>If we regard  <span class="math notranslate nohighlight">\(f=f_0\)</span> as a null hypothesis and <span class="math notranslate nohighlight">\(f=f_1\)</span> as an alternative hypothesis,
 then <span class="math notranslate nohighlight">\(L_1\)</span> and <span class="math notranslate nohighlight">\(L_0\)</span> are losses associated with two types of statistical errors</p>
 <ul class="simple">
@@ -1060,7 +1075,7 @@ error.</p></li>
 </ul>
 </div>
 <div class="section" id="intuition">
-<h3><span class="section-number">39.3.3. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">44.3.3. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this headline">¶</a></h3>
 <p>Let’s try to guess what an optimal decision rule might look like before we go further.</p>
 <p>Suppose at some given point in time that <span class="math notranslate nohighlight">\(\pi\)</span> is close to 1.</p>
 <p>Then our prior beliefs and the evidence so far point strongly to <span class="math notranslate nohighlight">\(f = f_0\)</span>.</p>
@@ -1077,11 +1092,11 @@ which will depend on the parameters listed above.</p>
 parameter such as <span class="math notranslate nohighlight">\(c\)</span> or <span class="math notranslate nohighlight">\(L_0\)</span> on <span class="math notranslate nohighlight">\(\alpha\)</span> or <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
 </div>
 <div class="section" id="a-bellman-equation">
-<h3><span class="section-number">39.3.4. </span>A Bellman Equation<a class="headerlink" href="#a-bellman-equation" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">44.3.4. </span>A Bellman Equation<a class="headerlink" href="#a-bellman-equation" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(J(\pi)\)</span> be the total loss for a decision-maker with current belief <span class="math notranslate nohighlight">\(\pi\)</span> who chooses optimally.</p>
 <p>With some thought, you will agree that <span class="math notranslate nohighlight">\(J\)</span> should satisfy the Bellman equation</p>
 <div class="math notranslate nohighlight" id="equation-new1">
-<span class="eqno">(39.1)<a class="headerlink" href="#equation-new1" title="Permalink to this equation">¶</a></span>\[J(\pi) =
+<span class="eqno">(44.1)<a class="headerlink" href="#equation-new1" title="Permalink to this equation">¶</a></span>\[J(\pi) =
     \min
     \left\{
         (1-\pi) L_0, \; \pi L_1, \;
@@ -1105,7 +1120,7 @@ f_{\pi}(v) = \pi f_0(v) + (1-\pi) f_1 (v)
 </ol>
 <p>We can represent the  Bellman equation as</p>
 <div class="math notranslate nohighlight" id="equation-optdec">
-<span class="eqno">(39.2)<a class="headerlink" href="#equation-optdec" title="Permalink to this equation">¶</a></span>\[J(\pi) =
+<span class="eqno">(44.2)<a class="headerlink" href="#equation-optdec" title="Permalink to this equation">¶</a></span>\[J(\pi) =
 \min \left\{ (1-\pi) L_0, \; \pi L_1, \; h(\pi) \right\}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\pi \in [0,1]\)</span> and</p>
 <ul class="simple">
@@ -1137,20 +1152,20 @@ the expected cost associated with drawing one more <span class="math notranslate
 \end{split}\]</div>
 <p>Our aim is to compute the value function <span class="math notranslate nohighlight">\(J\)</span>, and from it the associated cutoffs <span class="math notranslate nohighlight">\(\alpha\)</span>
 and <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
-<p>To make our computations simpler, using <a class="reference internal" href="#equation-optdec">(39.2)</a>, we can write the continuation value <span class="math notranslate nohighlight">\(h(\pi)\)</span> as</p>
+<p>To make our computations simpler, using <a class="reference internal" href="#equation-optdec">(44.2)</a>, we can write the continuation value <span class="math notranslate nohighlight">\(h(\pi)\)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-optdec2">
-<span class="eqno">(39.3)<a class="headerlink" href="#equation-optdec2" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(44.3)<a class="headerlink" href="#equation-optdec2" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
 h(\pi) &amp;= c + \mathbb E [J(\pi')] \\
 &amp;= c + \mathbb E_{\pi'} \min \{ (1 - \pi') L_0, \pi' L_1, h(\pi') \} \\
 &amp;= c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
 \end{aligned}\end{split}\]</div>
 <p>The equality</p>
 <div class="math notranslate nohighlight" id="equation-funceq">
-<span class="eqno">(39.4)<a class="headerlink" href="#equation-funceq" title="Permalink to this equation">¶</a></span>\[h(\pi) =
+<span class="eqno">(44.4)<a class="headerlink" href="#equation-funceq" title="Permalink to this equation">¶</a></span>\[h(\pi) =
 c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'\]</div>
 <p>can be understood as a functional equation, where <span class="math notranslate nohighlight">\(h\)</span> is the unknown.</p>
-<p>Using the functional equation, <a class="reference internal" href="#equation-funceq">(39.4)</a>, for the continuation value, we can back out
-optimal choices using the right side of <a class="reference internal" href="#equation-optdec">(39.2)</a>.</p>
+<p>Using the functional equation, <a class="reference internal" href="#equation-funceq">(44.4)</a>, for the continuation value, we can back out
+optimal choices using the right side of <a class="reference internal" href="#equation-optdec">(44.2)</a>.</p>
 <p>This functional equation can be solved by taking an initial guess and iterating
 to find a fixed point.</p>
 <p>Thus, we iterate with an operator <span class="math notranslate nohighlight">\(Q\)</span>, where</p>
@@ -1162,7 +1177,7 @@ c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', 
 </div>
 </div>
 <div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">39.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">44.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>First, we will construct a <code class="docutils literal notranslate"><span class="pre">jitclass</span></code> to store the parameters of the model</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1311,7 +1326,7 @@ c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', 
 </div>
 </div>
 <div class="section" id="analysis">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">39.5. </span>Analysis</a><a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">44.5. </span>Analysis</a><a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <p>Let’s inspect outcomes.</p>
 <p>We will be using the default parameterization with distributions like so</p>
 <div class="cell docutils container">
@@ -1333,7 +1348,7 @@ c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', 
 </div>
 </div>
 <div class="section" id="value-function">
-<h3><span class="section-number">39.5.1. </span>Value Function<a class="headerlink" href="#value-function" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">44.5.1. </span>Value Function<a class="headerlink" href="#value-function" title="Permalink to this headline">¶</a></h3>
 <p>To solve the model, we will call our <code class="docutils literal notranslate"><span class="pre">solve_model</span></code> function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1416,7 +1431,7 @@ probability assigned to <span class="math notranslate nohighlight">\(f_0\)</span
 model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <span class="math notranslate nohighlight">\(\beta\)</span> or above <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 </div>
 <div class="section" id="simulations">
-<h3><span class="section-number">39.5.2. </span>Simulations<a class="headerlink" href="#simulations" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">44.5.2. </span>Simulations<a class="headerlink" href="#simulations" title="Permalink to this headline">¶</a></h3>
 <p>The next figure shows the outcomes of 500 simulations of the decision process.</p>
 <p>On the left is a histogram of the stopping times, which equal the number of draws of <span class="math notranslate nohighlight">\(z_k\)</span> required to make a decision.</p>
 <p>The average number of draws is around 6.6.</p>
@@ -1523,7 +1538,7 @@ model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <spa
 </div>
 </div>
 <div class="section" id="comparative-statics">
-<h3><span class="section-number">39.5.3. </span>Comparative Statics<a class="headerlink" href="#comparative-statics" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">44.5.3. </span>Comparative Statics<a class="headerlink" href="#comparative-statics" title="Permalink to this headline">¶</a></h3>
 <p>Now let’s consider the following exercise.</p>
 <p>We double the cost of drawing an additional observation.</p>
 <p>Before you look, think about what will happen:</p>
@@ -1547,7 +1562,7 @@ model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <spa
 <p>This leads to him having a higher expected loss when he puts equal weight on both models.</p>
 </div>
 <div class="section" id="a-notebook-implementation">
-<h3><span class="section-number">39.5.4. </span>A Notebook Implementation<a class="headerlink" href="#a-notebook-implementation" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">44.5.4. </span>A Notebook Implementation<a class="headerlink" href="#a-notebook-implementation" title="Permalink to this headline">¶</a></h3>
 <p>To facilitate comparative statics, we provide
 a <a class="reference external" href="https://nbviewer.jupyter.org/github/QuantEcon/lecture-python-advanced.notebooks/blob/master/wald_friedman.ipynb">Jupyter notebook</a> that
 generates the same plots, but with sliders.</p>
@@ -1564,7 +1579,7 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 </div>
 </div>
 <div class="section" id="comparison-with-neyman-pearson-formulation">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">39.6. </span>Comparison with Neyman-Pearson Formulation</a><a class="headerlink" href="#comparison-with-neyman-pearson-formulation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">44.6. </span>Comparison with Neyman-Pearson Formulation</a><a class="headerlink" href="#comparison-with-neyman-pearson-formulation" title="Permalink to this headline">¶</a></h2>
 <p>For several reasons, it is useful to describe the theory underlying the test
 that Navy Captain G. S. Schuyler had been told to use and that led him
 to approach Milton Friedman and Allan Wallis to convey his conjecture
@@ -1572,7 +1587,7 @@ that superior practical procedures existed.</p>
 <p>Evidently, the Navy had told
 Captail Schuyler to use what it knew to be a state-of-the-art
 Neyman-Pearson test.</p>
-<p>We’ll rely on Abraham Wald’s <span id="id6">[<a class="reference internal" href="zreferences.html#id69">Wal47</a>]</span> elegant summary of Neyman-Pearson theory.</p>
+<p>We’ll rely on Abraham Wald’s <span id="id6">[<a class="reference internal" href="zreferences.html#id74">Wal47</a>]</span> elegant summary of Neyman-Pearson theory.</p>
 <p>For our purposes, watch for there features of the setup:</p>
 <ul class="simple">
 <li><p>the assumption of a <em>fixed</em> sample size <span class="math notranslate nohighlight">\(n\)</span></p></li>
@@ -1589,7 +1604,7 @@ rules used to determine <span class="math notranslate nohighlight">\(n\)</span> 
 <li><p>Laws of large numbers make no appearances in the sequential
 construction.</p></li>
 </ul>
-<p>In chapter 1 of <strong>Sequential Analysis</strong> <span id="id7">[<a class="reference internal" href="zreferences.html#id69">Wal47</a>]</span> Abraham Wald summarizes the
+<p>In chapter 1 of <strong>Sequential Analysis</strong> <span id="id7">[<a class="reference internal" href="zreferences.html#id74">Wal47</a>]</span> Abraham Wald summarizes the
 Neyman-Pearson approach to hypothesis testing.</p>
 <p>Wald frames the problem as making a decision about a probability
 distribution that is partially known.</p>
@@ -1716,7 +1731,7 @@ observations.</p>
 </div></blockquote>
 </div>
 <div class="section" id="sequels">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">39.7. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">44.7. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this headline">¶</a></h2>
 <p>We’ll dig deeper into some of the ideas used here in the following lectures:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="exchangeable.html"><span class="doc">this lecture</span></a> discusses the key concept of <strong>exchangeability</strong> that rationalizes statistical learning</p></li>
@@ -1730,7 +1745,7 @@ that the Navy had ordered him to use can be expected to be better or worse than 
 <dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id5">1</a></span></dt>
 <dd><p>The decision maker acts as if he believes that the sequence of random variables
 <span class="math notranslate nohighlight">\([z_{0}, z_{1}, \ldots]\)</span> is <em>exchangeable</em>.  See <a class="reference external" href="https://python.quantecon.org/exchangeable.html">Exchangeability and Bayesian Updating</a> and
-<span id="id8">[<a class="reference internal" href="zreferences.html#id67">Kre88</a>]</span> chapter 11, for  discussions of exchangeability.</p>
+<span id="id8">[<a class="reference internal" href="zreferences.html#id72">Kre88</a>]</span> chapter 11, for  discussions of exchangeability.</p>
 </dd>
 </dl>
 </div>
@@ -1810,28 +1825,60 @@ that the Navy had ordered him to use can be expected to be better or worse than 
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   5. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   6. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="complex_and_trig.html">
-   5. Complex Numbers and Trigonometry
+   7. Complex Numbers and Trigonometry
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   6. LLN and CLT
+   8. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   9. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   7. Heavy-Tailed Distributions
+   10. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   8. Multivariate Normal Distribution
+   11. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   9. Univariate Time Series with Matrix Algebra
+   12. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lp_intro.html">
+   13. Linear Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   14. Optimal Transport
   </a>
  </li>
 </ul>
@@ -1843,62 +1890,62 @@ that the Navy had ordered him to use can be expected to be better or worse than 
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   10. Dynamics in One Dimension
+   15. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   11. AR1 Processes
+   16. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   12. Finite Markov Chains
+   17. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   13. Inventory Dynamics
+   18. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   14. Linear State Space Models
+   19. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   15. Application: The Samuelson Multiplier-Accelerator
+   20. Application: The Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   16. Kesten Processes and Firm Dynamics
+   21. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   17. Wealth Distribution Dynamics
+   22. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   18. A First Look at the Kalman Filter
+   23. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   19. Shortest Paths
+   24. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   20. Cass-Koopmans Planning Problem
+   25. Cass-Koopmans Planning Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   21. Cass-Koopmans Competitive Equilibrium
+   26. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
 </ul>
@@ -1910,32 +1957,32 @@ that the Navy had ordered him to use can be expected to be better or worse than 
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   22. Job Search I: The McCall Search Model
+   27. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   23. Job Search II: Search and Separation
+   28. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   24. Job Search III: Fitted Value Function Iteration
+   29. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   25. Job Search IV: Correlated Wage Offers
+   30. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   26. Job Search V: Modeling Career Choice
+   31. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   27. Job Search VI: On-the-Job Search
+   32. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -1947,42 +1994,42 @@ that the Navy had ordered him to use can be expected to be better or worse than 
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   28. Cake Eating I: Introduction to Optimal Saving
+   33. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   29. Cake Eating II: Numerical Methods
+   34. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   30. Optimal Growth I: The Stochastic Optimal Growth Model
+   35. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   31. Optimal Growth II: Accelerating the Code with Numba
+   36. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   32. Optimal Growth III: Time Iteration
+   37. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   33. Optimal Growth IV: The Endogenous Grid Method
+   38. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   34. The Income Fluctuation Problem I: Basic Model
+   39. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   35. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   40. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1994,37 +2041,37 @@ that the Navy had ordered him to use can be expected to be better or worse than 
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   36. Job Search VII: Search with Learning
+   41. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   37. Likelihood Ratio Processes
+   42. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   38. Computing Mean of a Likelihood Ratio Process
+   43. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   39. A Problem that Stumped Milton Friedman
+   44. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   40. Exchangeability and Bayesian Updating
+   45. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   41. Likelihood Ratio Processes and Bayesian Learning
+   46. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   42. Bayesian versus Frequentist Decision Rules
+   47. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -2036,22 +2083,22 @@ that the Navy had ordered him to use can be expected to be better or worse than 
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   43. LQ Control: Foundations
+   48. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   44. The Permanent Income Model
+   49. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   45. Permanent Income II: LQ Techniques
+   50. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   46. Production Smoothing via Inventories
+   51. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2063,37 +2110,37 @@ that the Navy had ordered him to use can be expected to be better or worse than 
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   47. Schelling’s Segregation Model
+   52. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   48. A Lake Model of Employment and Unemployment
+   53. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   49. Rational Expectations Equilibrium
+   54. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   50. Stability in Linear Rational Expectations Models
+   55. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   51. Markov Perfect Equilibrium
+   56. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   52. Uncertainty Traps
+   57. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   53. The Aiyagari Model
+   58. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -2105,17 +2152,17 @@ that the Navy had ordered him to use can be expected to be better or worse than 
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   54. Asset Pricing: Finite State Models
+   59. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   55. Competitive equilibria with Arrow securities
+   60. Competitive equilibria with Arrow securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   56. Heterogeneous Beliefs and Bubbles
+   61. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -2127,17 +2174,17 @@ that the Navy had ordered him to use can be expected to be better or worse than 
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   57. Pandas for Panel Data
+   62. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   58. Linear Regression in Python
+   63. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   59. Maximum Likelihood Estimation
+   64. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2149,17 +2196,17 @@ that the Navy had ordered him to use can be expected to be better or worse than 
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   60. Troubleshooting
+   65. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   61. References
+   66. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   62. Execution Statistics
+   67. Execution Statistics
   </a>
  </li>
 </ul>

@@ -1,0 +1,1973 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>9. Two Meanings of Probability &#8212; Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+        MathJax = {
+          loader: {load: ['[tex]/boldsymbol']},
+          tex: {
+            packages: {'[+]': ['boldsymbol']},
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            processEscapes: true,
+            macros: {
+                "argmax" : "arg\\,max",
+                "argmin" : "arg\\,min"
+            }
+          },
+          svg: {
+            fontCache: 'global',
+            scale: 0.92,
+            displayAlign: "center",
+          },
+        };
+    </script>
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/quantecon-book-theme.b2c9c855ebbf206c0b4223812193cad1.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="_static/quantecon-book-theme.a5462485f8dd312884626d20cc9f547c.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/prob_meaning.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="10. Heavy-Tailed Distributions" href="heavy_tails.html" />
+    <link rel="prev" title="8. LLN and CLT" href="lln_clt.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Two Meanings of Probability"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Two Meanings of Probability" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/prob_meaning.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="wrapper">
+
+        <div class="main">
+
+            <div class="page" id=prob_meaning>
+
+                <div class="page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   9.1. Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#frequentist-interpretation">
+   9.2. Frequentist Interpretation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bayesian-interpretation">
+   9.3. Bayesian Interpretation
+  </a>
+ </li>
+</ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="page__header">
+
+                    <div class="page__header-copy">
+
+                        <p class="page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="page__header-subheading">Two Meanings of Probability</p>
+
+                    </div>
+
+                    <p class="page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="page__content" role="main">
+                    
+                    <div>
+                        
+  <div class="section" id="two-meanings-of-probability">
+<h1><span class="section-number">9. </span>Two Meanings of Probability<a class="headerlink" href="#two-meanings-of-probability" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2><span class="section-number">9.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This lecture  illustrates two distinct interpretations of a  <strong>probability distribution</strong></p>
+<ul class="simple">
+<li><p>A frequentist interpretation as <strong>relative frequencies</strong> anticipated to occur in a large i.i.d. sample</p></li>
+<li><p>A Bayesian interpretation as a <strong>personal probability</strong> (about a parameter or list of parameters) after seeing a collection of observations</p></li>
+</ul>
+<p>We recommend watching this video about <strong>hypothesis testing</strong> according to the frequentist approach</p>
+<div class="video_wrapper" style="">
+<iframe allowfullscreen="true" src="https://www.youtube.com/embed/8JIe_cz6qGA" style="border: 0; height: 345px; width: 560px">
+</iframe></div><p>After you watch that video, please watch the following video on the Bayesian approach to constructing <strong>coverage intervals</strong></p>
+<div class="video_wrapper" style="">
+<iframe allowfullscreen="true" src="https://www.youtube.com/embed/Pahyv9i_X2k" style="border: 0; height: 345px; width: 560px">
+</iframe></div><p>After you are familiar with the above material, this lecture uses the Socratic method to  to help consolidate your understanding of the different questions that are answered by</p>
+<ul class="simple">
+<li><p>a frequentist confidence interval</p></li>
+<li><p>a Bayesian coverage interval</p></li>
+</ul>
+<p>We do this  by inviting you to  write some  Python code.</p>
+<p>It would be especially useful if you tried doing this after each question that we pose for you,  before
+proceeding to read the rest of the lecture.</p>
+<p>We provide our own answers as the lecture unfolds, but you’ll learn more if you try writing your own code before reading and running ours.</p>
+<p><strong>Code for answering questions:</strong></p>
+<p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">prettytable</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting prettytable
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading prettytable-2.2.1-py3-none-any.whl (23 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from prettytable) (0.2.5)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: prettytable
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed prettytable-2.2.1
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+</div>
+</div>
+<p>To answer our coding questions, we’ll start with some imports</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">prettytable</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">binom</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">set_matplotlib_formats</span>
+<span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;retina&#39;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;font.family&quot;</span><span class="p">:</span><span class="s1">&#39;serif&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;mathtext.fontset&quot;</span><span class="p">:</span> <span class="s1">&#39;stix&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;font.serif&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;SimSun&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Empowered with these Python tools, we’ll now  explore the two meanings described above.</p>
+</div>
+<div class="section" id="frequentist-interpretation">
+<h2><span class="section-number">9.2. </span>Frequentist Interpretation<a class="headerlink" href="#frequentist-interpretation" title="Permalink to this headline">¶</a></h2>
+<p>Consider the following classic example.</p>
+<p>The random variable  <span class="math notranslate nohighlight">\(X \)</span> takes on possible values <span class="math notranslate nohighlight">\(k = 0, 1, 2, \ldots, n\)</span>  with probabilties</p>
+<div class="math notranslate nohighlight">
+\[ 
+\textrm{Prob}(X =  k | \theta) = 
+\left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k} =
+\]</div>
+<p>where the fixed parameter <span class="math notranslate nohighlight">\(\theta \in (0,1)\)</span>.</p>
+<p>This is called the  the <strong>binomial distribution</strong>.</p>
+<p>Here</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\theta\)</span> is the probability that one toss of a coin will be a head, an outcome that we encode as  <span class="math notranslate nohighlight">\(Y = 1\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(1 -\theta\)</span> is the probability that one toss of the coin will be a tail, an outcome that we denote <span class="math notranslate nohighlight">\(Y = 0\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(X\)</span> is the total number of heads that come up after flipping the coin <span class="math notranslate nohighlight">\(n\)</span> times.</p></li>
+</ul>
+<p>Consider the following experiment:</p>
+<p>Take <strong><span class="math notranslate nohighlight">\(I\)</span> independent sequences of <span class="math notranslate nohighlight">\(n\)</span>  independent flips of the coin</strong></p>
+<p>Notice the repeated use of the adjective <strong>independent</strong>:</p>
+<ul class="simple">
+<li><p>we use it once to describe that we are drawing <span class="math notranslate nohighlight">\(n\)</span> independent times from a <strong>Bernoulli</strong> distribution with parameter <span class="math notranslate nohighlight">\(\theta\)</span> to arrive at one draw from a <strong>Binomial</strong> distribution with parameters
+<span class="math notranslate nohighlight">\(\theta,n\)</span>.</p></li>
+<li><p>we use it again to describe that we are then drawing <span class="math notranslate nohighlight">\(I\)</span> such sequences of <span class="math notranslate nohighlight">\(n\)</span> coin draws.</p></li>
+</ul>
+<p>Let <span class="math notranslate nohighlight">\(y_h^i \in \{0, 1\}\)</span> be the realized value of <span class="math notranslate nohighlight">\(Y\)</span> on the <span class="math notranslate nohighlight">\(h\)</span>th flip during the <span class="math notranslate nohighlight">\(i\)</span>th sequence of flips.</p>
+<p>Let <span class="math notranslate nohighlight">\(\sum_{h=1}^n y_h^i\)</span> denote the total number of times  heads come up during the <span class="math notranslate nohighlight">\(i\)</span>th sequence of <span class="math notranslate nohighlight">\(n\)</span> independent coin flips.</p>
+<p>Let <span class="math notranslate nohighlight">\(f_k\)</span> record the fraction of samples of length <span class="math notranslate nohighlight">\(n\)</span> for which <span class="math notranslate nohighlight">\(\sum_{h=1}^n y_h^i = k\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ 
+f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h^i = k}{
+    I}
+\]</div>
+<p>The probability  <span class="math notranslate nohighlight">\(\textrm{Prob}(X =  k | \theta)\)</span> answers the following question:</p>
+<ul class="simple">
+<li><p>As <span class="math notranslate nohighlight">\(I\)</span> becomes large, in what   fraction of  <span class="math notranslate nohighlight">\(I\)</span> independent  draws of  <span class="math notranslate nohighlight">\(n\)</span> coin flips should we anticipate  <span class="math notranslate nohighlight">\(k\)</span> heads to occur?</p></li>
+</ul>
+<p>As usual, a law of large numbers justifies this answer.</p>
+<p><strong>Exercise 1:</strong></p>
+<ul class="simple">
+<li><p>(a) Please write a Python class to compute <span class="math notranslate nohighlight">\(f_k^I\)</span></p></li>
+<li><p>(b) Please use your code to compute <span class="math notranslate nohighlight">\(f_k^I, k = 0, \ldots , n\)</span> and compare them to
+<span class="math notranslate nohighlight">\(\textrm{Prob}(X =  k | \theta)\)</span> for various values of <span class="math notranslate nohighlight">\(\theta, n\)</span> and <span class="math notranslate nohighlight">\(I\)</span></p></li>
+<li><p>(c) With  the Law of Large numbers in mind, use your code to say something</p></li>
+</ul>
+<p><strong>Answer Code:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">frequentist</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">θ</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
+    
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        initialization</span>
+<span class="sd">        -----------------</span>
+<span class="sd">        parameters:</span>
+<span class="sd">        θ : probability that one toss of a coin will be a head with Y = 1</span>
+<span class="sd">        n : number of independent flips in each independent sequence of draws</span>
+<span class="sd">        I : number of independent sequence of draws</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">θ</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">I</span>
+    
+    <span class="k">def</span> <span class="nf">binomial</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        
+        <span class="sd">&#39;&#39;&#39;compute the theoretical probability for specific input k&#39;&#39;&#39;</span>
+        
+        <span class="n">θ</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&#39;&#39;&#39;draw n independent flips for I independent sequences&#39;&#39;&#39;</span>
+        
+        <span class="n">θ</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="p">(</span><span class="n">sample</span> <span class="o">&lt;=</span> <span class="n">θ</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
+    
+    <span class="k">def</span> <span class="nf">compute_fk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kk</span><span class="p">):</span>
+        
+        <span class="sd">&#39;&#39;&#39;compute f_{k}^I for specific input k&#39;&#39;&#39;</span>
+        
+        <span class="n">Y</span><span class="p">,</span> <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">f_kI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">K</span> <span class="o">==</span> <span class="n">kk</span><span class="p">)</span> <span class="o">/</span> <span class="n">I</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_kI</span> <span class="o">=</span> <span class="n">f_kI</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kk</span> <span class="o">=</span> <span class="n">kk</span>
+        
+    <span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&#39;&#39;&#39;compute and print the comparison&#39;&#39;&#39;</span>
+        
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="n">comp</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">PrettyTable</span><span class="p">()</span>
+        <span class="n">comp</span><span class="o">.</span><span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="s1">&#39;Theoretical&#39;</span><span class="p">,</span> <span class="s1">&#39;Frequentist&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compute_fk</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">comp</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_kI</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">θ</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">I</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1_000_000</span>
+
+<span class="n">freq</span> <span class="o">=</span> <span class="n">frequentist</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
+
+<span class="n">freq</span><span class="o">.</span><span class="n">compare</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+----+------------------------+-------------+
+| k  |      Theoretical       | Frequentist |
++----+------------------------+-------------+
+| 1  | 1.6271660538000033e-09 |     0.0     |
+| 2  | 3.606884752590009e-08  |     0.0     |
+| 3  | 5.049638653625996e-07  |    1e-06    |
+| 4  | 5.007558331512445e-06  |    9e-06    |
+| 5  | 3.738976887529286e-05  |   4.3e-05   |
+| 6  | 0.00021810698510587497 |   0.000187  |
+| 7  | 0.0010178325971607542  |   0.00103   |
+| 8  | 0.0038592819309011864  |   0.003933  |
+| 9  |  0.01200665489613702   |   0.011924  |
+| 10 |  0.030817080900085014  |   0.030932  |
+| 11 |  0.06536956554563475   |   0.065463  |
+| 12 |  0.11439673970486103   |   0.114384  |
+| 13 |  0.16426198521723673   |   0.163434  |
+| 14 |  0.19163898275344177   |   0.191754  |
+| 15 |  0.17886305056987878   |   0.179346  |
+| 16 |  0.13042097437387024   |   0.130402  |
+| 17 |  0.07160367220526216   |   0.071584  |
+| 18 |  0.027845872524268626  |   0.028021  |
+| 19 |  0.006839337111223874  |   0.006742  |
+| 20 | 0.0007979226629761189  |   0.000811  |
++----+------------------------+-------------+
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the table above, can you see the law of large numbers at work?</p>
+<p>Let’s do some more calculations.</p>
+<p><strong>Comparison with different <span class="math notranslate nohighlight">\(\theta\)</span></strong></p>
+<p>Now we fix</p>
+<div class="math notranslate nohighlight">
+\[
+n=20, k=10, I=1,000,000
+\]</div>
+<p>and vary <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(0.01\)</span> to <span class="math notranslate nohighlight">\(0.99\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">θ_low</span><span class="p">,</span> <span class="n">θ_high</span><span class="p">,</span> <span class="n">npt</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="mi">50</span>
+<span class="n">thetas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">θ_low</span><span class="p">,</span> <span class="n">θ_high</span><span class="p">,</span> <span class="n">npt</span><span class="p">)</span>
+<span class="n">P</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">f_kI</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npt</span><span class="p">):</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="n">frequentist</span><span class="p">(</span><span class="n">thetas</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">n</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
+    <span class="n">freq</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">freq</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">freq</span><span class="o">.</span><span class="n">compute_fk</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">P</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freq</span><span class="o">.</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">f_kI</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freq</span><span class="o">.</span><span class="n">f_kI</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">thetas</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="s1">&#39;k-.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Theoretical&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">thetas</span><span class="p">,</span> <span class="n">f_kI</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Fraction&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Comparison with different $\theta$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\theta$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Fraction&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>findfont: Font family [&#39;serif&#39;] not found. Falling back to DejaVu Sans.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>findfont: Font family [&#39;serif&#39;] not found. Falling back to DejaVu Sans.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>findfont: Font family [&#39;serif&#39;] not found. Falling back to DejaVu Sans.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>findfont: Font family [&#39;serif&#39;] not found. Falling back to DejaVu Sans.
+</pre></div>
+</div>
+<img alt="_images/prob_meaning_10_4.png" src="_images/prob_meaning_10_4.png" />
+</div>
+</div>
+<p><strong>Comparison with different <span class="math notranslate nohighlight">\(n\)</span></strong></p>
+<p>Now we fix <span class="math notranslate nohighlight">\(\theta=0.7, k=10, I=1,000,000\)</span> and vary <span class="math notranslate nohighlight">\(n\)</span> from <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(100\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_low</span><span class="p">,</span> <span class="n">n_high</span><span class="p">,</span> <span class="n">nn</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span>
+<span class="n">ns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">n_low</span><span class="p">,</span> <span class="n">n_high</span><span class="p">,</span> <span class="n">nn</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+<span class="n">P</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">f_kI</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nn</span><span class="p">):</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="n">frequentist</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">ns</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">I</span><span class="p">)</span>
+    <span class="n">freq</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">freq</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">freq</span><span class="o">.</span><span class="n">compute_fk</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">P</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freq</span><span class="o">.</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">f_kI</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freq</span><span class="o">.</span><span class="n">f_kI</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="s1">&#39;k-.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Theoretical&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">f_kI</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Frequentist&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Comparison with different $n$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$n$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Fraction&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/prob_meaning_13_0.png" src="_images/prob_meaning_13_0.png" />
+</div>
+</div>
+<p><strong>Comparison with different <span class="math notranslate nohighlight">\(I\)</span></strong></p>
+<p>Now we fix <span class="math notranslate nohighlight">\(\theta=0.7, n=20, k=10\)</span> and vary <span class="math notranslate nohighlight">\(\log(I)\)</span> from <span class="math notranslate nohighlight">\(2\)</span> to <span class="math notranslate nohighlight">\(7\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">I_log_low</span><span class="p">,</span> <span class="n">I_log_high</span><span class="p">,</span> <span class="n">nI</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">200</span>
+<span class="n">log_Is</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">I_log_low</span><span class="p">,</span> <span class="n">I_log_high</span><span class="p">,</span> <span class="n">nI</span><span class="p">)</span>
+<span class="n">Is</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">log_Is</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">P</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">f_kI</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nI</span><span class="p">):</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="n">frequentist</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">Is</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">freq</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">freq</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">freq</span><span class="o">.</span><span class="n">compute_fk</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">P</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freq</span><span class="o">.</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">f_kI</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freq</span><span class="o">.</span><span class="n">f_kI</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Is</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="s1">&#39;k-.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Theoretical&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Is</span><span class="p">,</span> <span class="n">f_kI</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Fraction&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Comparison with different $I$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$I$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Fraction&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/prob_meaning_16_0.png" src="_images/prob_meaning_16_0.png" />
+</div>
+</div>
+<p>From the above graphs, we can see that <strong><span class="math notranslate nohighlight">\(I\)</span>, the number of independent sequences,</strong> plays an important role.</p>
+<p>When <span class="math notranslate nohighlight">\(I\)</span> becomes larger, the difference between theoretical probability and frequentist estimate becomes smaller.</p>
+<p>Also, as long as <span class="math notranslate nohighlight">\(I\)</span> is large enough, changing <span class="math notranslate nohighlight">\(\theta\)</span> or <span class="math notranslate nohighlight">\(n\)</span> does not significantly change the accuracy of frequentist estimation.</p>
+<p>The Law of Large Numbers is at work here.</p>
+<p>For each draw of an independent sequence, <span class="math notranslate nohighlight">\(\textrm{Prob}(X_i =  k | \theta)\)</span>  is the same, so aggregating all draws forms an i.i.d sequence of a binary random variable <span class="math notranslate nohighlight">\(\rho_{k,i},i=1,2,...I\)</span>, with a mean of <span class="math notranslate nohighlight">\(\textrm{Prob}(X =  k | \theta)\)</span> and a variance of</p>
+<div class="math notranslate nohighlight">
+\[
+n \cdot \textrm{Prob}(X =  k | \theta) \cdot (1-\textrm{Prob}(X =  k | \theta)).
+\]</div>
+<p>So, by the LLN, the average of <span class="math notranslate nohighlight">\(P_{k,i}\)</span> converges to:</p>
+<div class="math notranslate nohighlight">
+\[
+E[\rho_{k,i}] = \textrm{Prob}(X =  k | \theta) = \left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
+\]</div>
+<p>as <span class="math notranslate nohighlight">\(I\)</span> goes to infinity.</p>
+</div>
+<div class="section" id="bayesian-interpretation">
+<h2><span class="section-number">9.3. </span>Bayesian Interpretation<a class="headerlink" href="#bayesian-interpretation" title="Permalink to this headline">¶</a></h2>
+<p>Consider again a binomial distribution above, but now assume that the parameter <span class="math notranslate nohighlight">\(\theta\)</span> is a fixed number.</p>
+<p>Instead, we think of it as a <strong>random variable</strong> in the sense that it is itself described by a probability
+distribution.</p>
+<p>But now this probability distribution means something different than relative frequency that we anticipate in a large i.i.d. sample.</p>
+<p>Instead, the probability distribution for the parameter <span class="math notranslate nohighlight">\(\theta\)</span> is now a summary of our views about the likely values of <span class="math notranslate nohighlight">\(\theta\)</span> before we have seen any data, or any more data.</p>
+<p>Thus, suppose that, before seeing any data, you have a personal prior probability distribution saying that</p>
+<div class="math notranslate nohighlight">
+\[
+P(\theta) = \frac{\theta^{\alpha-1}(1-\theta)^{\beta -1}}{B(\alpha, \beta)}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(B(\alpha, \beta)\)</span> the <strong>beta function</strong> so that <span class="math notranslate nohighlight">\(P(\theta)\)</span> is
+a beta distribution with parameters <span class="math notranslate nohighlight">\(\alpha, \beta\)</span>.</p>
+<p><strong>Exercise 2:</strong></p>
+<ul class="simple">
+<li><p>(a) Please write down the <strong>likelihood function</strong> for a sample of length <span class="math notranslate nohighlight">\(n\)</span> from a binomial distribution with parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
+<li><p>(b) Please write down the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of the coin.</p></li>
+<li><p>(c) Please pretend  that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span> and that someone who doesn’t know this has a beta prior distribution with parameters  with <span class="math notranslate nohighlight">\(\beta = \alpha = .5\)</span>.</p></li>
+<li><p>(d) Please write a Python class to simulate this person’s personal  posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span>  for a <em>single</em> sequence of <span class="math notranslate nohighlight">\(n\)</span> draws.</p></li>
+<li><p>(e) Please plot the posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span> as a function of <span class="math notranslate nohighlight">\(\theta\)</span> as <span class="math notranslate nohighlight">\(n\)</span> grows from <span class="math notranslate nohighlight">\(1, 2, \ldots\)</span>.</p></li>
+<li><p>(f) For various <span class="math notranslate nohighlight">\(n\)</span>’s, please describe and compute  a Bayesian coverage interval for the interval <span class="math notranslate nohighlight">\([.45, .55]\)</span>.</p></li>
+<li><p>(g) Please tell what question a Bayesian coverage interval answers.</p></li>
+<li><p>(h) Please use your Python class to study what happens to the posterior distribution as <span class="math notranslate nohighlight">\(n \rightarrow + \infty\)</span>, again assuming that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span>, though it is unknown to the person doing the updating via Bayes’ Law.</p></li>
+</ul>
+<p><strong>Answer:</strong></p>
+<ul class="simple">
+<li><p>(a) Please write down the <strong>likelihood function</strong> and the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of our coin.</p></li>
+</ul>
+<p>Suppose the outcome is <strong>Y</strong>.</p>
+<p>The likelihood function is:</p>
+<div class="math notranslate nohighlight">
+\[
+L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) = 
+\theta^Y (1-\theta)^{1-Y}
+\]</div>
+<ul class="simple">
+<li><p>(b) Please write the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of our coin.</p></li>
+</ul>
+<p>The prior distribution is</p>
+<div class="math notranslate nohighlight">
+\[
+\textrm{Prob}(\theta) = \frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)}
+\]</div>
+<p>We can derive the posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span> by</p>
+<p>\begin{align*}
+\textrm{Prob}(\theta | Y) &amp;= \frac{\textrm{Prob}(Y | \theta) \textrm{Prob}(\theta)}{\textrm{Prob}(Y)} \
+&amp;=\frac{\textrm{Prob}(Y | \theta) \textrm{Prob}(\theta)}{\int_{0}^{1} \textrm{Prob}(Y | \theta) \textrm{Prob}(\theta) d \theta }\
+&amp;= \frac{\theta^Y (1-\theta)^{1-Y}\frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)}}{\int_{0}^{1}\theta^Y (1-\theta)^{1-Y}\frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)} d \theta } \
+&amp;= \frac{ \theta^{Y+\alpha - 1} (1 - \theta)^{1-Y+\beta - 1}}{\int_{0}^{1}\theta^{Y+\alpha - 1} (1 - \theta)^{1-Y+\beta - 1} d \theta}
+\end{align*}</p>
+<p>which means that</p>
+<div class="math notranslate nohighlight">
+\[
+\textrm{Prob}(\theta | Y) \sim \textrm{Beta}(\alpha + Y, \beta + (1-Y))
+\]</div>
+<ul class="simple">
+<li><p>(c) Please pretend  that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span> and that someone who doesn’t know this has a beta prior with <span class="math notranslate nohighlight">\(\beta = \alpha = .5\)</span>.</p></li>
+<li><p>(d) Please write a Python class to simulate this person’s personal  posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span>  for a <em>single</em> sequence of <span class="math notranslate nohighlight">\(n\)</span> draws.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Bayesian</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">θ</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">        ----------</span>
+<span class="sd">        θ : float, ranging from [0,1]. </span>
+<span class="sd">           probability that one toss of a coin will be a head with Y = 1</span>
+<span class="sd">            </span>
+<span class="sd">        n : int.</span>
+<span class="sd">           number of independent flips in an independent sequence of draws</span>
+<span class="sd">            </span>
+<span class="sd">        α&amp;β : int or float.</span>
+<span class="sd">             parameters of the prior distribution on θ</span>
+<span class="sd">            </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span> <span class="o">=</span> <span class="n">θ</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        simulate a single sequence of draws of length n, given probability θ</span>
+<span class="sd">            </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draws</span> <span class="o">=</span> <span class="p">(</span><span class="n">array</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">form_single_posterior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_num</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        form a posterior distribution after observing the first step_num elements of the draws</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        step_num: int. </span>
+<span class="sd">               number of steps observed to form a posterior distribution</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        ------</span>
+<span class="sd">        the posterior distribution for sake of plotting in the subsequent steps</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">heads_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draws</span><span class="p">[:</span><span class="n">step_num</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">tails_num</span> <span class="o">=</span> <span class="n">step_num</span> <span class="o">-</span> <span class="n">heads_num</span>
+        
+        <span class="k">return</span> <span class="n">st</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">+</span><span class="n">heads_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="o">+</span><span class="n">tails_num</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">form_posterior_series</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">num_obs_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        form a series of posterior distributions that form after observing different number of draws.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        num_obs_list: a list of int.</span>
+<span class="sd">               a list of the number of observations used to form a series of posterior distributions.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">posterior_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">num_obs_list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">posterior_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form_single_posterior</span><span class="p">(</span><span class="n">num</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>(e) Please plot the posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span> as a function of <span class="math notranslate nohighlight">\(\theta\)</span> as <span class="math notranslate nohighlight">\(n\)</span> grows from <span class="math notranslate nohighlight">\(1, 2, \ldots\)</span>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Bay_stat</span> <span class="o">=</span> <span class="n">Bayesian</span><span class="p">()</span>
+<span class="n">Bay_stat</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+<span class="n">num_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="c1"># this line for finite n</span>
+            <span class="mi">5000</span><span class="p">,</span> <span class="mi">10_000</span><span class="p">,</span> <span class="mi">50_000</span><span class="p">,</span> <span class="mi">100_000</span><span class="p">,</span> <span class="mi">200_000</span><span class="p">,</span> <span class="mi">300_000</span><span class="p">]</span>  <span class="c1"># this line for approximately infinite n </span>
+
+<span class="n">Bay_stat</span><span class="o">.</span><span class="n">form_posterior_series</span><span class="p">(</span><span class="n">num_list</span><span class="p">)</span>
+
+<span class="n">θ_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">θ_values</span><span class="p">,</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">θ_values</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Prior Distribution&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">num_list</span><span class="p">[:</span><span class="mi">14</span><span class="p">]):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">θ_values</span><span class="p">,</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">θ_values</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Posterior with n = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">num</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;P.D.F of Posterior Distributions&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\theta$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span> 
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>findfont: Font family [&#39;serif&#39;] not found. Falling back to DejaVu Sans.
+</pre></div>
+</div>
+<img alt="_images/prob_meaning_20_1.png" src="_images/prob_meaning_20_1.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p>(f) For various <span class="math notranslate nohighlight">\(n\)</span>’s, please describe and compute  <span class="math notranslate nohighlight">\(.05\)</span> and <span class="math notranslate nohighlight">\(.95\)</span> quantiles for  posterior probabilities.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">upper_bound</span> <span class="o">=</span> <span class="p">[</span><span class="n">ii</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">[:</span><span class="mi">14</span><span class="p">]]</span>
+<span class="n">lower_bound</span> <span class="o">=</span> <span class="p">[</span><span class="n">ii</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.95</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">[:</span><span class="mi">14</span><span class="p">]]</span>
+
+<span class="n">interval_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">interval_df</span><span class="p">[</span><span class="s1">&#39;upper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">upper_bound</span>
+<span class="n">interval_df</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lower_bound</span>
+<span class="n">interval_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">num_list</span><span class="p">[:</span><span class="mi">14</span><span class="p">]</span>
+<span class="n">interval_df</span> <span class="o">=</span> <span class="n">interval_df</span><span class="o">.</span><span class="n">T</span>
+<span class="n">interval_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>10</th>
+      <th>20</th>
+      <th>30</th>
+      <th>50</th>
+      <th>70</th>
+      <th>100</th>
+      <th>300</th>
+      <th>500</th>
+      <th>1000</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>upper</th>
+      <td>0.001543</td>
+      <td>0.000868</td>
+      <td>0.000603</td>
+      <td>0.046007</td>
+      <td>0.036447</td>
+      <td>0.185116</td>
+      <td>0.196953</td>
+      <td>0.293487</td>
+      <td>0.366730</td>
+      <td>0.361765</td>
+      <td>0.360361</td>
+      <td>0.357572</td>
+      <td>0.360533</td>
+      <td>0.376729</td>
+    </tr>
+    <tr>
+      <th>lower</th>
+      <td>0.771480</td>
+      <td>0.569259</td>
+      <td>0.444067</td>
+      <td>0.650707</td>
+      <td>0.562845</td>
+      <td>0.652678</td>
+      <td>0.533165</td>
+      <td>0.582293</td>
+      <td>0.594938</td>
+      <td>0.555092</td>
+      <td>0.522172</td>
+      <td>0.450466</td>
+      <td>0.432354</td>
+      <td>0.427689</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>As n increases, we can see that Bayesian coverage intervals narrow and move toward <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
+<ul class="simple">
+<li><p>(g) Please tell what question a Bayesian coverage interval answers.</p></li>
+</ul>
+<p>The Bayesian coverage interval tells the range of <span class="math notranslate nohighlight">\(\theta\)</span> that corresponds to the [<span class="math notranslate nohighlight">\(p_1\)</span>, <span class="math notranslate nohighlight">\(p_2\)</span>] quantiles of the cumulative probability distribution (CDF)  of the posterior distribution.</p>
+<p>To construct the coverage interval we first compute a posterior distribution of the unknown parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>If the CDF is <span class="math notranslate nohighlight">\(F(\theta)\)</span>, then the Bayesian coverage interval <span class="math notranslate nohighlight">\([a,b]\)</span> for the interval <span class="math notranslate nohighlight">\([p_1,p_2]\)</span> is described by</p>
+<div class="math notranslate nohighlight">
+\[
+F(a)=p_1,F(b)=p_2
+\]</div>
+<ul class="simple">
+<li><p>(h) Please compute the Posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> for various values of sample size <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_value</span><span class="p">,</span> <span class="n">right_value</span> <span class="o">=</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.55</span>
+
+<span class="n">posterior_prob_list</span><span class="o">=</span><span class="p">[</span><span class="n">ii</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">right_value</span><span class="p">)</span><span class="o">-</span><span class="n">ii</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">left_value</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">posterior_prob_list</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Posterior Probabililty that &#39;</span><span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;$\theta$&quot;</span> <span class="o">+</span><span class="s1">&#39; Ranges from </span><span class="si">%.2f</span><span class="s1"> to </span><span class="si">%.2f</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">left_value</span><span class="p">,</span> <span class="n">right_value</span><span class="p">),</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">posterior_prob_list</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>  
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">num_list</span><span class="p">[::</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Observations&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/prob_meaning_24_0.png" src="_images/prob_meaning_24_0.png" />
+</div>
+</div>
+<p>Notice  that in the graph above the posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> exhibits a hump shape (in general) as n increases.</p>
+<p>Two opposing forces are at work.</p>
+<p>The first force is that the individual  adjusts his belief as he observes new outcomes, so his posterior probability distribution  becomes more and more realistic, which explains the rise of the posterior probabililty.</p>
+<p>However, <span class="math notranslate nohighlight">\([.45, .55]\)</span> actually excludes the true <span class="math notranslate nohighlight">\(\theta\)</span> that generates the data (which is 0.4).</p>
+<p>As a result, the posterior probabililty drops as larger and larger samples refine his  posterior probability distribution of <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>The descent seems precipitous only because of the scale of the graph  that has the number of observations increasing disproportionately.</p>
+<p>When the number of observations becomes large enough, our Bayesian becomes so confident about <span class="math notranslate nohighlight">\(\theta\)</span> that he considers <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> unlikely.</p>
+<p>That is why we see a nearly horizontal line when the number of observations exceeds 500.</p>
+<ul class="simple">
+<li><p>(i) Please use your Python class to study what happens to the posterior distribution as <span class="math notranslate nohighlight">\(n \rightarrow + \infty\)</span>, again assuming that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span>, though it is unknown to the person doing the updating via Bayes’ Law.</p></li>
+</ul>
+<p>Using the Python class we made above, we can see the evolution of posterior distributions as n approaches infinity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">num_list</span><span class="p">[</span><span class="mi">14</span><span class="p">:]):</span>
+    <span class="n">ii</span> <span class="o">+=</span> <span class="mi">14</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">θ_values</span><span class="p">,</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">θ_values</span><span class="p">),</span> 
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Posterior with n=</span><span class="si">%d</span><span class="s1"> thousand&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">num</span><span class="o">/</span><span class="mi">1000</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;P.D.F of Posterior Distributions&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\theta$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span> 
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/prob_meaning_26_0.png" src="_images/prob_meaning_26_0.png" />
+</div>
+</div>
+<p>As <span class="math notranslate nohighlight">\(n\)</span> increases, we can see that the probability density functions ‘concentrate’ on <span class="math notranslate nohighlight">\(0.4\)</span>, which is the true value of <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>Correspondingly, posterior means  converge to <span class="math notranslate nohighlight">\(0.4\)</span> while posterior standard deviations drop to <span class="math notranslate nohighlight">\(0\)</span>.</p>
+<p>To show this, we explicitly compute these statistics of the posterior distributions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">ii</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">]</span>
+<span class="n">std_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">ii</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mean_list</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Mean Values of Posterior Distribution&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mean_list</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>  
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">num_list</span><span class="p">[::</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Observations&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">std_list</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Standard Deviations of Posterior Distribution&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">std_list</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>  
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">num_list</span><span class="p">[::</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Observations&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/prob_meaning_28_0.png" src="_images/prob_meaning_28_0.png" />
+</div>
+</div>
+<p>How shall we interpret the patterns above?</p>
+<p>The answer is encoded in the  Bayesian updating formulas</p>
+<p>It is natural to extend the one-step Bayesian update to n-step Bayesian update.</p>
+<div class="math notranslate nohighlight">
+\[
+\textrm{Prob}(\theta|k) = \frac{\textrm{Prob}(\theta,k)}{\textrm{Prob}(k)}=\frac{\textrm{Prob}(k|\theta)*\textrm{Prob}(\theta)}{\textrm{Prob}(k)}=\frac{\textrm{Prob}(k|\theta)*\textrm{Prob}(\theta)}{\int_0^1 \textrm{Prob}(k|\theta)*\textrm{Prob}(\theta) d\theta}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+=\frac{{N \choose k} (1 - \theta)^{N-k} \theta^k*\frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)}}{\int_0^1 {N \choose k} (1 - \theta)^{N-k} \theta^k*\frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)} d\theta}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+=\frac{(1 -\theta)^{\beta+N-k-1}* \theta^{\alpha+k-1}}{\int_0^1 (1 - \theta)^{\beta+N-k-1}* \theta^{\alpha+k-1} d\theta}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+={Beta}(\alpha + k, \beta+N-k)
+\]</div>
+<p>A Beta Distribution with <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> has the following mean and variance.</p>
+<p>The mean is <span class="math notranslate nohighlight">\(\frac{\alpha}{\alpha + \beta}\)</span></p>
+<p>The variance is <span class="math notranslate nohighlight">\(\frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}\)</span></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span> can be viewed as the number of successes</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta\)</span> can be viewed as the number of failures</p></li>
+</ul>
+<p>The random variables <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> are governed by Binomial Distribution with <span class="math notranslate nohighlight">\(\theta=0.4\)</span> (that we call true data generation process).</p>
+<p>According to the Law of Large Numbers, for a large number of observations, observed frequencies of <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> will be described by the true data generation process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See Exercise <span class="math notranslate nohighlight">\(1\)</span>).</p>
+<p>Consequently, the  mean of the posterior distribution converges to <span class="math notranslate nohighlight">\(0.4\)</span> and the variance withers toward zero.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">upper_bound</span> <span class="o">=</span> <span class="p">[</span><span class="n">ii</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.95</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">]</span>
+<span class="n">lower_bound</span> <span class="o">=</span> <span class="p">[</span><span class="n">ii</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">)),</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;95 th Quantile&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">)),</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;05 th Quantile&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>  
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">num_list</span><span class="p">[::</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Observations&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Bayesian Coverage Intervals of Posterior Distributions&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>findfont: Font family [&#39;serif&#39;] not found. Falling back to DejaVu Sans.
+</pre></div>
+</div>
+<img alt="_images/prob_meaning_30_1.png" src="_images/prob_meaning_30_1.png" />
+</div>
+</div>
+<p>After observing a large number of outcomes, the  posterior distribution collapses around <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
+<p>Thus, he comes to believe that <span class="math notranslate nohighlight">\(\theta\)</span> is near <span class="math notranslate nohighlight">\(.4\)</span>.</p>
+<p>As shown in the figure above, as the number of observations grows, the Bayesian coverage intervals (BCIs) become narrower and narrower   around  <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
+<p>However, if you take a closer look, you will find that the centers of the  are not exactly <span class="math notranslate nohighlight">\(0.4\)</span>, due to the persistent influence of the prior distribution and the randomness of the simulation path.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                    <p class="caption">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   5. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   6. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   7. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   8. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   9. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   10. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   11. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   12. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lp_intro.html">
+   13. Linear Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   14. Optimal Transport
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   15. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   16. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   17. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   18. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   19. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   20. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   21. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   22. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   23. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   24. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   25. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   26. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   27. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   28. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   29. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   30. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   31. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   32. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   33. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   34. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   35. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   36. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   37. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   38. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   39. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   40. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   41. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   42. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   43. Computing Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   44. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   45. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   46. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   47. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   48. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   49. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   50. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   51. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   52. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   53. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   54. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   55. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   56. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   57. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   58. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   59. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   60. Competitive equilibria with Arrow securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   61. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   62. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   63. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   64. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   65. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   66. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   67. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="toolbar">
+
+            <div class="toolbar__inner">
+
+                <ul class="toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/prob_meaning.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/prob_meaning.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/prob_meaning.ipynb">BinderHub</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/prob_meaning.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/prob_meaning.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "prob_meaning";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/prob_meaning.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-54984338-10', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </body>
+</html>
