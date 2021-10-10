@@ -17,10 +17,9 @@ def solve_model_time_iter(model,    # Class with model information
             print(f"Error at iteration {i} is {error}.")
         σ = σ_new
 
-    if i == max_iter:
-        print("Failed to converge!")
-
-    if verbose and i < max_iter:
+    if i == max_iter and error > tol:
+        print("Failed to converge!"
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return σ_new

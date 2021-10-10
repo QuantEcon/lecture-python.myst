@@ -299,10 +299,9 @@ def compute_value_function(ce,
 
         v = v_new
 
-    if i == max_iter:
-        print("Failed to converge!")
-
-    if verbose and i < max_iter:
+    if i == max_iter and error > tol:
+        print("Failed to converge!"
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return v_new
