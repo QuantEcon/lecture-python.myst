@@ -22,7 +22,7 @@ def solve_model(og,
         v = v_new
 
     if i == max_iter and error > tol:
-        print("Failed to converge!"
+        print("Failed to converge!")
     elif verbose:
         print(f"\nConverged in {i} iterations.")
 
