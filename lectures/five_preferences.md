@@ -1385,7 +1385,7 @@ consumption compensations of the kind that {cite}`Lucas1987`,
 business cycles must differ. 
 
 
-#### Consumption-equivalent measures of uncertainty aversion
+### Consumption-equivalent measures of uncertainty aversion
 
 For each of our five types of preferences, the following figure allows us to construct a certainty
 equivalent point $(c^*, c^*)$ on the 45 degree line that renders the consumer indifferent between it and the risky point
