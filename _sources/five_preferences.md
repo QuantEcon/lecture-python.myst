@@ -693,7 +693,15 @@ In general, when $\theta < +\infty$, ${\sf T} u(c)$ depends on cumulants of all 
 
 These statements extend to cases with continuous probability distributions for $c$ and therefore for $u(c)$. 
 
-For the particular case $u(c) \sim {\mathcal N}(\mu_u, \sigma_u^2)$, $\kappa_1 = \mu_u, \kappa_2 = \sigma_u^2,$  and $\kappa_j = 0 \ \forall j \geq 3$, so ${\sf T} u(c) = \mu_u - \frac{1}{2 \theta} \sigma_u^2$, which becomes expected utility $\mu_u$ when $\theta^{-1} = 0$.
+For the special case $u(c) \sim {\mathcal N}(\mu_u, \sigma_u^2)$, $\kappa_1 = \mu_u, \kappa_2 = \sigma_u^2,$  and $\kappa_j = 0 \ \forall j \geq 3$, so 
+
+$$
+ {\sf T} u(c) = \mu_u - \frac{1}{2 \theta} \sigma_u^2, 
+$$ (tom200)
+
+which becomes expected utility $\mu_u$ when $\theta^{-1} = 0$.
+
+The right side of equation {eq}`tom200` is a special case of **stochastic differential utility** preferences in which consumption plans are ranked not just by their expected utilities $\mu_u$ but also the variances $\sigma_u^2$  of their expected utilities.
 
 ## Ex post Bayesian preferences 
 
@@ -1115,25 +1123,23 @@ ax2.set_xlabel(r'$c_1$')
 ax2.legend();
 ```
 
-Evidently, for a given $\eta$ and a given $(c_1, c_2)$ off the 45 degree line, by solving
-equations {eq}`tom7` and {eq}`tom20`, we can find $\tilde \theta (\eta, c)$
-and $\tilde \eta(\theta,c)$ that make the indifference curves for 
-multiplier and constraint preferences be tangent to one another at a
-given allocation $c$.
+**Kink at 45 degree line**
 
-For fixed $\eta$, a given plan $c$, and
-a utility function increasing in $c$, the worst case probabilities are
-$\hat \pi_1 < .5$ when $c_1 > c_2$ and $\hat \pi_1 > .5$ when
+
+Notice the kink in the indifference curve for constraint  preferences at the 45 degree line.  
+
+To understand the source of the kink, consider how the Lagrange multiplier and worst-case probabilities vary with the consumption plan under  constraint preferences. 
+
+For fixed $\eta$, a given plan $c$, and a utility function increasing in $c$,  worst case probabilities are **fixed numbers** $\hat \pi_1 < .5$ when $c_1 > c_2$ and $\hat \pi_1 > .5$ when
 $c_2 > c_1$. 
 
-The discontinuity in the worst case $\hat \pi_1$ at the 45
-degree line accounts for the kink in the indifference curve for
-constraint preferences associated with a particular positive entropy
-$\eta$. 
+This pattern makes the Lagrange multiplier $\tilde \theta$ vary discontinuously at $\hat \pi_1 = .5$. 
+
+The  discontinuity in the worst case $\hat \pi_1$ at the 45 degree line accounts for the kink at the 45 degree line in an indifference curve for constraint preferences associated with a given positive entropy constraint $\eta$. 
 
 The code for generating the preceding figure is somewhat intricate we formulate a root finding problem for finding indifference curves.
 
-Here is a brief literary  description of the method we used.
+Here is a brief literary  description of the method we use.
 
 **Parameters**
 
@@ -1167,10 +1173,17 @@ $$
 **Remark:** It is tricky to get the algorithm  to work properly for all values of $c_{1}$. In particular, parameters were chosen with [graduate student descent](https://sciencedryad.wordpress.com/2014/01/25/grad-student-descent/).
 
 
+**Tangent indifference curves off 45 degree line**
+
+For a given $\eta$ and a given allocatin $(c_1, c_2)$ off the 45 degree line, by solving
+equations {eq}`tom7` and {eq}`tom20`, we can find $\tilde \theta (\eta, c)$
+and $\tilde \eta(\theta,c)$ that make indifference curves for 
+multiplier and constraint preferences be tangent to one another.
+
 The following figure shows indifference curves for
 multiplier and constraint preferences through a point off the 45 degree
 line, namely, $(c(1),c(2)) = (3,1)$, at which $\eta$ and $\theta$ are
-set to render the indifference curves for constraint and multiplier
+adjusted to render the indifference curves for constraint and multiplier
 preferences tangent.
 
 
@@ -1239,7 +1252,8 @@ ax2.set_xlabel(r'$c_1$')
 ax2.legend();
 ```
 
-Note that all three lines of the left graph intersect at (1, 3). While the intersection at (3, 1) is hard-coded, the intersection at (1,3) arises from the computation which is a good sign.
+Note that all three lines of the left graph intersect at (1, 3). While the intersection at (3, 1) is hard-coded, the intersection at (1,3) arises from the computation,  which confirms that the code seems to be
+working properly.
 
 
 As we move along the (kinked) indifference curve for the constraint
@@ -1447,11 +1461,7 @@ model uncertainty.
 
 ## Iso-utility and iso-entropy curves and expansion paths
 
-The following figures show
-iso-entropy and iso-utility lines for the special case in which $I = 3$,
-$\pi_1 = .3, \pi_2 = .4$, and the utility function is
-$u(c)= \frac{c^{1-\alpha}}{1-\alpha}$ with $\alpha =0$ and $\alpha =3$,
-respectively, for the fixed plan $c(1) = 1, c(2) =2 , c(3) =3$.
+The following figures show iso-entropy and iso-utility lines for the special case in which $I = 3$, $\pi_1 = .3, \pi_2 = .4$, and the utility function is $u(c)= \frac{c^{1-\alpha}}{1-\alpha}$ with $\alpha =0$ and $\alpha =3$, respectively, for the fixed plan $c(1) = 1, c(2) =2 , c(3) =3$.
 
 The iso-utility lines are the level curves of
 
@@ -1816,25 +1826,27 @@ Beyond the helpful mathematical fact that it leads directly to
 convenient exponential twisting formulas {eq}`tom6` and
 {eq}`tom12` for worst-case probability distortions,
 there are two related justifications for using entropy to measure
-discrepancies between probability distribution. One arises from the role
-of entropy in statistical tests for discriminating between models. The
-other comes from axioms.
+discrepancies between probability distribution.
+
+One arises from the role of entropy in statistical tests for discriminating between models. 
+
+The other comes from axioms.
 
 ### Entropy and statistical detection
 
 Robust control theory starts with a decision maker who has constructed a
 good baseline approximating model whose free parameters he has estimated
-to fit historical data well. The decision maker recognizes that actual
-outcomes might be generated by one of a vast number of other models that
-fit the historical data nearly as well as his. Therefore, he wants to
-evaluate outcomes under a set of alternative models that are plausible
-in the sense of being statistically close to his model. He uses relative
-entropy to quantify what he means by close.
+to fit historical data well. 
+
+The decision maker recognizes that actual outcomes might be generated by one of a vast number of other models that fit the historical data nearly as well as his. 
+
+Therefore, he wants to evaluate outcomes under a set of alternative models that are plausible
+in the sense of being statistically close to his model.
+
+He uses relative entropy to quantify what  close means.
 
 {cite}`AHS_2003` and {cite}`BHS_2009`describe links between entropy and large deviations
-bounds on test statistics for discriminating between models, in
-particular, statistics that describe the probability of making an error
-in applying a likelihood ratio test to decide whether model A or model B
+bounds on test statistics for discriminating between models, in particular, statistics that describe the probability of making an error in applying a likelihood ratio test to decide whether model A or model B
 generated a data record of length $T$. 
 
 For a given sample size, an
@@ -1844,12 +1856,14 @@ use detection error probabilities to calibrate reasonable values of $\eta$.
 
 {cite}`AHS_2003`  and  {cite}`HansenSargent2008` also
 use detection error probabilities to calibrate reasonable values of the
-penalty parameter $\theta$ in multiplier preferences. For a fixed sample
-size and a fixed $\theta$, they would calculate the worst-case
+penalty parameter $\theta$ in multiplier preferences. 
+
+For a fixed sample size and a fixed $\theta$, they would calculate the worst-case
 $\hat m_i(\theta)$, an associated entropy $\eta(\theta)$, and an
 associated detection error probability. In this way they build up a
-detection error probability as a function of $\theta$. They then invert
-this function to calibrate $\theta$ to deliver a reasonable detection
+detection error probability as a function of $\theta$.
+
+They then invert this function to calibrate $\theta$ to deliver a reasonable detection
 error probability.
 
 To indicate outcomes from this approach, the following figure
@@ -1923,21 +1937,22 @@ The density for the approximating model is
 $\log c_{t+1} - \log c_t = \mu + \sigma_c \epsilon_{t+1}$ where
 $\epsilon_{t+1} \sim {\cal N}(0,1)$ and $\mu$ and $\sigma_c$ are
 estimated by maximum likelihood from the U.S. quarterly data in the
-histogram over the period 1948.I-2006.IV. The consumer's value function
-under logarithmic utility implies that the worst-case model is
+histogram over the period 1948.I-2006.IV. 
+
+The consumer's value function under logarithmic utility implies that the worst-case model is
 $\log c_{t+1} - \log c_t = (\mu + \sigma_c w)  + \sigma_c \tilde \epsilon_{t+1}$
 where $\{\tilde \epsilon_{t+1}\}$ is also a normalized Gaussian random
 sequence and where $w$ is calculated by setting a detection error
-probability to $.05$. The worst-case model appears to fit the histogram nearly as well as the approximating model.
+probability to $.05$. 
+
+The worst-case model appears to fit the histogram nearly as well as the approximating model.
 
 ### Axiomatic justifications
 
 Multiplier and constraint preferences are both special cases of what
 {cite}`MaccheroniMarinacciRustichini:2006b` call variational preferences. 
 
-They provide an
-axiomatic foundation for variational preferences and describe how they
+They provide an axiomatic foundation for variational preferences and describe how they
 express ambiguity aversion.
 
-Constraint preferences are particular
-instances of the multiple priors model of {cite}`GilboaSchmeidler:1989`.
+Constraint preferences are particular instances of the multiple priors model of {cite}`GilboaSchmeidler:1989`.
