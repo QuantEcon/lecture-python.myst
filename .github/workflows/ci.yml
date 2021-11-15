@@ -34,11 +34,6 @@ jobs:
       - name: Display Pip Versions
         shell: bash -l {0}
         run: pip list
-      - name: Check LaTeX
-        shell: bash -l {0}
-        run: |
-          which pdflatex
-          python path.py
       - name: Download "build" folder (cache)
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -53,7 +48,6 @@ jobs:
           jb build lectures --builder pdflatex --path-output ./ -n --keep-going
           mkdir -p _build/html/_pdf
           cp -u _build/latex/*.pdf _build/html/_pdf
-          rm /home/runner/.cache/matplotlib/tex.cache/*
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
         run: |
@@ -64,7 +58,7 @@ jobs:
       - name: Build HTML
         shell: bash -l {0}
         run: |
-          jb build --keep-going lectures --path-output ./
+          jb build -W --keep-going lectures --path-output ./
       - name: Save Build as Artifact
         uses: actions/upload-artifact@v1
         with:
