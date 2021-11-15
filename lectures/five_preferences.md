@@ -233,16 +233,10 @@ for i in range(π_hat_0_vals.size):  # Loop over all possible values for `π_hat
     ent_vals[i] = ent(π, π_hat)
 ```
 
-```{code-cell} ipython
----
-tags: [hide-input]
-render:
-  figure:
-    caption: |
-      Figure 1
-    name: figure1
----
+### Figure 1
 
+```{code-cell} ipython
+:tags: [hide-input]
 
 plt.figure(figsize=(5, 3))
 plt.plot(π_hat_0_vals, ent_vals, color='blue');
@@ -255,7 +249,7 @@ plt.show()
 
 The heat maps in  the next two  figures vary both $\hat{\pi}_1$ and $\pi_1$.
 
-The following figure plots  entropy.  
+The following figure plots entropy.  
 
 ```{code-cell} ipython
 :tags: [hide-input]
