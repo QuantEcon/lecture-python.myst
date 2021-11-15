@@ -34,6 +34,9 @@ jobs:
       - name: Display Pip Versions
         shell: bash -l {0}
         run: pip list
+      - name: Clean Matplotlib TeX Cache
+        shell: bash -l {0}
+        run: rm /home/runner/.cache/matplotlib/tex.cache/*
       - name: Download "build" folder (cache)
         uses: dawidd6/action-download-artifact@v2
         with:
