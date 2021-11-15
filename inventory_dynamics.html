@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>18. Inventory Dynamics &#8212; Quantitative Economics with Python</title>
+    <title>19. Inventory Dynamics &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -30,8 +30,8 @@
     </script>
     
     
-  <link href="_static/css/theme.css" rel="stylesheet" />
-  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -54,7 +54,7 @@
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
 
 
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -217,12 +217,19 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/inventory_dynamics.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="19. Linear State Space Models" href="linear_models.html" />
-    <link rel="prev" title="17. Finite Markov Chains" href="finite_markov.html" />
+    <link rel="next" title="20. Linear State Space Models" href="linear_models.html" />
+    <link rel="prev" title="18. Finite Markov Chains" href="finite_markov.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -272,49 +279,49 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   18.1. Overview
+   19.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sample-paths">
-   18.2. Sample Paths
+   19.2. Sample Paths
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#marginal-distributions">
-   18.3. Marginal Distributions
+   19.3. Marginal Distributions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   18.4. Exercises
+   19.4. Exercises
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-1">
-     18.4.1. Exercise 1
+     19.4.1. Exercise 1
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-2">
-     18.4.2. Exercise 2
+     19.4.2. Exercise 2
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
-   18.5. Solutions
+   19.5. Solutions
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id2">
-     18.5.1. Exercise 1
+     19.5.1. Exercise 1
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id3">
-     18.5.2. Exercise 2
+     19.5.2. Exercise 2
     </a>
    </li>
   </ul>
@@ -369,7 +376,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="inventory-dynamics">
-<h1><a class="toc-backref" href="#id4"><span class="section-number">18. </span>Inventory Dynamics</a><a class="headerlink" href="#inventory-dynamics" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id4"><span class="section-number">19. </span>Inventory Dynamics</a><a class="headerlink" href="#inventory-dynamics" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -385,7 +392,7 @@
 </ul>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">18.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">19.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture we will study the time path of inventories for firms that
 follow so-called s-S inventory dynamics.</p>
 <p>Such firms</p>
@@ -394,7 +401,7 @@ follow so-called s-S inventory dynamics.</p>
 <li><p>order sufficient quantities to bring their inventory back up to capacity <span class="math notranslate nohighlight">\(S\)</span>.</p></li>
 </ol>
 <p>These kinds of policies are common in practice and also optimal in certain circumstances.</p>
-<p>A review of early literature and some macroeconomic implications can be found in <span id="id1">[<a class="reference internal" href="zreferences.html#id13">Cap85</a>]</span>.</p>
+<p>A review of early literature and some macroeconomic implications can be found in <span id="id1">[<a class="reference internal" href="zreferences.html#id23">Cap85</a>]</span>.</p>
 <p>Here our main aim is to learn more about simulation, time series and Markov dynamics.</p>
 <p>While our Markov environment and many of the concepts we consider are related to those found in our <a class="reference internal" href="finite_markov.html"><span class="doc">lecture on finite Markov chains</span></a>, the state space is a continuum in the current application.</p>
 <p>Let’s start with some imports</p>
@@ -412,7 +419,7 @@ follow so-called s-S inventory dynamics.</p>
 </div>
 </div>
 <div class="section" id="sample-paths">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">18.2. </span>Sample Paths</a><a class="headerlink" href="#sample-paths" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">19.2. </span>Sample Paths</a><a class="headerlink" href="#sample-paths" title="Permalink to this headline">¶</a></h2>
 <p>Consider a firm with inventory <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
 <p>The firm waits until <span class="math notranslate nohighlight">\(X_t \leq s\)</span> and then restocks up to <span class="math notranslate nohighlight">\(S\)</span> units.</p>
 <p>It faces stochastic demand <span class="math notranslate nohighlight">\(\{ D_t \}\)</span>, which we assume is IID.</p>
@@ -532,7 +539,7 @@ the probabilities of different outcomes:</p>
 </div>
 </div>
 <div class="section" id="marginal-distributions">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">18.3. </span>Marginal Distributions</a><a class="headerlink" href="#marginal-distributions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">19.3. </span>Marginal Distributions</a><a class="headerlink" href="#marginal-distributions" title="Permalink to this headline">¶</a></h2>
 <p>Now let’s look at the marginal distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> of <span class="math notranslate nohighlight">\(X_T\)</span> for some
 fixed <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>We will do this by generating many draws of <span class="math notranslate nohighlight">\(X_T\)</span> given initial
@@ -652,9 +659,9 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 histogram just above.</p>
 </div>
 <div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">18.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">19.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="exercise-1">
-<h3><span class="section-number">18.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">19.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>This model is asymptotically stationary, with a unique stationary
 distribution.</p>
 <p>(See the discussion of stationarity in <a class="reference internal" href="ar1_processes.html"><span class="doc">our lecture on AR(1) processes</span></a> for background — the fundamental concepts are the same.)</p>
@@ -670,16 +677,16 @@ distribution.)</p>
 <p>Try different initial conditions to verify that, in the long run, the distribution is invariant across initial conditions.</p>
 </div>
 <div class="section" id="exercise-2">
-<h3><span class="section-number">18.4.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">19.4.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
 <p>Using simulation, calculate the probability that firms that start with
 <span class="math notranslate nohighlight">\(X_0 = 70\)</span> need to order twice or more in the first 50 periods.</p>
 <p>You will need a large sample size to get an accurate reading.</p>
 </div>
 </div>
 <div class="section" id="solutions">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">18.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">19.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id2">
-<h3><span class="section-number">18.5.1. </span>Exercise 1<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">19.5.1. </span>Exercise 1<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>Below is one possible solution:</p>
 <p>The computations involve a lot of CPU cycles so we have tried to write the
 code efficiently.</p>
@@ -749,7 +756,7 @@ testing a few of them.</p>
 <span class="math notranslate nohighlight">\(X_0 = 20\)</span> or <span class="math notranslate nohighlight">\(X_0 = 80\)</span>.</p>
 </div>
 <div class="section" id="id3">
-<h3><span class="section-number">18.5.2. </span>Exercise 2<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">19.5.2. </span>Exercise 2<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>Here is one solution.</p>
 <p>Again, the computations are relatively intensive so we have written a a
 specialized function rather than using the class above.</p>
@@ -792,9 +799,9 @@ specialized function rather than using the class above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Frequency of at least two stock outs = 0.44694
-CPU times: user 3.23 s, sys: 40.1 ms, total: 3.27 s
-Wall time: 1.92 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Frequency of at least two stock outs = 0.447147
+CPU times: user 3.34 s, sys: 4.63 ms, total: 3.34 s
+Wall time: 815 ms
 </pre></div>
 </div>
 </div>
@@ -920,6 +927,11 @@ above.</p>
    12. Univariate Time Series with Matrix Algebra
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="five_preferences.html">
+   13. Risk and Model Uncertainty
+  </a>
+ </li>
 </ul>
 <p class="caption">
  <span class="caption-text">
@@ -929,12 +941,12 @@ above.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   13. Linear Programming
+   14. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   14. Optimal Transport
+   15. Optimal Transport
   </a>
  </li>
 </ul>
@@ -946,62 +958,62 @@ above.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   15. Dynamics in One Dimension
+   16. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   16. AR1 Processes
+   17. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   17. Finite Markov Chains
+   18. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   18. Inventory Dynamics
+   19. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   19. Linear State Space Models
+   20. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   20. Application: The Samuelson Multiplier-Accelerator
+   21. Application: The Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   21. Kesten Processes and Firm Dynamics
+   22. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   22. Wealth Distribution Dynamics
+   23. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   23. A First Look at the Kalman Filter
+   24. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   24. Shortest Paths
+   25. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   25. Cass-Koopmans Planning Problem
+   26. Cass-Koopmans Planning Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   26. Cass-Koopmans Competitive Equilibrium
+   27. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
 </ul>
@@ -1013,32 +1025,32 @@ above.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   27. Job Search I: The McCall Search Model
+   28. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   28. Job Search II: Search and Separation
+   29. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   29. Job Search III: Fitted Value Function Iteration
+   30. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   30. Job Search IV: Correlated Wage Offers
+   31. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   31. Job Search V: Modeling Career Choice
+   32. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   32. Job Search VI: On-the-Job Search
+   33. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -1050,42 +1062,42 @@ above.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   33. Cake Eating I: Introduction to Optimal Saving
+   34. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   34. Cake Eating II: Numerical Methods
+   35. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   35. Optimal Growth I: The Stochastic Optimal Growth Model
+   36. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   36. Optimal Growth II: Accelerating the Code with Numba
+   37. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   37. Optimal Growth III: Time Iteration
+   38. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   38. Optimal Growth IV: The Endogenous Grid Method
+   39. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   39. The Income Fluctuation Problem I: Basic Model
+   40. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   40. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   41. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1097,37 +1109,37 @@ above.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   41. Job Search VII: Search with Learning
+   42. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   42. Likelihood Ratio Processes
+   43. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   43. Computing Mean of a Likelihood Ratio Process
+   44. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   44. A Problem that Stumped Milton Friedman
+   45. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   45. Exchangeability and Bayesian Updating
+   46. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   46. Likelihood Ratio Processes and Bayesian Learning
+   47. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   47. Bayesian versus Frequentist Decision Rules
+   48. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1139,22 +1151,22 @@ above.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   48. LQ Control: Foundations
+   49. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   49. The Permanent Income Model
+   50. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   50. Permanent Income II: LQ Techniques
+   51. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   51. Production Smoothing via Inventories
+   52. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1166,37 +1178,37 @@ above.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   52. Schelling’s Segregation Model
+   53. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   53. A Lake Model of Employment and Unemployment
+   54. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   54. Rational Expectations Equilibrium
+   55. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   55. Stability in Linear Rational Expectations Models
+   56. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   56. Markov Perfect Equilibrium
+   57. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   57. Uncertainty Traps
+   58. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   58. The Aiyagari Model
+   59. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1208,17 +1220,17 @@ above.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   59. Asset Pricing: Finite State Models
+   60. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   60. Competitive equilibria with Arrow securities
+   61. Competitive equilibria with Arrow securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   61. Heterogeneous Beliefs and Bubbles
+   62. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1230,17 +1242,17 @@ above.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   62. Pandas for Panel Data
+   63. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   63. Linear Regression in Python
+   64. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   64. Maximum Likelihood Estimation
+   65. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1252,17 +1264,17 @@ above.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   65. Troubleshooting
+   66. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   66. References
+   67. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   67. Execution Statistics
+   68. Execution Statistics
   </a>
  </li>
 </ul>

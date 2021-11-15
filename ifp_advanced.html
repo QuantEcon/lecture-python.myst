@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>40. The Income Fluctuation Problem II: Stochastic Returns on Assets &#8212; Quantitative Economics with Python</title>
+    <title>41. The Income Fluctuation Problem II: Stochastic Returns on Assets &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -30,8 +30,8 @@
     </script>
     
     
-  <link href="_static/css/theme.css" rel="stylesheet" />
-  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -54,7 +54,7 @@
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
 
 
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -196,12 +196,19 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/ifp_advanced.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="41. Job Search VII: Search with Learning" href="odu.html" />
-    <link rel="prev" title="39. The Income Fluctuation Problem I: Basic Model" href="ifp.html" />
+    <link rel="next" title="42. Job Search VII: Search with Learning" href="odu.html" />
+    <link rel="prev" title="40. The Income Fluctuation Problem I: Basic Model" href="ifp.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -251,102 +258,102 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   40.1. Overview
+   41.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-savings-problem">
-   40.2. The Savings Problem
+   41.2. The Savings Problem
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#set-up">
-     40.2.1. Set Up
+     41.2.1. Set Up
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#assumptions">
-     40.2.2. Assumptions
+     41.2.2. Assumptions
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#optimality">
-     40.2.3. Optimality
+     41.2.3. Optimality
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solution-algorithm">
-   40.3. Solution Algorithm
+   41.3. Solution Algorithm
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#a-time-iteration-operator">
-     40.3.1. A Time Iteration Operator
+     41.3.1. A Time Iteration Operator
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#convergence-properties">
-     40.3.2. Convergence Properties
+     41.3.2. Convergence Properties
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#using-an-endogenous-grid">
-     40.3.3. Using an Endogenous Grid
+     41.3.3. Using an Endogenous Grid
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#finding-optimal-consumption">
-       40.3.3.1. Finding Optimal Consumption
+       41.3.3.1. Finding Optimal Consumption
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#iterating">
-       40.3.3.2. Iterating
+       41.3.3.2. Iterating
       </a>
      </li>
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#testing-the-assumptions">
-     40.3.4. Testing the Assumptions
+     41.3.4. Testing the Assumptions
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#implementation">
-   40.4. Implementation
+   41.4. Implementation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#law-of-motion">
-     40.4.1. Law of Motion
+     41.4.1. Law of Motion
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   40.5. Exercises
+   41.5. Exercises
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-1">
-     40.5.1. Exercise 1
+     41.5.1. Exercise 1
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
-   40.6. Solutions
+   41.6. Solutions
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id9">
-     40.6.1. Exercise 1
+     41.6.1. Exercise 1
     </a>
    </li>
   </ul>
@@ -401,7 +408,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="the-income-fluctuation-problem-ii-stochastic-returns-on-assets">
-<h1><a class="toc-backref" href="#id10"><span class="section-number">40. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem II: Stochastic Returns on Assets</a><a class="headerlink" href="#the-income-fluctuation-problem-ii-stochastic-returns-on-assets" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id10"><span class="section-number">41. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem II: Stochastic Returns on Assets</a><a class="headerlink" href="#the-income-fluctuation-problem-ii-stochastic-returns-on-assets" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -589,731 +596,27 @@ Solving environment: \
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-The environment is inconsistent, please check the package plan carefully
-The following packages are causing the inconsistency:
-
-  - defaults/linux-64::terminado==0.9.1=py38_0
-  - defaults/noarch::jupyter_client==6.1.7=py_0
-  - defaults/linux-64::notebook==6.1.4=py38_0
-  - defaults/linux-64::jupyter==1.0.0=py38_7
-  - defaults/noarch::seaborn==0.11.0=py_0
-  - defaults/linux-64::scikit-image==0.17.2=py38hdf5156a_0
-  - defaults/linux-64::anaconda==2020.11=py38_0
-  - defaults/noarch::jupyterlab_server==1.2.0=py_0
-  - defaults/noarch::nbclient==0.5.1=py_0
-  - defaults/noarch::anaconda-project==0.8.4=py_0
-  - defaults/noarch::ipywidgets==7.5.1=py_1
-  - defaults/linux-64::spyder==4.1.5=py38_0
-  - defaults/linux-64::bokeh==2.2.3=py38_0
-  - defaults/linux-64::matplotlib==3.3.2=0
-  - defaults/linux-64::nbconvert==6.0.7=py38_0
-  - defaults/noarch::dask==2.30.0=py_0
-  - defaults/noarch::jupyter_console==6.2.0=py_0
-  - defaults/noarch::qtconsole==4.7.7=py_0
-  - defaults/noarch::jupyterlab==2.2.6=py_0
-  - defaults/linux-64::matplotlib-base==3.3.2=py38h817c723_0
-  - defaults/linux-64::distributed==2.30.1=py38h06a4308_0
-  - defaults/linux-64::widgetsnbextension==3.5.1=py38_0
-  - defaults/linux-64::ipykernel==5.3.4=py38h5ca1d4c_0
-  - defaults/linux-64::spyder-kernels==1.9.4=py38_0
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>## Package Plan ##
-
-  environment location: /usr/share/miniconda3/envs/quantecon
-
-  added / updated specs:
-    - quantecon
-
-
-The following packages will be downloaded:
-
-    package                    |            build
-    ---------------------------|-----------------
-    _anaconda_depends-2020.07  |           py38_0           6 KB
-    anaconda-custom            |           py38_1          35 KB
-    ca-certificates-2021.7.5   |       h06a4308_1         113 KB
-    certifi-2021.5.30          |   py38h06a4308_0         138 KB
-    libllvm9-9.0.1             |       h4a3c616_1        21.0 MB
-    openssl-1.1.1l             |       h7f8727e_0         2.5 MB
-    quantecon-0.5.0            |   py38h06a4308_0         288 KB
-    snappy-1.1.8               |       he6710b0_0          40 KB
-    tornado-6.1                |   py38h27cfd23_0         588 KB
-    ------------------------------------------------------------
-                                           Total:        24.7 MB
-
-The following NEW packages will be INSTALLED:
-
-  _anaconda_depends  pkgs/main/linux-64::_anaconda_depends-2020.07-py38_0
-  libllvm9           pkgs/main/linux-64::libllvm9-9.0.1-h4a3c616_1
-  quantecon          pkgs/main/linux-64::quantecon-0.5.0-py38h06a4308_0
-  snappy             pkgs/main/linux-64::snappy-1.1.8-he6710b0_0
-  tornado            pkgs/main/linux-64::tornado-6.1-py38h27cfd23_0
-
-The following packages will be UPDATED:
-
-  ca-certificates                              2020.10.14-0 --&gt; 2021.7.5-h06a4308_1
-  certifi            pkgs/main/noarch::certifi-2020.6.20-p~ --&gt; pkgs/main/linux-64::certifi-2021.5.30-py38h06a4308_0
-  openssl                                 1.1.1h-h7b6447c_0 --&gt; 1.1.1l-h7f8727e_0
-
-The following packages will be DOWNGRADED:
-
-  anaconda                                   2020.11-py38_0 --&gt; custom-py38_1
-
-
-
-Downloading and Extracting Packages
-
-tornado-6.1          | 588 KB    |                                       |   0% 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># All requested packages already installed.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tornado-6.1          | 588 KB    | ##################################### | 100% 
-tornado-6.1          | 588 KB    | ##################################### | 100% 
-
-snappy-1.1.8         | 40 KB     |                                       |   0% 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (2.2.1)
+Requirement already satisfied: tempita&gt;=0.5.2 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from interpolation) (0.5.3.dev0)
+Requirement already satisfied: numpy&gt;=1.18.1 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from interpolation) (1.19.2)
+Requirement already satisfied: scipy&gt;=1.4.1 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from interpolation) (1.5.2)
+Requirement already satisfied: numba&gt;=0.47 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from interpolation) (0.51.2)
+Requirement already satisfied: setuptools in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (50.3.1.post20201107)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>snappy-1.1.8         | 40 KB     | ##################################### | 100% 
-
-ca-certificates-2021 | 113 KB    |                                       |   0% 
-ca-certificates-2021 | 113 KB    | ##################################### | 100% 
-
-certifi-2021.5.30    | 138 KB    |                                       |   0% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>certifi-2021.5.30    | 138 KB    | ##################################### | 100% 
-
-quantecon-0.5.0      | 288 KB    |                                       |   0% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>quantecon-0.5.0      | 288 KB    | ##################################### | 100% 
-quantecon-0.5.0      | 288 KB    | ##################################### | 100% 
-
-openssl-1.1.1l       | 2.5 MB    |                                       |   0% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>openssl-1.1.1l       | 2.5 MB    | ##################################### | 100% 
-openssl-1.1.1l       | 2.5 MB    | ##################################### | 100% 
-
-anaconda-custom      | 35 KB     |                                       |   0% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>anaconda-custom      | 35 KB     | ##################################### | 100% 
-
-libllvm9-9.0.1       | 21.0 MB   |                                       |   0% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>libllvm9-9.0.1       | 21.0 MB   | ################3                     |  44% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>libllvm9-9.0.1       | 21.0 MB   | ###################################6  |  96% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>libllvm9-9.0.1       | 21.0 MB   | ##################################### | 100% 
-
-_anaconda_depends-20 | 6 KB      |                                       |   0% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>_anaconda_depends-20 | 6 KB      | ##################################### | 100% 
-Preparing transaction: - 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Verifying transaction: | 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Executing transaction: | 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting interpolation
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading interpolation-2.2.1-py3-none-any.whl (56 kB)
-?25l
-     |█████▉                          | 10 kB 31.0 MB/s eta 0:00:01
-     |███████████▋                    | 20 kB 22.6 MB/s eta 0:00:01
-     |█████████████████▍              | 30 kB 12.2 MB/s eta 0:00:01
-     |███████████████████████▏        | 40 kB 6.4 MB/s eta 0:00:01
-     |█████████████████████████████   | 51 kB 7.7 MB/s eta 0:00:01
-     |████████████████████████████████| 56 kB 4.6 MB/s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: scipy&gt;=1.4.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (1.5.2)
-Requirement already satisfied: numpy&gt;=1.18.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (1.19.2)
-Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (0.51.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting tempita&gt;=0.5.2
-  Downloading Tempita-0.5.2-py3-none-any.whl (12 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (50.3.1.post20201107)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.35,&gt;=0.34.0.dev0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.34.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: tempita, interpolation
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed interpolation-2.2.1 tempita-0.5.2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.35,&gt;=0.34.0.dev0 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.34.0)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">40.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">41.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we continue our study of the <a class="reference internal" href="ifp.html"><span class="doc">income fluctuation problem</span></a>.</p>
 <p>While the interest rate was previously taken to be fixed, we now allow
 returns on assets to be state-dependent.</p>
@@ -1321,9 +624,9 @@ returns on assets to be state-dependent.</p>
 face some capital income risk.</p>
 <p>It has been argued that modeling capital income risk is essential for
 understanding the joint distribution of income and wealth (see, e.g.,
-<span id="id1">[<a class="reference internal" href="zreferences.html#id96">BBZ15</a>]</span> or <span id="id2">[<a class="reference internal" href="zreferences.html#id219">ST19b</a>]</span>).</p>
+<span id="id1">[<a class="reference internal" href="zreferences.html#id106">BBZ15</a>]</span> or <span id="id2">[<a class="reference internal" href="zreferences.html#id229">ST19b</a>]</span>).</p>
 <p>Theoretical properties of the household savings model presented here are
-analyzed in detail in <span id="id3">[<a class="reference internal" href="zreferences.html#id218">MST20</a>]</span>.</p>
+analyzed in detail in <span id="id3">[<a class="reference internal" href="zreferences.html#id228">MST20</a>]</span>.</p>
 <p>In terms of computation, we use a combination of time iteration and the
 endogenous grid method to solve the model quickly and accurately.</p>
 <p>We require the following imports:</p>
@@ -1344,17 +647,17 @@ endogenous grid method to solve the model quickly and accurately.</p>
 </div>
 </div>
 <div class="section" id="the-savings-problem">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">40.2. </span>The Savings Problem</a><a class="headerlink" href="#the-savings-problem" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">41.2. </span>The Savings Problem</a><a class="headerlink" href="#the-savings-problem" title="Permalink to this headline">¶</a></h2>
 <p>In this section we review the household problem and optimality results.</p>
 <div class="section" id="set-up">
-<h3><span class="section-number">40.2.1. </span>Set Up<a class="headerlink" href="#set-up" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">41.2.1. </span>Set Up<a class="headerlink" href="#set-up" title="Permalink to this headline">¶</a></h3>
 <p>A household chooses a consumption-asset path <span class="math notranslate nohighlight">\(\{(c_t, a_t)\}\)</span> to
 maximize</p>
 <div class="math notranslate nohighlight" id="equation-trans-at">
-<span class="eqno">(40.1)<a class="headerlink" href="#equation-trans-at" title="Permalink to this equation">¶</a></span>\[\mathbb E \left\{ \sum_{t=0}^\infty \beta^t u(c_t) \right\}\]</div>
+<span class="eqno">(41.1)<a class="headerlink" href="#equation-trans-at" title="Permalink to this equation">¶</a></span>\[\mathbb E \left\{ \sum_{t=0}^\infty \beta^t u(c_t) \right\}\]</div>
 <p>subject to</p>
 <div class="math notranslate nohighlight" id="equation-trans-at2">
-<span class="eqno">(40.2)<a class="headerlink" href="#equation-trans-at2" title="Permalink to this equation">¶</a></span>\[a_{t+1} = R_{t+1} (a_t - c_t) + Y_{t+1}
+<span class="eqno">(41.2)<a class="headerlink" href="#equation-trans-at2" title="Permalink to this equation">¶</a></span>\[a_{t+1} = R_{t+1} (a_t - c_t) + Y_{t+1}
 \; \text{ and } \;
 0 \leq c_t \leq a_t,\]</div>
 <p>with initial condition <span class="math notranslate nohighlight">\((a_0, Z_0)=(a,z)\)</span> treated as given.</p>
@@ -1362,7 +665,7 @@ maximize</p>
 <p>The sequence <span class="math notranslate nohighlight">\(\{Y_t \}_{t \geq 1}\)</span> is non-financial income.</p>
 <p>The stochastic components of the problem obey</p>
 <div class="math notranslate nohighlight" id="equation-eq-ry-func">
-<span class="eqno">(40.3)<a class="headerlink" href="#equation-eq-ry-func" title="Permalink to this equation">¶</a></span>\[R_t = R(Z_t, \zeta_t)
+<span class="eqno">(41.3)<a class="headerlink" href="#equation-eq-ry-func" title="Permalink to this equation">¶</a></span>\[R_t = R(Z_t, \zeta_t)
   \quad \text{and} \quad
 Y_t = Y(Z_t, \eta_t),\]</div>
 <p>where</p>
@@ -1378,15 +681,15 @@ Y_t = Y(Z_t, \eta_t),\]</div>
 <span class="math notranslate nohighlight">\(\hat X\)</span> given current value <span class="math notranslate nohighlight">\(Z = z\)</span>.</p>
 </div>
 <div class="section" id="assumptions">
-<h3><span class="section-number">40.2.2. </span>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h3>
-<p>We need restrictions to ensure that the objective <a class="reference internal" href="#equation-trans-at">(40.1)</a> is finite and
+<h3><span class="section-number">41.2.2. </span>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h3>
+<p>We need restrictions to ensure that the objective <a class="reference internal" href="#equation-trans-at">(41.1)</a> is finite and
 the solution methods described below converge.</p>
 <p>We also need to ensure that the present discounted value of wealth
 does not grow too quickly.</p>
 <p>When <span class="math notranslate nohighlight">\(\{R_t\}\)</span> was constant we required that <span class="math notranslate nohighlight">\(\beta R &lt; 1\)</span>.</p>
 <p>Now it is stochastic, we require that</p>
 <div class="math notranslate nohighlight" id="equation-fpbc2">
-<span class="eqno">(40.4)<a class="headerlink" href="#equation-fpbc2" title="Permalink to this equation">¶</a></span>\[\beta G_R &lt; 1,
+<span class="eqno">(41.4)<a class="headerlink" href="#equation-fpbc2" title="Permalink to this equation">¶</a></span>\[\beta G_R &lt; 1,
 \quad \text{where} \quad
 G_R := \lim_{n \to \infty}
 \left(\mathbb E \prod_{t=1}^n R_t \right)^{1/n}\]</div>
@@ -1394,7 +697,7 @@ G_R := \lim_{n \to \infty}
 reduces to the previous restriction <span class="math notranslate nohighlight">\(\beta R &lt; 1\)</span></p>
 <p>The value <span class="math notranslate nohighlight">\(G_R\)</span> can be thought of as the long run (geometric) average
 gross rate of return.</p>
-<p>More intuition behind <a class="reference internal" href="#equation-fpbc2">(40.4)</a> is provided in <span id="id4">[<a class="reference internal" href="zreferences.html#id218">MST20</a>]</span>.</p>
+<p>More intuition behind <a class="reference internal" href="#equation-fpbc2">(41.4)</a> is provided in <span id="id4">[<a class="reference internal" href="zreferences.html#id228">MST20</a>]</span>.</p>
 <p>Discussion on how to check it is given below.</p>
 <p>Finally, we impose some routine technical restrictions on non-financial income.</p>
 <div class="math notranslate nohighlight">
@@ -1403,13 +706,13 @@ gross rate of return.</p>
 \label{a:y0}
 \]</div>
 <p>One relatively simple setting where all these restrictions are satisfied is
-the IID and CRRA environment of <span id="id5">[<a class="reference internal" href="zreferences.html#id96">BBZ15</a>]</span>.</p>
+the IID and CRRA environment of <span id="id5">[<a class="reference internal" href="zreferences.html#id106">BBZ15</a>]</span>.</p>
 </div>
 <div class="section" id="optimality">
-<h3><span class="section-number">40.2.3. </span>Optimality<a class="headerlink" href="#optimality" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">41.2.3. </span>Optimality<a class="headerlink" href="#optimality" title="Permalink to this headline">¶</a></h3>
 <p>Let the class of candidate consumption policies <span class="math notranslate nohighlight">\(\mathscr C\)</span> be defined
 <a class="reference internal" href="ifp.html"><span class="doc">as before</span></a>.</p>
-<p>In <span id="id6">[<a class="reference internal" href="zreferences.html#id218">MST20</a>]</span> it is shown that, under the stated assumptions,</p>
+<p>In <span id="id6">[<a class="reference internal" href="zreferences.html#id228">MST20</a>]</span> it is shown that, under the stated assumptions,</p>
 <ul class="simple">
 <li><p>any <span class="math notranslate nohighlight">\(\sigma \in \mathscr C\)</span> satisfying the Euler equation is an
 optimal policy and</p></li>
@@ -1417,7 +720,7 @@ optimal policy and</p></li>
 </ul>
 <p>In the present setting, the Euler equation takes the form</p>
 <div class="math notranslate nohighlight" id="equation-ifpa-euler">
-<span class="eqno">(40.5)<a class="headerlink" href="#equation-ifpa-euler" title="Permalink to this equation">¶</a></span>\[(u' \circ \sigma) (a, z) =
+<span class="eqno">(41.5)<a class="headerlink" href="#equation-ifpa-euler" title="Permalink to this equation">¶</a></span>\[(u' \circ \sigma) (a, z) =
 \max \left\{
            \beta \, \mathbb E_z \,\hat{R} \,
              (u' \circ \sigma)[\hat{R}(a - \sigma(a, z)) + \hat{Y}, \, \hat{Z}],
@@ -1427,13 +730,13 @@ optimal policy and</p></li>
 the income fluctuation problem.)</p>
 <p>We again solve the Euler equation using time iteration, iterating with a
 Coleman–Reffett operator <span class="math notranslate nohighlight">\(K\)</span> defined to match the Euler equation
-<a class="reference internal" href="#equation-ifpa-euler">(40.5)</a>.</p>
+<a class="reference internal" href="#equation-ifpa-euler">(41.5)</a>.</p>
 </div>
 </div>
 <div class="section" id="solution-algorithm">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">40.3. </span>Solution Algorithm</a><a class="headerlink" href="#solution-algorithm" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">41.3. </span>Solution Algorithm</a><a class="headerlink" href="#solution-algorithm" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="a-time-iteration-operator">
-<span id="index-1"></span><h3><span class="section-number">40.3.1. </span>A Time Iteration Operator<a class="headerlink" href="#a-time-iteration-operator" title="Permalink to this headline">¶</a></h3>
+<span id="index-1"></span><h3><span class="section-number">41.3.1. </span>A Time Iteration Operator<a class="headerlink" href="#a-time-iteration-operator" title="Permalink to this headline">¶</a></h3>
 <p>Our definition of the candidate class <span class="math notranslate nohighlight">\(\sigma \in \mathscr C\)</span> of consumption
 policies is the same as in our <a class="reference internal" href="ifp.html"><span class="doc">earlier lecture</span></a> on the income
 fluctuation problem.</p>
@@ -1441,7 +744,7 @@ fluctuation problem.</p>
 <span class="math notranslate nohighlight">\(K\sigma(a,z)\)</span> of the function <span class="math notranslate nohighlight">\(K\sigma\)</span> at <span class="math notranslate nohighlight">\((a,z)\)</span> is defined as the
 <span class="math notranslate nohighlight">\(\xi \in (0,a]\)</span> that solves</p>
 <div class="math notranslate nohighlight" id="equation-k-opr">
-<span class="eqno">(40.6)<a class="headerlink" href="#equation-k-opr" title="Permalink to this equation">¶</a></span>\[u'(\xi) =
+<span class="eqno">(41.6)<a class="headerlink" href="#equation-k-opr" title="Permalink to this equation">¶</a></span>\[u'(\xi) =
 \max \left\{
           \beta \, \mathbb E_z \, \hat{R} \,
              (u' \circ \sigma)[\hat{R}(a - \xi) + \hat{Y}, \, \hat{Z}],
@@ -1452,10 +755,10 @@ fluctuation problem.</p>
 if and only if <span class="math notranslate nohighlight">\(K\sigma(a, z) = \sigma(a, z)\)</span> for all <span class="math notranslate nohighlight">\((a, z) \in
 \mathbf S\)</span>.</p>
 <p>This means that fixed points of <span class="math notranslate nohighlight">\(K\)</span> in <span class="math notranslate nohighlight">\(\mathscr C\)</span> and optimal
-consumption policies exactly coincide (see <span id="id7">[<a class="reference internal" href="zreferences.html#id218">MST20</a>]</span> for more details).</p>
+consumption policies exactly coincide (see <span id="id7">[<a class="reference internal" href="zreferences.html#id228">MST20</a>]</span> for more details).</p>
 </div>
 <div class="section" id="convergence-properties">
-<h3><span class="section-number">40.3.2. </span>Convergence Properties<a class="headerlink" href="#convergence-properties" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">41.3.2. </span>Convergence Properties<a class="headerlink" href="#convergence-properties" title="Permalink to this headline">¶</a></h3>
 <p>As before, we pair <span class="math notranslate nohighlight">\(\mathscr C\)</span> with the distance</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1479,7 +782,7 @@ choose some <span class="math notranslate nohighlight">\(\sigma \in \mathscr C\)
 convergence (as measured by the distance <span class="math notranslate nohighlight">\(\rho\)</span>).</p>
 </div>
 <div class="section" id="using-an-endogenous-grid">
-<h3><span class="section-number">40.3.3. </span>Using an Endogenous Grid<a class="headerlink" href="#using-an-endogenous-grid" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">41.3.3. </span>Using an Endogenous Grid<a class="headerlink" href="#using-an-endogenous-grid" title="Permalink to this headline">¶</a></h3>
 <p>In the study of that model we found that it was possible to further
 accelerate time iteration via the <a class="reference internal" href="egm_policy_iter.html"><span class="doc">endogenous grid method</span></a>.</p>
 <p>We will use the same method here.</p>
@@ -1489,7 +792,7 @@ interior.</p>
 <p>In particular, optimal consumption can be equal to assets when the level of
 assets is low.</p>
 <div class="section" id="finding-optimal-consumption">
-<h4><span class="section-number">40.3.3.1. </span>Finding Optimal Consumption<a class="headerlink" href="#finding-optimal-consumption" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">41.3.3.1. </span>Finding Optimal Consumption<a class="headerlink" href="#finding-optimal-consumption" title="Permalink to this headline">¶</a></h4>
 <p>The endogenous grid method (EGM) calls for us to take a grid of <em>savings</em>
 values <span class="math notranslate nohighlight">\(s_i\)</span>, where each such <span class="math notranslate nohighlight">\(s\)</span> is interpreted as <span class="math notranslate nohighlight">\(s = a -
 c\)</span>.</p>
@@ -1501,9 +804,9 @@ consumes all that it can.</p>
 which pins down the policy at the origin, aiding interpolation.</p>
 <p>For <span class="math notranslate nohighlight">\(s &gt; 0\)</span>, we have, by definition, <span class="math notranslate nohighlight">\(c &lt; a\)</span>, and hence
 consumption is interior.</p>
-<p>Hence the max component of <a class="reference internal" href="#equation-ifpa-euler">(40.5)</a> drops out, and we solve for</p>
+<p>Hence the max component of <a class="reference internal" href="#equation-ifpa-euler">(41.5)</a> drops out, and we solve for</p>
 <div class="math notranslate nohighlight" id="equation-eqsifc2">
-<span class="eqno">(40.7)<a class="headerlink" href="#equation-eqsifc2" title="Permalink to this equation">¶</a></span>\[c_i =
+<span class="eqno">(41.7)<a class="headerlink" href="#equation-eqsifc2" title="Permalink to this equation">¶</a></span>\[c_i =
 (u')^{-1}
 \left\{
     \beta \, \mathbb E_z
@@ -1513,7 +816,7 @@ consumption is interior.</p>
 <p>at each <span class="math notranslate nohighlight">\(s_i\)</span>.</p>
 </div>
 <div class="section" id="iterating">
-<h4><span class="section-number">40.3.3.2. </span>Iterating<a class="headerlink" href="#iterating" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">41.3.3.2. </span>Iterating<a class="headerlink" href="#iterating" title="Permalink to this headline">¶</a></h4>
 <p>Once we have the pairs <span class="math notranslate nohighlight">\(\{s_i, c_i\}\)</span>, the endogenous asset grid is
 obtained by <span class="math notranslate nohighlight">\(a_i = c_i + s_i\)</span>.</p>
 <p>Also, we held <span class="math notranslate nohighlight">\(z \in \mathsf Z\)</span> in the discussion above so we can pair
@@ -1524,7 +827,7 @@ obtained by interpolating <span class="math notranslate nohighlight">\(\{a_i, c_
 </div>
 </div>
 <div class="section" id="testing-the-assumptions">
-<h3><span class="section-number">40.3.4. </span>Testing the Assumptions<a class="headerlink" href="#testing-the-assumptions" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">41.3.4. </span>Testing the Assumptions<a class="headerlink" href="#testing-the-assumptions" title="Permalink to this headline">¶</a></h3>
 <p>Convergence of time iteration is dependent on the condition <span class="math notranslate nohighlight">\(\beta G_R &lt; 1\)</span> being satisfied.</p>
 <p>One can check this using the fact that <span class="math notranslate nohighlight">\(G_R\)</span> is equal to the spectral
 radius of the matrix <span class="math notranslate nohighlight">\(L\)</span> defined by</p>
@@ -1532,7 +835,7 @@ radius of the matrix <span class="math notranslate nohighlight">\(L\)</span> def
 \[
 L(z, \hat z) := P(z, \hat z) \int R(\hat z, x) \phi(x) dx
 \]</div>
-<p>This identity is proved in <span id="id8">[<a class="reference internal" href="zreferences.html#id218">MST20</a>]</span>, where <span class="math notranslate nohighlight">\(\phi\)</span> is the
+<p>This identity is proved in <span id="id8">[<a class="reference internal" href="zreferences.html#id228">MST20</a>]</span>, where <span class="math notranslate nohighlight">\(\phi\)</span> is the
 density of the innovation <span class="math notranslate nohighlight">\(\zeta_t\)</span> to returns on assets.</p>
 <p>(Remember that <span class="math notranslate nohighlight">\(\mathsf Z\)</span> is a finite set, so this expression defines a matrix.)</p>
 <p>Checking the condition is even easier when <span class="math notranslate nohighlight">\(\{R_t\}\)</span> is IID.</p>
@@ -1542,7 +845,7 @@ is just <span class="math notranslate nohighlight">\(\mathbb E R_t\)</span>.</p>
 </div>
 </div>
 <div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">40.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">41.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>We will assume that <span class="math notranslate nohighlight">\(R_t = \exp(a_r \zeta_t + b_r)\)</span> where <span class="math notranslate nohighlight">\(a_r, b_r\)</span>
 are constants and <span class="math notranslate nohighlight">\(\{ \zeta_t\}\)</span> is IID standard normal.</p>
 <p>We allow labor income to be correlated, with</p>
@@ -1748,9 +1051,7 @@ assets.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.1057246950930697.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.03658262202883744.
+Error at iteration 15 is 0.03658262202883744.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.013936729965906114.
@@ -1796,7 +1097,7 @@ Converged in 45 iterations.
 <p>Can you explain why consuming all assets ends earlier (for lower values of
 assets) when <span class="math notranslate nohighlight">\(z=0\)</span>?</p>
 <div class="section" id="law-of-motion">
-<h3><span class="section-number">40.4.1. </span>Law of Motion<a class="headerlink" href="#law-of-motion" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">41.4.1. </span>Law of Motion<a class="headerlink" href="#law-of-motion" title="Permalink to this headline">¶</a></h3>
 <p>Let’s try to get some idea of what will happen to assets over the long run
 under this consumption policy.</p>
 <p>As with our <a class="reference internal" href="ifp.html"><span class="doc">earlier lecture</span></a> on the income fluctuation problem, we
@@ -1842,9 +1143,9 @@ diverge even in the highest state.</p>
 </div>
 </div>
 <div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">40.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">41.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="exercise-1">
-<h3><span class="section-number">40.5.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">41.5.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>Let’s repeat our <a class="reference internal" href="ifp.html#ifp-lrex"><span class="std std-ref">earlier exercise</span></a> on the long-run
 cross sectional distribution of assets.</p>
 <p>In that exercise, we used a relatively simple income fluctuation model.</p>
@@ -1855,9 +1156,9 @@ cross sectional distribution of assets.</p>
 </div>
 </div>
 <div class="section" id="solutions">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">40.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">41.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id9">
-<h3><span class="section-number">40.6.1. </span>Exercise 1<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">41.6.1. </span>Exercise 1<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <p>First we write a function to compute a long asset series.</p>
 <p>Because we want to JIT-compile the function, we code the solution in a way
 that breaks some rules on good programming style.</p>
@@ -2051,6 +1352,11 @@ wealth distribution.</p>
    12. Univariate Time Series with Matrix Algebra
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="five_preferences.html">
+   13. Risk and Model Uncertainty
+  </a>
+ </li>
 </ul>
 <p class="caption">
  <span class="caption-text">
@@ -2060,12 +1366,12 @@ wealth distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   13. Linear Programming
+   14. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   14. Optimal Transport
+   15. Optimal Transport
   </a>
  </li>
 </ul>
@@ -2077,62 +1383,62 @@ wealth distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   15. Dynamics in One Dimension
+   16. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   16. AR1 Processes
+   17. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   17. Finite Markov Chains
+   18. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   18. Inventory Dynamics
+   19. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   19. Linear State Space Models
+   20. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   20. Application: The Samuelson Multiplier-Accelerator
+   21. Application: The Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   21. Kesten Processes and Firm Dynamics
+   22. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   22. Wealth Distribution Dynamics
+   23. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   23. A First Look at the Kalman Filter
+   24. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   24. Shortest Paths
+   25. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   25. Cass-Koopmans Planning Problem
+   26. Cass-Koopmans Planning Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   26. Cass-Koopmans Competitive Equilibrium
+   27. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
 </ul>
@@ -2144,32 +1450,32 @@ wealth distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   27. Job Search I: The McCall Search Model
+   28. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   28. Job Search II: Search and Separation
+   29. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   29. Job Search III: Fitted Value Function Iteration
+   30. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   30. Job Search IV: Correlated Wage Offers
+   31. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   31. Job Search V: Modeling Career Choice
+   32. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   32. Job Search VI: On-the-Job Search
+   33. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -2181,42 +1487,42 @@ wealth distribution.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   33. Cake Eating I: Introduction to Optimal Saving
+   34. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   34. Cake Eating II: Numerical Methods
+   35. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   35. Optimal Growth I: The Stochastic Optimal Growth Model
+   36. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   36. Optimal Growth II: Accelerating the Code with Numba
+   37. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   37. Optimal Growth III: Time Iteration
+   38. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   38. Optimal Growth IV: The Endogenous Grid Method
+   39. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   39. The Income Fluctuation Problem I: Basic Model
+   40. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   40. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   41. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -2228,37 +1534,37 @@ wealth distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   41. Job Search VII: Search with Learning
+   42. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   42. Likelihood Ratio Processes
+   43. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   43. Computing Mean of a Likelihood Ratio Process
+   44. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   44. A Problem that Stumped Milton Friedman
+   45. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   45. Exchangeability and Bayesian Updating
+   46. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   46. Likelihood Ratio Processes and Bayesian Learning
+   47. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   47. Bayesian versus Frequentist Decision Rules
+   48. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -2270,22 +1576,22 @@ wealth distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   48. LQ Control: Foundations
+   49. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   49. The Permanent Income Model
+   50. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   50. Permanent Income II: LQ Techniques
+   51. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   51. Production Smoothing via Inventories
+   52. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2297,37 +1603,37 @@ wealth distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   52. Schelling’s Segregation Model
+   53. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   53. A Lake Model of Employment and Unemployment
+   54. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   54. Rational Expectations Equilibrium
+   55. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   55. Stability in Linear Rational Expectations Models
+   56. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   56. Markov Perfect Equilibrium
+   57. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   57. Uncertainty Traps
+   58. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   58. The Aiyagari Model
+   59. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -2339,17 +1645,17 @@ wealth distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   59. Asset Pricing: Finite State Models
+   60. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   60. Competitive equilibria with Arrow securities
+   61. Competitive equilibria with Arrow securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   61. Heterogeneous Beliefs and Bubbles
+   62. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -2361,17 +1667,17 @@ wealth distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   62. Pandas for Panel Data
+   63. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   63. Linear Regression in Python
+   64. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   64. Maximum Likelihood Estimation
+   65. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2383,17 +1689,17 @@ wealth distribution.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   65. Troubleshooting
+   66. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   66. References
+   67. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   67. Execution Statistics
+   68. Execution Statistics
   </a>
  </li>
 </ul>

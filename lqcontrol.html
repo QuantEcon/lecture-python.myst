@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>48. LQ Control: Foundations &#8212; Quantitative Economics with Python</title>
+    <title>49. LQ Control: Foundations &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -30,8 +30,8 @@
     </script>
     
     
-  <link href="_static/css/theme.css" rel="stylesheet" />
-  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -54,7 +54,7 @@
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
 
 
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -301,12 +301,19 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/lqcontrol.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="49. The Permanent Income Model" href="perm_income.html" />
-    <link rel="prev" title="47. Bayesian versus Frequentist Decision Rules" href="navy_captain.html" />
+    <link rel="next" title="50. The Permanent Income Model" href="perm_income.html" />
+    <link rel="prev" title="48. Bayesian versus Frequentist Decision Rules" href="navy_captain.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -356,44 +363,44 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   48.1. Overview
+   49.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#introduction">
-   48.2. Introduction
+   49.2. Introduction
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-law-of-motion">
-     48.2.1. The Law of Motion
+     49.2.1. The Law of Motion
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#example-1">
-       48.2.1.1. Example 1
+       49.2.1.1. Example 1
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#example-2">
-       48.2.1.2. Example 2
+       49.2.1.2. Example 2
       </a>
      </li>
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#preferences">
-     48.2.2. Preferences
+     49.2.2. Preferences
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#id5">
-       48.2.2.1. Example 1
+       49.2.2.1. Example 1
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#id6">
-       48.2.2.2. Example 2
+       49.2.2.2. Example 2
       </a>
      </li>
     </ul>
@@ -402,127 +409,127 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#optimality-finite-horizon">
-   48.3. Optimality – Finite Horizon
+   49.3. Optimality – Finite Horizon
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-objective">
-     48.3.1. The Objective
+     49.3.1. The Objective
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#information">
-     48.3.2. Information
+     49.3.2. Information
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#solution">
-     48.3.3. Solution
+     49.3.3. Solution
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#implementation">
-   48.4. Implementation
+   49.4. Implementation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#an-application">
-     48.4.1. An Application
+     49.4.1. An Application
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#extensions-and-comments">
-   48.5. Extensions and Comments
+   49.5. Extensions and Comments
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#time-varying-parameters">
-     48.5.1. Time-Varying Parameters
+     49.5.1. Time-Varying Parameters
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#adding-a-cross-product-term">
-     48.5.2. Adding a Cross-Product Term
+     49.5.2. Adding a Cross-Product Term
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#infinite-horizon">
-     48.5.3. Infinite Horizon
+     49.5.3. Infinite Horizon
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#certainty-equivalence">
-     48.5.4. Certainty Equivalence
+     49.5.4. Certainty Equivalence
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#further-applications">
-   48.6. Further Applications
+   49.6. Further Applications
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#application-1-age-dependent-income-process">
-     48.6.1. Application 1: Age-Dependent Income Process
+     49.6.1. Application 1: Age-Dependent Income Process
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#application-2-a-permanent-income-model-with-retirement">
-     48.6.2. Application 2: A Permanent Income Model with Retirement
+     49.6.2. Application 2: A Permanent Income Model with Retirement
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#application-3-monopoly-with-adjustment-costs">
-     48.6.3. Application 3: Monopoly with Adjustment Costs
+     49.6.3. Application 3: Monopoly with Adjustment Costs
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   48.7. Exercises
+   49.7. Exercises
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-1">
-     48.7.1. Exercise 1
+     49.7.1. Exercise 1
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-2">
-     48.7.2. Exercise 2
+     49.7.2. Exercise 2
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-3">
-     48.7.3. Exercise 3
+     49.7.3. Exercise 3
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
-   48.8. Solutions
+   49.8. Solutions
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id10">
-     48.8.1. Exercise 1
+     49.8.1. Exercise 1
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id11">
-     48.8.2. Exercise 2
+     49.8.2. Exercise 2
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id12">
-     48.8.3. Exercise 3
+     49.8.3. Exercise 3
     </a>
    </li>
   </ul>
@@ -577,7 +584,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="section" id="lq-control-foundations">
-<h1><a class="toc-backref" href="#id13"><span class="section-number">48. </span>LQ Control: Foundations</a><a class="headerlink" href="#lq-control-foundations" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id13"><span class="section-number">49. </span>LQ Control: Foundations</a><a class="headerlink" href="#lq-control-foundations" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -604,6 +611,30 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting package metadata (current_repodata.json): - 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
@@ -718,6 +749,15 @@ Solving environment: |
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
@@ -727,7 +767,7 @@ Solving environment: |
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">48.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">49.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Linear quadratic (LQ) control refers to a class of dynamic optimization problems that have found applications in almost every scientific field.</p>
 <p>This lecture provides an introduction to LQ control and its economic applications.</p>
 <p>As we will see, LQ systems have a simple structure that makes them an excellent workhorse for a wide variety of economic problems.</p>
@@ -746,9 +786,9 @@ Solving environment: |
 </ul>
 <p>For additional reading on LQ control, see, for example,</p>
 <ul class="simple">
-<li><p><span id="id1">[<a class="reference internal" href="zreferences.html#id148">LS18</a>]</span>, chapter 5</p></li>
-<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id132">HS08</a>]</span>, chapter 4</p></li>
-<li><p><span id="id3">[<a class="reference internal" href="zreferences.html#id134">HLL96</a>]</span>, section 3.5</p></li>
+<li><p><span id="id1">[<a class="reference internal" href="zreferences.html#id158">LS18</a>]</span>, chapter 5</p></li>
+<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id142">HS08</a>]</span>, chapter 4</p></li>
+<li><p><span id="id3">[<a class="reference internal" href="zreferences.html#id144">HLL96</a>]</span>, section 3.5</p></li>
 </ul>
 <p>In order to focus on computation, we leave longer proofs to these sources (while trying to provide as much intuition as possible).</p>
 <p>Let’s start with some imports:</p>
@@ -765,15 +805,15 @@ Solving environment: |
 </div>
 </div>
 <div class="section" id="introduction">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">48.2. </span>Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">49.2. </span>Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>The “linear” part of LQ is a linear law of motion for the state, while the “quadratic” part refers to preferences.</p>
 <p>Let’s begin with the former, move on to the latter, and then put them together into an optimization problem.</p>
 <div class="section" id="the-law-of-motion">
-<h3><span class="section-number">48.2.1. </span>The Law of Motion<a class="headerlink" href="#the-law-of-motion" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.2.1. </span>The Law of Motion<a class="headerlink" href="#the-law-of-motion" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(x_t\)</span> be a vector describing the state of some economic system.</p>
 <p>Suppose that <span class="math notranslate nohighlight">\(x_t\)</span> follows a linear law of motion given by</p>
 <div class="math notranslate nohighlight" id="equation-lq-lom">
-<span class="eqno">(48.1)<a class="headerlink" href="#equation-lq-lom" title="Permalink to this equation">¶</a></span>\[x_{t+1} = A x_t + B u_t + C w_{t+1},
+<span class="eqno">(49.1)<a class="headerlink" href="#equation-lq-lom" title="Permalink to this equation">¶</a></span>\[x_{t+1} = A x_t + B u_t + C w_{t+1},
 \qquad t = 0, 1, 2, \ldots\]</div>
 <p>Here</p>
 <ul class="simple">
@@ -787,7 +827,7 @@ Solving environment: |
 <li><p><span class="math notranslate nohighlight">\(w_t\)</span> is <span class="math notranslate nohighlight">\(j \times 1\)</span>, <span class="math notranslate nohighlight">\(C\)</span> is <span class="math notranslate nohighlight">\(n \times j\)</span></p></li>
 </ul>
 <div class="section" id="example-1">
-<h4><span class="section-number">48.2.1.1. </span>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">49.2.1.1. </span>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h4>
 <p>Consider a household budget constraint given by</p>
 <div class="math notranslate nohighlight">
 \[
@@ -802,10 +842,10 @@ the system as</p>
 \[
 a_{t+1} = (1 + r) a_t - c_t + \sigma w_{t+1}
 \]</div>
-<p>This is clearly a special case of <a class="reference internal" href="#equation-lq-lom">(48.1)</a>, with assets being the state and consumption being the control.</p>
+<p>This is clearly a special case of <a class="reference internal" href="#equation-lq-lom">(49.1)</a>, with assets being the state and consumption being the control.</p>
 </div>
 <div class="section" id="example-2">
-<span id="lq-hhp"></span><h4><span class="section-number">48.2.1.2. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h4>
+<span id="lq-hhp"></span><h4><span class="section-number">49.2.1.2. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h4>
 <p>One unrealistic feature of the previous model is that non-financial income has a zero mean and is often negative.</p>
 <p>This can easily be overcome by adding a sufficiently large mean.</p>
 <p>Hence in this example, we take <span class="math notranslate nohighlight">\(y_t = \sigma w_{t+1} + \mu\)</span> for some positive real number <span class="math notranslate nohighlight">\(\mu\)</span>.</p>
@@ -816,8 +856,8 @@ to the deviation of consumption from some “ideal” quantity <span class="math
 <p>For this reason, we now take our control to be <span class="math notranslate nohighlight">\(u_t := c_t - \bar c\)</span>.</p>
 <p>In terms of these variables, the budget constraint <span class="math notranslate nohighlight">\(a_{t+1} = (1 + r) a_t - c_t + y_t\)</span> becomes</p>
 <div class="math notranslate nohighlight" id="equation-lq-lomwc">
-<span class="eqno">(48.2)<a class="headerlink" href="#equation-lq-lomwc" title="Permalink to this equation">¶</a></span>\[a_{t+1} = (1 + r) a_t - u_t - \bar c + \sigma w_{t+1} + \mu\]</div>
-<p>How can we write this new system in the form of equation <a class="reference internal" href="#equation-lq-lom">(48.1)</a>?</p>
+<span class="eqno">(49.2)<a class="headerlink" href="#equation-lq-lomwc" title="Permalink to this equation">¶</a></span>\[a_{t+1} = (1 + r) a_t - u_t - \bar c + \sigma w_{t+1} + \mu\]</div>
+<p>How can we write this new system in the form of equation <a class="reference internal" href="#equation-lq-lom">(49.1)</a>?</p>
 <p>If, as in the previous example, we take <span class="math notranslate nohighlight">\(a_t\)</span> as the state, then we run into a problem:
 the law of motion contains some constant terms on the right-hand side.</p>
 <p>This means that we are dealing with an <em>affine</em> function, not a linear one
@@ -825,7 +865,7 @@ the law of motion contains some constant terms on the right-hand side.</p>
 <p>Fortunately, we can easily circumvent this problem by adding an extra state variable.</p>
 <p>In particular, if we write</p>
 <div class="math notranslate nohighlight" id="equation-lq-lowmc">
-<span class="eqno">(48.3)<a class="headerlink" href="#equation-lq-lowmc" title="Permalink to this equation">¶</a></span>\[\begin{split}\left(
+<span class="eqno">(49.3)<a class="headerlink" href="#equation-lq-lowmc" title="Permalink to this equation">¶</a></span>\[\begin{split}\left(
 \begin{array}{c}
 a_{t+1} \\
 1
@@ -857,11 +897,11 @@ u_t +
 \end{array}
 \right)
 w_{t+1}\end{split}\]</div>
-<p>then the first row is equivalent to <a class="reference internal" href="#equation-lq-lomwc">(48.2)</a>.</p>
+<p>then the first row is equivalent to <a class="reference internal" href="#equation-lq-lomwc">(49.2)</a>.</p>
 <p>Moreover, the model is now linear and can be written in the form of
-<a class="reference internal" href="#equation-lq-lom">(48.1)</a> by setting</p>
+<a class="reference internal" href="#equation-lq-lom">(49.1)</a> by setting</p>
 <div class="math notranslate nohighlight" id="equation-lq-lowmc2">
-<span class="eqno">(48.4)<a class="headerlink" href="#equation-lq-lowmc2" title="Permalink to this equation">¶</a></span>\[\begin{split}x_t :=
+<span class="eqno">(49.4)<a class="headerlink" href="#equation-lq-lowmc2" title="Permalink to this equation">¶</a></span>\[\begin{split}x_t :=
 \left(
 \begin{array}{c}
 a_t \\
@@ -896,10 +936,10 @@ C :=
 </div>
 </div>
 <div class="section" id="preferences">
-<h3><span class="section-number">48.2.2. </span>Preferences<a class="headerlink" href="#preferences" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.2.2. </span>Preferences<a class="headerlink" href="#preferences" title="Permalink to this headline">¶</a></h3>
 <p>In the LQ model, the aim is to minimize flow of losses, where time-<span class="math notranslate nohighlight">\(t\)</span> loss is given by the quadratic expression</p>
 <div class="math notranslate nohighlight" id="equation-lq-pref-flow">
-<span class="eqno">(48.5)<a class="headerlink" href="#equation-lq-pref-flow" title="Permalink to this equation">¶</a></span>\[x_t' R x_t + u_t' Q u_t\]</div>
+<span class="eqno">(49.5)<a class="headerlink" href="#equation-lq-pref-flow" title="Permalink to this equation">¶</a></span>\[x_t' R x_t + u_t' Q u_t\]</div>
 <p>Here</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(R\)</span> is assumed to be <span class="math notranslate nohighlight">\(n \times n\)</span>, symmetric and nonnegative definite.</p></li>
@@ -907,10 +947,10 @@ C :=
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In fact, for many economic problems, the definiteness conditions on <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> can be relaxed.  It is sufficient that certain submatrices of <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> be nonnegative definite. See <span id="id4">[<a class="reference internal" href="zreferences.html#id132">HS08</a>]</span> for details.</p>
+<p>In fact, for many economic problems, the definiteness conditions on <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> can be relaxed.  It is sufficient that certain submatrices of <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> be nonnegative definite. See <span id="id4">[<a class="reference internal" href="zreferences.html#id142">HS08</a>]</span> for details.</p>
 </div>
 <div class="section" id="id5">
-<h4><span class="section-number">48.2.2.1. </span>Example 1<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">49.2.2.1. </span>Example 1<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
 <p>A very simple example that satisfies these assumptions is to take <span class="math notranslate nohighlight">\(R\)</span>
 and <span class="math notranslate nohighlight">\(Q\)</span> to be identity matrices so that current loss is</p>
 <div class="math notranslate nohighlight">
@@ -918,7 +958,7 @@ and <span class="math notranslate nohighlight">\(Q\)</span> to be identity matri
 x_t' I x_t + u_t' I u_t = \| x_t \|^2 + \| u_t \|^2
 \]</div>
 <p>Thus, for both the state and the control, loss is measured as squared distance from the origin.</p>
-<p>(In fact, the general case <a class="reference internal" href="#equation-lq-pref-flow">(48.5)</a> can also be understood in this
+<p>(In fact, the general case <a class="reference internal" href="#equation-lq-pref-flow">(49.5)</a> can also be understood in this
 way, but with <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> identifying other – non-Euclidean – notions of “distance” from the zero vector.)</p>
 <p>Intuitively, we can often think of the state <span class="math notranslate nohighlight">\(x_t\)</span> as representing deviation from a target, such
 as</p>
@@ -929,7 +969,7 @@ as</p>
 <p>The aim is to put the state close to the target, while using  controls parsimoniously.</p>
 </div>
 <div class="section" id="id6">
-<h4><span class="section-number">48.2.2.2. </span>Example 2<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">49.2.2.2. </span>Example 2<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
 <p>In the household problem <a class="reference internal" href="#lq-hhp"><span class="std std-ref">studied above</span></a>, setting <span class="math notranslate nohighlight">\(R=0\)</span>
 and <span class="math notranslate nohighlight">\(Q=1\)</span> yields preferences</p>
 <div class="math notranslate nohighlight">
@@ -941,18 +981,18 @@ x_t' R x_t + u_t' Q u_t = u_t^2 = (c_t - \bar c)^2
 </div>
 </div>
 <div class="section" id="optimality-finite-horizon">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">48.3. </span>Optimality – Finite Horizon</a><a class="headerlink" href="#optimality-finite-horizon" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">49.3. </span>Optimality – Finite Horizon</a><a class="headerlink" href="#optimality-finite-horizon" title="Permalink to this headline">¶</a></h2>
 <p id="index-1">Let’s now be precise about the optimization problem we wish to consider, and look at how to solve it.</p>
 <div class="section" id="the-objective">
-<h3><span class="section-number">48.3.1. </span>The Objective<a class="headerlink" href="#the-objective" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.3.1. </span>The Objective<a class="headerlink" href="#the-objective" title="Permalink to this headline">¶</a></h3>
 <p>We will begin with the finite horizon case, with terminal time <span class="math notranslate nohighlight">\(T \in \mathbb N\)</span>.</p>
 <p>In this case, the aim is to choose a sequence of controls <span class="math notranslate nohighlight">\(\{u_0, \ldots, u_{T-1}\}\)</span> to minimize the objective</p>
 <div class="math notranslate nohighlight" id="equation-lq-object">
-<span class="eqno">(48.6)<a class="headerlink" href="#equation-lq-object" title="Permalink to this equation">¶</a></span>\[\mathbb E \,
+<span class="eqno">(49.6)<a class="headerlink" href="#equation-lq-object" title="Permalink to this equation">¶</a></span>\[\mathbb E \,
 \left\{
     \sum_{t=0}^{T-1} \beta^t (x_t' R x_t + u_t' Q u_t) + \beta^T x_T' R_f x_T
 \right\}\]</div>
-<p>subject to the law of motion <a class="reference internal" href="#equation-lq-lom">(48.1)</a> and initial state <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
+<p>subject to the law of motion <a class="reference internal" href="#equation-lq-lom">(49.1)</a> and initial state <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
 <p>The new objects introduced here are <span class="math notranslate nohighlight">\(\beta\)</span> and the matrix <span class="math notranslate nohighlight">\(R_f\)</span>.</p>
 <p>The scalar <span class="math notranslate nohighlight">\(\beta\)</span> is the discount factor, while <span class="math notranslate nohighlight">\(x' R_f x\)</span> gives terminal loss associated with state <span class="math notranslate nohighlight">\(x\)</span>.</p>
 <p>Comments:</p>
@@ -963,7 +1003,7 @@ x_t' R x_t + u_t' Q u_t = u_t^2 = (c_t - \bar c)^2
 </ul>
 </div>
 <div class="section" id="information">
-<span id="lq-cp"></span><h3><span class="section-number">48.3.2. </span>Information<a class="headerlink" href="#information" title="Permalink to this headline">¶</a></h3>
+<span id="lq-cp"></span><h3><span class="section-number">49.3.2. </span>Information<a class="headerlink" href="#information" title="Permalink to this headline">¶</a></h3>
 <p>There’s one constraint we’ve neglected to mention so far, which is that the
 decision-maker who solves this LQ problem knows only the present and the past,
 not the future.</p>
@@ -986,7 +1026,7 @@ so, for the purposes of intuition, you can read that last phrase as “for some 
 <p>What’s special about the LQ case is that – as we shall soon see —  the optimal <span class="math notranslate nohighlight">\(u_t\)</span> turns out to be a linear function of <span class="math notranslate nohighlight">\(x_t\)</span>.</p>
 </div>
 <div class="section" id="solution">
-<h3><span class="section-number">48.3.3. </span>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.3.3. </span>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h3>
 <p>To solve the finite horizon LQ problem we can use a dynamic programming
 strategy based on backward induction that is conceptually similar to the approach adopted in <a class="reference internal" href="short_path.html"><span class="doc">this lecture</span></a>.</p>
 <p>For reasons that will soon become clear, we first introduce the notation <span class="math notranslate nohighlight">\(J_T(x) = x' R_f x\)</span>.</p>
@@ -1004,7 +1044,7 @@ x_{T-1}' R x_{T-1} + u' Q u + \beta \,
 \]</div>
 <p>At this stage, it is convenient to define the function</p>
 <div class="math notranslate nohighlight" id="equation-lq-lsm">
-<span class="eqno">(48.7)<a class="headerlink" href="#equation-lq-lsm" title="Permalink to this equation">¶</a></span>\[J_{T-1} (x) =
+<span class="eqno">(49.7)<a class="headerlink" href="#equation-lq-lsm" title="Permalink to this equation">¶</a></span>\[J_{T-1} (x) =
 \min_u \{
 x' R x + u' Q u + \beta \,
 \mathbb E J_T(A x + B u + C w_T)
@@ -1055,9 +1095,9 @@ J_T(x) = x' R_f x
 <p>As a first step, let’s find out what the value functions look like.</p>
 <p>It turns out that every <span class="math notranslate nohighlight">\(J_t\)</span> has the form <span class="math notranslate nohighlight">\(J_t(x) = x' P_t x + d_t\)</span> where <span class="math notranslate nohighlight">\(P_t\)</span> is a <span class="math notranslate nohighlight">\(n \times n\)</span> matrix and <span class="math notranslate nohighlight">\(d_t\)</span> is a constant.</p>
 <p>We can show this by induction, starting from <span class="math notranslate nohighlight">\(P_T := R_f\)</span> and <span class="math notranslate nohighlight">\(d_T = 0\)</span>.</p>
-<p>Using this notation, <a class="reference internal" href="#equation-lq-lsm">(48.7)</a> becomes</p>
+<p>Using this notation, <a class="reference internal" href="#equation-lq-lsm">(49.7)</a> becomes</p>
 <div class="math notranslate nohighlight" id="equation-lq-fswb">
-<span class="eqno">(48.8)<a class="headerlink" href="#equation-lq-fswb" title="Permalink to this equation">¶</a></span>\[J_{T-1} (x) =
+<span class="eqno">(49.8)<a class="headerlink" href="#equation-lq-fswb" title="Permalink to this equation">¶</a></span>\[J_{T-1} (x) =
 \min_u \{
 x' R x + u' Q u + \beta \,
 \mathbb E (A x + B u + C w_T)' P_T (A x + B u + C w_T)
@@ -1065,48 +1105,48 @@ x' R x + u' Q u + \beta \,
 <p>To obtain the minimizer, we can take the derivative of the r.h.s. with respect to <span class="math notranslate nohighlight">\(u\)</span> and set it equal to zero.</p>
 <p>Applying the relevant rules of <a class="reference internal" href="linear_algebra.html#la-mcalc"><span class="std std-ref">matrix calculus</span></a>, this gives</p>
 <div class="math notranslate nohighlight" id="equation-lq-oc0">
-<span class="eqno">(48.9)<a class="headerlink" href="#equation-lq-oc0" title="Permalink to this equation">¶</a></span>\[u  = - (Q + \beta B' P_T B)^{-1} \beta B' P_T A x\]</div>
-<p>Plugging this back into <a class="reference internal" href="#equation-lq-fswb">(48.8)</a> and rearranging yields</p>
+<span class="eqno">(49.9)<a class="headerlink" href="#equation-lq-oc0" title="Permalink to this equation">¶</a></span>\[u  = - (Q + \beta B' P_T B)^{-1} \beta B' P_T A x\]</div>
+<p>Plugging this back into <a class="reference internal" href="#equation-lq-fswb">(49.8)</a> and rearranging yields</p>
 <div class="math notranslate nohighlight">
 \[
 J_{T-1} (x) = x' P_{T-1} x + d_{T-1}
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-lq-finr">
-<span class="eqno">(48.10)<a class="headerlink" href="#equation-lq-finr" title="Permalink to this equation">¶</a></span>\[P_{T-1} = R - \beta^2 A' P_T B (Q + \beta B' P_T B)^{-1} B' P_T A +
+<span class="eqno">(49.10)<a class="headerlink" href="#equation-lq-finr" title="Permalink to this equation">¶</a></span>\[P_{T-1} = R - \beta^2 A' P_T B (Q + \beta B' P_T B)^{-1} B' P_T A +
 \beta A' P_T A\]</div>
 <p>and</p>
 <div class="math notranslate nohighlight" id="equation-lq-finrd">
-<span class="eqno">(48.11)<a class="headerlink" href="#equation-lq-finrd" title="Permalink to this equation">¶</a></span>\[d_{T-1} := \beta \mathop{\mathrm{trace}}(C' P_T C)\]</div>
+<span class="eqno">(49.11)<a class="headerlink" href="#equation-lq-finrd" title="Permalink to this equation">¶</a></span>\[d_{T-1} := \beta \mathop{\mathrm{trace}}(C' P_T C)\]</div>
 <p>(The algebra is a good exercise — we’ll leave it up to you.)</p>
 <p>If we continue working backwards in this manner, it soon becomes clear that <span class="math notranslate nohighlight">\(J_t (x) = x' P_t x + d_t\)</span> as claimed, where <span class="math notranslate nohighlight">\(\{P_t\}\)</span> and <span class="math notranslate nohighlight">\(\{d_t\}\)</span> satisfy the recursions</p>
 <div class="math notranslate nohighlight" id="equation-lq-pr">
-<span class="eqno">(48.12)<a class="headerlink" href="#equation-lq-pr" title="Permalink to this equation">¶</a></span>\[P_{t-1} = R - \beta^2 A' P_t B (Q + \beta B' P_t B)^{-1} B' P_t A +
+<span class="eqno">(49.12)<a class="headerlink" href="#equation-lq-pr" title="Permalink to this equation">¶</a></span>\[P_{t-1} = R - \beta^2 A' P_t B (Q + \beta B' P_t B)^{-1} B' P_t A +
 \beta A' P_t A
 \quad \text{with } \quad
 P_T = R_f\]</div>
 <p>and</p>
 <div class="math notranslate nohighlight" id="equation-lq-dd">
-<span class="eqno">(48.13)<a class="headerlink" href="#equation-lq-dd" title="Permalink to this equation">¶</a></span>\[d_{t-1} = \beta (d_t + \mathop{\mathrm{trace}}(C' P_t C))
+<span class="eqno">(49.13)<a class="headerlink" href="#equation-lq-dd" title="Permalink to this equation">¶</a></span>\[d_{t-1} = \beta (d_t + \mathop{\mathrm{trace}}(C' P_t C))
 \quad \text{with } \quad
 d_T = 0\]</div>
-<p>Recalling <a class="reference internal" href="#equation-lq-oc0">(48.9)</a>, the minimizers from these backward steps are</p>
+<p>Recalling <a class="reference internal" href="#equation-lq-oc0">(49.9)</a>, the minimizers from these backward steps are</p>
 <div class="math notranslate nohighlight" id="equation-lq-oc">
-<span class="eqno">(48.14)<a class="headerlink" href="#equation-lq-oc" title="Permalink to this equation">¶</a></span>\[u_t  = - F_t x_t
+<span class="eqno">(49.14)<a class="headerlink" href="#equation-lq-oc" title="Permalink to this equation">¶</a></span>\[u_t  = - F_t x_t
 \quad \text{where} \quad
 F_t := (Q + \beta B' P_{t+1} B)^{-1} \beta B' P_{t+1} A\]</div>
 <p>These are the linear optimal control policies we <a class="reference internal" href="#lq-cp"><span class="std std-ref">discussed above</span></a>.</p>
-<p>In particular,  the sequence of controls given by <a class="reference internal" href="#equation-lq-oc">(48.14)</a> and <a class="reference internal" href="#equation-lq-lom">(48.1)</a> solves our finite horizon LQ problem.</p>
+<p>In particular,  the sequence of controls given by <a class="reference internal" href="#equation-lq-oc">(49.14)</a> and <a class="reference internal" href="#equation-lq-lom">(49.1)</a> solves our finite horizon LQ problem.</p>
 <p>Rephrasing this more precisely, the sequence <span class="math notranslate nohighlight">\(u_0, \ldots, u_{T-1}\)</span> given by</p>
 <div class="math notranslate nohighlight" id="equation-lq-xud">
-<span class="eqno">(48.15)<a class="headerlink" href="#equation-lq-xud" title="Permalink to this equation">¶</a></span>\[u_t = - F_t x_t
+<span class="eqno">(49.15)<a class="headerlink" href="#equation-lq-xud" title="Permalink to this equation">¶</a></span>\[u_t = - F_t x_t
 \quad \text{with} \quad
 x_{t+1} = (A - BF_t) x_t + C w_{t+1}\]</div>
-<p>for <span class="math notranslate nohighlight">\(t = 0, \ldots, T-1\)</span> attains the minimum of <a class="reference internal" href="#equation-lq-object">(48.6)</a> subject to our constraints.</p>
+<p>for <span class="math notranslate nohighlight">\(t = 0, \ldots, T-1\)</span> attains the minimum of <a class="reference internal" href="#equation-lq-object">(49.6)</a> subject to our constraints.</p>
 </div>
 </div>
 <div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">48.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id17"><span class="section-number">49.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>We will use code from <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lqcontrol.py">lqcontrol.py</a>
 in <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>
 to solve finite and infinite horizon linear quadratic control problems.</p>
@@ -1131,36 +1171,36 @@ are wrapped in a class  called <code class="docutils literal notranslate"><span 
 </li>
 <li><p>Methods:</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">update_values</span></code> — shifts <span class="math notranslate nohighlight">\(d_t, P_t, F_t\)</span> to their <span class="math notranslate nohighlight">\(t-1\)</span> values via <a class="reference internal" href="#equation-lq-pr">(48.12)</a>, <a class="reference internal" href="#equation-lq-dd">(48.13)</a> and <a class="reference internal" href="#equation-lq-oc">(48.14)</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">update_values</span></code> — shifts <span class="math notranslate nohighlight">\(d_t, P_t, F_t\)</span> to their <span class="math notranslate nohighlight">\(t-1\)</span> values via <a class="reference internal" href="#equation-lq-pr">(49.12)</a>, <a class="reference internal" href="#equation-lq-dd">(49.13)</a> and <a class="reference internal" href="#equation-lq-oc">(49.14)</a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">stationary_values</span></code> — computes <span class="math notranslate nohighlight">\(P, d, F\)</span> in the infinite horizon case</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">compute_sequence</span></code> —- simulates the dynamics of <span class="math notranslate nohighlight">\(x_t, u_t, w_t\)</span> given <span class="math notranslate nohighlight">\(x_0\)</span> and assuming standard normal shocks</p></li>
 </ul>
 </li>
 </ul>
 <div class="section" id="an-application">
-<span id="lq-mfpa"></span><h3><span class="section-number">48.4.1. </span>An Application<a class="headerlink" href="#an-application" title="Permalink to this headline">¶</a></h3>
+<span id="lq-mfpa"></span><h3><span class="section-number">49.4.1. </span>An Application<a class="headerlink" href="#an-application" title="Permalink to this headline">¶</a></h3>
 <p>Early Keynesian models assumed that households have a constant marginal
 propensity to consume from current income.</p>
 <p>Data contradicted the constancy of the marginal propensity to consume.</p>
 <p>In response, Milton Friedman, Franco Modigliani and others built models
 based on a consumer’s preference for an intertemporally smooth consumption stream.</p>
-<p>(See, for example, <span id="id7">[<a class="reference internal" href="zreferences.html#id126">Fri56</a>]</span> or <span id="id8">[<a class="reference internal" href="zreferences.html#id161">MB54</a>]</span>.)</p>
+<p>(See, for example, <span id="id7">[<a class="reference internal" href="zreferences.html#id136">Fri56</a>]</span> or <span id="id8">[<a class="reference internal" href="zreferences.html#id171">MB54</a>]</span>.)</p>
 <p>One property of those models is that households purchase and sell financial assets to make consumption streams smoother than income streams.</p>
 <p>The household savings problem <a class="reference internal" href="#lq-hhp"><span class="std std-ref">outlined above</span></a> captures these ideas.</p>
 <p>The optimization problem for the household is to choose a consumption sequence in order to minimize</p>
 <div class="math notranslate nohighlight" id="equation-lq-pio">
-<span class="eqno">(48.16)<a class="headerlink" href="#equation-lq-pio" title="Permalink to this equation">¶</a></span>\[\mathbb E \,
+<span class="eqno">(49.16)<a class="headerlink" href="#equation-lq-pio" title="Permalink to this equation">¶</a></span>\[\mathbb E \,
 \left\{
     \sum_{t=0}^{T-1} \beta^t (c_t - \bar c)^2 + \beta^T q a_T^2
 \right\}\]</div>
 <p>subject to the sequence of budget constraints <span class="math notranslate nohighlight">\(a_{t+1} = (1 + r) a_t - c_t + y_t, \ t \geq 0\)</span>.</p>
 <p>Here <span class="math notranslate nohighlight">\(q\)</span> is a large positive constant, the role of which is to induce the consumer to target zero debt at the end of her life.</p>
 <p>(Without such a constraint, the optimal choice is to choose <span class="math notranslate nohighlight">\(c_t = \bar c\)</span> in each period, letting assets adjust accordingly.)</p>
-<p>As before we set <span class="math notranslate nohighlight">\(y_t = \sigma w_{t+1} + \mu\)</span> and <span class="math notranslate nohighlight">\(u_t := c_t - \bar c\)</span>, after which the constraint can be written as in <a class="reference internal" href="#equation-lq-lomwc">(48.2)</a>.</p>
+<p>As before we set <span class="math notranslate nohighlight">\(y_t = \sigma w_{t+1} + \mu\)</span> and <span class="math notranslate nohighlight">\(u_t := c_t - \bar c\)</span>, after which the constraint can be written as in <a class="reference internal" href="#equation-lq-lomwc">(49.2)</a>.</p>
 <p>We saw how this constraint could be manipulated into the LQ formulation <span class="math notranslate nohighlight">\(x_{t+1} =
-Ax_t + Bu_t + Cw_{t+1}\)</span> by setting <span class="math notranslate nohighlight">\(x_t = (a_t \; 1)'\)</span> and using the definitions in <a class="reference internal" href="#equation-lq-lowmc2">(48.4)</a>.</p>
-<p>To match with this state and control, the objective function <a class="reference internal" href="#equation-lq-pio">(48.16)</a> can
-be written in the form of <a class="reference internal" href="#equation-lq-object">(48.6)</a> by choosing</p>
+Ax_t + Bu_t + Cw_{t+1}\)</span> by setting <span class="math notranslate nohighlight">\(x_t = (a_t \; 1)'\)</span> and using the definitions in <a class="reference internal" href="#equation-lq-lowmc2">(49.4)</a>.</p>
+<p>To match with this state and control, the objective function <a class="reference internal" href="#equation-lq-pio">(49.16)</a> can
+be written in the form of <a class="reference internal" href="#equation-lq-object">(49.6)</a> by choosing</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 Q := 1,
@@ -1182,9 +1222,9 @@ q &amp; 0 \\
 \right)
 \end{split}\]</div>
 <p>Now that the problem is expressed in LQ form, we can proceed to the solution
-by applying <a class="reference internal" href="#equation-lq-pr">(48.12)</a> and <a class="reference internal" href="#equation-lq-oc">(48.14)</a>.</p>
+by applying <a class="reference internal" href="#equation-lq-pr">(49.12)</a> and <a class="reference internal" href="#equation-lq-oc">(49.14)</a>.</p>
 <p>After generating shocks <span class="math notranslate nohighlight">\(w_1, \ldots, w_T\)</span>, the dynamics for assets and
-consumption can be simulated via <a class="reference internal" href="#equation-lq-xud">(48.15)</a>.</p>
+consumption can be simulated via <a class="reference internal" href="#equation-lq-xud">(49.15)</a>.</p>
 <p>The following figure was computed using <span class="math notranslate nohighlight">\(r = 0.05, \beta = 1 / (1+ r),
 \bar c = 2,  \mu = 1, \sigma = 0.25, T = 45\)</span> and <span class="math notranslate nohighlight">\(q = 10^6\)</span>.</p>
 <p>The shocks <span class="math notranslate nohighlight">\(\{w_t\}\)</span> were taken to be IID and standard normal.</p>
@@ -1321,47 +1361,47 @@ of assets in the middle periods to fund rising consumption.</p>
 </div>
 </div>
 <div class="section" id="extensions-and-comments">
-<h2><a class="toc-backref" href="#id18"><span class="section-number">48.5. </span>Extensions and Comments</a><a class="headerlink" href="#extensions-and-comments" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id18"><span class="section-number">49.5. </span>Extensions and Comments</a><a class="headerlink" href="#extensions-and-comments" title="Permalink to this headline">¶</a></h2>
 <p>Let’s now consider a number of standard extensions to the LQ problem treated above.</p>
 <div class="section" id="time-varying-parameters">
-<h3><span class="section-number">48.5.1. </span>Time-Varying Parameters<a class="headerlink" href="#time-varying-parameters" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.5.1. </span>Time-Varying Parameters<a class="headerlink" href="#time-varying-parameters" title="Permalink to this headline">¶</a></h3>
 <p>In some settings, it can be desirable to allow <span class="math notranslate nohighlight">\(A, B, C, R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> to depend on <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>For the sake of simplicity, we’ve chosen not to treat this extension in our implementation given below.</p>
 <p>However, the loss of generality is not as large as you might first imagine.</p>
 <p>In fact, we can tackle many models with time-varying parameters by suitable choice of state variables.</p>
 <p>One illustration is given <a class="reference internal" href="#lq-nsi"><span class="std std-ref">below</span></a>.</p>
-<p>For further examples and a more systematic treatment, see <span id="id9">[<a class="reference internal" href="zreferences.html#id131">HS13</a>]</span>, section 2.4.</p>
+<p>For further examples and a more systematic treatment, see <span id="id9">[<a class="reference internal" href="zreferences.html#id141">HS13</a>]</span>, section 2.4.</p>
 </div>
 <div class="section" id="adding-a-cross-product-term">
-<span id="lq-cpt"></span><h3><span class="section-number">48.5.2. </span>Adding a Cross-Product Term<a class="headerlink" href="#adding-a-cross-product-term" title="Permalink to this headline">¶</a></h3>
+<span id="lq-cpt"></span><h3><span class="section-number">49.5.2. </span>Adding a Cross-Product Term<a class="headerlink" href="#adding-a-cross-product-term" title="Permalink to this headline">¶</a></h3>
 <p>In some LQ problems, preferences include a cross-product term <span class="math notranslate nohighlight">\(u_t' N x_t\)</span>, so that the objective function becomes</p>
 <div class="math notranslate nohighlight" id="equation-lq-object-cp">
-<span class="eqno">(48.17)<a class="headerlink" href="#equation-lq-object-cp" title="Permalink to this equation">¶</a></span>\[\mathbb E \,
+<span class="eqno">(49.17)<a class="headerlink" href="#equation-lq-object-cp" title="Permalink to this equation">¶</a></span>\[\mathbb E \,
 \left\{
     \sum_{t=0}^{T-1} \beta^t (x_t' R x_t + u_t' Q u_t + 2 u_t' N x_t) + \beta^T x_T' R_f x_T
 \right\}\]</div>
 <p>Our results extend to this case in a straightforward way.</p>
-<p>The sequence <span class="math notranslate nohighlight">\(\{P_t\}\)</span> from <a class="reference internal" href="#equation-lq-pr">(48.12)</a> becomes</p>
+<p>The sequence <span class="math notranslate nohighlight">\(\{P_t\}\)</span> from <a class="reference internal" href="#equation-lq-pr">(49.12)</a> becomes</p>
 <div class="math notranslate nohighlight" id="equation-lq-pr-cp">
-<span class="eqno">(48.18)<a class="headerlink" href="#equation-lq-pr-cp" title="Permalink to this equation">¶</a></span>\[P_{t-1} = R - (\beta B' P_t A + N)'
+<span class="eqno">(49.18)<a class="headerlink" href="#equation-lq-pr-cp" title="Permalink to this equation">¶</a></span>\[P_{t-1} = R - (\beta B' P_t A + N)'
 (Q + \beta B' P_t B)^{-1} (\beta B' P_t A + N) +
 \beta A' P_t A
 \quad \text{with } \quad
 P_T = R_f\]</div>
-<p>The policies in <a class="reference internal" href="#equation-lq-oc">(48.14)</a> are modified to</p>
+<p>The policies in <a class="reference internal" href="#equation-lq-oc">(49.14)</a> are modified to</p>
 <div class="math notranslate nohighlight" id="equation-lq-oc-cp">
-<span class="eqno">(48.19)<a class="headerlink" href="#equation-lq-oc-cp" title="Permalink to this equation">¶</a></span>\[u_t  = - F_t x_t
+<span class="eqno">(49.19)<a class="headerlink" href="#equation-lq-oc-cp" title="Permalink to this equation">¶</a></span>\[u_t  = - F_t x_t
 \quad \text{where} \quad
 F_t := (Q + \beta B' P_{t+1} B)^{-1} (\beta B' P_{t+1} A + N)\]</div>
-<p>The sequence <span class="math notranslate nohighlight">\(\{d_t\}\)</span> is unchanged from <a class="reference internal" href="#equation-lq-dd">(48.13)</a>.</p>
+<p>The sequence <span class="math notranslate nohighlight">\(\{d_t\}\)</span> is unchanged from <a class="reference internal" href="#equation-lq-dd">(49.13)</a>.</p>
 <p>We leave interested readers to confirm these results (the calculations are long but not overly difficult).</p>
 </div>
 <div class="section" id="infinite-horizon">
-<span id="lq-ih"></span><h3><span class="section-number">48.5.3. </span>Infinite Horizon<a class="headerlink" href="#infinite-horizon" title="Permalink to this headline">¶</a></h3>
+<span id="lq-ih"></span><h3><span class="section-number">49.5.3. </span>Infinite Horizon<a class="headerlink" href="#infinite-horizon" title="Permalink to this headline">¶</a></h3>
 <p id="index-2">Finally, we consider the infinite horizon case, with <a class="reference internal" href="#lq-cpt"><span class="std std-ref">cross-product term</span></a>, unchanged dynamics and
 objective function given by</p>
 <div class="math notranslate nohighlight" id="equation-lq-object-ih">
-<span class="eqno">(48.20)<a class="headerlink" href="#equation-lq-object-ih" title="Permalink to this equation">¶</a></span>\[\mathbb E \,
+<span class="eqno">(49.20)<a class="headerlink" href="#equation-lq-object-ih" title="Permalink to this equation">¶</a></span>\[\mathbb E \,
 \left\{
     \sum_{t=0}^{\infty} \beta^t (x_t' R x_t + u_t' Q u_t + 2 u_t' N x_t)
 \right\}\]</div>
@@ -1375,43 +1415,43 @@ same infinite horizon at every stage, with only the current state changing.</p>
 <p>The stationary matrix <span class="math notranslate nohighlight">\(P\)</span> is the solution to the
 <a class="reference external" href="https://en.wikipedia.org/wiki/Algebraic_Riccati_equation">discrete-time algebraic Riccati equation</a>.</p>
 <div class="math notranslate nohighlight" id="equation-lq-pr-ih">
-<span id="riccati-equation"></span><span class="eqno">(48.21)<a class="headerlink" href="#equation-lq-pr-ih" title="Permalink to this equation">¶</a></span>\[P = R - (\beta B' P A + N)'
+<span id="riccati-equation"></span><span class="eqno">(49.21)<a class="headerlink" href="#equation-lq-pr-ih" title="Permalink to this equation">¶</a></span>\[P = R - (\beta B' P A + N)'
 (Q + \beta B' P B)^{-1} (\beta B' P A + N) +
 \beta A' P A\]</div>
-<p>Equation <a class="reference internal" href="#equation-lq-pr-ih">(48.21)</a> is also called the <em>LQ Bellman equation</em>, and the map
-that sends a given <span class="math notranslate nohighlight">\(P\)</span> into the right-hand side of <a class="reference internal" href="#equation-lq-pr-ih">(48.21)</a> is
+<p>Equation <a class="reference internal" href="#equation-lq-pr-ih">(49.21)</a> is also called the <em>LQ Bellman equation</em>, and the map
+that sends a given <span class="math notranslate nohighlight">\(P\)</span> into the right-hand side of <a class="reference internal" href="#equation-lq-pr-ih">(49.21)</a> is
 called the <em>LQ Bellman operator</em>.</p>
 <p>The stationary optimal policy for this model is</p>
 <div class="math notranslate nohighlight" id="equation-lq-oc-ih">
-<span class="eqno">(48.22)<a class="headerlink" href="#equation-lq-oc-ih" title="Permalink to this equation">¶</a></span>\[u  = - F x
+<span class="eqno">(49.22)<a class="headerlink" href="#equation-lq-oc-ih" title="Permalink to this equation">¶</a></span>\[u  = - F x
 \quad \text{where} \quad
 F = (Q + \beta B' P B)^{-1} (\beta B' P A + N)\]</div>
-<p>The sequence <span class="math notranslate nohighlight">\(\{d_t\}\)</span> from <a class="reference internal" href="#equation-lq-dd">(48.13)</a> is replaced by the constant value</p>
+<p>The sequence <span class="math notranslate nohighlight">\(\{d_t\}\)</span> from <a class="reference internal" href="#equation-lq-dd">(49.13)</a> is replaced by the constant value</p>
 <div class="math notranslate nohighlight" id="equation-lq-dd-ih">
-<span class="eqno">(48.23)<a class="headerlink" href="#equation-lq-dd-ih" title="Permalink to this equation">¶</a></span>\[d
+<span class="eqno">(49.23)<a class="headerlink" href="#equation-lq-dd-ih" title="Permalink to this equation">¶</a></span>\[d
 := \mathop{\mathrm{trace}}(C' P C) \frac{\beta}{1 - \beta}\]</div>
 <p>The state evolves according to the time-homogeneous process <span class="math notranslate nohighlight">\(x_{t+1} = (A - BF) x_t + C w_{t+1}\)</span>.</p>
 <p>An example infinite horizon problem is treated <a class="reference internal" href="#lqc-mwac"><span class="std std-ref">below</span></a>.</p>
 </div>
 <div class="section" id="certainty-equivalence">
-<span id="lq-cert-eq"></span><h3><span class="section-number">48.5.4. </span>Certainty Equivalence<a class="headerlink" href="#certainty-equivalence" title="Permalink to this headline">¶</a></h3>
+<span id="lq-cert-eq"></span><h3><span class="section-number">49.5.4. </span>Certainty Equivalence<a class="headerlink" href="#certainty-equivalence" title="Permalink to this headline">¶</a></h3>
 <p>Linear quadratic control problems of the class discussed above have the property of <em>certainty equivalence</em>.</p>
 <p>By this, we mean that the optimal policy <span class="math notranslate nohighlight">\(F\)</span> is not affected by the parameters in <span class="math notranslate nohighlight">\(C\)</span>, which specify the shock process.</p>
-<p>This can be confirmed by inspecting <a class="reference internal" href="#equation-lq-oc-ih">(48.22)</a> or <a class="reference internal" href="#equation-lq-oc-cp">(48.19)</a>.</p>
+<p>This can be confirmed by inspecting <a class="reference internal" href="#equation-lq-oc-ih">(49.22)</a> or <a class="reference internal" href="#equation-lq-oc-cp">(49.19)</a>.</p>
 <p>It follows that we can ignore uncertainty when solving for optimal behavior, and plug it back in when examining optimal state dynamics.</p>
 </div>
 </div>
 <div class="section" id="further-applications">
-<h2><a class="toc-backref" href="#id19"><span class="section-number">48.6. </span>Further Applications</a><a class="headerlink" href="#further-applications" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id19"><span class="section-number">49.6. </span>Further Applications</a><a class="headerlink" href="#further-applications" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="application-1-age-dependent-income-process">
-<span id="lq-nsi"></span><h3><span class="section-number">48.6.1. </span>Application 1: Age-Dependent Income Process<a class="headerlink" href="#application-1-age-dependent-income-process" title="Permalink to this headline">¶</a></h3>
+<span id="lq-nsi"></span><h3><span class="section-number">49.6.1. </span>Application 1: Age-Dependent Income Process<a class="headerlink" href="#application-1-age-dependent-income-process" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference internal" href="#lq-mfpa"><span class="std std-ref">Previously</span></a> we studied a permanent income model that generated consumption smoothing.</p>
 <p>One unrealistic feature of that model is the assumption that the mean of the random income process does not depend on the consumer’s age.</p>
 <p>A more realistic income profile is one that rises in early working life, peaks towards the middle and maybe declines toward the end of working life and falls more during retirement.</p>
 <p>In this section, we will model this rise and fall as a symmetric inverted “U” using a polynomial in age.</p>
 <p>As before, the consumer seeks to minimize</p>
 <div class="math notranslate nohighlight" id="equation-lq-pip">
-<span class="eqno">(48.24)<a class="headerlink" href="#equation-lq-pip" title="Permalink to this equation">¶</a></span>\[\mathbb E \,
+<span class="eqno">(49.24)<a class="headerlink" href="#equation-lq-pip" title="Permalink to this equation">¶</a></span>\[\mathbb E \,
 \left\{
     \sum_{t=0}^{T-1} \beta^t (c_t - \bar c)^2 + \beta^T q a_T^2
 \right\}\]</div>
@@ -1422,7 +1462,7 @@ F = (Q + \beta B' P B)^{-1} (\beta B' P A + N)\]</div>
 <p>You can confirm that the specification <span class="math notranslate nohighlight">\(m_0 = 0, m_1 = T \mu / (T/2)^2, m_2 = - \mu / (T/2)^2\)</span> satisfies these constraints.</p>
 <p>To put this into an LQ setting, consider the budget constraint, which becomes</p>
 <div class="math notranslate nohighlight" id="equation-lq-hib">
-<span class="eqno">(48.25)<a class="headerlink" href="#equation-lq-hib" title="Permalink to this equation">¶</a></span>\[a_{t+1} = (1 + r) a_t - u_t - \bar c + m_1 t + m_2 t^2 + \sigma w_{t+1}\]</div>
+<span class="eqno">(49.25)<a class="headerlink" href="#equation-lq-hib" title="Permalink to this equation">¶</a></span>\[a_{t+1} = (1 + r) a_t - u_t - \bar c + m_1 t + m_2 t^2 + \sigma w_{t+1}\]</div>
 <p>The fact that <span class="math notranslate nohighlight">\(a_{t+1}\)</span> is a linear function of
 <span class="math notranslate nohighlight">\((a_t, 1, t, t^2)\)</span> suggests taking these four variables as the state
 vector <span class="math notranslate nohighlight">\(x_t\)</span>.</p>
@@ -1430,7 +1470,7 @@ vector <span class="math notranslate nohighlight">\(x_t\)</span>.</p>
 has been made, the remaining specifications fall into place relatively easily.</p>
 <p>Thus, for the dynamics we set</p>
 <div class="math notranslate nohighlight" id="equation-lq-lowmc3">
-<span class="eqno">(48.26)<a class="headerlink" href="#equation-lq-lowmc3" title="Permalink to this equation">¶</a></span>\[\begin{split}x_t :=
+<span class="eqno">(49.26)<a class="headerlink" href="#equation-lq-lowmc3" title="Permalink to this equation">¶</a></span>\[\begin{split}x_t :=
 \left(
 \begin{array}{c}
 a_t \\
@@ -1470,11 +1510,11 @@ C :=
 \end{array}
 \right)\end{split}\]</div>
 <p>If you expand the expression <span class="math notranslate nohighlight">\(x_{t+1} = A x_t + B u_t + C w_{t+1}\)</span> using
-this specification, you will find that assets follow <a class="reference internal" href="#equation-lq-hib">(48.25)</a> as desired
+this specification, you will find that assets follow <a class="reference internal" href="#equation-lq-hib">(49.25)</a> as desired
 and that the other state variables also update appropriately.</p>
-<p>To implement preference specification <a class="reference internal" href="#equation-lq-pip">(48.24)</a> we take</p>
+<p>To implement preference specification <a class="reference internal" href="#equation-lq-pip">(49.24)</a> we take</p>
 <div class="math notranslate nohighlight" id="equation-lq-4sp">
-<span class="eqno">(48.27)<a class="headerlink" href="#equation-lq-4sp" title="Permalink to this equation">¶</a></span>\[\begin{split}Q := 1,
+<span class="eqno">(49.27)<a class="headerlink" href="#equation-lq-4sp" title="Permalink to this equation">¶</a></span>\[\begin{split}Q := 1,
 \quad
 R :=
 \left(
@@ -1505,7 +1545,7 @@ the <code class="docutils literal notranslate"><span class="pre">compute_sequenc
 <p>Exercise 1 gives the full set of parameters used here and asks you to replicate the figure.</p>
 </div>
 <div class="section" id="application-2-a-permanent-income-model-with-retirement">
-<span id="lq-nsi2"></span><h3><span class="section-number">48.6.2. </span>Application 2: A Permanent Income Model with Retirement<a class="headerlink" href="#application-2-a-permanent-income-model-with-retirement" title="Permalink to this headline">¶</a></h3>
+<span id="lq-nsi2"></span><h3><span class="section-number">49.6.2. </span>Application 2: A Permanent Income Model with Retirement<a class="headerlink" href="#application-2-a-permanent-income-model-with-retirement" title="Permalink to this headline">¶</a></h3>
 <p>In the <a class="reference internal" href="#lq-nsi"><span class="std std-ref">previous application</span></a>, we generated income dynamics with an inverted U shape using polynomials and placed them in an LQ framework.</p>
 <p>It is arguably the case that this income process still contains unrealistic features.</p>
 <p>A more common earning profile is where</p>
@@ -1516,7 +1556,7 @@ the <code class="docutils literal notranslate"><span class="pre">compute_sequenc
 <p>Letting <span class="math notranslate nohighlight">\(K\)</span> be the retirement date, we can express these income dynamics
 by</p>
 <div class="math notranslate nohighlight" id="equation-lq-cases">
-<span class="eqno">(48.28)<a class="headerlink" href="#equation-lq-cases" title="Permalink to this equation">¶</a></span>\[\begin{split}y_t =
+<span class="eqno">(49.28)<a class="headerlink" href="#equation-lq-cases" title="Permalink to this equation">¶</a></span>\[\begin{split}y_t =
 \begin{cases}
 p(t) + \sigma w_{t+1} &amp; \quad \text{if } t \leq K  \\
 s                     &amp; \quad \text{otherwise }
@@ -1526,10 +1566,10 @@ s                     &amp; \quad \text{otherwise }
 <li><p><span class="math notranslate nohighlight">\(p(t) := m_1 t + m_2 t^2\)</span> with the coefficients <span class="math notranslate nohighlight">\(m_1, m_2\)</span> chosen such that <span class="math notranslate nohighlight">\(p(K) = \mu\)</span> and <span class="math notranslate nohighlight">\(p(0) = p(2K)=0\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(s\)</span> is retirement income</p></li>
 </ul>
-<p>We suppose that preferences are unchanged and given by <a class="reference internal" href="#equation-lq-pio">(48.16)</a>.</p>
+<p>We suppose that preferences are unchanged and given by <a class="reference internal" href="#equation-lq-pio">(49.16)</a>.</p>
 <p>The budget constraint is also unchanged and given by <span class="math notranslate nohighlight">\(a_{t+1} = (1 + r) a_t - c_t + y_t\)</span>.</p>
 <p>Our aim is to solve this problem and simulate paths using the LQ techniques described in this lecture.</p>
-<p>In fact, this is a nontrivial problem, as the kink in the dynamics <a class="reference internal" href="#equation-lq-cases">(48.28)</a> at <span class="math notranslate nohighlight">\(K\)</span> makes it very difficult to express the law of motion as a fixed-coefficient linear system.</p>
+<p>In fact, this is a nontrivial problem, as the kink in the dynamics <a class="reference internal" href="#equation-lq-cases">(49.28)</a> at <span class="math notranslate nohighlight">\(K\)</span> makes it very difficult to express the law of motion as a fixed-coefficient linear system.</p>
 <p>However, we can still use our LQ methods here by suitably linking two-component LQ problems.</p>
 <p>These two LQ problems describe the consumer’s behavior during her working life (<code class="docutils literal notranslate"><span class="pre">lq_working</span></code>) and retirement (<code class="docutils literal notranslate"><span class="pre">lq_retired</span></code>).</p>
 <p>(This is possible because, in the two separate periods of life, the respective income processes
@@ -1556,7 +1596,7 @@ in life followed by later saving.</p>
 <p>Assets peak at retirement and subsequently decline.</p>
 </div>
 <div class="section" id="application-3-monopoly-with-adjustment-costs">
-<span id="lqc-mwac"></span><h3><span class="section-number">48.6.3. </span>Application 3: Monopoly with Adjustment Costs<a class="headerlink" href="#application-3-monopoly-with-adjustment-costs" title="Permalink to this headline">¶</a></h3>
+<span id="lqc-mwac"></span><h3><span class="section-number">49.6.3. </span>Application 3: Monopoly with Adjustment Costs<a class="headerlink" href="#application-3-monopoly-with-adjustment-costs" title="Permalink to this headline">¶</a></h3>
 <p>Consider a monopolist facing stochastic inverse demand function</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1570,7 +1610,7 @@ d_{t+1} = \rho d_t + \sigma w_{t+1}
 <p>where <span class="math notranslate nohighlight">\(\{w_t\}\)</span> is IID and standard normal.</p>
 <p>The monopolist maximizes the expected discounted sum of present and future profits</p>
 <div class="math notranslate nohighlight" id="equation-lq-object-mp">
-<span class="eqno">(48.29)<a class="headerlink" href="#equation-lq-object-mp" title="Permalink to this equation">¶</a></span>\[\mathbb E \,
+<span class="eqno">(49.29)<a class="headerlink" href="#equation-lq-object-mp" title="Permalink to this equation">¶</a></span>\[\mathbb E \,
 \left\{
     \sum_{t=0}^{\infty} \beta^t
     \pi_t
@@ -1614,10 +1654,10 @@ monopolist will choose output to maximize current profit in each period.</p>
 <p>The key to this conversion is to choose the right state — which can be a bit of an art.</p>
 <p>Here we take <span class="math notranslate nohighlight">\(x_t = (\bar q_t \;\, q_t \;\, 1)'\)</span>, while the control is chosen as <span class="math notranslate nohighlight">\(u_t = q_{t+1} - q_t\)</span>.</p>
 <p>We also manipulated the profit function slightly.</p>
-<p>In <a class="reference internal" href="#equation-lq-object-mp">(48.29)</a>, current profits are <span class="math notranslate nohighlight">\(\pi_t := p_t q_t - c q_t - \gamma (q_{t+1} - q_t)^2\)</span>.</p>
-<p>Let’s now replace <span class="math notranslate nohighlight">\(\pi_t\)</span> in <a class="reference internal" href="#equation-lq-object-mp">(48.29)</a> with <span class="math notranslate nohighlight">\(\hat \pi_t := \pi_t - a_1 \bar q_t^2\)</span>.</p>
+<p>In <a class="reference internal" href="#equation-lq-object-mp">(49.29)</a>, current profits are <span class="math notranslate nohighlight">\(\pi_t := p_t q_t - c q_t - \gamma (q_{t+1} - q_t)^2\)</span>.</p>
+<p>Let’s now replace <span class="math notranslate nohighlight">\(\pi_t\)</span> in <a class="reference internal" href="#equation-lq-object-mp">(49.29)</a> with <span class="math notranslate nohighlight">\(\hat \pi_t := \pi_t - a_1 \bar q_t^2\)</span>.</p>
 <p>This makes no difference to the solution, since <span class="math notranslate nohighlight">\(a_1 \bar q_t^2\)</span> does not depend on the controls.</p>
-<p>(In fact, we are just adding a constant term to <a class="reference internal" href="#equation-lq-object-mp">(48.29)</a>, and optimizers are not affected by constant terms.)</p>
+<p>(In fact, we are just adding a constant term to <a class="reference internal" href="#equation-lq-object-mp">(49.29)</a>, and optimizers are not affected by constant terms.)</p>
 <p>The reason for making this substitution is that, as you will be able to
 verify, <span class="math notranslate nohighlight">\(\hat \pi_t\)</span> reduces to the simple quadratic</p>
 <div class="math notranslate nohighlight">
@@ -1626,40 +1666,40 @@ verify, <span class="math notranslate nohighlight">\(\hat \pi_t\)</span> reduces
 \]</div>
 <p>After negation to convert to a minimization problem, the objective becomes</p>
 <div class="math notranslate nohighlight" id="equation-lq-object-mp2">
-<span class="eqno">(48.30)<a class="headerlink" href="#equation-lq-object-mp2" title="Permalink to this equation">¶</a></span>\[\min
+<span class="eqno">(49.30)<a class="headerlink" href="#equation-lq-object-mp2" title="Permalink to this equation">¶</a></span>\[\min
 \mathbb E \,
     \sum_{t=0}^{\infty} \beta^t
 \left\{
     a_1 ( q_t - \bar q_t)^2 + \gamma u_t^2
 \right\}\]</div>
 <p>It’s now relatively straightforward to find <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> such that
-<a class="reference internal" href="#equation-lq-object-mp2">(48.30)</a> can be written as <a class="reference internal" href="#equation-lq-object-ih">(48.20)</a>.</p>
-<p>Furthermore, the matrices <span class="math notranslate nohighlight">\(A, B\)</span> and <span class="math notranslate nohighlight">\(C\)</span> from <a class="reference internal" href="#equation-lq-lom">(48.1)</a>
+<a class="reference internal" href="#equation-lq-object-mp2">(49.30)</a> can be written as <a class="reference internal" href="#equation-lq-object-ih">(49.20)</a>.</p>
+<p>Furthermore, the matrices <span class="math notranslate nohighlight">\(A, B\)</span> and <span class="math notranslate nohighlight">\(C\)</span> from <a class="reference internal" href="#equation-lq-lom">(49.1)</a>
 can be found by writing down the dynamics of each element of the state.</p>
 <p><a class="reference internal" href="#lqc-ex3"><span class="std std-ref">Exercise 3</span></a> asks you to complete this process, and reproduce the preceding figures.</p>
 </div>
 </div>
 <div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id20"><span class="section-number">48.7. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id20"><span class="section-number">49.7. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="exercise-1">
-<span id="lqc-ex1"></span><h3><span class="section-number">48.7.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<span id="lqc-ex1"></span><h3><span class="section-number">49.7.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>Replicate the figure with polynomial income <a class="reference internal" href="#solution-lqc-ex1-fig"><span class="std std-ref">shown above</span></a>.</p>
 <p>The parameters are <span class="math notranslate nohighlight">\(r = 0.05, \beta = 1 / (1 + r), \bar c = 1.5,  \mu = 2, \sigma = 0.15, T = 50\)</span> and <span class="math notranslate nohighlight">\(q = 10^4\)</span>.</p>
 </div>
 <div class="section" id="exercise-2">
-<span id="lqc-ex2"></span><h3><span class="section-number">48.7.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
+<span id="lqc-ex2"></span><h3><span class="section-number">49.7.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
 <p>Replicate the figure on work and retirement <a class="reference internal" href="#solution-lqc-ex2-fig"><span class="std std-ref">shown above</span></a>.</p>
 <p>The parameters are <span class="math notranslate nohighlight">\(r = 0.05, \beta = 1 / (1 + r), \bar c = 4,  \mu = 4, \sigma = 0.35, K = 40, T = 60, s = 1\)</span> and <span class="math notranslate nohighlight">\(q = 10^4\)</span>.</p>
 <p>To understand the overall procedure, carefully read the section containing that figure.</p>
 <p>Some hints are as follows:</p>
 <p>First, in order to make our approach work, we must ensure that both LQ problems have the same state variables and control.</p>
 <p>As with previous applications, the control can be set to <span class="math notranslate nohighlight">\(u_t = c_t - \bar c\)</span>.</p>
-<p>For <code class="docutils literal notranslate"><span class="pre">lq_working</span></code>, <span class="math notranslate nohighlight">\(x_t, A, B, C\)</span> can be chosen as in <a class="reference internal" href="#equation-lq-lowmc3">(48.26)</a>.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">lq_working</span></code>, <span class="math notranslate nohighlight">\(x_t, A, B, C\)</span> can be chosen as in <a class="reference internal" href="#equation-lq-lowmc3">(49.26)</a>.</p>
 <ul class="simple">
 <li><p>Recall that <span class="math notranslate nohighlight">\(m_1, m_2\)</span> are chosen so that <span class="math notranslate nohighlight">\(p(K) = \mu\)</span> and <span class="math notranslate nohighlight">\(p(2K)=0\)</span>.</p></li>
 </ul>
 <p>For <code class="docutils literal notranslate"><span class="pre">lq_retired</span></code>, use the same definition of <span class="math notranslate nohighlight">\(x_t\)</span> and <span class="math notranslate nohighlight">\(u_t\)</span>, but modify <span class="math notranslate nohighlight">\(A, B, C\)</span> to correspond to constant income <span class="math notranslate nohighlight">\(y_t = s\)</span>.</p>
-<p>For <code class="docutils literal notranslate"><span class="pre">lq_retired</span></code>, set preferences as in <a class="reference internal" href="#equation-lq-4sp">(48.27)</a>.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">lq_retired</span></code>, set preferences as in <a class="reference internal" href="#equation-lq-4sp">(49.27)</a>.</p>
 <p>For <code class="docutils literal notranslate"><span class="pre">lq_working</span></code>, preferences are the same, except that <span class="math notranslate nohighlight">\(R_f\)</span> should
 be replaced by the final value function that emerges from iterating <code class="docutils literal notranslate"><span class="pre">lq_retired</span></code>
 back to the start of retirement.</p>
@@ -1667,7 +1707,7 @@ back to the start of retirement.</p>
 together the simulations from these two separate models.</p>
 </div>
 <div class="section" id="exercise-3">
-<span id="lqc-ex3"></span><h3><span class="section-number">48.7.3. </span>Exercise 3<a class="headerlink" href="#exercise-3" title="Permalink to this headline">¶</a></h3>
+<span id="lqc-ex3"></span><h3><span class="section-number">49.7.3. </span>Exercise 3<a class="headerlink" href="#exercise-3" title="Permalink to this headline">¶</a></h3>
 <p>Reproduce the figures from the monopolist application <a class="reference internal" href="#lqc-mwac"><span class="std std-ref">given above</span></a>.</p>
 <p>For parameters, use <span class="math notranslate nohighlight">\(a_0 = 5, a_1 = 0.5, \sigma = 0.15, \rho = 0.9,
 \beta = 0.95\)</span> and <span class="math notranslate nohighlight">\(c = 2\)</span>, while <span class="math notranslate nohighlight">\(\gamma\)</span> varies between 1 and 50
@@ -1675,9 +1715,9 @@ together the simulations from these two separate models.</p>
 </div>
 </div>
 <div class="section" id="solutions">
-<h2><a class="toc-backref" href="#id21"><span class="section-number">48.8. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id21"><span class="section-number">49.8. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id10">
-<h3><span class="section-number">48.8.1. </span>Exercise 1<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.8.1. </span>Exercise 1<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <p>Here’s one solution.</p>
 <p>We use some fancy plot commands to get a certain style — feel free to
 use simpler ones.</p>
@@ -1769,7 +1809,7 @@ y_t = m_1 t + m_2 t^2 + \sigma w_{t+1}
 </div>
 </div>
 <div class="section" id="id11">
-<h3><span class="section-number">48.8.2. </span>Exercise 2<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.8.2. </span>Exercise 2<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <p>This is a permanent income / life-cycle model with polynomial growth in
 income over working life followed by a fixed retirement income.</p>
 <p>The model is solved by combining two LQ programming problems as described in
@@ -1882,7 +1922,7 @@ the lecture.</p>
 </div>
 </div>
 <div class="section" id="id12">
-<h3><span class="section-number">48.8.3. </span>Exercise 3<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">49.8.3. </span>Exercise 3<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <p>The first task is to find the matrices <span class="math notranslate nohighlight">\(A, B, C, Q, R\)</span> that define
 the LQ problem.</p>
 <p>Recall that <span class="math notranslate nohighlight">\(x_t = (\bar q_t \;\, q_t \;\, 1)'\)</span>, while
@@ -2091,6 +2131,11 @@ function, which we repeat here for convenience:</p>
    12. Univariate Time Series with Matrix Algebra
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="five_preferences.html">
+   13. Risk and Model Uncertainty
+  </a>
+ </li>
 </ul>
 <p class="caption">
  <span class="caption-text">
@@ -2100,12 +2145,12 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   13. Linear Programming
+   14. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   14. Optimal Transport
+   15. Optimal Transport
   </a>
  </li>
 </ul>
@@ -2117,62 +2162,62 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   15. Dynamics in One Dimension
+   16. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   16. AR1 Processes
+   17. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   17. Finite Markov Chains
+   18. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   18. Inventory Dynamics
+   19. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   19. Linear State Space Models
+   20. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   20. Application: The Samuelson Multiplier-Accelerator
+   21. Application: The Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   21. Kesten Processes and Firm Dynamics
+   22. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   22. Wealth Distribution Dynamics
+   23. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   23. A First Look at the Kalman Filter
+   24. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   24. Shortest Paths
+   25. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   25. Cass-Koopmans Planning Problem
+   26. Cass-Koopmans Planning Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   26. Cass-Koopmans Competitive Equilibrium
+   27. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
 </ul>
@@ -2184,32 +2229,32 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   27. Job Search I: The McCall Search Model
+   28. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   28. Job Search II: Search and Separation
+   29. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   29. Job Search III: Fitted Value Function Iteration
+   30. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   30. Job Search IV: Correlated Wage Offers
+   31. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   31. Job Search V: Modeling Career Choice
+   32. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   32. Job Search VI: On-the-Job Search
+   33. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -2221,42 +2266,42 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   33. Cake Eating I: Introduction to Optimal Saving
+   34. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   34. Cake Eating II: Numerical Methods
+   35. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   35. Optimal Growth I: The Stochastic Optimal Growth Model
+   36. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   36. Optimal Growth II: Accelerating the Code with Numba
+   37. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   37. Optimal Growth III: Time Iteration
+   38. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   38. Optimal Growth IV: The Endogenous Grid Method
+   39. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   39. The Income Fluctuation Problem I: Basic Model
+   40. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   40. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   41. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -2268,37 +2313,37 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   41. Job Search VII: Search with Learning
+   42. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   42. Likelihood Ratio Processes
+   43. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   43. Computing Mean of a Likelihood Ratio Process
+   44. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   44. A Problem that Stumped Milton Friedman
+   45. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   45. Exchangeability and Bayesian Updating
+   46. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   46. Likelihood Ratio Processes and Bayesian Learning
+   47. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   47. Bayesian versus Frequentist Decision Rules
+   48. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -2310,22 +2355,22 @@ function, which we repeat here for convenience:</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   48. LQ Control: Foundations
+   49. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   49. The Permanent Income Model
+   50. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   50. Permanent Income II: LQ Techniques
+   51. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   51. Production Smoothing via Inventories
+   52. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2337,37 +2382,37 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   52. Schelling’s Segregation Model
+   53. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   53. A Lake Model of Employment and Unemployment
+   54. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   54. Rational Expectations Equilibrium
+   55. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   55. Stability in Linear Rational Expectations Models
+   56. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   56. Markov Perfect Equilibrium
+   57. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   57. Uncertainty Traps
+   58. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   58. The Aiyagari Model
+   59. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -2379,17 +2424,17 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   59. Asset Pricing: Finite State Models
+   60. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   60. Competitive equilibria with Arrow securities
+   61. Competitive equilibria with Arrow securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   61. Heterogeneous Beliefs and Bubbles
+   62. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -2401,17 +2446,17 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   62. Pandas for Panel Data
+   63. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   63. Linear Regression in Python
+   64. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   64. Maximum Likelihood Estimation
+   65. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2423,17 +2468,17 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   65. Troubleshooting
+   66. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   66. References
+   67. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   67. Execution Statistics
+   68. Execution Statistics
   </a>
  </li>
 </ul>
