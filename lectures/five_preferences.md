@@ -27,11 +27,11 @@ Two of them also incorporate  **uncertainty aversion**, meaning  dislike of not 
 
 The preference orderings are 
 
-  *  Expected utility preferences
-  *  Constraint preferences
-  *  Multiplier preferences
-  *  Risk-sensitive preferences
-  *  Ex post Bayesian expected utility preferences
+*  Expected utility preferences
+*  Constraint preferences
+*  Multiplier preferences
+*  Risk-sensitive preferences
+*  Ex post Bayesian expected utility preferences
 
 This labeling  scheme is taken from {cite}`HansenSargent2001`.
 
@@ -71,6 +71,7 @@ from numba import njit
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Plotting parameters
 %matplotlib inline
 %config InlineBackend.figure_format='retina'
@@ -93,6 +94,7 @@ mpl.rcParams['font.size'] = text_size
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Useful functions
 @njit
 def ent(π, π_hat):
@@ -143,22 +145,20 @@ def utility_function_factory(α):
         return lambda c: c ** (1 - α) / (1 - α)
 ```
 
-
-
 ## Basic objects
 
 Basic ingredients are 
 
 *  a set of states of the world
 *  plans describing outcomes as functions of the state of the world,
-*  a  utility  function mapping outcomes into utilities
+*  a utility function mapping outcomes into utilities
 *  either a probability distribution or a **set** of probability distributions over states of the world; and 
 *  a way of measuring a discrepancy between two probability distributions.
 
 
 In more detail, we'll work with the following setting.
 
-*  A  finite set of possible **states** ${\cal I} = \{i= 1, \ldots, I\}$.
+*  A finite set of possible **states** ${\cal I} = \{i= 1, \ldots, I\}$.
 *  A (consumption) **plan** is a function $c: {\cal I} \rightarrow {\mathbb R}$.  
 * $u: {\mathbb R} \rightarrow {\mathbb R}$  is a **utility function**.
 * $\pi$ is an $I \times 1$ vector of nonnegative **probabilities** over  states, with $\pi_ i \geq 0, \sum_{i=1}^I \pi_i = 1$.
@@ -172,28 +172,28 @@ $$
 or 
 
 $$
-  \textrm{ent}(\pi, \hat \pi) = \sum_{i=1}^I \pi_i m_i \log m_i  .
+\textrm{ent}(\pi, \hat \pi) = \sum_{i=1}^I \pi_i m_i \log m_i  .
 $$
 
 
 **Remark:** A likelihood ratio $m_i$ is a discrete random variable. For any discrete random variable $\{x_i\}_{i=1}^I$, the expected  value of $x$  under the $\hat \pi_i$ distribution can be represented as the expected  value  under the $\pi$ distribution of the product of  $x_i$ times the `shock'  $m_i$:
 
 $$
- \hat E x = \sum_{i=1}^I x_i \hat \pi_i = \sum_{i=1}^I m_i x_i  \pi_i = E m x ,
- $$
+\hat E x = \sum_{i=1}^I x_i \hat \pi_i = \sum_{i=1}^I m_i x_i  \pi_i = E m x ,
+$$
  
 where $\hat E$ is the mathematical  expectation under the $\hat \pi$ distribution and $E$ is the expectation under the $\pi$ distribution. 
  
 Evidently, 
 
 $$ 
-  \hat E 1 = E m = 1
+\hat E 1 = E m = 1
 $$ 
 
 and relative entropy is 
 
 $$
- E m \log m  = \hat E \log m .
+E m \log m  = \hat E \log m .
 $$
 
 In the three figures below, we plot relative entropy from several perspectives.
@@ -243,7 +243,6 @@ render:
     name: figure1
 ---
 
-
 plt.figure(figsize=(5, 3))
 plt.plot(π_hat_0_vals, ent_vals, color='blue');
 plt.ylabel(r'entropy ($\pi_{1}=%.2f$)' % π[0] );
@@ -259,6 +258,7 @@ The following figure plots  entropy.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Use same grid for `π_0_vals` as for `π_hat_0_vals` 
 π_0_vals = π_hat_0_vals.copy() 
 
@@ -281,6 +281,7 @@ for i in range(π_0_vals.size):  # Loop over all possible values for `π_0`
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 x, y = np.meshgrid(π_0_vals, π_hat_0_vals)
 plt.figure(figsize=(10, 8))
 plt.pcolormesh(x, y, ent_vals_mat.T, cmap='seismic', shading='gouraud')
@@ -296,6 +297,7 @@ The next figure plots  the logarithm of entropy.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Check the point (0.01, 0.9)
 π = np.array([0.01, 0.99])
 π_hat = np.array([0.9, 0.1])
@@ -304,6 +306,7 @@ ent(π, π_hat)
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 plt.figure(figsize=(10, 8))
 plt.pcolormesh(x, y, np.log(ent_vals_mat.T), shading='gouraud', cmap='seismic')
 plt.colorbar()
@@ -317,11 +320,11 @@ plt.show()
 
 We describe five types of preferences over plans.
 
-  * Expected utility preferences 
-  * Constraint preferences
-  * Multiplier preferences
-  * Risk-sensitive preferences
-  * Ex post Bayesian expected utility preferences
+* Expected utility preferences 
+* Constraint preferences
+* Multiplier preferences
+* Risk-sensitive preferences
+* Ex post Bayesian expected utility preferences
 
 
 Expected utility, risk-sensitive, and ex post Bayesian prefernces are  each cast in terms of a unique probability distribution, so they can express risk-aversion, but not model ambiguity aversion. 
@@ -338,10 +341,10 @@ concerns about model misppecification, i.e., model uncertainty;  both are cast  
 A decision maker is said to have **expected utility preferences** when he ranks plans $c$ by their expected utilities 
   
 $$
-        \sum_{i=1}^I u(c_i) \pi_i, 
+\sum_{i=1}^I u(c_i) \pi_i, 
 $$ (tom1)
 
-where $u$ is a unique utility function and $\pi$ is a unique probability measure over     states.
+where $u$ is a unique utility function and $\pi$ is a unique probability measure over states.
 
 * A known $\pi$ expresses risk.
 * Curvature of $u$ expresses
@@ -411,9 +414,9 @@ $$ (tom7)
 
 for $\tilde \theta = \tilde \theta(c; \eta)$.
 
-For a fixed $\eta$, the $\tilde \theta$ that solves equation {eq}`tom7` is    evidently a function of the consumption plan $c$. 
+For a fixed $\eta$, the $\tilde \theta$ that solves equation {eq}`tom7` is evidently a function of the consumption plan $c$. 
 
-With  $\tilde \theta(c;\eta)$ in hand we can obtain worst-case  probabilities as functions $\pi_i\tilde m_i(c;\eta)$ of $\eta$.
+With $\tilde \theta(c;\eta)$ in hand we can obtain worst-case  probabilities as functions $\pi_i\tilde m_i(c;\eta)$ of $\eta$.
 
 The **indirect (expected) utility function** under constraint preferences is
 
@@ -434,7 +437,7 @@ $$
     & = & -\tilde \theta^{-1} \sum_{i=1}^I  \pi_i \left[\frac{\exp(-\tilde \theta^{-1} u(c_i))}
     {\sum_{j=1}^I \exp(-\tilde \theta^{-1} u(c_j) ) \pi_j } \right]    u(c_i)  \cr
     & & + \log \left(\sum_{j=1}^I \exp(-\tilde \theta^{-1} u(c_j) ) \pi_j \right) .
-        \end{aligned}  
+\end{aligned}  
 $$ (tom9)
 
 Expression {eq}`tom9` implies that 
@@ -445,7 +448,7 @@ $$
     \sum_{i=1}^I  \pi_i \left[\frac{\exp(-\tilde \theta^{-1} u(c_i))}
     {\sum_{j=1}^I \exp(-\tilde \theta^{-1} u(c_j) ) \pi_j } \right]    u(c_i) \cr
     &   &   + \tilde \theta (c;\eta) \sum_{i=1}^I \log \tilde m_i(c;\eta) \tilde m_i(c;   \eta) \pi_i ,
-    \end{aligned} 
+\end{aligned} 
 $$ (tom10)
 
 
@@ -498,7 +501,7 @@ If we add $\theta$ times entropy under the worst-case model to expected utility 
 **indirect expected utility function** under multiplier preferences is
 
 $$
-    -  \theta \log \left(\sum_{j=1}^I \exp(- \theta^{-1} u(c_j) ) \pi_j \right) .
+-  \theta \log \left(\sum_{j=1}^I \exp(- \theta^{-1} u(c_j) ) \pi_j \right) .
 $$ (tom13)
 
 ## Risk-sensitive preferences 
@@ -519,12 +522,11 @@ Because risk-sensitive preferences use a unique probability distribution, they a
 
 Instead, they make an additional adjustment for risk-aversion beyond that embedded in the curvature of $u$. 
 
- 
-    
 For $I=2, c_1=2, c_2=1$, $u(c) = \ln c$, the following figure plots the risk-sensitive criterion ${\sf T} u(c)$ defined in    {eq}`tom14` as a function of $\pi_1$ for values of $\theta$ of 100 and .6.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 c_bundle = np.array([2., 1.])  # Consumption bundle
 θ_vals = np.array([100, 0.6])  # Array containing the different values of θ
 u = utility_function_factory(1.)  # Utility function
@@ -550,6 +552,7 @@ for i in range(θ_vals.size):  # Loop over θ values
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 plt.figure(figsize=(10, 8))
 plt.plot(π_0_vals, Tuc_vals[0], label=r'$\theta=100$', color='blue');
 plt.plot(π_0_vals, Tuc_vals[1], label=r'$\theta=0.6$', color='red');
@@ -558,21 +561,17 @@ plt.xlabel(r'$\pi_1$');
 plt.legend();
 ```
 
-
-
-    
 For large values of $\theta$, ${\sf T} u(c)$ is approximately linear in the probability $\pi_1$, but for lower values of $\theta$, ${\sf T} u(c)$ has considerable    curvature as a function of $\pi_1$.
 
 Under expected utility, i.e., $\theta =+\infty$, ${\sf T}u(c)$ is linear in $\pi_1$, but it is convex as a function of $\pi_1$ when $\theta< + \infty$.
-
 
 The two  panels in the next  figure below  can help us to visualize the extra adjustment for risk that the risk-sensitive operator entails.  
 
 This will help us understand  how the $\mathbf{T}$ transformation works by envisioning  what function is being averaged. 
 
-
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Parameter values
 θ= 0.8
 π = np.array([0.5, 0.5])
@@ -609,6 +608,7 @@ third_trnsf_u_c_bundle = -θ * np.log(second_trnsf_u_c_bundle)
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), sharex=True, sharey=True)
 
 ax1.plot(c_grid, u_c_grid, label=r'$\log\left(c\right)$', color='blue')
@@ -665,26 +665,20 @@ The risk-sensitivity operator ${\sf T}$ is intimately connected to a moment gene
 
 In particular, a principal constinuent of the ${\sf T}$ operator, namely,  
 
-$$ 
-
+$$
 E \exp\bigl(-u(c_i)/\theta\bigr) = \sum_{i=1}^I \pi_i \exp\bigl(- u(c_i)/\theta  \bigr)
-
 $$
 
- is evidently a **moment generating function** for the random variable $u(c_i)$, while 
- 
- $$
- 
-  g(\theta^{-1}) \doteq  \log \sum_{i=1}^I \pi_i \exp\bigl(- u(c_i)/\theta  \bigr)
- 
- $$
- 
- is a **cumulant generating function**, 
+is evidently a **moment generating function** for the random variable $u(c_i)$, while 
  
 $$
+g(\theta^{-1}) \doteq  \log \sum_{i=1}^I \pi_i \exp\bigl(- u(c_i)/\theta  \bigr)
+$$
  
- g(\theta^{-1}) = \sum_{j=1}^\infty \kappa_j \frac{{(-\theta^{-1})}^{j}}{j!}. 
+is a **cumulant generating function**, 
  
+$$
+g(\theta^{-1}) = \sum_{j=1}^\infty \kappa_j \frac{{(-\theta^{-1})}^{j}}{j!}. 
 $$ 
 
 where $\kappa_j$ is the $j$th cumulant of the random variable $u(c)$.
@@ -692,9 +686,7 @@ where $\kappa_j$ is the $j$th cumulant of the random variable $u(c)$.
 Then 
 
 $$
-
 {\sf T}u(c) = -\theta g(\theta^{-1}) = -\theta \sum_{j=1}^\infty \kappa_j \frac{{(-\theta^{-1})}^{j}}{j!}.
-
 $$ 
 
 In general, when $\theta < +\infty$, ${\sf T} u(c)$ depends on cumulants of all orders.
@@ -702,11 +694,6 @@ In general, when $\theta < +\infty$, ${\sf T} u(c)$ depends on cumulants of all 
 These statements extend to cases with continuous probability distributions for $c$ and therefore for $u(c)$. 
 
 For the particular case $u(c) \sim {\mathcal N}(\mu_u, \sigma_u^2)$, $\kappa_1 = \mu_u, \kappa_2 = \sigma_u^2,$  and $\kappa_j = 0 \ \forall j \geq 3$, so ${\sf T} u(c) = \mu_u - \frac{1}{2 \theta} \sigma_u^2$, which becomes expected utility $\mu_u$ when $\theta^{-1} = 0$.
-
-
-
-
- 
 
 ## Ex post Bayesian preferences 
 
@@ -720,10 +707,7 @@ where $\hat \pi(c^*)$ is the worst-case probability distribution associated with
 
 At $c^*$, an ex post Bayesian's indifference curves are tangent to those for multiplier and constraint preferences with appropriately chosen $\theta$ and $\eta$, respectively.
 
-
-
 ## Comparing preferences
-
 
 For the special case in which $I=2$, $c_1=2, c_2=1$, $u(c) = \ln c$, and
 $\pi_1 =.5$, the following two figures depict how worst-case
@@ -744,6 +728,7 @@ Unless $u(c_1) = u(c_2)$, the $\hat \pi_1$ that minimizes $\hat E u(c)$ is at th
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Parameter 
 η = 0.25
 π = np.array([0.5, 0.5])
@@ -758,7 +743,6 @@ E_hat_uc = np.empty(π_hat_0_vals.size)
 for i in range(π_hat_0_vals.size):  # Loop over π_hat_0
     # Compute and store \hat{E}[u(c)]
     E_hat_uc[i] = u(c_bundle[1]) + π_hat_0_vals[i] * (u(c_bundle[0]) - u(c_bundle[1]))
-    
 
 # Set up a root finding problem to find the solution to the constraint problem
 # First argument to `root_scalar` is a function that takes a value for π_hat_0 and returns 
@@ -768,6 +752,7 @@ root = optimize.root_scalar(lambda x: ent(π, np.array([x, 1-x])) - η, bracket=
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 plt.figure(figsize=(12, 8))
 plt.plot(π_hat_0_vals, E_hat_uc, label=r'$\hat{E}u\left(c\right)$', color='blue')
 plt.fill_between(π_hat_0_vals, η_line, alpha=0.3, label=r'$\mathrm{ent}\left(\pi,\hat{\pi}\right)\leq\eta$',
@@ -779,17 +764,14 @@ plt.xlabel(r'$\hat{\pi}_1$');
 plt.legend();
 ```
 
-
-
 The next  figure shows the function $\sum_{i=1}^I \pi_i m_i [  u(c_i) + \theta \log m_i ]$ that is to be
 minimized in the multiplier problem.
 
 The argument of the function is  $\hat \pi_1 = m_1 \pi_1$.
 
-
-
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Parameter values
 θ_vals = np.array([0.42, 1.])
 
@@ -811,6 +793,7 @@ for i in range(θ_vals.size):  # Loop over θ values
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 plt.figure(figsize=(12, 8))
 
 # Expected utility values
@@ -841,8 +824,6 @@ plt.xlabel(r'$\hat{\pi}_1$');
 plt.legend();
 ```
 
-
-
 Evidently, from this figure and also from formula {eq}`tom12`, lower values of $\theta$ lead to lower,
 and thus more distorted, minimizing values of $\hat \pi_1$. 
 
@@ -855,7 +836,6 @@ Thus, to draw the figure, we set the penalty parameter for
 multiplier preferences $\theta$ so that the minimizing $\hat \pi_1$
 equals the minimizing $\hat \pi_1$ for the constraint problem from
 the previous figure.
-
 
 The penalty parameter $\theta=.42$ also equals the
 Lagrange multiplier $\tilde \theta$ on the entropy constraint for the
@@ -886,7 +866,6 @@ likelihood ratio $m$, a decrease in $\theta$ represents an **increase** in
 ambiguity (or what {cite}`Knight:1921` called uncertainty) about the specification of the baseline
 approximating model $\{\pi_i\}_{i=1}^I$.
 
-
 Formulas {eq}`tom6`  assert that the decision maker acts as if
 he is pessimistic relative to an approximating model $\pi$. 
 
@@ -914,7 +893,6 @@ decision rules are undominated and therefore admissible.
 
 ## Indifference curves
 
-
 Indifference curves illuminate how concerns about robustness affect
 asset pricing and utility costs of fluctuations. For $I=2$, the slopes
 of the indifference curves for our five preference specifications are
@@ -922,13 +900,13 @@ of the indifference curves for our five preference specifications are
 * Expected utility:
     
     $$
-        \frac{d c_2}{d c_1} = - \frac{\pi_1}{\pi_2}\frac{u'(c_1)}{u'(c_2)}
+    \frac{d c_2}{d c_1} = - \frac{\pi_1}{\pi_2}\frac{u'(c_1)}{u'(c_2)}
     $$
 
 * Constraint and ex post Bayesian preferences:
     
     $$
-        \frac{d c_2}{d c_1} = - \frac{\hat \pi_1}{\hat \pi_2}\frac{u'(c_1)}{u'(c_2)}
+    \frac{d c_2}{d c_1} = - \frac{\hat \pi_1}{\hat \pi_2}\frac{u'(c_1)}{u'(c_2)}
     $$
 
     where $\hat \pi_1, \hat \pi_2$ are the minimizing probabilities
@@ -959,6 +937,7 @@ point along the 45 degree line.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 def multiplier_criterion_factory(θ, π, u):
     """
     Return a function to compute the multiplier preferences objective function parametrized 
@@ -1073,6 +1052,7 @@ def solve_root_problem(problem, u_bar, c_1_grid, method='bisect', bracket=[0.5, 
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Parameters
 c_bundle = np.array([1., 1.])  # Consumption bundle
 u_inv = lambda x: np.exp(x)  # Inverse of the utility function
@@ -1114,6 +1094,7 @@ for i in range(c_1_grid.size):
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 f, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8), sharex=True)
 
 ax1.plot(c_1_grid, c_1_grid, '--', color='black')
@@ -1134,15 +1115,11 @@ ax2.set_xlabel(r'$c_1$')
 ax2.legend();
 ```
 
-
-
 Evidently, for a given $\eta$ and a given $(c_1, c_2)$ off the 45 degree line, by solving
 equations {eq}`tom7` and {eq}`tom20`, we can find $\tilde \theta (\eta, c)$
 and $\tilde \eta(\theta,c)$ that make the indifference curves for 
 multiplier and constraint preferences be tangent to one another at a
 given allocation $c$.
-
-
 
 For fixed $\eta$, a given plan $c$, and
 a utility function increasing in $c$, the worst case probabilities are
@@ -1153,10 +1130,6 @@ The discontinuity in the worst case $\hat \pi_1$ at the 45
 degree line accounts for the kink in the indifference curve for
 constraint preferences associated with a particular positive entropy
 $\eta$. 
-
-
-
-
 
 The code for generating the preceding figure is somewhat intricate we formulate a root finding problem for finding indifference curves.
 
@@ -1185,7 +1158,9 @@ But notice that  equation {eq}`tom7` does not always have a solution.
 
 Under $u=\log$, $c_{1}=c_{2}=1$, we have: 
 
-$$\sum_{i}\pi_{i}\frac{\exp\left(\frac{-u\left(c_{i}\right)}{\tilde{\theta}}\right)}{\sum_{j}\pi_{j}\exp\left(\frac{-u\left(c_{j}\right)}{\tilde{\theta}}\right)}\log\left(\frac{\exp\left(\frac{-u\left(c_{i}\right)}{\tilde{\theta}}\right)}{\sum_{j}\pi_{j}\exp\left(\frac{-u\left(c_{j}\right)}{\tilde{\theta}}\right)}\right)=0$$
+$$
+\sum_{i}\pi_{i}\frac{\exp\left(\frac{-u\left(c_{i}\right)}{\tilde{\theta}}\right)}{\sum_{j}\pi_{j}\exp\left(\frac{-u\left(c_{j}\right)}{\tilde{\theta}}\right)}\log\left(\frac{\exp\left(\frac{-u\left(c_{i}\right)}{\tilde{\theta}}\right)}{\sum_{j}\pi_{j}\exp\left(\frac{-u\left(c_{j}\right)}{\tilde{\theta}}\right)}\right)=0
+$$
 
 **Conjecture:** when our numerical  method fails it  because the derivative of the objective doesn't exist for our choice of  parameters.
 
@@ -1201,6 +1176,7 @@ preferences tangent.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Parameters
 θ = 2.
 η = 0.036
@@ -1277,7 +1253,6 @@ multiplier preferences for a given penalty parameter $\theta$, the
 implied entropy $\tilde \eta$ from equation {eq}`tom20` and the worst-case probabilities both
 change with $(c_1, c_2)$.
 
-
 For constraint preferences, there is a kink in the indifference curve. 
 
 For ex post Bayesian preferences, there are effectively two sets of indifference curves depending on which
@@ -1287,7 +1262,6 @@ There are two sets of indifference curves because, while the worst-case
 probabilities differ above and below the 45 degree line, the idea of ex
 post Bayesian preferences is to use a *single* probability distribution
 to compute expected utilities for all consumption bundles.
-
 
 Indifference curves through point $(c_1, c_2) = (3,1)$ for expected
 logarithmic utility (less curved smooth line), multiplier (more curved
@@ -1310,7 +1284,6 @@ $\sum_{i}^I q_i (c_i - \bar c_i) \leq 0$.
 When a representative consumer has multiplier preferences, the state prices are
 
 $$
-\label{eqn:state_price}
 q_i = \pi_i \hat m_i u'(\bar c_i) = \pi_i \Biggl(\frac{\exp(-u(\bar c_i)/\theta)}{\sum_j  \pi_j \exp(-u(\bar c_j)/\theta)}\Biggr) u'(\bar c_i) .
 $$ (eqn:state_price)
 
@@ -1327,12 +1300,11 @@ In this figure, budget line and indifference curves through point $(c_1, c_2) = 
 for expected logarithmic utility, multiplier, constraint (kinked at 45
 degree line), and *ex post* Bayesian (dotted lines) preferences. 
 
-
-
 ## Figure 2.7
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Parameters
 θ = 2.
 η = 0.036
@@ -1356,6 +1328,7 @@ budget_constraint = slope * c_1_grid + intercept
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 plt.figure(figsize=(10, 8))
 
 plt.plot(c_1_grid, c_1_grid, '--', color='black')
@@ -1370,7 +1343,6 @@ plt.ylim(0.75, 4.)
 plt.xlim(0.75, 4.)
 plt.legend();
 ```
-
 
 Because budget constraints are linear, asset prices are identical under
 multiplier and constraint preferences for which $\theta$ and $\eta$ are
@@ -1391,13 +1363,11 @@ For each of our five types of preferences, the following figure allows us to con
 equivalent point $(c^*, c^*)$ on the 45 degree line that renders the consumer indifferent between it and the risky point
 $(c(1), c(2)) = (3,1)$. 
 
-
-
-
 ## Figure 2.8
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Compute values for the certainty equivalent line 
 intercept = 4.  # Intercept value
 mask = (1. <= c_1_grid) & (c_1_grid <= 3.)  # Mask to keep only data between c_1=1 and c_1=3
@@ -1423,6 +1393,7 @@ fp_cons = optimize.fixed_point(func_approx, x0, args=([c_2_grid_cons]))
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 plt.figure(figsize=(8, 8))
 
 plt.plot(c_1_grid, c_1_grid, '--', color='black')
@@ -1452,8 +1423,6 @@ plt.annotate('D', (fp_cons-0.01, fp_cons+0.06))
 plt.legend();
 ```
 
-
-
 The figure indicates that the certainty equivalent
 level $c^*$ is higher for the consumer with expected utility preferences
 than for the consumer with multiplier preferences, and that it is higher
@@ -1475,8 +1444,6 @@ preference consumer's aversion to model uncertainty.
 The gap between
 points B and D measures the constraint preference consumer's aversion to
 model uncertainty.
-
-
 
 ## Iso-utility and iso-entropy curves and expansion paths
 
@@ -1506,14 +1473,14 @@ meaning that for a given $\theta$ and $(c_1, c_2, c_3)$ triple, the worst-case p
 
 **Color bars:** 
 
- * First color bar: variation in $\theta$  
- * Second color bar: variation in utility levels  
- * Third color bar: variation in entropy levels
-
+* First color bar: variation in $\theta$  
+* Second color bar: variation in utility levels  
+* Third color bar: variation in entropy levels
 
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Plotting functions
 def make_segments(x, y):
     '''
@@ -1556,6 +1523,7 @@ def colorline(x, y, z=None, cmap=plt.get_cmap('copper'), norm=plt.Normalize(0.0,
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Parameters
 π_1 = 0.3
 π_2 = 0.4
@@ -1624,6 +1592,7 @@ def contour_plot(α, π_vals_nb=200, levels_nb=20, min_π_val=1e-8):
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 α = 0.
 
 contour_plot(α)
@@ -1632,14 +1601,11 @@ contour_plot(α)
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 α = 3.
 
 contour_plot(α)
 ```
-
-
-
-
 
 ## Bounds on expected utility
 
@@ -1656,14 +1622,13 @@ string of inequalities associated with multiplier preferences:
 
 
 $$
-
 \begin{aligned}
 {\sf T}_\theta u(c) & = & -\theta \log \sum_{i=1}^I \exp\Biggl(\frac{-u(c_i)}{\theta}\Biggr) \pi_i \nonumber \\
     & = & \sum_{i=1}^I m_i^* \pi_i \bigl( u(c_i) + \theta \log m_i^* \bigr) \nonumber \\
     & \leq & \sum_{i=1}^I m_i \pi_i u(c_i) + \theta \sum_{i=1}^i m_i \log m_i \pi_i
 \end{aligned}
-    
 $$
+
 where $m_i^* \propto \exp \Bigl( \frac{- u(c_i)}{\theta} \Bigr)$ are the
 worst-case distortions to probabilities.
 
@@ -1672,11 +1637,8 @@ The inequality in the last line just asserts that minimizers minimize.
 Therefore, we have the following useful bound:
 
 $$
-
- \sum_{i=1}^I m_i \pi_i u(c_i ) \geq {\sf T}_\theta u(c) - \theta \sum_{i=1}^I \pi_i m_i \log m_i .
-
+\sum_{i=1}^I m_i \pi_i u(c_i ) \geq {\sf T}_\theta u(c) - \theta \sum_{i=1}^I \pi_i m_i \log m_i .
 $$ (eqn:bound1)
-
 
 The left side is expected utility under the probability distribution $\{ m_i \pi_i\}$. 
 
@@ -1690,22 +1652,20 @@ The *intercept* in the bound is the risk-sensitive criterion ${\sf T}_\theta u(c
 
 Lowering $\theta$ does two things:
 
- * it lowers the intercept ${\sf T}_\theta u(c)$, which makes the bound less informative for small
+* it lowers the intercept ${\sf T}_\theta u(c)$, which makes the bound less informative for small
 values of entropy; and
 
- * it lowers the absolute value of the slope, which makes the bound more informative for larger values of relative
+* it lowers the absolute value of the slope, which makes the bound more informative for larger values of relative
 entropy $\sum_{i=1}^I \pi_i m_i \log m_i$.
-
 
 The following figure reports  best-case and worst-case expected utilities.
 
 We calculate the lines in this figure  numerically by solving optimization problems with respect to the change of measure.
 
 
-
-
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Parameters
 α = 3
 u = utility_function_factory(α)
@@ -1785,6 +1745,7 @@ for i in range(η_vals_nb):
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 # Compute lower bound line
 θ = 1.269230769133136
 T_θ = T_θ_factory(θ, π_base)
@@ -1794,6 +1755,7 @@ lower_bound = intercept - θ * η_vals
 
 ```{code-cell} ipython3
 :tags: [hide-input]
+
 plt.figure(figsize=(8, 6))
 plt.plot(η_vals, min_EU, color='blue')
 plt.plot(η_vals, max_EU, color='blue')
@@ -1957,8 +1919,6 @@ ax.legend(lns, labs, loc=0);
 rc('text',usetex=True)
 ```
 
-
-
 The density for the approximating model is
 $\log c_{t+1} - \log c_t = \mu + \sigma_c \epsilon_{t+1}$ where
 $\epsilon_{t+1} \sim {\cal N}(0,1)$ and $\mu$ and $\sigma_c$ are
@@ -1969,7 +1929,6 @@ $\log c_{t+1} - \log c_t = (\mu + \sigma_c w)  + \sigma_c \tilde \epsilon_{t+1}$
 where $\{\tilde \epsilon_{t+1}\}$ is also a normalized Gaussian random
 sequence and where $w$ is calculated by setting a detection error
 probability to $.05$. The worst-case model appears to fit the histogram nearly as well as the approximating model.
-
 
 ### Axiomatic justifications
 
@@ -1982,6 +1941,3 @@ express ambiguity aversion.
 
 Constraint preferences are particular
 instances of the multiple priors model of {cite}`GilboaSchmeidler:1989`.
-
-
-
