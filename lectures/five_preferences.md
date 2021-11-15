@@ -71,6 +71,7 @@ from numba import njit
 
 ```{code-cell} python3
 :tags: [hide-input]
+
 # Plotting parameters
 %matplotlib inline
 %config InlineBackend.figure_format='retina'
@@ -93,6 +94,7 @@ mpl.rcParams['font.size'] = text_size
 
 ```{code-cell} python3
 :tags: [hide-input]
+
 # Useful functions
 @njit
 def ent(π, π_hat):
