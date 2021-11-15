@@ -245,14 +245,13 @@ plt.xlabel(r'$\hat{\pi}_1$');
 plt.show()
 ```
 
-
-
 The heat maps in  the next two  figures vary both $\hat{\pi}_1$ and $\pi_1$.
 
 The following figure plots entropy.  
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 # Use same grid for `π_0_vals` as for `π_hat_0_vals` 
 π_0_vals = π_hat_0_vals.copy() 
 
@@ -275,6 +274,7 @@ for i in range(π_0_vals.size):  # Loop over all possible values for `π_0`
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 x, y = np.meshgrid(π_0_vals, π_hat_0_vals)
 plt.figure(figsize=(10, 8))
 plt.pcolormesh(x, y, ent_vals_mat.T, cmap='seismic', shading='gouraud')
@@ -290,6 +290,7 @@ The next figure plots  the logarithm of entropy.
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 # Check the point (0.01, 0.9)
 π = np.array([0.01, 0.99])
 π_hat = np.array([0.9, 0.1])
@@ -298,6 +299,7 @@ ent(π, π_hat)
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 plt.figure(figsize=(10, 8))
 plt.pcolormesh(x, y, np.log(ent_vals_mat.T), shading='gouraud', cmap='seismic')
 plt.colorbar()
@@ -311,11 +313,11 @@ plt.show()
 
 We describe five types of preferences over plans.
 
-  * Expected utility preferences 
-  * Constraint preferences
-  * Multiplier preferences
-  * Risk-sensitive preferences
-  * Ex post Bayesian expected utility preferences
+* Expected utility preferences 
+* Constraint preferences
+* Multiplier preferences
+* Risk-sensitive preferences
+* Ex post Bayesian expected utility preferences
 
 
 Expected utility, risk-sensitive, and ex post Bayesian prefernces are  each cast in terms of a unique probability distribution, so they can express risk-aversion, but not model ambiguity aversion. 
@@ -519,6 +521,7 @@ For $I=2, c_1=2, c_2=1$, $u(c) = \ln c$, the following figure plots the risk-sen
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 c_bundle = np.array([2., 1.])  # Consumption bundle
 θ_vals = np.array([100, 0.6])  # Array containing the different values of θ
 u = utility_function_factory(1.)  # Utility function
@@ -544,6 +547,7 @@ for i in range(θ_vals.size):  # Loop over θ values
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 plt.figure(figsize=(10, 8))
 plt.plot(π_0_vals, Tuc_vals[0], label=r'$\theta=100$', color='blue');
 plt.plot(π_0_vals, Tuc_vals[1], label=r'$\theta=0.6$', color='red');
@@ -567,6 +571,7 @@ This will help us understand  how the $\mathbf{T}$ transformation works by envis
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 # Parameter values
 θ= 0.8
 π = np.array([0.5, 0.5])
@@ -603,6 +608,7 @@ third_trnsf_u_c_bundle = -θ * np.log(second_trnsf_u_c_bundle)
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), sharex=True, sharey=True)
 
 ax1.plot(c_grid, u_c_grid, label=r'$\log\left(c\right)$', color='blue')
@@ -726,6 +732,7 @@ Unless $u(c_1) = u(c_2)$, the $\hat \pi_1$ that minimizes $\hat E u(c)$ is at th
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 # Parameter 
 η = 0.25
 π = np.array([0.5, 0.5])
@@ -750,6 +757,7 @@ root = optimize.root_scalar(lambda x: ent(π, np.array([x, 1-x])) - η, bracket=
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 plt.figure(figsize=(12, 8))
 plt.plot(π_hat_0_vals, E_hat_uc, label=r'$\hat{E}u\left(c\right)$', color='blue')
 plt.fill_between(π_hat_0_vals, η_line, alpha=0.3, label=r'$\mathrm{ent}\left(\pi,\hat{\pi}\right)\leq\eta$',
@@ -772,6 +780,7 @@ The argument of the function is  $\hat \pi_1 = m_1 \pi_1$.
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 # Parameter values
 θ_vals = np.array([0.42, 1.])
 
@@ -793,6 +802,7 @@ for i in range(θ_vals.size):  # Loop over θ values
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 plt.figure(figsize=(12, 8))
 
 # Expected utility values
@@ -941,6 +951,7 @@ point along the 45 degree line.
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 def multiplier_criterion_factory(θ, π, u):
     """
     Return a function to compute the multiplier preferences objective function parametrized 
@@ -1055,6 +1066,7 @@ def solve_root_problem(problem, u_bar, c_1_grid, method='bisect', bracket=[0.5, 
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 # Parameters
 c_bundle = np.array([1., 1.])  # Consumption bundle
 u_inv = lambda x: np.exp(x)  # Inverse of the utility function
@@ -1096,6 +1108,7 @@ for i in range(c_1_grid.size):
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 f, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8), sharex=True)
 
 ax1.plot(c_1_grid, c_1_grid, '--', color='black')
@@ -1185,6 +1198,7 @@ preferences tangent.
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 # Parameters
 θ = 2.
 η = 0.036
@@ -1316,6 +1330,7 @@ degree line), and *ex post* Bayesian (dotted lines) preferences.
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 # Parameters
 θ = 2.
 η = 0.036
@@ -1339,6 +1354,7 @@ budget_constraint = slope * c_1_grid + intercept
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 plt.figure(figsize=(10, 8))
 
 plt.plot(c_1_grid, c_1_grid, '--', color='black')
@@ -1381,6 +1397,7 @@ $(c(1), c(2)) = (3,1)$.
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 # Compute values for the certainty equivalent line 
 intercept = 4.  # Intercept value
 mask = (1. <= c_1_grid) & (c_1_grid <= 3.)  # Mask to keep only data between c_1=1 and c_1=3
@@ -1406,6 +1423,7 @@ fp_cons = optimize.fixed_point(func_approx, x0, args=([c_2_grid_cons]))
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 plt.figure(figsize=(8, 8))
 
 plt.plot(c_1_grid, c_1_grid, '--', color='black')
@@ -1489,14 +1507,14 @@ meaning that for a given $\theta$ and $(c_1, c_2, c_3)$ triple, the worst-case p
 
 **Color bars:** 
 
- * First color bar: variation in $\theta$  
- * Second color bar: variation in utility levels  
- * Third color bar: variation in entropy levels
-
+* First color bar: variation in $\theta$  
+* Second color bar: variation in utility levels  
+* Third color bar: variation in entropy levels
 
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 # Plotting functions
 def make_segments(x, y):
     '''
@@ -1539,6 +1557,7 @@ def colorline(x, y, z=None, cmap=plt.get_cmap('copper'), norm=plt.Normalize(0.0,
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 # Parameters
 π_1 = 0.3
 π_2 = 0.4
@@ -1607,6 +1626,7 @@ def contour_plot(α, π_vals_nb=200, levels_nb=20, min_π_val=1e-8):
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 α = 0.
 
 contour_plot(α)
@@ -1615,6 +1635,7 @@ contour_plot(α)
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 α = 3.
 
 contour_plot(α)
@@ -1686,6 +1707,7 @@ We calculate the lines in this figure  numerically by solving optimization probl
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 # Parameters
 α = 3
 u = utility_function_factory(α)
@@ -1745,6 +1767,7 @@ def max_obj_wrapper(m_0_and_1, η):
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 method = 'Nelder-Mead'
 m_0_and_1 = np.ones(2)  # Initial guess
 
@@ -1765,6 +1788,7 @@ for i in range(η_vals_nb):
 
 ```{code-cell} ipython
 :tags: [hide-input]
+
 # Compute lower bound line
 θ = 1.269230769133136
 T_θ = T_θ_factory(θ, π_base)
