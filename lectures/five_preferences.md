@@ -1300,7 +1300,7 @@ In this figure, budget line and indifference curves through point $(c_1, c_2) = 
 for expected logarithmic utility, multiplier, constraint (kinked at 45
 degree line), and *ex post* Bayesian (dotted lines) preferences. 
 
-## Figure 2.7
+**Figure 2.7:**
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -1357,13 +1357,13 @@ consumption compensations of the kind that {cite}`Lucas1987`,
 business cycles must differ. 
 
 
-#### Consumption-equivalent measures of uncertainty aversion
+### Consumption-equivalent measures of uncertainty aversion
 
 For each of our five types of preferences, the following figure allows us to construct a certainty
 equivalent point $(c^*, c^*)$ on the 45 degree line that renders the consumer indifferent between it and the risky point
 $(c(1), c(2)) = (3,1)$. 
 
-## Figure 2.8
+**Figure 2.8:**
 
 ```{code-cell} ipython3
 :tags: [hide-input]
