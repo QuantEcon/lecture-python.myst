@@ -172,28 +172,28 @@ $$
 or 
 
 $$
-  \textrm{ent}(\pi, \hat \pi) = \sum_{i=1}^I \pi_i m_i \log m_i  .
+\textrm{ent}(\pi, \hat \pi) = \sum_{i=1}^I \pi_i m_i \log m_i  .
 $$
 
 
 **Remark:** A likelihood ratio $m_i$ is a discrete random variable. For any discrete random variable $\{x_i\}_{i=1}^I$, the expected  value of $x$  under the $\hat \pi_i$ distribution can be represented as the expected  value  under the $\pi$ distribution of the product of  $x_i$ times the `shock'  $m_i$:
 
 $$
- \hat E x = \sum_{i=1}^I x_i \hat \pi_i = \sum_{i=1}^I m_i x_i  \pi_i = E m x ,
- $$
+\hat E x = \sum_{i=1}^I x_i \hat \pi_i = \sum_{i=1}^I m_i x_i  \pi_i = E m x ,
+$$
  
 where $\hat E$ is the mathematical  expectation under the $\hat \pi$ distribution and $E$ is the expectation under the $\pi$ distribution. 
  
 Evidently, 
 
 $$ 
-  \hat E 1 = E m = 1
+\hat E 1 = E m = 1
 $$ 
 
 and relative entropy is 
 
 $$
- E m \log m  = \hat E \log m .
+E m \log m  = \hat E \log m .
 $$
 
 In the three figures below, we plot relative entropy from several perspectives.
@@ -338,7 +338,7 @@ concerns about model misppecification, i.e., model uncertainty;  both are cast  
 A decision maker is said to have **expected utility preferences** when he ranks plans $c$ by their expected utilities 
   
 $$
-        \sum_{i=1}^I u(c_i) \pi_i, 
+\sum_{i=1}^I u(c_i) \pi_i, 
 $$ (tom1)
 
 where $u$ is a unique utility function and $\pi$ is a unique probability measure over     states.
@@ -390,7 +390,7 @@ The minimizing probability distortions (likelihood ratios) are
 $$
 \tilde m_i(c;\tilde \theta)
 = \frac{ \exp \bigl(- u(c_i)/\tilde \theta\bigr)}{\sum_j \pi_j \exp \bigl(- u(c_j) /\tilde \theta\bigr) } .
-$$  (tom6)
+$$ (tom6)
 
 
 
@@ -419,7 +419,7 @@ The **indirect (expected) utility function** under constraint preferences is
 
 $$
 \sum_{i=1}^I   \pi_i \tilde m_i(c_i;\eta) u(c_i) = \sum_{i=1}^I  \pi_i \left[\frac{\exp(-\tilde \theta^{-1} u(c_i))}
-    {\sum_{j=1}^I \exp(-\tilde \theta^{-1} u(c_j) ) \pi_j } \right]    u(c_i) .
+{\sum_{j=1}^I \exp(-\tilde \theta^{-1} u(c_j) ) \pi_j } \right]    u(c_i) .
 $$ (tom8)
 
 Entropy evaluated at the minimizing probability distortion
@@ -666,25 +666,19 @@ The risk-sensitivity operator ${\sf T}$ is intimately connected to a moment gene
 In particular, a principal constinuent of the ${\sf T}$ operator, namely,  
 
 $$ 
-
 E \exp\bigl(-u(c_i)/\theta\bigr) = \sum_{i=1}^I \pi_i \exp\bigl(- u(c_i)/\theta  \bigr)
-
 $$
 
- is evidently a **moment generating function** for the random variable $u(c_i)$, while 
+is evidently a **moment generating function** for the random variable $u(c_i)$, while 
  
- $$
- 
-  g(\theta^{-1}) \doteq  \log \sum_{i=1}^I \pi_i \exp\bigl(- u(c_i)/\theta  \bigr)
- 
- $$
+$$
+g(\theta^{-1}) \doteq  \log \sum_{i=1}^I \pi_i \exp\bigl(- u(c_i)/\theta  \bigr)
+$$
  
  is a **cumulant generating function**, 
  
 $$
- 
- g(\theta^{-1}) = \sum_{j=1}^\infty \kappa_j \frac{{(-\theta^{-1})}^{j}}{j!}. 
- 
+g(\theta^{-1}) = \sum_{j=1}^\infty \kappa_j \frac{{(-\theta^{-1})}^{j}}{j!}.  
 $$ 
 
 where $\kappa_j$ is the $j$th cumulant of the random variable $u(c)$.
@@ -692,9 +686,7 @@ where $\kappa_j$ is the $j$th cumulant of the random variable $u(c)$.
 Then 
 
 $$
-
 {\sf T}u(c) = -\theta g(\theta^{-1}) = -\theta \sum_{j=1}^\infty \kappa_j \frac{{(-\theta^{-1})}^{j}}{j!}.
-
 $$ 
 
 In general, when $\theta < +\infty$, ${\sf T} u(c)$ depends on cumulants of all orders.
@@ -703,10 +695,6 @@ These statements extend to cases with continuous probability distributions for $
 
 For the particular case $u(c) \sim {\mathcal N}(\mu_u, \sigma_u^2)$, $\kappa_1 = \mu_u, \kappa_2 = \sigma_u^2,$  and $\kappa_j = 0 \ \forall j \geq 3$, so ${\sf T} u(c) = \mu_u - \frac{1}{2 \theta} \sigma_u^2$, which becomes expected utility $\mu_u$ when $\theta^{-1} = 0$.
 
-
-
-
- 
 
 ## Ex post Bayesian preferences 
 
@@ -922,13 +910,13 @@ of the indifference curves for our five preference specifications are
 * Expected utility:
     
     $$
-        \frac{d c_2}{d c_1} = - \frac{\pi_1}{\pi_2}\frac{u'(c_1)}{u'(c_2)}
+    \frac{d c_2}{d c_1} = - \frac{\pi_1}{\pi_2}\frac{u'(c_1)}{u'(c_2)}
     $$
 
 * Constraint and ex post Bayesian preferences:
     
     $$
-        \frac{d c_2}{d c_1} = - \frac{\hat \pi_1}{\hat \pi_2}\frac{u'(c_1)}{u'(c_2)}
+    \frac{d c_2}{d c_1} = - \frac{\hat \pi_1}{\hat \pi_2}\frac{u'(c_1)}{u'(c_2)}
     $$
 
     where $\hat \pi_1, \hat \pi_2$ are the minimizing probabilities
@@ -1185,7 +1173,9 @@ But notice that  equation {eq}`tom7` does not always have a solution.
 
 Under $u=\log$, $c_{1}=c_{2}=1$, we have: 
 
-$$\sum_{i}\pi_{i}\frac{\exp\left(\frac{-u\left(c_{i}\right)}{\tilde{\theta}}\right)}{\sum_{j}\pi_{j}\exp\left(\frac{-u\left(c_{j}\right)}{\tilde{\theta}}\right)}\log\left(\frac{\exp\left(\frac{-u\left(c_{i}\right)}{\tilde{\theta}}\right)}{\sum_{j}\pi_{j}\exp\left(\frac{-u\left(c_{j}\right)}{\tilde{\theta}}\right)}\right)=0$$
+$$
+\sum_{i}\pi_{i}\frac{\exp\left(\frac{-u\left(c_{i}\right)}{\tilde{\theta}}\right)}{\sum_{j}\pi_{j}\exp\left(\frac{-u\left(c_{j}\right)}{\tilde{\theta}}\right)}\log\left(\frac{\exp\left(\frac{-u\left(c_{i}\right)}{\tilde{\theta}}\right)}{\sum_{j}\pi_{j}\exp\left(\frac{-u\left(c_{j}\right)}{\tilde{\theta}}\right)}\right)=0
+$$
 
 **Conjecture:** when our numerical  method fails it  because the derivative of the objective doesn't exist for our choice of  parameters.
 
@@ -1310,7 +1300,6 @@ $\sum_{i}^I q_i (c_i - \bar c_i) \leq 0$.
 When a representative consumer has multiplier preferences, the state prices are
 
 $$
-\label{eqn:state_price}
 q_i = \pi_i \hat m_i u'(\bar c_i) = \pi_i \Biggl(\frac{\exp(-u(\bar c_i)/\theta)}{\sum_j  \pi_j \exp(-u(\bar c_j)/\theta)}\Biggr) u'(\bar c_i) .
 $$ (eqn:state_price)
 
@@ -1656,14 +1645,13 @@ string of inequalities associated with multiplier preferences:
 
 
 $$
-
 \begin{aligned}
 {\sf T}_\theta u(c) & = & -\theta \log \sum_{i=1}^I \exp\Biggl(\frac{-u(c_i)}{\theta}\Biggr) \pi_i \nonumber \\
     & = & \sum_{i=1}^I m_i^* \pi_i \bigl( u(c_i) + \theta \log m_i^* \bigr) \nonumber \\
     & \leq & \sum_{i=1}^I m_i \pi_i u(c_i) + \theta \sum_{i=1}^i m_i \log m_i \pi_i
-\end{aligned}
-    
+\end{aligned}  
 $$
+
 where $m_i^* \propto \exp \Bigl( \frac{- u(c_i)}{\theta} \Bigr)$ are the
 worst-case distortions to probabilities.
 
@@ -1672,9 +1660,7 @@ The inequality in the last line just asserts that minimizers minimize.
 Therefore, we have the following useful bound:
 
 $$
-
- \sum_{i=1}^I m_i \pi_i u(c_i ) \geq {\sf T}_\theta u(c) - \theta \sum_{i=1}^I \pi_i m_i \log m_i .
-
+\sum_{i=1}^I m_i \pi_i u(c_i ) \geq {\sf T}_\theta u(c) - \theta \sum_{i=1}^I \pi_i m_i \log m_i .
 $$ (eqn:bound1)
 
 
@@ -1690,10 +1676,10 @@ The *intercept* in the bound is the risk-sensitive criterion ${\sf T}_\theta u(c
 
 Lowering $\theta$ does two things:
 
- * it lowers the intercept ${\sf T}_\theta u(c)$, which makes the bound less informative for small
+* it lowers the intercept ${\sf T}_\theta u(c)$, which makes the bound less informative for small
 values of entropy; and
 
- * it lowers the absolute value of the slope, which makes the bound more informative for larger values of relative
+* it lowers the absolute value of the slope, which makes the bound more informative for larger values of relative
 entropy $\sum_{i=1}^I \pi_i m_i \log m_i$.
 
 
