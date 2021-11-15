@@ -54,7 +54,7 @@ We begin with some that we'll use to create some graphs.
 
 
 
-```{code-cell} ipython
+```{code-cell} python3
 # Package imports
 import numpy as np
 import matplotlib as mpl
@@ -69,7 +69,7 @@ from matplotlib.colors import ListedColormap, BoundaryNorm
 from numba import njit
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 # Plotting parameters
 %matplotlib inline
@@ -91,7 +91,7 @@ mpl.rcParams['legend.fontsize'] = legend_size
 mpl.rcParams['font.size'] = text_size
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 # Useful functions
 @njit
@@ -207,7 +207,7 @@ However, when $\pi_1=0$ or $\pi_1=1$, entropy  is infinite.
 
 
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Specify baseline probability vector `π`
@@ -235,7 +235,7 @@ for i in range(π_hat_0_vals.size):  # Loop over all possible values for `π_hat
 
 ### Figure 1
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 plt.figure(figsize=(5, 3))
@@ -249,7 +249,7 @@ The heat maps in  the next two  figures vary both $\hat{\pi}_1$ and $\pi_1$.
 
 The following figure plots entropy.  
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Use same grid for `π_0_vals` as for `π_hat_0_vals` 
@@ -272,7 +272,7 @@ for i in range(π_0_vals.size):  # Loop over all possible values for `π_0`
         ent_vals_mat[i, j] = ent(π, π_hat)
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 x, y = np.meshgrid(π_0_vals, π_hat_0_vals)
@@ -288,7 +288,7 @@ plt.show()
 
 The next figure plots  the logarithm of entropy.
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Check the point (0.01, 0.9)
@@ -297,7 +297,7 @@ The next figure plots  the logarithm of entropy.
 ent(π, π_hat)
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 plt.figure(figsize=(10, 8))
@@ -519,7 +519,7 @@ Instead, they make an additional adjustment for risk-aversion beyond that embedd
     
 For $I=2, c_1=2, c_2=1$, $u(c) = \ln c$, the following figure plots the risk-sensitive criterion ${\sf T} u(c)$ defined in    {eq}`tom14` as a function of $\pi_1$ for values of $\theta$ of 100 and .6.
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 c_bundle = np.array([2., 1.])  # Consumption bundle
@@ -545,7 +545,7 @@ for i in range(θ_vals.size):  # Loop over θ values
         Tuc_vals[i, j] = Tu(c_bundle)
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 plt.figure(figsize=(10, 8))
@@ -569,7 +569,7 @@ The two  panels in the next  figure below  can help us to visualize the extra ad
 This will help us understand  how the $\mathbf{T}$ transformation works by envisioning  what function is being averaged. 
 
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Parameter values
@@ -606,7 +606,7 @@ second_trnsf_u_c_bundle = np.sum(π * first_trnsf_u_c_bundle)
 third_trnsf_u_c_bundle = -θ * np.log(second_trnsf_u_c_bundle)
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), sharex=True, sharey=True)
@@ -730,7 +730,7 @@ entropy curve lies below the horizontal dotted line at an entropy level of $\eta
 Unless $u(c_1) = u(c_2)$, the $\hat \pi_1$ that minimizes $\hat E u(c)$ is at the boundary of the set $\hat \Pi_1$.
 
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Parameter 
@@ -755,7 +755,7 @@ for i in range(π_hat_0_vals.size):  # Loop over π_hat_0
 root = optimize.root_scalar(lambda x: ent(π, np.array([x, 1-x])) - η, bracket=[1e-4, 0.5]).root
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 plt.figure(figsize=(12, 8))
@@ -778,7 +778,7 @@ The argument of the function is  $\hat \pi_1 = m_1 \pi_1$.
 
 
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Parameter values
@@ -800,7 +800,7 @@ for i in range(θ_vals.size):  # Loop over θ values
         multi_crit_vals[i, j] = np.sum(π_hat * (u(c_bundle) + θ_vals[i] * np.log(m_i)))
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 plt.figure(figsize=(12, 8))
@@ -949,7 +949,7 @@ The following figure shows indifference curves going through a
 point along the 45 degree line. 
 
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 def multiplier_criterion_factory(θ, π, u):
@@ -1064,7 +1064,7 @@ def solve_root_problem(problem, u_bar, c_1_grid, method='bisect', bracket=[0.5, 
     return c_2_grid
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Parameters
@@ -1106,7 +1106,7 @@ for i in range(c_1_grid.size):
 θs[~np.isfinite(c_2_grid_cons)] = np.nan
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 f, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8), sharex=True)
@@ -1196,7 +1196,7 @@ set to render the indifference curves for constraint and multiplier
 preferences tangent.
 
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Parameters
@@ -1239,7 +1239,7 @@ for i in range(c_1_grid.size):
 θs[~np.isfinite(c_2_grid_cons)] = np.nan
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 f, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8), sharex=True)
 
@@ -1328,7 +1328,7 @@ degree line), and *ex post* Bayesian (dotted lines) preferences.
 
 ## Figure 2.7
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Parameters
@@ -1352,7 +1352,7 @@ slope = -q[0] / q[1]
 budget_constraint = slope * c_1_grid + intercept
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 plt.figure(figsize=(10, 8))
@@ -1395,7 +1395,7 @@ $(c(1), c(2)) = (3,1)$.
 
 ## Figure 2.8
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Compute values for the certainty equivalent line 
@@ -1421,7 +1421,7 @@ fp_mult = optimize.fixed_point(func_approx, x0, args=([c_2_grid_mult]))
 fp_cons = optimize.fixed_point(func_approx, x0, args=([c_2_grid_cons]))
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 plt.figure(figsize=(8, 8))
@@ -1512,7 +1512,7 @@ meaning that for a given $\theta$ and $(c_1, c_2, c_3)$ triple, the worst-case p
 * Third color bar: variation in entropy levels
 
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Plotting functions
@@ -1555,7 +1555,7 @@ def colorline(x, y, z=None, cmap=plt.get_cmap('copper'), norm=plt.Normalize(0.0,
     return lc
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Parameters
@@ -1624,7 +1624,7 @@ def contour_plot(α, π_vals_nb=200, levels_nb=20, min_π_val=1e-8):
     plt.ylabel(r'$\hat{\pi}_{2}$')
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 α = 0.
@@ -1633,7 +1633,7 @@ contour_plot(α)
 ```
 
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 α = 3.
@@ -1705,7 +1705,7 @@ We calculate the lines in this figure  numerically by solving optimization probl
 
 
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Parameters
@@ -1765,7 +1765,7 @@ def max_obj_wrapper(m_0_and_1, η):
         return obj_val
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 method = 'Nelder-Mead'
@@ -1786,7 +1786,7 @@ for i in range(η_vals_nb):
         max_EU[i] = -opt_res.fun
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Compute lower bound line
@@ -1796,7 +1796,7 @@ intercept = T_θ(u)(c_bundle)
 lower_bound = intercept - θ * η_vals
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 plt.figure(figsize=(8, 6))
 plt.plot(η_vals, min_EU, color='blue')
@@ -1904,7 +1904,7 @@ aversion associated with a logarithmic one-period utility function.
 
 
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Load data
@@ -1916,7 +1916,7 @@ data = loadmat('dataBHS.mat')
 μ_c_tilde = μ_c - σ_c * 0.304569723799467
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 # Compute consumption growth
@@ -1938,7 +1938,7 @@ approx = stats.norm(loc=μ_c, scale=σ_c).pdf(pdf_x)
 worst_case = stats.norm(loc=μ_c_tilde, scale=σ_c).pdf(pdf_x)
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 fig = plt.figure(figsize=(10, 8))
@@ -1955,7 +1955,7 @@ labs = [l.get_label() for l in lns]
 ax.legend(lns, labs, loc=0);
 ```
 
-```{code-cell} ipython
+```{code-cell} python3
 :tags: [hide-input]
 
 rc('text',usetex=True)
