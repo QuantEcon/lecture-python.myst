@@ -51,6 +51,7 @@ jobs:
           jb build lectures --builder pdflatex --path-output ./ -n --keep-going
           mkdir -p _build/html/_pdf
           cp -u _build/latex/*.pdf _build/html/_pdf
+          rm /home/runner/.cache/matplotlib/tex.cache/*
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
         run: |
