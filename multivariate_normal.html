@@ -9,43 +9,25 @@
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    
-        <script>
-            MathJax = {
-            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
-            tex: {
-                packages: {'[+]': ['boldsymbol', 'textmacros']},
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                processEscapes: true,
-                macros: {
-                    "argmax" : "arg\\,max",
-                    "argmin" : "arg\\,min",
-                    "col"    : "col",
-                    "Span"   :  "span",
-                    "epsilon": "\\varepsilon",
-                    "EE": "\\mathbb{E}",
-                    "PP": "\\mathbb{P}",
-                    "RR": "\\mathbb{R}",
-                    "NN": "\\mathbb{N}",
-                    "ZZ": "\\mathbb{Z}",
-                    "aA": "\\mathcal{A}",
-                    "bB": "\\mathcal{B}",
-                    "cC": "\\mathcal{C}",
-                    "dD": "\\mathcal{D}",
-                    "eE": "\\mathcal{E}",
-                    "fF": "\\mathcal{F}",
-                    "gG": "\\mathcal{G}",
-                    "hH": "\\mathcal{H}",
-                }
-            },
-            svg: {
-                fontCache: 'global',
-                scale: 0.92,
-                displayAlign: "center",
-            },
-            };
-        </script>
-    
+    <script>
+        MathJax = {
+          loader: {load: ['[tex]/boldsymbol']},
+          tex: {
+            packages: {'[+]': ['boldsymbol']},
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            processEscapes: true,
+            macros: {
+                "argmax" : "arg\\,max",
+                "argmin" : "arg\\,min"
+            }
+          },
+          svg: {
+            fontCache: 'global',
+            scale: 0.92,
+            displayAlign: "center",
+          },
+        };
+    </script>
     
     
   <link href="_static/css/theme.css" rel="stylesheet">
@@ -63,7 +45,7 @@
       
 
     
-    <link rel="stylesheet" href="_static/quantecon-book-theme.857ff391aaabaeb8c161d2309c375fe6.css" type="text/css" />
+    <link rel="stylesheet" href="_static/quantecon-book-theme.b2c9c855ebbf206c0b4223812193cad1.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -85,7 +67,7 @@
     <script src="_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script src="_static/quantecon-book-theme.76bf49d7bbc59738cdb03766fad654af.js"></script>
+    <script src="_static/quantecon-book-theme.a5462485f8dd312884626d20cc9f547c.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
@@ -952,7 +934,7 @@ estimate on <span class="math notranslate nohighlight">\(z_2 - \mu_2\)</span></p
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.2]]), array([0.1996826]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.2]]), array([0.19816092]))
 </pre></div>
 </div>
 </div>
@@ -966,7 +948,7 @@ degrees-of-freedom adjusted estimate of the variance of <span class="math notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.96]]), 0.9592014785103599)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.96]]), 0.9625672475792763)
 </pre></div>
 </div>
 </div>
@@ -980,7 +962,7 @@ compare it with <span class="math notranslate nohighlight">\(\hat{\mu}_1\)</span
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([1.]), array([0.99841302]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([1.]), array([0.9908046]))
 </pre></div>
 </div>
 </div>
@@ -1012,10 +994,10 @@ Numbers.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.7741472 , 0.04486051, 0.47978784]),
- array([[0.86931087, 0.6238465 , 0.28339707],
-        [0.6238465 , 0.4856893 , 0.23005175],
-        [0.28339707, 0.23005175, 0.20364304]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.00611755, 0.48199715, 0.70636294]),
+ array([[1.04325572, 0.52581086, 0.33341036],
+        [0.52581086, 0.36351339, 0.28997129],
+        [0.33341036, 0.28997129, 0.30491033]]))
 </pre></div>
 </div>
 </div>
@@ -1068,7 +1050,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 1.34496265, -0.12774285]]), array([ 1.34516181, -0.12816732]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 2.37877814, -1.16876002]]), array([ 2.37750242, -1.16824543]))
 </pre></div>
 </div>
 </div>
@@ -1080,7 +1062,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.06646259]]), 0.06659427388960926)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.18214502]]), 0.18210053128265036)
 </pre></div>
 </div>
 </div>
@@ -1092,7 +1074,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([2.826312]), array([2.82478269]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-1.40112177]), array([-1.40084886]))
 </pre></div>
 </div>
 </div>
@@ -1269,7 +1251,7 @@ random vector from our distribution and then compute the distribution of
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>94.1887057372779
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>112.80589643922426
 </pre></div>
 </div>
 </div>
@@ -1286,7 +1268,7 @@ general case so we need to set <code class="docutils literal notranslate"><span 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([94.39286408]), array([[1.96078431]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([113.73092446]), array([[1.96078431]]))
 </pre></div>
 </div>
 </div>
@@ -1619,7 +1601,7 @@ the mean vector and covariance matrix of the joint normal distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(97.43988567085323, 110.34294305610729)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(108.11155078424513, 90.28483326425932)
 </pre></div>
 </div>
 </div>
@@ -1638,7 +1620,7 @@ the mean vector and covariance matrix of the joint normal distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([ 95.27360057, 110.06035354]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([108.03290082, 103.20981032]),
  array([[33.33333333,  0.        ],
         [ 0.        , 33.33333333]]))
 </pre></div>
@@ -1681,12 +1663,12 @@ separately conditional on various subsets of test scores.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean and variance of θ conditional on y1, y2, y3, y4  are 95.27 and 33.33 respectively
-The mean and variance of θ conditional on y1, y2          are 95.27 and 33.33 respectively
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean and variance of θ conditional on y1, y2, y3, y4  are 108.03 and 33.33 respectively
+The mean and variance of θ conditional on y1, y2          are 108.03 and 33.33 respectively
 The mean and variance of θ conditional on y3, y4          are 100.00 and 100.00 respectively
-The mean and variance of η conditional on y1, y2, y3, y4  are 110.06 and 33.33 respectively
+The mean and variance of η conditional on y1, y2, y3, y4  are 103.21 and 33.33 respectively
 The mean and variance of η conditional on y1, y2          are 100.00 and 100.00 respectively
-The mean and variance of η conditional on y3, y4          are 110.06 and 33.33 respectively
+The mean and variance of η conditional on y3, y4          are 103.21 and 33.33 respectively
 </pre></div>
 </div>
 </div>
@@ -1942,12 +1924,12 @@ information about the hidden state</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X =  [-0.7054914  -1.16543122 -1.08225245 -2.35610062]
-Y =  [-0.70677753 -1.15581389 -1.15287774 -2.47157693]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X =  [-0.09992704 -1.13171487 -2.06377227 -1.58082968]
+Y =  [-0.07587789 -1.11516573 -2.02023841 -1.55969385]
  E [ X | Y] = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.70618031, -1.15477798, -1.15579901, -2.46800746]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.07803317, -1.11483521, -2.01713002, -1.56033157]),
  array([[2.48875094e-03, 5.57449314e-06, 1.24861729e-08, 2.80236945e-11],
         [5.57449314e-06, 2.48876343e-03, 5.57452116e-06, 1.25113944e-08],
         [1.24861728e-08, 5.57452116e-06, 2.48876346e-03, 5.58575339e-06],
@@ -2020,7 +2002,7 @@ matrix of the subvector
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-1.03733504]), array([[1.00201996]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-1.81593228]), array([[1.00201996]]))
 </pre></div>
 </div>
 </div>
@@ -2085,7 +2067,7 @@ covariance matrix of the subvector
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.93515837]), array([[1.81413617]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.90117351]), array([[1.81413617]]))
 </pre></div>
 </div>
 </div>
@@ -2130,7 +2112,7 @@ y_{t} = h_{t,t} \epsilon_{t} + h_{t,t-1} \epsilon_{t-1} + \dots + h_{t,0} \epsil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.70589571, -0.52012625, -0.11355653, -1.43101148])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.07578322, -1.04468762, -1.01663951,  0.25566129])
 </pre></div>
 </div>
 </div>
@@ -2142,7 +2124,7 @@ y_{t} = h_{t,t} \epsilon_{t} + h_{t,t-1} \epsilon_{t-1} + \dots + h_{t,0} \epsil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.70677753, -1.15581389, -1.15287774, -2.47157693])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.07587789, -1.11516573, -2.02023841, -1.55969385])
 </pre></div>
 </div>
 </div>
@@ -2296,7 +2278,7 @@ for the second column. <span class="math notranslate nohighlight">\(D\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([ 0.74452408, -0.92609944]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([ 0.62086795, -1.31350427]),
  array([[0.04761905, 0.        ],
         [0.        , 0.04761905]]))
 </pre></div>
@@ -2315,7 +2297,7 @@ for the second column. <span class="math notranslate nohighlight">\(D\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.74452408, -0.92609944])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.62086795, -1.31350427])
 </pre></div>
 </div>
 </div>
@@ -2328,8 +2310,8 @@ for the second column. <span class="math notranslate nohighlight">\(D\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([ 0.91473164,  0.91473164,  0.91473164,  0.91473164,  0.91473164,
-        -0.90236678, -0.90236678, -0.90236678, -0.90236678, -0.90236678]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([ 0.70871342,  0.70871342,  0.70871342,  0.70871342,  0.70871342,
+        -0.9755754 , -0.9755754 , -0.9755754 , -0.9755754 , -0.9755754 ]),
  array([[0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
         [0.  , 0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
         [0.  , 0.  , 0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
@@ -2353,8 +2335,8 @@ for the second column. <span class="math notranslate nohighlight">\(D\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.91473164,  0.91473164,  0.91473164,  0.91473164,  0.91473164,
-       -0.90236678, -0.90236678, -0.90236678, -0.90236678, -0.90236678])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.70871342,  0.70871342,  0.70871342,  0.70871342,  0.70871342,
+       -0.9755754 , -0.9755754 , -0.9755754 , -0.9755754 , -0.9755754 ])
 </pre></div>
 </div>
 </div>
@@ -2419,7 +2401,7 @@ Y = P \epsilon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.7639210781816965e-16
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.440892098500626e-16
 </pre></div>
 </div>
 </div>
@@ -2455,8 +2437,8 @@ Y = P \epsilon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ε =  [ 1.74804677 -2.17436236 -0.10708777 -0.39365509 -0.4401061   0.80176403
- -0.02231647  0.15972715  0.55428324  0.02910711]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ε =  [-3.08393909  1.45771808  0.14067889  0.53722852  0.85339876 -0.36761702
+  0.34691222 -0.40040549  0.64547336  0.55946117]
 </pre></div>
 </div>
 </div>
@@ -2470,7 +2452,7 @@ Y = P \epsilon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f =  [ 0.91473164 -0.90236678]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f =  [ 0.70871342 -0.9755754 ]
 </pre></div>
 </div>
 </div>
@@ -2512,7 +2494,7 @@ largest two eigenvalues.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1.74804677, -2.17436236])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-3.08393909,  1.45771808])
 </pre></div>
 </div>
 </div>
@@ -2525,7 +2507,7 @@ largest two eigenvalues.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.74452408, -0.92609944])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.62086795, -1.31350427])
 </pre></div>
 </div>
 </div>
@@ -2539,7 +2521,7 @@ principal components can be computed as below.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8400000000000001
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.84
 </pre></div>
 </div>
 </div>
@@ -3194,8 +3176,6 @@ equations, followed by an example.</p>
             </div> <!-- .page -->
 
             
-
-            
             <div class="sidebar bd-sidebar inactive" id="site-navigation">
 
                 <div class="sidebar__header">
@@ -3655,7 +3635,7 @@ equations, followed by an example.</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/multivariate_normal.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/multivariate_normal.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/multivariate_normal.md" download><i data-feather="github"></i></a></li>

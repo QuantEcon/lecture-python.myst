@@ -9,43 +9,25 @@
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    
-        <script>
-            MathJax = {
-            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
-            tex: {
-                packages: {'[+]': ['boldsymbol', 'textmacros']},
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                processEscapes: true,
-                macros: {
-                    "argmax" : "arg\\,max",
-                    "argmin" : "arg\\,min",
-                    "col"    : "col",
-                    "Span"   :  "span",
-                    "epsilon": "\\varepsilon",
-                    "EE": "\\mathbb{E}",
-                    "PP": "\\mathbb{P}",
-                    "RR": "\\mathbb{R}",
-                    "NN": "\\mathbb{N}",
-                    "ZZ": "\\mathbb{Z}",
-                    "aA": "\\mathcal{A}",
-                    "bB": "\\mathcal{B}",
-                    "cC": "\\mathcal{C}",
-                    "dD": "\\mathcal{D}",
-                    "eE": "\\mathcal{E}",
-                    "fF": "\\mathcal{F}",
-                    "gG": "\\mathcal{G}",
-                    "hH": "\\mathcal{H}",
-                }
-            },
-            svg: {
-                fontCache: 'global',
-                scale: 0.92,
-                displayAlign: "center",
-            },
-            };
-        </script>
-    
+    <script>
+        MathJax = {
+          loader: {load: ['[tex]/boldsymbol']},
+          tex: {
+            packages: {'[+]': ['boldsymbol']},
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            processEscapes: true,
+            macros: {
+                "argmax" : "arg\\,max",
+                "argmin" : "arg\\,min"
+            }
+          },
+          svg: {
+            fontCache: 'global',
+            scale: 0.92,
+            displayAlign: "center",
+          },
+        };
+    </script>
     
     
   <link href="_static/css/theme.css" rel="stylesheet">
@@ -63,7 +45,7 @@
       
 
     
-    <link rel="stylesheet" href="_static/quantecon-book-theme.857ff391aaabaeb8c161d2309c375fe6.css" type="text/css" />
+    <link rel="stylesheet" href="_static/quantecon-book-theme.b2c9c855ebbf206c0b4223812193cad1.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -85,7 +67,7 @@
     <script src="_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script src="_static/quantecon-book-theme.76bf49d7bbc59738cdb03766fad654af.js"></script>
+    <script src="_static/quantecon-book-theme.a5462485f8dd312884626d20cc9f547c.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
@@ -605,8 +587,19 @@ proceeding to read the rest of the lecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (2.4.0)
-Requirement already satisfied: wcwidth in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from prettytable) (0.2.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting prettytable
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading prettytable-2.4.0-py3-none-any.whl (24 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from prettytable) (0.2.5)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: prettytable
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed prettytable-2.4.0
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
@@ -763,25 +756,25 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 | k  |      Theoretical       | Frequentist |
 +----+------------------------+-------------+
 | 1  | 1.6271660538000033e-09 |     0.0     |
-| 2  | 3.606884752590009e-08  |     0.0     |
-| 3  | 5.049638653625996e-07  |     0.0     |
-| 4  | 5.007558331512445e-06  |    7e-06    |
+| 2  | 3.606884752590009e-08  |    1e-06    |
+| 3  | 5.049638653625996e-07  |    1e-06    |
+| 4  | 5.007558331512445e-06  |    8e-06    |
 | 5  | 3.738976887529286e-05  |   3.1e-05   |
-| 6  | 0.00021810698510587497 |   0.000205  |
-| 7  | 0.0010178325971607542  |   0.000965  |
-| 8  | 0.0038592819309011864  |   0.003857  |
-| 9  |  0.01200665489613702   |   0.011999  |
-| 10 |  0.030817080900085014  |   0.030766  |
-| 11 |  0.06536956554563475   |   0.065431  |
-| 12 |  0.11439673970486103   |   0.114742  |
-| 13 |  0.16426198521723673   |   0.164581  |
-| 14 |  0.19163898275344177   |   0.191387  |
-| 15 |  0.17886305056987878   |   0.178445  |
-| 16 |  0.13042097437387024   |   0.130401  |
-| 17 |  0.07160367220526216   |   0.071697  |
-| 18 |  0.027845872524268626  |   0.027929  |
-| 19 |  0.006839337111223874  |   0.006768  |
-| 20 | 0.0007979226629761189  |   0.000789  |
+| 6  | 0.00021810698510587497 |   0.000221  |
+| 7  | 0.0010178325971607542  |   0.001024  |
+| 8  | 0.0038592819309011864  |   0.003928  |
+| 9  |  0.01200665489613702   |   0.012143  |
+| 10 |  0.030817080900085014  |   0.031146  |
+| 11 |  0.06536956554563475   |   0.064984  |
+| 12 |  0.11439673970486103   |   0.114362  |
+| 13 |  0.16426198521723673   |   0.164258  |
+| 14 |  0.19163898275344177   |   0.19238   |
+| 15 |  0.17886305056987878   |   0.178313  |
+| 16 |  0.13042097437387024   |   0.130072  |
+| 17 |  0.07160367220526216   |   0.071439  |
+| 18 |  0.027845872524268626  |   0.027964  |
+| 19 |  0.006839337111223874  |   0.006904  |
+| 20 | 0.0007979226629761189  |   0.000821  |
 +----+------------------------+-------------+
 </pre></div>
 </div>
@@ -1154,37 +1147,37 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
   <tbody>
     <tr>
       <th>upper</th>
-      <td>0.228520</td>
+      <td>0.001543</td>
       <td>0.097308</td>
-      <td>0.062413</td>
-      <td>0.046007</td>
-      <td>0.127776</td>
-      <td>0.185116</td>
+      <td>0.235534</td>
+      <td>0.349293</td>
+      <td>0.437155</td>
+      <td>0.261922</td>
       <td>0.237639</td>
-      <td>0.264015</td>
-      <td>0.310582</td>
-      <td>0.307914</td>
-      <td>0.284691</td>
-      <td>0.370581</td>
-      <td>0.362493</td>
-      <td>0.367846</td>
+      <td>0.235206</td>
+      <td>0.274075</td>
+      <td>0.268394</td>
+      <td>0.350784</td>
+      <td>0.393430</td>
+      <td>0.391977</td>
+      <td>0.377717</td>
     </tr>
     <tr>
       <th>lower</th>
-      <td>0.998457</td>
+      <td>0.771480</td>
       <td>0.902692</td>
-      <td>0.764466</td>
-      <td>0.650707</td>
-      <td>0.739366</td>
-      <td>0.652678</td>
+      <td>0.937587</td>
+      <td>0.953993</td>
+      <td>0.963553</td>
+      <td>0.738078</td>
       <td>0.582446</td>
-      <td>0.549653</td>
-      <td>0.536089</td>
-      <td>0.498084</td>
-      <td>0.441218</td>
-      <td>0.463935</td>
-      <td>0.434377</td>
-      <td>0.418610</td>
+      <td>0.516350</td>
+      <td>0.495929</td>
+      <td>0.454460</td>
+      <td>0.512171</td>
+      <td>0.487421</td>
+      <td>0.464637</td>
+      <td>0.428697</td>
     </tr>
   </tbody>
 </table>
@@ -1387,8 +1380,6 @@ F(a)=p_1,F(b)=p_2
                 </footer> <!-- .page__footer -->
 
             </div> <!-- .page -->
-
-            
 
             
             <div class="sidebar bd-sidebar inactive" id="site-navigation">
@@ -1850,7 +1841,7 @@ F(a)=p_1,F(b)=p_2
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/prob_meaning.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/prob_meaning.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/prob_meaning.md" download><i data-feather="github"></i></a></li>

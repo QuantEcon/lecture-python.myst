@@ -9,43 +9,25 @@
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    
-        <script>
-            MathJax = {
-            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
-            tex: {
-                packages: {'[+]': ['boldsymbol', 'textmacros']},
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                processEscapes: true,
-                macros: {
-                    "argmax" : "arg\\,max",
-                    "argmin" : "arg\\,min",
-                    "col"    : "col",
-                    "Span"   :  "span",
-                    "epsilon": "\\varepsilon",
-                    "EE": "\\mathbb{E}",
-                    "PP": "\\mathbb{P}",
-                    "RR": "\\mathbb{R}",
-                    "NN": "\\mathbb{N}",
-                    "ZZ": "\\mathbb{Z}",
-                    "aA": "\\mathcal{A}",
-                    "bB": "\\mathcal{B}",
-                    "cC": "\\mathcal{C}",
-                    "dD": "\\mathcal{D}",
-                    "eE": "\\mathcal{E}",
-                    "fF": "\\mathcal{F}",
-                    "gG": "\\mathcal{G}",
-                    "hH": "\\mathcal{H}",
-                }
-            },
-            svg: {
-                fontCache: 'global',
-                scale: 0.92,
-                displayAlign: "center",
-            },
-            };
-        </script>
-    
+    <script>
+        MathJax = {
+          loader: {load: ['[tex]/boldsymbol']},
+          tex: {
+            packages: {'[+]': ['boldsymbol']},
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            processEscapes: true,
+            macros: {
+                "argmax" : "arg\\,max",
+                "argmin" : "arg\\,min"
+            }
+          },
+          svg: {
+            fontCache: 'global',
+            scale: 0.92,
+            displayAlign: "center",
+          },
+        };
+    </script>
     
     
   <link href="_static/css/theme.css" rel="stylesheet">
@@ -63,7 +45,7 @@
       
 
     
-    <link rel="stylesheet" href="_static/quantecon-book-theme.857ff391aaabaeb8c161d2309c375fe6.css" type="text/css" />
+    <link rel="stylesheet" href="_static/quantecon-book-theme.b2c9c855ebbf206c0b4223812193cad1.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -85,7 +67,7 @@
     <script src="_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script src="_static/quantecon-book-theme.76bf49d7bbc59738cdb03766fad654af.js"></script>
+    <script src="_static/quantecon-book-theme.a5462485f8dd312884626d20cc9f547c.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
@@ -692,23 +674,39 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quandl in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (3.7.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quandl
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.8 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from quandl) (1.19.2)
-Requirement already satisfied: pandas&gt;=0.14 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from quandl) (1.1.3)
-Requirement already satisfied: requests&gt;=2.7.0 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from quandl) (2.24.0)
-Requirement already satisfied: six in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from quandl) (1.15.0)
-Requirement already satisfied: python-dateutil in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from quandl) (2.8.1)
-Requirement already satisfied: inflection&gt;=0.3.1 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from quandl) (0.5.1)
-Requirement already satisfied: more-itertools in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from quandl) (8.6.0)
-Requirement already satisfied: pytz&gt;=2017.2 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from pandas&gt;=0.14-&gt;quandl) (2020.1)
-Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,&lt;1.26,&gt;=1.21.1 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (1.25.11)
-Requirement already satisfied: chardet&lt;4,&gt;=3.0.2 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.0.4)
-Requirement already satisfied: idna&lt;3,&gt;=2.5 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.10)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading Quandl-3.7.0-py2.py3-none-any.whl (26 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: certifi&gt;=2017.4.17 in /Users/matthewmckay/anaconda3/envs/quantecon-2020.11/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2020.6.20)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: python-dateutil in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.8.1)
+Requirement already satisfied: numpy&gt;=1.8 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.19.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting inflection&gt;=0.3.1
+  Downloading inflection-0.5.1-py2.py3-none-any.whl (9.5 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests&gt;=2.7.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.24.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.15.0)
+Requirement already satisfied: pandas&gt;=0.14 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.1.3)
+Requirement already satisfied: more-itertools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (8.6.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2021.10.8)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,&lt;1.26,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (1.25.11)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;3,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.10)
+Requirement already satisfied: chardet&lt;4,&gt;=3.0.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.0.4)
+Requirement already satisfied: pytz&gt;=2017.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.14-&gt;quandl) (2020.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: inflection, quandl
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed inflection-0.5.1 quandl-3.7.0
 </pre></div>
 </div>
 </div>
@@ -864,14 +862,14 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[-0.1908785 , -0.55435067, -0.19642843, -0.34695562, -0.70519388],
-        [-0.33917428, -0.56128919,  0.38718495,  0.63849167,  0.11104707],
-        [-0.23994547,  0.32011784,  0.82359064, -0.29866838, -0.26915867],
-        [-0.42104994,  0.52456718, -0.29666033,  0.49746206, -0.46051098],
-        [-0.78337049, -0.00190373, -0.21259065, -0.36780277,  0.45371069]]),
- array([1.37839418, 0.42732292]),
- array([[-0.83197627, -0.55481122],
-        [ 0.55481122, -0.83197627]]))
+ array([[-0.56083206,  0.47549704, -0.05163019, -0.66615734, -0.11374835],
+        [-0.13869798, -0.14754653, -0.71387215,  0.17717482, -0.64652033],
+        [-0.50730475, -0.50476195,  0.57495786,  0.0882592 , -0.38664071],
+        [-0.38580393,  0.57156886,  0.08687921,  0.71702091,  0.05289026],
+        [-0.50992891, -0.41310652, -0.38677687,  0.05417384,  0.64558838]]),
+ array([1.55813779, 1.08293525]),
+ array([[-0.6205794 , -0.78414362],
+        [ 0.78414362, -0.6205794 ]]))
 </pre></div>
 </div>
 </div>
@@ -887,14 +885,14 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[-0.1908785 , -0.55435067],
-        [-0.33917428, -0.56128919],
-        [-0.23994547,  0.32011784],
-        [-0.42104994,  0.52456718],
-        [-0.78337049, -0.00190373]]),
- array([1.37839418, 0.42732292]),
- array([[-0.83197627, -0.55481122],
-        [ 0.55481122, -0.83197627]]))
+ array([[-0.56083206,  0.47549704],
+        [-0.13869798, -0.14754653],
+        [-0.50730475, -0.50476195],
+        [-0.38580393,  0.57156886],
+        [-0.50992891, -0.41310652]]),
+ array([1.55813779, 1.08293525]),
+ array([[-0.6205794 , -0.78414362],
+        [ 0.78414362, -0.6205794 ]]))
 </pre></div>
 </div>
 </div>
@@ -1334,8 +1332,6 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
                 </footer> <!-- .page__footer -->
 
             </div> <!-- .page -->
-
-            
 
             
             <div class="sidebar bd-sidebar inactive" id="site-navigation">
@@ -1797,7 +1793,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/svd_intro.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/svd_intro.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/svd_intro.md" download><i data-feather="github"></i></a></li>
