@@ -55,9 +55,6 @@ jobs:
           mkdir -p _build/html/_notebooks
           cp -u _build/jupyter/*.ipynb _build/html/_notebooks
       # Build HTML (Website)
-      - name: Clean Matplotlib TeX Cache
-        shell: bash -l {0}
-        run: rm /home/runner/.cache/matplotlib/tex.cache/*
       - name: Build HTML
         shell: bash -l {0}
         run: |
