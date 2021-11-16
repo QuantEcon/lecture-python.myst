@@ -76,7 +76,7 @@ from numba import njit
 %matplotlib inline
 %config InlineBackend.figure_format='retina'
 
-rc('text', usetex=True)
+plt.rc('text', usetex=True)
 
 label_size = 20
 label_tick_size = 18
