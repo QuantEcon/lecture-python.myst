@@ -28,11 +28,11 @@ If a primal problem involves **maximization**, the dual problem involves **minim
 
 If a primal problem involves  **minimization**, the dual problem involves **maximization**.
 
-We provide a standard form of a  linear program and methods to transform other forms of linear programming problems  into a standard form.
+We provide a standard form of a linear program and methods to transform other forms of linear programming problems  into a standard form.
 
-We tell how to solve a linear programming prolem using **Scipy**.
+We tell how to solve a linear programming problem using [SciPy](https://scipy.org/).
 
-We describe the important concept of  complementary slackness and how it relates to the dual problem.
+We describe the important concept of complementary slackness and how it relates to the dual problem.
 
 Let's start with some standard imports.
 
@@ -436,9 +436,9 @@ Inside it, Python first  transforms the problem into  standard form.
 
 To do that, for each inequality constraint it generates one slack variable.
 
-Here the vector of slack variables is a two-dimensional numpy array that  equals $b_{ub} - A_{ub}x$. 
+Here the vector of slack variables is a two-dimensional NumPy array that  equals $b_{ub} - A_{ub}x$. 
 
-See [official documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html#scipy.optimize.linprog) for more details.
+See the [official documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html#scipy.optimize.linprog) for more details.
 
 ```{note}
 This problem is to maximize the objective, so that we need to put a minus sign in front of parameter vector c.
