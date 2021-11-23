@@ -76,6 +76,8 @@ config = {
     "font.serif": ['SimSun'],
 }
 rcParams.update(config)
+
+import matplotlib.font_manager
 ```
 
 Empowered with these Python tools, we'll now  explore the two meanings described above.
