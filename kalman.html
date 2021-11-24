@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>23. A First Look at the Kalman Filter &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -63,8 +64,8 @@
       
 
     
-    <link rel="stylesheet" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -75,175 +76,20 @@
   <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
 
 
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
+    <script>
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
@@ -437,7 +283,7 @@
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="section" id="a-first-look-at-the-kalman-filter">
+</div><section class="tex2jax_ignore mathjax_ignore" id="a-first-look-at-the-kalman-filter">
 <h1><a class="toc-backref" href="#id14"><span class="section-number">23. </span>A First Look at the Kalman Filter</a><a class="headerlink" href="#a-first-look-at-the-kalman-filter" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
@@ -504,32 +350,8 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: \ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+Solving environment: / 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
@@ -593,6 +415,12 @@ Solving environment: \
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -603,7 +431,7 @@ Solving environment: \
 </div>
 </div>
 </div>
-<div class="section" id="overview">
+<section id="overview">
 <h2><a class="toc-backref" href="#id15"><span class="section-number">23.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture provides a simple and intuitive introduction to the Kalman filter, for those who either</p>
 <ul class="simple">
@@ -635,8 +463,8 @@ Solving environment: \
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="the-basic-idea">
+</section>
+<section id="the-basic-idea">
 <h2><a class="toc-backref" href="#id16"><span class="section-number">23.2. </span>The Basic Idea</a><a class="headerlink" href="#the-basic-idea" title="Permalink to this headline">¶</a></h2>
 <p>The Kalman filter has many applications in economics, but for now
 let’s pretend that we are rocket scientists.</p>
@@ -763,7 +591,7 @@ we do have some beliefs about <span class="math notranslate nohighlight">\(x\)</
 <img alt="_images/kalman_5_0.png" src="_images/kalman_5_0.png" />
 </div>
 </div>
-<div class="section" id="the-filtering-step">
+<section id="the-filtering-step">
 <h3><span class="section-number">23.2.1. </span>The Filtering Step<a class="headerlink" href="#the-filtering-step" title="Permalink to this headline">¶</a></h3>
 <p>We are now presented with some good news and some bad news.</p>
 <p>The good news is that the missile has been located by our sensors, which report that the current location is <span class="math notranslate nohighlight">\(y = (2.3, -1.9)\)</span>.</p>
@@ -854,8 +682,8 @@ p(x \,|\, y) = N(\hat x^F, \Sigma^F)
 <p>Our new density twists the prior <span class="math notranslate nohighlight">\(p(x)\)</span> in a direction determined by  the new
 information <span class="math notranslate nohighlight">\(y - G \hat x\)</span>.</p>
 <p>In generating the figure, we set <span class="math notranslate nohighlight">\(G\)</span> to the identity matrix and <span class="math notranslate nohighlight">\(R = 0.5 \Sigma\)</span> for <span class="math notranslate nohighlight">\(\Sigma\)</span> defined in <a class="reference internal" href="#equation-kalman-dhxs">(23.2)</a>.</p>
-</div>
-<div class="section" id="the-forecast-step">
+</section>
+<section id="the-forecast-step">
 <span id="kl-forecase-step"></span><h3><span class="section-number">23.2.2. </span>The Forecast Step<a class="headerlink" href="#the-forecast-step" title="Permalink to this headline">¶</a></h3>
 <p>What have we achieved so far?</p>
 <p>We have obtained probabilities for the current location of the state (missile) given prior and current information.</p>
@@ -952,8 +780,8 @@ Q = 0.3 * \Sigma
 <img alt="_images/kalman_11_0.png" src="_images/kalman_11_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="the-recursive-procedure">
+</section>
+<section id="the-recursive-procedure">
 <h3><span class="section-number">23.2.3. </span>The Recursive Procedure<a class="headerlink" href="#the-recursive-procedure" title="Permalink to this headline">¶</a></h3>
 <p id="index-1">Let’s look back at what we’ve done.</p>
 <p>We started the current period with a prior <span class="math notranslate nohighlight">\(p(x)\)</span> for the location <span class="math notranslate nohighlight">\(x\)</span> of the missile.</p>
@@ -976,9 +804,9 @@ as the current prior.</p>
     \Sigma_{t+1} &amp;= A \Sigma_t A' - K_{\Sigma_t} G \Sigma_t A' + Q \nonumber
 \end{aligned}\end{split}\]</div>
 <p>These are the standard dynamic equations for the Kalman filter (see, for example, <span id="id4">[<a class="reference internal" href="zreferences.html#id158">LS18</a>]</span>, page 58).</p>
-</div>
-</div>
-<div class="section" id="convergence">
+</section>
+</section>
+<section id="convergence">
 <span id="kalman-convergence"></span><h2><a class="toc-backref" href="#id17"><span class="section-number">23.3. </span>Convergence</a><a class="headerlink" href="#convergence" title="Permalink to this headline">¶</a></h2>
 <p>The matrix <span class="math notranslate nohighlight">\(\Sigma_t\)</span> is a measure of the uncertainty of our prediction <span class="math notranslate nohighlight">\(\hat x_t\)</span> of <span class="math notranslate nohighlight">\(x_t\)</span>.</p>
 <p>Apart from special cases, this uncertainty will never be fully resolved, regardless of how much time elapses.</p>
@@ -999,8 +827,8 @@ as the current prior.</p>
 <p>A sufficient (but not necessary) condition is that all the eigenvalues <span class="math notranslate nohighlight">\(\lambda_i\)</span> of <span class="math notranslate nohighlight">\(A\)</span> satisfy <span class="math notranslate nohighlight">\(|\lambda_i| &lt; 1\)</span> (cf. e.g., <span id="id7">[<a class="reference internal" href="zreferences.html#id118">AM05</a>]</span>, p. 77).</p>
 <p>(This strong condition assures that the unconditional  distribution of <span class="math notranslate nohighlight">\(x_t\)</span>  converges as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>.)</p>
 <p>In this case, for any initial choice of <span class="math notranslate nohighlight">\(\Sigma_0\)</span> that is both non-negative and symmetric, the sequence <span class="math notranslate nohighlight">\(\{\Sigma_t\}\)</span> in <a class="reference internal" href="#equation-kalman-sdy">(23.8)</a> converges to a non-negative symmetric matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> that solves <a class="reference internal" href="#equation-kalman-dare">(23.9)</a>.</p>
-</div>
-<div class="section" id="implementation">
+</section>
+<section id="implementation">
 <h2><a class="toc-backref" href="#id18"><span class="section-number">23.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p id="index-2">The class <code class="docutils literal notranslate"><span class="pre">Kalman</span></code> from the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a> package implements the Kalman filter</p>
 <ul class="simple">
@@ -1038,10 +866,10 @@ Q := CC' \quad \text{and} \quad R := HH'
 </li>
 </ul>
 <p>You can view the program <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/kalman.py">on GitHub</a>.</p>
-</div>
-<div class="section" id="exercises">
+</section>
+<section id="exercises">
 <h2><a class="toc-backref" href="#id19"><span class="section-number">23.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="exercise-1">
+<section id="exercise-1">
 <span id="kalman-ex1"></span><h3><span class="section-number">23.5.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>Consider the following simple application of the Kalman filter, loosely based
 on <span id="id8">[<a class="reference internal" href="zreferences.html#id158">LS18</a>]</span>, section 2.9.2.</p>
@@ -1056,11 +884,11 @@ on <span id="id8">[<a class="reference internal" href="zreferences.html#id158">L
 <p>As shown in <span id="id9">[<a class="reference internal" href="zreferences.html#id158">LS18</a>]</span>, sections 2.9.1–2.9.2, these distributions asymptotically put all mass on the unknown value <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p>In the simulation, take <span class="math notranslate nohighlight">\(\theta = 10\)</span>, <span class="math notranslate nohighlight">\(\hat x_0 = 8\)</span> and <span class="math notranslate nohighlight">\(\Sigma_0 = 1\)</span>.</p>
 <p>Your figure should – modulo randomness – look something like this</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/kl_ex1_fig.png" src="_images/kl_ex1_fig.png" />
-</div>
-</div>
-<div class="section" id="exercise-2">
+</figure>
+</section>
+<section id="exercise-2">
 <span id="kalman-ex2"></span><h3><span class="section-number">23.5.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
 <p>The preceding figure gives some support to the idea that probability mass
 converges to <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
@@ -1072,11 +900,11 @@ z_t := 1 - \int_{\theta - \epsilon}^{\theta + \epsilon} p_t(x) dx
 <p>for <span class="math notranslate nohighlight">\(t = 0, 1, 2, \ldots, T\)</span>.</p>
 <p>Plot <span class="math notranslate nohighlight">\(z_t\)</span> against <span class="math notranslate nohighlight">\(T\)</span>, setting <span class="math notranslate nohighlight">\(\epsilon = 0.1\)</span> and <span class="math notranslate nohighlight">\(T = 600\)</span>.</p>
 <p>Your figure should show error erratically declining something like this</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/kl_ex2_fig.png" src="_images/kl_ex2_fig.png" />
-</div>
-</div>
-<div class="section" id="exercise-3">
+</figure>
+</section>
+<section id="exercise-3">
 <span id="kalman-ex3"></span><h3><span class="section-number">23.5.3. </span>Exercise 3<a class="headerlink" href="#exercise-3" title="Permalink to this headline">¶</a></h3>
 <p>As discussed <a class="reference internal" href="#kalman-convergence"><span class="std std-ref">above</span></a>, if the shock sequence <span class="math notranslate nohighlight">\(\{w_t\}\)</span> is not degenerate, then it is not in general possible to predict <span class="math notranslate nohighlight">\(x_t\)</span> without error at time <span class="math notranslate nohighlight">\(t-1\)</span> (and this would be the case even if we could observe <span class="math notranslate nohighlight">\(x_{t-1}\)</span>).</p>
 <p>Let’s now compare the prediction <span class="math notranslate nohighlight">\(\hat x_t\)</span> made by the Kalman filter
@@ -1117,21 +945,21 @@ A
 <p>and <span class="math notranslate nohighlight">\(\hat x_0 = (8, 8)\)</span>.</p>
 <p>Finally, set <span class="math notranslate nohighlight">\(x_0 = (0, 0)\)</span>.</p>
 <p>You should end up with a figure similar to the following (modulo randomness)</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/kalman_ex3.png" src="_images/kalman_ex3.png" />
-</div>
+</figure>
 <p>Observe how, after an initial learning period, the Kalman filter performs quite well, even relative to the competitor who predicts optimally with knowledge of the latent state.</p>
-</div>
-<div class="section" id="exercise-4">
+</section>
+<section id="exercise-4">
 <span id="kalman-ex4"></span><h3><span class="section-number">23.5.4. </span>Exercise 4<a class="headerlink" href="#exercise-4" title="Permalink to this headline">¶</a></h3>
 <p>Try varying the coefficient <span class="math notranslate nohighlight">\(0.3\)</span> in <span class="math notranslate nohighlight">\(Q = 0.3 I\)</span> up and down.</p>
 <p>Observe how the diagonal values in the stationary solution <span class="math notranslate nohighlight">\(\Sigma\)</span> (see <a class="reference internal" href="#equation-kalman-dare">(23.9)</a>) increase and decrease in line with this coefficient.</p>
 <p>The interpretation is that more randomness in the law of motion for <span class="math notranslate nohighlight">\(x_t\)</span> causes more (permanent) uncertainty in prediction.</p>
-</div>
-</div>
-<div class="section" id="solutions">
+</section>
+</section>
+<section id="solutions">
 <h2><a class="toc-backref" href="#id20"><span class="section-number">23.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id10">
+<section id="id10">
 <h3><span class="section-number">23.6.1. </span>Exercise 1<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1170,8 +998,8 @@ A
 <img alt="_images/kalman_13_0.png" src="_images/kalman_13_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="id11">
+</section>
+<section id="id11">
 <h3><span class="section-number">23.6.2. </span>Exercise 2<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1211,8 +1039,8 @@ A
 <img alt="_images/kalman_15_0.png" src="_images/kalman_15_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="id12">
+</section>
+<section id="id12">
 <h3><span class="section-number">23.6.3. </span>Exercise 3<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1284,9 +1112,9 @@ Stationary prediction error variance:
 <dd><p>See, for example, page 93 of <span id="id13">[<a class="reference internal" href="zreferences.html#id123">Bis06</a>]</span>. To get from his expressions to the ones used above, you will also need to apply the <a class="reference external" href="https://en.wikipedia.org/wiki/Woodbury_matrix_identity">Woodbury matrix identity</a>.</p>
 </dd>
 </dl>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1337,7 +1165,7 @@ Stationary prediction error variance:
                 </div>
 
                 <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
-                    <p class="caption">
+                    <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Tools and Techniques
  </span>
@@ -1404,7 +1232,7 @@ Stationary prediction error variance:
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Linear Programming
  </span>
@@ -1421,7 +1249,7 @@ Stationary prediction error variance:
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Introduction to Dynamics
  </span>
@@ -1488,7 +1316,7 @@ Stationary prediction error variance:
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Search
  </span>
@@ -1525,7 +1353,7 @@ Stationary prediction error variance:
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Consumption, Savings and Growth
  </span>
@@ -1572,7 +1400,7 @@ Stationary prediction error variance:
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Information
  </span>
@@ -1614,7 +1442,7 @@ Stationary prediction error variance:
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   LQ Control
  </span>
@@ -1641,7 +1469,7 @@ Stationary prediction error variance:
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Multiple Agent Models
  </span>
@@ -1683,7 +1511,7 @@ Stationary prediction error variance:
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Asset Pricing and Finance
  </span>
@@ -1705,7 +1533,7 @@ Stationary prediction error variance:
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Data and Empirics
  </span>
@@ -1727,7 +1555,7 @@ Stationary prediction error variance:
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Other
  </span>

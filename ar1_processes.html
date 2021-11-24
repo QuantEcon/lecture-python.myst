@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>16. AR1 Processes &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -63,8 +64,8 @@
       
 
     
-    <link rel="stylesheet" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -75,28 +76,20 @@
   <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
 
 
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
+    <script>
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
@@ -287,7 +280,7 @@
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="section" id="ar1-processes">
+</div><section class="tex2jax_ignore mathjax_ignore" id="ar1-processes">
 <h1><a class="toc-backref" href="#id5"><span class="section-number">16. </span>AR1 Processes</a><a class="headerlink" href="#ar1-processes" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
@@ -304,7 +297,7 @@
 </li>
 </ul>
 </div>
-<div class="section" id="overview">
+<section id="overview">
 <h2><a class="toc-backref" href="#id6"><span class="section-number">16.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture we are going to study a very simple class of stochastic
 models called AR(1) processes.</p>
@@ -328,8 +321,8 @@ partly because they help us understand important concepts.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="the-ar-1-model">
+</section>
+<section id="the-ar-1-model">
 <h2><a class="toc-backref" href="#id7"><span class="section-number">16.2. </span>The AR(1) Model</a><a class="headerlink" href="#the-ar-1-model" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>AR(1) model</strong> (autoregressive model of order 1) takes the form</p>
 <div class="math notranslate nohighlight" id="equation-can-ar1">
@@ -344,7 +337,7 @@ specify an initial condition <span class="math notranslate nohighlight">\(X_0\)<
 <li><p>the initial condition <span class="math notranslate nohighlight">\(X_0\)</span> is drawn from the normal distribution <span class="math notranslate nohighlight">\(N(\mu_0, v_0)\)</span> and</p></li>
 <li><p>the initial condition <span class="math notranslate nohighlight">\(X_0\)</span> is independent of <span class="math notranslate nohighlight">\(\{ W_t \}\)</span>.</p></li>
 </ul>
-<div class="section" id="moving-average-representation">
+<section id="moving-average-representation">
 <h3><span class="section-number">16.2.1. </span>Moving Average Representation<a class="headerlink" href="#moving-average-representation" title="Permalink to this headline">¶</a></h3>
 <p>Iterating backwards from time <span class="math notranslate nohighlight">\(t\)</span>, we obtain</p>
 <div class="math notranslate nohighlight">
@@ -365,8 +358,8 @@ X_t = a X_{t-1} + b +  c W_t
 </ul>
 <p>Throughout, the symbol <span class="math notranslate nohighlight">\(\psi_t\)</span> will be used to refer to the
 density of this random variable <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
-</div>
-<div class="section" id="distribution-dynamics">
+</section>
+<section id="distribution-dynamics">
 <h3><span class="section-number">16.2.2. </span>Distribution Dynamics<a class="headerlink" href="#distribution-dynamics" title="Permalink to this headline">¶</a></h3>
 <p>One of the nice things about this model is that it’s so easy to trace out the sequence of distributions <span class="math notranslate nohighlight">\(\{ \psi_t \}\)</span> corresponding to the time
 series <span class="math notranslate nohighlight">\(\{ X_t\}\)</span>.</p>
@@ -432,9 +425,9 @@ distributions <span class="math notranslate nohighlight">\(\{ \psi_t \}\)</span>
 <img alt="_images/ar1_processes_5_0.png" src="_images/ar1_processes_5_0.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="stationarity-and-asymptotic-stability">
+</section>
+</section>
+<section id="stationarity-and-asymptotic-stability">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">16.3. </span>Stationarity and Asymptotic Stability</a><a class="headerlink" href="#stationarity-and-asymptotic-stability" title="Permalink to this headline">¶</a></h2>
 <p>Notice that, in the figure above, the sequence <span class="math notranslate nohighlight">\(\{ \psi_t \}\)</span> seems to be converging to a limiting distribution.</p>
 <p>This is even clearer if we project forward further into the future:</p>
@@ -508,7 +501,7 @@ t \to \infty\]</div>
 </div>
 </div>
 <p>As claimed, the sequence <span class="math notranslate nohighlight">\(\{ \psi_t \}\)</span> converges to <span class="math notranslate nohighlight">\(\psi^*\)</span>.</p>
-<div class="section" id="stationary-distributions">
+<section id="stationary-distributions">
 <h3><span class="section-number">16.3.1. </span>Stationary Distributions<a class="headerlink" href="#stationary-distributions" title="Permalink to this headline">¶</a></h3>
 <p>A stationary distribution is a distribution that is a fixed
 point of the update rule for distributions.</p>
@@ -528,9 +521,9 @@ checking this is an exercise.</p>
 well defined.)</p>
 <p>In fact, it can be shown that no other distribution on <span class="math notranslate nohighlight">\(\mathbb R\)</span> has this property.</p>
 <p>Thus, when <span class="math notranslate nohighlight">\(|a| &lt; 1\)</span>, the AR(1) model has exactly one stationary density and that density is given by <span class="math notranslate nohighlight">\(\psi^*\)</span>.</p>
-</div>
-</div>
-<div class="section" id="ergodicity">
+</section>
+</section>
+<section id="ergodicity">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">16.4. </span>Ergodicity</a><a class="headerlink" href="#ergodicity" title="Permalink to this headline">¶</a></h2>
 <p>The concept of ergodicity is used in different ways by different authors.</p>
 <p>One way to understand it in the present setting is that a version of the Law
@@ -559,10 +552,10 @@ stationary distribution.</p>
 stationary distribution.</p>
 <p>As will become clear over the next few lectures, ergodicity is a very
 important concept for statistics and simulation.</p>
-</div>
-<div class="section" id="exercises">
+</section>
+<section id="exercises">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">16.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="exercise-1">
+<section id="exercise-1">
 <h3><span class="section-number">16.5.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(k\)</span> be a natural number.</p>
 <p>The <span class="math notranslate nohighlight">\(k\)</span>-th central moment of a  random variable is defined as</p>
@@ -589,8 +582,8 @@ M_k =
 \]</div>
 <p>when <span class="math notranslate nohighlight">\(m\)</span> is large.</p>
 <p>Confirm this by simulation at a range of <span class="math notranslate nohighlight">\(k\)</span> using the default parameters from the lecture.</p>
-</div>
-<div class="section" id="exercise-2">
+</section>
+<section id="exercise-2">
 <h3><span class="section-number">16.5.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
 <p>Write your own version of a one dimensional <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_density_estimation">kernel density
 estimator</a>,
@@ -628,8 +621,8 @@ with <span class="math notranslate nohighlight">\(\alpha = \beta = 0.5\)</span><
 <p>Use <span class="math notranslate nohighlight">\(n=500\)</span>.</p>
 <p>Make a comment on your results. (Do you think this is a good estimator
 of these distributions?)</p>
-</div>
-<div class="section" id="exercise-3">
+</section>
+<section id="exercise-3">
 <h3><span class="section-number">16.5.3. </span>Exercise 3<a class="headerlink" href="#exercise-3" title="Permalink to this headline">¶</a></h3>
 <p>In the lecture we discussed the following fact: for the <span class="math notranslate nohighlight">\(AR(1)\)</span> process</p>
 <div class="math notranslate nohighlight">
@@ -665,11 +658,11 @@ density estimate via kernel density estimation.</p></li>
 <p>Try this for <span class="math notranslate nohighlight">\(n=2000\)</span> and confirm that the
 simulation based estimate of <span class="math notranslate nohighlight">\(\psi_{t+1}\)</span> does converge to the
 theoretical distribution.</p>
-</div>
-</div>
-<div class="section" id="solutions">
+</section>
+</section>
+<section id="solutions">
 <h2><a class="toc-backref" href="#id11"><span class="section-number">16.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id2">
+<section id="id2">
 <h3><span class="section-number">16.6.1. </span>Exercise 1<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -713,8 +706,8 @@ theoretical distribution.</p>
 <img alt="_images/ar1_processes_13_0.png" src="_images/ar1_processes_13_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="id3">
+</section>
+<section id="id3">
 <h3><span class="section-number">16.6.2. </span>Exercise 2<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>Here is one solution:</p>
 <div class="cell docutils container">
@@ -779,8 +772,8 @@ theoretical distribution.</p>
 </div>
 <p>We see that the kernel density estimator is effective when the underlying
 distribution is smooth but less so otherwise.</p>
-</div>
-<div class="section" id="id4">
+</section>
+<section id="id4">
 <h3><span class="section-number">16.6.3. </span>Exercise 3<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>Here is our solution</p>
 <div class="cell docutils container">
@@ -843,9 +836,9 @@ distribution is smooth but less so otherwise.</p>
 </div>
 <p>The simulated distribution approximately coincides with the theoretical
 distribution, as predicted.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -896,7 +889,7 @@ distribution, as predicted.</p>
                 </div>
 
                 <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
-                    <p class="caption">
+                    <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Tools and Techniques
  </span>
@@ -963,7 +956,7 @@ distribution, as predicted.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Linear Programming
  </span>
@@ -980,7 +973,7 @@ distribution, as predicted.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Introduction to Dynamics
  </span>
@@ -1047,7 +1040,7 @@ distribution, as predicted.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Search
  </span>
@@ -1084,7 +1077,7 @@ distribution, as predicted.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Consumption, Savings and Growth
  </span>
@@ -1131,7 +1124,7 @@ distribution, as predicted.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Information
  </span>
@@ -1173,7 +1166,7 @@ distribution, as predicted.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   LQ Control
  </span>
@@ -1200,7 +1193,7 @@ distribution, as predicted.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Multiple Agent Models
  </span>
@@ -1242,7 +1235,7 @@ distribution, as predicted.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Asset Pricing and Finance
  </span>
@@ -1264,7 +1257,7 @@ distribution, as predicted.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Data and Empirics
  </span>
@@ -1286,7 +1279,7 @@ distribution, as predicted.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Other
  </span>

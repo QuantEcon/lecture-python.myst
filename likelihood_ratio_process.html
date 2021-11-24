@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>42. Likelihood Ratio Processes &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -63,8 +64,8 @@
       
 
     
-    <link rel="stylesheet" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -75,203 +76,20 @@
   <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
 
 
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
+    <script>
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
@@ -419,7 +237,7 @@
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="section" id="likelihood-ratio-processes">
+</div><section class="tex2jax_ignore mathjax_ignore" id="likelihood-ratio-processes">
 <h1><a class="toc-backref" href="#id4"><span class="section-number">42. </span>Likelihood Ratio Processes</a><a class="headerlink" href="#likelihood-ratio-processes" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
@@ -438,7 +256,7 @@
 </li>
 </ul>
 </div>
-<div class="section" id="overview">
+<section id="overview">
 <h2><a class="toc-backref" href="#id5"><span class="section-number">42.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture describes likelihood ratio processes and some of their uses.</p>
 <p>We’ll use a setting described in <a class="reference internal" href="exchangeable.html"><span class="doc">this lecture</span></a>.</p>
@@ -463,8 +281,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="id1">
+</section>
+<section id="id1">
 <h2><a class="toc-backref" href="#id6"><span class="section-number">42.2. </span>Likelihood Ratio Process</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>A nonnegative random variable <span class="math notranslate nohighlight">\(W\)</span> has one of two probability density functions, either
 <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>.</p>
@@ -555,8 +373,8 @@ probability distributionss, for example, a sequence of  IID draws from <span cla
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="nature-permanently-draws-from-density-g">
+</section>
+<section id="nature-permanently-draws-from-density-g">
 <h2><a class="toc-backref" href="#id7"><span class="section-number">42.3. </span>Nature Permanently Draws from Density g</a><a class="headerlink" href="#nature-permanently-draws-from-density-g" title="Permalink to this headline">¶</a></h2>
 <p>We first simulate the likelihood ratio process when nature permanently
 draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
@@ -597,7 +415,7 @@ paths <span class="math notranslate nohighlight">\(L\left(w^{t}\right)\)</span> 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fc734314e20&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f7944a90d90&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_9_1.png" src="_images/likelihood_ratio_process_9_1.png" />
@@ -641,8 +459,8 @@ E\left[L\left(w^{t}\right)\bigm|q=g\right]  &amp;=E\left[L\left(w^{t-1}\right)\e
 <p>Mathematical induction implies
 <span class="math notranslate nohighlight">\(E\left[L\left(w^{t}\right)\bigm|q=g\right]=1\)</span> for all
 <span class="math notranslate nohighlight">\(t \geq 1\)</span>.</p>
-</div>
-<div class="section" id="peculiar-property-of-likelihood-ratio-process">
+</section>
+<section id="peculiar-property-of-likelihood-ratio-process">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">42.4. </span>Peculiar Property of Likelihood Ratio Process</a><a class="headerlink" href="#peculiar-property-of-likelihood-ratio-process" title="Permalink to this headline">¶</a></h2>
 <p>How can <span class="math notranslate nohighlight">\(E\left[L\left(w^{t}\right)\bigm|q=g\right]=1\)</span> possibly be true when most  probability mass of the likelihood
 ratio process is piling up near <span class="math notranslate nohighlight">\(0\)</span> as
@@ -671,8 +489,8 @@ paths.</p>
 <p>Because the probability density in the right tail is close to <span class="math notranslate nohighlight">\(0\)</span>,  it just takes too much computer time to sample enough points from the right tail.</p>
 <p>We explain the problem in more detail  in <a class="reference internal" href="imp_sample.html"><span class="doc">this lecture</span></a>.</p>
 <p>There we describe a way to an alternative way to compute the mean of a likelihood ratio by computing the mean of a <em>different</em> random variable by sampling from  a <em>different</em> probability distribution.</p>
-</div>
-<div class="section" id="nature-permanently-draws-from-density-f">
+</section>
+<section id="nature-permanently-draws-from-density-f">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">42.5. </span>Nature Permanently Draws from Density f</a><a class="headerlink" href="#nature-permanently-draws-from-density-f" title="Permalink to this headline">¶</a></h2>
 <p>Now suppose that before time <span class="math notranslate nohighlight">\(0\)</span> nature permanently decided to draw repeatedly from density <span class="math notranslate nohighlight">\(f\)</span>.</p>
 <p>While the mean of the likelihood ratio <span class="math notranslate nohighlight">\(\ell \left(w_{t}\right)\)</span> under density
@@ -709,7 +527,7 @@ diverges toward <span class="math notranslate nohighlight">\(+ \infty\)</span>.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fc73611a3d0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f79448bcb50&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_14_1.png" src="_images/likelihood_ratio_process_14_1.png" />
@@ -725,14 +543,14 @@ fast probability mass diverges  to <span class="math notranslate nohighlight">\(
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fc7362bebb0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f7944823040&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_16_1.png" src="_images/likelihood_ratio_process_16_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="likelihood-ratio-test">
+</section>
+<section id="likelihood-ratio-test">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">42.6. </span>Likelihood Ratio Test</a><a class="headerlink" href="#likelihood-ratio-test" title="Permalink to this headline">¶</a></h2>
 <p>We now describe how to employ the machinery
 of Neyman and Pearson <span id="id3">[<a class="reference internal" href="zreferences.html#id227">NP33</a>]</span> to test the hypothesis that  history <span class="math notranslate nohighlight">\(w^t\)</span> is generated by repeated
@@ -955,8 +773,8 @@ target probability of detection, for example, <span class="math notranslate nohi
 control tests during World War II.</p>
 <p>A Navy Captain who had been ordered to perform tests of this kind had doubts about it that he
 presented to Milton Friedman, as we describe in  <a class="reference internal" href="wald_friedman.html"><span class="doc">this lecture</span></a>.</p>
-</div>
-<div class="section" id="kullbackleibler-divergence">
+</section>
+<section id="kullbackleibler-divergence">
 <h2><a class="toc-backref" href="#id11"><span class="section-number">42.7. </span>Kullback–Leibler divergence</a><a class="headerlink" href="#kullbackleibler-divergence" title="Permalink to this headline">¶</a></h2>
 <p>Now let’s consider a case in which neither <span class="math notranslate nohighlight">\(g\)</span> nor <span class="math notranslate nohighlight">\(f\)</span>
 generates the data.</p>
@@ -1086,7 +904,7 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fc73634f7f0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f7945f356d0&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_37_1.png" src="_images/likelihood_ratio_process_37_1.png" />
@@ -1133,21 +951,21 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fc7342f4bb0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f7945ff3130&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_43_1.png" src="_images/likelihood_ratio_process_43_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="sequels">
+</section>
+<section id="sequels">
 <h2><a class="toc-backref" href="#id12"><span class="section-number">42.8. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this headline">¶</a></h2>
 <p>Likelihood processes play an important role in Bayesian learning, as described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this lecture</span></a>
 and as applied in <a class="reference internal" href="odu.html"><span class="doc">this lecture</span></a>.</p>
 <p>Likelihood ratio processes appear again in <a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html">this lecture</a>, which contains another illustration
 of the <strong>peculiar property</strong> of likelihood ratio processes described above.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1198,7 +1016,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
                 </div>
 
                 <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
-                    <p class="caption">
+                    <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Tools and Techniques
  </span>
@@ -1265,7 +1083,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Linear Programming
  </span>
@@ -1282,7 +1100,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Introduction to Dynamics
  </span>
@@ -1349,7 +1167,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Search
  </span>
@@ -1386,7 +1204,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Consumption, Savings and Growth
  </span>
@@ -1433,7 +1251,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Information
  </span>
@@ -1475,7 +1293,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   LQ Control
  </span>
@@ -1502,7 +1320,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Multiple Agent Models
  </span>
@@ -1544,7 +1362,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Asset Pricing and Finance
  </span>
@@ -1566,7 +1384,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Data and Empirics
  </span>
@@ -1588,7 +1406,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Other
  </span>

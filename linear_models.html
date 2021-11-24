@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>19. Linear State Space Models &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -63,8 +64,8 @@
       
 
     
-    <link rel="stylesheet" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -75,217 +76,20 @@
   <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
 
 
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
+    <script>
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
@@ -604,7 +408,7 @@
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="section" id="linear-state-space-models">
+</div><section class="tex2jax_ignore mathjax_ignore" id="linear-state-space-models">
 <h1><a class="toc-backref" href="#id4"><span class="section-number">19. </span>Linear State Space Models</a><a class="headerlink" href="#linear-state-space-models" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
@@ -680,32 +484,8 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: | 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+Solving environment: - 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
@@ -772,6 +552,9 @@ Solving environment: |
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -782,7 +565,7 @@ Solving environment: |
 </div>
 </div>
 </div>
-<div class="section" id="overview">
+<section id="overview">
 <h2><a class="toc-backref" href="#id5"><span class="section-number">19.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture introduces the <strong>linear state space</strong> dynamic system.</p>
 <p>The linear state space system is a generalization of the scalar AR(1) process <a class="reference internal" href="ar1_processes.html"><span class="doc">we studied before</span></a>.</p>
@@ -822,8 +605,8 @@ Solving environment: |
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="the-linear-state-space-model">
+</section>
+<section id="the-linear-state-space-model">
 <h2><a class="toc-backref" href="#id6"><span class="section-number">19.2. </span>The Linear State Space Model</a><a class="headerlink" href="#the-linear-state-space-model" title="Permalink to this headline">¶</a></h2>
 <p id="index-1">The objects in play are:</p>
 <ul class="simple">
@@ -841,7 +624,7 @@ Solving environment: |
     y_t &amp;  =  G x_t \nonumber \\
     x_0 &amp; \sim N(\mu_0, \Sigma_0) \nonumber
 \end{aligned}\end{split}\]</div>
-<div class="section" id="primitives">
+<section id="primitives">
 <span id="lss-pgs"></span><h3><span class="section-number">19.2.1. </span>Primitives<a class="headerlink" href="#primitives" title="Permalink to this headline">¶</a></h3>
 <p>The primitives of the model are</p>
 <ol class="simple">
@@ -853,7 +636,7 @@ Solving environment: |
 model <a class="reference internal" href="#equation-st-space-rep">(19.1)</a> pins down the values of the sequences <span class="math notranslate nohighlight">\(\{x_t\}\)</span> and <span class="math notranslate nohighlight">\(\{y_t\}\)</span>.</p>
 <p>Even without these draws, the primitives 1–3 pin down the <em>probability distributions</em> of <span class="math notranslate nohighlight">\(\{x_t\}\)</span> and <span class="math notranslate nohighlight">\(\{y_t\}\)</span>.</p>
 <p>Later we’ll see how to compute these distributions and their moments.</p>
-<div class="section" id="martingale-difference-shocks">
+<section id="martingale-difference-shocks">
 <h4><span class="section-number">19.2.1.1. </span>Martingale Difference Shocks<a class="headerlink" href="#martingale-difference-shocks" title="Permalink to this headline">¶</a></h4>
 <p id="index-2">We’ve made the common assumption that the shocks are independent standardized normal vectors.</p>
 <p>But some of what we say will be valid under the assumption that <span class="math notranslate nohighlight">\(\{w_{t+1}\}\)</span> is a <strong>martingale difference sequence</strong>.</p>
@@ -864,14 +647,14 @@ model <a class="reference internal" href="#equation-st-space-rep">(19.1)</a> pin
 \mathbb{E} [w_{t+1} | x_t, x_{t-1}, \ldots ] = 0
 \]</div>
 <p>This is a weaker condition than that <span class="math notranslate nohighlight">\(\{w_t\}\)</span> is IID with <span class="math notranslate nohighlight">\(w_{t+1} \sim N(0,I)\)</span>.</p>
-</div>
-</div>
-<div class="section" id="examples">
+</section>
+</section>
+<section id="examples">
 <h3><span class="section-number">19.2.2. </span>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
 <p>By appropriate choice of the primitives, a variety of dynamics can be represented in terms of the linear state space model.</p>
 <p>The following examples help to highlight this point.</p>
 <p>They also illustrate the wise dictum <em>finding the state is an art</em>.</p>
-<div class="section" id="second-order-difference-equation">
+<section id="second-order-difference-equation">
 <span id="lss-sode"></span><h4><span class="section-number">19.2.2.1. </span>Second-order Difference Equation<a class="headerlink" href="#second-order-difference-equation" title="Permalink to this headline">¶</a></h4>
 <p>Let <span class="math notranslate nohighlight">\(\{y_t\}\)</span> be a deterministic sequence that satisfies</p>
 <div class="math notranslate nohighlight" id="equation-st-ex-1">
@@ -946,8 +729,8 @@ G = \begin{bmatrix} 0 &amp; 1 &amp; 0 \end{bmatrix}
 </div>
 </div>
 <p>Later you’ll be asked to recreate this figure.</p>
-</div>
-<div class="section" id="univariate-autoregressive-processes">
+</section>
+<section id="univariate-autoregressive-processes">
 <h4><span class="section-number">19.2.2.2. </span>Univariate Autoregressive Processes<a class="headerlink" href="#univariate-autoregressive-processes" title="Permalink to this headline">¶</a></h4>
 <p id="index-3">We can use <a class="reference internal" href="#equation-st-space-rep">(19.1)</a> to represent the model</p>
 <div class="math notranslate nohighlight" id="equation-eq-ar-rep">
@@ -1008,8 +791,8 @@ y_{-3} = 1
 <img alt="_images/linear_models_8_0.png" src="_images/linear_models_8_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="vector-autoregressions">
+</section>
+<section id="vector-autoregressions">
 <h4><span class="section-number">19.2.2.3. </span>Vector Autoregressions<a class="headerlink" href="#vector-autoregressions" title="Permalink to this headline">¶</a></h4>
 <p id="index-4">Now suppose that</p>
 <ul class="simple">
@@ -1051,8 +834,8 @@ G =
  \end{bmatrix}
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(I\)</span> is the <span class="math notranslate nohighlight">\(k \times k\)</span> identity matrix and <span class="math notranslate nohighlight">\(\sigma\)</span> is a <span class="math notranslate nohighlight">\(k \times k\)</span> matrix.</p>
-</div>
-<div class="section" id="seasonals">
+</section>
+<section id="seasonals">
 <h4><span class="section-number">19.2.2.4. </span>Seasonals<a class="headerlink" href="#seasonals" title="Permalink to this headline">¶</a></h4>
 <p id="index-5">We can use <a class="reference internal" href="#equation-st-space-rep">(19.1)</a> to represent</p>
 <ol class="simple">
@@ -1077,8 +860,8 @@ x_{t+4} = x_t
 \]</div>
 <p>Such an <span class="math notranslate nohighlight">\(x_t\)</span> process can be used to model deterministic seasonals in quarterly time series.</p>
 <p>The <em>indeterministic</em> seasonal produces recurrent, but aperiodic, seasonal fluctuations.</p>
-</div>
-<div class="section" id="time-trends">
+</section>
+<section id="time-trends">
 <h4><span class="section-number">19.2.2.5. </span>Time Trends<a class="headerlink" href="#time-trends" title="Permalink to this headline">¶</a></h4>
 <p id="index-6">The model <span class="math notranslate nohighlight">\(y_t = a t + b\)</span> is known as a <em>linear time trend</em>.</p>
 <p>We can represent this model in the linear state space form by taking</p>
@@ -1135,9 +918,9 @@ A^t =
 \end{bmatrix}
 \end{split}\]</div>
 <p>Then <span class="math notranslate nohighlight">\(x_t^\prime = \begin{bmatrix} t(t-1)/2 &amp;t &amp; 1 \end{bmatrix}\)</span>. You can now confirm that <span class="math notranslate nohighlight">\(y_t = G x_t\)</span> has the correct form.</p>
-</div>
-</div>
-<div class="section" id="moving-average-representations">
+</section>
+</section>
+<section id="moving-average-representations">
 <h3><span class="section-number">19.2.3. </span>Moving Average Representations<a class="headerlink" href="#moving-average-representations" title="Permalink to this headline">¶</a></h3>
 <p id="index-7">A nonrecursive expression for <span class="math notranslate nohighlight">\(x_t\)</span> as a function of
 <span class="math notranslate nohighlight">\(x_0, w_1, w_2, \ldots,  w_t\)</span> can be found by using <a class="reference internal" href="#equation-st-space-rep">(19.1)</a> repeatedly to obtain</p>
@@ -1183,11 +966,11 @@ x_0
 <p>The first term on the right is a cumulated sum of martingale differences and is therefore a <a class="reference external" href="https://en.wikipedia.org/wiki/Martingale_%28probability_theory%29">martingale</a>.</p>
 <p>The second term is a translated linear function of time.</p>
 <p>For this reason, <span class="math notranslate nohighlight">\(x_{1t}\)</span> is called a <em>martingale with drift</em>.</p>
-</div>
-</div>
-<div class="section" id="distributions-and-moments">
+</section>
+</section>
+<section id="distributions-and-moments">
 <h2><a class="toc-backref" href="#id7"><span class="section-number">19.3. </span>Distributions and Moments</a><a class="headerlink" href="#distributions-and-moments" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="index-8"></span><div class="section" id="unconditional-moments">
+<span class="target" id="index-8"></span><section id="unconditional-moments">
 <span id="index-9"></span><h3><span class="section-number">19.3.1. </span>Unconditional Moments<a class="headerlink" href="#unconditional-moments" title="Permalink to this headline">¶</a></h3>
 <p>Using <a class="reference internal" href="#equation-st-space-rep">(19.1)</a>, it’s easy to obtain expressions for the
 (unconditional) means of <span class="math notranslate nohighlight">\(x_t\)</span> and <span class="math notranslate nohighlight">\(y_t\)</span>.</p>
@@ -1214,7 +997,7 @@ determine this matrix recursively via</p>
 information, to be defined below.</p>
 <p>However, you should be aware that these “unconditional” moments do depend on
 the initial distribution <span class="math notranslate nohighlight">\(N(\mu_0, \Sigma_0)\)</span>.</p>
-<div class="section" id="moments-of-the-observations">
+<section id="moments-of-the-observations">
 <h4><span class="section-number">19.3.1.1. </span>Moments of the Observations<a class="headerlink" href="#moments-of-the-observations" title="Permalink to this headline">¶</a></h4>
 <p>Using linearity of expectations again we have</p>
 <div class="math notranslate nohighlight" id="equation-lss-umy">
@@ -1222,9 +1005,9 @@ the initial distribution <span class="math notranslate nohighlight">\(N(\mu_0, \
 <p>The variance-covariance matrix of <span class="math notranslate nohighlight">\(y_t\)</span> is easily shown to be</p>
 <div class="math notranslate nohighlight" id="equation-lss-uvy">
 <span class="eqno">(19.9)<a class="headerlink" href="#equation-lss-uvy" title="Permalink to this equation">¶</a></span>\[\textrm{Var} [y_t] = \textrm{Var} [G x_t] = G \Sigma_t G'\]</div>
-</div>
-</div>
-<div class="section" id="distributions">
+</section>
+</section>
+<section id="distributions">
 <h3><span class="section-number">19.3.2. </span>Distributions<a class="headerlink" href="#distributions" title="Permalink to this headline">¶</a></h3>
 <p id="index-10">In general, knowing the mean and variance-covariance matrix of a random vector
 is not quite as good as knowing the full distribution.</p>
@@ -1259,8 +1042,8 @@ we have</p>
 <p>By similar reasoning combined with <a class="reference internal" href="#equation-lss-umy">(19.8)</a> and <a class="reference internal" href="#equation-lss-uvy">(19.9)</a>,</p>
 <div class="math notranslate nohighlight" id="equation-lss-mgs-y">
 <span class="eqno">(19.12)<a class="headerlink" href="#equation-lss-mgs-y" title="Permalink to this equation">¶</a></span>\[y_t \sim N(G \mu_t, G \Sigma_t G')\]</div>
-</div>
-<div class="section" id="ensemble-interpretations">
+</section>
+<section id="ensemble-interpretations">
 <h3><span class="section-number">19.3.3. </span>Ensemble Interpretations<a class="headerlink" href="#ensemble-interpretations" title="Permalink to this headline">¶</a></h3>
 <p>How should we interpret the distributions defined by <a class="reference internal" href="#equation-lss-mgs-x">(19.11)</a>–<a class="reference internal" href="#equation-lss-mgs-y">(19.12)</a>?</p>
 <p>Intuitively, the probabilities in a distribution correspond to relative frequencies in a large population drawn from that distribution.</p>
@@ -1389,7 +1172,7 @@ that shows relative frequencies from our sample of 20 <span class="math notransl
 <p>By looking at the figures and experimenting with parameters, you will gain a
 feel for how the population distribution depends on the model primitives <a class="reference internal" href="#lss-pgs"><span class="std std-ref">listed above</span></a>, as intermediated by
 the distribution’s sufficient statistics.</p>
-<div class="section" id="ensemble-means">
+<section id="ensemble-means">
 <h4><span class="section-number">19.3.3.1. </span>Ensemble Means<a class="headerlink" href="#ensemble-means" title="Permalink to this headline">¶</a></h4>
 <p>In the preceding figure, we approximated the population distribution of <span class="math notranslate nohighlight">\(y_T\)</span> by</p>
 <ol class="simple">
@@ -1461,9 +1244,9 @@ and the sample size is relatively small (<span class="math notranslate nohighlig
 \frac{1}{I} \sum_{i=1}^I (x_T^i - \bar x_T) (x_T^i - \bar x_T)' \to \Sigma_T
 \qquad (I \to \infty)
 \]</div>
-</div>
-</div>
-<div class="section" id="joint-distributions">
+</section>
+</section>
+<section id="joint-distributions">
 <h3><span class="section-number">19.3.4. </span>Joint Distributions<a class="headerlink" href="#joint-distributions" title="Permalink to this headline">¶</a></h3>
 <p>In the preceding discussion, we looked at the distributions of <span class="math notranslate nohighlight">\(x_t\)</span> and
 <span class="math notranslate nohighlight">\(y_t\)</span> in isolation.</p>
@@ -1493,7 +1276,7 @@ p(x_0, x_1, \ldots, x_T) =  p(x_0) \prod_{t=0}^{T-1} p(x_{t+1} \,|\, x_t)
 \[
 p(x_{t+1} \,|\, x_t) = N(Ax_t, C C')
 \]</div>
-<div class="section" id="autocovariance-functions">
+<section id="autocovariance-functions">
 <h4><span class="section-number">19.3.4.1. </span>Autocovariance Functions<a class="headerlink" href="#autocovariance-functions" title="Permalink to this headline">¶</a></h4>
 <p>An important object related to the joint distribution is the <em>autocovariance function</em></p>
 <div class="math notranslate nohighlight" id="equation-eqnautodeff">
@@ -1502,14 +1285,14 @@ p(x_{t+1} \,|\, x_t) = N(Ax_t, C C')
 <div class="math notranslate nohighlight" id="equation-eqnautocov">
 <span class="eqno">(19.14)<a class="headerlink" href="#equation-eqnautocov" title="Permalink to this equation">¶</a></span>\[\Sigma_{t+j,t} = A^j \Sigma_t\]</div>
 <p>Notice that <span class="math notranslate nohighlight">\(\Sigma_{t+j,t}\)</span> in general depends on both <span class="math notranslate nohighlight">\(j\)</span>, the gap between the two dates, and <span class="math notranslate nohighlight">\(t\)</span>, the earlier date.</p>
-</div>
-</div>
-</div>
-<div class="section" id="stationarity-and-ergodicity">
+</section>
+</section>
+</section>
+<section id="stationarity-and-ergodicity">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">19.4. </span>Stationarity and Ergodicity</a><a class="headerlink" href="#stationarity-and-ergodicity" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="index-11"></span><p id="index-12">Stationarity and ergodicity are two properties  that, when they hold,  greatly aid analysis of linear state space models.</p>
 <p>Let’s start with the intuition.</p>
-<div class="section" id="visualizing-stability">
+<section id="visualizing-stability">
 <h3><span class="section-number">19.4.1. </span>Visualizing Stability<a class="headerlink" href="#visualizing-stability" title="Permalink to this headline">¶</a></h3>
 <p>Let’s look at some more time series from the same model that we analyzed above.</p>
 <p>This picture shows cross-sectional distributions for <span class="math notranslate nohighlight">\(y\)</span> at times
@@ -1573,8 +1356,8 @@ the distribution at <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>Apparently, the distributions of <span class="math notranslate nohighlight">\(y_t\)</span>  converge to a fixed long-run
 distribution as <span class="math notranslate nohighlight">\(t \to \infty\)</span>.</p>
 <p>When such a distribution exists it is called a <em>stationary distribution</em>.</p>
-</div>
-<div class="section" id="stationary-distributions">
+</section>
+<section id="stationary-distributions">
 <h3><span class="section-number">19.4.2. </span>Stationary Distributions<a class="headerlink" href="#stationary-distributions" title="Permalink to this headline">¶</a></h3>
 <p>In our setting, a distribution <span class="math notranslate nohighlight">\(\psi_{\infty}\)</span> is said to be <em>stationary</em> for <span class="math notranslate nohighlight">\(x_t\)</span> if</p>
 <div class="math notranslate nohighlight">
@@ -1597,8 +1380,8 @@ x_{t+1} \sim \psi_{\infty}
 = N(\mu_{\infty}, \Sigma_{\infty})
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\mu_{\infty}\)</span> and <span class="math notranslate nohighlight">\(\Sigma_{\infty}\)</span> are fixed points of <a class="reference internal" href="#equation-lss-mut-linear-models">(19.6)</a> and <a class="reference internal" href="#equation-eqsigmalaw-linear-models">(19.7)</a> respectively.</p>
-</div>
-<div class="section" id="covariance-stationary-processes">
+</section>
+<section id="covariance-stationary-processes">
 <h3><span class="section-number">19.4.3. </span>Covariance Stationary Processes<a class="headerlink" href="#covariance-stationary-processes" title="Permalink to this headline">¶</a></h3>
 <p>Let’s see what happens to the preceding figure if we start <span class="math notranslate nohighlight">\(x_0\)</span> at the stationary distribution.</p>
 <div class="cell docutils container" id="lss-s-fig">
@@ -1633,10 +1416,10 @@ x_{t+1} \sim \psi_{\infty}
 <li><p><span class="math notranslate nohighlight">\(\Sigma_{t+j,t}\)</span> depends on the time gap <span class="math notranslate nohighlight">\(j\)</span> but not on time <span class="math notranslate nohighlight">\(t\)</span></p></li>
 </ul>
 <p>In our setting, <span class="math notranslate nohighlight">\(\{x_t\}\)</span> will be covariance stationary if <span class="math notranslate nohighlight">\(\mu_0, \Sigma_0, A, C\)</span>  assume values that  imply that none of <span class="math notranslate nohighlight">\(\mu_t, \Sigma_t, \Sigma_{t+j,t}\)</span> depends on <span class="math notranslate nohighlight">\(t\)</span>.</p>
-</div>
-<div class="section" id="conditions-for-stationarity">
+</section>
+<section id="conditions-for-stationarity">
 <h3><span class="section-number">19.4.4. </span>Conditions for Stationarity<a class="headerlink" href="#conditions-for-stationarity" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="the-globally-stable-case">
+<section id="the-globally-stable-case">
 <h4><span class="section-number">19.4.4.1. </span>The Globally Stable Case<a class="headerlink" href="#the-globally-stable-case" title="Permalink to this headline">¶</a></h4>
 <p>The difference equation <span class="math notranslate nohighlight">\(\mu_{t+1} = A \mu_t\)</span> is known to have <em>unique</em>
 fixed point <span class="math notranslate nohighlight">\(\mu_{\infty} = 0\)</span> if all eigenvalues of <span class="math notranslate nohighlight">\(A\)</span> have moduli strictly less than unity.</p>
@@ -1656,8 +1439,8 @@ fixed point <span class="math notranslate nohighlight">\(\mu_{\infty} = 0\)</spa
 <p>Here the state is <span class="math notranslate nohighlight">\(x_t = \begin{bmatrix} 1 &amp; y_t &amp; y_{t-1} \end{bmatrix}'\)</span>.</p>
 <p>Because of the constant first component in the state vector, we will never have <span class="math notranslate nohighlight">\(\mu_t \to 0\)</span>.</p>
 <p>How can we find stationary solutions that respect a constant state component?</p>
-</div>
-<div class="section" id="processes-with-a-constant-state-component">
+</section>
+<section id="processes-with-a-constant-state-component">
 <h4><span class="section-number">19.4.4.2. </span>Processes with a Constant State Component<a class="headerlink" href="#processes-with-a-constant-state-component" title="Permalink to this headline">¶</a></h4>
 <p>To investigate such a process, suppose that <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(C\)</span> take the
 form</p>
@@ -1720,13 +1503,13 @@ matrix both converge to their stationary values; and (b)
 iterations on <a class="reference internal" href="#equation-eqsigmalaw-linear-models">(19.7)</a> converge to the fixed point of the <em>discrete
 Lyapunov equation</em> in the first line of <a class="reference internal" href="#equation-eqnsigmainf">(19.16)</a>.</p>
 </div>
-</div>
-</div>
-<div class="section" id="ergodicity">
+</section>
+</section>
+<section id="ergodicity">
 <h3><span class="section-number">19.4.5. </span>Ergodicity<a class="headerlink" href="#ergodicity" title="Permalink to this headline">¶</a></h3>
 <p>Let’s suppose that we’re working with a covariance stationary process.</p>
 <p>In this case, we know that the ensemble mean will converge to <span class="math notranslate nohighlight">\(\mu_{\infty}\)</span> as the sample size <span class="math notranslate nohighlight">\(I\)</span> approaches infinity.</p>
-<div class="section" id="averages-over-time">
+<section id="averages-over-time">
 <h4><span class="section-number">19.4.5.1. </span>Averages over Time<a class="headerlink" href="#averages-over-time" title="Permalink to this headline">¶</a></h4>
 <p>Ensemble averages across simulations are interesting theoretically, but in real life, we usually observe only a <em>single</em> realization <span class="math notranslate nohighlight">\(\{x_t, y_t\}_{t=0}^T\)</span>.</p>
 <p>So now let’s take a single realization and form the time-series averages</p>
@@ -1748,10 +1531,10 @@ expectation under the stationary distribution.</p>
 <li><p><span class="math notranslate nohighlight">\(\frac{1}{T} \sum_{t=1}^T (x_{t+j} -\bar x_T) (x_t - \bar x_T)' \to A^j \Sigma_\infty\)</span></p></li>
 </ul>
 <p>In our linear Gaussian setting, any covariance stationary process is also ergodic.</p>
-</div>
-</div>
-</div>
-<div class="section" id="noisy-observations">
+</section>
+</section>
+</section>
+<section id="noisy-observations">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">19.5. </span>Noisy Observations</a><a class="headerlink" href="#noisy-observations" title="Permalink to this headline">¶</a></h2>
 <p>In some settings, the observation equation <span class="math notranslate nohighlight">\(y_t = Gx_t\)</span> is modified to
 include an error term.</p>
@@ -1784,12 +1567,12 @@ now become</p>
 \[
 y_t \sim N(G \mu_t, G \Sigma_t G' + HH')
 \]</div>
-</div>
-<div class="section" id="prediction">
+</section>
+<section id="prediction">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">19.6. </span>Prediction</a><a class="headerlink" href="#prediction" title="Permalink to this headline">¶</a></h2>
 <p id="index-13">The theory of prediction for linear state space systems is elegant and
 simple.</p>
-<div class="section" id="forecasting-formulas-conditional-means">
+<section id="forecasting-formulas-conditional-means">
 <span id="ff-cm"></span><h3><span class="section-number">19.6.1. </span>Forecasting Formulas – Conditional Means<a class="headerlink" href="#forecasting-formulas-conditional-means" title="Permalink to this headline">¶</a></h3>
 <p>The natural way to predict variables is to use conditional distributions.</p>
 <p>For example, the optimal forecast of <span class="math notranslate nohighlight">\(x_{t+1}\)</span> given information known at time <span class="math notranslate nohighlight">\(t\)</span> is</p>
@@ -1831,8 +1614,8 @@ x_{t+j} = A^j x_t + A^{j-1} C w_{t+1} + A^{j-2} C w_{t+2} +
 = \mathbb{E}_t [G x_{t+j} + H v_{t+j}]
 = G A^j x_t
 \]</div>
-</div>
-<div class="section" id="covariance-of-prediction-errors">
+</section>
+<section id="covariance-of-prediction-errors">
 <h3><span class="section-number">19.6.2. </span>Covariance of Prediction Errors<a class="headerlink" href="#covariance-of-prediction-errors" title="Permalink to this headline">¶</a></h3>
 <p>It is useful to obtain the covariance matrix of the vector of  <span class="math notranslate nohighlight">\(j\)</span>-step-ahead prediction errors</p>
 <div class="math notranslate nohighlight" id="equation-eqob8">
@@ -1851,9 +1634,9 @@ x_{t+j} = A^j x_t + A^{j-1} C w_{t+1} + A^{j-2} C w_{t+2} +
 <p>Equation <a class="reference internal" href="#equation-eqob10">(19.23)</a> is an example of a <em>discrete Lyapunov</em> equation in the covariance matrix <span class="math notranslate nohighlight">\(V_\infty\)</span>.</p>
 <p>A sufficient condition for <span class="math notranslate nohighlight">\(V_j\)</span> to converge is that the eigenvalues of <span class="math notranslate nohighlight">\(A\)</span> be strictly less than one in modulus.</p>
 <p>Weaker sufficient conditions for convergence  associate eigenvalues equaling or exceeding one in modulus with elements of <span class="math notranslate nohighlight">\(C\)</span> that equal <span class="math notranslate nohighlight">\(0\)</span>.</p>
-</div>
-</div>
-<div class="section" id="code">
+</section>
+</section>
+<section id="code">
 <span id="lm-fgs"></span><h2><a class="toc-backref" href="#id11"><span class="section-number">19.7. </span>Code</a><a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
 <p>Our preceding simulations and calculations are based on code in
 the file <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">lss.py</a> from the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a> package.</p>
@@ -1861,10 +1644,10 @@ the file <a class="reference external" href="https://github.com/QuantEcon/QuantE
 <p>One Python construct you might not be familiar with is the use of a generator function in the method <code class="docutils literal notranslate"><span class="pre">moment_sequence()</span></code>.</p>
 <p>Go back and <a class="reference external" href="https://python-programming.quantecon.org/python_advanced_features.html#generators">read the relevant documentation</a> if you’ve forgotten how generator functions work.</p>
 <p>Examples of usage are given in the solutions to the exercises.</p>
-</div>
-<div class="section" id="exercises">
+</section>
+<section id="exercises">
 <h2><a class="toc-backref" href="#id12"><span class="section-number">19.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="exercise-1">
+<section id="exercise-1">
 <span id="lss-ex1"></span><h3><span class="section-number">19.8.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>In several contexts, we want to compute forecasts of  geometric sums of future random variables governed by the linear state-space system <a class="reference internal" href="#equation-st-space-rep">(19.1)</a>.</p>
 <p>We want the following objects</p>
@@ -1889,11 +1672,11 @@ the file <a class="reference external" href="https://github.com/QuantEcon/QuantE
 \mathbb{E}_t \left[\sum_{j=0}^\infty \beta^j y_{t+j} \right] = G[I - \beta A]^{-1} x_t
 \]</div>
 <p>what must the modulus for every eigenvalue of <span class="math notranslate nohighlight">\(A\)</span> be less than?</p>
-</div>
-</div>
-<div class="section" id="solutions">
+</section>
+</section>
+<section id="solutions">
 <h2><a class="toc-backref" href="#id13"><span class="section-number">19.9. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id3">
+<section id="id3">
 <h3><span class="section-number">19.9.1. </span>Exercise 1<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>Suppose that every eigenvalue of <span class="math notranslate nohighlight">\(A\)</span> has modulus strictly less than <span class="math notranslate nohighlight">\(\frac{1}{\beta}\)</span>.</p>
 <p>It <a class="reference internal" href="linear_algebra.html#la-neumann-remarks"><span class="std std-ref">then follows</span></a> that <span class="math notranslate nohighlight">\(I + \beta A + \beta^2 A^2 + \cdots = \left[I - \beta A \right]^{-1}\)</span>.</p>
@@ -1928,9 +1711,9 @@ is assumed to be Gaussian, it follows that every <span class="math notranslate n
 Evidently, this implies that each <span class="math notranslate nohighlight">\(y_t\)</span> is Gaussian.</p>
 </dd>
 </dl>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1981,7 +1764,7 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
                 </div>
 
                 <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
-                    <p class="caption">
+                    <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Tools and Techniques
  </span>
@@ -2048,7 +1831,7 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Linear Programming
  </span>
@@ -2065,7 +1848,7 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Introduction to Dynamics
  </span>
@@ -2132,7 +1915,7 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Search
  </span>
@@ -2169,7 +1952,7 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Consumption, Savings and Growth
  </span>
@@ -2216,7 +1999,7 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Information
  </span>
@@ -2258,7 +2041,7 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   LQ Control
  </span>
@@ -2285,7 +2068,7 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Multiple Agent Models
  </span>
@@ -2327,7 +2110,7 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Asset Pricing and Finance
  </span>
@@ -2349,7 +2132,7 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Data and Empirics
  </span>
@@ -2371,7 +2154,7 @@ Evidently, this implies that each <span class="math notranslate nohighlight">\(y
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Other
  </span>

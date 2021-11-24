@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>20. Application: The Samuelson Multiplier-Accelerator &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -63,8 +64,8 @@
       
 
     
-    <link rel="stylesheet" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -75,406 +76,20 @@
   <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
 
 
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
+    <script>
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
@@ -539,7 +154,7 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#samuelson-s-model">
+    <a class="reference internal nav-link" href="#samuelsons-model">
      20.1.1. Samuelson’s Model
     </a>
    </li>
@@ -728,7 +343,7 @@
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="section" id="application-the-samuelson-multiplier-accelerator">
+</div><section class="tex2jax_ignore mathjax_ignore" id="application-the-samuelson-multiplier-accelerator">
 <h1><a class="toc-backref" href="#id7"><span class="section-number">20. </span>Application: The Samuelson Multiplier-Accelerator</a><a class="headerlink" href="#application-the-samuelson-multiplier-accelerator" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
@@ -798,44 +413,10 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: | 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving environment: / 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
@@ -896,41 +477,26 @@ Solving environment: |
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>## Package Plan ##
-
-  environment location: /usr/share/miniconda3/envs/quantecon
-
-  added / updated specs:
-    - quantecon
-
-
-The following packages will be UPDATED:
-
-  ca-certificates    conda-forge::ca-certificates-2021.10.~ --&gt; pkgs/main::ca-certificates-2021.10.26-h06a4308_2
-
-
-Preparing transaction: \ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Verifying transaction: / 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Executing transaction: \ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># All requested packages already installed.
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="overview">
+<section id="overview">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">20.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture creates non-stochastic and stochastic versions of Paul Samuelson’s celebrated multiplier accelerator model <span id="id1">[<a class="reference internal" href="zreferences.html#id60">Sam39</a>]</span>.</p>
 <p>In doing so, we extend the example of the Solow model class in <a class="reference external" href="https://python-programming.quantecon.org/python_oop.html">our second OOP lecture</a>.</p>
@@ -964,8 +530,8 @@ Executing transaction: \
 </div>
 </div>
 </div>
-<div class="section" id="samuelson-s-model">
-<h3><span class="section-number">20.1.1. </span>Samuelson’s Model<a class="headerlink" href="#samuelson-s-model" title="Permalink to this headline">¶</a></h3>
+<section id="samuelsons-model">
+<h3><span class="section-number">20.1.1. </span>Samuelson’s Model<a class="headerlink" href="#samuelsons-model" title="Permalink to this headline">¶</a></h3>
 <p>Samuelson used a <em>second-order linear difference equation</em> to
 represent a model of national output based on three components:</p>
 <ul class="simple">
@@ -1000,9 +566,9 @@ identity representing random fluctuations in aggregate demand.</p>
 gives rise to recurrent irregular business cycles.</p>
 <p>(To read about stochastic linear difference equations see chapter XI of
 <span id="id3">[<a class="reference internal" href="zreferences.html#id182">Sar87</a>]</span>.)</p>
-</div>
-</div>
-<div class="section" id="details">
+</section>
+</section>
+<section id="details">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">20.2. </span>Details</a><a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
 <p>Let’s assume that</p>
 <ul class="simple">
@@ -1073,7 +639,7 @@ a constant value as <span class="math notranslate nohighlight">\(t\)</span> beco
 no random shocks hit aggregate demand — has only transient fluctuations.</p>
 <p>We can convert the model to one that has persistent irregular
 fluctuations by adding a random shock to aggregate demand.</p>
-<div class="section" id="stochastic-version-of-the-model">
+<section id="stochastic-version-of-the-model">
 <h3><span class="section-number">20.2.1. </span>Stochastic Version of the Model<a class="headerlink" href="#stochastic-version-of-the-model" title="Permalink to this headline">¶</a></h3>
 <p>We create a <strong>random</strong> or <strong>stochastic</strong> version of the model by adding
 a random process of <strong>shocks</strong> or <strong>disturbances</strong>
@@ -1082,8 +648,8 @@ leading to the <strong>second-order scalar linear stochastic difference
 equation</strong>:</p>
 <div class="math notranslate nohighlight" id="equation-second-stochastic">
 <span class="eqno">(20.5)<a class="headerlink" href="#equation-second-stochastic" title="Permalink to this equation">¶</a></span>\[Y_t = G_t + a (1-b) Y_{t-1} - a b Y_{t-2} + \sigma \epsilon_{t}\]</div>
-</div>
-<div class="section" id="mathematical-analysis-of-the-model">
+</section>
+<section id="mathematical-analysis-of-the-model">
 <h3><span class="section-number">20.2.2. </span>Mathematical Analysis of the Model<a class="headerlink" href="#mathematical-analysis-of-the-model" title="Permalink to this headline">¶</a></h3>
 <p>To get started, let’s set <span class="math notranslate nohighlight">\(G_t \equiv 0\)</span>, <span class="math notranslate nohighlight">\(\sigma = 0\)</span>, and
 <span class="math notranslate nohighlight">\(\gamma = 0\)</span>.</p>
@@ -1183,8 +749,8 @@ polynomial are both strictly less than one:</p>
 absolute values strictly less than one, the absolute value of the larger
 one governs the rate of convergence to the steady state of the non
 stochastic version of the model.</p>
-</div>
-<div class="section" id="things-this-lecture-does">
+</section>
+<section id="things-this-lecture-does">
 <h3><span class="section-number">20.2.3. </span>Things This Lecture Does<a class="headerlink" href="#things-this-lecture-does" title="Permalink to this headline">¶</a></h3>
 <p>We write a function to generate simulations of a <span class="math notranslate nohighlight">\(\{Y_t\}\)</span> sequence as a function of time.</p>
 <p>The function requires that we put in initial conditions for <span class="math notranslate nohighlight">\(Y_{-1}, Y_{-2}\)</span>.</p>
@@ -1213,9 +779,9 @@ A = \begin{bmatrix} 1 &amp; 0 &amp; 0 \cr
                       \gamma + G &amp; \rho_1 &amp; \rho_2 \cr
                       0 &amp; 1 &amp; 0 \end{bmatrix}
 \]</div>
-</div>
-</div>
-<div class="section" id="implementation">
+</section>
+</section>
+<section id="implementation">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">20.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>We’ll start by drawing an informative graph from page 189 of <span id="id5">[<a class="reference internal" href="zreferences.html#id182">Sar87</a>]</span></p>
 <div class="cell tag_output_scroll docutils container">
@@ -1313,7 +879,7 @@ convergence to the steady state without damped cycles.</p></li>
 </ul>
 <p>Later we’ll present the graph with a red mark showing the particular
 point implied by the setting of <span class="math notranslate nohighlight">\((a,b)\)</span>.</p>
-<div class="section" id="function-to-describe-implications-of-characteristic-polynomial">
+<section id="function-to-describe-implications-of-characteristic-polynomial">
 <h3><span class="section-number">20.3.1. </span>Function to Describe Implications of Characteristic Polynomial<a class="headerlink" href="#function-to-describe-implications-of-characteristic-polynomial" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1342,7 +908,7 @@ point implied by the setting of <span class="math notranslate nohighlight">\((a,
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### Test the categorize_solution function</span>
 
-<span class="n">categorize_solution</span><span class="p">(</span><span class="mf">1.3</span><span class="p">,</span> <span class="o">-.</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">categorize_solution</span><span class="p">(</span><span class="mf">1.3</span><span class="p">,</span> <span class="o">-</span><span class="mf">.4</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1352,8 +918,8 @@ point implied by the setting of <span class="math notranslate nohighlight">\((a,
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="function-for-plotting-paths">
+</section>
+<section id="function-for-plotting-paths">
 <h3><span class="section-number">20.3.2. </span>Function for Plotting Paths<a class="headerlink" href="#function-for-plotting-paths" title="Permalink to this headline">¶</a></h3>
 <p>A useful function for our work below is</p>
 <div class="cell docutils container">
@@ -1372,8 +938,8 @@ point implied by the setting of <span class="math notranslate nohighlight">\((a,
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="manual-or-by-hand-root-calculations">
+</section>
+<section id="manual-or-by-hand-root-calculations">
 <h3><span class="section-number">20.3.3. </span>Manual or “by hand” Root Calculations<a class="headerlink" href="#manual-or-by-hand-root-calculations" title="Permalink to this headline">¶</a></h3>
 <p>The following function calculates roots of the characteristic polynomial
 using high school algebra.</p>
@@ -1384,7 +950,7 @@ that we set</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is a &#39;manual&#39; method</span>
 
-<span class="k">def</span> <span class="nf">y_nonstochastic</span><span class="p">(</span><span class="n">y_0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">y_1</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">α</span><span class="o">=.</span><span class="mi">92</span><span class="p">,</span> <span class="n">β</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">y_nonstochastic</span><span class="p">(</span><span class="n">y_0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">y_1</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.92</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;Takes values of parameters and computes the roots of characteristic</span>
 <span class="sd">    polynomial. It tells whether they are real or complex and whether they</span>
@@ -1447,8 +1013,8 @@ Absolute values of roots are less than one
 <img alt="_images/samuelson_14_1.png" src="_images/samuelson_14_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="reverse-engineering-parameters-to-generate-damped-cycles">
+</section>
+<section id="reverse-engineering-parameters-to-generate-damped-cycles">
 <h3><span class="section-number">20.3.4. </span>Reverse-Engineering Parameters to Generate Damped Cycles<a class="headerlink" href="#reverse-engineering-parameters-to-generate-damped-cycles" title="Permalink to this headline">¶</a></h3>
 <p>The next cell writes code that takes as inputs the modulus <span class="math notranslate nohighlight">\(r\)</span> and
 phase <span class="math notranslate nohighlight">\(\phi\)</span> of a conjugate pair of complex numbers in polar form</p>
@@ -1488,7 +1054,7 @@ pairs that would generate those roots</p></li>
 <span class="c1">## Now let&#39;s use the function in an example</span>
 <span class="c1">## Here are the example parameters</span>
 
-<span class="n">r</span> <span class="o">=</span> <span class="o">.</span><span class="mi">95</span>
+<span class="n">r</span> <span class="o">=</span> <span class="mf">.95</span>
 <span class="n">period</span> <span class="o">=</span> <span class="mi">10</span>                <span class="c1"># Length of cycle in units of time</span>
 <span class="n">ϕ</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">period</span>
 
@@ -1525,8 +1091,8 @@ pairs that would generate those roots</p></li>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="root-finding-using-numpy">
+</section>
+<section id="root-finding-using-numpy">
 <h3><span class="section-number">20.3.5. </span>Root Finding Using Numpy<a class="headerlink" href="#root-finding-using-numpy" title="Permalink to this headline">¶</a></h3>
 <p>Here we’ll use numpy to compute the roots of the characteristic
 polynomial</p>
@@ -1560,7 +1126,7 @@ a, b = (0.6346322893124001+0j), (0.9024999999999999-0j)
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">##=== This method uses numpy to calculate roots ===#</span>
 
 
-<span class="k">def</span> <span class="nf">y_nonstochastic</span><span class="p">(</span><span class="n">y_0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">y_1</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">α</span><span class="o">=.</span><span class="mi">9</span><span class="p">,</span> <span class="n">β</span><span class="o">=.</span><span class="mi">8</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">y_nonstochastic</span><span class="p">(</span><span class="n">y_0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">y_1</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; Rather than computing the roots of the characteristic</span>
 <span class="sd">    polynomial by hand as we did earlier, this function</span>
@@ -1615,8 +1181,8 @@ Roots are less than one
 <img alt="_images/samuelson_20_1.png" src="_images/samuelson_20_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="reverse-engineered-complex-roots-example">
+</section>
+<section id="reverse-engineered-complex-roots-example">
 <h3><span class="section-number">20.3.6. </span>Reverse-Engineered Complex Roots: Example<a class="headerlink" href="#reverse-engineered-complex-roots-example" title="Permalink to this headline">¶</a></h3>
 <p>The next cell studies the implications of reverse-engineered complex
 roots.</p>
@@ -1648,14 +1214,14 @@ roots.</p>
 Roots are complex with modulus less than one; therefore damped oscillations
 Roots are [0.80901699+0.58778525j 0.80901699-0.58778525j]
 Roots are complex
-Roots are less than one
+Roots are not less than one
 </pre></div>
 </div>
 <img alt="_images/samuelson_22_1.png" src="_images/samuelson_22_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="digression-using-sympy-to-find-roots">
+</section>
+<section id="digression-using-sympy-to-find-roots">
 <h3><span class="section-number">20.3.7. </span>Digression: Using Sympy to Find Roots<a class="headerlink" href="#digression-using-sympy-to-find-roots" title="Permalink to this headline">¶</a></h3>
 <p>We can also use sympy to compute analytic formulas for the roots</p>
 <div class="cell docutils container">
@@ -1671,6 +1237,20 @@ Roots are less than one
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
+The to_png function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
+  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
+/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
+The to_rgba function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
+  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
+/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
+The to_mask function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
+  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
+/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
+The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
+  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
+</pre></div>
+</div>
 <div class="output text_latex math notranslate nohighlight">
 \[\displaystyle \left[ \frac{ρ_{1}}{2} - \frac{\sqrt{ρ_{1}^{2} + 4 ρ_{2}}}{2}, \  \frac{ρ_{1}}{2} + \frac{\sqrt{ρ_{1}^{2} + 4 ρ_{2}}}{2}\right]\]</div>
 </div>
@@ -1687,13 +1267,27 @@ Roots are less than one
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
+The to_png function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
+  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
+/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
+The to_rgba function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
+  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
+/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
+The to_mask function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
+  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
+/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
+The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
+  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
+</pre></div>
+</div>
 <div class="output text_latex math notranslate nohighlight">
 \[\displaystyle \left[ \frac{α}{2} + \frac{β}{2} - \frac{\sqrt{α^{2} + 2 α β + β^{2} - 4 β}}{2}, \  \frac{α}{2} + \frac{β}{2} + \frac{\sqrt{α^{2} + 2 α β + β^{2} - 4 β}}{2}\right]\]</div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="stochastic-shocks">
+</section>
+</section>
+<section id="stochastic-shocks">
 <h2><a class="toc-backref" href="#id11"><span class="section-number">20.4. </span>Stochastic Shocks</a><a class="headerlink" href="#stochastic-shocks" title="Permalink to this headline">¶</a></h2>
 <p>Now we’ll construct some code to simulate the stochastic version of the
 model that emerges when we add a random shock process to aggregate
@@ -1763,7 +1357,7 @@ Roots are less than one
 <p>Let’s do a simulation in which there are shocks and the characteristic polynomial has complex roots</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="o">.</span><span class="mi">97</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="mf">.97</span>
 
 <span class="n">period</span> <span class="o">=</span> <span class="mi">10</span>   <span class="c1">#  Length of cycle in units of time</span>
 <span class="n">ϕ</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">period</span>
@@ -1792,8 +1386,8 @@ Roots are less than one
 <img alt="_images/samuelson_29_1.png" src="_images/samuelson_29_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="government-spending">
+</section>
+<section id="government-spending">
 <h2><a class="toc-backref" href="#id12"><span class="section-number">20.5. </span>Government Spending</a><a class="headerlink" href="#government-spending" title="Permalink to this headline">¶</a></h2>
 <p>This function computes a response to either a permanent or one-off increase
 in government expenditures</p>
@@ -1918,8 +1512,8 @@ Roots are less than one
 <img alt="_images/samuelson_35_1.png" src="_images/samuelson_35_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="wrapping-everything-into-a-class">
+</section>
+<section id="wrapping-everything-into-a-class">
 <h2><a class="toc-backref" href="#id13"><span class="section-number">20.6. </span>Wrapping Everything Into a Class</a><a class="headerlink" href="#wrapping-everything-into-a-class" title="Permalink to this headline">¶</a></h2>
 <p>Up to now, we have written functions to do the work.</p>
 <p>Now we’ll roll up our sleeves and write a Python class called <code class="docutils literal notranslate"><span class="pre">Samuelson</span></code>
@@ -2121,7 +1715,7 @@ for the Samuelson model</p>
 </div>
 </div>
 </div>
-<div class="section" id="illustration-of-samuelson-class">
+<section id="illustration-of-samuelson-class">
 <h3><span class="section-number">20.6.1. </span>Illustration of Samuelson Class<a class="headerlink" href="#illustration-of-samuelson-class" title="Permalink to this headline">¶</a></h3>
 <p>Now we’ll put our Samuelson class to work on an example</p>
 <div class="cell docutils container">
@@ -2156,8 +1750,8 @@ Permanent government spending shock at t = 20
 <img alt="_images/samuelson_40_0.png" src="_images/samuelson_40_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="using-the-graph">
+</section>
+<section id="using-the-graph">
 <h3><span class="section-number">20.6.2. </span>Using the Graph<a class="headerlink" href="#using-the-graph" title="Permalink to this headline">¶</a></h3>
 <p>We’ll use our graph to show where the roots lie and how their location
 is consistent with the behavior of the path just graphed.</p>
@@ -2173,9 +1767,9 @@ is consistent with the behavior of the path just graphed.</p>
 <img alt="_images/samuelson_42_0.png" src="_images/samuelson_42_0.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="using-the-linearstatespace-class">
+</section>
+</section>
+<section id="using-the-linearstatespace-class">
 <h2><a class="toc-backref" href="#id14"><span class="section-number">20.7. </span>Using the LinearStateSpace Class</a><a class="headerlink" href="#using-the-linearstatespace-class" title="Permalink to this headline">¶</a></h2>
 <p>It turns out that we can use the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>
 <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class to do
@@ -2230,7 +1824,7 @@ much of the work that we have done from scratch above.</p>
 <img alt="_images/samuelson_44_0.png" src="_images/samuelson_44_0.png" />
 </div>
 </div>
-<div class="section" id="other-methods-in-the-linearstatespace-class">
+<section id="other-methods-in-the-linearstatespace-class">
 <h3><span class="section-number">20.7.1. </span>Other Methods in the <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> Class<a class="headerlink" href="#other-methods-in-the-linearstatespace-class" title="Permalink to this headline">¶</a></h3>
 <p>Let’s plot <strong>impulse response functions</strong> for the instance of the
 Samuelson model using a method in the <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> class</p>
@@ -2265,8 +1859,8 @@ calculating the eigenvalues of <span class="math notranslate nohighlight">\(A\)<
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="inheriting-methods-from-linearstatespace">
+</section>
+<section id="inheriting-methods-from-linearstatespace">
 <h3><span class="section-number">20.7.2. </span>Inheriting Methods from <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code><a class="headerlink" href="#inheriting-methods-from-linearstatespace" title="Permalink to this headline">¶</a></h3>
 <p>We could also create a subclass of <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> (inheriting all its
 methods and attributes) to add more functions to use</p>
@@ -2378,8 +1972,8 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="illustrations">
+</section>
+<section id="illustrations">
 <h3><span class="section-number">20.7.3. </span>Illustrations<a class="headerlink" href="#illustrations" title="Permalink to this headline">¶</a></h3>
 <p>Let’s show how we can use the <code class="docutils literal notranslate"><span class="pre">SamuelsonLSS</span></code></p>
 <div class="cell docutils container">
@@ -2434,9 +2028,9 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="pure-multiplier-model">
+</section>
+</section>
+<section id="pure-multiplier-model">
 <h2><a class="toc-backref" href="#id15"><span class="section-number">20.8. </span>Pure Multiplier Model</a><a class="headerlink" href="#pure-multiplier-model" title="Permalink to this headline">¶</a></h2>
 <p>Let’s shut down the accelerator by setting <span class="math notranslate nohighlight">\(b=0\)</span> to get a pure
 multiplier model</p>
@@ -2491,8 +2085,8 @@ accelerator</p></li>
 <img alt="_images/samuelson_62_1.png" src="_images/samuelson_62_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="summary">
+</section>
+<section id="summary">
 <h2><a class="toc-backref" href="#id16"><span class="section-number">20.9. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we wrote functions and classes to represent non-stochastic and
 stochastic versions of the Samuelson (1939) multiplier-accelerator model, described
@@ -2501,8 +2095,8 @@ in <span id="id6">[<a class="reference internal" href="zreferences.html#id60">Sa
 could either be stationary, explosive, or oscillating.</p>
 <p>We also were able to represent the model using the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>
 <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -2553,7 +2147,7 @@ could either be stationary, explosive, or oscillating.</p>
                 </div>
 
                 <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
-                    <p class="caption">
+                    <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Tools and Techniques
  </span>
@@ -2620,7 +2214,7 @@ could either be stationary, explosive, or oscillating.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Linear Programming
  </span>
@@ -2637,7 +2231,7 @@ could either be stationary, explosive, or oscillating.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Introduction to Dynamics
  </span>
@@ -2704,7 +2298,7 @@ could either be stationary, explosive, or oscillating.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Search
  </span>
@@ -2741,7 +2335,7 @@ could either be stationary, explosive, or oscillating.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Consumption, Savings and Growth
  </span>
@@ -2788,7 +2382,7 @@ could either be stationary, explosive, or oscillating.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Information
  </span>
@@ -2830,7 +2424,7 @@ could either be stationary, explosive, or oscillating.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   LQ Control
  </span>
@@ -2857,7 +2451,7 @@ could either be stationary, explosive, or oscillating.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Multiple Agent Models
  </span>
@@ -2899,7 +2493,7 @@ could either be stationary, explosive, or oscillating.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Asset Pricing and Finance
  </span>
@@ -2921,7 +2515,7 @@ could either be stationary, explosive, or oscillating.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Data and Empirics
  </span>
@@ -2943,7 +2537,7 @@ could either be stationary, explosive, or oscillating.</p>
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Other
  </span>

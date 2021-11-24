@@ -65,17 +65,7 @@ import prettytable as pt
 import matplotlib.pyplot as plt
 from scipy.stats import binom
 import scipy.stats as st
-from matplotlib import rcParams
-from IPython.display import set_matplotlib_formats
-set_matplotlib_formats('retina')
 %matplotlib inline
-
-config = {
-    "font.family":'serif',
-    "mathtext.fontset": 'stix',
-    "font.serif": ['SimSun'],
-}
-rcParams.update(config)
 ```
 
 Empowered with these Python tools, we'll now  explore the two meanings described above.
@@ -133,12 +123,12 @@ As usual, a law of large numbers justifies this answer.
 
 **Exercise 1:** 
 
- * (a) Please write a Python class to compute $f_k^I$
+1. Please write a Python class to compute $f_k^I$
 
- * (b) Please use your code to compute $f_k^I, k = 0, \ldots , n$ and compare them to
+2. Please use your code to compute $f_k^I, k = 0, \ldots , n$ and compare them to
   $\textrm{Prob}(X =  k | \theta)$ for various values of $\theta, n$ and $I$
 
- * (c) With  the Law of Large numbers in mind, use your code to say something
+3. With  the Law of Large numbers in mind, use your code to say something
 
 +++
 
@@ -360,25 +350,27 @@ a beta distribution with parameters $\alpha, \beta$.
 
 **Exercise 2:**
 
-* (a) Please write down the **likelihood function** for a sample of length $n$ from a binomial distribution with parameter $\theta$. 
+**a)**  Please write down the **likelihood function** for a sample of length $n$ from a binomial distribution with parameter $\theta$. 
 
-* (b) Please write down the **posterior** distribution for $\theta$ after observing  one flip of the coin.
+**b)** Please write down the **posterior** distribution for $\theta$ after observing  one flip of the coin.
 
-* (c) Please pretend  that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior distribution with parameters  with $\beta = \alpha = .5$.
+**c)** Please pretend  that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior distribution with parameters  with $\beta = \alpha = .5$.
 
-* (d) Please write a Python class to simulate this person's personal  posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
+**d)** Please write a Python class to simulate this person's personal  posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
 
-* (e) Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows from $1, 2, \ldots$.  
+**e)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows from $1, 2, \ldots$.  
 
-* (f) For various $n$'s, please describe and compute  a Bayesian coverage interval for the interval $[.45, .55]$.
+**f)** For various $n$'s, please describe and compute  a Bayesian coverage interval for the interval $[.45, .55]$.
 
-* (g) Please tell what question a Bayesian coverage interval answers.
+**g)** Please tell what question a Bayesian coverage interval answers.
 
-* (h) Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
+**h)** Please compute the Posterior probabililty that $\theta \in [.45, .55]$ for various values of sample size $n$. 
+
+**i)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
 
 **Answer:**
 
-* (a) Please write down the **likelihood function** and the **posterior** distribution for $\theta$ after observing  one flip of our coin.
+**a)** Please write down the **likelihood function** and the **posterior** distribution for $\theta$ after observing  one flip of our coin.
 
 Suppose the outcome is __Y__.
 
@@ -389,7 +381,7 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 \theta^Y (1-\theta)^{1-Y}
 $$ 
 
-* (b) Please write the **posterior** distribution for $\theta$ after observing  one flip of our coin.
+**b)** Please write the **posterior** distribution for $\theta$ after observing  one flip of our coin.
 
 The prior distribution is
 
@@ -412,9 +404,9 @@ $$
 \textrm{Prob}(\theta | Y) \sim \textrm{Beta}(\alpha + Y, \beta + (1-Y))
 $$
 
-* (c) Please pretend  that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior with $\beta = \alpha = .5$.
+**c)** Please pretend  that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior with $\beta = \alpha = .5$.
 
-* (d) Please write a Python class to simulate this person's personal  posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
+**d)** Please write a Python class to simulate this person's personal  posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
 
 ```{code-cell} ipython3
 class Bayesian:
@@ -478,7 +470,7 @@ class Bayesian:
             self.posterior_list.append(self.form_single_posterior(num))
 ```
 
-* (e) Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows from $1, 2, \ldots$.  
+**e)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows from $1, 2, \ldots$.  
 
 ```{code-cell} ipython3
 Bay_stat = Bayesian()
@@ -505,7 +497,7 @@ ax.legend(fontsize=11)
 plt.show()
 ```
 
-* (f) For various $n$'s, please describe and compute  $.05$ and $.95$ quantiles for  posterior probabilities.
+**f)** For various $n$'s, please describe and compute  $.05$ and $.95$ quantiles for  posterior probabilities.
 
 ```{code-cell} ipython3
 upper_bound = [ii.ppf(0.05) for ii in Bay_stat.posterior_list[:14]]
@@ -521,7 +513,7 @@ interval_df
 
 As n increases, we can see that Bayesian coverage intervals narrow and move toward $0.4$.
 
-* (g) Please tell what question a Bayesian coverage interval answers.
+**g)** Please tell what question a Bayesian coverage interval answers.
 
 The Bayesian coverage interval tells the range of $\theta$ that corresponds to the [$p_1$, $p_2$] quantiles of the cumulative probability distribution (CDF)  of the posterior distribution.
 
@@ -533,7 +525,7 @@ $$
 F(a)=p_1,F(b)=p_2
 $$
 
-* (h) Please compute the Posterior probabililty that $\theta \in [.45, .55]$ for various values of sample size $n$. 
+**h)** Please compute the Posterior probabililty that $\theta \in [.45, .55]$ for various values of sample size $n$. 
 
 ```{code-cell} ipython3
 left_value, right_value = 0.45, 0.55
@@ -567,7 +559,7 @@ When the number of observations becomes large enough, our Bayesian becomes so co
 
 That is why we see a nearly horizontal line when the number of observations exceeds 500.
 
-* (i) Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
+**i)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
 
 Using the Python class we made above, we can see the evolution of posterior distributions as n approaches infinity.
 

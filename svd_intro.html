@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>6. Singular Value Decomposition (SVD) &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -63,8 +64,8 @@
       
 
     
-    <link rel="stylesheet" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -75,448 +76,20 @@
   <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
 
 
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
+    <script>
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
@@ -675,7 +248,7 @@
                     
                     <div>
                         
-  <div class="section" id="singular-value-decomposition-svd">
+  <section class="tex2jax_ignore mathjax_ignore" id="singular-value-decomposition-svd">
 <h1><span class="section-number">6. </span>Singular Value Decomposition (SVD)<a class="headerlink" href="#singular-value-decomposition-svd" title="Permalink to this headline">¶</a></h1>
 <p>In addition to regular packages contained in Anaconda by default, this notebook also requires:</p>
 <div class="cell tag_hide-output docutils container">
@@ -686,32 +259,31 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quandl
-  Downloading Quandl-3.7.0-py2.py3-none-any.whl (26 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting inflection&gt;=0.3.1
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading Quandl-3.7.0-py2.py3-none-any.whl (26 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading inflection-0.5.1-py2.py3-none-any.whl (9.5 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: inflection&gt;=0.3.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (0.5.1)
+Requirement already satisfied: python-dateutil in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.8.2)
+Requirement already satisfied: pandas&gt;=0.14 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.3.4)
+Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.16.0)
+Requirement already satisfied: numpy&gt;=1.8 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.20.3)
+Requirement already satisfied: requests&gt;=2.7.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.26.0)
+Requirement already satisfied: more-itertools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (8.10.0)
+Requirement already satisfied: pytz&gt;=2017.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.14-&gt;quandl) (2021.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.15.0)
-Requirement already satisfied: pandas&gt;=0.14 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.1.3)
-Requirement already satisfied: more-itertools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (8.6.0)
-Requirement already satisfied: python-dateutil in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.8.1)
-Requirement already satisfied: numpy&gt;=1.8 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.19.2)
-Requirement already satisfied: requests&gt;=2.7.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.24.0)
-Requirement already satisfied: pytz&gt;=2017.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.14-&gt;quandl) (2020.1)
-Requirement already satisfied: idna&lt;3,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.10)
-Requirement already satisfied: chardet&lt;4,&gt;=3.0.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.0.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2021.10.8)
-Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,&lt;1.26,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (1.25.11)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2021.10.8)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.2)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (1.26.7)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.0.4)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: inflection, quandl
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quandl
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed inflection-0.5.1 quandl-3.7.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed quandl-3.7.0
 </pre></div>
 </div>
 </div>
@@ -728,7 +300,7 @@ Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,&lt;1.26,&gt;=1.21.1 in 
 </div>
 </div>
 </div>
-<div class="section" id="overview">
+<section id="overview">
 <h2><span class="section-number">6.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>singular value decomposition</strong> is a work-horse in applications of least squares projection that
 form the backbone of important parts of modern machine learning methods.</p>
@@ -738,8 +310,8 @@ form the backbone of important parts of modern machine learning methods.</p>
 <li><p>dynamic mode decomposition (DMD)</p></li>
 </ul>
 <p>Each of these can be thought of as data-reduction methods that are designed to capture principal patterns in data by projecting data onto a limited set of factors.</p>
-</div>
-<div class="section" id="the-setup">
+</section>
+<section id="the-setup">
 <h2><span class="section-number">6.2. </span>The Setup<a class="headerlink" href="#the-setup" title="Permalink to this headline">¶</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> be an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of rank <span class="math notranslate nohighlight">\(r\)</span>.</p>
 <p>In this notebook, we’ll think of <span class="math notranslate nohighlight">\(X\)</span> as a matrix of <strong>data</strong>.</p>
@@ -756,8 +328,8 @@ form the backbone of important parts of modern machine learning methods.</p>
 <p>In the first case in which there are many more observations <span class="math notranslate nohighlight">\(n\)</span> than there are random variables <span class="math notranslate nohighlight">\(m\)</span>, we learn about the joint distribution of the  random variables by taking averages  across observations of functions of the observations. Here we’ll look for <strong>patterns</strong> by using a <strong>singular value decomosition</strong> to do a <strong>principal components analysis</strong> (PCA).</p>
 <p>In the second case in which there are many more random variables <span class="math notranslate nohighlight">\(m\)</span> than observations <span class="math notranslate nohighlight">\(n\)</span>, we’ll proceed in a different way.
 We’ll again use a <strong>singular value decomposition</strong>,  but now to do a <strong>dynamic mode decomposition</strong> (DMD)</p>
-</div>
-<div class="section" id="singular-value-decomposition">
+</section>
+<section id="singular-value-decomposition">
 <h2><span class="section-number">6.3. </span>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>singular value decomposition</strong> of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span> of rank <span class="math notranslate nohighlight">\(r \leq \min(m,n)\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -765,10 +337,11 @@ We’ll again use a <strong>singular value decomposition</strong>,  but now to d
 X  = U \Sigma V^T
 \]</div>
 <p>where</p>
-<p>\begin{align*}
-UU^T &amp;  = I  &amp;  \quad U^T U = I \cr<br />
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+UU^T &amp;  = I  &amp;  \quad U^T U = I \cr    
 VV^T &amp; = I &amp; \quad V^T V = I
-\end{align*}</p>
+\end{align*}\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(U\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix whose columns are eigenvectors of <span class="math notranslate nohighlight">\(X^T X\)</span></p></li>
@@ -787,18 +360,19 @@ VV^T &amp; = I &amp; \quad V^T V = I
 <p>At other times, we’ll use the latter convention in which <span class="math notranslate nohighlight">\(\Sigma\)</span> is an <span class="math notranslate nohighlight">\(r \times r\)</span>  diagonal matrix.</p>
 <p>Also, when we discuss the <strong>dynamic mode decomposition</strong> below, we’ll use a special case of the latter  convention in which it is understood that
 <span class="math notranslate nohighlight">\(r\)</span> is just a pre-specified small number of leading singular values that we think capture the  most interesting  dynamics.</p>
-</div>
-<div class="section" id="digression-the-polar-decomposition">
+</section>
+<section id="digression-the-polar-decomposition">
 <h2><span class="section-number">6.4. </span>Digression: the polar decomposition<a class="headerlink" href="#digression-the-polar-decomposition" title="Permalink to this headline">¶</a></h2>
 <p>Through  the following identities, the singular value decomposition (SVD) is related to the <strong>polar decomposition</strong> of <span class="math notranslate nohighlight">\(X\)</span></p>
-<p>\begin{align*}
-X &amp; = SQ  \cr<br />
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+X &amp; = SQ  \cr  
 S &amp; = U\Sigma U^T \cr
-Q &amp; = U V^T
-\end{align*}</p>
+Q &amp; = U V^T 
+\end{align*}\]</div>
 <p>where <span class="math notranslate nohighlight">\(S\)</span> is evidently a symmetric matrix and <span class="math notranslate nohighlight">\(Q\)</span> is an orthogonal matrix.</p>
-</div>
-<div class="section" id="principle-componenents-analysis-pca">
+</section>
+<section id="principle-componenents-analysis-pca">
 <h2><span class="section-number">6.5. </span>Principle Componenents Analysis (PCA)<a class="headerlink" href="#principle-componenents-analysis-pca" title="Permalink to this headline">¶</a></h2>
 <p>Let’s begin with the case in which <span class="math notranslate nohighlight">\(n &gt;&gt; m\)</span>, so that we have many  more observations <span class="math notranslate nohighlight">\(n\)</span> than random variables <span class="math notranslate nohighlight">\(m\)</span>.</p>
 <p>The data matrix <span class="math notranslate nohighlight">\(X\)</span> is <strong>short and fat</strong>  in the  <span class="math notranslate nohighlight">\(n &gt;&gt; m\)</span> case as opposed to a <strong>tall and skinny</strong> case with <span class="math notranslate nohighlight">\(m &gt; &gt; n \)</span> to be discussed later in this notebook.</p>
@@ -814,8 +388,8 @@ X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n\end{bmatrix}
 <p>Arrange the singular values  in decreasing order.</p>
 <p>Arrange   the positive singular values on the main diagonal of the matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> of into a vector <span class="math notranslate nohighlight">\(\sigma_R\)</span>.</p>
 <p>Set all other entries of <span class="math notranslate nohighlight">\(\Sigma\)</span> to zero.</p>
-</div>
-<div class="section" id="relationship-of-pca-to-svd">
+</section>
+<section id="relationship-of-pca-to-svd">
 <h2><span class="section-number">6.6. </span>Relationship of PCA to SVD<a class="headerlink" href="#relationship-of-pca-to-svd" title="Permalink to this headline">¶</a></h2>
 <p>To relate a SVD to a PCA (principal component analysis) of data set <span class="math notranslate nohighlight">\(X\)</span>, first construct  the  SVD of the data matrix <span class="math notranslate nohighlight">\(X\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-pca1">
@@ -846,8 +420,8 @@ a time series context:</p>
 is a vector of loadings of variables <span class="math notranslate nohighlight">\(X_i\)</span> on the <span class="math notranslate nohighlight">\(k\)</span>th principle component,  <span class="math notranslate nohighlight">\(i=1, \ldots, m\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\sigma_k \)</span> for each <span class="math notranslate nohighlight">\(k=1, \ldots, r\)</span> is the strength of <span class="math notranslate nohighlight">\(k\)</span>th <strong>principal component</strong></p></li>
 </ul>
-</div>
-<div class="section" id="digression-reduced-or-economy-versus-full-svd">
+</section>
+<section id="digression-reduced-or-economy-versus-full-svd">
 <h2><span class="section-number">6.7. </span>Digression: reduced (or economy) versus full SVD<a class="headerlink" href="#digression-reduced-or-economy-versus-full-svd" title="Permalink to this headline">¶</a></h2>
 <p>You can read about reduced and full SVD here
 <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html">https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html</a></p>
@@ -867,14 +441,14 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[-0.41918369,  0.90683682, -0.03004576,  0.01338394,  0.02915702],
-        [-0.52586141, -0.22233876, -0.17743683, -0.56515116, -0.56846776],
-        [-0.18597865, -0.05091452,  0.97793808, -0.05755944, -0.05606859],
-        [-0.51088389, -0.24393449, -0.07447863,  0.79614441, -0.20025142],
-        [-0.50215975, -0.25713057, -0.07552137, -0.20800487,  0.79545582]]),
- array([1.85069072, 0.52100722]),
- array([[-0.69012438, -0.72369077],
-        [-0.72369077,  0.69012438]]))
+ array([[-0.42080786,  0.20980146, -0.16848951, -0.41943542, -0.75801669],
+        [-0.45851044, -0.8276004 ,  0.0930961 ,  0.27335804, -0.14647269],
+        [-0.12743034,  0.16719411,  0.97321882, -0.071124  , -0.05995116],
+        [-0.30726903,  0.45816194, -0.0677474 ,  0.81928797, -0.14089321],
+        [-0.70854511,  0.18219411, -0.10582918, -0.27029226,  0.61685607]]),
+ array([1.36844297, 0.6087333 ]),
+ array([[-0.70960092, -0.70460381],
+        [-0.70460381,  0.70960092]]))
 </pre></div>
 </div>
 </div>
@@ -890,14 +464,14 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[-0.41918369,  0.90683682],
-        [-0.52586141, -0.22233876],
-        [-0.18597865, -0.05091452],
-        [-0.51088389, -0.24393449],
-        [-0.50215975, -0.25713057]]),
- array([1.85069072, 0.52100722]),
- array([[-0.69012438, -0.72369077],
-        [-0.72369077,  0.69012438]]))
+ array([[-0.42080786,  0.20980146],
+        [-0.45851044, -0.8276004 ],
+        [-0.12743034,  0.16719411],
+        [-0.30726903,  0.45816194],
+        [-0.70854511,  0.18219411]]),
+ array([1.36844297, 0.6087333 ]),
+ array([[-0.70960092, -0.70460381],
+        [-0.70460381,  0.70960092]]))
 </pre></div>
 </div>
 </div>
@@ -915,8 +489,8 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="pca-with-eigenvalues-and-eigenvectors">
+</section>
+<section id="pca-with-eigenvalues-and-eigenvectors">
 <h2><span class="section-number">6.8. </span>PCA with eigenvalues and eigenvectors<a class="headerlink" href="#pca-with-eigenvalues-and-eigenvectors" title="Permalink to this headline">¶</a></h2>
 <p>We now  turn to using the eigen decomposition of a sample covariance matrix to do PCA.</p>
 <p>Let <span class="math notranslate nohighlight">\(X_{m \times n}\)</span> be our <span class="math notranslate nohighlight">\(m \times n\)</span> data matrix.</p>
@@ -953,11 +527,12 @@ X=P\epsilon
 XX^T=P\Lambda P^T
 \]</div>
 <p>It follows that we can represent the data matrix as</p>
-<p>\begin{equation*}
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
 X=\begin{bmatrix}X_1|X_2|\ldots|X_m\end{bmatrix} =\begin{bmatrix}P_1|P_2|\ldots|P_m\end{bmatrix}
-\begin{bmatrix}\epsilon_1\epsilon_2\ldots\epsilon_m\end{bmatrix}
+\begin{bmatrix}\epsilon_1\\\epsilon_2\\\ldots\\\epsilon_m\end{bmatrix} 
 = P_1\epsilon_1+P_2\epsilon_2+\ldots+P_m\epsilon_m
-\end{equation*}</p>
+\end{equation*}\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
 \[
@@ -988,8 +563,8 @@ X=\sigma_1U_1{V_1}^{T}+\sigma_2 U_2{V_2}^{T}+\ldots+\sigma_{r} U_{r}{V_{r}}^{T}
 <li><p>sorting eigenvalues and singular values in descending order</p></li>
 <li><p>imposing positive diagonals on <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(U\)</span> and adjusting signs in <span class="math notranslate nohighlight">\(V^T\)</span> accordingly</p></li>
 </ol>
-</div>
-<div class="section" id="summary-of-connections">
+</section>
+<section id="summary-of-connections">
 <h2><span class="section-number">6.9. </span>Summary of  Connections<a class="headerlink" href="#summary-of-connections" title="Permalink to this headline">¶</a></h2>
 <p>To pull things together, it is useful to assemble and compare some formulas presented above.</p>
 <p>First, consider the following SVD of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix:</p>
@@ -998,18 +573,20 @@ X=\sigma_1U_1{V_1}^{T}+\sigma_2 U_2{V_2}^{T}+\ldots+\sigma_{r} U_{r}{V_{r}}^{T}
 X = U\Sigma V^T
 \]</div>
 <p>Compute:</p>
-<p>\begin{align*}
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
 XX^T&amp;=U\Sigma V^TV\Sigma^T U^T\cr
 &amp;\equiv U\Sigma\Sigma^TU^T\cr
 &amp;\equiv U\Lambda U^T
-\end{align*}</p>
+\end{align*}\]</div>
 <p>Thus, <span class="math notranslate nohighlight">\(U\)</span> in the SVD is the matrix <span class="math notranslate nohighlight">\(P\)</span>  of
 eigenvectors of <span class="math notranslate nohighlight">\(XX^T\)</span> and <span class="math notranslate nohighlight">\(\Sigma \Sigma^T\)</span> is the matrix <span class="math notranslate nohighlight">\(\Lambda\)</span> of eigenvalues.</p>
 <p>Second, let’s compute</p>
-<p>\begin{align*}
-X^TX &amp;=V\Sigma^T U^TU\Sigma V^T\
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+X^TX &amp;=V\Sigma^T U^TU\Sigma V^T\\
 &amp;=V\Sigma^T{\Sigma}V^T
-\end{align*}</p>
+\end{align*}\]</div>
 <p>Thus, the matrix <span class="math notranslate nohighlight">\(V\)</span> in the SVD is the matrix of eigenvectors of <span class="math notranslate nohighlight">\(X^TX\)</span></p>
 <p>Summarizing and fitting things together, we have the eigen decomposition of the sample
 covariance matrix</p>
@@ -1185,8 +762,8 @@ obtained by different algorithms.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="dynamic-mode-decomposition-dmd">
+</section>
+<section id="dynamic-mode-decomposition-dmd">
 <h2><span class="section-number">6.10. </span>Dynamic Mode Decomposition (DMD)<a class="headerlink" href="#dynamic-mode-decomposition-dmd" title="Permalink to this headline">¶</a></h2>
 <p>We now turn to the case in which <span class="math notranslate nohighlight">\(m &gt;&gt;n \)</span> so that there are many more random variables <span class="math notranslate nohighlight">\(m\)</span> than observations <span class="math notranslate nohighlight">\(n\)</span>.</p>
 <p>This is the <strong>tall and skinny</strong> case associated with <strong>Dynamic Mode Decomposition</strong>.</p>
@@ -1294,13 +871,13 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
 \[
 \check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
 \]</div>
-</div>
-<div class="section" id="source-for-some-python-code">
+</section>
+<section id="source-for-some-python-code">
 <h2><span class="section-number">6.11. </span>Source for some Python code<a class="headerlink" href="#source-for-some-python-code" title="Permalink to this headline">¶</a></h2>
 <p>You can find a Python implementation of DMD here:</p>
 <p><a class="reference external" href="https://mathlab.github.io/PyDMD/">https://mathlab.github.io/PyDMD/</a></p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1351,7 +928,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
                 </div>
 
                 <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
-                    <p class="caption">
+                    <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Tools and Techniques
  </span>
@@ -1418,7 +995,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Linear Programming
  </span>
@@ -1435,7 +1012,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Introduction to Dynamics
  </span>
@@ -1502,7 +1079,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Search
  </span>
@@ -1539,7 +1116,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Consumption, Savings and Growth
  </span>
@@ -1586,7 +1163,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Information
  </span>
@@ -1628,7 +1205,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   LQ Control
  </span>
@@ -1655,7 +1232,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Multiple Agent Models
  </span>
@@ -1697,7 +1274,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Asset Pricing and Finance
  </span>
@@ -1719,7 +1296,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Data and Empirics
  </span>
@@ -1741,7 +1318,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Other
  </span>

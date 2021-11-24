@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>25. Cass-Koopmans Planning Problem &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -63,8 +64,8 @@
       
 
     
-    <link rel="stylesheet" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -75,56 +76,20 @@
   <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
 
 
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script >
+    <script>
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
@@ -296,7 +261,7 @@
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="section" id="cass-koopmans-planning-problem">
+</div><section class="tex2jax_ignore mathjax_ignore" id="cass-koopmans-planning-problem">
 <h1><a class="toc-backref" href="#id3"><span class="section-number">25. </span>Cass-Koopmans Planning Problem</a><a class="headerlink" href="#cass-koopmans-planning-problem" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
@@ -315,7 +280,7 @@
 </li>
 </ul>
 </div>
-<div class="section" id="overview">
+<section id="overview">
 <h2><a class="toc-backref" href="#id4"><span class="section-number">25.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture and lecture <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> describe a model that Tjalling Koopmans <span id="id1">[<a class="reference internal" href="zreferences.html#id63">Koo65</a>]</span>
 and David Cass <span id="id2">[<a class="reference internal" href="zreferences.html#id64">Cas65</a>]</span> used to analyze optimal growth.</p>
@@ -349,8 +314,8 @@ long but finite-horizon economies.</p></li>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="the-model">
+</section>
+<section id="the-model">
 <h2><a class="toc-backref" href="#id5"><span class="section-number">25.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
 <p>Time is discrete and takes values <span class="math notranslate nohighlight">\(t = 0, 1 , \ldots, T\)</span> where <span class="math notranslate nohighlight">\(T\)</span> is  finite.</p>
 <p>(We’ll study a limiting case in which  <span class="math notranslate nohighlight">\(T = + \infty\)</span> before concluding).</p>
@@ -390,8 +355,8 @@ capital stock.</p>
 <div class="math notranslate nohighlight" id="equation-allocation">
 <span class="eqno">(25.4)<a class="headerlink" href="#equation-allocation" title="Permalink to this equation">¶</a></span>\[C_t + K_{t+1} \leq F(K_t,N_t) + (1-\delta) K_t, \quad \text{for all } t \in [0, T]\]</div>
 <p>where <span class="math notranslate nohighlight">\(\delta \in (0,1)\)</span> is a depreciation rate of capital.</p>
-</div>
-<div class="section" id="planning-problem">
+</section>
+<section id="planning-problem">
 <h2><a class="toc-backref" href="#id6"><span class="section-number">25.3. </span>Planning Problem</a><a class="headerlink" href="#planning-problem" title="Permalink to this headline">¶</a></h2>
 <p>A planner chooses an allocation <span class="math notranslate nohighlight">\(\{\vec{C},\vec{K}\}\)</span> to
 maximize <a class="reference internal" href="#equation-utility-functional">(25.1)</a> subject to <a class="reference internal" href="#equation-allocation">(25.4)</a>.</p>
@@ -417,7 +382,7 @@ conditions are satisfied at an allocation that satisfies the
 first-order conditions that we are about to compute.</p></li>
 </ul>
 <p>Before computing first-order conditions, we present some handy formulas.</p>
-<div class="section" id="useful-properties-of-linearly-homogeneous-production-function">
+<section id="useful-properties-of-linearly-homogeneous-production-function">
 <h3><span class="section-number">25.3.1. </span>Useful Properties of Linearly Homogeneous Production Function<a class="headerlink" href="#useful-properties-of-linearly-homogeneous-production-function" title="Permalink to this headline">¶</a></h3>
 <p>The following technicalities will help us.</p>
 <p>Notice that</p>
@@ -458,8 +423,8 @@ f\left(\frac{K_t}{N_t}\right){-}\frac{K_t}{N_t}f'\left.\left(\frac{K_t}{N_t}\rig
 f(K_t) - f'(K_t) K_t
 \end{aligned}
 \end{split}\]</div>
-</div>
-<div class="section" id="first-order-necessary-conditions">
+</section>
+<section id="first-order-necessary-conditions">
 <h3><span class="section-number">25.3.2. </span>First-order necessary conditions<a class="headerlink" href="#first-order-necessary-conditions" title="Permalink to this headline">¶</a></h3>
 <p>We now compute <strong>first order necessary conditions</strong> for extremization of the Lagrangian:</p>
 <div class="math notranslate nohighlight" id="equation-constraint1">
@@ -593,9 +558,9 @@ that define our economy.</p>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="shooting-algorithm">
+</section>
+</section>
+<section id="shooting-algorithm">
 <h2><a class="toc-backref" href="#id7"><span class="section-number">25.4. </span>Shooting Algorithm</a><a class="headerlink" href="#shooting-algorithm" title="Permalink to this headline">¶</a></h2>
 <p>We use  <strong>shooting</strong> to compute an optimal allocation
 <span class="math notranslate nohighlight">\(\vec{C}, \vec{K}\)</span> and an associated Lagrange multiplier sequence
@@ -808,8 +773,8 @@ tolerance bounds), we stop.</p>
 <img alt="_images/cass_koopmans_1_16_0.png" src="_images/cass_koopmans_1_16_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="setting-initial-capital-to-steady-state-capital">
+</section>
+<section id="setting-initial-capital-to-steady-state-capital">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">25.5. </span>Setting Initial Capital to Steady State Capital</a><a class="headerlink" href="#setting-initial-capital-to-steady-state-capital" title="Permalink to this headline">¶</a></h2>
 <p>When  <span class="math notranslate nohighlight">\(T \rightarrow +\infty\)</span>, the optimal allocation converges to
 steady state values of <span class="math notranslate nohighlight">\(C_t\)</span> and <span class="math notranslate nohighlight">\(K_t\)</span>.</p>
@@ -909,8 +874,8 @@ value <span class="math notranslate nohighlight">\(K_{T+1} =0\)</span> when <spa
 <img alt="_images/cass_koopmans_1_24_0.png" src="_images/cass_koopmans_1_24_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="a-turnpike-property">
+</section>
+<section id="a-turnpike-property">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">25.6. </span>A Turnpike Property</a><a class="headerlink" href="#a-turnpike-property" title="Permalink to this headline">¶</a></h2>
 <p>The following calculation indicates that when  <span class="math notranslate nohighlight">\(T\)</span> is very large,
 the optimal capital stock stays close to
@@ -980,8 +945,8 @@ over time.</p>
 <img alt="_images/cass_koopmans_1_30_0.png" src="_images/cass_koopmans_1_30_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="a-limiting-economy">
+</section>
+<section id="a-limiting-economy">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">25.7. </span>A Limiting Economy</a><a class="headerlink" href="#a-limiting-economy" title="Permalink to this headline">¶</a></h2>
 <p>We want to set <span class="math notranslate nohighlight">\(T = +\infty\)</span>.</p>
 <p>The appropriate thing to do is to replace terminal condition
@@ -1027,7 +992,7 @@ saving rate.</p>
 <p>Note, <span class="math notranslate nohighlight">\(f''(K)&lt;0\)</span>, so as <span class="math notranslate nohighlight">\(K\)</span> rises, <span class="math notranslate nohighlight">\(f'(K)\)</span> declines.</p>
 <p>The planner slowly lowers the saving rate until reaching a steady
 state in which <span class="math notranslate nohighlight">\(f'(K)=\rho +\delta\)</span>.</p>
-<div class="section" id="exercise">
+<section id="exercise">
 <h3><span class="section-number">25.7.1. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Plot the optimal consumption, capital, and saving paths when the
@@ -1035,8 +1000,8 @@ initial capital level begins at 1.5 times the steady state level
 as we shoot towards the steady state at <span class="math notranslate nohighlight">\(T=130\)</span>.</p></li>
 <li><p>Why does the saving rate respond as it does?</p></li>
 </ul>
-</div>
-<div class="section" id="solution">
+</section>
+<section id="solution">
 <h3><span class="section-number">25.7.2. </span>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1048,9 +1013,9 @@ as we shoot towards the steady state at <span class="math notranslate nohighligh
 <img alt="_images/cass_koopmans_1_34_0.png" src="_images/cass_koopmans_1_34_0.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="concluding-remarks">
+</section>
+</section>
+<section id="concluding-remarks">
 <h2><a class="toc-backref" href="#id11"><span class="section-number">25.8. </span>Concluding Remarks</a><a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
 <p>In <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a>,  we study a decentralized version of an economy with exactly the same
 technology and preference structure as deployed here.</p>
@@ -1061,8 +1026,8 @@ the invisible hand.</p>
 by a representative household and a representative firm.</p>
 <p>The relationship between a command economy like the one studied in this lecture and a market economy like that
 studied in <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> is a foundational topic in general equilibrium theory and welfare economics.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1113,7 +1078,7 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
                 </div>
 
                 <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
-                    <p class="caption">
+                    <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Tools and Techniques
  </span>
@@ -1180,7 +1145,7 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Linear Programming
  </span>
@@ -1197,7 +1162,7 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Introduction to Dynamics
  </span>
@@ -1264,7 +1229,7 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Search
  </span>
@@ -1301,7 +1266,7 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Consumption, Savings and Growth
  </span>
@@ -1348,7 +1313,7 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Information
  </span>
@@ -1390,7 +1355,7 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   LQ Control
  </span>
@@ -1417,7 +1382,7 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Multiple Agent Models
  </span>
@@ -1459,7 +1424,7 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Asset Pricing and Finance
  </span>
@@ -1481,7 +1446,7 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Data and Empirics
  </span>
@@ -1503,7 +1468,7 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Other
  </span>
