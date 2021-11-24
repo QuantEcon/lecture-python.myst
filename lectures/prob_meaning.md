@@ -66,8 +66,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import binom
 import scipy.stats as st
 from matplotlib import rcParams
-from IPython.display import set_matplotlib_formats
-set_matplotlib_formats('retina')
+import matplotlib.font_manager
 %matplotlib inline
 
 config = {
@@ -76,8 +75,6 @@ config = {
     "font.serif": ['SimSun'],
 }
 rcParams.update(config)
-
-import matplotlib.font_manager
 ```
 
 Empowered with these Python tools, we'll now  explore the two meanings described above.
