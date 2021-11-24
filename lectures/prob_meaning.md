@@ -65,16 +65,7 @@ import prettytable as pt
 import matplotlib.pyplot as plt
 from scipy.stats import binom
 import scipy.stats as st
-from matplotlib import rcParams
-import matplotlib.font_manager
 %matplotlib inline
-
-config = {
-    "font.family":'serif',
-    "mathtext.fontset": 'stix',
-    "font.serif": ['SimSun'],
-}
-rcParams.update(config)
 ```
 
 Empowered with these Python tools, we'll now  explore the two meanings described above.
