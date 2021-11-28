@@ -433,8 +433,8 @@ After rearranging, the same expression can be written as
 $$
 \lim_{h \to 0}
     \frac{u(c^*_t - h) - u(c^*_t) }{h}
-+ \lim_{h \to 0}
-    \frac{ \beta u(c^*_{t+1} + h) - u(c^*_{t+1}) }{h} = 0
++ \beta \lim_{h \to 0}
+    \frac{ u(c^*_{t+1} + h) - u(c^*_{t+1}) }{h} = 0
 $$
 
 or, taking the limit,

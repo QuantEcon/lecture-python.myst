@@ -18,6 +18,19 @@ jobs:
           python-version: 3.8
           environment-file: environment.yml
           activate-environment: quantecon
+      - name: Install latex dependencies
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y     \
+            texlive-latex-recommended \
+            texlive-latex-extra       \
+            texlive-fonts-recommended \
+            texlive-fonts-extra       \
+            texlive-xetex             \
+            latexmk                   \
+            xindy                     \
+            dvipng                    \
+            cm-super
       - name: Build HTML
         shell: bash -l {0}
         run: |
