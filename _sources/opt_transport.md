@@ -373,7 +373,7 @@ The above warning message from SciPy points out that A is not full rank.
 
 This indicates that the linear program has been set up to include one or more redundant constraints.
 
-Here, the source of the redundancy is that the set of restrictions {eq}`sumconstraints`.
+Here, the source of the redundancy is the structure of  restrictions {eq}`sumconstraints`.
 
 Let's explore this further by printing out $A$ and staring at it.
 
@@ -554,7 +554,7 @@ and  $v$ is attached to constraints
  
 * $(\mathbf{I}_n \otimes \mathbf{1}_m') \operatorname{vec}(X) = q.$
 
-Components of the vectors $u$ and $v$ of **values**  are **shadow prices** of the quantities appearing on the right sides of those constraints.
+Components of the vectors $u$ and $v$ of per unit **values**  are **shadow prices** of the quantities appearing on the right sides of those constraints.
 
 We can write the dual problem as 
 
@@ -626,7 +626,8 @@ linprog(-b[:-1], A_ub=A[:-1].T, b_ub=C_vec,
 
 ### Interpretation of dual problem
 
-By **strong duality**, we know that:
+By **strong duality** (please see this lecture
+{doc}`Linear Programming <lp_intro>`), we know that:
 
 $$
 \sum_{i=1}^m \sum_{j=1}^n c_{ij} x_{ij}  = \sum_{i=1}^m p_i u_i + \sum_{j=1}^n q_j v_j

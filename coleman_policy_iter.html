@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>37. Optimal Growth III: Time Iteration &#8212; Quantitative Economics with Python</title>
+    <title>38. Optimal Growth III: Time Iteration &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,8 +99,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="38. Optimal Growth IV: The Endogenous Grid Method" href="egm_policy_iter.html" />
-    <link rel="prev" title="36. Optimal Growth II: Accelerating the Code with Numba" href="optgrowth_fast.html" />
+    <link rel="next" title="39. Optimal Growth IV: The Endogenous Grid Method" href="egm_policy_iter.html" />
+    <link rel="prev" title="37. Optimal Growth II: Accelerating the Code with Numba" href="optgrowth_fast.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -150,63 +150,63 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   37.1. Overview
+   38.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-euler-equation">
-   37.2. The Euler Equation
+   38.2. The Euler Equation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-coleman-reffett-operator">
-     37.2.1. The Coleman-Reffett Operator
+     38.2.1. The Coleman-Reffett Operator
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#is-the-coleman-reffett-operator-well-defined">
-     37.2.2. Is the Coleman-Reffett Operator Well Defined?
+     38.2.2. Is the Coleman-Reffett Operator Well Defined?
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#comparison-with-vfi-theory">
-     37.2.3. Comparison with VFI (Theory)
+     38.2.3. Comparison with VFI (Theory)
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#implementation">
-   37.3. Implementation
+   38.3. Implementation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#testing">
-     37.3.1. Testing
+     38.3.1. Testing
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   37.4. Exercises
+   38.4. Exercises
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-1">
-     37.4.1. Exercise 1
+     38.4.1. Exercise 1
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
-   37.5. Solutions
+   38.5. Solutions
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id3">
-     37.5.1. Exercise 1
+     38.5.1. Exercise 1
     </a>
    </li>
   </ul>
@@ -261,7 +261,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="optimal-growth-iii-time-iteration">
-<h1><a class="toc-backref" href="#id4"><span class="section-number">37. </span><span class="target" id="index-0"></span>Optimal Growth III: Time Iteration</a><a class="headerlink" href="#optimal-growth-iii-time-iteration" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id4"><span class="section-number">38. </span><span class="target" id="index-0"></span>Optimal Growth III: Time Iteration</a><a class="headerlink" href="#optimal-growth-iii-time-iteration" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -333,14 +333,14 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: \ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+Solving environment: / 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
@@ -389,6 +389,33 @@ Solving environment: \
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -399,19 +426,19 @@ Solving environment: \
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (2.2.1)
 Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (0.54.1)
-Requirement already satisfied: numpy&gt;=1.18.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (1.20.3)
 Requirement already satisfied: tempita&gt;=0.5.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (0.5.2)
 Requirement already satisfied: scipy&gt;=1.4.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (1.7.1)
+Requirement already satisfied: numpy&gt;=1.18.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (1.20.3)
+Requirement already satisfied: llvmlite&lt;0.38,&gt;=0.37.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.37.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (58.0.4)
-Requirement already satisfied: llvmlite&lt;0.38,&gt;=0.37.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.37.0)
 </pre></div>
 </div>
 </div>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">37.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">38.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we’ll continue our <a class="reference internal" href="optgrowth.html"><span class="doc">earlier</span></a> study of the stochastic optimal growth model.</p>
 <p>In that lecture, we solved the associated dynamic programming
 problem using value function iteration.</p>
@@ -445,7 +472,7 @@ iteration can be further adjusted to obtain even more efficiency.</p>
 </div>
 </section>
 <section id="the-euler-equation">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">37.2. </span>The Euler Equation</a><a class="headerlink" href="#the-euler-equation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">38.2. </span>The Euler Equation</a><a class="headerlink" href="#the-euler-equation" title="Permalink to this headline">¶</a></h2>
 <p>Our first step is to derive the Euler equation, which is a generalization of
 the Euler equation we obtained in the <a class="reference internal" href="cake_eating_problem.html"><span class="doc">lecture on cake eating</span></a>.</p>
 <p>We take the model set out in <a class="reference internal" href="optgrowth.html"><span class="doc">the stochastic growth model lecture</span></a> and add the following assumptions:</p>
@@ -458,14 +485,14 @@ the Euler equation we obtained in the <a class="reference internal" href="cake_e
 <p>The last two conditions are usually called <strong>Inada conditions</strong>.</p>
 <p>Recall the Bellman equation</p>
 <div class="math notranslate nohighlight" id="equation-cpi-fpb30">
-<span class="eqno">(37.1)<a class="headerlink" href="#equation-cpi-fpb30" title="Permalink to this equation">¶</a></span>\[v^*(y) = \max_{0 \leq c \leq y}
+<span class="eqno">(38.1)<a class="headerlink" href="#equation-cpi-fpb30" title="Permalink to this equation">¶</a></span>\[v^*(y) = \max_{0 \leq c \leq y}
     \left\{
         u(c) + \beta \int v^*(f(y - c) z) \phi(dz)
     \right\}
 \quad \text{for all} \quad
 y \in \mathbb R_+\]</div>
 <p>Let the optimal consumption policy be denoted by <span class="math notranslate nohighlight">\(\sigma^*\)</span>.</p>
-<p>We know that <span class="math notranslate nohighlight">\(\sigma^*\)</span> is a <span class="math notranslate nohighlight">\(v^*\)</span>-greedy policy so that <span class="math notranslate nohighlight">\(\sigma^*(y)\)</span> is the maximizer in <a class="reference internal" href="#equation-cpi-fpb30">(37.1)</a>.</p>
+<p>We know that <span class="math notranslate nohighlight">\(\sigma^*\)</span> is a <span class="math notranslate nohighlight">\(v^*\)</span>-greedy policy so that <span class="math notranslate nohighlight">\(\sigma^*(y)\)</span> is the maximizer in <a class="reference internal" href="#equation-cpi-fpb30">(38.1)</a>.</p>
 <p>The conditions above imply that</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\sigma^*\)</span> is the unique optimal policy for the stochastic optimal growth model</p></li>
@@ -473,9 +500,9 @@ y \in \mathbb R_+\]</div>
 <li><p>the value function is strictly concave and continuously differentiable, with</p></li>
 </ul>
 <div class="math notranslate nohighlight" id="equation-cpi-env">
-<span class="eqno">(37.2)<a class="headerlink" href="#equation-cpi-env" title="Permalink to this equation">¶</a></span>\[(v^*)'(y) = u' (\sigma^*(y) ) := (u' \circ \sigma^*)(y)\]</div>
+<span class="eqno">(38.2)<a class="headerlink" href="#equation-cpi-env" title="Permalink to this equation">¶</a></span>\[(v^*)'(y) = u' (\sigma^*(y) ) := (u' \circ \sigma^*)(y)\]</div>
 <p>The last result is called the <strong>envelope condition</strong> due to its relationship with the <a class="reference external" href="https://en.wikipedia.org/wiki/Envelope_theorem">envelope theorem</a>.</p>
-<p>To see why <a class="reference internal" href="#equation-cpi-env">(37.2)</a> holds, write the Bellman equation in the equivalent
+<p>To see why <a class="reference internal" href="#equation-cpi-env">(38.2)</a> holds, write the Bellman equation in the equivalent
 form</p>
 <div class="math notranslate nohighlight">
 \[
@@ -484,28 +511,28 @@ v^*(y) = \max_{0 \leq k \leq y}
         u(y-k) + \beta \int v^*(f(k) z) \phi(dz)
     \right\},
 \]</div>
-<p>Differentiating with respect to <span class="math notranslate nohighlight">\(y\)</span>,  and then evaluating at the optimum yields <a class="reference internal" href="#equation-cpi-env">(37.2)</a>.</p>
+<p>Differentiating with respect to <span class="math notranslate nohighlight">\(y\)</span>,  and then evaluating at the optimum yields <a class="reference internal" href="#equation-cpi-env">(38.2)</a>.</p>
 <p>(Section 12.1 of <a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a> contains full proofs of these results, and closely related discussions can be found in many other texts.)</p>
 <p>Differentiability of the value function and interiority of the optimal policy
 imply that optimal consumption satisfies the first order condition associated
-with <a class="reference internal" href="#equation-cpi-fpb30">(37.1)</a>, which is</p>
+with <a class="reference internal" href="#equation-cpi-fpb30">(38.1)</a>, which is</p>
 <div class="math notranslate nohighlight" id="equation-cpi-foc">
-<span class="eqno">(37.3)<a class="headerlink" href="#equation-cpi-foc" title="Permalink to this equation">¶</a></span>\[u'(\sigma^*(y)) = \beta \int (v^*)'(f(y - \sigma^*(y)) z) f'(y - \sigma^*(y)) z \phi(dz)\]</div>
-<p>Combining <a class="reference internal" href="#equation-cpi-env">(37.2)</a> and the first-order condition <a class="reference internal" href="#equation-cpi-foc">(37.3)</a> gives the <strong>Euler equation</strong></p>
+<span class="eqno">(38.3)<a class="headerlink" href="#equation-cpi-foc" title="Permalink to this equation">¶</a></span>\[u'(\sigma^*(y)) = \beta \int (v^*)'(f(y - \sigma^*(y)) z) f'(y - \sigma^*(y)) z \phi(dz)\]</div>
+<p>Combining <a class="reference internal" href="#equation-cpi-env">(38.2)</a> and the first-order condition <a class="reference internal" href="#equation-cpi-foc">(38.3)</a> gives the <strong>Euler equation</strong></p>
 <div class="math notranslate nohighlight" id="equation-cpi-euler">
-<span class="eqno">(37.4)<a class="headerlink" href="#equation-cpi-euler" title="Permalink to this equation">¶</a></span>\[(u'\circ \sigma^*)(y)
+<span class="eqno">(38.4)<a class="headerlink" href="#equation-cpi-euler" title="Permalink to this equation">¶</a></span>\[(u'\circ \sigma^*)(y)
 = \beta \int (u'\circ \sigma^*)(f(y - \sigma^*(y)) z) f'(y - \sigma^*(y)) z \phi(dz)\]</div>
 <p>We can think of the Euler equation as a functional equation</p>
 <div class="math notranslate nohighlight" id="equation-cpi-euler-func">
-<span class="eqno">(37.5)<a class="headerlink" href="#equation-cpi-euler-func" title="Permalink to this equation">¶</a></span>\[(u'\circ \sigma)(y)
+<span class="eqno">(38.5)<a class="headerlink" href="#equation-cpi-euler-func" title="Permalink to this equation">¶</a></span>\[(u'\circ \sigma)(y)
 = \beta \int (u'\circ \sigma)(f(y - \sigma(y)) z) f'(y - \sigma(y)) z \phi(dz)\]</div>
 <p>over interior consumption policies <span class="math notranslate nohighlight">\(\sigma\)</span>, one solution of which is the optimal policy <span class="math notranslate nohighlight">\(\sigma^*\)</span>.</p>
-<p>Our aim is to solve the functional equation <a class="reference internal" href="#equation-cpi-euler-func">(37.5)</a> and hence obtain <span class="math notranslate nohighlight">\(\sigma^*\)</span>.</p>
+<p>Our aim is to solve the functional equation <a class="reference internal" href="#equation-cpi-euler-func">(38.5)</a> and hence obtain <span class="math notranslate nohighlight">\(\sigma^*\)</span>.</p>
 <section id="the-coleman-reffett-operator">
-<h3><span class="section-number">37.2.1. </span>The Coleman-Reffett Operator<a class="headerlink" href="#the-coleman-reffett-operator" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">38.2.1. </span>The Coleman-Reffett Operator<a class="headerlink" href="#the-coleman-reffett-operator" title="Permalink to this headline">¶</a></h3>
 <p>Recall the Bellman operator</p>
 <div class="math notranslate nohighlight" id="equation-fcbell20-coleman">
-<span class="eqno">(37.6)<a class="headerlink" href="#equation-fcbell20-coleman" title="Permalink to this equation">¶</a></span>\[Tv(y) := \max_{0 \leq c \leq y}
+<span class="eqno">(38.6)<a class="headerlink" href="#equation-fcbell20-coleman" title="Permalink to this equation">¶</a></span>\[Tv(y) := \max_{0 \leq c \leq y}
 \left\{
     u(c) + \beta \int v(f(y - c) z) \phi(dz)
 \right\}\]</div>
@@ -520,7 +547,7 @@ that are continuous, strictly increasing and interior.</p>
 <li><p>returns a new function <span class="math notranslate nohighlight">\(K\sigma\)</span>,  where <span class="math notranslate nohighlight">\(K\sigma(y)\)</span> is the <span class="math notranslate nohighlight">\(c \in (0, y)\)</span> that solves.</p></li>
 </ol>
 <div class="math notranslate nohighlight" id="equation-cpi-coledef">
-<span class="eqno">(37.7)<a class="headerlink" href="#equation-cpi-coledef" title="Permalink to this equation">¶</a></span>\[u'(c)
+<span class="eqno">(38.7)<a class="headerlink" href="#equation-cpi-coledef" title="Permalink to this equation">¶</a></span>\[u'(c)
 = \beta \int (u' \circ \sigma) (f(y - c) z ) f'(y - c) z \phi(dz)\]</div>
 <p>We call this operator the <strong>Coleman-Reffett operator</strong> to acknowledge the work of
 <span id="id1">[<a class="reference internal" href="zreferences.html#id127">Col90</a>]</span> and <span id="id2">[<a class="reference internal" href="zreferences.html#id59">Ref96</a>]</span>.</p>
@@ -528,7 +555,7 @@ that are continuous, strictly increasing and interior.</p>
 you to choose today when your future consumption policy is <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
 <p>The  important thing to note about <span class="math notranslate nohighlight">\(K\)</span> is that, by
 construction, its fixed points coincide with solutions to the functional
-equation <a class="reference internal" href="#equation-cpi-euler-func">(37.5)</a>.</p>
+equation <a class="reference internal" href="#equation-cpi-euler-func">(38.5)</a>.</p>
 <p>In particular, the optimal policy <span class="math notranslate nohighlight">\(\sigma^*\)</span> is a fixed point.</p>
 <p>Indeed, for fixed <span class="math notranslate nohighlight">\(y\)</span>, the value <span class="math notranslate nohighlight">\(K\sigma^*(y)\)</span> is the <span class="math notranslate nohighlight">\(c\)</span> that
 solves</p>
@@ -540,16 +567,16 @@ u'(c)
 <p>In view of the Euler equation, this is exactly <span class="math notranslate nohighlight">\(\sigma^*(y)\)</span>.</p>
 </section>
 <section id="is-the-coleman-reffett-operator-well-defined">
-<h3><span class="section-number">37.2.2. </span>Is the Coleman-Reffett Operator Well Defined?<a class="headerlink" href="#is-the-coleman-reffett-operator-well-defined" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">38.2.2. </span>Is the Coleman-Reffett Operator Well Defined?<a class="headerlink" href="#is-the-coleman-reffett-operator-well-defined" title="Permalink to this headline">¶</a></h3>
 <p>In particular, is there always a unique <span class="math notranslate nohighlight">\(c \in (0, y)\)</span> that solves
-<a class="reference internal" href="#equation-cpi-coledef">(37.7)</a>?</p>
+<a class="reference internal" href="#equation-cpi-coledef">(38.7)</a>?</p>
 <p>The answer is yes, under our assumptions.</p>
-<p>For any <span class="math notranslate nohighlight">\(\sigma \in \mathscr P\)</span>, the right side of <a class="reference internal" href="#equation-cpi-coledef">(37.7)</a></p>
+<p>For any <span class="math notranslate nohighlight">\(\sigma \in \mathscr P\)</span>, the right side of <a class="reference internal" href="#equation-cpi-coledef">(38.7)</a></p>
 <ul class="simple">
 <li><p>is continuous and strictly increasing in <span class="math notranslate nohighlight">\(c\)</span> on <span class="math notranslate nohighlight">\((0, y)\)</span></p></li>
 <li><p>diverges to <span class="math notranslate nohighlight">\(+\infty\)</span> as <span class="math notranslate nohighlight">\(c \uparrow y\)</span></p></li>
 </ul>
-<p>The left side of <a class="reference internal" href="#equation-cpi-coledef">(37.7)</a></p>
+<p>The left side of <a class="reference internal" href="#equation-cpi-coledef">(38.7)</a></p>
 <ul class="simple">
 <li><p>is continuous and strictly decreasing in <span class="math notranslate nohighlight">\(c\)</span> on <span class="math notranslate nohighlight">\((0, y)\)</span></p></li>
 <li><p>diverges to <span class="math notranslate nohighlight">\(+\infty\)</span> as <span class="math notranslate nohighlight">\(c \downarrow 0\)</span></p></li>
@@ -559,7 +586,7 @@ u'(c)
 whenever <span class="math notranslate nohighlight">\(\sigma \in \mathscr P\)</span>.</p>
 </section>
 <section id="comparison-with-vfi-theory">
-<h3><span class="section-number">37.2.3. </span>Comparison with VFI (Theory)<a class="headerlink" href="#comparison-with-vfi-theory" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">38.2.3. </span>Comparison with VFI (Theory)<a class="headerlink" href="#comparison-with-vfi-theory" title="Permalink to this headline">¶</a></h3>
 <p>It is possible to prove that there is a tight relationship between iterates of
 <span class="math notranslate nohighlight">\(K\)</span> and iterates of the Bellman operator.</p>
 <p>Mathematically, the two operators are <em>topologically conjugate</em>.</p>
@@ -573,7 +600,7 @@ and hence more efficient in the applications we consider.</p>
 </section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">37.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">38.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>As in our <a class="reference internal" href="optgrowth_fast.html"><span class="doc">previous study</span></a>, we continue to assume that</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(u(c) = \ln c\)</span></p></li>
@@ -668,7 +695,7 @@ constructed in an <a class="reference internal" href="optgrowth_fast.html"><span
 </div>
 <p>Now we implement a method called <code class="docutils literal notranslate"><span class="pre">euler_diff</span></code>, which returns</p>
 <div class="math notranslate nohighlight" id="equation-euler-diff">
-<span class="eqno">(37.8)<a class="headerlink" href="#equation-euler-diff" title="Permalink to this equation">¶</a></span>\[u'(c) - \beta \int (u' \circ \sigma) (f(y - c) z ) f'(y - c) z \phi(dz)\]</div>
+<span class="eqno">(38.8)<a class="headerlink" href="#equation-euler-diff" title="Permalink to this equation">¶</a></span>\[u'(c) - \beta \int (u' \circ \sigma) (f(y - c) z ) f'(y - c) z \phi(dz)\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
@@ -694,7 +721,7 @@ constructed in an <a class="reference internal" href="optgrowth_fast.html"><span
 </div>
 <p>The function <code class="docutils literal notranslate"><span class="pre">euler_diff</span></code> evaluates integrals by Monte Carlo and
 approximates functions using linear interpolation.</p>
-<p>We will use a root-finding algorithm to solve <a class="reference internal" href="#equation-euler-diff">(37.8)</a> for <span class="math notranslate nohighlight">\(c\)</span> given
+<p>We will use a root-finding algorithm to solve <a class="reference internal" href="#equation-euler-diff">(38.8)</a> for <span class="math notranslate nohighlight">\(c\)</span> given
 state <span class="math notranslate nohighlight">\(y\)</span> and <span class="math notranslate nohighlight">\(σ\)</span>, the current guess of the policy.</p>
 <p>Here’s the operator <span class="math notranslate nohighlight">\(K\)</span>, that implements the root-finding step.</p>
 <div class="cell docutils container">
@@ -723,7 +750,7 @@ state <span class="math notranslate nohighlight">\(y\)</span> and <span class="m
 </div>
 </div>
 <section id="testing">
-<h3><span class="section-number">37.3.1. </span>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">38.3.1. </span>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
 <p>Let’s generate an instance and plot some iterates of <span class="math notranslate nohighlight">\(K\)</span>, starting from <span class="math notranslate nohighlight">\(σ(y) = y\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -849,7 +876,7 @@ using time iteration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>72.2 ms ± 0 ns per loop (mean ± std. dev. of 1 run, 3 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>76.8 ms ± 0 ns per loop (mean ± std. dev. of 1 run, 3 loops each)
 </pre></div>
 </div>
 </div>
@@ -860,9 +887,9 @@ and accuracy, at least for this model.</p>
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">37.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">38.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <section id="exercise-1">
-<h3><span class="section-number">37.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">38.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>Solve the model with CRRA utility</p>
 <div class="math notranslate nohighlight">
 \[
@@ -873,9 +900,9 @@ u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
 </section>
 </section>
 <section id="solutions">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">37.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">38.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <section id="id3">
-<h3><span class="section-number">37.5.1. </span>Exercise 1<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">38.5.1. </span>Exercise 1<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>We use the class <code class="docutils literal notranslate"><span class="pre">OptimalGrowthModel_CRRA</span></code> from our <a class="reference internal" href="optgrowth_fast.html"><span class="doc">VFI lecture</span></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -965,8 +992,8 @@ u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
 </pre></div>
 </div>
 <img alt="_images/coleman_policy_iter_29_1.png" src="_images/coleman_policy_iter_29_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.69 s, sys: 112 µs, total: 1.69 s
-Wall time: 1.69 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.2 s, sys: 8.01 ms, total: 2.21 s
+Wall time: 2.21 s
 </pre></div>
 </div>
 </div>
@@ -1107,6 +1134,11 @@ Wall time: 1.69 s
    14. Optimal Transport
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   15. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1116,62 +1148,62 @@ Wall time: 1.69 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   15. Dynamics in One Dimension
+   16. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   16. AR1 Processes
+   17. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   17. Finite Markov Chains
+   18. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   18. Inventory Dynamics
+   19. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   19. Linear State Space Models
+   20. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   20. Application: The Samuelson Multiplier-Accelerator
+   21. Application: The Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   21. Kesten Processes and Firm Dynamics
+   22. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   22. Wealth Distribution Dynamics
+   23. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   23. A First Look at the Kalman Filter
+   24. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   24. Shortest Paths
+   25. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   25. Cass-Koopmans Planning Problem
+   26. Cass-Koopmans Planning Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   26. Cass-Koopmans Competitive Equilibrium
+   27. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
 </ul>
@@ -1183,32 +1215,32 @@ Wall time: 1.69 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   27. Job Search I: The McCall Search Model
+   28. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   28. Job Search II: Search and Separation
+   29. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   29. Job Search III: Fitted Value Function Iteration
+   30. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   30. Job Search IV: Correlated Wage Offers
+   31. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   31. Job Search V: Modeling Career Choice
+   32. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   32. Job Search VI: On-the-Job Search
+   33. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -1220,42 +1252,42 @@ Wall time: 1.69 s
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   33. Cake Eating I: Introduction to Optimal Saving
+   34. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   34. Cake Eating II: Numerical Methods
+   35. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   35. Optimal Growth I: The Stochastic Optimal Growth Model
+   36. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   36. Optimal Growth II: Accelerating the Code with Numba
+   37. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   37. Optimal Growth III: Time Iteration
+   38. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   38. Optimal Growth IV: The Endogenous Grid Method
+   39. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   39. The Income Fluctuation Problem I: Basic Model
+   40. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   40. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   41. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1267,37 +1299,37 @@ Wall time: 1.69 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   41. Job Search VII: Search with Learning
+   42. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   42. Likelihood Ratio Processes
+   43. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   43. Computing Mean of a Likelihood Ratio Process
+   44. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   44. A Problem that Stumped Milton Friedman
+   45. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   45. Exchangeability and Bayesian Updating
+   46. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   46. Likelihood Ratio Processes and Bayesian Learning
+   47. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   47. Bayesian versus Frequentist Decision Rules
+   48. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1309,22 +1341,22 @@ Wall time: 1.69 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   48. LQ Control: Foundations
+   49. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   49. The Permanent Income Model
+   50. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   50. Permanent Income II: LQ Techniques
+   51. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   51. Production Smoothing via Inventories
+   52. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1336,37 +1368,37 @@ Wall time: 1.69 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   52. Schelling’s Segregation Model
+   53. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   53. A Lake Model of Employment and Unemployment
+   54. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   54. Rational Expectations Equilibrium
+   55. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   55. Stability in Linear Rational Expectations Models
+   56. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   56. Markov Perfect Equilibrium
+   57. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   57. Uncertainty Traps
+   58. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   58. The Aiyagari Model
+   59. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1378,17 +1410,17 @@ Wall time: 1.69 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   59. Asset Pricing: Finite State Models
+   60. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   60. Competitive equilibria with Arrow securities
+   61. Competitive equilibria with Arrow securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   61. Heterogeneous Beliefs and Bubbles
+   62. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1400,17 +1432,17 @@ Wall time: 1.69 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   62. Pandas for Panel Data
+   63. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   63. Linear Regression in Python
+   64. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   64. Maximum Likelihood Estimation
+   65. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1422,17 +1454,17 @@ Wall time: 1.69 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   65. Troubleshooting
+   66. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   66. References
+   67. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   67. Execution Statistics
+   68. Execution Statistics
   </a>
  </li>
 </ul>

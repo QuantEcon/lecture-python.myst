@@ -1,0 +1,1963 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>15. Von Neumann Growth Model (and a Generalization) &#8212; Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/von_neumann_model.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="16. Dynamics in One Dimension" href="scalar_dynam.html" />
+    <link rel="prev" title="14. Optimal Transport" href="opt_transport.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Von Neumann Growth Model (and a Generalization)"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Von Neumann Growth Model (and a Generalization)" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/von_neumann_model.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=von_neumann_model>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#notation">
+   15.1. Notation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-ingredients-and-assumptions">
+   15.2. Model Ingredients and Assumptions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dynamic-interpretation">
+   15.3. Dynamic Interpretation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#balanced-growth">
+     15.3.1. Balanced Growth
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#duality">
+   15.4. Duality
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#interpretation-as-two-player-zero-sum-game">
+   15.5. Interpretation as Two-player Zero-sum Game
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#connection-with-linear-programming-lp">
+     15.5.1. Connection with Linear Programming (LP)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#algorithm">
+     15.5.2. Algorithm
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#step-1">
+       15.5.2.1. Step 1
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#step-2">
+       15.5.2.2. Step 2
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#uniqueness-and-irreducibility">
+     15.5.3. Uniqueness and Irreducibility
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-special-case">
+     15.5.4. A Special Case
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="qe-page__header-subheading">Von Neumann Growth Model (and a Generalization)</p>
+
+                    </div>
+
+                    <p class="qe-page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div><section class="tex2jax_ignore mathjax_ignore" id="von-neumann-growth-model-and-a-generalization">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id14"><span class="section-number">15. </span>Von Neumann Growth Model (and a Generalization)</a><a class="headerlink" href="#von-neumann-growth-model-and-a-generalization" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#von-neumann-growth-model-and-a-generalization" id="id14">Von Neumann Growth Model (and a Generalization)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#notation" id="id15">Notation</a></p></li>
+<li><p><a class="reference internal" href="#model-ingredients-and-assumptions" id="id16">Model Ingredients and Assumptions</a></p></li>
+<li><p><a class="reference internal" href="#dynamic-interpretation" id="id17">Dynamic Interpretation</a></p></li>
+<li><p><a class="reference internal" href="#duality" id="id18">Duality</a></p></li>
+<li><p><a class="reference internal" href="#interpretation-as-two-player-zero-sum-game" id="id19">Interpretation as Two-player Zero-sum Game</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>This lecture uses the class <code class="docutils literal notranslate"><span class="pre">Neumann</span></code> to calculate key objects of a
+linear growth model of John von Neumann <span id="id1">[<a class="reference internal" href="zreferences.html#id48">vN37</a>]</span> that was generalized by
+Kemeny, Morgenstern and Thompson <span id="id2">[<a class="reference internal" href="zreferences.html#id51">KMT56</a>]</span>.</p>
+<p>Objects of interest are the maximal expansion rate (<span class="math notranslate nohighlight">\(\alpha\)</span>), the
+interest factor (<span class="math notranslate nohighlight">\(β\)</span>), the optimal intensities (<span class="math notranslate nohighlight">\(x\)</span>), and
+prices (<span class="math notranslate nohighlight">\(p\)</span>).</p>
+<p>In addition to watching how the towering mind of John von Neumann
+formulated an equilibrium model of price and quantity vectors in
+balanced growth, this lecture shows how fruitfully to employ the
+following important tools:</p>
+<ul class="simple">
+<li><p>a zero-sum two-player game</p></li>
+<li><p>linear programming</p></li>
+<li><p>the Perron-Frobenius theorem</p></li>
+</ul>
+<p>We’ll begin with some imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">solve</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">fsolve</span><span class="p">,</span> <span class="n">linprog</span>
+<span class="kn">from</span> <span class="nn">textwrap</span> <span class="kn">import</span> <span class="n">dedent</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The code below provides the <code class="docutils literal notranslate"><span class="pre">Neumann</span></code> class</p>
+<div class="cell tag_collapse-20 docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Neumann</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class describes the Generalized von Neumann growth model as it was</span>
+<span class="sd">    discussed in Kemeny et al. (1956, ECTA) and Gale (1960, Chapter 9.5):</span>
+
+<span class="sd">    Let:</span>
+<span class="sd">    n ... number of goods</span>
+<span class="sd">    m ... number of activities</span>
+<span class="sd">    A ... input matrix is m-by-n</span>
+<span class="sd">        a_{i,j} - amount of good j consumed by activity i</span>
+<span class="sd">    B ... output matrix is m-by-n</span>
+<span class="sd">        b_{i,j} - amount of good j produced by activity i</span>
+
+<span class="sd">    x ... intensity vector (m-vector) with non-negative entries</span>
+<span class="sd">        x&#39;B - the vector of goods produced</span>
+<span class="sd">        x&#39;A - the vector of goods consumed</span>
+<span class="sd">    p ... price vector (n-vector) with non-negative entries</span>
+<span class="sd">        Bp - the revenue vector for every activity</span>
+<span class="sd">        Ap - the cost of each activity</span>
+
+<span class="sd">    Both A and B have non-negative entries. Moreover, we assume that</span>
+<span class="sd">    (1) Assumption I (every good which is consumed is also produced):</span>
+<span class="sd">        for all j, b_{.,j} &gt; 0, i.e. at least one entry is strictly positive</span>
+<span class="sd">    (2) Assumption II (no free lunch):</span>
+<span class="sd">        for all i, a_{i,.} &gt; 0, i.e. at least one entry is strictly positive</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : array_like or scalar(float)</span>
+<span class="sd">        Part of the state transition equation.  It should be `n x n`</span>
+<span class="sd">    B : array_like or scalar(float)</span>
+<span class="sd">        Part of the state transition equation.  It should be `n x k`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">convert</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># Check if (A, B) satisfy the basic assumptions</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;The input and output matrices </span><span class="se">\</span>
+<span class="s1">              must have the same dimensions!&#39;</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="s1">&#39;The input and </span><span class="se">\</span>
+<span class="s1">              output matrices must have only non-negative entries!&#39;</span>
+
+        <span class="c1"># (1) Check whether Assumption I is satisfied:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">AI</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">AI</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># (2) Check whether Assumption II is satisfied:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">AII</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">AII</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">me</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        Generalized von Neumann expanding model:</span>
+<span class="s2">          - number of goods          : </span><span class="si">{n}</span><span class="s2"></span>
+<span class="s2">          - number of activities     : </span><span class="si">{m}</span><span class="s2"></span>
+
+<span class="s2">        Assumptions:</span>
+<span class="s2">          - AI:  every column of B has a positive entry    : </span><span class="si">{AI}</span><span class="s2"></span>
+<span class="s2">          - AII: every row of A has a positive entry       : </span><span class="si">{AII}</span><span class="s2"></span>
+
+<span class="s2">        &quot;&quot;&quot;</span>
+        <span class="c1"># Irreducible                                       : {irr}</span>
+        <span class="k">return</span> <span class="n">dedent</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+                                <span class="n">AI</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">AI</span><span class="p">,</span> <span class="n">AII</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">AII</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert array_like objects (lists of lists, floats, etc.) into</span>
+<span class="sd">        well-formed 2D NumPy arrays</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+
+    <span class="k">def</span> <span class="nf">bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the trivial upper and lower bounds for alpha (expansion rate)</span>
+<span class="sd">        and beta (interest factor). See the proof of Theorem 9.8 in Gale (1960)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span>
+
+        <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">α</span><span class="p">:</span> <span class="p">((</span><span class="n">B</span> <span class="o">-</span> <span class="n">α</span> <span class="o">*</span> <span class="n">A</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">β</span><span class="p">:</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span> <span class="o">@</span> <span class="p">(</span><span class="n">B</span> <span class="o">-</span> <span class="n">β</span> <span class="o">*</span> <span class="n">A</span><span class="p">))</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+
+        <span class="n">UB</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># Upper bound for α, β</span>
+        <span class="n">LB</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># Lower bound for α, β</span>
+
+        <span class="k">return</span> <span class="n">LB</span><span class="p">,</span> <span class="n">UB</span>
+
+
+    <span class="k">def</span> <span class="nf">zerosum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">dual</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given gamma, calculate the value and optimal strategies of a</span>
+<span class="sd">        two-player zero-sum game given by the matrix</span>
+
+<span class="sd">                M(gamma) = B - gamma * A</span>
+
+<span class="sd">        Row player maximizing, column player minimizing</span>
+
+<span class="sd">        Zero-sum game as an LP (primal --&gt; α)</span>
+
+<span class="sd">            max (0&#39;, 1) @ (x&#39;, v)</span>
+<span class="sd">            subject to</span>
+<span class="sd">            [-M&#39;, ones(n, 1)] @ (x&#39;, v)&#39; &lt;= 0</span>
+<span class="sd">            (x&#39;, v) @ (ones(m, 1), 0) = 1</span>
+<span class="sd">            (x&#39;, v) &gt;= (0&#39;, -inf)</span>
+
+<span class="sd">        Zero-sum game as an LP (dual --&gt; beta)</span>
+
+<span class="sd">            min (0&#39;, 1) @ (p&#39;, u)</span>
+<span class="sd">            subject to</span>
+<span class="sd">            [M, -ones(m, 1)] @ (p&#39;, u)&#39; &lt;= 0</span>
+<span class="sd">            (p&#39;, u) @ (ones(n, 1), 0) = 1</span>
+<span class="sd">            (p&#39;, u) &gt;= (0&#39;, -inf)</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        --------</span>
+<span class="sd">        value: scalar</span>
+<span class="sd">            value of the zero-sum game</span>
+
+<span class="sd">        strategy: vector</span>
+<span class="sd">            if dual = False, it is the intensity vector,</span>
+<span class="sd">            if dual = True, it is the price vector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">B</span> <span class="o">-</span> <span class="n">γ</span> <span class="o">*</span> <span class="n">A</span>
+
+        <span class="k">if</span> <span class="n">dual</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="c1"># Solve the primal LP (for details see the description)</span>
+            <span class="c1"># (1) Define the problem for v as a maximization (linprog minimizes)</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="c1"># (2) Add constraints :</span>
+            <span class="c1"># ... non-negativity constraints</span>
+            <span class="n">bounds</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)])</span>
+            <span class="c1"># ... inequality constraints</span>
+            <span class="n">A_iq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="o">-</span><span class="n">M</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">))])</span>
+            <span class="n">b_iq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="c1"># ... normalization</span>
+            <span class="n">A_eq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">b_eq</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="n">res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">A_ub</span><span class="o">=</span><span class="n">A_iq</span><span class="p">,</span> <span class="n">b_ub</span><span class="o">=</span><span class="n">b_iq</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A_eq</span><span class="p">,</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b_eq</span><span class="p">,</span>
+                          <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Solve the dual LP (for details see the description)</span>
+            <span class="c1"># (1) Define the problem for v as a maximization (linprog minimizes)</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="mi">1</span><span class="p">])</span>
+
+            <span class="c1"># (2) Add constraints :</span>
+            <span class="c1"># ... non-negativity constraints</span>
+            <span class="n">bounds</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)])</span>
+            <span class="c1"># ... inequality constraints</span>
+            <span class="n">A_iq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">M</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))])</span>
+            <span class="n">b_iq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="c1"># ... normalization</span>
+            <span class="n">A_eq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">b_eq</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="n">res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">A_ub</span><span class="o">=</span><span class="n">A_iq</span><span class="p">,</span> <span class="n">b_ub</span><span class="o">=</span><span class="n">b_iq</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A_eq</span><span class="p">,</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b_eq</span><span class="p">,</span>
+                          <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="c1"># Pull out the required quantities</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">strategy</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="n">strategy</span>
+
+
+    <span class="k">def</span> <span class="nf">expansion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">maxit</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The algorithm used here is described in Hamburger-Thompson-Weil</span>
+<span class="sd">        (1967, ECTA). It is based on a simple bisection argument and utilizes</span>
+<span class="sd">        the idea that for a given γ (= α or β), the matrix &quot;M = B - γ * A&quot;</span>
+<span class="sd">        defines a two-player zero-sum game, where the optimal strategies are</span>
+<span class="sd">        the (normalized) intensity and price vector.</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        --------</span>
+<span class="sd">        alpha: scalar</span>
+<span class="sd">            optimal expansion rate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">LB</span><span class="p">,</span> <span class="n">UB</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxit</span><span class="p">):</span>
+
+            <span class="n">γ</span> <span class="o">=</span> <span class="p">(</span><span class="n">LB</span> <span class="o">+</span> <span class="n">UB</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="n">ZS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zerosum</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">)</span>
+            <span class="n">V</span> <span class="o">=</span> <span class="n">ZS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>     <span class="c1"># value of the game with γ</span>
+
+            <span class="k">if</span> <span class="n">V</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">LB</span> <span class="o">=</span> <span class="n">γ</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">UB</span> <span class="o">=</span> <span class="n">γ</span>
+
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">UB</span> <span class="o">-</span> <span class="n">LB</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+                <span class="n">γ</span> <span class="o">=</span> <span class="p">(</span><span class="n">UB</span> <span class="o">+</span> <span class="n">LB</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zerosum</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zerosum</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">,</span> <span class="n">dual</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">γ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">p</span>
+
+    <span class="k">def</span> <span class="nf">interest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">maxit</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The algorithm used here is described in Hamburger-Thompson-Weil</span>
+<span class="sd">        (1967, ECTA). It is based on a simple bisection argument and utilizes</span>
+<span class="sd">        the idea that for a given gamma (= alpha or beta),</span>
+<span class="sd">        the matrix &quot;M = B - γ * A&quot; defines a two-player zero-sum game,</span>
+<span class="sd">        where the optimal strategies are the (normalized) intensity and price</span>
+<span class="sd">        vector</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        --------</span>
+<span class="sd">        beta: scalar</span>
+<span class="sd">            optimal interest rate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">LB</span><span class="p">,</span> <span class="n">UB</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxit</span><span class="p">):</span>
+            <span class="n">γ</span> <span class="o">=</span> <span class="p">(</span><span class="n">LB</span> <span class="o">+</span> <span class="n">UB</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="n">ZS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zerosum</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">,</span> <span class="n">dual</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">V</span> <span class="o">=</span> <span class="n">ZS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">V</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">LB</span> <span class="o">=</span> <span class="n">γ</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">UB</span> <span class="o">=</span> <span class="n">γ</span>
+
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">UB</span> <span class="o">-</span> <span class="n">LB</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+                <span class="n">γ</span> <span class="o">=</span> <span class="p">(</span><span class="n">UB</span> <span class="o">+</span> <span class="n">LB</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zerosum</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">,</span> <span class="n">dual</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zerosum</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">γ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">p</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="notation">
+<h2><a class="toc-backref" href="#id15"><span class="section-number">15.1. </span>Notation</a><a class="headerlink" href="#notation" title="Permalink to this headline">¶</a></h2>
+<p>We use the following notation.</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{0}\)</span> denotes
+a vector of zeros.</p>
+<p>We call an <span class="math notranslate nohighlight">\(n\)</span>-vector  positive and write
+<span class="math notranslate nohighlight">\(x\gg \mathbf{0}\)</span> if <span class="math notranslate nohighlight">\(x_i&gt;0\)</span> for all <span class="math notranslate nohighlight">\(i=1,2,\dots,n\)</span>.</p>
+<p>We call a vector  non-negative and write <span class="math notranslate nohighlight">\(x\geq \mathbf{0}\)</span> if <span class="math notranslate nohighlight">\(x_i\geq 0\)</span> for
+all <span class="math notranslate nohighlight">\(i=1,2,\dots,n\)</span>.</p>
+<p>We call a vector  semi-positive and written <span class="math notranslate nohighlight">\(x &gt; \mathbf{0}\)</span> if
+<span class="math notranslate nohighlight">\(x\geq \mathbf{0}\)</span> and <span class="math notranslate nohighlight">\(x\neq \mathbf{0}\)</span>.</p>
+<p>For two conformable vectors <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, <span class="math notranslate nohighlight">\(x\gg y\)</span>,
+<span class="math notranslate nohighlight">\(x\geq y\)</span> and <span class="math notranslate nohighlight">\(x&gt; y\)</span> mean <span class="math notranslate nohighlight">\(x-y\gg \mathbf{0}\)</span>,
+<span class="math notranslate nohighlight">\(x-y \geq \mathbf{0}\)</span>, and <span class="math notranslate nohighlight">\(x-y &gt; \mathbf{0}\)</span>, respectively.</p>
+<p>We let all vectors in this lecture be column vectors; <span class="math notranslate nohighlight">\(x^{T}\)</span> denotes the
+transpose of <span class="math notranslate nohighlight">\(x\)</span> (i.e., a row vector).</p>
+<p>Let <span class="math notranslate nohighlight">\(\iota_n\)</span> denote a
+column vector composed of <span class="math notranslate nohighlight">\(n\)</span> ones, i.e.
+<span class="math notranslate nohighlight">\(\iota_n = (1,1,\dots,1)^T\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(e^i\)</span> denote a vector (of
+arbitrary size) containing zeros except for the <span class="math notranslate nohighlight">\(i\)</span> th position
+where it is one.</p>
+<p>We denote matrices by capital letters. For an arbitrary matrix
+<span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(a_{i,j}\)</span> represents the entry in its <span class="math notranslate nohighlight">\(i\)</span> th
+row and <span class="math notranslate nohighlight">\(j\)</span> th column.</p>
+<p><span class="math notranslate nohighlight">\(a_{\cdot j}\)</span> and <span class="math notranslate nohighlight">\(a_{i\cdot}\)</span>
+denote the <span class="math notranslate nohighlight">\(j\)</span> th column and <span class="math notranslate nohighlight">\(i\)</span> th row of <span class="math notranslate nohighlight">\(A\)</span>,
+respectively.</p>
+</section>
+<section id="model-ingredients-and-assumptions">
+<h2><a class="toc-backref" href="#id16"><span class="section-number">15.2. </span>Model Ingredients and Assumptions</a><a class="headerlink" href="#model-ingredients-and-assumptions" title="Permalink to this headline">¶</a></h2>
+<p>A pair <span class="math notranslate nohighlight">\((A,B)\)</span> of <span class="math notranslate nohighlight">\(m\times n\)</span> non-negative matrices defines
+an economy.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(m\)</span> is the number of <em>activities</em> (or sectors)</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span> is the number of <em>goods</em> (produced and/or consumed).</p></li>
+<li><p><span class="math notranslate nohighlight">\(A\)</span> is called the <em>input matrix</em>; <span class="math notranslate nohighlight">\(a_{i,j}\)</span> denotes the
+amount of good <span class="math notranslate nohighlight">\(j\)</span> consumed by activity <span class="math notranslate nohighlight">\(i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(B\)</span> is called the <em>output matrix</em>; <span class="math notranslate nohighlight">\(b_{i,j}\)</span> represents
+the amount of good <span class="math notranslate nohighlight">\(j\)</span> produced by activity <span class="math notranslate nohighlight">\(i\)</span></p></li>
+</ul>
+<p>Two key assumptions restrict economy <span class="math notranslate nohighlight">\((A,B)\)</span>:</p>
+<ul>
+<li><p><strong>Assumption I:</strong> (every good that is consumed is also produced)</p>
+<div class="math notranslate nohighlight">
+\[
+  b_{.,j} &gt; \mathbf{0}\hspace{5mm}\forall j=1,2,\dots,n
+  \]</div>
+</li>
+<li><p><strong>Assumption II:</strong> (no free lunch)</p>
+<div class="math notranslate nohighlight">
+\[
+  a_{i,.} &gt; \mathbf{0}\hspace{5mm}\forall i=1,2,\dots,m
+  \]</div>
+</li>
+</ul>
+<p>A semi-positive  <em>intensity</em> <span class="math notranslate nohighlight">\(m\)</span>-vector  <span class="math notranslate nohighlight">\(x\)</span> denotes  levels at which
+activities are operated.</p>
+<p>Therefore,</p>
+<ul class="simple">
+<li><p>vector <span class="math notranslate nohighlight">\(x^TA\)</span> gives the total amount of <em>goods used in
+production</em></p></li>
+<li><p>vector <span class="math notranslate nohighlight">\(x^TB\)</span> gives <em>total outputs</em></p></li>
+</ul>
+<p>An economy <span class="math notranslate nohighlight">\((A,B)\)</span> is said to be <em>productive</em>, if there exists a
+non-negative intensity vector <span class="math notranslate nohighlight">\(x \geq 0\)</span> such
+that <span class="math notranslate nohighlight">\(x^T B &gt; x^TA\)</span>.</p>
+<p>The semi-positive <span class="math notranslate nohighlight">\(n\)</span>-vector <span class="math notranslate nohighlight">\(p\)</span> contains prices assigned to
+the <span class="math notranslate nohighlight">\(n\)</span> goods.</p>
+<p>The <span class="math notranslate nohighlight">\(p\)</span> vector implies <em>cost</em> and <em>revenue</em> vectors</p>
+<ul class="simple">
+<li><p>the vector <span class="math notranslate nohighlight">\(Ap\)</span> tells <em>costs</em> of the vector of activities</p></li>
+<li><p>the vector <span class="math notranslate nohighlight">\(Bp\)</span> tells <em>revenues</em> from the vector of activities</p></li>
+</ul>
+<p>Satisfaction or a property of an input-output pair <span class="math notranslate nohighlight">\((A,B)\)</span> called <em>irreducibility</em>
+(or indecomposability) determines whether an economy can be decomposed
+into multiple     “sub-economies”.</p>
+<p><strong>Definition:</strong> For an economy <span class="math notranslate nohighlight">\((A,B)\)</span>, the set of goods
+<span class="math notranslate nohighlight">\(S\subset \{1,2,\dots,n\}\)</span> is called an <em>independent subset</em> if
+it is possible to produce every good in <span class="math notranslate nohighlight">\(S\)</span> without consuming
+goods from outside <span class="math notranslate nohighlight">\(S\)</span>. Formally, the set <span class="math notranslate nohighlight">\(S\)</span> is independent if
+<span class="math notranslate nohighlight">\(\exists T\subset \{1,2,\dots,m\}\)</span> (a subset of activities) such
+that <span class="math notranslate nohighlight">\(a_{i,j}=0\)</span> <span class="math notranslate nohighlight">\(\forall i\in T\)</span> and <span class="math notranslate nohighlight">\(j\in S^c\)</span> and
+for all <span class="math notranslate nohighlight">\(j\in S\)</span>, <span class="math notranslate nohighlight">\(\exists i\in T\)</span> for which  <span class="math notranslate nohighlight">\(b_{i,j}&gt;0\)</span>.
+The economy is <strong>irreducible</strong> if there are no proper independent
+subsets.</p>
+<p>We study two examples, both in  Chapter 9.6 of Gale <span id="id3">[<a class="reference internal" href="zreferences.html#id53">Gal89</a>]</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># (1) Irreducible (A, B) example: α_0 = β_0</span>
+<span class="n">A1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+
+<span class="n">B1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+
+<span class="c1"># (2) Reducible (A, B) example: β_0 &lt; α_0</span>
+<span class="n">A2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+
+<span class="n">B2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following code sets up our first Neumann economy or <code class="docutils literal notranslate"><span class="pre">Neumann</span></code>
+instance</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n1</span> <span class="o">=</span> <span class="n">Neumann</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">B1</span><span class="p">)</span>
+<span class="n">n1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generalized von Neumann expanding model:
+  - number of goods          : 4
+  - number of activities     : 3
+
+Assumptions:
+  - AI:  every column of B has a positive entry    : True
+  - AII: every row of A has a positive entry       : True
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is a second instance of a Neumann economy</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n2</span> <span class="o">=</span> <span class="n">Neumann</span><span class="p">(</span><span class="n">A2</span><span class="p">,</span> <span class="n">B2</span><span class="p">)</span>
+<span class="n">n2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generalized von Neumann expanding model:
+  - number of goods          : 6
+  - number of activities     : 5
+
+Assumptions:
+  - AI:  every column of B has a positive entry    : True
+  - AII: every row of A has a positive entry       : True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dynamic-interpretation">
+<h2><a class="toc-backref" href="#id17"><span class="section-number">15.3. </span>Dynamic Interpretation</a><a class="headerlink" href="#dynamic-interpretation" title="Permalink to this headline">¶</a></h2>
+<p>Attach a time index <span class="math notranslate nohighlight">\(t\)</span> to the preceding objects, regard an economy
+as a dynamic system, and study sequences</p>
+<div class="math notranslate nohighlight">
+\[
+\{(A_t,B_t)\}_{t\geq 0}, \hspace{1cm}\{x_t\}_{t\geq 0},\hspace{1cm} \{p_t\}_{t\geq 0}
+\]</div>
+<p>An interesting special case holds the technology process constant and
+investigates the dynamics of quantities and prices only.</p>
+<p>Accordingly, in the rest of this lecture, we assume that
+<span class="math notranslate nohighlight">\((A_t,B_t)=(A,B)\)</span> for all <span class="math notranslate nohighlight">\(t\geq 0\)</span>.</p>
+<p>A crucial element of the dynamic interpretation involves the timing of
+production.</p>
+<p>We assume that production (consumption of inputs) takes place in period
+<span class="math notranslate nohighlight">\(t\)</span>, while the consequent output materializes in period
+<span class="math notranslate nohighlight">\(t+1\)</span>, i.e., consumption of <span class="math notranslate nohighlight">\(x_{t}^TA\)</span> in period <span class="math notranslate nohighlight">\(t\)</span>
+results in <span class="math notranslate nohighlight">\(x^T_{t}B\)</span> amounts of output in period <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
+<p>These timing conventions imply the following feasibility condition:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{aligned}
+x^T_{t}B \geq x^T_{t+1} A \hspace{1cm}\forall t\geq 1
+\end{aligned}
+\]</div>
+<p>which asserts that no more goods can be used today than were produced
+yesterday.</p>
+<p>Accordingly, <span class="math notranslate nohighlight">\(Ap_t\)</span> tells the costs of production in period
+<span class="math notranslate nohighlight">\(t\)</span> and <span class="math notranslate nohighlight">\(Bp_t\)</span> tells revenues in period <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
+<section id="balanced-growth">
+<h3><span class="section-number">15.3.1. </span>Balanced Growth<a class="headerlink" href="#balanced-growth" title="Permalink to this headline">¶</a></h3>
+<p>We follow John von Neumann in studying “balanced growth”.</p>
+<p>Let <span class="math notranslate nohighlight">\(./\)</span> denote an elementwise division of one vector by another and let
+<span class="math notranslate nohighlight">\(\alpha &gt;0\)</span> be a scalar.</p>
+<p>Then <em>balanced growth</em> is a situation in which</p>
+<div class="math notranslate nohighlight">
+\[
+x_{t+1}./x_t = \alpha , \quad \forall t \geq 0
+\]</div>
+<p>With balanced growth, the law of motion of <span class="math notranslate nohighlight">\(x\)</span> is evidently <span class="math notranslate nohighlight">\(x_{t+1}=\alpha x_t\)</span>
+and so we can rewrite the feasibility constraint as</p>
+<div class="math notranslate nohighlight">
+\[
+x^T_{t}B \geq \alpha x^T_t A \hspace{1cm}\forall t
+\]</div>
+<p>In the same spirit, define <span class="math notranslate nohighlight">\(\beta\in\mathbb{R}\)</span> as the <strong>interest
+factor</strong> per unit of time.</p>
+<p>We assume that it is always possible to earn a gross return equal to the
+constant interest factor <span class="math notranslate nohighlight">\(\beta\)</span> by investing “outside the model”.</p>
+<p>Under this assumption about outside investment opportunities, a
+no-arbitrage condition gives rise to the following (no profit)
+restriction on the price sequence:</p>
+<div class="math notranslate nohighlight">
+\[
+\beta Ap_{t} \geq B p_{t} \hspace{1cm}\forall t
+\]</div>
+<p>This says that production cannot yield a return greater than that
+offered by the outside investment opportunity (here we compare values in
+period <span class="math notranslate nohighlight">\(t+1\)</span>).</p>
+<p>The balanced growth assumption allows us to drop time subscripts and
+conduct an analysis purely in terms of a time-invariant growth rate
+<span class="math notranslate nohighlight">\(\alpha\)</span> and interest factor <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
+</section>
+</section>
+<section id="duality">
+<h2><a class="toc-backref" href="#id18"><span class="section-number">15.4. </span>Duality</a><a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
+<p>Two problems are connected by a remarkable dual
+relationship between  technological and valuation characteristics of
+the economy:</p>
+<p><strong>Definition:</strong> The <em>technological expansion problem</em> (TEP) for the economy
+<span class="math notranslate nohighlight">\((A,B)\)</span> is to find a semi-positive <span class="math notranslate nohighlight">\(m\)</span>-vector <span class="math notranslate nohighlight">\(x&gt;0\)</span>
+and a number <span class="math notranslate nohighlight">\(\alpha\in\mathbb{R}\)</span> that satisfy</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+    &amp;\max_{\alpha} \hspace{2mm} \alpha\\
+    &amp;\text{s.t. }\hspace{2mm}x^T B \geq \alpha x^T A
+    \end{aligned}
+\end{split}\]</div>
+<p>Theorem 9.3 of David Gale’s book <span id="id4">[<a class="reference internal" href="zreferences.html#id53">Gal89</a>]</span> asserts that if Assumptions I and II are
+both satisfied, then a maximum value of <span class="math notranslate nohighlight">\(\alpha\)</span> exists and that it is
+positive.</p>
+<p>The maximal value is called the <em>technological expansion rate</em> and is denoted
+by <span class="math notranslate nohighlight">\(\alpha_0\)</span>. The associated intensity vector <span class="math notranslate nohighlight">\(x_0\)</span> is the
+<em>optimal intensity vector</em>.</p>
+<p><strong>Definition:</strong> The economic expansion problem (EEP) for
+<span class="math notranslate nohighlight">\((A,B)\)</span> is to find a semi-positive <span class="math notranslate nohighlight">\(n\)</span>-vector <span class="math notranslate nohighlight">\(p&gt;0\)</span>
+and a number <span class="math notranslate nohighlight">\(\beta\in\mathbb{R}\)</span> that satisfy</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+    &amp;\min_{\beta} \hspace{2mm} \beta\\
+    &amp;\text{s.t. }\hspace{2mm}Bp \leq \beta Ap
+    \end{aligned}
+\end{split}\]</div>
+<p>Assumptions I and II imply existence of a minimum value
+<span class="math notranslate nohighlight">\(\beta_0&gt;0\)</span> called the <em>economic expansion rate</em>.</p>
+<p>The corresponding price vector <span class="math notranslate nohighlight">\(p_0\)</span> is the <em>optimal price vector</em>.</p>
+<p>Because the criterion functions in the <em>technological expansion</em> problem
+and the <em>economical expansion problem</em> are both linearly homogeneous,
+the optimality of <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(p_0\)</span> are defined only up to a
+positive scale factor.</p>
+<p>For convenience (and to emphasize a close connection to zero-sum games),  we normalize both vectors
+<span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(p_0\)</span> to have unit length.</p>
+<p>A standard duality argument (see Lemma 9.4. in (Gale, 1960) <span id="id5">[<a class="reference internal" href="zreferences.html#id53">Gal89</a>]</span>) implies
+that under Assumptions I and II, <span class="math notranslate nohighlight">\(\beta_0\leq \alpha_0\)</span>.</p>
+<p>But to deduce that <span class="math notranslate nohighlight">\(\beta_0\geq \alpha_0\)</span>,
+Assumptions I and II are not sufficient.</p>
+<p>Therefore, von Neumann <span id="id6">[<a class="reference internal" href="zreferences.html#id48">vN37</a>]</span>  went on to prove the following remarkable
+“duality” result that connects TEP and EEP.</p>
+<p><strong>Theorem 1 (von Neumann):</strong> If the economy <span class="math notranslate nohighlight">\((A,B)\)</span> satisfies
+Assumptions I and II, then there exist
+<span class="math notranslate nohighlight">\(\left(\gamma^{*}, x_0, p_0\right)\)</span>, where
+<span class="math notranslate nohighlight">\(\gamma^{*}\in[\beta_0, \alpha_0]\subset\mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(x_0&gt;0\)</span>
+is an <span class="math notranslate nohighlight">\(m\)</span>-vector, <span class="math notranslate nohighlight">\(p_0&gt;0\)</span> is an <span class="math notranslate nohighlight">\(n\)</span>-vector, and the
+following arbitrage true</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+x_0^T B &amp;\geq \gamma^{* } x_0^T A \\
+Bp_0 &amp;\leq \gamma^{* } Ap_0 \\
+x_0^T\left(B-\gamma^{* } A\right)p_0 &amp;= 0
+\end{aligned}
+\end{split}\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>Proof (Sketch):</em> Assumption I and II imply that there exist <span class="math notranslate nohighlight">\((\alpha_0,
+x_0)\)</span> and <span class="math notranslate nohighlight">\((\beta_0, p_0)\)</span> that solve the TEP and EEP, respectively. If
+<span class="math notranslate nohighlight">\(\gamma^*&gt;\alpha_0\)</span>, then by definition of <span class="math notranslate nohighlight">\(\alpha_0\)</span>, there cannot
+exist a semi-positive <span class="math notranslate nohighlight">\(x\)</span> that satisfies <span class="math notranslate nohighlight">\(x^T B \geq \gamma^{* }
+x^T A\)</span>.  Similarly, if <span class="math notranslate nohighlight">\(\gamma^*&lt;\beta_0\)</span>, there is no semi-positive
+<span class="math notranslate nohighlight">\(p\)</span> for which <span class="math notranslate nohighlight">\(Bp \leq \gamma^{* } Ap\)</span>. Let <span class="math notranslate nohighlight">\(\gamma^{*
+}\in[\beta_0, \alpha_0]\)</span>, then <span class="math notranslate nohighlight">\(x_0^T B \geq \alpha_0 x_0^T A \geq
+\gamma^{* } x_0^T A\)</span>.  Moreover, <span class="math notranslate nohighlight">\(Bp_0\leq \beta_0 A p_0\leq \gamma^* A
+p_0\)</span>. These two inequalities imply <span class="math notranslate nohighlight">\(x_0\left(B - \gamma^{* } A\right)p_0
+= 0\)</span>.</p>
+</div>
+<p>Here the constant <span class="math notranslate nohighlight">\(\gamma^{*}\)</span> is both an expansion factor  and an interest
+factor (not necessarily optimal).</p>
+<p>We have already encountered and
+discussed the first two inequalities that represent feasibility and
+no-profit conditions.</p>
+<p>Moreover, the equality <span class="math notranslate nohighlight">\(x_0^T\left(B-\gamma^{* } A\right)p_0 = 0\)</span> concisely expresses the
+requirements that if any good grows at a rate larger than
+<span class="math notranslate nohighlight">\(\gamma^{*}\)</span> (i.e., if it is <em>oversupplied</em>), then its price
+must be zero; and that if any activity provides negative profit, it must
+be unused.</p>
+<p>Therefore, the conditions stated in Theorem I ex encode all equilibrium conditions.</p>
+<p>So  Theorem I essentially states that under Assumptions I and II there
+always exists an equilibrium <span class="math notranslate nohighlight">\(\left(\gamma^{*}, x_0, p_0\right)\)</span>
+with balanced growth.</p>
+<p>Note that Theorem I is silent about uniqueness of the equilibrium. In
+fact, it does not rule out (trivial) cases with <span class="math notranslate nohighlight">\(x_0^TBp_0 = 0\)</span> so
+that nothing of value is produced.</p>
+<p>To exclude such uninteresting cases,
+Kemeny, Morgenstern and Thomspson <span id="id7">[<a class="reference internal" href="zreferences.html#id51">KMT56</a>]</span> add an extra requirement</p>
+<div class="math notranslate nohighlight">
+\[
+x^T_0 B p_0 &gt; 0
+\]</div>
+<p>and call the associated equilibria <em>economic solutions</em>.</p>
+<p>They show that
+this extra condition does not affect the existence result, while it
+significantly reduces the number of (relevant) solutions.</p>
+</section>
+<section id="interpretation-as-two-player-zero-sum-game">
+<h2><a class="toc-backref" href="#id19"><span class="section-number">15.5. </span>Interpretation as Two-player Zero-sum Game</a><a class="headerlink" href="#interpretation-as-two-player-zero-sum-game" title="Permalink to this headline">¶</a></h2>
+<p>To compute the equilibrium <span class="math notranslate nohighlight">\((\gamma^{*}, x_0, p_0)\)</span>, we follow the
+algorithm proposed by Hamburger, Thompson and Weil (1967), building on
+the key insight that an equilibrium (with balanced growth) can be
+solves a particular two-player zero-sum game.
+First, we introduce some notation.</p>
+<p>Consider the <span class="math notranslate nohighlight">\(m\times n\)</span> matrix <span class="math notranslate nohighlight">\(C\)</span> as a payoff matrix,
+with the entries representing payoffs from the <strong>minimizing</strong> column
+player to the <strong>maximizing</strong> row player and assume that the players can
+use mixed strategies. Thus,</p>
+<ul class="simple">
+<li><p>the  row player chooses the <span class="math notranslate nohighlight">\(m\)</span>-vector <span class="math notranslate nohighlight">\(x &gt; \mathbf{0}\)</span> subject to <span class="math notranslate nohighlight">\(\iota_m^T x = 1\)</span></p></li>
+<li><p>the column player chooses the <span class="math notranslate nohighlight">\(n\)</span>-vector <span class="math notranslate nohighlight">\(p &gt; \mathbf{0}\)</span> subject to <span class="math notranslate nohighlight">\(\iota_n^T p = 1\)</span>.</p></li>
+</ul>
+<p><strong>Definition:</strong> The <span class="math notranslate nohighlight">\(m\times n\)</span> matrix game <span class="math notranslate nohighlight">\(C\)</span> has the
+<em>solution</em> <span class="math notranslate nohighlight">\((x^*, p^*, V(C))\)</span> in mixed strategies if</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{aligned}
+(x^* )^T C e^j \geq V(C)\quad \forall j\in\{1, \dots, n\}\quad \quad
+\text{and}\quad\quad (e^i)^T C p^* \leq V(C)\quad \forall i\in\{1, \dots, m\}
+\end{aligned}
+\]</div>
+<p>The number <span class="math notranslate nohighlight">\(V(C)\)</span> is called the <em>value</em> of the game.</p>
+<p>From the above definition, it is clear that the value <span class="math notranslate nohighlight">\(V(C)\)</span> has
+two alternative interpretations:</p>
+<ul class="simple">
+<li><p>by playing the appropriate mixed
+stategy, the maximizing player can assure himself at least <span class="math notranslate nohighlight">\(V(C)\)</span>
+(no matter what the column player chooses)</p></li>
+<li><p>by playing the appropriate
+mixed stategy, the minimizing player can make sure that the maximizing
+player will not get more than <span class="math notranslate nohighlight">\(V(C)\)</span> (irrespective of what is the
+maximizing player’s choice)</p></li>
+</ul>
+<p>A famous theorem of Nash (1951) tells us that there always
+exists a mixed strategy Nash equilibrium for any <em>finite</em> two-player
+zero-sum game.</p>
+<p>Moreover, von Neumann’s Minmax Theorem <span id="id8">[<a class="reference internal" href="zreferences.html#id49">vN28</a>]</span> implies that</p>
+<div class="math notranslate nohighlight">
+\[
+V(C) = \max_x \min_p \hspace{2mm} x^T C p = \min_p \max_x \hspace{2mm} x^T C p = (x^*)^T C p^*
+\]</div>
+<section id="connection-with-linear-programming-lp">
+<h3><span class="section-number">15.5.1. </span>Connection with Linear Programming (LP)<a class="headerlink" href="#connection-with-linear-programming-lp" title="Permalink to this headline">¶</a></h3>
+<p>Nash equilibria of a finite two-player zero-sum game solve  a linear programming problem.</p>
+<p>To see this, we introduce
+the following notation</p>
+<ul class="simple">
+<li><p>For a fixed <span class="math notranslate nohighlight">\(x\)</span>, let <span class="math notranslate nohighlight">\(v\)</span> be the value of the minimization problem: <span class="math notranslate nohighlight">\(v \equiv \min_p x^T C p = \min_j x^T C e^j\)</span></p></li>
+<li><p>For a fixed <span class="math notranslate nohighlight">\(p\)</span>, let <span class="math notranslate nohighlight">\(u\)</span> be the value of the maximization problem: <span class="math notranslate nohighlight">\(u \equiv \max_x x^T C p = \max_i (e^i)^T C p\)</span></p></li>
+</ul>
+<p>Then the <em>max-min problem</em> (the game from the maximizing player’s point
+of view) can be written as the <em>primal</em> LP</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+V(C) = &amp; \max \hspace{2mm} v \\
+\text{s.t. } \hspace{2mm} v \iota_n^T &amp;\leq x^T C  \\
+x &amp;\geq \mathbf{0} \\
+\iota_n^T x &amp; = 1
+\end{aligned}
+\end{split}\]</div>
+<p>while the <em>min-max problem</em> (the game from the minimizing player’s point
+of view) is the <em>dual</em> LP</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+V(C) = &amp;\min \hspace{2mm} u \\
+\text{s.t. } \hspace{2mm}u \iota_m &amp;\geq Cp  \\
+p &amp;\geq \mathbf{0} \\
+\iota_m^T p &amp; = 1
+\end{aligned}
+\end{split}\]</div>
+<p>Hamburger, Thompson and Weil <span id="id9">[<a class="reference internal" href="zreferences.html#id52">HTW67</a>]</span> view the input-output pair of the
+economy as payoff matrices of two-player zero-sum games.</p>
+<p>Using this interpretation, they restate Assumption I and II as follows</p>
+<div class="math notranslate nohighlight">
+\[
+V(-A) &lt; 0\quad\quad \text{and}\quad\quad V(B)&gt;0
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>Proof (Sketch)</em>:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\Rightarrow\)</span> <span class="math notranslate nohighlight">\(V(B)&gt;0\)</span> implies
+<span class="math notranslate nohighlight">\(x_0^T B \gg \mathbf{0}\)</span>, where <span class="math notranslate nohighlight">\(x_0\)</span> is a maximizing
+vector. Since <span class="math notranslate nohighlight">\(B\)</span> is non-negative, this requires that each
+column of <span class="math notranslate nohighlight">\(B\)</span> has at least one positive entry, which is
+Assumption I.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Leftarrow\)</span> From Assumption I and the fact
+that <span class="math notranslate nohighlight">\(p&gt;\mathbf{0}\)</span>, it follows that <span class="math notranslate nohighlight">\(Bp &gt; \mathbf{0}\)</span>.
+This implies that the maximizing player can always choose <span class="math notranslate nohighlight">\(x\)</span>
+so that <span class="math notranslate nohighlight">\(x^TBp&gt;0\)</span> so that it must be the case
+that <span class="math notranslate nohighlight">\(V(B)&gt;0\)</span>.</p></li>
+</ul>
+</div>
+<p>In order to (re)state Theorem I in terms of a particular two-player
+zero-sum game, we define a matrix for <span class="math notranslate nohighlight">\(\gamma\in\mathbb{R}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+M(\gamma) \equiv B - \gamma A
+\]</div>
+<p>For fixed <span class="math notranslate nohighlight">\(\gamma\)</span>, treating <span class="math notranslate nohighlight">\(M(\gamma)\)</span> as a matrix game,
+calculating the solution of the game implies</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(\gamma &gt; \alpha_0\)</span>, then for all <span class="math notranslate nohighlight">\(x&gt;0\)</span>, there
+<span class="math notranslate nohighlight">\(\exists j\in\{1, \dots, n\}\)</span>, s.t.
+<span class="math notranslate nohighlight">\([x^T M(\gamma)]_j &lt; 0\)</span> implying
+that <span class="math notranslate nohighlight">\(V(M(\gamma)) &lt; 0\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\gamma &lt; \beta_0\)</span>, then for all <span class="math notranslate nohighlight">\(p&gt;0\)</span>, there
+<span class="math notranslate nohighlight">\(\exists i\in\{1, \dots, m\}\)</span>, s.t.
+<span class="math notranslate nohighlight">\([M(\gamma)p]_i &gt; 0\)</span> implying that <span class="math notranslate nohighlight">\(V(M(\gamma)) &gt; 0\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\gamma \in \{\beta_0, \alpha_0\}\)</span>, then (by Theorem I) the
+optimal intensity and price vectors <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(p_0\)</span>
+satisfy</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\begin{aligned}
+x_0^T M(\gamma) \geq \mathbf{0}^T \quad \quad \text{and}\quad\quad M(\gamma) p_0 \leq \mathbf{0}
+\end{aligned}
+\]</div>
+<p>That is, <span class="math notranslate nohighlight">\((x_0, p_0, 0)\)</span> is a solution of the game
+<span class="math notranslate nohighlight">\(M(\gamma)\)</span> so
+that <span class="math notranslate nohighlight">\(V\left(M(\beta_0)\right) = V\left(M(\alpha_0)\right) = 0\)</span>.</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(\beta_0 &lt; \alpha_0\)</span> and
+<span class="math notranslate nohighlight">\(\gamma \in (\beta_0, \alpha_0)\)</span>, then <span class="math notranslate nohighlight">\(V(M(\gamma)) = 0\)</span>.</p></li>
+</ul>
+<p>Moreover, if <span class="math notranslate nohighlight">\(x'\)</span> is optimal for the maximizing player in
+<span class="math notranslate nohighlight">\(M(\gamma')\)</span> for <span class="math notranslate nohighlight">\(\gamma'\in(\beta_0, \alpha_0)\)</span> and
+<span class="math notranslate nohighlight">\(p''\)</span> is optimal for the minimizing player in <span class="math notranslate nohighlight">\(M(\gamma'')\)</span>
+where <span class="math notranslate nohighlight">\(\gamma''\in(\beta_0, \gamma')\)</span>, then <span class="math notranslate nohighlight">\((x', p'', 0)\)</span>
+is a solution for <span class="math notranslate nohighlight">\(M(\gamma)\)</span> <span class="math notranslate nohighlight">\(\forall \gamma\in (\gamma'', \gamma')\)</span>.</p>
+<p><em>Proof (Sketch):</em> If <span class="math notranslate nohighlight">\(x'\)</span> is optimal for a maximizing player in
+game <span class="math notranslate nohighlight">\(M(\gamma')\)</span>, then <span class="math notranslate nohighlight">\((x')^T M(\gamma')\geq \mathbf{0}^T\)</span> and so for all <span class="math notranslate nohighlight">\(\gamma&lt;\gamma'\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[
+(x')^T M(\gamma) = (x')^T M(\gamma') + (x')^T(\gamma' - \gamma)A \geq \mathbf{0}^T
+\]</div>
+<p>hence <span class="math notranslate nohighlight">\(V(M(\gamma))\geq 0\)</span>. If <span class="math notranslate nohighlight">\(p''\)</span> is optimal for a
+minimizing player in game <span class="math notranslate nohighlight">\(M(\gamma'')\)</span>, then <span class="math notranslate nohighlight">\(M(\gamma)p \leq \mathbf{0}\)</span>
+and so for all <span class="math notranslate nohighlight">\(\gamma''&lt;\gamma\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+M(\gamma)p'' = M(\gamma'') + (\gamma'' - \gamma)Ap'' \leq \mathbf{0}
+\]</div>
+<p>hence <span class="math notranslate nohighlight">\(V(M(\gamma))\leq 0\)</span>.</p>
+<p>It is clear from the above argument that <span class="math notranslate nohighlight">\(\beta_0\)</span>, <span class="math notranslate nohighlight">\(\alpha_0\)</span> are the minimal and maximal <span class="math notranslate nohighlight">\(\gamma\)</span> for which
+<span class="math notranslate nohighlight">\(V(M(\gamma))=0\)</span>.</p>
+<p>Furthermore, Hamburger et al. <span id="id10">[<a class="reference internal" href="zreferences.html#id52">HTW67</a>]</span> show that the
+function <span class="math notranslate nohighlight">\(\gamma \mapsto V(M(\gamma))\)</span> is continuous and
+nonincreasing in <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
+<p>This suggests an algorithm to compute
+<span class="math notranslate nohighlight">\((\alpha_0, x_0)\)</span> and <span class="math notranslate nohighlight">\((\beta_0, p_0)\)</span> for a given
+input-output pair <span class="math notranslate nohighlight">\((A, B)\)</span>.</p>
+</section>
+<section id="algorithm">
+<h3><span class="section-number">15.5.2. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
+<p>Hamburger, Thompson and Weil <span id="id11">[<a class="reference internal" href="zreferences.html#id52">HTW67</a>]</span> propose a simple bisection algorithm
+to find the minimal and maximal roots (i.e. <span class="math notranslate nohighlight">\(\beta_0\)</span> and
+<span class="math notranslate nohighlight">\(\alpha_0\)</span>) of the function <span class="math notranslate nohighlight">\(\gamma \mapsto V(M(\gamma))\)</span>.</p>
+<section id="step-1">
+<h4><span class="section-number">15.5.2.1. </span>Step 1<a class="headerlink" href="#step-1" title="Permalink to this headline">¶</a></h4>
+<p>First, notice that we can easily find trivial upper and lower bounds for
+<span class="math notranslate nohighlight">\(\alpha_0\)</span> and <span class="math notranslate nohighlight">\(\beta_0\)</span>.</p>
+<ul class="simple">
+<li><p>TEP requires that
+<span class="math notranslate nohighlight">\(x^T(B-\alpha A)\geq \mathbf{0}^T\)</span> and <span class="math notranslate nohighlight">\(x &gt; \mathbf{0}\)</span>, so
+if <span class="math notranslate nohighlight">\(\alpha\)</span> is so large that
+<span class="math notranslate nohighlight">\(\max_i\{[(B-\alpha A)\iota_n]_i\} &lt; 0\)</span>, then TEP ceases to have a
+solution.</p></li>
+</ul>
+<p>Accordingly, let <strong><code class="docutils literal notranslate"><span class="pre">UB</span></code></strong> be the <span class="math notranslate nohighlight">\(\alpha^{*}\)</span> that
+solves <span class="math notranslate nohighlight">\(\max_i\{[(B-\alpha^{*} A)\iota_n]_i\} = 0\)</span>.</p>
+<ul class="simple">
+<li><p>Similar to
+the upper bound, if <span class="math notranslate nohighlight">\(\beta\)</span> is so low that
+<span class="math notranslate nohighlight">\(\min_j\{[\iota^T_m(B-\beta A)]_j\}&gt;0\)</span>, then the EEP has no
+solution and so we can define <strong><code class="docutils literal notranslate"><span class="pre">LB</span></code></strong> as the <span class="math notranslate nohighlight">\(\beta^{*}\)</span> that
+solves <span class="math notranslate nohighlight">\(\min_j\{[\iota^T_m(B-\beta^{*} A)]_j\}=0\)</span>.</p></li>
+</ul>
+<p>The <em>bounds</em> method calculates these trivial bounds for us</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n1</span><span class="o">.</span><span class="n">bounds</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0, 2.0)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-2">
+<h4><span class="section-number">15.5.2.2. </span>Step 2<a class="headerlink" href="#step-2" title="Permalink to this headline">¶</a></h4>
+<p>Compute <span class="math notranslate nohighlight">\(\alpha_0\)</span> and <span class="math notranslate nohighlight">\(\beta_0\)</span></p>
+<ul class="simple">
+<li><p>Finding <span class="math notranslate nohighlight">\(\alpha_0\)</span></p>
+<ol class="simple">
+<li><p>Fix <span class="math notranslate nohighlight">\(\gamma = \frac{UB + LB}{2}\)</span> and compute the solution
+of the two-player zero-sum game associated
+with <span class="math notranslate nohighlight">\(M(\gamma)\)</span>. We can use either the primal or the dual
+LP problem.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(V(M(\gamma)) \geq 0\)</span>, then set <span class="math notranslate nohighlight">\(LB = \gamma\)</span>,
+otherwise let <span class="math notranslate nohighlight">\(UB = \gamma\)</span>.</p></li>
+<li><p>Iterate on 1. and 2. until <span class="math notranslate nohighlight">\(|UB - LB| &lt; \epsilon\)</span>.</p></li>
+</ol>
+</li>
+<li><p>Finding <span class="math notranslate nohighlight">\(\beta_0\)</span></p>
+<ol class="simple">
+<li><p>Fix <span class="math notranslate nohighlight">\(\gamma = \frac{UB + LB}{2}\)</span> and compute the solution
+of the two-player zero-sum game associated.
+with <span class="math notranslate nohighlight">\(M(\gamma)\)</span>. We can use either the primal or the dual
+LP problem.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(V(M(\gamma)) &gt; 0\)</span>, then set <span class="math notranslate nohighlight">\(LB = \gamma\)</span>,
+otherwise let <span class="math notranslate nohighlight">\(UB = \gamma\)</span>.</p></li>
+<li><p>Iterate on 1. and 2. until <span class="math notranslate nohighlight">\(|UB - LB| &lt; \epsilon\)</span>.</p></li>
+</ol>
+</li>
+<li><p><em>Existence</em>: Since <span class="math notranslate nohighlight">\(V(M(LB))&gt;0\)</span> and <span class="math notranslate nohighlight">\(V(M(UB))&lt;0\)</span> and
+<span class="math notranslate nohighlight">\(V(M(\cdot))\)</span> is a continuous, nonincreasing function, there is
+at least one <span class="math notranslate nohighlight">\(\gamma\in[LB, UB]\)</span>, s.t. <span class="math notranslate nohighlight">\(V(M(\gamma))=0\)</span>.</p></li>
+</ul>
+<p>The <em>zerosum</em> method calculates the value and optimal strategies
+associated with a given <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">γ</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Value of the game with γ = </span><span class="si">{</span><span class="n">γ</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">zerosum</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Intensity vector (from the primal)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">zerosum</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Price vector (from the dual)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">zerosum</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">,</span> <span class="n">dual</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value of the game with γ = 2
+-0.2400000009785035
+Intensity vector (from the primal)
+[0.32 0.28 0.4 ]
+Price vector (from the dual)
+[4.00e-01 3.20e-01 2.80e-01 2.54e-10]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">numb_grid</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">γ_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">,</span> <span class="n">numb_grid</span><span class="p">)</span>
+
+<span class="n">value_ex1_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">n1</span><span class="o">.</span><span class="n">zerosum</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="n">γ_grid</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numb_grid</span><span class="p">)])</span>
+<span class="n">value_ex2_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">n2</span><span class="o">.</span><span class="n">zerosum</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="n">γ_grid</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numb_grid</span><span class="p">)])</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;The function $V(M(\gamma))$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">(</span><span class="n">value_ex1_grid</span><span class="p">,</span> <span class="n">value_ex2_grid</span><span class="p">),</span>
+                          <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">γ_grid</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Example </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;$\gamma$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">bounds</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;lower bound&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">bounds</span><span class="p">()[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;upper bound&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/von_neumann_model_14_0.png" src="_images/von_neumann_model_14_0.png" />
+</div>
+</div>
+<p>The <em>expansion</em> method implements the bisection algorithm for
+<span class="math notranslate nohighlight">\(\alpha_0\)</span> (and uses the primal LP problem for <span class="math notranslate nohighlight">\(x_0\)</span>)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">α_0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">n1</span><span class="o">.</span><span class="n">expansion</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;α_0 = </span><span class="si">{</span><span class="n">α_0</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;x_0 = </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The corresponding p from the dual = </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>α_0 = 1.2599210478365421
+x_0 = [0.33 0.26 0.41]
+The corresponding p from the dual = [4.13e-01 3.27e-01 2.60e-01 1.82e-10]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <em>interest</em> method implements the bisection algorithm for
+<span class="math notranslate nohighlight">\(\beta_0\)</span> (and uses the dual LP problem for <span class="math notranslate nohighlight">\(p_0\)</span>)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">β_0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">n1</span><span class="o">.</span><span class="n">interest</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;β_0 = </span><span class="si">{</span><span class="n">β_0</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;p_0 = </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The corresponding x from the primal = </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>β_0 = 1.2599210478365421
+p_0 = [4.13e-01 3.27e-01 2.60e-01 1.82e-10]
+The corresponding x from the primal = [0.33 0.26 0.41]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Of course, when <span class="math notranslate nohighlight">\(\gamma^*\)</span> is unique, it is irrelevant which one of the two methods we use  – both work.</p>
+<p>In particular, as will be shown below, in
+case of an irreducible <span class="math notranslate nohighlight">\((A,B)\)</span> (like in Example 1), the maximal
+and minimal roots of <span class="math notranslate nohighlight">\(V(M(\gamma))\)</span> necessarily coincide implying
+a ‘‘full duality’’ result, i.e. <span class="math notranslate nohighlight">\(\alpha_0 = \beta_0 = \gamma^*\)</span> so that the expansion (and interest) rate <span class="math notranslate nohighlight">\(\gamma^*\)</span> is unique.</p>
+</section>
+</section>
+<section id="uniqueness-and-irreducibility">
+<h3><span class="section-number">15.5.3. </span>Uniqueness and Irreducibility<a class="headerlink" href="#uniqueness-and-irreducibility" title="Permalink to this headline">¶</a></h3>
+<p>As an illustration, compute first the maximal and minimal roots of
+<span class="math notranslate nohighlight">\(V(M(\cdot))\)</span> for our Example 2 that has a reducible
+input-output pair <span class="math notranslate nohighlight">\((A, B)\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">α_0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">n2</span><span class="o">.</span><span class="n">expansion</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;α_0 = </span><span class="si">{</span><span class="n">α_0</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;x_0 = </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The corresponding p from the dual = </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>α_0 = 1.1343201892450452
+x_0 = [1.67e-11 1.84e-11 3.24e-01 2.61e-01 4.15e-01]
+The corresponding p from the dual = [5.04e-01 4.96e-01 2.97e-12 2.24e-12 3.08e-12 3.56e-12]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">β_0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">n2</span><span class="o">.</span><span class="n">interest</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;β_0 = </span><span class="si">{</span><span class="n">β_0</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;p_0 = </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The corresponding x from the primal = </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>β_0 = 1.2579826647415757
+p_0 = [5.11e-01 4.89e-01 2.73e-08 2.17e-08 1.88e-08 2.66e-09]
+The corresponding x from the primal = [1.61e-09 1.65e-09 3.27e-01 2.60e-01 4.12e-01]
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we can see, with a reducible <span class="math notranslate nohighlight">\((A,B)\)</span>, the roots found by the
+bisection algorithms might differ, so there might be multiple
+<span class="math notranslate nohighlight">\(\gamma^*\)</span> that make the value of the game
+with <span class="math notranslate nohighlight">\(M(\gamma^*)\)</span> zero. (see the figure above).</p>
+<p>Indeed, although the von Neumann theorem assures existence of the
+equilibrium, Assumptions I and II are not sufficient for uniqueness.
+Nonetheless, Kemeny et al. (1967) show that there are at most finitely
+many economic solutions, meaning that there are only finitely many
+<span class="math notranslate nohighlight">\(\gamma^*\)</span> that satisfy <span class="math notranslate nohighlight">\(V(M(\gamma^*)) = 0\)</span> and
+<span class="math notranslate nohighlight">\(x_0^TBp_0 &gt; 0\)</span> and that for each such <span class="math notranslate nohighlight">\(\gamma^*_i\)</span>, there
+is a self-contained part of the economy (a sub-economy) that in
+equilibrium can expand independently with the expansion
+coefficient <span class="math notranslate nohighlight">\(\gamma^*_i\)</span>.</p>
+<p>The following theorem (see Theorem 9.10. in Gale <span id="id12">[<a class="reference internal" href="zreferences.html#id53">Gal89</a>]</span>) asserts that
+imposing irreducibility is sufficient for uniqueness of
+<span class="math notranslate nohighlight">\((\gamma^*, x_0, p_0)\)</span>.</p>
+<p><strong>Theorem II:</strong> Adopt the conditions of Theorem 1. If the economy
+<span class="math notranslate nohighlight">\((A,B)\)</span> is irreducible, then <span class="math notranslate nohighlight">\(\gamma^*=\alpha_0=\beta_0\)</span>.</p>
+</section>
+<section id="a-special-case">
+<h3><span class="section-number">15.5.4. </span>A Special Case<a class="headerlink" href="#a-special-case" title="Permalink to this headline">¶</a></h3>
+<p>There is a special <span class="math notranslate nohighlight">\((A,B)\)</span> that allows us to simplify the solution
+method significantly by invoking the powerful Perron-Frobenius theorem
+for non-negative matrices.</p>
+<p><strong>Definition:</strong> We call an economy <em>simple</em> if it satisfies</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n=m\)</span></p></li>
+<li><p>Each activity produces exactly one good</p></li>
+<li><p>Each good is produced by one and only one activity.</p></li>
+</ul>
+<p>These assumptions imply that <span class="math notranslate nohighlight">\(B=I_n\)</span>, i.e., that <span class="math notranslate nohighlight">\(B\)</span> can be
+written as an identity matrix (possibly after reshuffling its rows and
+columns).</p>
+<p>The simple model has the following special property (Theorem 9.11. in Gale <span id="id13">[<a class="reference internal" href="zreferences.html#id53">Gal89</a>]</span>): if <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(\alpha_0&gt;0\)</span> solve the TEP
+with <span class="math notranslate nohighlight">\((A,I_n)\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[
+x_0^T = \alpha_0 x_0^T A\hspace{1cm}\Leftrightarrow\hspace{1cm}x_0^T
+A=\left(\frac{1}{\alpha_0}\right)x_0^T
+\]</div>
+<p>The latter shows that <span class="math notranslate nohighlight">\(1/\alpha_0\)</span> is a positive eigenvalue of
+<span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(x_0\)</span> is the corresponding non-negative left
+eigenvector.</p>
+<p>The classic result of <strong>Perron and Frobenius</strong> implies
+that a non-negative matrix  has a non-negative
+eigenvalue-eigenvector pair.</p>
+<p>Moreover, if <span class="math notranslate nohighlight">\(A\)</span> is irreducible, then
+the optimal intensity vector <span class="math notranslate nohighlight">\(x_0\)</span> is positive and <em>unique</em> up to
+multiplication by a positive scalar.</p>
+<p>Suppose that <span class="math notranslate nohighlight">\(A\)</span> is reducible with <span class="math notranslate nohighlight">\(k\)</span> irreducible subsets
+<span class="math notranslate nohighlight">\(S_1,\dots,S_k\)</span>. Let <span class="math notranslate nohighlight">\(A_i\)</span> be the submatrix corresponding to
+<span class="math notranslate nohighlight">\(S_i\)</span> and let <span class="math notranslate nohighlight">\(\alpha_i\)</span> and <span class="math notranslate nohighlight">\(\beta_i\)</span> be the
+associated expansion and interest factors, respectively. Then we have</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha_0 = \max_i \{\alpha_i\}\hspace{1cm}\text{and}\hspace{1cm}\beta_0 = \min_i \{\beta_i\}
+\]</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   2. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   3. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   4. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   5. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   6. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   7. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   8. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   9. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   10. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   11. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   12. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lp_intro.html">
+   13. Linear Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   14. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   15. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   16. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   17. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   18. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   19. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   20. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   21. Application: The Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   22. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   23. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   24. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   25. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   26. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   27. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   28. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   29. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   30. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   31. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   32. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   33. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   34. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   35. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   36. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   37. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   38. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   39. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   40. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   41. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   42. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   43. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   44. Computing Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   45. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   46. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   47. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   48. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   49. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   50. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   51. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   52. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   53. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   54. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   55. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   56. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   57. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   58. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   59. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   60. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   61. Competitive equilibria with Arrow securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   62. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   63. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   64. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   65. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   66. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   67. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   68. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="_notebooks/von_neumann_model.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/von_neumann_model.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/von_neumann_model.ipynb">BinderHub</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/von_neumann_model.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/von_neumann_model.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "von_neumann_model";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/von_neumann_model.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-54984338-10', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </body>
+</html>
