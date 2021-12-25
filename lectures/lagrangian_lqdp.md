@@ -39,11 +39,11 @@ Such a problem is  also sometimes called an  optimal linear regulator problem.
 
 A Lagrangian formulation 
 
- * carries insights about connections between stability and optimality
+* carries insights about connections between stability and optimality
  
- * is the basis for fast algorithms for solving Riccati equations
+* is the basis for fast algorithms for solving Riccati equations
   
- * opens the way to constructing solutions of dynamic systems that don't come directly from an  intertemporal optimization problem
+* opens the way to constructing solutions of dynamic systems that don't come directly from an  intertemporal optimization problem
 
 A key tool in this lecture is the concept of an $n \times n$ **symplectic** matrix.
 
@@ -78,7 +78,7 @@ $$
 
 subject to $x_{t+1}=Ax_t+Bu_t$, where  $x_0$ is a  given initial state vector. 
 
- Here $x_t$ is an $(n\times 1)$ vector of state variables, $u_t$ is a $(k\times 1)$
+Here $x_t$ is an $(n\times 1)$ vector of state variables, $u_t$ is a $(k\times 1)$
 vector of controls, $R$ is a positive semidefinite symmetric matrix,
 $Q$ is a positive definite symmetric matrix, $A$ is an $(n\times n)$
 matrix, and $B$ is an $(n\times k)$ matrix.
@@ -116,8 +116,9 @@ $$
 or 
 
 $$
- u=-Fx,
+u=-Fx,
 $$
+
 where 
 
 $$ 
@@ -139,7 +140,7 @@ But only one of them is positive definite.
 
 The positive define solution is associated with the maximum of our problem.
 
-It  expresses the matrix $P$ as an implicit function of the matrices
+It expresses the matrix $P$ as an implicit function of the matrices
 $R,Q,A,B$. 
 
 Notice that the **gradient of the value function** is
@@ -168,7 +169,9 @@ where $2 \mu_{t+1}$ is a vector of Lagrange multipliers on the time $t$ transiti
 First-order conditions for maximization with respect to $\{u_t,x_{t+1}\}_{t=0}^\infty$ are
 
 $$
-\eqalign{2 Q u_t &+ 2B^\prime \mu_{t+1} = 0 \ ,\ t \geq 0 \cr \mu_t &= R x_t + A^\prime \mu_{t+1}\ ,\ t\geq 1.\cr} 
+\begin{aligned}
+2 Q u_t &+ 2B^\prime \mu_{t+1} = 0 \ ,\ t \geq 0 \cr \mu_t &= R x_t + A^\prime \mu_{t+1}\ ,\ t\geq 1.\cr
+\end{aligned}
 $$ (eq2)
 
 Define $\mu_0$ to be  a vector of shadow prices of $x_0$ and apply an envelope condition to {eq}`eq1`
@@ -183,7 +186,7 @@ which is a time $t=0 $ counterpart to the second equation of system {eq}`eq2`.
 An important fact is  that  
 
 $$ 
- \mu_{t+1} = P x_{t+1}
+\mu_{t+1} = P x_{t+1}
 $$ (eqn:muPx)
 
 where $P$ is a positive define  matrix that solves  the algebraic Riccati equation {eq}`riccati`. 
@@ -196,36 +199,36 @@ corresponds to the **state** vector $x_t$.
 
 It is useful to proceed with the following steps:
 
- * solve the first equation of {eq}`eq2`  for $u_t$ in terms of $\mu_{t+1}$.
+* solve the first equation of {eq}`eq2`  for $u_t$ in terms of $\mu_{t+1}$.
 
- * substitute the result into the law of motion $x_{t+1} = A x_t + B u_t$.
-  
- * arrange the resulting equation and the second equation of {eq}`eq2`  into the form
+* substitute the result into the law of motion $x_{t+1} = A x_t + B u_t$.
+
+* arrange the resulting equation and the second equation of {eq}`eq2`  into the form
 
 $$
-L\ \pmatrix{x_{t+1}\cr \mu_{t+1}\cr}\ = \ N\ \pmatrix{x_t\cr \mu_t\cr}\
+L\ \begin{pmatrix}x_{t+1}\cr \mu_{t+1}\cr\end{pmatrix}\ = \ N\ \begin{pmatrix}x_t\cr \mu_t\cr\end{pmatrix}\
 ,\ t \geq 0,
 $$ (eq:systosolve)
 
 where
 
 $$
-L = \ \pmatrix{I & BQ^{-1} B^\prime \cr 0 & A^\prime\cr}, \quad N = \
-\pmatrix{A & 0\cr -R & I\cr}.
+L = \ \begin{pmatrix}I & BQ^{-1} B^\prime \cr 0 & A^\prime\cr\end{pmatrix}, \quad N = \
+\begin{pmatrix}A & 0\cr -R & I\cr\end{pmatrix}.
 $$
 
 When $L$ is of full rank (i.e., when $A$ is of full rank), we can write
 system {eq}`eq:systosolve` as
 
 $$
-\pmatrix{x_{t+1}\cr \mu_{t+1}\cr}\ = M\ \pmatrix{x_t\cr\mu_t\cr}
+\begin{pmatrix}x_{t+1}\cr \mu_{t+1}\cr\end{pmatrix}\ = M\ \begin{pmatrix}x_t\cr\mu_t\cr\end{pmatrix}
 $$ (eq4orig)
 
 where
 
 $$
-M\equiv L^{-1} N = \pmatrix{A+B Q^{-1} B^\prime A^{\prime-1}R &
--B Q^{-1} B^\prime A^{\prime-1}\cr -A^{\prime -1} R & A^{\prime -1}\cr}.
+M\equiv L^{-1} N = \begin{pmatrix}A+B Q^{-1} B^\prime A^{\prime-1}R &
+-B Q^{-1} B^\prime A^{\prime-1}\cr -A^{\prime -1} R & A^{\prime -1}\cr\end{pmatrix}.
 $$ (Mdefn)
 
 +++
@@ -236,15 +239,16 @@ $$ (Mdefn)
 We seek to solve the difference equation system  {eq}`eq4orig` for a sequence $\{x_t\}_{t=0}^\infty$
 that satisfies 
 
- * an initial condition for $x_0$
- * a terminal condition $\lim_{t \rightarrow +\infty} x_t =0$ 
+* an initial condition for $x_0$
+* a terminal condition $\lim_{t \rightarrow +\infty} x_t =0$ 
 
 This  terminal condition reflects our desire for a **stable** solution, one that does not diverge as $t \rightarrow \infty$.
 
 
 We inherit our wish for stability of the $\{x_t\}$ sequence from a desire to maximize
 
-$$ -\sum_{t=0}^\infty \bigl[ x_t ' R x_t + u_t' Q u_t \bigr],
+$$ 
+-\sum_{t=0}^\infty \bigl[ x_t ' R x_t + u_t' Q u_t \bigr],
 $$
 
 which requires that $x_t' R x_t$ converge to zero as $t \rightarrow + \infty$.
@@ -258,7 +262,7 @@ To proceed, we study properties of the $(2n \times 2n)$ matrix $M$ defined in {e
 It helps to introduce a $(2n \times 2n)$ matrix
 
 $$
-J= \pmatrix{0 & -I_n\cr I_n & 0\cr}.
+J = \begin{pmatrix}0 & -I_n\cr I_n & 0\cr\end{pmatrix}.
 $$
 
 The rank of $J$ is $2n$.
@@ -283,11 +287,11 @@ by a **similarity transformation**.
 
 For square matrices, recall that  
   
-  * similar matrices share eigenvalues
-  
-  *  eigenvalues of the inverse of a matrix are  inverses of  eigenvalues of the matrix
-  
-  * a matrix and its transpose share eigenvalues
+* similar matrices share eigenvalues
+
+*  eigenvalues of the inverse of a matrix are  inverses of  eigenvalues of the matrix
+
+* a matrix and its transpose share eigenvalues
 
 It then follows from equation {eq}`eq4`  that
 the eigenvalues of $M$ occur in reciprocal pairs: if $\lambda$ is an
@@ -299,12 +303,12 @@ $$
 y_{t+1} = M y_t
 $$ (eq658)
 
-where $y_t = \pmatrix{x_t\cr \mu_t\cr}$. 
+where $y_t = \begin{pmatrix}x_t\cr \mu_t\cr\end{pmatrix}$. 
 
 Consider a **triangularization** of $M$
 
 $$
-V^{-1} M V= \pmatrix{W_{11} & W_{12} \cr 0 & W_{22}\cr}
+V^{-1} M V= \begin{pmatrix}W_{11} & W_{12} \cr 0 & W_{22}\cr\end{pmatrix}
 $$ (eqn:triangledecomp)
 
 where 
@@ -329,7 +333,7 @@ A solution of equation {eq}`eq659`  for arbitrary initial condition $y_0$ is
 evidently
 
 $$
-y_{t} = V \left[\matrix{W^t_{11} & W_{12,t}\cr 0 & W^t_{22}\cr}\right]
+y_{t} = V \left[\begin{matrix}W^t_{11} & W_{12,t}\cr 0 & W^t_{22}\cr\end{matrix}\right]
 \ V^{-1} y_0
 $$ (eq6510)
 
@@ -344,9 +348,9 @@ and where $W^t_{ii}$ is $W_{ii}$ raised to the $t$th  power.
 Write equation {eq}`eq6510` as
 
 $$
-\pmatrix{y^\ast_{1t}\cr y^\ast_{2t}\cr}\ =\ \left[\matrix{W^t_{11} &
-W_{12, t}\cr 0 & W^t_{22}\cr}\right]\quad \pmatrix{y^\ast_{10}\cr
-y^\ast_{20}\cr}
+\begin{pmatrix}y^\ast_{1t}\cr y^\ast_{2t}\cr\end{pmatrix}\ =\ \left[\begin{matrix} W^t_{11} &
+W_{12, t}\cr 0 & W^t_{22}\cr\end{matrix}\right]\quad \begin{pmatrix}y^\ast_{10}\cr
+y^\ast_{20}\cr\end{pmatrix}
 $$
 
 where $y^\ast_t = V^{-1} y_t$, and in particular where
@@ -385,7 +389,7 @@ But notice that because $(V^{21}\ V^{22})$ is the second row block of
 the inverse of $V,$ it follows that
 
 $$
-(V^{21} \ V^{22})\quad \pmatrix{V_{11}\cr V_{21}\cr} = 0
+(V^{21} \ V^{22})\quad \begin{pmatrix}V_{11}\cr V_{21}\cr\end{pmatrix} = 0
 $$
 
 which implies
@@ -514,8 +518,8 @@ eigvals
 
 When we apply Schur decomposition such that $M=V W V^{-1}$, we want 
 
- * the upper left block of $W$, $W_{11}$, to have all of its eigenvalues   less than 1 in modulus, and 
- * the lower right block $W_{22}$ to have  eigenvalues that  exceed 1 in modulus. 
+* the upper left block of $W$, $W_{11}$, to have all of its eigenvalues   less than 1 in modulus, and 
+* the lower right block $W_{22}$ to have  eigenvalues that  exceed 1 in modulus. 
 
 To get what we want, let's define a sorting function that tells `scipy.schur` to sort the corresponding eigenvalues with modulus smaller than 1 to the upper left.
 
@@ -786,7 +790,9 @@ First-order conditions for maximization with respect
 to $\{u_t,x_{t+1}\}_{t=0}^\infty$ are
 
 $$
-\eqalign{2 Q u_t &+ 2  \beta B^\prime \mu_{t+1} = 0 \ ,\ t \geq 0 \cr \mu_t &= R x_t + \beta A^\prime \mu_{t+1}\ ,\ t\geq 1.\cr}
+\begin{aligned}
+2 Q u_t &+ 2  \beta B^\prime \mu_{t+1} = 0 \ ,\ t \geq 0 \cr \mu_t &= R x_t + \beta A^\prime \mu_{t+1}\ ,\ t\geq 1.\cr
+\end{aligned}
 $$ (eq662)
 
 Define $2 \mu_0$ to be the vector of shadow prices of $x_0$ and apply an envelope condition to
@@ -802,12 +808,12 @@ Proceeding as we did above with  the undiscounted system  {eq}`eq2`, we can rear
 system
 
 $$
-\left[\matrix{ I & \beta B Q^{-1} B' \cr
-             0 & \beta A' }\right] 
-\left[\matrix{ x_{t+1} \cr \mu_{t+1} }\right] =
-\left[\matrix{ A & 0 \cr
-             - R & I }\right] 
-\left[\matrix{ x_t \cr \mu_t }\right]
+\left[\begin{matrix} I & \beta B Q^{-1} B' \cr
+             0 & \beta A' \end{matrix}\right]
+\left[\begin{matrix} x_{t+1} \cr \mu_{t+1} \end{matrix}\right] =
+\left[\begin{matrix} A & 0 \cr
+             - R & I \end{matrix}\right] 
+\left[\begin{matrix} x_t \cr \mu_t \end{matrix}\right]
 $$ (eq663)
 
 which in the special case that $\beta = 1$ agrees with equation {eq}`eq2`, as expected.
@@ -889,8 +895,4 @@ $$ (eq667)
 
 where we must require that $F$ obeys equation {eq}`eqn:optimalFformula`.
 
-Equations {eq}`eq666` and {eq}`eq667` provide different perspectives on the optimal value function. 
-
-```{code-cell} ipython3
-
-```
+Equations {eq}`eq666` and {eq}`eq667` provide different perspectives on the optimal value function.
