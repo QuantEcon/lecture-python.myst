@@ -17,7 +17,7 @@ from quantecon import LQ
 from scipy.linalg import schur
 ```
 
-# Lagrangian for LQ control
+# Lagrangian for LQ Control
 
 +++
 
@@ -246,7 +246,7 @@ which requires that $x_t' R x_t$ converge to zero as $t \rightarrow + \infty$.
 
 +++
 
-### Reciprocal pairs property
+## Reciprocal pairs property
 
 To proceed, we study properties of the $(2n \times 2n)$ matrix $M$ defined in {eq}`Mdefn`. 
 
@@ -309,7 +309,7 @@ where
 * all eigenvalues of $W_{22}$ exceed $1$ in modulus
 * all  eigenvalues of $W_{11}$ are  less than $1$ in modulus 
 
-### Schur decomposition
+## Schur decomposition
 
 The **Schur decomposition** and the **eigenvalue decomposition**
 are two  decompositions of the form {eq}`eqn:triangledecomp`. 
@@ -435,7 +435,7 @@ is an equilibrium of a model in which there are distortions that
 prevent there being any optimum problem that the equilibrium
 solves. See {cite}`Ljungqvist2012`,  ch 12.  
 
-### Application
+## Application
 
 Here we demonstrate the computation with an example which is the deterministic version of an example borrowed from this [quantecon lecture](https://python.quantecon.org/lqcontrol.html).
 
@@ -684,7 +684,7 @@ P
 
 
 
-### Transforming states and controls to eliminate discounting
+### Transforming States and Controls to Eliminate Discounting
 
 A pair of useful transformations allows us to convert a discounted problem into an undiscounted one.
 
