@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>56. Stability in Linear Rational Expectations Models &#8212; Quantitative Economics with Python</title>
+    <title>58. Stability in Linear Rational Expectations Models &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,8 +99,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="57. Markov Perfect Equilibrium" href="markov_perf.html" />
-    <link rel="prev" title="55. Rational Expectations Equilibrium" href="rational_expectations.html" />
+    <link rel="next" title="59. Markov Perfect Equilibrium" href="markov_perf.html" />
+    <link rel="prev" title="57. Rational Expectations Equilibrium" href="rational_expectations.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -150,73 +150,73 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   56.1. Overview
+   58.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#linear-difference-equations">
-   56.2. Linear difference equations
+   58.2. Linear difference equations
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#first-order">
-     56.2.1. First order
+     58.2.1. First order
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#second-order">
-     56.2.2. Second order
+     58.2.2. Second order
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#illustration-cagans-model">
-   56.3. Illustration: Cagan’s Model
+   58.3. Illustration: Cagan’s Model
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#some-python-code">
-   56.4. Some Python code
+   58.4. Some Python code
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#alternative-code">
-   56.5. Alternative code
+   58.5. Alternative code
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#special-case">
-     56.5.1. Special case
+     58.5.1. Special case
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#another-perspective">
-   56.6. Another perspective
+   58.6. Another perspective
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#refining-the-formula">
-     56.6.1. Refining the formula
+     58.6.1. Refining the formula
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#some-remarks-about-feedback">
-     56.6.2. Some remarks about feedback
+     58.6.2. Some remarks about feedback
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#log-money-supply-feeds-back-on-log-price-level">
-   56.7. Log money supply feeds back on log price level
+   58.7. Log money supply feeds back on log price level
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#big-p-little-p-interpretation">
-   56.8. Big
+   58.8. Big
    <span class="math notranslate nohighlight">
     \(P\)
    </span>
@@ -229,7 +229,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fun-with-sympy-code">
-   56.9. Fun with SymPy code
+   58.9. Fun with SymPy code
   </a>
  </li>
 </ul>
@@ -282,7 +282,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="stability-in-linear-rational-expectations-models">
-<h1><a class="toc-backref" href="#id8"><span class="section-number">56. </span>Stability in Linear Rational Expectations Models</a><a class="headerlink" href="#stability-in-linear-rational-expectations-models" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id8"><span class="section-number">58. </span>Stability in Linear Rational Expectations Models</a><a class="headerlink" href="#stability-in-linear-rational-expectations-models" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -310,18 +310,6 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting package metadata (current_repodata.json): - 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
@@ -412,24 +400,6 @@ Solving environment: -
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
@@ -452,7 +422,7 @@ Solving environment: -
 </div>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">56.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">58.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture studies stability in the context of an elementary rational expectations model.</p>
 <p>We study a rational expectations version of Philip Cagan’s model <span id="id1">[<a class="reference internal" href="zreferences.html#id65">Cag56</a>]</span> linking
 the price level to the money supply.</p>
@@ -470,13 +440,14 @@ a mathematical expectation of a geometric sum of future values of another variab
 <li><p>a use of eigenvector decompositions of matrices that allowed Blanchard and Khan (1981) <span id="id3">[<a class="reference internal" href="zreferences.html#id224">BK80</a>]</span> and Whiteman (1983) <span id="id4">[<a class="reference internal" href="zreferences.html#id225">Whi83</a>]</span> to solve a class of linear rational expectations models</p></li>
 <li><p>how to use <strong>SymPy</strong> to get analytical formulas for some key objects comprising a rational expectations equilibrium</p></li>
 </ul>
+<p>Matrix decompositions employed here are described in more depth in this lecture <a class="reference internal" href="lagrangian_lqdp.html"><span class="doc">Lagrangian formulations</span></a>.</p>
 <p>We formulate a version of  Cagan’s model under  rational expectations
 as an <strong>expectational difference equation</strong> whose solution is a rational expectations equilibrium.</p>
 <p>We’ll start this lecture with a quick review of deterministic (i.e., non-random)
 first-order and second-order linear difference equations.</p>
 </section>
 <section id="linear-difference-equations">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">56.2. </span>Linear difference equations</a><a class="headerlink" href="#linear-difference-equations" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">58.2. </span>Linear difference equations</a><a class="headerlink" href="#linear-difference-equations" title="Permalink to this headline">¶</a></h2>
 <p>We’ll use the <em>backward shift</em> or <em>lag</em> operator <span class="math notranslate nohighlight">\(L\)</span>.</p>
 <p>The lag operator <span class="math notranslate nohighlight">\(L\)</span>  maps a sequence <span class="math notranslate nohighlight">\(\{x_t\}_{t=0}^\infty\)</span> into the sequence <span class="math notranslate nohighlight">\(\{x_{t-1}\}_{t=0}^\infty\)</span></p>
 <p>We’ll deploy  <span class="math notranslate nohighlight">\(L\)</span>  by using the equality
@@ -486,7 +457,7 @@ operator.</p>
 <p>We’ll often use the equality  <span class="math notranslate nohighlight">\(L^{-1} x_t \equiv x_{t+1}\)</span> below.</p>
 <p>The algebra of lag and forward shift operators can simplify representing and solving linear difference equations.</p>
 <section id="first-order">
-<h3><span class="section-number">56.2.1. </span>First order<a class="headerlink" href="#first-order" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">58.2.1. </span>First order<a class="headerlink" href="#first-order" title="Permalink to this headline">¶</a></h3>
 <p>We want to solve a linear first-order scalar difference equation.</p>
 <p>Let <span class="math notranslate nohighlight">\(|\lambda | &lt; 1\)</span> and let
 <span class="math notranslate nohighlight">\(\{u_t\}_{t=-\infty}^\infty\)</span> be a bounded sequence of scalar real
@@ -496,10 +467,10 @@ numbers.</p>
 operator defined by <span class="math notranslate nohighlight">\(L^{-1} x_t \equiv x_{t+1}\)</span>.</p>
 <p>Then</p>
 <div class="math notranslate nohighlight" id="equation-equn-1">
-<span class="eqno">(56.1)<a class="headerlink" href="#equation-equn-1" title="Permalink to this equation">¶</a></span>\[(1 - \lambda L) y_t = u_t, \forall t\]</div>
+<span class="eqno">(58.1)<a class="headerlink" href="#equation-equn-1" title="Permalink to this equation">¶</a></span>\[(1 - \lambda L) y_t = u_t, \forall t\]</div>
 <p>has solutions</p>
 <div class="math notranslate nohighlight" id="equation-equn-2">
-<span class="eqno">(56.2)<a class="headerlink" href="#equation-equn-2" title="Permalink to this equation">¶</a></span>\[y_t = (1 -\lambda L)^{-1} u_t +k \lambda^t\]</div>
+<span class="eqno">(58.2)<a class="headerlink" href="#equation-equn-2" title="Permalink to this equation">¶</a></span>\[y_t = (1 -\lambda L)^{-1} u_t +k \lambda^t\]</div>
 <p>or</p>
 <div class="math notranslate nohighlight">
 \[
@@ -507,55 +478,55 @@ y_t =  \sum_{j=0}^\infty \lambda^j u_{t-j} +k \lambda^t
 \]</div>
 <p>for any real number <span class="math notranslate nohighlight">\(k\)</span>.</p>
 <p>You can verify this fact by applying <span class="math notranslate nohighlight">\((1-\lambda L)\)</span> to both sides
-of equation <a class="reference internal" href="#equation-equn-2">(56.2)</a> and noting that <span class="math notranslate nohighlight">\((1 - \lambda L) \lambda^t =0\)</span>.</p>
+of equation <a class="reference internal" href="#equation-equn-2">(58.2)</a> and noting that <span class="math notranslate nohighlight">\((1 - \lambda L) \lambda^t =0\)</span>.</p>
 <p>To pin down <span class="math notranslate nohighlight">\(k\)</span> we need one condition imposed from outside (e.g.,
 an initial or terminal condition) on the path of <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <p>Now let <span class="math notranslate nohighlight">\(| \lambda | &gt; 1\)</span>.</p>
-<p>Rewrite equation <a class="reference internal" href="#equation-equn-1">(56.1)</a> as</p>
+<p>Rewrite equation <a class="reference internal" href="#equation-equn-1">(58.1)</a> as</p>
 <div class="math notranslate nohighlight" id="equation-equn-3">
-<span class="eqno">(56.3)<a class="headerlink" href="#equation-equn-3" title="Permalink to this equation">¶</a></span>\[y_{t-1} = \lambda^{-1} y_t - \lambda^{-1} u_t , \forall t\]</div>
+<span class="eqno">(58.3)<a class="headerlink" href="#equation-equn-3" title="Permalink to this equation">¶</a></span>\[y_{t-1} = \lambda^{-1} y_t - \lambda^{-1} u_t , \forall t\]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-equn-4">
-<span class="eqno">(56.4)<a class="headerlink" href="#equation-equn-4" title="Permalink to this equation">¶</a></span>\[(1 - \lambda^{-1} L^{-1}) y_t = - \lambda^{-1} u_{t+1}.\]</div>
+<span class="eqno">(58.4)<a class="headerlink" href="#equation-equn-4" title="Permalink to this equation">¶</a></span>\[(1 - \lambda^{-1} L^{-1}) y_t = - \lambda^{-1} u_{t+1}.\]</div>
 <p>A solution is</p>
 <div class="math notranslate nohighlight" id="equation-equn-5">
-<span class="eqno">(56.5)<a class="headerlink" href="#equation-equn-5" title="Permalink to this equation">¶</a></span>\[y_t = - \lambda^{-1}\left({ 1 \over  1 - \lambda^{-1} L^{-1}} \right)
+<span class="eqno">(58.5)<a class="headerlink" href="#equation-equn-5" title="Permalink to this equation">¶</a></span>\[y_t = - \lambda^{-1}\left({ 1 \over  1 - \lambda^{-1} L^{-1}} \right)
          u_{t+1} + k \lambda^t\]</div>
 <p>for any <span class="math notranslate nohighlight">\(k\)</span>.</p>
 <p>To verify that this is a solution, check the consequences of operating
-on both sides of equation <a class="reference internal" href="#equation-equn-5">(56.5)</a> by <span class="math notranslate nohighlight">\((1 -\lambda L)\)</span> and compare to
-equation <a class="reference internal" href="#equation-equn-1">(56.1)</a>.</p>
-<p>For any bounded <span class="math notranslate nohighlight">\(\{u_t\}\)</span> sequence, solution <a class="reference internal" href="#equation-equn-2">(56.2)</a> exists for <span class="math notranslate nohighlight">\(|\lambda | &lt; 1\)</span> because
+on both sides of equation <a class="reference internal" href="#equation-equn-5">(58.5)</a> by <span class="math notranslate nohighlight">\((1 -\lambda L)\)</span> and compare to
+equation <a class="reference internal" href="#equation-equn-1">(58.1)</a>.</p>
+<p>For any bounded <span class="math notranslate nohighlight">\(\{u_t\}\)</span> sequence, solution <a class="reference internal" href="#equation-equn-2">(58.2)</a> exists for <span class="math notranslate nohighlight">\(|\lambda | &lt; 1\)</span> because
 the <strong>distributed lag</strong> in <span class="math notranslate nohighlight">\(u\)</span> converges.</p>
-<p>Solution <a class="reference internal" href="#equation-equn-5">(56.5)</a> exists when <span class="math notranslate nohighlight">\(|\lambda| &gt; 1\)</span> because the <strong>distributed
+<p>Solution <a class="reference internal" href="#equation-equn-5">(58.5)</a> exists when <span class="math notranslate nohighlight">\(|\lambda| &gt; 1\)</span> because the <strong>distributed
 lead</strong> in <span class="math notranslate nohighlight">\(u\)</span> converges.</p>
-<p>When <span class="math notranslate nohighlight">\(|\lambda | &gt; 1\)</span>, the distributed lag in <span class="math notranslate nohighlight">\(u\)</span> in <a class="reference internal" href="#equation-equn-2">(56.2)</a> may
+<p>When <span class="math notranslate nohighlight">\(|\lambda | &gt; 1\)</span>, the distributed lag in <span class="math notranslate nohighlight">\(u\)</span> in <a class="reference internal" href="#equation-equn-2">(58.2)</a> may
 diverge, in which case a solution of this form does not exist.</p>
-<p>The distributed lead in <span class="math notranslate nohighlight">\(u\)</span> in <a class="reference internal" href="#equation-equn-5">(56.5)</a> need not
+<p>The distributed lead in <span class="math notranslate nohighlight">\(u\)</span> in <a class="reference internal" href="#equation-equn-5">(58.5)</a> need not
 converge when <span class="math notranslate nohighlight">\(|\lambda| &lt; 1\)</span>.</p>
 </section>
 <section id="second-order">
-<h3><span class="section-number">56.2.2. </span>Second order<a class="headerlink" href="#second-order" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">58.2.2. </span>Second order<a class="headerlink" href="#second-order" title="Permalink to this headline">¶</a></h3>
 <p>Now consider the second order difference equation</p>
 <div class="math notranslate nohighlight" id="equation-equn-6">
-<span class="eqno">(56.6)<a class="headerlink" href="#equation-equn-6" title="Permalink to this equation">¶</a></span>\[(1-\lambda_1 L) (1 - \lambda_2 L) y_{t+1} = u_t\]</div>
+<span class="eqno">(58.6)<a class="headerlink" href="#equation-equn-6" title="Permalink to this equation">¶</a></span>\[(1-\lambda_1 L) (1 - \lambda_2 L) y_{t+1} = u_t\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{u_t\}\)</span> is a bounded sequence, <span class="math notranslate nohighlight">\(y_0\)</span> is an initial
 condition, <span class="math notranslate nohighlight">\(| \lambda_1 | &lt; 1\)</span> and <span class="math notranslate nohighlight">\(| \lambda_2| &gt;1\)</span>.</p>
 <p>We seek a bounded sequence <span class="math notranslate nohighlight">\(\{y_t\}_{t=0}^\infty\)</span> that satisfies
-<a class="reference internal" href="#equation-equn-6">(56.6)</a>. Using insights from our analysis of the first-order equation,
-operate on both sides of <a class="reference internal" href="#equation-equn-6">(56.6)</a> by the forward inverse of
-<span class="math notranslate nohighlight">\((1-\lambda_2 L)\)</span> to rewrite equation <a class="reference internal" href="#equation-equn-6">(56.6)</a> as</p>
+<a class="reference internal" href="#equation-equn-6">(58.6)</a>. Using insights from our analysis of the first-order equation,
+operate on both sides of <a class="reference internal" href="#equation-equn-6">(58.6)</a> by the forward inverse of
+<span class="math notranslate nohighlight">\((1-\lambda_2 L)\)</span> to rewrite equation <a class="reference internal" href="#equation-equn-6">(58.6)</a> as</p>
 <div class="math notranslate nohighlight">
 \[
 (1-\lambda_1 L) y_{t+1} = -{\frac{\lambda_2^{-1}}{1 - \lambda_2^{-1}L^{-1}}} u_{t+1}
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-equn-7">
-<span class="eqno">(56.7)<a class="headerlink" href="#equation-equn-7" title="Permalink to this equation">¶</a></span>\[y_{t+1} = \lambda_1 y_t - \lambda_2^{-1} \sum_{j=0}^\infty \lambda_2^{-j} u_{t+j+1} .\]</div>
-<p>Thus, we obtained equation <a class="reference internal" href="#equation-equn-7">(56.7)</a> by
+<span class="eqno">(58.7)<a class="headerlink" href="#equation-equn-7" title="Permalink to this equation">¶</a></span>\[y_{t+1} = \lambda_1 y_t - \lambda_2^{-1} \sum_{j=0}^\infty \lambda_2^{-j} u_{t+j+1} .\]</div>
+<p>Thus, we obtained equation <a class="reference internal" href="#equation-equn-7">(58.7)</a> by
 solving a stable root (in this case <span class="math notranslate nohighlight">\(\lambda_1\)</span>) <strong>backward</strong>, and an
 unstable root (in this case <span class="math notranslate nohighlight">\(\lambda_2\)</span>) <strong>forward</strong>.</p>
-<p>Equation <a class="reference internal" href="#equation-equn-7">(56.7)</a> has a form that we shall encounter often.</p>
+<p>Equation <a class="reference internal" href="#equation-equn-7">(58.7)</a> has a form that we shall encounter often.</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\lambda_1 y_t\)</span> is called the <strong>feedback part</strong></p></li>
 <li><p><span class="math notranslate nohighlight">\(-{\frac{\lambda_2^{-1}}{1 - \lambda_2^{-1}L^{-1}}} u_{t+1}\)</span> is called the <strong>feedforward part</strong></p></li>
@@ -563,7 +534,7 @@ unstable root (in this case <span class="math notranslate nohighlight">\(\lambda
 </section>
 </section>
 <section id="illustration-cagans-model">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">56.3. </span>Illustration: Cagan’s Model</a><a class="headerlink" href="#illustration-cagans-model" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">58.3. </span>Illustration: Cagan’s Model</a><a class="headerlink" href="#illustration-cagans-model" title="Permalink to this headline">¶</a></h2>
 <p>Now let’s use linear difference equations to represent and solve Sargent’s  <span id="id5">[<a class="reference internal" href="zreferences.html#id66">Sar77</a>]</span> rational expectations version of
 Cagan’s model <span id="id6">[<a class="reference internal" href="zreferences.html#id65">Cag56</a>]</span> that connects the price level to the public’s anticipations of future money supplies.</p>
 <p>Cagan did not use a rational expectations version of his model, but Sargent <span id="id7">[<a class="reference internal" href="zreferences.html#id66">Sar77</a>]</span></p>
@@ -586,27 +557,27 @@ m_t^d - p_t = - \beta (p_{t+1} - p_t ), \quad \beta &gt;0
 logarithm of the price level <span class="math notranslate nohighlight">\(p_t\)</span> is related to the logarithm of
 the money supply <span class="math notranslate nohighlight">\(m_t\)</span> by</p>
 <div class="math notranslate nohighlight" id="equation-equation-1">
-<span class="eqno">(56.8)<a class="headerlink" href="#equation-equation-1" title="Permalink to this equation">¶</a></span>\[p_t = (1 -\lambda) m_t + \lambda p_{t+1}\]</div>
+<span class="eqno">(58.8)<a class="headerlink" href="#equation-equation-1" title="Permalink to this equation">¶</a></span>\[p_t = (1 -\lambda) m_t + \lambda p_{t+1}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\lambda \equiv \frac{\beta}{1+\beta} \in (0,1)\)</span>.</p>
 <p>(We note that the characteristic polynomial if <span class="math notranslate nohighlight">\(1 - \lambda^{-1} z^{-1} = 0\)</span> so that the zero of the
 characteristic polynomial in this case is <span class="math notranslate nohighlight">\(\lambda \in (0,1)\)</span> which here is <strong>inside</strong> the unit circle.)</p>
-<p>Solving the first order difference equation <a class="reference internal" href="#equation-equation-1">(56.8)</a> forward gives</p>
+<p>Solving the first order difference equation <a class="reference internal" href="#equation-equation-1">(58.8)</a> forward gives</p>
 <div class="math notranslate nohighlight" id="equation-equation-2">
-<span class="eqno">(56.9)<a class="headerlink" href="#equation-equation-2" title="Permalink to this equation">¶</a></span>\[p_t = (1 - \lambda) \sum_{j=0}^\infty \lambda^j m_{t+j},\]</div>
-<p>which is the unique <strong>stable</strong> solution of difference equation <a class="reference internal" href="#equation-equation-1">(56.8)</a> among
+<span class="eqno">(58.9)<a class="headerlink" href="#equation-equation-2" title="Permalink to this equation">¶</a></span>\[p_t = (1 - \lambda) \sum_{j=0}^\infty \lambda^j m_{t+j},\]</div>
+<p>which is the unique <strong>stable</strong> solution of difference equation <a class="reference internal" href="#equation-equation-1">(58.8)</a> among
 a class of more general solutions</p>
 <div class="math notranslate nohighlight" id="equation-equation-1a">
-<span class="eqno">(56.10)<a class="headerlink" href="#equation-equation-1a" title="Permalink to this equation">¶</a></span>\[p_t = (1 - \lambda) \sum_{j=0}^\infty \lambda^j m_{t+j} + c \lambda^{-t}\]</div>
+<span class="eqno">(58.10)<a class="headerlink" href="#equation-equation-1a" title="Permalink to this equation">¶</a></span>\[p_t = (1 - \lambda) \sum_{j=0}^\infty \lambda^j m_{t+j} + c \lambda^{-t}\]</div>
 <p>that is indexed by the real number <span class="math notranslate nohighlight">\(c \in {\bf R}\)</span>.</p>
 <p>Because we want to focus on stable solutions, we set <span class="math notranslate nohighlight">\(c=0\)</span>.</p>
-<p>Equation <a class="reference internal" href="#equation-equation-1a">(56.10)</a> attributes  <strong>perfect foresight</strong> about the money supply sequence to the holders of real balances.</p>
+<p>Equation <a class="reference internal" href="#equation-equation-1a">(58.10)</a> attributes  <strong>perfect foresight</strong> about the money supply sequence to the holders of real balances.</p>
 <p>We begin by assuming that the log of the money supply is <strong>exogenous</strong>
 in the sense that it is an autonomous process that does not feed back on
 the log of the price level.</p>
 <p>In particular, we assume that the log of the money supply is described
 by the linear state space system</p>
 <div class="math notranslate nohighlight" id="equation-equation-3">
-<span class="eqno">(56.11)<a class="headerlink" href="#equation-equation-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(58.11)<a class="headerlink" href="#equation-equation-3" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
   m_t &amp;  = G x_t \\ x_{t+1} &amp; = A x_t
  \end{aligned}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(x_t\)</span> is an <span class="math notranslate nohighlight">\(n \times 1\)</span> vector that does not include
@@ -618,7 +589,7 @@ might help predict future values of the money supply.</p>
 <p>We’ll start with an example in which <span class="math notranslate nohighlight">\(x_t\)</span> includes only <span class="math notranslate nohighlight">\(m_t\)</span>,
 possibly lagged values of <span class="math notranslate nohighlight">\(m\)</span>, and a constant.</p>
 <p>An example of such an <span class="math notranslate nohighlight">\(\{m_t\}\)</span> process that fits info state space
-system <a class="reference internal" href="#equation-equation-3">(56.11)</a> is one that satisfies the second order linear difference
+system <a class="reference internal" href="#equation-equation-3">(58.11)</a> is one that satisfies the second order linear difference
 equation</p>
 <div class="math notranslate nohighlight">
 \[
@@ -628,31 +599,31 @@ m_{t+1} = \alpha + \rho_1 m_t + \rho_2 m_{t-1}
 <span class="math notranslate nohighlight">\((1 - \rho_1 z - \rho_2 z^2)\)</span> are strictly greater than <span class="math notranslate nohighlight">\(1\)</span>
 in modulus.</p>
 <p>(Please see  <a class="reference internal" href="samuelson.html"><span class="doc">this</span></a> QuantEcon lecture for more about characteristic polynomials and their role in solving linear difference equations.)</p>
-<p>We seek a stable or non-explosive solution of the difference equation <a class="reference internal" href="#equation-equation-1">(56.8)</a> that
-obeys the system comprised of <a class="reference internal" href="#equation-equation-1">(56.8)</a>-<a class="reference internal" href="#equation-equation-3">(56.11)</a>.</p>
+<p>We seek a stable or non-explosive solution of the difference equation <a class="reference internal" href="#equation-equation-1">(58.8)</a> that
+obeys the system comprised of <a class="reference internal" href="#equation-equation-1">(58.8)</a>-<a class="reference internal" href="#equation-equation-3">(58.11)</a>.</p>
 <p>By stable or non-explosive, we mean that neither <span class="math notranslate nohighlight">\(m_t\)</span> nor <span class="math notranslate nohighlight">\(p_t\)</span>
 diverges as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>.</p>
-<p>This requires  that we  shut down the term <span class="math notranslate nohighlight">\(c \lambda^{-t}\)</span> in equation <a class="reference internal" href="#equation-equation-1a">(56.10)</a> above by setting <span class="math notranslate nohighlight">\(c=0\)</span></p>
+<p>This requires  that we  shut down the term <span class="math notranslate nohighlight">\(c \lambda^{-t}\)</span> in equation <a class="reference internal" href="#equation-equation-1a">(58.10)</a> above by setting <span class="math notranslate nohighlight">\(c=0\)</span></p>
 <p>The solution we are after is</p>
 <div class="math notranslate nohighlight" id="equation-equation-4">
-<span class="eqno">(56.12)<a class="headerlink" href="#equation-equation-4" title="Permalink to this equation">¶</a></span>\[p_t = F x_t\]</div>
+<span class="eqno">(58.12)<a class="headerlink" href="#equation-equation-4" title="Permalink to this equation">¶</a></span>\[p_t = F x_t\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-equation-5">
-<span class="eqno">(56.13)<a class="headerlink" href="#equation-equation-5" title="Permalink to this equation">¶</a></span>\[F = (1-\lambda) G (I - \lambda A)^{-1}\]</div>
+<span class="eqno">(58.13)<a class="headerlink" href="#equation-equation-5" title="Permalink to this equation">¶</a></span>\[F = (1-\lambda) G (I - \lambda A)^{-1}\]</div>
 <p><strong>Note:</strong> As mentioned above, an <em>explosive solution</em> of difference
-equation <a class="reference internal" href="#equation-equation-1">(56.8)</a> can be constructed by adding to the right hand of <a class="reference internal" href="#equation-equation-4">(56.12)</a> a
+equation <a class="reference internal" href="#equation-equation-1">(58.8)</a> can be constructed by adding to the right hand of <a class="reference internal" href="#equation-equation-4">(58.12)</a> a
 sequence <span class="math notranslate nohighlight">\(c \lambda^{-t}\)</span> where <span class="math notranslate nohighlight">\(c\)</span> is an arbitrary positive
 constant.</p>
 </section>
 <section id="some-python-code">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">56.4. </span>Some Python code</a><a class="headerlink" href="#some-python-code" title="Permalink to this headline">¶</a></h2>
-<p>We’ll construct examples that illustrate <a class="reference internal" href="#equation-equation-3">(56.11)</a>.</p>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">58.4. </span>Some Python code</a><a class="headerlink" href="#some-python-code" title="Permalink to this headline">¶</a></h2>
+<p>We’ll construct examples that illustrate <a class="reference internal" href="#equation-equation-3">(58.11)</a>.</p>
 <p>Our first example takes as the law of motion for the log money supply
 the second order difference equation</p>
 <div class="math notranslate nohighlight" id="equation-equation-6">
-<span class="eqno">(56.14)<a class="headerlink" href="#equation-equation-6" title="Permalink to this equation">¶</a></span>\[m_{t+1} = \alpha + \rho_1 m_t + \rho_2 m_{t-1}\]</div>
+<span class="eqno">(58.14)<a class="headerlink" href="#equation-equation-6" title="Permalink to this equation">¶</a></span>\[m_{t+1} = \alpha + \rho_1 m_t + \rho_2 m_{t-1}\]</div>
 <p>that is parameterized by <span class="math notranslate nohighlight">\(\rho_1, \rho_2, \alpha\)</span></p>
-<p>To capture this parameterization with system <a class="reference internal" href="#equation-equation-2">(56.9)</a> we set</p>
+<p>To capture this parameterization with system <a class="reference internal" href="#equation-equation-2">(58.9)</a> we set</p>
 <div class="math notranslate nohighlight">
 \[
 x_t = \begin{bmatrix} 1 \cr m_t \cr m_{t-1} \end{bmatrix} , \quad
@@ -709,7 +680,7 @@ modulus.</p>
 </div>
 </div>
 </div>
-<p>Now let’s compute <span class="math notranslate nohighlight">\(F\)</span> in formulas <a class="reference internal" href="#equation-equation-4">(56.12)</a> and <a class="reference internal" href="#equation-equation-5">(56.13)</a>.</p>
+<p>Now let’s compute <span class="math notranslate nohighlight">\(F\)</span> in formulas <a class="reference internal" href="#equation-equation-4">(58.12)</a> and <a class="reference internal" href="#equation-equation-5">(58.13)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute the solution, i.e. forumula (3)</span>
@@ -773,14 +744,14 @@ initial value <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
 the log of the money supply?</p>
 <p>Because</p>
 <ul class="simple">
-<li><p>according to equation <a class="reference internal" href="#equation-equation-2">(56.9)</a>, <span class="math notranslate nohighlight">\(p_t\)</span> is a geometric weighted
+<li><p>according to equation <a class="reference internal" href="#equation-equation-2">(58.9)</a>, <span class="math notranslate nohighlight">\(p_t\)</span> is a geometric weighted
 average of current and future values of <span class="math notranslate nohighlight">\(m_t\)</span>, and</p></li>
 <li><p>it happens that in this example future <span class="math notranslate nohighlight">\(m\)</span>’s are always less
 than the current <span class="math notranslate nohighlight">\(m\)</span></p></li>
 </ul>
 </section>
 <section id="alternative-code">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">56.5. </span>Alternative code</a><a class="headerlink" href="#alternative-code" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">58.5. </span>Alternative code</a><a class="headerlink" href="#alternative-code" title="Permalink to this headline">¶</a></h2>
 <p>We could also have run the simulation using the quantecon
 <strong>LinearStateSpace</strong> code.</p>
 <p>The following code block performs the calculation with that code.</p>
@@ -821,20 +792,20 @@ than the current <span class="math notranslate nohighlight">\(m\)</span></p></li
 </div>
 </div>
 <section id="special-case">
-<h3><span class="section-number">56.5.1. </span>Special case<a class="headerlink" href="#special-case" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">58.5.1. </span>Special case<a class="headerlink" href="#special-case" title="Permalink to this headline">¶</a></h3>
 <p>To simplify our presentation in ways that will let focus on an important
-idea, in the above second-order difference equation <a class="reference internal" href="#equation-equation-6">(56.14)</a> that governs
+idea, in the above second-order difference equation <a class="reference internal" href="#equation-equation-6">(58.14)</a> that governs
 <span class="math notranslate nohighlight">\(m_t\)</span>, we now set <span class="math notranslate nohighlight">\(\alpha =0\)</span>,
 <span class="math notranslate nohighlight">\(\rho_1 = \rho \in (-1,1)\)</span>, and <span class="math notranslate nohighlight">\(\rho_2 =0\)</span> so that the law
 of motion for <span class="math notranslate nohighlight">\(m_t\)</span> becomes</p>
 <div class="math notranslate nohighlight" id="equation-equation-7">
-<span class="eqno">(56.15)<a class="headerlink" href="#equation-equation-7" title="Permalink to this equation">¶</a></span>\[m_{t+1} =\rho m_t\]</div>
+<span class="eqno">(58.15)<a class="headerlink" href="#equation-equation-7" title="Permalink to this equation">¶</a></span>\[m_{t+1} =\rho m_t\]</div>
 <p>and the state <span class="math notranslate nohighlight">\(x_t\)</span> becomes</p>
 <div class="math notranslate nohighlight">
 \[
 x_t = m_t .
 \]</div>
-<p>Consequently,  we can set <span class="math notranslate nohighlight">\(G =1, A =\rho\)</span> making our formula <a class="reference internal" href="#equation-equation-5">(56.13)</a> for <span class="math notranslate nohighlight">\(F\)</span>
+<p>Consequently,  we can set <span class="math notranslate nohighlight">\(G =1, A =\rho\)</span> making our formula <a class="reference internal" href="#equation-equation-5">(58.13)</a> for <span class="math notranslate nohighlight">\(F\)</span>
 become</p>
 <div class="math notranslate nohighlight">
 \[
@@ -850,26 +821,26 @@ route to and interpretation of our formula for <span class="math notranslate noh
 </section>
 </section>
 <section id="another-perspective">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">56.6. </span>Another perspective</a><a class="headerlink" href="#another-perspective" title="Permalink to this headline">¶</a></h2>
-<p>Above, we imposed stability or non-explosiveness on the solution of the key difference equation <a class="reference internal" href="#equation-equation-1">(56.8)</a>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">58.6. </span>Another perspective</a><a class="headerlink" href="#another-perspective" title="Permalink to this headline">¶</a></h2>
+<p>Above, we imposed stability or non-explosiveness on the solution of the key difference equation <a class="reference internal" href="#equation-equation-1">(58.8)</a>
 in Cagan’s model by solving the  unstable root of the characteristic polynomial forward.</p>
 <p>To shed light on the mechanics involved in imposing stability on a
 solution of a potentially unstable system of linear difference equations
 and to prepare the way for generalizations of our model in which the
 money supply is allowed to feed back on the price level itself, we stack
-equations <a class="reference internal" href="#equation-equation-1">(56.8)</a> and <a class="reference internal" href="#equation-equation-7">(56.15)</a> to form the system</p>
+equations <a class="reference internal" href="#equation-equation-1">(58.8)</a> and <a class="reference internal" href="#equation-equation-7">(58.15)</a> to form the system</p>
 <div class="math notranslate nohighlight" id="equation-equation-8">
-<span class="eqno">(56.16)<a class="headerlink" href="#equation-equation-8" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix} m_{t+1} \cr p_{t+1} \end{bmatrix} = \begin{bmatrix} \rho &amp; 0 \\ - (1-\lambda)/\lambda &amp; \lambda^{-1}  \end{bmatrix} \begin{bmatrix} m_t \\ p_t \end{bmatrix}\end{split}\]</div>
+<span class="eqno">(58.16)<a class="headerlink" href="#equation-equation-8" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix} m_{t+1} \cr p_{t+1} \end{bmatrix} = \begin{bmatrix} \rho &amp; 0 \\ - (1-\lambda)/\lambda &amp; \lambda^{-1}  \end{bmatrix} \begin{bmatrix} m_t \\ p_t \end{bmatrix}\end{split}\]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-equation-9">
-<span class="eqno">(56.17)<a class="headerlink" href="#equation-equation-9" title="Permalink to this equation">¶</a></span>\[y_{t+1} = H y_t, \quad t \geq 0\]</div>
+<span class="eqno">(58.17)<a class="headerlink" href="#equation-equation-9" title="Permalink to this equation">¶</a></span>\[y_{t+1} = H y_t, \quad t \geq 0\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-equation-10">
-<span class="eqno">(56.18)<a class="headerlink" href="#equation-equation-10" title="Permalink to this equation">¶</a></span>\[\begin{split}H = \begin{bmatrix} \rho &amp; 0 \\ - (1-\lambda)/\lambda &amp; \lambda^{-1}  \end{bmatrix} .\end{split}\]</div>
+<span class="eqno">(58.18)<a class="headerlink" href="#equation-equation-10" title="Permalink to this equation">¶</a></span>\[\begin{split}H = \begin{bmatrix} \rho &amp; 0 \\ - (1-\lambda)/\lambda &amp; \lambda^{-1}  \end{bmatrix} .\end{split}\]</div>
 <p>Transition matrix <span class="math notranslate nohighlight">\(H\)</span> has eigenvalues <span class="math notranslate nohighlight">\(\rho \in (0,1)\)</span> and
 <span class="math notranslate nohighlight">\(\lambda^{-1} &gt; 1\)</span>.</p>
 <p>Because an eigenvalue of <span class="math notranslate nohighlight">\(H\)</span> exceeds unity, if we iterate on
-equation <a class="reference internal" href="#equation-equation-9">(56.17)</a> starting from an arbitrary initial vector
+equation <a class="reference internal" href="#equation-equation-9">(58.17)</a> starting from an arbitrary initial vector
 <span class="math notranslate nohighlight">\(y_0 = \begin{bmatrix} m_0 \\ p_0 \end{bmatrix}\)</span> with <span class="math notranslate nohighlight">\(m_0 &gt;0, p_0 &gt;0\)</span>, we discover that
 in general absolute values of both components of <span class="math notranslate nohighlight">\(y_t\)</span> diverge
 toward <span class="math notranslate nohighlight">\(+\infty\)</span> as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>.</p>
@@ -910,11 +881,11 @@ y^*_{t+1} = \Lambda^t y^*_t
 \]</div>
 <p>Staring at this equation indicates that unless</p>
 <div class="math notranslate nohighlight" id="equation-equation-11">
-<span class="eqno">(56.19)<a class="headerlink" href="#equation-equation-11" title="Permalink to this equation">¶</a></span>\[y^*_0 = \begin{bmatrix} y^*_{1,0} \cr 0 \end{bmatrix}\]</div>
+<span class="eqno">(58.19)<a class="headerlink" href="#equation-equation-11" title="Permalink to this equation">¶</a></span>\[y^*_0 = \begin{bmatrix} y^*_{1,0} \cr 0 \end{bmatrix}\]</div>
 <p>the path of <span class="math notranslate nohighlight">\(y^*_t\)</span> and therefore the paths of both components of
 <span class="math notranslate nohighlight">\(y_t = Q y^*_t\)</span> will diverge in absolute value as
 <span class="math notranslate nohighlight">\(t \rightarrow +\infty\)</span>. (We say that the paths <em>explode</em>)</p>
-<p>Equation <a class="reference internal" href="#equation-equation-11">(56.19)</a> also leads us to conclude that there is a unique setting
+<p>Equation <a class="reference internal" href="#equation-equation-11">(58.19)</a> also leads us to conclude that there is a unique setting
 for the initial vector <span class="math notranslate nohighlight">\(y_0\)</span> for which both components of
 <span class="math notranslate nohighlight">\(y_t\)</span> do not diverge.</p>
 <p>The required setting of <span class="math notranslate nohighlight">\(y_0\)</span> must evidently have the property
@@ -931,7 +902,7 @@ is truly a <strong>state</strong> variable, <span class="math notranslate nohigh
 must adjust at <span class="math notranslate nohighlight">\(t=0\)</span> in order to satisfy the equation.</p>
 <p>Thus, in a nutshell the unique value of the vector <span class="math notranslate nohighlight">\(y_0\)</span> for which
 the paths of <span class="math notranslate nohighlight">\(y_t\)</span> do not diverge must have second component
-<span class="math notranslate nohighlight">\(p_0\)</span> that verifies equality <a class="reference internal" href="#equation-equation-11">(56.19)</a> by setting the second component
+<span class="math notranslate nohighlight">\(p_0\)</span> that verifies equality <a class="reference internal" href="#equation-equation-11">(58.19)</a> by setting the second component
 of <span class="math notranslate nohighlight">\(y^*_0\)</span> equal to zero.</p>
 <p>The component <span class="math notranslate nohighlight">\(p_0\)</span> of the initial vector
 <span class="math notranslate nohighlight">\(y_0 = \begin{bmatrix} m_0 \cr p_0 \end{bmatrix}\)</span> must evidently
@@ -943,16 +914,16 @@ Q^{\{2\}} y_0 =0
 <p>where <span class="math notranslate nohighlight">\(Q^{\{2\}}\)</span> denotes the second row of <span class="math notranslate nohighlight">\(Q^{-1}\)</span>, a
 restriction that is equivalent to</p>
 <div class="math notranslate nohighlight" id="equation-equation-12">
-<span class="eqno">(56.20)<a class="headerlink" href="#equation-equation-12" title="Permalink to this equation">¶</a></span>\[Q^{21} m_0 + Q^{22} p_0 = 0\]</div>
+<span class="eqno">(58.20)<a class="headerlink" href="#equation-equation-12" title="Permalink to this equation">¶</a></span>\[Q^{21} m_0 + Q^{22} p_0 = 0\]</div>
 <p>where <span class="math notranslate nohighlight">\(Q^{ij}\)</span> denotes the <span class="math notranslate nohighlight">\((i,j)\)</span> component of
 <span class="math notranslate nohighlight">\(Q^{-1}\)</span>.</p>
 <p>Solving this equation for <span class="math notranslate nohighlight">\(p_0\)</span>, we find</p>
 <div class="math notranslate nohighlight" id="equation-equation-13">
-<span class="eqno">(56.21)<a class="headerlink" href="#equation-equation-13" title="Permalink to this equation">¶</a></span>\[p_0 = - (Q^{22})^{-1} Q^{21} m_0.\]</div>
+<span class="eqno">(58.21)<a class="headerlink" href="#equation-equation-13" title="Permalink to this equation">¶</a></span>\[p_0 = - (Q^{22})^{-1} Q^{21} m_0.\]</div>
 <p>This is the unique <strong>stabilizing value</strong> of <span class="math notranslate nohighlight">\(p_0\)</span> expressed as a function of
 <span class="math notranslate nohighlight">\(m_0\)</span>.</p>
 <section id="refining-the-formula">
-<h3><span class="section-number">56.6.1. </span>Refining the formula<a class="headerlink" href="#refining-the-formula" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">58.6.1. </span>Refining the formula<a class="headerlink" href="#refining-the-formula" title="Permalink to this headline">¶</a></h3>
 <p>We can get an even more convenient formula for <span class="math notranslate nohighlight">\(p_0\)</span> that is cast
 in terms of components of <span class="math notranslate nohighlight">\(Q\)</span> instead of components of
 <span class="math notranslate nohighlight">\(Q^{-1}\)</span>.</p>
@@ -975,11 +946,11 @@ Q^{21} Q_{11} + Q^{22} Q_{21} = 0.
 \]</div>
 <p>So we can write</p>
 <div class="math notranslate nohighlight" id="equation-equation-14">
-<span class="eqno">(56.22)<a class="headerlink" href="#equation-equation-14" title="Permalink to this equation">¶</a></span>\[p_0 = Q_{21} Q_{11}^{-1} m_0 .\]</div>
+<span class="eqno">(58.22)<a class="headerlink" href="#equation-equation-14" title="Permalink to this equation">¶</a></span>\[p_0 = Q_{21} Q_{11}^{-1} m_0 .\]</div>
 <p>It can be verified that this formula replicates itself over time in the sense  that</p>
 <div class="math notranslate nohighlight" id="equation-equation-15">
-<span class="eqno">(56.23)<a class="headerlink" href="#equation-equation-15" title="Permalink to this equation">¶</a></span>\[p_t = Q_{21} Q^{-1}_{11} m_t.\]</div>
-<p>To implement formula <a class="reference internal" href="#equation-equation-15">(56.23)</a>, we want to compute <span class="math notranslate nohighlight">\(Q_1\)</span> the
+<span class="eqno">(58.23)<a class="headerlink" href="#equation-equation-15" title="Permalink to this equation">¶</a></span>\[p_t = Q_{21} Q^{-1}_{11} m_t.\]</div>
+<p>To implement formula <a class="reference internal" href="#equation-equation-15">(58.23)</a>, we want to compute <span class="math notranslate nohighlight">\(Q_1\)</span> the
 eigenvector of <span class="math notranslate nohighlight">\(Q\)</span> associated with the stable eigenvalue
 <span class="math notranslate nohighlight">\(\rho\)</span> of <span class="math notranslate nohighlight">\(Q\)</span>.</p>
 <p>By hand it can be verified that the eigenvector associated with the
@@ -1006,15 +977,15 @@ Q_1 = \begin{bmatrix} Q_{11} \\ Q_{21}  \end{bmatrix}.
 \end{split}\]</div>
 </section>
 <section id="some-remarks-about-feedback">
-<h3><span class="section-number">56.6.2. </span>Some remarks about feedback<a class="headerlink" href="#some-remarks-about-feedback" title="Permalink to this headline">¶</a></h3>
-<p>We have expressed <a class="reference internal" href="#equation-equation-8">(56.16)</a> in what superficially appears to be a form in
+<h3><span class="section-number">58.6.2. </span>Some remarks about feedback<a class="headerlink" href="#some-remarks-about-feedback" title="Permalink to this headline">¶</a></h3>
+<p>We have expressed <a class="reference internal" href="#equation-equation-8">(58.16)</a> in what superficially appears to be a form in
 which <span class="math notranslate nohighlight">\(y_{t+1}\)</span> feeds back on <span class="math notranslate nohighlight">\(y_t\)</span>, even though what we
 actually want to represent is that the component <span class="math notranslate nohighlight">\(p_t\)</span> feeds
 <strong>forward</strong> on <span class="math notranslate nohighlight">\(p_{t+1}\)</span>, and through it, on future
 <span class="math notranslate nohighlight">\(m_{t+j}\)</span>, <span class="math notranslate nohighlight">\(j = 0, 1, 2, \ldots\)</span>.</p>
 <p>A tell-tale sign that we should look beyond its superficial “feedback”
 form is that <span class="math notranslate nohighlight">\(\lambda^{-1} &gt; 1\)</span> so that the matrix <span class="math notranslate nohighlight">\(H\)</span> in
-<a class="reference internal" href="#equation-equation-8">(56.16)</a> is <strong>unstable</strong></p>
+<a class="reference internal" href="#equation-equation-8">(58.16)</a> is <strong>unstable</strong></p>
 <ul class="simple">
 <li><p>it has one eigenvalue <span class="math notranslate nohighlight">\(\rho\)</span> that is less than one in modulus
 that does not imperil stability, but <span class="math notranslate nohighlight">\(\ldots\)</span></p></li>
@@ -1027,20 +998,20 @@ level.</p>
 </section>
 </section>
 <section id="log-money-supply-feeds-back-on-log-price-level">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">56.7. </span>Log money supply feeds back on log price level</a><a class="headerlink" href="#log-money-supply-feeds-back-on-log-price-level" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">58.7. </span>Log money supply feeds back on log price level</a><a class="headerlink" href="#log-money-supply-feeds-back-on-log-price-level" title="Permalink to this headline">¶</a></h2>
 <p>An arrangement of eigenvalues that split around unity, with one being
 below unity and another being greater than unity, sometimes prevails when there is  <em>feedback</em> from the log price level to the log
 money supply.</p>
 <p>Let the feedback rule be</p>
 <div class="math notranslate nohighlight" id="equation-equation-16">
-<span class="eqno">(56.24)<a class="headerlink" href="#equation-equation-16" title="Permalink to this equation">¶</a></span>\[m_{t+1} =  \rho m_t + \delta p_t\]</div>
+<span class="eqno">(58.24)<a class="headerlink" href="#equation-equation-16" title="Permalink to this equation">¶</a></span>\[m_{t+1} =  \rho m_t + \delta p_t\]</div>
 <p>where <span class="math notranslate nohighlight">\(\rho \in (0,1)\)</span>  and where we shall now allow
 <span class="math notranslate nohighlight">\(\delta \neq 0\)</span>.</p>
 <p><strong>Warning:</strong>  If things are to fit together as we
 wish to deliver a stable system for some initial value <span class="math notranslate nohighlight">\(p_0\)</span> that we want to determine uniquely, <span class="math notranslate nohighlight">\(\delta\)</span> cannot be too large.</p>
-<p>The forward-looking equation <a class="reference internal" href="#equation-equation-1">(56.8)</a> continues to describe equality between
+<p>The forward-looking equation <a class="reference internal" href="#equation-equation-1">(58.8)</a> continues to describe equality between
 the demand and supply of money.</p>
-<p>We assume that equations <a class="reference internal" href="#equation-equation-1">(56.8)</a> and <a class="reference internal" href="#equation-equation-16">(56.24)</a> govern
+<p>We assume that equations <a class="reference internal" href="#equation-equation-1">(58.8)</a> and <a class="reference internal" href="#equation-equation-16">(58.24)</a> govern
 <span class="math notranslate nohighlight">\(y_t \equiv \begin{bmatrix} m_t \cr p_t \end{bmatrix}\)</span> for
 <span class="math notranslate nohighlight">\(t \geq 0\)</span>.</p>
 <p>The transition matrix <span class="math notranslate nohighlight">\(H\)</span> in the law of motion</p>
@@ -1252,11 +1223,11 @@ exist.</p>
 </div>
 </section>
 <section id="big-p-little-p-interpretation">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">56.8. </span>Big <span class="math notranslate nohighlight">\(P\)</span>, little <span class="math notranslate nohighlight">\(p\)</span> interpretation</a><a class="headerlink" href="#big-p-little-p-interpretation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">58.8. </span>Big <span class="math notranslate nohighlight">\(P\)</span>, little <span class="math notranslate nohighlight">\(p\)</span> interpretation</a><a class="headerlink" href="#big-p-little-p-interpretation" title="Permalink to this headline">¶</a></h2>
 <p>It is helpful to view our solutions of difference equations having  feedback from the price level or inflation to money or the rate of money
 creation in terms of the Big <span class="math notranslate nohighlight">\(K\)</span>, little <span class="math notranslate nohighlight">\(k\)</span> idea discussed in <a class="reference internal" href="rational_expectations.html"><span class="doc">Rational Expectations Models</span></a>.</p>
 <p>This will help us sort out what is taken as given by the decision makers who use the
-difference equation <a class="reference internal" href="#equation-equation-2">(56.9)</a> to determine <span class="math notranslate nohighlight">\(p_t\)</span> as a function of their forecasts of future values of
+difference equation <a class="reference internal" href="#equation-equation-2">(58.9)</a> to determine <span class="math notranslate nohighlight">\(p_t\)</span> as a function of their forecasts of future values of
 <span class="math notranslate nohighlight">\(m_t\)</span>.</p>
 <p>Let’s write the stabilizing solution that we have computed using the eigenvector decomposition of <span class="math notranslate nohighlight">\(H\)</span> as
 <span class="math notranslate nohighlight">\(P_t = F^* m_t\)</span>, where</p>
@@ -1276,7 +1247,7 @@ F^* = Q_{21} Q_{11}^{-1} .
 x_{t+1} = A x_t
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(x_t = \begin{bmatrix} m_t \cr P_t \end{bmatrix}\)</span>.</p>
-<p>Apply formula <a class="reference internal" href="#equation-equation-5">(56.13)</a> for <span class="math notranslate nohighlight">\(F\)</span> to deduce that</p>
+<p>Apply formula <a class="reference internal" href="#equation-equation-5">(58.13)</a> for <span class="math notranslate nohighlight">\(F\)</span> to deduce that</p>
 <div class="math notranslate nohighlight">
 \[
 p_t = F \begin{bmatrix} m_t \cr P_t \end{bmatrix} = F \begin{bmatrix} m_t \cr F^* m_t \end{bmatrix}
@@ -1297,13 +1268,13 @@ computations.</p>
 <li><p>For the system with <span class="math notranslate nohighlight">\(\delta\neq 0\)</span> so that there is feedback,
 we compute the stabilizing solution for <span class="math notranslate nohighlight">\(p_t\)</span> in the form
 <span class="math notranslate nohighlight">\(p_t = F^* m_t\)</span> where <span class="math notranslate nohighlight">\(F^* = Q_{21}Q_{11}^{-1}\)</span> as above.</p></li>
-<li><p>Recalling the system <a class="reference internal" href="#equation-equation-3">(56.11)</a>, <a class="reference internal" href="#equation-equation-4">(56.12)</a>, and <a class="reference internal" href="#equation-equation-5">(56.13)</a> above, we define
+<li><p>Recalling the system <a class="reference internal" href="#equation-equation-3">(58.11)</a>, <a class="reference internal" href="#equation-equation-4">(58.12)</a>, and <a class="reference internal" href="#equation-equation-5">(58.13)</a> above, we define
 <span class="math notranslate nohighlight">\(x_t = \begin{bmatrix} m_t \cr P_t \end{bmatrix}\)</span> and notice
 that it is Big <span class="math notranslate nohighlight">\(P_t\)</span> and not little <span class="math notranslate nohighlight">\(p_t\)</span> here. Then we form <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(G\)</span> as
 <span class="math notranslate nohighlight">\(A = \begin{bmatrix}\rho &amp; \delta \cr F^* \rho &amp; F^*\delta \end{bmatrix}\)</span>
 and <span class="math notranslate nohighlight">\(G = \begin{bmatrix} 1 &amp; 0 \end{bmatrix}\)</span> and we compute
 <span class="math notranslate nohighlight">\(\begin{bmatrix}  F_1 &amp;  F_2 \end{bmatrix} \equiv F\)</span>
-from equation <a class="reference internal" href="#equation-equation-5">(56.13)</a> above.</p></li>
+from equation <a class="reference internal" href="#equation-equation-5">(58.13)</a> above.</p></li>
 <li><p>We compute <span class="math notranslate nohighlight">\(F_1 +  F_2 F^*\)</span> and compare it
 with <span class="math notranslate nohighlight">\(F^*\)</span> and check for the anticipated  equality.</p></li>
 </ol>
@@ -1368,7 +1339,7 @@ with <span class="math notranslate nohighlight">\(F^*\)</span> and check for the
 </div>
 </section>
 <section id="fun-with-sympy-code">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">56.9. </span>Fun with SymPy code</a><a class="headerlink" href="#fun-with-sympy-code" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id17"><span class="section-number">58.9. </span>Fun with SymPy code</a><a class="headerlink" href="#fun-with-sympy-code" title="Permalink to this headline">¶</a></h2>
 <p>This section is a  gift for readers who have made it this far.</p>
 <p>It puts SymPy to work on our model.</p>
 <p>Thus, we  use Sympy to compute some  key objects comprising the eigenvector decomposition of <span class="math notranslate nohighlight">\(H\)</span>.</p>
@@ -2023,18 +1994,28 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   50. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   51. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   50. The Permanent Income Model
+   52. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   51. Permanent Income II: LQ Techniques
+   53. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   52. Production Smoothing via Inventories
+   54. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2046,37 +2027,37 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   53. Schelling’s Segregation Model
+   55. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   54. A Lake Model of Employment and Unemployment
+   56. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   55. Rational Expectations Equilibrium
+   57. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   56. Stability in Linear Rational Expectations Models
+   58. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   57. Markov Perfect Equilibrium
+   59. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   58. Uncertainty Traps
+   60. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   59. The Aiyagari Model
+   61. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -2088,17 +2069,17 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   60. Asset Pricing: Finite State Models
+   62. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   61. Competitive equilibria with Arrow securities
+   63. Competitive equilibria with Arrow securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   62. Heterogeneous Beliefs and Bubbles
+   64. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -2110,17 +2091,17 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   63. Pandas for Panel Data
+   65. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   64. Linear Regression in Python
+   66. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   65. Maximum Likelihood Estimation
+   67. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2132,17 +2113,17 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   66. Troubleshooting
+   68. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   67. References
+   69. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   68. Execution Statistics
+   70. Execution Statistics
   </a>
  </li>
 </ul>

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>63. Pandas for Panel Data &#8212; Quantitative Economics with Python</title>
+    <title>65. Pandas for Panel Data &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -97,8 +97,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="64. Linear Regression in Python" href="ols.html" />
-    <link rel="prev" title="62. Heterogeneous Beliefs and Bubbles" href="harrison_kreps.html" />
+    <link rel="next" title="66. Linear Regression in Python" href="ols.html" />
+    <link rel="prev" title="64. Heterogeneous Beliefs and Bubbles" href="harrison_kreps.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -148,59 +148,59 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   63.1. Overview
+   65.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#slicing-and-reshaping-data">
-   63.2. Slicing and Reshaping Data
+   65.2. Slicing and Reshaping Data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#merging-dataframes-and-filling-nans">
-   63.3. Merging Dataframes and Filling NaNs
+   65.3. Merging Dataframes and Filling NaNs
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#grouping-and-summarizing-data">
-   63.4. Grouping and Summarizing Data
+   65.4. Grouping and Summarizing Data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#final-remarks">
-   63.5. Final Remarks
+   65.5. Final Remarks
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   63.6. Exercises
+   65.6. Exercises
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-1">
-     63.6.1. Exercise 1
+     65.6.1. Exercise 1
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-2">
-     63.6.2. Exercise 2
+     65.6.2. Exercise 2
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
-   63.7. Solutions
+   65.7. Solutions
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id1">
-     63.7.1. Exercise 1
+     65.7.1. Exercise 1
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id2">
-     63.7.2. Exercise 2
+     65.7.2. Exercise 2
     </a>
    </li>
   </ul>
@@ -255,7 +255,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="pandas-for-panel-data">
-<h1><a class="toc-backref" href="#id3"><span class="section-number">63. </span><span class="target" id="index-0"></span>Pandas for Panel Data</a><a class="headerlink" href="#pandas-for-panel-data" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id3"><span class="section-number">65. </span><span class="target" id="index-0"></span>Pandas for Panel Data</a><a class="headerlink" href="#pandas-for-panel-data" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-1"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -273,7 +273,7 @@
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">63.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">65.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In an <a class="reference external" href="https://python-programming.quantecon.org/pandas.html">earlier lecture on pandas</a>, we looked at working with simple data sets.</p>
 <p>Econometricians often need to work with more complex data sets, such as panels.</p>
 <p>Common tasks include</p>
@@ -297,7 +297,7 @@ reshaping the resulting <code class="docutils literal notranslate"><span class="
 function.</p>
 </section>
 <section id="slicing-and-reshaping-data">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">63.2. </span>Slicing and Reshaping Data</a><a class="headerlink" href="#slicing-and-reshaping-data" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">65.2. </span>Slicing and Reshaping Data</a><a class="headerlink" href="#slicing-and-reshaping-data" title="Permalink to this headline">¶</a></h2>
 <p>We will read in a dataset from the OECD of real minimum wages in 32
 countries and assign it to <code class="docutils literal notranslate"><span class="pre">realwage</span></code>.</p>
 <p>The dataset can be accessed with the following link:</p>
@@ -891,7 +891,7 @@ period.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_25036/329490644.py:1: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_45813/329490644.py:1: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
   realwage[&#39;2015&#39;].stack(level=(1, 2)).transpose().head()
 </pre></div>
 </div>
@@ -1089,7 +1089,7 @@ the higher levels (countries in this case)</p>
 </div>
 </section>
 <section id="merging-dataframes-and-filling-nans">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">63.3. </span>Merging Dataframes and Filling NaNs</a><a class="headerlink" href="#merging-dataframes-and-filling-nans" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">65.3. </span>Merging Dataframes and Filling NaNs</a><a class="headerlink" href="#merging-dataframes-and-filling-nans" title="Permalink to this headline">¶</a></h2>
 <p>Similar to relational databases like SQL, pandas has built in methods to
 merge datasets together.</p>
 <p>Using country information from
@@ -1939,7 +1939,7 @@ will go ahead and transpose <code class="docutils literal notranslate"><span cla
 </div>
 </section>
 <section id="grouping-and-summarizing-data">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">63.4. </span>Grouping and Summarizing Data</a><a class="headerlink" href="#grouping-and-summarizing-data" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">65.4. </span>Grouping and Summarizing Data</a><a class="headerlink" href="#grouping-and-summarizing-data" title="Permalink to this headline">¶</a></h2>
 <p>Grouping and summarizing data can be particularly useful for
 understanding large panel datasets.</p>
 <p>A simple way to summarize data is to call an <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/getting_started/intro_tutorials/06_calculate_statistics.html">aggregation
@@ -2040,7 +2040,7 @@ to aggregate over</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_25036/1343207079.py:1: FutureWarning: Using the level keyword in DataFrame and Series aggregations is deprecated and will be removed in a future version. Use groupby instead. df.median(level=1) should use df.groupby(level=1).median().
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_45813/1343207079.py:1: FutureWarning: Using the level keyword in DataFrame and Series aggregations is deprecated and will be removed in a future version. Use groupby instead. df.median(level=1) should use df.groupby(level=1).median().
   merged.mean(level=&#39;Continent&#39;, axis=1).head()
 </pre></div>
 </div>
@@ -2127,7 +2127,7 @@ to aggregate over</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_25036/1308448930.py:1: FutureWarning: Using the level keyword in DataFrame and Series aggregations is deprecated and will be removed in a future version. Use groupby instead. df.median(level=1) should use df.groupby(level=1).median().
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_45813/1308448930.py:1: FutureWarning: Using the level keyword in DataFrame and Series aggregations is deprecated and will be removed in a future version. Use groupby instead. df.median(level=1) should use df.groupby(level=1).median().
   merged.mean(level=&#39;Continent&#39;, axis=1).plot()
 </pre></div>
 </div>
@@ -2147,7 +2147,7 @@ to aggregate over</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_25036/859697695.py:2: FutureWarning: Using the level keyword in DataFrame and Series aggregations is deprecated and will be removed in a future version. Use groupby instead. df.median(level=1) should use df.groupby(level=1).median().
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_45813/859697695.py:2: FutureWarning: Using the level keyword in DataFrame and Series aggregations is deprecated and will be removed in a future version. Use groupby instead. df.median(level=1) should use df.groupby(level=1).median().
   merged.mean(level=&#39;Continent&#39;, axis=1).plot()
 </pre></div>
 </div>
@@ -2258,7 +2258,7 @@ a new <code class="docutils literal notranslate"><span class="pre">DataFrameGrou
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7fe718938700&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f25ff7a7790&gt;
 </pre></div>
 </div>
 </div>
@@ -2306,11 +2306,11 @@ object</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_25036/2687141154.py:6: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_45813/2687141154.py:6: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
   sns.kdeplot(grouped.get_group(continent)[&#39;2015&#39;].unstack(), label=continent, shade=True)
-/tmp/ipykernel_25036/2687141154.py:6: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
+/tmp/ipykernel_45813/2687141154.py:6: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
   sns.kdeplot(grouped.get_group(continent)[&#39;2015&#39;].unstack(), label=continent, shade=True)
-/tmp/ipykernel_25036/2687141154.py:6: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
+/tmp/ipykernel_45813/2687141154.py:6: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
   sns.kdeplot(grouped.get_group(continent)[&#39;2015&#39;].unstack(), label=continent, shade=True)
 </pre></div>
 </div>
@@ -2319,7 +2319,7 @@ object</p>
 </div>
 </section>
 <section id="final-remarks">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">63.5. </span>Final Remarks</a><a class="headerlink" href="#final-remarks" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">65.5. </span>Final Remarks</a><a class="headerlink" href="#final-remarks" title="Permalink to this headline">¶</a></h2>
 <p>This lecture has provided an introduction to some of pandas’ more
 advanced features, including multiindices, merging, grouping and
 plotting.</p>
@@ -2327,9 +2327,9 @@ plotting.</p>
 extends pandas to N-dimensional data structures.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">63.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">65.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <section id="exercise-1">
-<h3><span class="section-number">63.6.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">65.6.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>In these exercises, you’ll work with a dataset of employment rates
 in Europe by age and sex from <a class="reference external" href="http://ec.europa.eu/eurostat/data/database">Eurostat</a>.</p>
 <p>The dataset can be accessed with the following link:</p>
@@ -2347,7 +2347,7 @@ a wide format dataframe with a <code class="docutils literal notranslate"><span 
 <p>Write a program that quickly returns all values in the <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code>.</p>
 </section>
 <section id="exercise-2">
-<h3><span class="section-number">63.6.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">65.6.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
 <p>Filter the above dataframe to only include employment as a percentage of
 ‘active population’.</p>
 <p>Create a grouped boxplot using <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> of employment rates in 2015
@@ -2356,9 +2356,9 @@ by age group and sex.</p>
 </section>
 </section>
 <section id="solutions">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">63.7. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">65.7. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <section id="id1">
-<h3><span class="section-number">63.7.1. </span>Exercise 1<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">65.7.1. </span>Exercise 1<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">employ</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url3</span><span class="p">)</span>
@@ -2538,7 +2538,7 @@ GEO Index([&#39;Austria&#39;, &#39;Belgium&#39;, &#39;Bulgaria&#39;, &#39;Croati
 </div>
 </section>
 <section id="id2">
-<h3><span class="section-number">63.7.2. </span>Exercise 2<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">65.7.2. </span>Exercise 2<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>To easily filter by country, swap <code class="docutils literal notranslate"><span class="pre">GEO</span></code> to the top level and sort the
 <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code></p>
 <div class="cell docutils container">
@@ -2719,7 +2719,7 @@ dataframe</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_25036/132081023.py:1: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_45813/132081023.py:1: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
   box = employ_f[&#39;2015&#39;].unstack().reset_index()
 </pre></div>
 </div>
@@ -3073,18 +3073,28 @@ dataframe</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   50. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   51. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   50. The Permanent Income Model
+   52. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   51. Permanent Income II: LQ Techniques
+   53. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   52. Production Smoothing via Inventories
+   54. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -3096,37 +3106,37 @@ dataframe</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   53. Schelling’s Segregation Model
+   55. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   54. A Lake Model of Employment and Unemployment
+   56. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   55. Rational Expectations Equilibrium
+   57. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   56. Stability in Linear Rational Expectations Models
+   58. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   57. Markov Perfect Equilibrium
+   59. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   58. Uncertainty Traps
+   60. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   59. The Aiyagari Model
+   61. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -3138,17 +3148,17 @@ dataframe</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   60. Asset Pricing: Finite State Models
+   62. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   61. Competitive equilibria with Arrow securities
+   63. Competitive equilibria with Arrow securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   62. Heterogeneous Beliefs and Bubbles
+   64. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -3160,17 +3170,17 @@ dataframe</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   63. Pandas for Panel Data
+   65. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   64. Linear Regression in Python
+   66. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   65. Maximum Likelihood Estimation
+   67. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -3182,17 +3192,17 @@ dataframe</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   66. Troubleshooting
+   68. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   67. References
+   69. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   68. Execution Statistics
+   70. Execution Statistics
   </a>
  </li>
 </ul>

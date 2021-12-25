@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>53. Schelling’s Segregation Model &#8212; Quantitative Economics with Python</title>
+    <title>55. Schelling’s Segregation Model &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,8 +99,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="54. A Lake Model of Employment and Unemployment" href="lake_model.html" />
-    <link rel="prev" title="52. Production Smoothing via Inventories" href="lq_inventories.html" />
+    <link rel="next" title="56. A Lake Model of Employment and Unemployment" href="lake_model.html" />
+    <link rel="prev" title="54. Production Smoothing via Inventories" href="lq_inventories.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -150,56 +150,56 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#outline">
-   53.1. Outline
+   55.1. Outline
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-model">
-   53.2. The Model
+   55.2. The Model
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#set-up">
-     53.2.1. Set-Up
+     55.2.1. Set-Up
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#preferences">
-     53.2.2. Preferences
+     55.2.2. Preferences
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#behavior">
-     53.2.3. Behavior
+     55.2.3. Behavior
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#results">
-   53.3. Results
+   55.3. Results
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   53.4. Exercises
+   55.4. Exercises
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-1">
-     53.4.1. Exercise 1
+     55.4.1. Exercise 1
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
-   53.5. Solutions
+   55.5. Solutions
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id2">
-     53.5.1. Exercise 1
+     55.5.1. Exercise 1
     </a>
    </li>
   </ul>
@@ -254,7 +254,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="schellings-segregation-model">
-<h1><a class="toc-backref" href="#id3"><span class="section-number">53. </span>Schelling’s Segregation Model</a><a class="headerlink" href="#schellings-segregation-model" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id3"><span class="section-number">55. </span>Schelling’s Segregation Model</a><a class="headerlink" href="#schellings-segregation-model" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="index-0"></span><div class="contents topic" id="contents">
 <span id="index-1"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -270,7 +270,7 @@
 </ul>
 </div>
 <section id="outline">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">53.1. </span>Outline</a><a class="headerlink" href="#outline" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">55.1. </span>Outline</a><a class="headerlink" href="#outline" title="Permalink to this headline">¶</a></h2>
 <p>In 1969, Thomas C. Schelling developed a simple but striking model of racial segregation <span id="id1">[<a class="reference internal" href="zreferences.html#id184">Sch69</a>]</span>.</p>
 <p>His model studies the dynamics of racially mixed neighborhoods.</p>
 <p>Like much of Schelling’s work, the model shows how local interactions can lead to surprising aggregate structure.</p>
@@ -291,17 +291,17 @@
 </div>
 </section>
 <section id="the-model">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">53.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">55.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
 <p>We will cover a variation of Schelling’s model that is easy to program and captures the main idea.</p>
 <section id="set-up">
-<h3><span class="section-number">53.2.1. </span>Set-Up<a class="headerlink" href="#set-up" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">55.2.1. </span>Set-Up<a class="headerlink" href="#set-up" title="Permalink to this headline">¶</a></h3>
 <p>Suppose we have two types of people: orange people and green people.</p>
 <p>For the purpose of this lecture, we will assume there are 250 of each type.</p>
 <p>These agents all live on a single unit square.</p>
 <p>The location of an agent is just a point <span class="math notranslate nohighlight">\((x, y)\)</span>,  where <span class="math notranslate nohighlight">\(0 &lt; x, y &lt; 1\)</span>.</p>
 </section>
 <section id="preferences">
-<h3><span class="section-number">53.2.2. </span>Preferences<a class="headerlink" href="#preferences" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">55.2.2. </span>Preferences<a class="headerlink" href="#preferences" title="Permalink to this headline">¶</a></h3>
 <p>We will say that an agent is <em>happy</em> if half or more of her 10 nearest neighbors are of the same type.</p>
 <p>Here ‘nearest’ is in terms of <a class="reference external" href="https://en.wikipedia.org/wiki/Euclidean_distance">Euclidean distance</a>.</p>
 <p>An agent who is not happy is called <em>unhappy</em>.</p>
@@ -309,7 +309,7 @@
 <p>They are perfectly happy if half their neighbors are of the other color.</p>
 </section>
 <section id="behavior">
-<h3><span class="section-number">53.2.3. </span>Behavior<a class="headerlink" href="#behavior" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">55.2.3. </span>Behavior<a class="headerlink" href="#behavior" title="Permalink to this headline">¶</a></h3>
 <p>Initially, agents are mixed together (integrated).</p>
 <p>In particular, the initial location of each agent is an independent draw from a bivariate uniform distribution on <span class="math notranslate nohighlight">\(S = (0, 1)^2\)</span>.</p>
 <p>Now, cycling through the set of all agents, each agent is now given the chance to stay or move.</p>
@@ -325,7 +325,7 @@
 </section>
 </section>
 <section id="results">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">53.3. </span>Results</a><a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">55.3. </span>Results</a><a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
 <p>Let’s have a look at the results we got when we coded and ran this model.</p>
 <p>As discussed above, agents are initially mixed randomly together.</p>
 <figure class="align-default">
@@ -348,9 +348,9 @@ agents, indicating that all agents had reached a state of happiness.</p>
 <p>Even with these preferences, the outcome is a high degree of segregation.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">53.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">55.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <section id="exercise-1">
-<span id="schelling-ex1"></span><h3><span class="section-number">53.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<span id="schelling-ex1"></span><h3><span class="section-number">55.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>Implement and run this simulation for yourself.</p>
 <p>Consider the following structure for your program.</p>
 <p>Agents can be modeled as <a class="reference external" href="https://python-programming.quantecon.org/python_oop.html">objects</a>.</p>
@@ -379,9 +379,9 @@ agents, indicating that all agents had reached a state of happiness.</p>
 </section>
 </section>
 <section id="solutions">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">53.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">55.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <section id="id2">
-<h3><span class="section-number">53.5.1. </span>Exercise 1<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">55.5.1. </span>Exercise 1<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>Here’s one solution that does the job we want.</p>
 <p>If you feel like a further exercise, you can probably speed up some of the computations and
 then increase the number of agents.</p>
@@ -848,18 +848,28 @@ then increase the number of agents.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   50. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   51. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   50. The Permanent Income Model
+   52. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   51. Permanent Income II: LQ Techniques
+   53. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   52. Production Smoothing via Inventories
+   54. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -871,37 +881,37 @@ then increase the number of agents.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   53. Schelling’s Segregation Model
+   55. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   54. A Lake Model of Employment and Unemployment
+   56. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   55. Rational Expectations Equilibrium
+   57. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   56. Stability in Linear Rational Expectations Models
+   58. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   57. Markov Perfect Equilibrium
+   59. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   58. Uncertainty Traps
+   60. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   59. The Aiyagari Model
+   61. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -913,17 +923,17 @@ then increase the number of agents.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   60. Asset Pricing: Finite State Models
+   62. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   61. Competitive equilibria with Arrow securities
+   63. Competitive equilibria with Arrow securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   62. Heterogeneous Beliefs and Bubbles
+   64. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -935,17 +945,17 @@ then increase the number of agents.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   63. Pandas for Panel Data
+   65. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   64. Linear Regression in Python
+   66. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   65. Maximum Likelihood Estimation
+   67. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -957,17 +967,17 @@ then increase the number of agents.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   66. Troubleshooting
+   68. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   67. References
+   69. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   68. Execution Statistics
+   70. Execution Statistics
   </a>
  </li>
 </ul>

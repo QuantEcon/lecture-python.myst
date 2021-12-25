@@ -70,6 +70,8 @@ In this lecture, we'll encounter:
 * a use of eigenvector decompositions of matrices that allowed Blanchard and Khan (1981) {cite}`Blanchard_Khan` and Whiteman (1983) {cite}`Whiteman` to solve a class of linear rational expectations models
 * how to use **SymPy** to get analytical formulas for some key objects comprising a rational expectations equilibrium
 
+Matrix decompositions employed here are described in more depth in this lecture {doc}`Lagrangian formulations<lagrangian_lqdp>`.
+
 We formulate a version of  Cagan's model under  rational expectations
 as an **expectational difference equation** whose solution is a rational expectations equilibrium.
 
