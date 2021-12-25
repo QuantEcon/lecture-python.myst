@@ -11,13 +11,18 @@ kernelspec:
   name: python3
 ---
 
+# Lagrangian for LQ Control
+
+```{code-cell} ipython3
+:tags: [hide-output]
+!pip install quantecon
+```
+
 ```{code-cell} ipython3
 import numpy as np
 from quantecon import LQ
 from scipy.linalg import schur
 ```
-
-# Lagrangian for LQ Control
 
 +++
 
