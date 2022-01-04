@@ -12,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-# Competitive equilibria with Arrow securities
+# Competitive Equilibria with Arrow Securities
 
 +++
 
