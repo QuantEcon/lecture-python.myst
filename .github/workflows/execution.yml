@@ -4,7 +4,7 @@ on:
     # UTC 22:00 is early morning in Australia
     - cron:  '0 22 * * *'
 jobs:
-  execution-tests-linux-osx:
+  execution-tests-linux:
     name: Execution Tests (${{ matrix.python-version }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
@@ -64,7 +64,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install latex dependencies
         run: |
-          brew install texlive     
+          brew install texlive
       - name: Install Anaconda + Dependencies
         shell: bash -l {0}
         run: |
