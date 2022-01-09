@@ -255,7 +255,7 @@ which requires that $x_t' R x_t$ converge to zero as $t \rightarrow + \infty$.
 
 +++
 
-## Reciprocal pairs property
+## Reciprocal Pairs Property
 
 To proceed, we study properties of the $(2n \times 2n)$ matrix $M$ defined in {eq}`Mdefn`. 
 
@@ -273,7 +273,12 @@ $$
 MJM^\prime = J.
 $$ (eq3)
 
-It can be verified directly that $M$ in equation is symplectic.
+Salient properties of symplectic matrices that are readily verified include:
+
+  * If $M$ is symplectic, then $M^2$ is symplectic
+  * The determinant of a symplectic, then $\textrm{det}(M) = 1$
+
+It can be verified directly that $M$ in equation {eq}`Mdefn` is symplectic.
 
 It follows from equation {eq}`eq3` and from the fact $J^{-1} = J^\prime = -J$ that for any symplectic
 matrix $M$,
