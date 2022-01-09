@@ -112,7 +112,7 @@ At other times, we'll use the latter convention in which $\Sigma$ is an $r \time
 Also, when we discuss the **dynamic mode decomposition** below, we'll use a special case of the latter  convention in which it is understood that
 $r$ is just a pre-specified small number of leading singular values that we think capture the  most interesting  dynamics.
 
-## Digression: the polar decomposition
+## Digression:  Polar Decomposition
 
  Through  the following identities, the singular value decomposition (SVD) is related to the **polar decomposition** of $X$
 
@@ -187,7 +187,7 @@ is a vector of loadings of variables $X_i$ on the $k$th principle component,  $i
 
 * $\sigma_k $ for each $k=1, \ldots, r$ is the strength of $k$th **principal component**
 
-## Digression: reduced (or economy) versus full SVD
+## Digression: Reduced (or Economy) Versus Full SVD
 
 You can read about reduced and full SVD here
 <https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html>
@@ -215,7 +215,7 @@ rr
 Add some words about the "economy SVD" and add an example here
 ```
 
-## PCA with eigenvalues and eigenvectors
+## PCA with Eigenvalues and Eigenvectors
 
 We now  turn to using the eigen decomposition of a sample covariance matrix to do PCA.
 
@@ -653,7 +653,7 @@ $$
 
 +++
 
-## Source for some Python code
+## Source for Some Python Code
 
 You can find a Python implementation of DMD here:
 
