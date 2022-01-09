@@ -13,7 +13,7 @@ kernelspec:
 
 # Singular Value Decomposition (SVD)
 
-In addition to regular packages contained in Anaconda by default, this notebook also requires:
+In addition to regular packages contained in Anaconda by default, this lecture also requires:
 
 ```{code-cell} ipython3
 :tags: [hide-output]
@@ -46,7 +46,7 @@ This lecture describes the singular value decomposition and two of its uses:
 
 Let $X$ be an $m \times n$ matrix of rank $r$.
 
-In this notebook, we'll think of $X$ as a matrix of **data**.
+In this lecture, we'll think of $X$ as a matrix of **data**.
 
   * each column is an **individual** -- a time period or person, depending on the application
   
@@ -55,21 +55,24 @@ In this notebook, we'll think of $X$ as a matrix of **data**.
   
 We'll be interested in  two distinct cases
 
-  * The **short and fat** case in which $m << n$, so that there are many more columns than rows.
+  * A **short and fat** case in which $m << n$, so that there are many more columns than rows.
 
-  * The  **tall and skinny** case in which $m >> n$, so that there are many more rows than columns. 
+  * A  **tall and skinny** case in which $m >> n$, so that there are many more rows than columns. 
     
    
 We'll apply a **singular value decomposition** of $X$ in both situations.
 
-In the first case in which there are many more observations $n$ than there are random variables $m$, we learn about the joint distribution of the  random variables by taking averages  across observations of functions of the observations. Here we'll look for **patterns** by using a **singular value decomosition** to do a **principal components analysis** (PCA).
+In the first case in which there are many more observations $n$ than random variables $m$, we learn about the joint distribution of the  random variables by taking averages  across observations of functions of the observations. 
+
+Here we'll look for **patterns** by using a **singular value decomosition** to do a **principal components analysis** (PCA).
 
 In the second case in which there are many more random variables $m$ than observations $n$, we'll proceed in a different way. 
+
 We'll again use a **singular value decomposition**,  but now to do a **dynamic mode decomposition** (DMD)
 
 ## Singular Value Decomposition
 
-The **singular value decomposition** of an $m \times n$ matrix $X$ of rank $r \leq \min(m,n)$ is
+A **singular value decomposition** of an $m \times n$ matrix $X$ of rank $r \leq \min(m,n)$ is
 
 $$
 X  = U \Sigma V^T
@@ -93,15 +96,17 @@ where
 * The $r$ singular values are square roots of the eigenvalues of the $m \times m$ matrix  $X X^T$ and the $n \times n$ matrix $X^T X$
 
 * When $U$ is a complex valued matrix, $U^T$ denotes the **conjugate-transpose** or **Hermitian-transpose** of $U$, meaning that 
-$U_{ij}^T$ is the complex conjugate of $U_{ji}$. Similarly, when $V$ is a complex valued matrix, $V^T$ denotes the **conjugate-transpose** or **Hermitian-transpose** of $V$
+$U_{ij}^T$ is the complex conjugate of $U_{ji}$. 
+
+* Similarly, when $V$ is a complex valued matrix, $V^T$ denotes the **conjugate-transpose** or **Hermitian-transpose** of $V$
 
 The shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively. 
 
 Below, we shall assume these shapes.
 
-However, there is an alternative shape convention that we could have used, though we chose not to.
+However, though we chose not to, there is an alternative shape convention that we could have used.
 
-Thus, note that because we assume that $A$ has rank $r$, there are only $r $ nonzero singular values, where $r=rank(A)\leq\min\left(m, n\right)$.  
+Thus, note that because we assume that $A$ has rank $r$, there are only $r $ nonzero singular values, where $r=\textrm{rank}(A)\leq\min\left(m, n\right)$.  
 
 Therefore,  we could also write $U$, $\Sigma$, and $V$ as matrices with shapes $\left(m, r\right)$, $\left(r, r\right)$, $\left(r, n\right)$.
 
@@ -124,11 +129,11 @@ Q & = U V^T
 
 where $S$ is evidently a symmetric matrix and $Q$ is an orthogonal matrix.
 
-## Principle Componenents Analysis (PCA)
+## Principle Components Analysis (PCA)
 
-Let's begin with the case in which $n >> m$, so that we have many  more observations $n$ than random variables $m$.
+Let's begin with a case in which $n >> m$, so that we have many  more observations $n$ than random variables $m$.
 
-The data matrix $X$ is **short and fat**  in the  $n >> m$ case as opposed to a **tall and skinny** case with $m > > n $ to be discussed later in this notebook.
+The data matrix $X$ is **short and fat**  in an  $n >> m$ case as opposed to a **tall and skinny** case with $m > > n $ to be discussed later in this lecture.
 
 We regard  $X$ as an  $m \times n$ matrix of **data**:
 
@@ -140,7 +145,7 @@ where for $j = 1, \ldots, n$ the column vector $X_j = \begin{bmatrix}X_{1j}\\X_{
 
 In a **time series** setting, we would think of columns $j$ as indexing different __times__ at which random variables are observed, while rows index different random variables.
 
-In a **cross section** setting, we would think of columns $j$ as indexing different __individuals__ for  which random variables are observed, while rows index different random variables.
+In a **cross section** setting, we would think of columns $j$ as indexing different __individuals__ for  which random variables are observed, while rows index different **random variables**.
 
 The number of singular values equals the rank of  matrix $X$.
 
@@ -187,7 +192,7 @@ is a vector of loadings of variables $X_i$ on the $k$th principle component,  $i
 
 * $\sigma_k $ for each $k=1, \ldots, r$ is the strength of $k$th **principal component**
 
-## Digression: Reduced (or Economy) Versus Full SVD
+## Reduced Versus Full SVD
 
 You can read about reduced and full SVD here
 <https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html>
@@ -282,10 +287,12 @@ which evidently implies that $\tilde{\epsilon}_j\tilde{\epsilon}_j^T=1$.
 
 Therefore 
 
+$$
 \begin{aligned}
 X&=\sqrt{\lambda_1}P_1\tilde{\epsilon_1}+\sqrt{\lambda_2}P_2\tilde{\epsilon_2}+\ldots+\sqrt{\lambda_m}P_m\tilde{\epsilon_m}\\
 &=\sigma_1P_1\tilde{\epsilon_2}+\sigma_2P_2\tilde{\epsilon_2}+\ldots+\sigma_mP_m\tilde{\epsilon_m}
 \end{aligned}
+$$
 
 which evidently agrees with 
 
@@ -308,7 +315,7 @@ In the following, we accomplish this by
 1. sorting eigenvalues and singular values in descending order
 2. imposing positive diagonals on $P$ and $U$ and adjusting signs in $V^T$ accordingly
 
-## Summary of  Connections
+## Connections
 
 To pull things together, it is useful to assemble and compare some formulas presented above.
 
@@ -540,7 +547,7 @@ In forming $\tilde X$ and $\tilde X'$, we have in each case  dropped a column fr
 
 Evidently, $\tilde X$ and $\tilde X'$ are both $m \times \tilde n$ matrices where $\tilde n = n - 1$.
 
-We start with a system consisting of $m$ least squares regressions of *everything on everything*:
+We start with a system consisting of $m$ least squares regressions of **everything** on one lagged value of **everything**:
 
 $$
 \tilde X' = A \tilde X + \epsilon
@@ -552,7 +559,7 @@ $$
 A = \tilde X' \tilde X^{+}
 $$
 
-and where the (huge) $m \times m $ matrix $X^{+}$ is the Moore-Penrose generalize inverse of $X$ that we could compute
+and where the (huge) $m \times m $ matrix $X^{+}$ is the Moore-Penrose generalized inverse of $X$ that we could compute
 as 
 
 $$
@@ -563,7 +570,7 @@ where the matrix $\Sigma^{-1}$ is constructed by replacing each non-zero element
 
 The idea behind **dynamic mode decomposition** is to construct an approximation that  
 
-* sidesteps computing $X^{+}$
+* sidesteps computing the generalized inverse $X^{+}$
 
 * retains only the largest  $\tilde r< < r$ eigenvalues and associated eigenvectors of $U$ and $V^T$ 
 
@@ -609,7 +616,7 @@ To accomplish a DMD, we deploy the following steps:
 * At this point, in constructing $\tilde A$ according to the above formula,
   we take only the  columns of $U$ corresponding to the $\tilde r$ largest singular values.  
   
-  Tu et al. verify that eigenvalues and eigenvectors of $\tilde A$ equal the leading eigenvalues and associated eigenvectors of $A$.
+  Tu et al. {cite}`tu_Rowley` verify that eigenvalues and eigenvectors of $\tilde A$ equal the leading eigenvalues and associated eigenvectors of $A$.
 
 * Construct an eigencomposition of $\tilde A$ that satisfies
 
