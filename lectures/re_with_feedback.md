@@ -78,7 +78,7 @@ as an **expectational difference equation** whose solution is a rational expecta
 We'll start this lecture with a quick review of deterministic (i.e., non-random)
 first-order and second-order linear difference equations.
 
-## Linear difference equations
+## Linear Difference Equations
 
 We'll use the *backward shift* or *lag* operator $L$.
 
@@ -94,7 +94,7 @@ We'll often use the equality  $L^{-1} x_t \equiv x_{t+1}$ below.
 
 The algebra of lag and forward shift operators can simplify representing and solving linear difference equations.
 
-### First order
+### First Order
 
 We want to solve a linear first-order scalar difference equation.
 
@@ -181,7 +181,7 @@ diverge, in which case a solution of this form does not exist.
 The distributed lead in $u$ in {eq}`equn_5` need not
 converge when $|\lambda| < 1$.
 
-### Second order
+### Second Order
 
 Now consider the second order difference equation
 
@@ -351,7 +351,7 @@ equation {eq}`equation_1` can be constructed by adding to the right hand of {eq}
 sequence $c \lambda^{-t}$ where $c$ is an arbitrary positive
 constant.
 
-## Some Python code
+## Some Python Code
 
 We’ll construct examples that illustrate {eq}`equation_3`.
 
@@ -464,7 +464,7 @@ Because
 - it happens that in this example future $m$’s are always less
   than the current $m$
 
-## Alternative code
+## Alternative Code
 
 We could also have run the simulation using the quantecon
 **LinearStateSpace** code.
@@ -498,7 +498,7 @@ plt.legend()
 plt.show()
 ```
 
-### Special case
+### Special Case
 
 To simplify our presentation in ways that will let focus on an important
 idea, in the above second-order difference equation {eq}`equation_6` that governs
@@ -534,7 +534,7 @@ $$
 Please keep these formulas in mind as we investigate an alternative
 route to and interpretation of our formula for $F$.
 
-## Another perspective
+## Another Perspective
 
 Above, we imposed stability or non-explosiveness on the solution of the key difference equation {eq}`equation_1`
 in Cagan's model by solving the  unstable root of the characteristic polynomial forward.
@@ -685,7 +685,7 @@ p_0 = - (Q^{22})^{-1} Q^{21} m_0.
 This is the unique **stabilizing value** of $p_0$ expressed as a function of
 $m_0$.
 
-### Refining the formula
+### Refining the Formula
 
 We can get an even more convenient formula for $p_0$ that is cast
 in terms of components of $Q$ instead of components of
@@ -757,7 +757,7 @@ $$
 Q_1 = \begin{bmatrix} Q_{11} \\ Q_{21}  \end{bmatrix}.
 $$
 
-### Some remarks about feedback
+### Remarks about Feedback
 
 We have expressed {eq}`equation_8` in what superficially appears to be a form in
 which $y_{t+1}$ feeds back on $y_t$, even though what we
@@ -778,7 +778,7 @@ We’ll keep these observations in mind as we turn now to a case in which
 the log money supply actually does feed back on the log of the price
 level.
 
-## Log money supply feeds back on log price level
+## Log money Supply Feeds Back on Log Price Level
 
 An arrangement of eigenvalues that split around unity, with one being
 below unity and another being greater than unity, sometimes prevails when there is  *feedback* from the log price level to the log
@@ -964,7 +964,7 @@ exist.
 magic_p0(1, δ=0.2)
 ```
 
-## Big $P$, little $p$ interpretation
+## Big $P$, Little $p$ Interpretation
 
 It is helpful to view our solutions of difference equations having  feedback from the price level or inflation to money or the rate of money
 creation in terms of the Big $K$, little $k$ idea discussed in {doc}`Rational Expectations Models <rational_expectations>`.
@@ -1064,7 +1064,7 @@ Compare $F^*$ with $F_1 + F_2 F^*$
 F_check[0] + F_check[1] * F_star, F_star
 ```
 
-## Fun with SymPy code
+## Fun with SymPy 
 
 This section is a  gift for readers who have made it this far.
 

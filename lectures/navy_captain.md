@@ -789,7 +789,7 @@ axs[1].legend()
 plt.show()
 ```
 
-## Was the Navy Captain’s hunch correct?
+## Was the Navy Captain’s Hunch Correct?
 
 We now compare average (i.e., frequentist) losses obtained by the
 frequentist and Bayesian decision rules.
@@ -845,7 +845,7 @@ $\bar{V}_{fre}-\bar{V}_{Bayes}$.
 
 It is always positive.
 
-## More details
+## More Details
 
 We can provide more insights by focusing on the case in which
 $\pi^{*}=0.5=\pi_{0}$.
@@ -870,7 +870,7 @@ corresponding to `t_optimal` sample size.
 t_idx = t_optimal - 1
 ```
 
-### Distribution of Bayesian decision rule’s times to decide
+## Distribution of Bayesian Decision Rule’s Time to Decide
 
 By using simulations, we compute the frequency distribution of time to
 deciding for the Bayesian decision rule and compare that time to the
@@ -1005,7 +1005,7 @@ plt.title('Unconditional distribution of times')
 plt.show()
 ```
 
-### Probability of making correct decisions
+## Probability of Making Correct Decision
 
 Now we use simulations to compute the fraction of samples in which the
 Bayesian and the frequentist decision rules decide correctly.
@@ -1064,7 +1064,7 @@ plt.title('Uncond. probability of making correct decisions before t')
 plt.show()
 ```
 
-### Distribution of likelihood ratios at frequentist’s $t$
+## Distribution of Likelihood Ratios at Frequentist’s $t$
 
 Next we use simulations to construct distributions of likelihood ratios
 after $t$ draws.
