@@ -397,9 +397,6 @@ Solving environment: -
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
@@ -411,14 +408,14 @@ Solving environment: -
 <section id="overview">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">53.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture continues our analysis of the linear-quadratic (LQ) permanent income model of savings and consumption.</p>
-<p>As we saw in our <a class="reference internal" href="perm_income.html"><span class="doc">previous lecture</span></a> on this topic, Robert Hall <span id="id1">[<a class="reference internal" href="zreferences.html#id137">Hal78</a>]</span> used the LQ permanent income model to restrict and interpret intertemporal comovements of nondurable consumption, nonfinancial income, and financial wealth.</p>
+<p>As we saw in our <a class="reference internal" href="perm_income.html"><span class="doc">previous lecture</span></a> on this topic, Robert Hall <span id="id1">[<a class="reference internal" href="zreferences.html#id138">Hal78</a>]</span> used the LQ permanent income model to restrict and interpret intertemporal comovements of nondurable consumption, nonfinancial income, and financial wealth.</p>
 <p>For example, we saw how the model asserts that for any covariance stationary process for nonfinancial income</p>
 <ul class="simple">
 <li><p>consumption is a random walk</p></li>
 <li><p>financial wealth has a unit root and is cointegrated with consumption</p></li>
 </ul>
 <p>Other applications use the same LQ framework.</p>
-<p>For example, a model isomorphic to the LQ permanent income model has been used by Robert Barro <span id="id2">[<a class="reference internal" href="zreferences.html#id121">Bar79</a>]</span> to interpret intertemporal comovements of a government’s tax collections, its  expenditures net of debt service, and its public debt.</p>
+<p>For example, a model isomorphic to the LQ permanent income model has been used by Robert Barro <span id="id2">[<a class="reference internal" href="zreferences.html#id122">Bar79</a>]</span> to interpret intertemporal comovements of a government’s tax collections, its  expenditures net of debt service, and its public debt.</p>
 <p>This isomorphism means that in analyzing the LQ permanent income model, we are in effect also analyzing  the Barro tax smoothing model.</p>
 <p>It is just a matter of appropriately relabeling the variables in Hall’s model.</p>
 <p>In this lecture, we’ll</p>
@@ -428,7 +425,7 @@ Solving environment: -
 <li><p>apply <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon</a>’s <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class to characterize statistical features of the consumer’s optimal consumption and borrowing plans.</p></li>
 </ul>
 <p>We’ll then use these characterizations to construct a simple model of cross-section wealth and
-consumption dynamics in the spirit of Truman Bewley <span id="id3">[<a class="reference internal" href="zreferences.html#id85">Bew86</a>]</span>.</p>
+consumption dynamics in the spirit of Truman Bewley <span id="id3">[<a class="reference internal" href="zreferences.html#id86">Bew86</a>]</span>.</p>
 <p>(Later we’ll study other Bewley models—see <a class="reference internal" href="aiyagari.html"><span class="doc">this lecture</span></a>.)</p>
 <p>The model will prove useful for illustrating concepts such as</p>
 <ul class="simple">
@@ -480,7 +477,7 @@ subject to the sequence of budget constraints</p>
 <section id="digression-on-a-useful-isomorphism">
 <h3><span class="section-number">53.2.1. </span>Digression on a Useful Isomorphism<a class="headerlink" href="#digression-on-a-useful-isomorphism" title="Permalink to this headline">¶</a></h3>
 <p>The LQ permanent income model of consumption is mathematically isomorphic with a version of
-Barro’s <span id="id4">[<a class="reference internal" href="zreferences.html#id121">Bar79</a>]</span> model of tax smoothing.</p>
+Barro’s <span id="id4">[<a class="reference internal" href="zreferences.html#id122">Bar79</a>]</span> model of tax smoothing.</p>
 <p>In the LQ permanent income model</p>
 <ul class="simple">
 <li><p>the household faces an exogenous process of nonfinancial income</p></li>
@@ -835,7 +832,7 @@ income problem we used a different solution method.</p>
 </section>
 <section id="two-example-economies">
 <h2><a class="toc-backref" href="#id12"><span class="section-number">53.5. </span>Two Example Economies</a><a class="headerlink" href="#two-example-economies" title="Permalink to this headline">¶</a></h2>
-<p>In the spirit of Bewley models <span id="id5">[<a class="reference internal" href="zreferences.html#id85">Bew86</a>]</span>, we’ll generate panels of consumers.</p>
+<p>In the spirit of Bewley models <span id="id5">[<a class="reference internal" href="zreferences.html#id86">Bew86</a>]</span>, we’ll generate panels of consumers.</p>
 <p>The examples differ only in  the initial states with which we endow the consumers.</p>
 <p>All other parameter values are kept the same in the two examples</p>
 <ul class="simple">
@@ -1099,7 +1096,7 @@ anticipation of rising incomes.</p>
 steady state in which there is an excess aggregate supply of risk-free
 loans at a gross interest rate of <span class="math notranslate nohighlight">\(R\)</span>.</p>
 <p>This excess supply is filled by “foreigner lenders” willing to make those loans.</p>
-<p>We can use virtually the same code to rig a “poor man’s Bewley <span id="id6">[<a class="reference internal" href="zreferences.html#id85">Bew86</a>]</span> model” in the following way</p>
+<p>We can use virtually the same code to rig a “poor man’s Bewley <span id="id6">[<a class="reference internal" href="zreferences.html#id86">Bew86</a>]</span> model” in the following way</p>
 <ul class="simple">
 <li><p>as before, we start everyone at <span class="math notranslate nohighlight">\(b_0 = 0\)</span>.</p></li>
 <li><p>But instead of starting everyone at <span class="math notranslate nohighlight">\(y_{-1} = y_{-2} = 0\)</span>, we

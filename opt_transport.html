@@ -266,8 +266,8 @@ economic theory.</p>
 key tool for solving it, and then provide some examples.</p>
 <p>We will provide other applications in followup lectures.</p>
 <p>The optimal transport problem was studied in early work about linear
-programming, as summarized for example by <span id="id1">[<a class="reference internal" href="zreferences.html#id13">DSS58</a>]</span>.  A modern reference
-about applications in economics is <span id="id2">[<a class="reference internal" href="zreferences.html#id14">Gal16</a>]</span>.</p>
+programming, as summarized for example by <span id="id1">[<a class="reference internal" href="zreferences.html#id14">DSS58</a>]</span>.  A modern reference
+about applications in economics is <span id="id2">[<a class="reference internal" href="zreferences.html#id15">Gal16</a>]</span>.</p>
 <p>Below, we show how to solve the optimal transport problem using
 several implementations of linear programming, including, in order,</p>
 <ol class="simple">
@@ -293,57 +293,55 @@ solver from SciPy,</p></li>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.5.2-py3-none-any.whl (269 kB)
 ?25l
-     |█▏                              | 10 kB 27.8 MB/s eta 0:00:01
-     |██▍                             | 20 kB 10.9 MB/s eta 0:00:01
-     |███▋                            | 30 kB 8.6 MB/s eta 0:00:01
+     |█▏                              | 10 kB 38.3 MB/s eta 0:00:01
+     |██▍                             | 20 kB 41.6 MB/s eta 0:00:01
+     |███▋                            | 30 kB 18.7 MB/s eta 0:00:01
+     |████▉                           | 40 kB 8.7 MB/s eta 0:00:01
+     |██████                          | 51 kB 10.4 MB/s eta 0:00:01
+     |███████▎                        | 61 kB 11.8 MB/s eta 0:00:01
+     |████████▌                       | 71 kB 10.8 MB/s eta 0:00:01
+     |█████████▊                      | 81 kB 12.0 MB/s eta 0:00:01
+     |███████████                     | 92 kB 12.7 MB/s eta 0:00:01
+     |████████████▏                   | 102 kB 10.1 MB/s eta 0:00:01
+     |█████████████▍                  | 112 kB 10.1 MB/s eta 0:00:01
+     |██████████████▋                 | 122 kB 10.1 MB/s eta 0:00:01
+     |███████████████▉                | 133 kB 10.1 MB/s eta 0:00:01
+     |█████████████████               | 143 kB 10.1 MB/s eta 0:00:01
+     |██████████████████▎             | 153 kB 10.1 MB/s eta 0:00:01
+     |███████████████████▌            | 163 kB 10.1 MB/s eta 0:00:01
+     |████████████████████▊           | 174 kB 10.1 MB/s eta 0:00:01
+     |██████████████████████          | 184 kB 10.1 MB/s eta 0:00:01
+     |███████████████████████▏        | 194 kB 10.1 MB/s eta 0:00:01
+     |████████████████████████▍       | 204 kB 10.1 MB/s eta 0:00:01
+     |█████████████████████████▋      | 215 kB 10.1 MB/s eta 0:00:01
+     |██████████████████████████▉     | 225 kB 10.1 MB/s eta 0:00:01
+     |████████████████████████████    | 235 kB 10.1 MB/s eta 0:00:01
+     |█████████████████████████████▏  | 245 kB 10.1 MB/s eta 0:00:01
+     |██████████████████████████████▍ | 256 kB 10.1 MB/s eta 0:00:01
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |████▉                           | 40 kB 4.1 MB/s eta 0:00:01
-     |██████                          | 51 kB 4.6 MB/s eta 0:00:01
-     |███████▎                        | 61 kB 4.8 MB/s eta 0:00:01
-     |████████▌                       | 71 kB 4.7 MB/s eta 0:00:01
-     |█████████▊                      | 81 kB 5.3 MB/s eta 0:00:01
-     |███████████                     | 92 kB 4.3 MB/s eta 0:00:01
-     |████████████▏                   | 102 kB 4.7 MB/s eta 0:00:01
-     |█████████████▍                  | 112 kB 4.7 MB/s eta 0:00:01
-     |██████████████▋                 | 122 kB 4.7 MB/s eta 0:00:01
-     |███████████████▉                | 133 kB 4.7 MB/s eta 0:00:01
-     |█████████████████               | 143 kB 4.7 MB/s eta 0:00:01
-     |██████████████████▎             | 153 kB 4.7 MB/s eta 0:00:01
-     |███████████████████▌            | 163 kB 4.7 MB/s eta 0:00:01
-     |████████████████████▊           | 174 kB 4.7 MB/s eta 0:00:01
-     |██████████████████████          | 184 kB 4.7 MB/s eta 0:00:01
-     |███████████████████████▏        | 194 kB 4.7 MB/s eta 0:00:01
-     |████████████████████████▍       | 204 kB 4.7 MB/s eta 0:00:01
-     |█████████████████████████▋      | 215 kB 4.7 MB/s eta 0:00:01
-     |██████████████████████████▉     | 225 kB 4.7 MB/s eta 0:00:01
-     |████████████████████████████    | 235 kB 4.7 MB/s eta 0:00:01
-     |█████████████████████████████▏  | 245 kB 4.7 MB/s eta 0:00:01
-     |██████████████████████████████▍ | 256 kB 4.7 MB/s eta 0:00:01
-     |███████████████████████████████▋| 266 kB 4.7 MB/s eta 0:00:01
-     |████████████████████████████████| 269 kB 4.7 MB/s 
-?25hRequirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.20.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.7.1)
-Requirement already satisfied: numba&gt;=0.38 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (0.54.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |███████████████████████████████▋| 266 kB 10.1 MB/s eta 0:00:01
+     |████████████████████████████████| 269 kB 10.1 MB/s 
+?25hRequirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.9)
+Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.7.1)
 Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (2.26.0)
-Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.9)
+Requirement already satisfied: numba&gt;=0.38 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (0.54.1)
+Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.20.3)
 Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.38-&gt;quantecon) (58.0.4)
 Requirement already satisfied: llvmlite&lt;0.38,&gt;=0.37.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.38-&gt;quantecon) (0.37.0)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (1.26.7)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (3.2)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (2021.10.8)
 Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from sympy-&gt;quantecon) (1.2.1)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (2021.10.8)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (1.26.7)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
   Attempting uninstall: quantecon
     Found existing installation: quantecon 0.5.0
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Uninstalling quantecon-0.5.0:
+    Uninstalling quantecon-0.5.0:
       Successfully uninstalled quantecon-0.5.0
 </pre></div>
 </div>
@@ -351,82 +349,78 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/qua
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting POT
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading POT-0.8.1.0-cp38-cp38-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (673 kB)
+  Downloading POT-0.8.1.0-cp38-cp38-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (673 kB)
 ?25l
-     |▌                               | 10 kB 31.1 MB/s eta 0:00:01
-     |█                               | 20 kB 9.8 MB/s eta 0:00:01
-     |█▌                              | 30 kB 8.3 MB/s eta 0:00:01
-     |██                              | 40 kB 3.9 MB/s eta 0:00:01
-     |██▍                             | 51 kB 4.8 MB/s eta 0:00:01
+     |▌                               | 10 kB 41.0 MB/s eta 0:00:01
+     |█                               | 20 kB 28.4 MB/s eta 0:00:01
+     |█▌                              | 30 kB 19.4 MB/s eta 0:00:01
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |███                             | 61 kB 5.0 MB/s eta 0:00:01
-     |███▍                            | 71 kB 4.9 MB/s eta 0:00:01
-     |████                            | 81 kB 5.5 MB/s eta 0:00:01
-     |████▍                           | 92 kB 5.6 MB/s eta 0:00:01
-     |████▉                           | 102 kB 4.7 MB/s eta 0:00:01
-     |█████▍                          | 112 kB 4.7 MB/s eta 0:00:01
-     |█████▉                          | 122 kB 4.7 MB/s eta 0:00:01
-     |██████▎                         | 133 kB 4.7 MB/s eta 0:00:01
-     |██████▉                         | 143 kB 4.7 MB/s eta 0:00:01
-     |███████▎                        | 153 kB 4.7 MB/s eta 0:00:01
-     |███████▉                        | 163 kB 4.7 MB/s eta 0:00:01
-     |████████▎                       | 174 kB 4.7 MB/s eta 0:00:01
-     |████████▊                       | 184 kB 4.7 MB/s eta 0:00:01
-     |█████████▎                      | 194 kB 4.7 MB/s eta 0:00:01
-     |█████████▊                      | 204 kB 4.7 MB/s eta 0:00:01
-     |██████████▏                     | 215 kB 4.7 MB/s eta 0:00:01
-     |██████████▊                     | 225 kB 4.7 MB/s eta 0:00:01
-     |███████████▏                    | 235 kB 4.7 MB/s eta 0:00:01
-     |███████████▊                    | 245 kB 4.7 MB/s eta 0:00:01
-     |████████████▏                   | 256 kB 4.7 MB/s eta 0:00:01
-     |████████████▋                   | 266 kB 4.7 MB/s eta 0:00:01
-     |█████████████▏                  | 276 kB 4.7 MB/s eta 0:00:01
-     |█████████████▋                  | 286 kB 4.7 MB/s eta 0:00:01
-     |██████████████▏                 | 296 kB 4.7 MB/s eta 0:00:01
-     |██████████████▋                 | 307 kB 4.7 MB/s eta 0:00:01
-     |███████████████                 | 317 kB 4.7 MB/s eta 0:00:01
-     |███████████████▋                | 327 kB 4.7 MB/s eta 0:00:01
-     |████████████████                | 337 kB 4.7 MB/s eta 0:00:01
-     |████████████████▌               | 348 kB 4.7 MB/s eta 0:00:01
-     |█████████████████               | 358 kB 4.7 MB/s eta 0:00:01
-     |█████████████████▌              | 368 kB 4.7 MB/s eta 0:00:01
-     |██████████████████              | 378 kB 4.7 MB/s eta 0:00:01
-     |██████████████████▌             | 389 kB 4.7 MB/s eta 0:00:01
-     |███████████████████             | 399 kB 4.7 MB/s eta 0:00:01
-     |███████████████████▌            | 409 kB 4.7 MB/s eta 0:00:01
-     |████████████████████            | 419 kB 4.7 MB/s eta 0:00:01
-     |████████████████████▍           | 430 kB 4.7 MB/s eta 0:00:01
-     |█████████████████████           | 440 kB 4.7 MB/s eta 0:00:01
-     |█████████████████████▍          | 450 kB 4.7 MB/s eta 0:00:01
-     |██████████████████████          | 460 kB 4.7 MB/s eta 0:00:01
-     |██████████████████████▍         | 471 kB 4.7 MB/s eta 0:00:01
-     |██████████████████████▉         | 481 kB 4.7 MB/s eta 0:00:01
-     |███████████████████████▍        | 491 kB 4.7 MB/s eta 0:00:01
-     |███████████████████████▉        | 501 kB 4.7 MB/s eta 0:00:01
-     |████████████████████████▍       | 512 kB 4.7 MB/s eta 0:00:01
-     |████████████████████████▉       | 522 kB 4.7 MB/s eta 0:00:01
-     |█████████████████████████▎      | 532 kB 4.7 MB/s eta 0:00:01
-     |█████████████████████████▉      | 542 kB 4.7 MB/s eta 0:00:01
-     |██████████████████████████▎     | 552 kB 4.7 MB/s eta 0:00:01
-     |██████████████████████████▊     | 563 kB 4.7 MB/s eta 0:00:01
-     |███████████████████████████▎    | 573 kB 4.7 MB/s eta 0:00:01
-     |███████████████████████████▊    | 583 kB 4.7 MB/s eta 0:00:01
-     |████████████████████████████▎   | 593 kB 4.7 MB/s eta 0:00:01
-     |████████████████████████████▊   | 604 kB 4.7 MB/s eta 0:00:01
-     |█████████████████████████████▏  | 614 kB 4.7 MB/s eta 0:00:01
-     |█████████████████████████████▊  | 624 kB 4.7 MB/s eta 0:00:01
-     |██████████████████████████████▏ | 634 kB 4.7 MB/s eta 0:00:01
-     |██████████████████████████████▋ | 645 kB 4.7 MB/s eta 0:00:01
-     |███████████████████████████████▏| 655 kB 4.7 MB/s eta 0:00:01
-     |███████████████████████████████▋| 665 kB 4.7 MB/s eta 0:00:01
-     |████████████████████████████████| 673 kB 4.7 MB/s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: scipy&gt;=1.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from POT) (1.7.1)
-Requirement already satisfied: numpy&gt;=1.20 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from POT) (1.20.3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |██                              | 40 kB 9.5 MB/s eta 0:00:01
+     |██▍                             | 51 kB 10.9 MB/s eta 0:00:01
+     |███                             | 61 kB 12.8 MB/s eta 0:00:01
+     |███▍                            | 71 kB 11.1 MB/s eta 0:00:01
+     |████                            | 81 kB 12.5 MB/s eta 0:00:01
+     |████▍                           | 92 kB 12.4 MB/s eta 0:00:01
+     |████▉                           | 102 kB 10.7 MB/s eta 0:00:01
+     |█████▍                          | 112 kB 10.7 MB/s eta 0:00:01
+     |█████▉                          | 122 kB 10.7 MB/s eta 0:00:01
+     |██████▎                         | 133 kB 10.7 MB/s eta 0:00:01
+     |██████▉                         | 143 kB 10.7 MB/s eta 0:00:01
+     |███████▎                        | 153 kB 10.7 MB/s eta 0:00:01
+     |███████▉                        | 163 kB 10.7 MB/s eta 0:00:01
+     |████████▎                       | 174 kB 10.7 MB/s eta 0:00:01
+     |████████▊                       | 184 kB 10.7 MB/s eta 0:00:01
+     |█████████▎                      | 194 kB 10.7 MB/s eta 0:00:01
+     |█████████▊                      | 204 kB 10.7 MB/s eta 0:00:01
+     |██████████▏                     | 215 kB 10.7 MB/s eta 0:00:01
+     |██████████▊                     | 225 kB 10.7 MB/s eta 0:00:01
+     |███████████▏                    | 235 kB 10.7 MB/s eta 0:00:01
+     |███████████▊                    | 245 kB 10.7 MB/s eta 0:00:01
+     |████████████▏                   | 256 kB 10.7 MB/s eta 0:00:01
+     |████████████▋                   | 266 kB 10.7 MB/s eta 0:00:01
+     |█████████████▏                  | 276 kB 10.7 MB/s eta 0:00:01
+     |█████████████▋                  | 286 kB 10.7 MB/s eta 0:00:01
+     |██████████████▏                 | 296 kB 10.7 MB/s eta 0:00:01
+     |██████████████▋                 | 307 kB 10.7 MB/s eta 0:00:01
+     |███████████████                 | 317 kB 10.7 MB/s eta 0:00:01
+     |███████████████▋                | 327 kB 10.7 MB/s eta 0:00:01
+     |████████████████                | 337 kB 10.7 MB/s eta 0:00:01
+     |████████████████▌               | 348 kB 10.7 MB/s eta 0:00:01
+     |█████████████████               | 358 kB 10.7 MB/s eta 0:00:01
+     |█████████████████▌              | 368 kB 10.7 MB/s eta 0:00:01
+     |██████████████████              | 378 kB 10.7 MB/s eta 0:00:01
+     |██████████████████▌             | 389 kB 10.7 MB/s eta 0:00:01
+     |███████████████████             | 399 kB 10.7 MB/s eta 0:00:01
+     |███████████████████▌            | 409 kB 10.7 MB/s eta 0:00:01
+     |████████████████████            | 419 kB 10.7 MB/s eta 0:00:01
+     |████████████████████▍           | 430 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████           | 440 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████▍          | 450 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████          | 460 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████▍         | 471 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████▉         | 481 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████▍        | 491 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████▉        | 501 kB 10.7 MB/s eta 0:00:01
+     |████████████████████████▍       | 512 kB 10.7 MB/s eta 0:00:01
+     |████████████████████████▉       | 522 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████████▎      | 532 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████████▉      | 542 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████████▎     | 552 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████████▊     | 563 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████████▎    | 573 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████████▊    | 583 kB 10.7 MB/s eta 0:00:01
+     |████████████████████████████▎   | 593 kB 10.7 MB/s eta 0:00:01
+     |████████████████████████████▊   | 604 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████████████▏  | 614 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████████████▊  | 624 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████████████▏ | 634 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████████████▋ | 645 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████████████▏| 655 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████████████▋| 665 kB 10.7 MB/s eta 0:00:01
+     |████████████████████████████████| 673 kB 10.7 MB/s 
+?25hRequirement already satisfied: numpy&gt;=1.20 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from POT) (1.20.3)
+Requirement already satisfied: scipy&gt;=1.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from POT) (1.7.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: POT
@@ -714,7 +708,7 @@ X: [[15. 35.  0.  0.  0.]
  [ 0. 80.  0.  0. 70.]]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17308/1014317504.py:24: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_12777/1014317504.py:24: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
   res = linprog(C_vec, A_eq=A, b_eq=b, method=&#39;Revised simplex&#39;)
 </pre></div>
 </div>
@@ -777,8 +771,8 @@ X: [[15. 35.  0.  0.  0.]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.09 ms, sys: 5 µs, total: 4.09 ms
-Wall time: 3.75 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.53 ms, sys: 185 µs, total: 3.72 ms
+Wall time: 3.53 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([0., 0., 0., 0., 0., 0., 0.])
@@ -801,8 +795,8 @@ Wall time: 3.75 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.45 ms, sys: 0 ns, total: 4.45 ms
-Wall time: 4.03 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.36 ms, sys: 18 µs, total: 4.38 ms
+Wall time: 3.9 ms
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;timed eval&gt;:1: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
@@ -855,7 +849,7 @@ Wall time: 4.03 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17308/2305330369.py:8: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_12777/2305330369.py:8: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
   res_shuffle = linprog(C_vec, A_eq=A[arr], b_eq=b[arr], method=&#39;Revised simplex&#39;)
 </pre></div>
 </div>
@@ -992,8 +986,8 @@ minimization, we need to put a negative sign before vector <code class="docutils
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.03 ms, sys: 1e+03 ns, total: 4.03 ms
-Wall time: 3.81 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 366 µs, sys: 4.02 ms, total: 4.39 ms
+Wall time: 4.02 ms
 </pre></div>
 </div>
 </div>
@@ -1006,8 +1000,8 @@ Wall time: 3.81 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 109 µs, sys: 4 µs, total: 113 µs
-Wall time: 116 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 84 µs, sys: 2 µs, total: 86 µs
+Wall time: 89.9 µs
 </pre></div>
 </div>
 </div>
@@ -1116,8 +1110,8 @@ v: [ 5. 10.  0. 15.  0.]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.11 ms, sys: 32 µs, total: 5.15 ms
-Wall time: 3.83 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.66 ms, sys: 86 µs, total: 3.74 ms
+Wall time: 3.31 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([], dtype=float64)
@@ -1140,8 +1134,8 @@ Wall time: 3.83 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 440 µs, sys: 0 ns, total: 440 µs
-Wall time: 445 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 371 µs, sys: 9 µs, total: 380 µs
+Wall time: 385 µs
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SimplexResult(x=array([ 5., 15., 25.,  5., 10.,  0., 15.,  0.]), lambd=array([ 0., 35.,  0., 15.,  0., 25.,  0., 60., 15.,  0.,  0., 80.,  0.,
@@ -1348,8 +1342,8 @@ and location.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 616 µs, sys: 18 µs, total: 634 µs
-Wall time: 508 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 590 µs, sys: 14 µs, total: 604 µs
+Wall time: 457 µs
 </pre></div>
 </div>
 </div>

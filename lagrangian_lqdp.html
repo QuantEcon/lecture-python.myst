@@ -170,7 +170,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reciprocal-pairs-property">
-   50.5. Reciprocal pairs property
+   50.5. Reciprocal Pairs Property
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -260,19 +260,19 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (0.5.2)
-Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.9)
-Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (2.26.0)
 Requirement already satisfied: numba&gt;=0.38 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (0.54.1)
-Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.7.1)
+Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (2.26.0)
+Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.9)
 Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.20.3)
-Requirement already satisfied: llvmlite&lt;0.38,&gt;=0.37.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.38-&gt;quantecon) (0.37.0)
+Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.7.1)
 Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.38-&gt;quantecon) (58.0.4)
+Requirement already satisfied: llvmlite&lt;0.38,&gt;=0.37.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.38-&gt;quantecon) (0.37.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (3.2)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (2.0.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (1.26.7)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (2021.10.8)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (1.26.7)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (3.2)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -461,7 +461,7 @@ that satisfies</p>
 <p>which requires that <span class="math notranslate nohighlight">\(x_t' R x_t\)</span> converge to zero as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>.</p>
 </section>
 <section id="reciprocal-pairs-property">
-<h2><span class="section-number">50.5. </span>Reciprocal pairs property<a class="headerlink" href="#reciprocal-pairs-property" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">50.5. </span>Reciprocal Pairs Property<a class="headerlink" href="#reciprocal-pairs-property" title="Permalink to this headline">¶</a></h2>
 <p>To proceed, we study properties of the <span class="math notranslate nohighlight">\((2n \times 2n)\)</span> matrix <span class="math notranslate nohighlight">\(M\)</span> defined in <a class="reference internal" href="#equation-mdefn">(50.9)</a>.</p>
 <p>It helps to introduce a <span class="math notranslate nohighlight">\((2n \times 2n)\)</span> matrix</p>
 <div class="math notranslate nohighlight">
@@ -474,7 +474,12 @@ J = \begin{pmatrix}0 &amp; -I_n\cr I_n &amp; 0\cr\end{pmatrix}.
 <span class="eqno">(50.10)<a class="headerlink" href="#equation-eq3" title="Permalink to this equation">¶</a></span>\[
 MJM^\prime = J.
 \]</div>
-<p>It can be verified directly that <span class="math notranslate nohighlight">\(M\)</span> in equation is symplectic.</p>
+<p>Salient properties of symplectic matrices that are readily verified include:</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(M\)</span> is symplectic, then <span class="math notranslate nohighlight">\(M^2\)</span> is symplectic</p></li>
+<li><p>The determinant of a symplectic, then <span class="math notranslate nohighlight">\(\textrm{det}(M) = 1\)</span></p></li>
+</ul>
+<p>It can be verified directly that <span class="math notranslate nohighlight">\(M\)</span> in equation <a class="reference internal" href="#equation-mdefn">(50.9)</a> is symplectic.</p>
 <p>It follows from equation <a class="reference internal" href="#equation-eq3">(50.10)</a> and from the fact <span class="math notranslate nohighlight">\(J^{-1} = J^\prime = -J\)</span> that for any symplectic
 matrix <span class="math notranslate nohighlight">\(M\)</span>,</p>
 <div class="math notranslate nohighlight" id="equation-eq4">
@@ -611,7 +616,7 @@ inside and half outside the unit circle.</p>
 to occur in reciprocal pairs arise when the system being solved
 is an equilibrium of a model in which there are distortions that
 prevent there being any optimum problem that the equilibrium
-solves. See <span id="id1">[<a class="reference internal" href="zreferences.html#id158">LS18</a>]</span>,  ch 12.</p>
+solves. See <span id="id1">[<a class="reference internal" href="zreferences.html#id159">LS18</a>]</span>,  ch 12.</p>
 </section>
 <section id="application">
 <h2><span class="section-number">50.7. </span>Application<a class="headerlink" href="#application" title="Permalink to this headline">¶</a></h2>
@@ -929,7 +934,7 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>137 µs ± 242 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>101 µs ± 104 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
 </pre></div>
 </div>
 </div>
@@ -942,7 +947,7 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.07 ms ± 3.2 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.99 ms ± 2.26 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
 </pre></div>
 </div>
 </div>

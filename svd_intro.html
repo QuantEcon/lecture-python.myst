@@ -164,13 +164,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#digression-the-polar-decomposition">
-   6.4. Digression: the polar decomposition
+  <a class="reference internal nav-link" href="#digression-polar-decomposition">
+   6.4. Digression:  Polar Decomposition
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#principle-componenents-analysis-pca">
-   6.5. Principle Componenents Analysis (PCA)
+  <a class="reference internal nav-link" href="#principle-components-analysis-pca">
+   6.5. Principle Components Analysis (PCA)
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -179,18 +179,18 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#digression-reduced-or-economy-versus-full-svd">
-   6.7. Digression: reduced (or economy) versus full SVD
+  <a class="reference internal nav-link" href="#reduced-versus-full-svd">
+   6.7. Reduced Versus Full SVD
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pca-with-eigenvalues-and-eigenvectors">
-   6.8. PCA with eigenvalues and eigenvectors
+   6.8. PCA with Eigenvalues and Eigenvectors
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#summary-of-connections">
-   6.9. Summary of  Connections
+  <a class="reference internal nav-link" href="#connections">
+   6.9. Connections
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -200,7 +200,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#source-for-some-python-code">
-   6.11. Source for some Python code
+   6.11. Source for Some Python Code
   </a>
  </li>
 </ul>
@@ -250,7 +250,7 @@
                         
   <section class="tex2jax_ignore mathjax_ignore" id="singular-value-decomposition-svd">
 <h1><span class="section-number">6. </span>Singular Value Decomposition (SVD)<a class="headerlink" href="#singular-value-decomposition-svd" title="Permalink to this headline">¶</a></h1>
-<p>In addition to regular packages contained in Anaconda by default, this notebook also requires:</p>
+<p>In addition to regular packages contained in Anaconda by default, this lecture also requires:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quandl
@@ -262,20 +262,20 @@
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading Quandl-3.7.0-py2.py3-none-any.whl (26 kB)
-Requirement already satisfied: inflection&gt;=0.3.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (0.5.1)
-Requirement already satisfied: pandas&gt;=0.14 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.3.4)
-Requirement already satisfied: numpy&gt;=1.8 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.20.3)
 Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.16.0)
-Requirement already satisfied: requests&gt;=2.7.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.26.0)
+Requirement already satisfied: numpy&gt;=1.8 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.20.3)
 Requirement already satisfied: python-dateutil in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.8.2)
+Requirement already satisfied: inflection&gt;=0.3.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (0.5.1)
 Requirement already satisfied: more-itertools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (8.10.0)
-Requirement already satisfied: pytz&gt;=2017.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.14-&gt;quandl) (2021.3)
+Requirement already satisfied: requests&gt;=2.7.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.26.0)
+Requirement already satisfied: pandas&gt;=0.14 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.3.4)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytz&gt;=2017.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.14-&gt;quandl) (2021.3)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2021.10.8)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (1.26.7)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.2)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.0.4)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quandl
@@ -312,24 +312,25 @@ form the backbone of important parts of modern machine learning methods.</p>
 <section id="the-setup">
 <h2><span class="section-number">6.2. </span>The Setup<a class="headerlink" href="#the-setup" title="Permalink to this headline">¶</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> be an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of rank <span class="math notranslate nohighlight">\(r\)</span>.</p>
-<p>In this notebook, we’ll think of <span class="math notranslate nohighlight">\(X\)</span> as a matrix of <strong>data</strong>.</p>
+<p>In this lecture, we’ll think of <span class="math notranslate nohighlight">\(X\)</span> as a matrix of <strong>data</strong>.</p>
 <ul class="simple">
 <li><p>each column is an <strong>individual</strong> – a time period or person, depending on the application</p></li>
 <li><p>each row is a <strong>random variable</strong> measuring an attribute of a time period or a person, depending on the application</p></li>
 </ul>
 <p>We’ll be interested in  two distinct cases</p>
 <ul class="simple">
-<li><p>The <strong>short and fat</strong> case in which <span class="math notranslate nohighlight">\(m &lt;&lt; n\)</span>, so that there are many more columns than rows.</p></li>
-<li><p>The  <strong>tall and skinny</strong> case in which <span class="math notranslate nohighlight">\(m &gt;&gt; n\)</span>, so that there are many more rows than columns.</p></li>
+<li><p>A <strong>short and fat</strong> case in which <span class="math notranslate nohighlight">\(m &lt;&lt; n\)</span>, so that there are many more columns than rows.</p></li>
+<li><p>A  <strong>tall and skinny</strong> case in which <span class="math notranslate nohighlight">\(m &gt;&gt; n\)</span>, so that there are many more rows than columns.</p></li>
 </ul>
 <p>We’ll apply a <strong>singular value decomposition</strong> of <span class="math notranslate nohighlight">\(X\)</span> in both situations.</p>
-<p>In the first case in which there are many more observations <span class="math notranslate nohighlight">\(n\)</span> than there are random variables <span class="math notranslate nohighlight">\(m\)</span>, we learn about the joint distribution of the  random variables by taking averages  across observations of functions of the observations. Here we’ll look for <strong>patterns</strong> by using a <strong>singular value decomosition</strong> to do a <strong>principal components analysis</strong> (PCA).</p>
-<p>In the second case in which there are many more random variables <span class="math notranslate nohighlight">\(m\)</span> than observations <span class="math notranslate nohighlight">\(n\)</span>, we’ll proceed in a different way.
-We’ll again use a <strong>singular value decomposition</strong>,  but now to do a <strong>dynamic mode decomposition</strong> (DMD)</p>
+<p>In the first case in which there are many more observations <span class="math notranslate nohighlight">\(n\)</span> than random variables <span class="math notranslate nohighlight">\(m\)</span>, we learn about the joint distribution of the  random variables by taking averages  across observations of functions of the observations.</p>
+<p>Here we’ll look for <strong>patterns</strong> by using a <strong>singular value decomosition</strong> to do a <strong>principal components analysis</strong> (PCA).</p>
+<p>In the second case in which there are many more random variables <span class="math notranslate nohighlight">\(m\)</span> than observations <span class="math notranslate nohighlight">\(n\)</span>, we’ll proceed in a different way.</p>
+<p>We’ll again use a <strong>singular value decomposition</strong>,  but now to do a <strong>dynamic mode decomposition</strong> (DMD)</p>
 </section>
 <section id="singular-value-decomposition">
 <h2><span class="section-number">6.3. </span>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this headline">¶</a></h2>
-<p>The <strong>singular value decomposition</strong> of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span> of rank <span class="math notranslate nohighlight">\(r \leq \min(m,n)\)</span> is</p>
+<p>A <strong>singular value decomposition</strong> of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span> of rank <span class="math notranslate nohighlight">\(r \leq \min(m,n)\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
 X  = U \Sigma V^T
@@ -347,20 +348,21 @@ VV^T &amp; = I &amp; \quad V^T V = I
 <li><p><span class="math notranslate nohighlight">\(\Sigma\)</span> is an <span class="math notranslate nohighlight">\(m \times r\)</span> matrix in which the first <span class="math notranslate nohighlight">\(r\)</span> places on its main diagonal are positive numbers <span class="math notranslate nohighlight">\(\sigma_1, \sigma_2, \ldots, \sigma_r\)</span> called <strong>singular values</strong>; remaining entries of <span class="math notranslate nohighlight">\(\Sigma\)</span> are all zero</p></li>
 <li><p>The <span class="math notranslate nohighlight">\(r\)</span> singular values are square roots of the eigenvalues of the <span class="math notranslate nohighlight">\(m \times m\)</span> matrix  <span class="math notranslate nohighlight">\(X X^T\)</span> and the <span class="math notranslate nohighlight">\(n \times n\)</span> matrix <span class="math notranslate nohighlight">\(X^T X\)</span></p></li>
 <li><p>When <span class="math notranslate nohighlight">\(U\)</span> is a complex valued matrix, <span class="math notranslate nohighlight">\(U^T\)</span> denotes the <strong>conjugate-transpose</strong> or <strong>Hermitian-transpose</strong> of <span class="math notranslate nohighlight">\(U\)</span>, meaning that
-<span class="math notranslate nohighlight">\(U_{ij}^T\)</span> is the complex conjugate of <span class="math notranslate nohighlight">\(U_{ji}\)</span>. Similarly, when <span class="math notranslate nohighlight">\(V\)</span> is a complex valued matrix, <span class="math notranslate nohighlight">\(V^T\)</span> denotes the <strong>conjugate-transpose</strong> or <strong>Hermitian-transpose</strong> of <span class="math notranslate nohighlight">\(V\)</span></p></li>
+<span class="math notranslate nohighlight">\(U_{ij}^T\)</span> is the complex conjugate of <span class="math notranslate nohighlight">\(U_{ji}\)</span>.</p></li>
+<li><p>Similarly, when <span class="math notranslate nohighlight">\(V\)</span> is a complex valued matrix, <span class="math notranslate nohighlight">\(V^T\)</span> denotes the <strong>conjugate-transpose</strong> or <strong>Hermitian-transpose</strong> of <span class="math notranslate nohighlight">\(V\)</span></p></li>
 </ul>
 <p>The shapes of <span class="math notranslate nohighlight">\(U\)</span>, <span class="math notranslate nohighlight">\(\Sigma\)</span>, and <span class="math notranslate nohighlight">\(V\)</span> are <span class="math notranslate nohighlight">\(\left(m, m\right)\)</span>, <span class="math notranslate nohighlight">\(\left(m, n\right)\)</span>, <span class="math notranslate nohighlight">\(\left(n, n\right)\)</span>, respectively.</p>
 <p>Below, we shall assume these shapes.</p>
-<p>However, there is an alternative shape convention that we could have used, though we chose not to.</p>
-<p>Thus, note that because we assume that <span class="math notranslate nohighlight">\(A\)</span> has rank <span class="math notranslate nohighlight">\(r\)</span>, there are only <span class="math notranslate nohighlight">\(r \)</span> nonzero singular values, where <span class="math notranslate nohighlight">\(r=rank(A)\leq\min\left(m, n\right)\)</span>.</p>
+<p>However, though we chose not to, there is an alternative shape convention that we could have used.</p>
+<p>Thus, note that because we assume that <span class="math notranslate nohighlight">\(A\)</span> has rank <span class="math notranslate nohighlight">\(r\)</span>, there are only <span class="math notranslate nohighlight">\(r \)</span> nonzero singular values, where <span class="math notranslate nohighlight">\(r=\textrm{rank}(A)\leq\min\left(m, n\right)\)</span>.</p>
 <p>Therefore,  we could also write <span class="math notranslate nohighlight">\(U\)</span>, <span class="math notranslate nohighlight">\(\Sigma\)</span>, and <span class="math notranslate nohighlight">\(V\)</span> as matrices with shapes <span class="math notranslate nohighlight">\(\left(m, r\right)\)</span>, <span class="math notranslate nohighlight">\(\left(r, r\right)\)</span>, <span class="math notranslate nohighlight">\(\left(r, n\right)\)</span>.</p>
 <p>Sometimes, we will choose the former one to be consistent with what is adopted by <code class="docutils literal notranslate"><span class="pre">numpy</span></code>.</p>
 <p>At other times, we’ll use the latter convention in which <span class="math notranslate nohighlight">\(\Sigma\)</span> is an <span class="math notranslate nohighlight">\(r \times r\)</span>  diagonal matrix.</p>
 <p>Also, when we discuss the <strong>dynamic mode decomposition</strong> below, we’ll use a special case of the latter  convention in which it is understood that
 <span class="math notranslate nohighlight">\(r\)</span> is just a pre-specified small number of leading singular values that we think capture the  most interesting  dynamics.</p>
 </section>
-<section id="digression-the-polar-decomposition">
-<h2><span class="section-number">6.4. </span>Digression: the polar decomposition<a class="headerlink" href="#digression-the-polar-decomposition" title="Permalink to this headline">¶</a></h2>
+<section id="digression-polar-decomposition">
+<h2><span class="section-number">6.4. </span>Digression:  Polar Decomposition<a class="headerlink" href="#digression-polar-decomposition" title="Permalink to this headline">¶</a></h2>
 <p>Through  the following identities, the singular value decomposition (SVD) is related to the <strong>polar decomposition</strong> of <span class="math notranslate nohighlight">\(X\)</span></p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -370,10 +372,10 @@ Q &amp; = U V^T
 \end{align*}\]</div>
 <p>where <span class="math notranslate nohighlight">\(S\)</span> is evidently a symmetric matrix and <span class="math notranslate nohighlight">\(Q\)</span> is an orthogonal matrix.</p>
 </section>
-<section id="principle-componenents-analysis-pca">
-<h2><span class="section-number">6.5. </span>Principle Componenents Analysis (PCA)<a class="headerlink" href="#principle-componenents-analysis-pca" title="Permalink to this headline">¶</a></h2>
-<p>Let’s begin with the case in which <span class="math notranslate nohighlight">\(n &gt;&gt; m\)</span>, so that we have many  more observations <span class="math notranslate nohighlight">\(n\)</span> than random variables <span class="math notranslate nohighlight">\(m\)</span>.</p>
-<p>The data matrix <span class="math notranslate nohighlight">\(X\)</span> is <strong>short and fat</strong>  in the  <span class="math notranslate nohighlight">\(n &gt;&gt; m\)</span> case as opposed to a <strong>tall and skinny</strong> case with <span class="math notranslate nohighlight">\(m &gt; &gt; n \)</span> to be discussed later in this notebook.</p>
+<section id="principle-components-analysis-pca">
+<h2><span class="section-number">6.5. </span>Principle Components Analysis (PCA)<a class="headerlink" href="#principle-components-analysis-pca" title="Permalink to this headline">¶</a></h2>
+<p>Let’s begin with a case in which <span class="math notranslate nohighlight">\(n &gt;&gt; m\)</span>, so that we have many  more observations <span class="math notranslate nohighlight">\(n\)</span> than random variables <span class="math notranslate nohighlight">\(m\)</span>.</p>
+<p>The data matrix <span class="math notranslate nohighlight">\(X\)</span> is <strong>short and fat</strong>  in an  <span class="math notranslate nohighlight">\(n &gt;&gt; m\)</span> case as opposed to a <strong>tall and skinny</strong> case with <span class="math notranslate nohighlight">\(m &gt; &gt; n \)</span> to be discussed later in this lecture.</p>
 <p>We regard  <span class="math notranslate nohighlight">\(X\)</span> as an  <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of <strong>data</strong>:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -381,7 +383,7 @@ X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n\end{bmatrix}
 \]</div>
 <p>where for <span class="math notranslate nohighlight">\(j = 1, \ldots, n\)</span> the column vector <span class="math notranslate nohighlight">\(X_j = \begin{bmatrix}X_{1j}\\X_{2j}\\\vdots\\X_{mj}\end{bmatrix}\)</span> is a  vector of observations on variables <span class="math notranslate nohighlight">\(\begin{bmatrix}x_1\\x_2\\\vdots\\x_m\end{bmatrix}\)</span>.</p>
 <p>In a <strong>time series</strong> setting, we would think of columns <span class="math notranslate nohighlight">\(j\)</span> as indexing different <strong>times</strong> at which random variables are observed, while rows index different random variables.</p>
-<p>In a <strong>cross section</strong> setting, we would think of columns <span class="math notranslate nohighlight">\(j\)</span> as indexing different <strong>individuals</strong> for  which random variables are observed, while rows index different random variables.</p>
+<p>In a <strong>cross section</strong> setting, we would think of columns <span class="math notranslate nohighlight">\(j\)</span> as indexing different <strong>individuals</strong> for  which random variables are observed, while rows index different <strong>random variables</strong>.</p>
 <p>The number of singular values equals the rank of  matrix <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <p>Arrange the singular values  in decreasing order.</p>
 <p>Arrange   the positive singular values on the main diagonal of the matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> of into a vector <span class="math notranslate nohighlight">\(\sigma_R\)</span>.</p>
@@ -419,8 +421,8 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 <li><p><span class="math notranslate nohighlight">\(\sigma_k \)</span> for each <span class="math notranslate nohighlight">\(k=1, \ldots, r\)</span> is the strength of <span class="math notranslate nohighlight">\(k\)</span>th <strong>principal component</strong></p></li>
 </ul>
 </section>
-<section id="digression-reduced-or-economy-versus-full-svd">
-<h2><span class="section-number">6.7. </span>Digression: reduced (or economy) versus full SVD<a class="headerlink" href="#digression-reduced-or-economy-versus-full-svd" title="Permalink to this headline">¶</a></h2>
+<section id="reduced-versus-full-svd">
+<h2><span class="section-number">6.7. </span>Reduced Versus Full SVD<a class="headerlink" href="#reduced-versus-full-svd" title="Permalink to this headline">¶</a></h2>
 <p>You can read about reduced and full SVD here
 <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html">https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html</a></p>
 <p>Let’s do a small experiment to see the difference</p>
@@ -439,14 +441,14 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[ 0.37753004, -0.05937881, -0.55076896, -0.47227183, -0.57232692],
-        [ 0.41656901,  0.7118991 ,  0.20287222,  0.4098333 , -0.33248979],
-        [ 0.48366092, -0.35415895,  0.73147472, -0.3120451 , -0.09064294],
-        [ 0.39871193, -0.56055804, -0.24444555,  0.68336931, -0.00749931],
-        [ 0.5394833 ,  0.22365141, -0.24634838, -0.21125867,  0.74405649]]),
- array([1.55904072, 0.24196405]),
- array([[ 0.22393241,  0.97460468],
-        [ 0.97460468, -0.22393241]]))
+ array([[-0.49824105,  0.00894476, -0.37018109, -0.74388263, -0.24754886],
+        [-0.55528581, -0.12154741, -0.1902351 ,  0.62960638, -0.49425733],
+        [-0.3893806 , -0.10046235,  0.89766792, -0.15867526, -0.0854665 ],
+        [-0.33745341,  0.874927  ,  0.00470553,  0.12658142,  0.32339287],
+        [-0.42180738, -0.45777318, -0.14472982,  0.09504601,  0.76324425]]),
+ array([1.95283772, 0.59351895]),
+ array([[-0.82410313, -0.56643978],
+        [-0.56643978,  0.82410313]]))
 </pre></div>
 </div>
 </div>
@@ -462,14 +464,14 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[ 0.37753004, -0.05937881],
-        [ 0.41656901,  0.7118991 ],
-        [ 0.48366092, -0.35415895],
-        [ 0.39871193, -0.56055804],
-        [ 0.5394833 ,  0.22365141]]),
- array([1.55904072, 0.24196405]),
- array([[ 0.22393241,  0.97460468],
-        [ 0.97460468, -0.22393241]]))
+ array([[-0.49824105,  0.00894476],
+        [-0.55528581, -0.12154741],
+        [-0.3893806 , -0.10046235],
+        [-0.33745341,  0.874927  ],
+        [-0.42180738, -0.45777318]]),
+ array([1.95283772, 0.59351895]),
+ array([[-0.82410313, -0.56643978],
+        [-0.56643978,  0.82410313]]))
 </pre></div>
 </div>
 </div>
@@ -489,7 +491,7 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 </div>
 </section>
 <section id="pca-with-eigenvalues-and-eigenvectors">
-<h2><span class="section-number">6.8. </span>PCA with eigenvalues and eigenvectors<a class="headerlink" href="#pca-with-eigenvalues-and-eigenvectors" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.8. </span>PCA with Eigenvalues and Eigenvectors<a class="headerlink" href="#pca-with-eigenvalues-and-eigenvectors" title="Permalink to this headline">¶</a></h2>
 <p>We now  turn to using the eigen decomposition of a sample covariance matrix to do PCA.</p>
 <p>Let <span class="math notranslate nohighlight">\(X_{m \times n}\)</span> be our <span class="math notranslate nohighlight">\(m \times n\)</span> data matrix.</p>
 <p>Let’s assume that sample means of all variables are zero.</p>
@@ -540,10 +542,13 @@ X=\begin{bmatrix}X_1|X_2|\ldots|X_m\end{bmatrix} =\begin{bmatrix}P_1|P_2|\ldots|
 <p>Now define  <span class="math notranslate nohighlight">\(\tilde{\epsilon_j} = \frac{\epsilon_j}{\sqrt{\lambda_j}}\)</span>
 which evidently implies that <span class="math notranslate nohighlight">\(\tilde{\epsilon}_j\tilde{\epsilon}_j^T=1\)</span>.</p>
 <p>Therefore</p>
-<p>\begin{aligned}
-X&amp;=\sqrt{\lambda_1}P_1\tilde{\epsilon_1}+\sqrt{\lambda_2}P_2\tilde{\epsilon_2}+\ldots+\sqrt{\lambda_m}P_m\tilde{\epsilon_m}\
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+X&amp;=\sqrt{\lambda_1}P_1\tilde{\epsilon_1}+\sqrt{\lambda_2}P_2\tilde{\epsilon_2}+\ldots+\sqrt{\lambda_m}P_m\tilde{\epsilon_m}\\
 &amp;=\sigma_1P_1\tilde{\epsilon_2}+\sigma_2P_2\tilde{\epsilon_2}+\ldots+\sigma_mP_m\tilde{\epsilon_m}
-\end{aligned}</p>
+\end{aligned}
+\end{split}\]</div>
 <p>which evidently agrees with</p>
 <div class="math notranslate nohighlight">
 \[
@@ -562,8 +567,8 @@ X=\sigma_1U_1{V_1}^{T}+\sigma_2 U_2{V_2}^{T}+\ldots+\sigma_{r} U_{r}{V_{r}}^{T}
 <li><p>imposing positive diagonals on <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(U\)</span> and adjusting signs in <span class="math notranslate nohighlight">\(V^T\)</span> accordingly</p></li>
 </ol>
 </section>
-<section id="summary-of-connections">
-<h2><span class="section-number">6.9. </span>Summary of  Connections<a class="headerlink" href="#summary-of-connections" title="Permalink to this headline">¶</a></h2>
+<section id="connections">
+<h2><span class="section-number">6.9. </span>Connections<a class="headerlink" href="#connections" title="Permalink to this headline">¶</a></h2>
 <p>To pull things together, it is useful to assemble and compare some formulas presented above.</p>
 <p>First, consider the following SVD of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix:</p>
 <div class="math notranslate nohighlight">
@@ -765,7 +770,7 @@ obtained by different algorithms.</p>
 <h2><span class="section-number">6.10. </span>Dynamic Mode Decomposition (DMD)<a class="headerlink" href="#dynamic-mode-decomposition-dmd" title="Permalink to this headline">¶</a></h2>
 <p>We now turn to the case in which <span class="math notranslate nohighlight">\(m &gt;&gt;n \)</span> so that there are many more random variables <span class="math notranslate nohighlight">\(m\)</span> than observations <span class="math notranslate nohighlight">\(n\)</span>.</p>
 <p>This is the <strong>tall and skinny</strong> case associated with <strong>Dynamic Mode Decomposition</strong>.</p>
-<p>You can read about Dynamic Mode Decomposition here <span id="id2">[<a class="reference internal" href="zreferences.html#id15">KBBWP16</a>]</span>.</p>
+<p>You can read about Dynamic Mode Decomposition here <span id="id2">[<a class="reference internal" href="zreferences.html#id16">KBBWP16</a>]</span>.</p>
 <p>Starting with an <span class="math notranslate nohighlight">\(m \times n \)</span> matrix of data <span class="math notranslate nohighlight">\(X\)</span>, we form two matrices</p>
 <div class="math notranslate nohighlight">
 \[
@@ -778,7 +783,7 @@ obtained by different algorithms.</p>
 \]</div>
 <p>In forming <span class="math notranslate nohighlight">\(\tilde X\)</span> and <span class="math notranslate nohighlight">\(\tilde X'\)</span>, we have in each case  dropped a column from <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <p>Evidently, <span class="math notranslate nohighlight">\(\tilde X\)</span> and <span class="math notranslate nohighlight">\(\tilde X'\)</span> are both <span class="math notranslate nohighlight">\(m \times \tilde n\)</span> matrices where <span class="math notranslate nohighlight">\(\tilde n = n - 1\)</span>.</p>
-<p>We start with a system consisting of <span class="math notranslate nohighlight">\(m\)</span> least squares regressions of <em>everything on everything</em>:</p>
+<p>We start with a system consisting of <span class="math notranslate nohighlight">\(m\)</span> least squares regressions of <strong>everything</strong> on one lagged value of <strong>everything</strong>:</p>
 <div class="math notranslate nohighlight">
 \[
 \tilde X' = A \tilde X + \epsilon
@@ -788,7 +793,7 @@ obtained by different algorithms.</p>
 \[
 A = \tilde X' \tilde X^{+}
 \]</div>
-<p>and where the (huge) <span class="math notranslate nohighlight">\(m \times m \)</span> matrix <span class="math notranslate nohighlight">\(X^{+}\)</span> is the Moore-Penrose generalize inverse of <span class="math notranslate nohighlight">\(X\)</span> that we could compute
+<p>and where the (huge) <span class="math notranslate nohighlight">\(m \times m \)</span> matrix <span class="math notranslate nohighlight">\(X^{+}\)</span> is the Moore-Penrose generalized inverse of <span class="math notranslate nohighlight">\(X\)</span> that we could compute
 as</p>
 <div class="math notranslate nohighlight">
 \[
@@ -797,7 +802,7 @@ X^{+} = V \Sigma^{-1} U^T
 <p>where the matrix <span class="math notranslate nohighlight">\(\Sigma^{-1}\)</span> is constructed by replacing each non-zero element of <span class="math notranslate nohighlight">\(\Sigma\)</span> with <span class="math notranslate nohighlight">\(\sigma_j^{-1}\)</span>.</p>
 <p>The idea behind <strong>dynamic mode decomposition</strong> is to construct an approximation that</p>
 <ul class="simple">
-<li><p>sidesteps computing <span class="math notranslate nohighlight">\(X^{+}\)</span></p></li>
+<li><p>sidesteps computing the generalized inverse <span class="math notranslate nohighlight">\(X^{+}\)</span></p></li>
 <li><p>retains only the largest  <span class="math notranslate nohighlight">\(\tilde r&lt; &lt; r\)</span> eigenvalues and associated eigenvectors of <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V^T\)</span></p></li>
 <li><p>constructs an <span class="math notranslate nohighlight">\(m \times \tilde r\)</span> matrix <span class="math notranslate nohighlight">\(\Phi\)</span> that captures effects of <span class="math notranslate nohighlight">\(r\)</span> dynamic modes on all <span class="math notranslate nohighlight">\(m\)</span> variables</p></li>
 <li><p>uses <span class="math notranslate nohighlight">\(\Phi\)</span> and the <span class="math notranslate nohighlight">\(\tilde r\)</span> leading singular values to forecast <em>future</em> <span class="math notranslate nohighlight">\(X_t\)</span>’s</p></li>
@@ -832,7 +837,7 @@ X^{+} = V \Sigma^{-1} U^T
 </li>
 <li><p>At this point, in constructing <span class="math notranslate nohighlight">\(\tilde A\)</span> according to the above formula,
 we take only the  columns of <span class="math notranslate nohighlight">\(U\)</span> corresponding to the <span class="math notranslate nohighlight">\(\tilde r\)</span> largest singular values.</p>
-<p>Tu et al. verify that eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(\tilde A\)</span> equal the leading eigenvalues and associated eigenvectors of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>Tu et al. <span id="id3">[<a class="reference internal" href="zreferences.html#id3">TRL+14</a>]</span> verify that eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(\tilde A\)</span> equal the leading eigenvalues and associated eigenvectors of <span class="math notranslate nohighlight">\(A\)</span>.</p>
 </li>
 <li><p>Construct an eigencomposition of <span class="math notranslate nohighlight">\(\tilde A\)</span> that satisfies</p>
 <div class="math notranslate nohighlight">
@@ -871,7 +876,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
 \]</div>
 </section>
 <section id="source-for-some-python-code">
-<h2><span class="section-number">6.11. </span>Source for some Python code<a class="headerlink" href="#source-for-some-python-code" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.11. </span>Source for Some Python Code<a class="headerlink" href="#source-for-some-python-code" title="Permalink to this headline">¶</a></h2>
 <p>You can find a Python implementation of DMD here:</p>
 <p><a class="reference external" href="https://mathlab.github.io/PyDMD/">https://mathlab.github.io/PyDMD/</a></p>
 </section>
