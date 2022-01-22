@@ -438,8 +438,8 @@ def plot_value_function_seq(mcm, ax, num_plots=6):
     for i in range(num_plots):
         ax.plot(mcm.w, v, '-', alpha=0.4, label=f"iterate {i}")
         # Update guess
-        for i in range(n):
-            v_next[i] = np.max(mcm.state_action_values(i, v))
+        for j in range(n):
+            v_next[j] = np.max(mcm.state_action_values(j, v))
         v[:] = v_next  # copy contents into v
 
     ax.legend(loc='lower right')
@@ -484,8 +484,8 @@ def compute_reservation_wage(mcm,
     error = tol + 1
     while i < max_iter and error > tol:
 
-        for i in range(n):
-            v_next[i] = np.max(mcm.state_action_values(i, v))
+        for j in range(n):
+            v_next[j] = np.max(mcm.state_action_values(j, v))
 
         error = np.max(np.abs(v_next - v))
         i += 1
