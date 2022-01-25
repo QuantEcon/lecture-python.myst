@@ -698,7 +698,9 @@ $$
 \end{aligned}
 $$
 
-We then solve this dual problem by function *linprog*. Since parameters used here are defined before when solving the primal problem, we don't need to define them here.
+We solve this dual problem by using the  function *linprog*. 
+
+Since parameters used here are defined before when solving the primal problem, we won't define them here.
 
 ```{code-cell} ipython3
 # Solve the dual problem
@@ -707,7 +709,11 @@ res_ex1_dual = linprog(b_ex1, A_ub=-A_ex1.T, b_ub=-c_ex1, method='revised simple
 res_ex1_dual
 ```
 
-The optimal of the dual problem is 27.5, which is the same as the primal problem's. This matches the strong duality. The shadow prices for materials and labor are 0.625 and 0.4375, respectively.
+The optimal value for the dual problem equals  27.5.
+
+This equals the optimal value of  the primal problem, an illustration of  strong duality. 
+
+Shadow prices for materials and labor are 0.625 and 0.4375, respectively.
 
 ### Example 2: Investment Problem
 
@@ -727,7 +733,7 @@ $$
 \end{aligned}
 $$
 
-We then solve this dual problem by function *linprog*.
+We solve this dual problem by using the function *linprog*.
 
 ```{code-cell} ipython3
 # Objective function parameters
@@ -761,7 +767,7 @@ res_ex2_dual = linprog(c_ex2_dual, A_eq=A_eq_ex2_dual, b_eq=b_eq_ex2_dual,
 res_ex2_dual
 ```
 
-The optimal value for the dual problem is 141018.24, which is the same as the primal problem's.
+The optimal value for the dual problem is 141018.24, which equals the value of the primal problem.
 
 Now, let's interpret the dual variables.
 
@@ -781,11 +787,11 @@ We can also interpret $p_1$ as the prospective  value in the end of the third ye
 
 If the mutual fund can raise money at a cost lower than $p_1 - 1$, then it should raise more money to increase its revenue.
 
-But if it bears a cost of funds higher than $p_1 - 1$, it shouldn't do that. 
+But if it bears a cost of funds higher than $p_1 - 1$, the mutual fund shouldn't do that. 
 
-For $i = 4, 5, 6$, this means, if the amount of capital that the fund is permitted to borrow from the bank changes by one dollar, the optimal pay out  at the end of the third year will change $p_i$ dollars.
+For $i = 4, 5, 6$, this means that if the amount of capital that the fund is permitted to borrow from the bank changes by one dollar, the optimal pay out  at the end of the third year will change $p_i$ dollars.
 
-Thus, for $i = 4, 5, 6$, $|p_i|$ reflects the value of one dollar that the mutual fund can borrow from the bank at the beginning of the $i-3$-th year. 
+Thus, for $i = 4, 5, 6$, $|p_i|$ indicates the value of one dollar that the mutual fund can borrow from the bank at the beginning of the $i-3$-th year. 
 
 $|p_i|$ is the shadow price for the loan amount. (We use absolute value here since $p_i \le 0$.)
 
@@ -793,7 +799,7 @@ If the interest rate is lower than $|p_i|$, then the mutual fund should borrow t
 
 For $i = 7$, this means that if the amount of the corporate bond the mutual fund can buy changes one dollar, then the optimal payoff will change $p_7$ dollars at the end of the third year.  Again, $p_7$ is the shadow price for the amount of the corporate bond the mutual fund can buy.
 
-As for numerical results, 
+As for numerical results 
 
 1. $p_1 = 1.38$, which means one dollar of initial capital is worth $\$ 1.38$ at the end of the third year.
 
