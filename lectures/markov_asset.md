@@ -170,7 +170,7 @@ It is useful to regard equation {eq}`lteeqs102`   as a generalization of equatio
 * In equation {eq}`rnapex`, the stochastic discount factor $m_{t+1} = \beta$,  a constant.
 * In equation {eq}`rnapex`, the covariance term ${\rm cov}_t (m_{t+1}, d_{t+1}+ p_{t+1})$ is zero because $m_{t+1} = \beta$.
 * In equation {eq}`rnapex`, ${\mathbb E}_t m_{t+1}$ can be interpreted as the reciprocal of the one-period risk-free gross interest rate.
-* When  $m_{t+1}$ is covaries more negatively with the payout $p_{t+1} + d_{t+1}$, the price of the asset is lower.
+* When  $m_{t+1}$  covaries more negatively with the payout $p_{t+1} + d_{t+1}$, the price of the asset is lower.
 
 Equation {eq}`lteeqs102` asserts that the covariance of the stochastic discount factor with the one period payout $d_{t+1} + p_{t+1}$ is an important determinant of the price $p_t$.
 
@@ -448,7 +448,19 @@ We'll price several distinct assets, including
 
 Let's start with a version of the celebrated asset pricing model of Robert E. Lucas, Jr. {cite}`Lucas1978`.
 
-As in {cite}`Lucas1978`, suppose that the stochastic discount factor takes the form
+Lucas considered an abstract pure exchange economy with these features:
+
+* a single non-storable consumption good
+* a Markov process that governs the total amount of the consumption good available each period
+* a single *tree* that each period yields *fruit* that equals the total amount of consumption available to the economy
+* a competitive market in  *shares* in the tree that entitles their owners to corresponding shares of the *dividend* stream, i.e., the *fruit* stream, yielded by the tree
+
+* a representative consumer who in a competitive equilibrium 
+
+    * consumes the economy's entire endowment each period
+    * owns 100 percent of the shares in the tree
+
+As in {cite}`Lucas1978`, we suppose that the stochastic discount factor takes the form
 
 ```{math}
 :label: lucsdf
@@ -462,10 +474,9 @@ where $u$ is a concave utility function and $c_t$ is time $t$ consumption of a r
 
 Assume the existence of an endowment that follows growth process {eq}`mass_fmce`.
 
-The asset being priced is a claim on the endowment process.
+The asset being priced is a claim on the endowment process, i.e., the *Lucas tree* described above.
 
-Following {cite}`Lucas1978`, suppose further that in equilibrium, consumption
-is equal to the endowment, so that $d_t = c_t$ for all $t$.
+Following {cite}`Lucas1978`, we suppose  that in equilibrium the representative consumer's  consumption equals the aggregate endowment, so that $d_t = c_t$ for all $t$.
 
 For utility, we'll assume the **constant relative risk aversion** (CRRA)
 specification
@@ -512,7 +523,7 @@ $$
 J(x, y) := g(y)^{1-\gamma}  P(x, y)
 $$
 
-then we can rewrite equation {eq}`eq:neweqn101} in vector form as
+then we can rewrite equation {eq}`eq:neweqn101` in vector form as
 
 $$
 v = \beta J ({\mathbb 1} + v )
@@ -628,7 +639,7 @@ Notice that $v$ is decreasing in each case.
 This is because, with a positively correlated state process, higher states indicate higher future consumption growth.
 
 With the stochastic discount factor {eq}`lucsdf2`, higher growth decreases the
-discount factor, lowering the weight placed on future returns.
+discount factor, lowering the weight placed on future dividends.
 
 #### Special Cases
 
