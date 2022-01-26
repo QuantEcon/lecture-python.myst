@@ -971,7 +971,8 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 &amp; p_1, p_2 \ge 0 \\
 \end{aligned}
 \end{split}\]</div>
-<p>We then solve this dual problem by function <em>linprog</em>. Since parameters used here are defined before when solving the primal problem, we don’t need to define them here.</p>
+<p>We solve this dual problem by using the  function <em>linprog</em>.</p>
+<p>Since parameters used here are defined before when solving the primal problem, we won’t define them here.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solve the dual problem</span>
@@ -994,7 +995,9 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 </div>
 </div>
 </div>
-<p>The optimal of the dual problem is 27.5, which is the same as the primal problem’s. This matches the strong duality. The shadow prices for materials and labor are 0.625 and 0.4375, respectively.</p>
+<p>The optimal value for the dual problem equals  27.5.</p>
+<p>This equals the optimal value of  the primal problem, an illustration of  strong duality.</p>
+<p>Shadow prices for materials and labor are 0.625 and 0.4375, respectively.</p>
 </section>
 <section id="id10">
 <h3><span class="section-number">13.8.4. </span>Example 2: Investment Problem<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
@@ -1013,7 +1016,7 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 &amp; p_7 \ge 0 \\
 \end{aligned}
 \end{split}\]</div>
-<p>We then solve this dual problem by function <em>linprog</em>.</p>
+<p>We solve this dual problem by using the function <em>linprog</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Objective function parameters</span>
@@ -1062,7 +1065,7 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 </div>
 </div>
 </div>
-<p>The optimal value for the dual problem is 141018.24, which is the same as the primal problem’s.</p>
+<p>The optimal value for the dual problem is 141018.24, which equals the value of the primal problem.</p>
 <p>Now, let’s interpret the dual variables.</p>
 <p>By strong duality and also our  numerical results, we have that  optimal value is:</p>
 <div class="math notranslate nohighlight">
@@ -1074,13 +1077,13 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <p>Thus, <span class="math notranslate nohighlight">\(p_1\)</span> is the potential value of one more unit of initial capital, or the shadow price for initial capital.</p>
 <p>We can also interpret <span class="math notranslate nohighlight">\(p_1\)</span> as the prospective  value in the end of the third year coming from having  one more  dollar to invest at the beginning of the first year.</p>
 <p>If the mutual fund can raise money at a cost lower than <span class="math notranslate nohighlight">\(p_1 - 1\)</span>, then it should raise more money to increase its revenue.</p>
-<p>But if it bears a cost of funds higher than <span class="math notranslate nohighlight">\(p_1 - 1\)</span>, it shouldn’t do that.</p>
-<p>For <span class="math notranslate nohighlight">\(i = 4, 5, 6\)</span>, this means, if the amount of capital that the fund is permitted to borrow from the bank changes by one dollar, the optimal pay out  at the end of the third year will change <span class="math notranslate nohighlight">\(p_i\)</span> dollars.</p>
-<p>Thus, for <span class="math notranslate nohighlight">\(i = 4, 5, 6\)</span>, <span class="math notranslate nohighlight">\(|p_i|\)</span> reflects the value of one dollar that the mutual fund can borrow from the bank at the beginning of the <span class="math notranslate nohighlight">\(i-3\)</span>-th year.</p>
+<p>But if it bears a cost of funds higher than <span class="math notranslate nohighlight">\(p_1 - 1\)</span>, the mutual fund shouldn’t do that.</p>
+<p>For <span class="math notranslate nohighlight">\(i = 4, 5, 6\)</span>, this means that if the amount of capital that the fund is permitted to borrow from the bank changes by one dollar, the optimal pay out  at the end of the third year will change <span class="math notranslate nohighlight">\(p_i\)</span> dollars.</p>
+<p>Thus, for <span class="math notranslate nohighlight">\(i = 4, 5, 6\)</span>, <span class="math notranslate nohighlight">\(|p_i|\)</span> indicates the value of one dollar that the mutual fund can borrow from the bank at the beginning of the <span class="math notranslate nohighlight">\(i-3\)</span>-th year.</p>
 <p><span class="math notranslate nohighlight">\(|p_i|\)</span> is the shadow price for the loan amount. (We use absolute value here since <span class="math notranslate nohighlight">\(p_i \le 0\)</span>.)</p>
 <p>If the interest rate is lower than <span class="math notranslate nohighlight">\(|p_i|\)</span>, then the mutual fund should borrow to increase its optimal payoff;  if the interest rate is higher, it is better to not do this.</p>
 <p>For <span class="math notranslate nohighlight">\(i = 7\)</span>, this means that if the amount of the corporate bond the mutual fund can buy changes one dollar, then the optimal payoff will change <span class="math notranslate nohighlight">\(p_7\)</span> dollars at the end of the third year.  Again, <span class="math notranslate nohighlight">\(p_7\)</span> is the shadow price for the amount of the corporate bond the mutual fund can buy.</p>
-<p>As for numerical results,</p>
+<p>As for numerical results</p>
 <ol class="simple">
 <li><p><span class="math notranslate nohighlight">\(p_1 = 1.38\)</span>, which means one dollar of initial capital is worth <span class="math notranslate nohighlight">\(\$ 1.38\)</span> at the end of the third year.</p></li>
 <li><p><span class="math notranslate nohighlight">\(p_4 = p_5 = 0\)</span>, which means the loan amounts at the beginning of the first and second year are worth nothing. Recall that the optimal solution to the primal problem, <span class="math notranslate nohighlight">\(x_2, x_3 &gt; 0\)</span>, which means at the beginning of the first and second year, the mutual fund has a postive bank account and borrows no capital from the bank. Thus, it is reasonable that the loan amounts at the beginning of the first and second year are valueless. This is what the  complementary slackness conditions mean in this setting.</p></li>

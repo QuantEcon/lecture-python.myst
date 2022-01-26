@@ -53,18 +53,19 @@ An asset is a claim on one or more future payoffs.
 
 The spot price of an asset depends primarily on
 
-* the anticipated dynamics for the stream of income accruing to the owners
-* attitudes to risk
+* the anticipated  income stream  
+* attitudes about risk
 * rates of time preference
 
 In this lecture, we consider some standard pricing models and dividend stream specifications.
 
 We study how prices and dividend-price ratios respond in these different scenarios.
 
-We also look at creating and pricing *derivative* assets by repackaging income streams.
+We also look at creating and pricing *derivative* assets that repackage income streams.
 
 Key tools for the lecture are
 
+* Markov processses
 * formulas for predicting future values of functions of a Markov state
 * a formula for predicting the discounted sum of future values of a Markov state
 
@@ -84,7 +85,7 @@ from numpy.linalg import eigvals, solve
 ```{index} single: Models; Pricing
 ```
 
-In what follows let $\{d_t\}_{t \geq 0}$ be a stream of dividends
+Let $\{d_t\}_{t \geq 0}$ be a stream of dividends
 
 * A time-$t$ **cum-dividend** asset is a claim to the stream $d_t, d_{t+1}, \ldots$.
 * A time-$t$ **ex-dividend** asset is a claim to the stream $d_{t+1}, d_{t+2}, \ldots$.
@@ -99,8 +100,8 @@ Let's look at some equations that we expect to hold for prices of assets under e
 
 Our first scenario is risk-neutral pricing.
 
-Let $\beta = 1/(1+\rho)$ be an intertemporal discount factor, where
-$\rho$ is the rate at which agents discount the future.
+Let $\beta = 1/(1+\rho)$ be an intertemporal discount **factor**, where
+$\rho$ is the **rate** at which agents discount the future.
 
 The basic risk-neutral asset pricing equation for pricing one unit of an ex-dividend asset is
 
@@ -114,6 +115,8 @@ p_t = \beta {\mathbb E}_t [d_{t+1} + p_{t+1}]
 This is a simple "cost equals expected benefit" relationship.
 
 Here ${\mathbb E}_t [y]$ denotes the best forecast of $y$, conditioned on information available at time $t$.
+
+More precisely, ${\mathbb E}_t [y]$ is the mathematical expectation of $y$ conditional on information available at time $t$.
 
 ### Pricing with Random Discount Factor
 
@@ -134,13 +137,13 @@ p_t = {\mathbb E}_t \left[ m_{t+1}  ( d_{t+1} + p_{t+1} ) \right]
 
 for some  **stochastic discount factor** $m_{t+1}$.
 
-The fixed discount factor $\beta$ in {eq}`rnapex` has been replaced by the random variable $m_{t+1}$.
+Here the fixed discount factor $\beta$ in {eq}`rnapex` has been replaced by the random variable $m_{t+1}$.
 
-The way anticipated future payoffs are evaluated can now depend on various random outcomes.
+How anticipated future payoffs are evaluated  now depends on statistical properties of $m_{t+1}$.
 
-One example of this idea is that assets that tend to have good payoffs in bad states of the world might be regarded as more valuable.
+The stochastic discount factor can be specified to capture the idea that assets that tend to have good payoffs in bad states of the world are valued more highly than other assets whose payoffs don't behave that way.
 
-This is because they pay well when funds are more urgently wanted.
+This is because such assets pay well when funds are more urgently wanted.
 
 We give examples of how the stochastic discount factor has been modeled below.
 
@@ -200,11 +203,11 @@ The answer to this question depends on
 
 For now we'll study  the risk-neutral case in which  the stochastic discount factor is constant.
 
-We'll  focus on how the asset  prices depends on the dividend process.
+We'll  focus on how an asset  price depends on a dividend process.
 
 ### Example 1: Constant Dividends
 
-The simplest case is risk-neutral pricing in the face of a constant, non-random dividend stream $d_t = d > 0$.
+The simplest case is risk-neutral price of a constant, non-random dividend stream $d_t = d > 0$.
 
 Removing the expectation from {eq}`rnapex` and iterating forward gives
 
@@ -220,7 +223,7 @@ $$
 \end{aligned}
 $$
 
-Unless prices explode in the future, this sequence converges to
+If $\lim_{k \rightarrow + \infty} \beta^{k-1} p_{t+k} = 0$, this sequence converges to
 
 ```{math}
 :label: ddet
@@ -228,18 +231,18 @@ Unless prices explode in the future, this sequence converges to
 \bar p := \frac{\beta d}{1-\beta}
 ```
 
-This price is the equilibrium price in the constant dividend case.
+This is the equilibrium price in the constant dividend case.
 
 Indeed, simple algebra shows that setting $p_t = \bar p$ for all $t$
-satisfies the equilibrium condition $p_t = \beta (d + p_{t+1})$.
+satisfies the difference equation $p_t = \beta (d + p_{t+1})$.
 
 ### Example 2: Dividends with Deterministic Growth Paths
 
 Consider a growing, non-random dividend process $d_{t+1} = g d_t$
 where $0 < g \beta < 1$.
 
-While prices are not usually constant when dividends grow over time, the price
-dividend-ratio might be.
+While prices are not usually constant when dividends grow over time, a price
+dividend-ratio can be.
 
 If we guess this, substituting $v_t = v$ into {eq}`pdex` as well as our
 other assumptions, we get $v = \beta g (1 + v)$.
@@ -292,7 +295,7 @@ where
    \qquad (x, y \in S)
    $$
    
-1. $g$ is a given function on $S$ taking positive values
+1. $g$ is a given function on $S$ taking nonnegative values
 
 You can think of
 
@@ -328,15 +331,15 @@ plt.tight_layout()
 plt.show()
 ```
 
-#### Pricing
+#### Pricing Formula
 
 To obtain asset prices in this setting, let's adapt our analysis from the case of deterministic growth.
 
 In that case, we found that $v$ is constant.
 
-This encourages us to guess that, in the current case, $v_t$ is constant given the state $X_t$.
+This encourages us to guess that, in the current case, $v_t$ is a fixed function of the state $X_t$.
 
-In other words, we are looking for a fixed function $v$ such that the price-dividend ratio satisfies  $v_t = v(X_t)$.
+We seek a function $v$ such that the price-dividend ratio satisfies  $v_t = v(X_t)$.
 
 We can substitute this guess into {eq}`pdex` to get
 
@@ -376,11 +379,11 @@ Here
 * $K$ is the matrix $(K(x_i, x_j))_{1 \leq i, j \leq n}$.
 * ${\mathbb 1}$ is a column vector of ones.
 
-When does {eq}`vcumrn` have a unique solution?
+When does equation {eq}`vcumrn` have a unique solution?
 
-From the {ref}`Neumann series lemma <la_neumann>` and Gelfand's formula, this will be the case if $\beta K$ has spectral radius strictly less than one.
+From the {ref}`Neumann series lemma <la_neumann>` and Gelfand's formula, equation {eq}`vcumrn` has a unique solution when $\beta K$ has spectral radius strictly less than one.
 
-In other words, we require that the eigenvalues of $K$  be strictly less than $\beta^{-1}$ in modulus.
+Thus,  we require that the eigenvalues of $K$  be strictly less than $\beta^{-1}$ in modulus.
 
 The solution is then
 
@@ -392,7 +395,7 @@ v = (I - \beta K)^{-1} \beta K{\mathbb 1}
 
 ### Code
 
-Let's calculate and plot the price-dividend ratio at a set of parameters.
+Let's calculate and plot the price-dividend ratio at some parameters.
 
 As before, we'll generate $\{X_t\}$  as a {ref}`discretized AR1 process <mc_ex3>` and set $g_t = \exp(X_t)$.
 
@@ -494,7 +497,7 @@ v(X_t)
 \left[
     g(X_{t+1})^{1-\gamma} (1 + v(X_{t+1}) )
 \right]
-$$
+$$ (eq:neweqn101)
 
 Conditioning on $X_t = x$, we can write this as
 
@@ -509,7 +512,7 @@ $$
 J(x, y) := g(y)^{1-\gamma}  P(x, y)
 $$
 
-then we can rewrite in vector form as
+then we can rewrite equation {eq}`eq:neweqn101} in vector form as
 
 $$
 v = \beta J ({\mathbb 1} + v )
@@ -523,7 +526,7 @@ Assuming that the spectral radius of $J$ is strictly less than $\beta^{-1}$, thi
 v = (I - \beta J)^{-1} \beta  J {\mathbb 1}
 ```
 
-We will define a function tree_price to solve for $v$ given parameters stored in
+We will define a function tree_price to compute $v$ given parameters stored in
 the class AssetPriceModel
 
 ```{code-cell} python3
@@ -622,9 +625,9 @@ plt.show()
 
 Notice that $v$ is decreasing in each case.
 
-This is because, with a positively correlated state process, higher states suggest higher future consumption growth.
+This is because, with a positively correlated state process, higher states indicate higher future consumption growth.
 
-In the stochastic discount factor {eq}`lucsdf2`, higher growth decreases the
+With the stochastic discount factor {eq}`lucsdf2`, higher growth decreases the
 discount factor, lowering the weight placed on future returns.
 
 #### Special Cases
@@ -654,7 +657,7 @@ A risk-free consol promises to pay a constant amount  $\zeta> 0$ each period.
 
 Recycling notation, let $p_t$ now be the price of an  ex-coupon claim to the consol.
 
-An ex-coupon claim to the consol entitles the owner at the end of period $t$ to
+An ex-coupon claim to the consol entitles an owner at the end of period $t$ to
 
 * $\zeta$ in period $t+1$, plus
 * the right to sell the claim for $p_{t+1}$ next period
@@ -665,7 +668,7 @@ $$
 p_t = {\mathbb E}_t \left[ m_{t+1}  ( \zeta + p_{t+1} ) \right]
 $$
 
-We maintain the stochastic discount factor {eq}`lucsdf2`, so this becomes
+With the stochastic discount factor {eq}`lucsdf2`, this becomes
 
 ```{math}
 :label: consolguess1
@@ -729,13 +732,13 @@ def consol_price(ap, ζ):
 
 ### Pricing an Option to Purchase the Consol
 
-Let's now price options of varying maturities.
+Let's now price options of various maturities.
 
 We'll study an option that  gives the owner the  right to purchase a consol at a price $p_S$.
 
 #### An Infinite Horizon Call Option
 
-We want to price an infinite horizon  option to purchase a consol at a price $p_S$.
+We want to price an *infinite horizon*  option to purchase a consol at a price $p_S$.
 
 The option entitles the owner at the beginning of a period either
 
@@ -787,7 +790,7 @@ values $(w(x_i), p_S)_{i = 1}^n$, we can express {eq}`FEoption0` as the nonlinea
 w = \max \{ \beta M w, \; p - p_S {\mathbb 1} \}
 ```
 
-To solve {eq}`FEoption`, form the operator $T$ mapping vector $w$
+To solve {eq}`FEoption`, form an operator $T$ that maps vector $w$
 into vector $Tw$ via
 
 $$
@@ -941,8 +944,8 @@ Do the same for
 
 ### Exercise 3
 
-Let's consider finite horizon call options, which are more common than the
-infinite horizon variety.
+Let's consider finite horizon call options, which are more common than 
+infinite horizon ones.
 
 Finite horizon options obey functional equations closely related to {eq}`FEoption0`.
 
@@ -967,7 +970,7 @@ $$
 
 where $w(x, 0) = 0$ for all $x$.
 
-We can express the preceding as the sequence of nonlinear vector equations
+We can express this  as a sequence of nonlinear vector equations
 
 $$
 w_k = \max \{ \beta M w_{k-1}, \; p - p_S {\mathbb 1} \}
@@ -1090,8 +1093,8 @@ ax.legend()
 plt.show()
 ```
 
-Not surprisingly, the option has greater value with larger $k$.
+Not surprisingly,  options with larger $k$ are worth more.
 
-This is because the owner has a longer time horizon over which he or she
-may exercise the option.
+This is because an owner has a longer  horizon over which 
+ the option can be exercised.
 
