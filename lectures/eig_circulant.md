@@ -474,7 +474,7 @@ x[0:2] = 1/2
 x
 ```
 
-Apply a discrete fourier transform.
+Apply a discrete Fourier transform.
 
 ```{code-cell} ipython3
 X = DFT(x)

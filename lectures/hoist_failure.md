@@ -504,7 +504,8 @@ Probabilities for each event are recorded as failure rates per year.
 
 ## Failure Rates Unknown
 
-Now we come to the problem that really interests us, following {cite}`Ardron_2018` and Greenfield and Sargent {cite}`Greenfield_Sargent_1993`  in the spirit of Apostolakis  {cite}`apostolakis1990`.  
+Now we come to the problem that really interests us, following  {cite}`Ardron_2018` and Greenfield and Sargent 
+ {cite}`Greenfield_Sargent_1993`  in the spirit of Apostolakis  {cite}`apostolakis1990`.  
 
 The constituent probabilities or failure rates $P(A_i)$ are not known a priori and have to be estimated.  
 

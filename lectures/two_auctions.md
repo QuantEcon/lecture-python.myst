@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Two auctions
+# First-Price and Second-Price Auctions
 
 In this lecture we'll learn about and simulate two classic auctions:
 

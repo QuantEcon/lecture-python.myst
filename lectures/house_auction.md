@@ -34,7 +34,7 @@ We describe two distinct mechanisms
 
  * A multiple rounds, ascending bid auction
  
- * A special case of a Groves-Clarke ({cite}`Groves_73`, {cite}`Clarke_71`) mechanism with a benevolent social planner
+ * A special case of a Groves-Clarke {cite}`Groves_73`, {cite}`Clarke_71` mechanism with a benevolent social planner
 
 
 **Note:** In 1994, the multiple rounds, ascending bid auction was actually used by Stanford University to sell leases to 9 lots on the Stanford campus to eligible faculty members.
@@ -1019,7 +1019,7 @@ We now decribe an alternative way for society to allocate $n$  houses to $m$ pos
  
 We continue to assume that each buyer can purchase at most one house.
 
-The mechanism  is a very special case of a Groves-Clarke mechanism({cite}`Groves_73`, {cite}`Clarke_71`). 
+The mechanism  is a very special case of a Groves-Clarke mechanism {cite}`Groves_73`, {cite}`Clarke_71`. 
 
 Its special structure substantially simplifies writing Python code to find an optimal allocation.
 
