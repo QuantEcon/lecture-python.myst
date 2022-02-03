@@ -503,7 +503,7 @@ fig.add_trace(go.Scatter(x=grid, y=f_val, name=r'$-3x+2$'))
 fig.add_trace(go.Scatter(x=grid, y=predictions, name='Approximation'))
 
 # Export to PNG file
-#Image(fig.to_image(format="png"))
+Image(fig.to_image(format="png"))
 # fig.show() will provide interactive plot when running
 # notebook locally
 ```
@@ -583,7 +583,7 @@ fig.add_trace(go.Scatter(x=grid, y=predictions_2, name='Two-layer neural network
 fig.add_trace(go.Scatter(x=grid, y=predictions_3, name='Three-layer neural network'))
 
 # Export to PNG file
-#Image(fig.to_image(format="png"))
+Image(fig.to_image(format="png"))
 # fig.show() will provide interactive plot when running
 # notebook locally
 ```
