@@ -503,7 +503,7 @@ fig.add_trace(go.Scatter(x=grid, y=f_val, name=r'$-3x+2$'))
 fig.add_trace(go.Scatter(x=grid, y=predictions, name='Approximation'))
 
 # Export to PNG file
-#Image(fig.to_image(format="png"))
+Image(fig.to_image(format="png"))
 # fig.show() will provide interactive plot when running
 # notebook locally
 ```
@@ -583,7 +583,7 @@ fig.add_trace(go.Scatter(x=grid, y=predictions_2, name='Two-layer neural network
 fig.add_trace(go.Scatter(x=grid, y=predictions_3, name='Three-layer neural network'))
 
 # Export to PNG file
-#Image(fig.to_image(format="png"))
+Image(fig.to_image(format="png"))
 # fig.show() will provide interactive plot when running
 # notebook locally
 ```
@@ -593,4 +593,10 @@ fig.add_trace(go.Scatter(x=grid, y=predictions_3, name='Three-layer neural netwo
 
 from jax.lib import xla_bridge
 print(xla_bridge.get_backend().platform)
+```
+
+```{note} Cloud Enivronment
+This lecture site is built in a server environment that doesn't have access to a `gpu`
+If you run this lecture locally this lets you know where your code is being executed, either
+via the `cpu` or the `gpu`
 ```
