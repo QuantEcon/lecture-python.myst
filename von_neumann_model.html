@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>15. Von Neumann Growth Model (and a Generalization) &#8212; Quantitative Economics with Python</title>
+    <title>18. Von Neumann Growth Model (and a Generalization) &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,8 +99,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="16. Dynamics in One Dimension" href="scalar_dynam.html" />
-    <link rel="prev" title="14. Optimal Transport" href="opt_transport.html" />
+    <link rel="next" title="19. Dynamics in One Dimension" href="scalar_dynam.html" />
+    <link rel="prev" title="17. Optimal Transport" href="opt_transport.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -150,66 +150,66 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#notation">
-   15.1. Notation
+   18.1. Notation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#model-ingredients-and-assumptions">
-   15.2. Model Ingredients and Assumptions
+   18.2. Model Ingredients and Assumptions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dynamic-interpretation">
-   15.3. Dynamic Interpretation
+   18.3. Dynamic Interpretation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#balanced-growth">
-     15.3.1. Balanced Growth
+     18.3.1. Balanced Growth
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#duality">
-   15.4. Duality
+   18.4. Duality
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#interpretation-as-two-player-zero-sum-game">
-   15.5. Interpretation as Two-player Zero-sum Game
+   18.5. Interpretation as Two-player Zero-sum Game
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#connection-with-linear-programming-lp">
-     15.5.1. Connection with Linear Programming (LP)
+     18.5.1. Connection with Linear Programming (LP)
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#algorithm">
-     15.5.2. Algorithm
+     18.5.2. Algorithm
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#step-1">
-       15.5.2.1. Step 1
+       18.5.2.1. Step 1
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#step-2">
-       15.5.2.2. Step 2
+       18.5.2.2. Step 2
       </a>
      </li>
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#uniqueness-and-irreducibility">
-     15.5.3. Uniqueness and Irreducibility
+     18.5.3. Uniqueness and Irreducibility
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#a-special-case">
-     15.5.4. A Special Case
+     18.5.4. A Special Case
     </a>
    </li>
   </ul>
@@ -264,7 +264,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="von-neumann-growth-model-and-a-generalization">
-<span id="index-0"></span><h1><a class="toc-backref" href="#id14"><span class="section-number">15. </span>Von Neumann Growth Model (and a Generalization)</a><a class="headerlink" href="#von-neumann-growth-model-and-a-generalization" title="Permalink to this headline">¶</a></h1>
+<span id="index-0"></span><h1><a class="toc-backref" href="#id14"><span class="section-number">18. </span>Von Neumann Growth Model (and a Generalization)</a><a class="headerlink" href="#von-neumann-growth-model-and-a-generalization" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -280,8 +280,8 @@
 </ul>
 </div>
 <p>This lecture uses the class <code class="docutils literal notranslate"><span class="pre">Neumann</span></code> to calculate key objects of a
-linear growth model of John von Neumann <span id="id1">[<a class="reference internal" href="zreferences.html#id49">vN37</a>]</span> that was generalized by
-Kemeny, Morgenstern and Thompson <span id="id2">[<a class="reference internal" href="zreferences.html#id52">KMT56</a>]</span>.</p>
+linear growth model of John von Neumann <span id="id1">[<a class="reference internal" href="zreferences.html#id57">vN37</a>]</span> that was generalized by
+Kemeny, Morgenstern and Thompson <span id="id2">[<a class="reference internal" href="zreferences.html#id60">KMT56</a>]</span>.</p>
 <p>Objects of interest are the maximal expansion rate (<span class="math notranslate nohighlight">\(\alpha\)</span>), the
 interest factor (<span class="math notranslate nohighlight">\(β\)</span>), the optimal intensities (<span class="math notranslate nohighlight">\(x\)</span>), and
 prices (<span class="math notranslate nohighlight">\(p\)</span>).</p>
@@ -573,7 +573,7 @@ following important tools:</p>
 </div>
 </div>
 <section id="notation">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">15.1. </span>Notation</a><a class="headerlink" href="#notation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">18.1. </span>Notation</a><a class="headerlink" href="#notation" title="Permalink to this headline">¶</a></h2>
 <p>We use the following notation.</p>
 <p><span class="math notranslate nohighlight">\(\mathbf{0}\)</span> denotes
 a vector of zeros.</p>
@@ -602,7 +602,7 @@ denote the <span class="math notranslate nohighlight">\(j\)</span> th column and
 respectively.</p>
 </section>
 <section id="model-ingredients-and-assumptions">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">15.2. </span>Model Ingredients and Assumptions</a><a class="headerlink" href="#model-ingredients-and-assumptions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">18.2. </span>Model Ingredients and Assumptions</a><a class="headerlink" href="#model-ingredients-and-assumptions" title="Permalink to this headline">¶</a></h2>
 <p>A pair <span class="math notranslate nohighlight">\((A,B)\)</span> of <span class="math notranslate nohighlight">\(m\times n\)</span> non-negative matrices defines
 an economy.</p>
 <ul class="simple">
@@ -658,7 +658,7 @@ that <span class="math notranslate nohighlight">\(a_{i,j}=0\)</span> <span class
 for all <span class="math notranslate nohighlight">\(j\in S\)</span>, <span class="math notranslate nohighlight">\(\exists i\in T\)</span> for which  <span class="math notranslate nohighlight">\(b_{i,j}&gt;0\)</span>.
 The economy is <strong>irreducible</strong> if there are no proper independent
 subsets.</p>
-<p>We study two examples, both in  Chapter 9.6 of Gale <span id="id3">[<a class="reference internal" href="zreferences.html#id54">Gal89</a>]</span></p>
+<p>We study two examples, both in  Chapter 9.6 of Gale <span id="id3">[<a class="reference internal" href="zreferences.html#id62">Gal89</a>]</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># (1) Irreducible (A, B) example: α_0 = β_0</span>
@@ -729,7 +729,7 @@ Assumptions:
 </div>
 </section>
 <section id="dynamic-interpretation">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">15.3. </span>Dynamic Interpretation</a><a class="headerlink" href="#dynamic-interpretation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id17"><span class="section-number">18.3. </span>Dynamic Interpretation</a><a class="headerlink" href="#dynamic-interpretation" title="Permalink to this headline">¶</a></h2>
 <p>Attach a time index <span class="math notranslate nohighlight">\(t\)</span> to the preceding objects, regard an economy
 as a dynamic system, and study sequences</p>
 <div class="math notranslate nohighlight">
@@ -758,7 +758,7 @@ yesterday.</p>
 <p>Accordingly, <span class="math notranslate nohighlight">\(Ap_t\)</span> tells the costs of production in period
 <span class="math notranslate nohighlight">\(t\)</span> and <span class="math notranslate nohighlight">\(Bp_t\)</span> tells revenues in period <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
 <section id="balanced-growth">
-<h3><span class="section-number">15.3.1. </span>Balanced Growth<a class="headerlink" href="#balanced-growth" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">18.3.1. </span>Balanced Growth<a class="headerlink" href="#balanced-growth" title="Permalink to this headline">¶</a></h3>
 <p>We follow John von Neumann in studying “balanced growth”.</p>
 <p>Let <span class="math notranslate nohighlight">\(./\)</span> denote an elementwise division of one vector by another and let
 <span class="math notranslate nohighlight">\(\alpha &gt;0\)</span> be a scalar.</p>
@@ -793,7 +793,7 @@ conduct an analysis purely in terms of a time-invariant growth rate
 </section>
 </section>
 <section id="duality">
-<h2><a class="toc-backref" href="#id18"><span class="section-number">15.4. </span>Duality</a><a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id18"><span class="section-number">18.4. </span>Duality</a><a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
 <p>Two problems are connected by a remarkable dual
 relationship between  technological and valuation characteristics of
 the economy:</p>
@@ -807,7 +807,7 @@ and a number <span class="math notranslate nohighlight">\(\alpha\in\mathbb{R}\)<
     &amp;\text{s.t. }\hspace{2mm}x^T B \geq \alpha x^T A
     \end{aligned}
 \end{split}\]</div>
-<p>Theorem 9.3 of David Gale’s book <span id="id4">[<a class="reference internal" href="zreferences.html#id54">Gal89</a>]</span> asserts that if Assumptions I and II are
+<p>Theorem 9.3 of David Gale’s book <span id="id4">[<a class="reference internal" href="zreferences.html#id62">Gal89</a>]</span> asserts that if Assumptions I and II are
 both satisfied, then a maximum value of <span class="math notranslate nohighlight">\(\alpha\)</span> exists and that it is
 positive.</p>
 <p>The maximal value is called the <em>technological expansion rate</em> and is denoted
@@ -832,11 +832,11 @@ the optimality of <span class="math notranslate nohighlight">\(x_0\)</span> and 
 positive scale factor.</p>
 <p>For convenience (and to emphasize a close connection to zero-sum games),  we normalize both vectors
 <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(p_0\)</span> to have unit length.</p>
-<p>A standard duality argument (see Lemma 9.4. in (Gale, 1960) <span id="id5">[<a class="reference internal" href="zreferences.html#id54">Gal89</a>]</span>) implies
+<p>A standard duality argument (see Lemma 9.4. in (Gale, 1960) <span id="id5">[<a class="reference internal" href="zreferences.html#id62">Gal89</a>]</span>) implies
 that under Assumptions I and II, <span class="math notranslate nohighlight">\(\beta_0\leq \alpha_0\)</span>.</p>
 <p>But to deduce that <span class="math notranslate nohighlight">\(\beta_0\geq \alpha_0\)</span>,
 Assumptions I and II are not sufficient.</p>
-<p>Therefore, von Neumann <span id="id6">[<a class="reference internal" href="zreferences.html#id49">vN37</a>]</span>  went on to prove the following remarkable
+<p>Therefore, von Neumann <span id="id6">[<a class="reference internal" href="zreferences.html#id57">vN37</a>]</span>  went on to prove the following remarkable
 “duality” result that connects TEP and EEP.</p>
 <p><strong>Theorem 1 (von Neumann):</strong> If the economy <span class="math notranslate nohighlight">\((A,B)\)</span> satisfies
 Assumptions I and II, then there exist
@@ -883,7 +883,7 @@ with balanced growth.</p>
 fact, it does not rule out (trivial) cases with <span class="math notranslate nohighlight">\(x_0^TBp_0 = 0\)</span> so
 that nothing of value is produced.</p>
 <p>To exclude such uninteresting cases,
-Kemeny, Morgenstern and Thomspson <span id="id7">[<a class="reference internal" href="zreferences.html#id52">KMT56</a>]</span> add an extra requirement</p>
+Kemeny, Morgenstern and Thomspson <span id="id7">[<a class="reference internal" href="zreferences.html#id60">KMT56</a>]</span> add an extra requirement</p>
 <div class="math notranslate nohighlight">
 \[
 x^T_0 B p_0 &gt; 0
@@ -894,7 +894,7 @@ this extra condition does not affect the existence result, while it
 significantly reduces the number of (relevant) solutions.</p>
 </section>
 <section id="interpretation-as-two-player-zero-sum-game">
-<h2><a class="toc-backref" href="#id19"><span class="section-number">15.5. </span>Interpretation as Two-player Zero-sum Game</a><a class="headerlink" href="#interpretation-as-two-player-zero-sum-game" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id19"><span class="section-number">18.5. </span>Interpretation as Two-player Zero-sum Game</a><a class="headerlink" href="#interpretation-as-two-player-zero-sum-game" title="Permalink to this headline">¶</a></h2>
 <p>To compute the equilibrium <span class="math notranslate nohighlight">\((\gamma^{*}, x_0, p_0)\)</span>, we follow the
 algorithm proposed by Hamburger, Thompson and Weil (1967), building on
 the key insight that an equilibrium (with balanced growth) can be
@@ -932,13 +932,13 @@ maximizing player’s choice)</p></li>
 <p>A famous theorem of Nash (1951) tells us that there always
 exists a mixed strategy Nash equilibrium for any <em>finite</em> two-player
 zero-sum game.</p>
-<p>Moreover, von Neumann’s Minmax Theorem <span id="id8">[<a class="reference internal" href="zreferences.html#id50">vN28</a>]</span> implies that</p>
+<p>Moreover, von Neumann’s Minmax Theorem <span id="id8">[<a class="reference internal" href="zreferences.html#id58">vN28</a>]</span> implies that</p>
 <div class="math notranslate nohighlight">
 \[
 V(C) = \max_x \min_p \hspace{2mm} x^T C p = \min_p \max_x \hspace{2mm} x^T C p = (x^*)^T C p^*
 \]</div>
 <section id="connection-with-linear-programming-lp">
-<h3><span class="section-number">15.5.1. </span>Connection with Linear Programming (LP)<a class="headerlink" href="#connection-with-linear-programming-lp" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">18.5.1. </span>Connection with Linear Programming (LP)<a class="headerlink" href="#connection-with-linear-programming-lp" title="Permalink to this headline">¶</a></h3>
 <p>Nash equilibria of a finite two-player zero-sum game solve  a linear programming problem.</p>
 <p>To see this, we introduce
 the following notation</p>
@@ -968,7 +968,7 @@ p &amp;\geq \mathbf{0} \\
 \iota_m^T p &amp; = 1
 \end{aligned}
 \end{split}\]</div>
-<p>Hamburger, Thompson and Weil <span id="id9">[<a class="reference internal" href="zreferences.html#id53">HTW67</a>]</span> view the input-output pair of the
+<p>Hamburger, Thompson and Weil <span id="id9">[<a class="reference internal" href="zreferences.html#id61">HTW67</a>]</span> view the input-output pair of the
 economy as payoff matrices of two-player zero-sum games.</p>
 <p>Using this interpretation, they restate Assumption I and II as follows</p>
 <div class="math notranslate nohighlight">
@@ -1045,7 +1045,7 @@ M(\gamma)p'' = M(\gamma'') + (\gamma'' - \gamma)Ap'' \leq \mathbf{0}
 <p>hence <span class="math notranslate nohighlight">\(V(M(\gamma))\leq 0\)</span>.</p>
 <p>It is clear from the above argument that <span class="math notranslate nohighlight">\(\beta_0\)</span>, <span class="math notranslate nohighlight">\(\alpha_0\)</span> are the minimal and maximal <span class="math notranslate nohighlight">\(\gamma\)</span> for which
 <span class="math notranslate nohighlight">\(V(M(\gamma))=0\)</span>.</p>
-<p>Furthermore, Hamburger et al. <span id="id10">[<a class="reference internal" href="zreferences.html#id53">HTW67</a>]</span> show that the
+<p>Furthermore, Hamburger et al. <span id="id10">[<a class="reference internal" href="zreferences.html#id61">HTW67</a>]</span> show that the
 function <span class="math notranslate nohighlight">\(\gamma \mapsto V(M(\gamma))\)</span> is continuous and
 nonincreasing in <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
 <p>This suggests an algorithm to compute
@@ -1053,12 +1053,12 @@ nonincreasing in <span class="math notranslate nohighlight">\(\gamma\)</span>.</
 input-output pair <span class="math notranslate nohighlight">\((A, B)\)</span>.</p>
 </section>
 <section id="algorithm">
-<h3><span class="section-number">15.5.2. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
-<p>Hamburger, Thompson and Weil <span id="id11">[<a class="reference internal" href="zreferences.html#id53">HTW67</a>]</span> propose a simple bisection algorithm
+<h3><span class="section-number">18.5.2. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
+<p>Hamburger, Thompson and Weil <span id="id11">[<a class="reference internal" href="zreferences.html#id61">HTW67</a>]</span> propose a simple bisection algorithm
 to find the minimal and maximal roots (i.e. <span class="math notranslate nohighlight">\(\beta_0\)</span> and
 <span class="math notranslate nohighlight">\(\alpha_0\)</span>) of the function <span class="math notranslate nohighlight">\(\gamma \mapsto V(M(\gamma))\)</span>.</p>
 <section id="step-1">
-<h4><span class="section-number">15.5.2.1. </span>Step 1<a class="headerlink" href="#step-1" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">18.5.2.1. </span>Step 1<a class="headerlink" href="#step-1" title="Permalink to this headline">¶</a></h4>
 <p>First, notice that we can easily find trivial upper and lower bounds for
 <span class="math notranslate nohighlight">\(\alpha_0\)</span> and <span class="math notranslate nohighlight">\(\beta_0\)</span>.</p>
 <ul class="simple">
@@ -1092,7 +1092,7 @@ solves <span class="math notranslate nohighlight">\(\min_j\{[\iota^T_m(B-\beta^{
 </div>
 </section>
 <section id="step-2">
-<h4><span class="section-number">15.5.2.2. </span>Step 2<a class="headerlink" href="#step-2" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">18.5.2.2. </span>Step 2<a class="headerlink" href="#step-2" title="Permalink to this headline">¶</a></h4>
 <p>Compute <span class="math notranslate nohighlight">\(\alpha_0\)</span> and <span class="math notranslate nohighlight">\(\beta_0\)</span></p>
 <ul class="simple">
 <li><p>Finding <span class="math notranslate nohighlight">\(\alpha_0\)</span></p>
@@ -1222,7 +1222,7 @@ a ‘‘full duality’’ result, i.e. <span class="math notranslate nohighligh
 </section>
 </section>
 <section id="uniqueness-and-irreducibility">
-<h3><span class="section-number">15.5.3. </span>Uniqueness and Irreducibility<a class="headerlink" href="#uniqueness-and-irreducibility" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">18.5.3. </span>Uniqueness and Irreducibility<a class="headerlink" href="#uniqueness-and-irreducibility" title="Permalink to this headline">¶</a></h3>
 <p>As an illustration, compute first the maximal and minimal roots of
 <span class="math notranslate nohighlight">\(V(M(\cdot))\)</span> for our Example 2 that has a reducible
 input-output pair <span class="math notranslate nohighlight">\((A, B)\)</span></p>
@@ -1273,14 +1273,14 @@ many economic solutions, meaning that there are only finitely many
 is a self-contained part of the economy (a sub-economy) that in
 equilibrium can expand independently with the expansion
 coefficient <span class="math notranslate nohighlight">\(\gamma^*_i\)</span>.</p>
-<p>The following theorem (see Theorem 9.10. in Gale <span id="id12">[<a class="reference internal" href="zreferences.html#id54">Gal89</a>]</span>) asserts that
+<p>The following theorem (see Theorem 9.10. in Gale <span id="id12">[<a class="reference internal" href="zreferences.html#id62">Gal89</a>]</span>) asserts that
 imposing irreducibility is sufficient for uniqueness of
 <span class="math notranslate nohighlight">\((\gamma^*, x_0, p_0)\)</span>.</p>
 <p><strong>Theorem II:</strong> Adopt the conditions of Theorem 1. If the economy
 <span class="math notranslate nohighlight">\((A,B)\)</span> is irreducible, then <span class="math notranslate nohighlight">\(\gamma^*=\alpha_0=\beta_0\)</span>.</p>
 </section>
 <section id="a-special-case">
-<h3><span class="section-number">15.5.4. </span>A Special Case<a class="headerlink" href="#a-special-case" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">18.5.4. </span>A Special Case<a class="headerlink" href="#a-special-case" title="Permalink to this headline">¶</a></h3>
 <p>There is a special <span class="math notranslate nohighlight">\((A,B)\)</span> that allows us to simplify the solution
 method significantly by invoking the powerful Perron-Frobenius theorem
 for non-negative matrices.</p>
@@ -1293,7 +1293,7 @@ for non-negative matrices.</p>
 <p>These assumptions imply that <span class="math notranslate nohighlight">\(B=I_n\)</span>, i.e., that <span class="math notranslate nohighlight">\(B\)</span> can be
 written as an identity matrix (possibly after reshuffling its rows and
 columns).</p>
-<p>The simple model has the following special property (Theorem 9.11. in Gale <span id="id13">[<a class="reference internal" href="zreferences.html#id54">Gal89</a>]</span>): if <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(\alpha_0&gt;0\)</span> solve the TEP
+<p>The simple model has the following special property (Theorem 9.11. in Gale <span id="id13">[<a class="reference internal" href="zreferences.html#id62">Gal89</a>]</span>): if <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(\alpha_0&gt;0\)</span> solve the TEP
 with <span class="math notranslate nohighlight">\((A,I_n)\)</span>, then</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1412,28 +1412,43 @@ associated expansion and interest factors, respectively. Then we have</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   8. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   8. LLN and CLT
+   9. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   9. Two Meanings of Probability
+   10. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   10. Heavy-Tailed Distributions
+   11. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   11. Multivariate Normal Distribution
+   12. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   13. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   12. Univariate Time Series with Matrix Algebra
+   14. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   15. Introduction to Artificial Neural Networks
   </a>
  </li>
 </ul>
@@ -1445,17 +1460,17 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   13. Linear Programming
+   16. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   14. Optimal Transport
+   17. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   15. Von Neumann Growth Model (and a Generalization)
+   18. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1467,62 +1482,62 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   16. Dynamics in One Dimension
+   19. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   17. AR1 Processes
+   20. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   18. Finite Markov Chains
+   21. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   19. Inventory Dynamics
+   22. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   20. Linear State Space Models
+   23. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   21. Application: The Samuelson Multiplier-Accelerator
+   24. Application: The Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   22. Kesten Processes and Firm Dynamics
+   25. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   23. Wealth Distribution Dynamics
+   26. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   24. A First Look at the Kalman Filter
+   27. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   25. Shortest Paths
+   28. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   26. Cass-Koopmans Planning Problem
+   29. Cass-Koopmans Planning Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   27. Cass-Koopmans Competitive Equilibrium
+   30. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
 </ul>
@@ -1534,32 +1549,32 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   28. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   29. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   30. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   31. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   32. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   33. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -1571,42 +1586,42 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   34. Cake Eating I: Introduction to Optimal Saving
+   37. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   35. Cake Eating II: Numerical Methods
+   38. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   36. Optimal Growth I: The Stochastic Optimal Growth Model
+   39. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   37. Optimal Growth II: Accelerating the Code with Numba
+   40. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   38. Optimal Growth III: Time Iteration
+   41. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   39. Optimal Growth IV: The Endogenous Grid Method
+   42. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   40. The Income Fluctuation Problem I: Basic Model
+   43. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   41. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   44. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1618,37 +1633,37 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   42. Job Search VII: Search with Learning
+   45. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   43. Likelihood Ratio Processes
+   46. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   44. Computing Mean of a Likelihood Ratio Process
+   47. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   45. A Problem that Stumped Milton Friedman
+   48. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   46. Exchangeability and Bayesian Updating
+   49. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   47. Likelihood Ratio Processes and Bayesian Learning
+   50. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   48. Bayesian versus Frequentist Decision Rules
+   51. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1660,32 +1675,32 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   49. LQ Control: Foundations
+   52. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   50. Lagrangian for LQ Control
+   53. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   51. Eliminating Cross Products
+   54. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   52. The Permanent Income Model
+   55. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   53. Permanent Income II: LQ Techniques
+   56. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   54. Production Smoothing via Inventories
+   57. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1697,37 +1712,37 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   55. Schelling’s Segregation Model
+   58. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   56. A Lake Model of Employment and Unemployment
+   59. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   57. Rational Expectations Equilibrium
+   60. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   58. Stability in Linear Rational Expectations Models
+   61. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   59. Markov Perfect Equilibrium
+   62. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   60. Uncertainty Traps
+   63. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   61. The Aiyagari Model
+   64. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1739,17 +1754,17 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   62. Asset Pricing: Finite State Models
+   65. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   63. Competitive Equilibria with Arrow Securities
+   66. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   64. Heterogeneous Beliefs and Bubbles
+   67. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1761,17 +1776,34 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   65. Pandas for Panel Data
+   68. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   66. Linear Regression in Python
+   69. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   67. Maximum Likelihood Estimation
+   70. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   71. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   72. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1783,17 +1815,17 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   68. Troubleshooting
+   73. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   69. References
+   74. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   70. Execution Statistics
+   75. Execution Statistics
   </a>
  </li>
 </ul>

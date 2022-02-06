@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>14. Optimal Transport &#8212; Quantitative Economics with Python</title>
+    <title>17. Optimal Transport &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,8 +99,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="15. Von Neumann Growth Model (and a Generalization)" href="von_neumann_model.html" />
-    <link rel="prev" title="13. Linear Programming" href="lp_intro.html" />
+    <link rel="next" title="18. Von Neumann Growth Model (and a Generalization)" href="von_neumann_model.html" />
+    <link rel="prev" title="16. Linear Programming" href="lp_intro.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -150,61 +150,61 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   14.1. Overview
+   17.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-optimal-transport-problem">
-   14.2. The Optimal Transport Problem
+   17.2. The Optimal Transport Problem
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-linear-programming-approach">
-   14.3. The Linear Programming Approach
+   17.3. The Linear Programming Approach
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#vectorizing-a-matrix-of-decision-variables">
-     14.3.1. Vectorizing a Matrix of Decision Variables
+     17.3.1. Vectorizing a Matrix of Decision Variables
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#an-application">
-     14.3.2. An Application
+     17.3.2. An Application
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#using-a-just-in-time-compiler">
-     14.3.3. Using a Just-in-Time Compiler
+     17.3.3. Using a Just-in-Time Compiler
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-dual-problem">
-   14.4. The Dual Problem
+   17.4. The Dual Problem
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#interpretation-of-dual-problem">
-     14.4.1. Interpretation of dual problem
+     17.4.1. Interpretation of dual problem
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-python-optimal-transport-package">
-   14.5. The Python Optimal Transport Package
+   17.5. The Python Optimal Transport Package
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#replicating-previous-results">
-     14.5.1. Replicating Previous Results
+     17.5.1. Replicating Previous Results
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#a-larger-application">
-     14.5.2. A Larger Application
+     17.5.2. A Larger Application
     </a>
    </li>
   </ul>
@@ -255,9 +255,9 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="optimal-transport">
-<h1><span class="section-number">14. </span>Optimal Transport<a class="headerlink" href="#optimal-transport" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">17. </span>Optimal Transport<a class="headerlink" href="#optimal-transport" title="Permalink to this headline">¶</a></h1>
 <section id="overview">
-<h2><span class="section-number">14.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">17.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>transportation</strong> or <strong>optimal transport</strong> problem is interesting both
 because of its many applications and because of its important role in the history of
 economic theory.</p>
@@ -266,8 +266,8 @@ economic theory.</p>
 key tool for solving it, and then provide some examples.</p>
 <p>We will provide other applications in followup lectures.</p>
 <p>The optimal transport problem was studied in early work about linear
-programming, as summarized for example by <span id="id1">[<a class="reference internal" href="zreferences.html#id14">DSS58</a>]</span>.  A modern reference
-about applications in economics is <span id="id2">[<a class="reference internal" href="zreferences.html#id15">Gal16</a>]</span>.</p>
+programming, as summarized for example by <span id="id1">[<a class="reference internal" href="zreferences.html#id22">DSS58</a>]</span>.  A modern reference
+about applications in economics is <span id="id2">[<a class="reference internal" href="zreferences.html#id23">Gal16</a>]</span>.</p>
 <p>Below, we show how to solve the optimal transport problem using
 several implementations of linear programming, including, in order,</p>
 <ol class="simple">
@@ -293,45 +293,45 @@ solver from SciPy,</p></li>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.5.2-py3-none-any.whl (269 kB)
 ?25l
-     |█▏                              | 10 kB 30.6 MB/s eta 0:00:01
-     |██▍                             | 20 kB 22.4 MB/s eta 0:00:01
-     |███▋                            | 30 kB 16.3 MB/s eta 0:00:01
-     |████▉                           | 40 kB 6.5 MB/s eta 0:00:01
-     |██████                          | 51 kB 6.7 MB/s eta 0:00:01
-     |███████▎                        | 61 kB 8.0 MB/s eta 0:00:01
-     |████████▌                       | 71 kB 8.4 MB/s eta 0:00:01
-     |█████████▊                      | 81 kB 9.0 MB/s eta 0:00:01
-     |███████████                     | 92 kB 10.0 MB/s eta 0:00:01
-     |████████████▏                   | 102 kB 7.8 MB/s eta 0:00:01
-     |█████████████▍                  | 112 kB 7.8 MB/s eta 0:00:01
-     |██████████████▋                 | 122 kB 7.8 MB/s eta 0:00:01
-     |███████████████▉                | 133 kB 7.8 MB/s eta 0:00:01
-     |█████████████████               | 143 kB 7.8 MB/s eta 0:00:01
-     |██████████████████▎             | 153 kB 7.8 MB/s eta 0:00:01
-     |███████████████████▌            | 163 kB 7.8 MB/s eta 0:00:01
-     |████████████████████▊           | 174 kB 7.8 MB/s eta 0:00:01
-     |██████████████████████          | 184 kB 7.8 MB/s eta 0:00:01
-     |███████████████████████▏        | 194 kB 7.8 MB/s eta 0:00:01
-     |████████████████████████▍       | 204 kB 7.8 MB/s eta 0:00:01
-     |█████████████████████████▋      | 215 kB 7.8 MB/s eta 0:00:01
-     |██████████████████████████▉     | 225 kB 7.8 MB/s eta 0:00:01
-     |████████████████████████████    | 235 kB 7.8 MB/s eta 0:00:01
-     |█████████████████████████████▏  | 245 kB 7.8 MB/s eta 0:00:01
-     |██████████████████████████████▍ | 256 kB 7.8 MB/s eta 0:00:01
-     |███████████████████████████████▋| 266 kB 7.8 MB/s eta 0:00:01
-     |████████████████████████████████| 269 kB 7.8 MB/s 
+     |█▏                              | 10 kB 33.4 MB/s eta 0:00:01
+     |██▍                             | 20 kB 40.4 MB/s eta 0:00:01
+     |███▋                            | 30 kB 47.2 MB/s eta 0:00:01
+     |████▉                           | 40 kB 9.2 MB/s eta 0:00:01
+     |██████                          | 51 kB 11.1 MB/s eta 0:00:01
+     |███████▎                        | 61 kB 13.0 MB/s eta 0:00:01
+     |████████▌                       | 71 kB 11.0 MB/s eta 0:00:01
+     |█████████▊                      | 81 kB 12.4 MB/s eta 0:00:01
+     |███████████                     | 92 kB 12.6 MB/s eta 0:00:01
+     |████████████▏                   | 102 kB 10.7 MB/s eta 0:00:01
+     |█████████████▍                  | 112 kB 10.7 MB/s eta 0:00:01
+     |██████████████▋                 | 122 kB 10.7 MB/s eta 0:00:01
+     |███████████████▉                | 133 kB 10.7 MB/s eta 0:00:01
+     |█████████████████               | 143 kB 10.7 MB/s eta 0:00:01
+     |██████████████████▎             | 153 kB 10.7 MB/s eta 0:00:01
+     |███████████████████▌            | 163 kB 10.7 MB/s eta 0:00:01
+     |████████████████████▊           | 174 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████          | 184 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████▏        | 194 kB 10.7 MB/s eta 0:00:01
+     |████████████████████████▍       | 204 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████████▋      | 215 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████████▉     | 225 kB 10.7 MB/s eta 0:00:01
+     |████████████████████████████    | 235 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████████████▏  | 245 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████████████▍ | 256 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████████████▋| 266 kB 10.7 MB/s eta 0:00:01
+     |████████████████████████████████| 269 kB 10.7 MB/s 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (2.26.0)
-Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.20.3)
 Requirement already satisfied: numba&gt;=0.38 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (0.54.1)
-Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.7.1)
 Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.9)
-Requirement already satisfied: llvmlite&lt;0.38,&gt;=0.37.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.38-&gt;quantecon) (0.37.0)
+Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.7.1)
+Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.20.3)
 Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.38-&gt;quantecon) (58.0.4)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: llvmlite&lt;0.38,&gt;=0.37.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.38-&gt;quantecon) (0.37.0)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (1.26.7)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (2021.10.8)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (3.2)
 Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
@@ -339,9 +339,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/qua
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
   Attempting uninstall: quantecon
     Found existing installation: quantecon 0.5.0
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Uninstalling quantecon-0.5.0:
+    Uninstalling quantecon-0.5.0:
       Successfully uninstalled quantecon-0.5.0
 </pre></div>
 </div>
@@ -353,76 +351,76 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/qua
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading POT-0.8.1.0-cp38-cp38-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (673 kB)
 ?25l
-     |▌                               | 10 kB 25.9 MB/s eta 0:00:01
-     |█                               | 20 kB 32.1 MB/s eta 0:00:01
-     |█▌                              | 30 kB 25.3 MB/s eta 0:00:01
-     |██                              | 40 kB 7.7 MB/s eta 0:00:01
-     |██▍                             | 51 kB 8.8 MB/s eta 0:00:01
-     |███                             | 61 kB 7.8 MB/s eta 0:00:01
-     |███▍                            | 71 kB 8.4 MB/s eta 0:00:01
-     |████                            | 81 kB 9.5 MB/s eta 0:00:01
-     |████▍                           | 92 kB 10.6 MB/s eta 0:00:01
-     |████▉                           | 102 kB 8.3 MB/s eta 0:00:01
-     |█████▍                          | 112 kB 8.3 MB/s eta 0:00:01
-     |█████▉                          | 122 kB 8.3 MB/s eta 0:00:01
-     |██████▎                         | 133 kB 8.3 MB/s eta 0:00:01
-     |██████▉                         | 143 kB 8.3 MB/s eta 0:00:01
-     |███████▎                        | 153 kB 8.3 MB/s eta 0:00:01
-     |███████▉                        | 163 kB 8.3 MB/s eta 0:00:01
-     |████████▎                       | 174 kB 8.3 MB/s eta 0:00:01
-     |████████▊                       | 184 kB 8.3 MB/s eta 0:00:01
-     |█████████▎                      | 194 kB 8.3 MB/s eta 0:00:01
-     |█████████▊                      | 204 kB 8.3 MB/s eta 0:00:01
-     |██████████▏                     | 215 kB 8.3 MB/s eta 0:00:01
-     |██████████▊                     | 225 kB 8.3 MB/s eta 0:00:01
-     |███████████▏                    | 235 kB 8.3 MB/s eta 0:00:01
-     |███████████▊                    | 245 kB 8.3 MB/s eta 0:00:01
-     |████████████▏                   | 256 kB 8.3 MB/s eta 0:00:01
-     |████████████▋                   | 266 kB 8.3 MB/s eta 0:00:01
-     |█████████████▏                  | 276 kB 8.3 MB/s eta 0:00:01
-     |█████████████▋                  | 286 kB 8.3 MB/s eta 0:00:01
-     |██████████████▏                 | 296 kB 8.3 MB/s eta 0:00:01
-     |██████████████▋                 | 307 kB 8.3 MB/s eta 0:00:01
-     |███████████████                 | 317 kB 8.3 MB/s eta 0:00:01
-     |███████████████▋                | 327 kB 8.3 MB/s eta 0:00:01
-     |████████████████                | 337 kB 8.3 MB/s eta 0:00:01
-     |████████████████▌               | 348 kB 8.3 MB/s eta 0:00:01
-     |█████████████████               | 358 kB 8.3 MB/s eta 0:00:01
-     |█████████████████▌              | 368 kB 8.3 MB/s eta 0:00:01
-     |██████████████████              | 378 kB 8.3 MB/s eta 0:00:01
-     |██████████████████▌             | 389 kB 8.3 MB/s eta 0:00:01
-     |███████████████████             | 399 kB 8.3 MB/s eta 0:00:01
-     |███████████████████▌            | 409 kB 8.3 MB/s eta 0:00:01
-     |████████████████████            | 419 kB 8.3 MB/s eta 0:00:01
-     |████████████████████▍           | 430 kB 8.3 MB/s eta 0:00:01
-     |█████████████████████           | 440 kB 8.3 MB/s eta 0:00:01
-     |█████████████████████▍          | 450 kB 8.3 MB/s eta 0:00:01
-     |██████████████████████          | 460 kB 8.3 MB/s eta 0:00:01
-     |██████████████████████▍         | 471 kB 8.3 MB/s eta 0:00:01
-     |██████████████████████▉         | 481 kB 8.3 MB/s eta 0:00:01
-     |███████████████████████▍        | 491 kB 8.3 MB/s eta 0:00:01
-     |███████████████████████▉        | 501 kB 8.3 MB/s eta 0:00:01
-     |████████████████████████▍       | 512 kB 8.3 MB/s eta 0:00:01
-     |████████████████████████▉       | 522 kB 8.3 MB/s eta 0:00:01
-     |█████████████████████████▎      | 532 kB 8.3 MB/s eta 0:00:01
-     |█████████████████████████▉      | 542 kB 8.3 MB/s eta 0:00:01
-     |██████████████████████████▎     | 552 kB 8.3 MB/s eta 0:00:01
-     |██████████████████████████▊     | 563 kB 8.3 MB/s eta 0:00:01
-     |███████████████████████████▎    | 573 kB 8.3 MB/s eta 0:00:01
-     |███████████████████████████▊    | 583 kB 8.3 MB/s eta 0:00:01
-     |████████████████████████████▎   | 593 kB 8.3 MB/s eta 0:00:01
-     |████████████████████████████▊   | 604 kB 8.3 MB/s eta 0:00:01
-     |█████████████████████████████▏  | 614 kB 8.3 MB/s eta 0:00:01
-     |█████████████████████████████▊  | 624 kB 8.3 MB/s eta 0:00:01
-     |██████████████████████████████▏ | 634 kB 8.3 MB/s eta 0:00:01
-     |██████████████████████████████▋ | 645 kB 8.3 MB/s eta 0:00:01
-     |███████████████████████████████▏| 655 kB 8.3 MB/s eta 0:00:01
-     |███████████████████████████████▋| 665 kB 8.3 MB/s eta 0:00:01
-     |████████████████████████████████| 673 kB 8.3 MB/s 
+     |▌                               | 10 kB 30.9 MB/s eta 0:00:01
+     |█                               | 20 kB 36.6 MB/s eta 0:00:01
+     |█▌                              | 30 kB 21.7 MB/s eta 0:00:01
+     |██                              | 40 kB 9.4 MB/s eta 0:00:01
+     |██▍                             | 51 kB 11.2 MB/s eta 0:00:01
+     |███                             | 61 kB 13.1 MB/s eta 0:00:01
+     |███▍                            | 71 kB 11.4 MB/s eta 0:00:01
+     |████                            | 81 kB 12.9 MB/s eta 0:00:01
+     |████▍                           | 92 kB 12.6 MB/s eta 0:00:01
+     |████▉                           | 102 kB 10.7 MB/s eta 0:00:01
+     |█████▍                          | 112 kB 10.7 MB/s eta 0:00:01
+     |█████▉                          | 122 kB 10.7 MB/s eta 0:00:01
+     |██████▎                         | 133 kB 10.7 MB/s eta 0:00:01
+     |██████▉                         | 143 kB 10.7 MB/s eta 0:00:01
+     |███████▎                        | 153 kB 10.7 MB/s eta 0:00:01
+     |███████▉                        | 163 kB 10.7 MB/s eta 0:00:01
+     |████████▎                       | 174 kB 10.7 MB/s eta 0:00:01
+     |████████▊                       | 184 kB 10.7 MB/s eta 0:00:01
+     |█████████▎                      | 194 kB 10.7 MB/s eta 0:00:01
+     |█████████▊                      | 204 kB 10.7 MB/s eta 0:00:01
+     |██████████▏                     | 215 kB 10.7 MB/s eta 0:00:01
+     |██████████▊                     | 225 kB 10.7 MB/s eta 0:00:01
+     |███████████▏                    | 235 kB 10.7 MB/s eta 0:00:01
+     |███████████▊                    | 245 kB 10.7 MB/s eta 0:00:01
+     |████████████▏                   | 256 kB 10.7 MB/s eta 0:00:01
+     |████████████▋                   | 266 kB 10.7 MB/s eta 0:00:01
+     |█████████████▏                  | 276 kB 10.7 MB/s eta 0:00:01
+     |█████████████▋                  | 286 kB 10.7 MB/s eta 0:00:01
+     |██████████████▏                 | 296 kB 10.7 MB/s eta 0:00:01
+     |██████████████▋                 | 307 kB 10.7 MB/s eta 0:00:01
+     |███████████████                 | 317 kB 10.7 MB/s eta 0:00:01
+     |███████████████▋                | 327 kB 10.7 MB/s eta 0:00:01
+     |████████████████                | 337 kB 10.7 MB/s eta 0:00:01
+     |████████████████▌               | 348 kB 10.7 MB/s eta 0:00:01
+     |█████████████████               | 358 kB 10.7 MB/s eta 0:00:01
+     |█████████████████▌              | 368 kB 10.7 MB/s eta 0:00:01
+     |██████████████████              | 378 kB 10.7 MB/s eta 0:00:01
+     |██████████████████▌             | 389 kB 10.7 MB/s eta 0:00:01
+     |███████████████████             | 399 kB 10.7 MB/s eta 0:00:01
+     |███████████████████▌            | 409 kB 10.7 MB/s eta 0:00:01
+     |████████████████████            | 419 kB 10.7 MB/s eta 0:00:01
+     |████████████████████▍           | 430 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████           | 440 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████▍          | 450 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████          | 460 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████▍         | 471 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████▉         | 481 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████▍        | 491 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████▉        | 501 kB 10.7 MB/s eta 0:00:01
+     |████████████████████████▍       | 512 kB 10.7 MB/s eta 0:00:01
+     |████████████████████████▉       | 522 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████████▎      | 532 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████████▉      | 542 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████████▎     | 552 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████████▊     | 563 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████████▎    | 573 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████████▊    | 583 kB 10.7 MB/s eta 0:00:01
+     |████████████████████████████▎   | 593 kB 10.7 MB/s eta 0:00:01
+     |████████████████████████████▊   | 604 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████████████▏  | 614 kB 10.7 MB/s eta 0:00:01
+     |█████████████████████████████▊  | 624 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████████████▏ | 634 kB 10.7 MB/s eta 0:00:01
+     |██████████████████████████████▋ | 645 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████████████▏| 655 kB 10.7 MB/s eta 0:00:01
+     |███████████████████████████████▋| 665 kB 10.7 MB/s eta 0:00:01
+     |████████████████████████████████| 673 kB 10.7 MB/s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: scipy&gt;=1.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from POT) (1.7.1)
-Requirement already satisfied: numpy&gt;=1.20 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from POT) (1.20.3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: numpy&gt;=1.20 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from POT) (1.20.3)
+Requirement already satisfied: scipy&gt;=1.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from POT) (1.7.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: POT
@@ -449,7 +447,7 @@ Requirement already satisfied: numpy&gt;=1.20 in /usr/share/miniconda3/envs/quan
 </div>
 </section>
 <section id="the-optimal-transport-problem">
-<h2><span class="section-number">14.2. </span>The Optimal Transport Problem<a class="headerlink" href="#the-optimal-transport-problem" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">17.2. </span>The Optimal Transport Problem<a class="headerlink" href="#the-optimal-transport-problem" title="Permalink to this headline">¶</a></h2>
 <p>Suppose that <span class="math notranslate nohighlight">\(m\)</span> factories produce goods that must be sent to <span class="math notranslate nohighlight">\(n\)</span> locations.</p>
 <p>Let</p>
 <ul class="simple">
@@ -477,7 +475,7 @@ target locations are distributed in the plane.</p>
 stated above.</p>
 <p>The planner’s problem can be expressed as the following constrained minimization problem:</p>
 <div class="math notranslate nohighlight" id="equation-plannerproblem">
-<span class="eqno">(14.1)<a class="headerlink" href="#equation-plannerproblem" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(17.1)<a class="headerlink" href="#equation-plannerproblem" title="Permalink to this equation">¶</a></span>\[\begin{split}
 \begin{aligned}
     \min_{x_{ij}} \ &amp; \sum_{i=1}^m \sum_{j=1}^n c_{ij} x_{ij} \\
     \mbox{subject to } \ &amp; \sum_{j=1}^n x_{ij} = p_i, &amp; i = 1, 2, \dots, m \\
@@ -492,23 +490,23 @@ stated above.</p>
 </ul>
 <p>Summing the <span class="math notranslate nohighlight">\(q_j\)</span>’s across all <span class="math notranslate nohighlight">\(j\)</span>’s and the <span class="math notranslate nohighlight">\(p_i\)</span>’s across all <span class="math notranslate nohighlight">\(i\)</span>’s indicates that the total capacity of all the factories  equals  total requirements at all locations:</p>
 <div class="math notranslate nohighlight" id="equation-sumconstraints">
-<span class="eqno">(14.2)<a class="headerlink" href="#equation-sumconstraints" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(17.2)<a class="headerlink" href="#equation-sumconstraints" title="Permalink to this equation">¶</a></span>\[
     \sum_{j=1}^n q_j 
     = \sum_{j=1}^n \sum_{i=1}^m x_{ij} 
     = \sum_{i=1}^m \sum_{j=1}^n x_{ij} 
     = \sum_{i=1}^m p_i
 \]</div>
-<p>The presence of the restrictions in <a class="reference internal" href="#equation-sumconstraints">(14.2)</a> will be the source of
+<p>The presence of the restrictions in <a class="reference internal" href="#equation-sumconstraints">(17.2)</a> will be the source of
 one redundancy in the complete set of restrictions that we describe below.</p>
 <p>More about this later.</p>
 </section>
 <section id="the-linear-programming-approach">
-<h2><span class="section-number">14.3. </span>The Linear Programming Approach<a class="headerlink" href="#the-linear-programming-approach" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">17.3. </span>The Linear Programming Approach<a class="headerlink" href="#the-linear-programming-approach" title="Permalink to this headline">¶</a></h2>
 <p>In this section we discuss using using standard linear programming solvers to
 tackle the optimal transport problem.</p>
 <section id="vectorizing-a-matrix-of-decision-variables">
-<h3><span class="section-number">14.3.1. </span>Vectorizing a Matrix of Decision Variables<a class="headerlink" href="#vectorizing-a-matrix-of-decision-variables" title="Permalink to this headline">¶</a></h3>
-<p>A <em>matrix</em> of decision variables <span class="math notranslate nohighlight">\(x_{ij}\)</span> appears in problem <a class="reference internal" href="#equation-plannerproblem">(14.1)</a>.</p>
+<h3><span class="section-number">17.3.1. </span>Vectorizing a Matrix of Decision Variables<a class="headerlink" href="#vectorizing-a-matrix-of-decision-variables" title="Permalink to this headline">¶</a></h3>
+<p>A <em>matrix</em> of decision variables <span class="math notranslate nohighlight">\(x_{ij}\)</span> appears in problem <a class="reference internal" href="#equation-plannerproblem">(17.1)</a>.</p>
 <p>The SciPy function <code class="docutils literal notranslate"><span class="pre">linprog</span></code> expects to see a <em>vector</em> of decision variables.</p>
 <p>This situation impels us to rewrite our problem in terms of a
 <em>vector</em> of decision variables.</p>
@@ -555,12 +553,12 @@ an <span class="math notranslate nohighlight">\(n \times t\)</span> matrix.</p>
 <p><span class="math notranslate nohighlight">\(A \otimes B\)</span> is an <span class="math notranslate nohighlight">\(mn \times st\)</span> matrix.</p>
 <p>It has the property that for any <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span></p>
 <div class="math notranslate nohighlight" id="equation-kroneckerprop">
-<span class="eqno">(14.3)<a class="headerlink" href="#equation-kroneckerprop" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(17.3)<a class="headerlink" href="#equation-kroneckerprop" title="Permalink to this equation">¶</a></span>\[
     \operatorname{vec}(A'XB) = (B' \otimes A') \operatorname{vec}(X).
 \]</div>
 <p>We can now express our constraints in terms of <span class="math notranslate nohighlight">\(\operatorname{vec}(X)\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(A = \mathbf{I}_m', B = \mathbf{1}_n\)</span>.</p>
-<p>By equation <a class="reference internal" href="#equation-kroneckerprop">(14.3)</a></p>
+<p>By equation <a class="reference internal" href="#equation-kroneckerprop">(17.3)</a></p>
 <div class="math notranslate nohighlight">
 \[
     X \ \mathbf{1}_n 
@@ -582,7 +580,7 @@ an <span class="math notranslate nohighlight">\(n \times t\)</span> matrix.</p>
 <p>With <span class="math notranslate nohighlight">\(z := \operatorname{vec}(X)\)</span>, our problem can now be expressed
 in terms of an <span class="math notranslate nohighlight">\(mn\)</span>-dimensional vector of decision variables:</p>
 <div class="math notranslate nohighlight" id="equation-decisionvars">
-<span class="eqno">(14.4)<a class="headerlink" href="#equation-decisionvars" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(17.4)<a class="headerlink" href="#equation-decisionvars" title="Permalink to this equation">¶</a></span>\[\begin{split}
     \begin{aligned}
         \min_{z} \ &amp; \operatorname{vec}(C)' z \\
         \mbox{subject to } \ &amp; A z = b \\
@@ -605,8 +603,8 @@ in terms of an <span class="math notranslate nohighlight">\(mn\)</span>-dimensio
 \end{split}\]</div>
 </section>
 <section id="an-application">
-<h3><span class="section-number">14.3.2. </span>An Application<a class="headerlink" href="#an-application" title="Permalink to this headline">¶</a></h3>
-<p>We now provide an example that takes the form <a class="reference internal" href="#equation-decisionvars">(14.4)</a> that we’ll
+<h3><span class="section-number">17.3.2. </span>An Application<a class="headerlink" href="#an-application" title="Permalink to this headline">¶</a></h3>
+<p>We now provide an example that takes the form <a class="reference internal" href="#equation-decisionvars">(17.4)</a> that we’ll
 solve by deploying the function <code class="docutils literal notranslate"><span class="pre">linprog</span></code>.</p>
 <p>The table below provides numbers for the requirements vector <span class="math notranslate nohighlight">\(q\)</span>, the capacity vector <span class="math notranslate nohighlight">\(p\)</span>,
 and entries <span class="math notranslate nohighlight">\(c_{ij}\)</span>  of the cost-of-shipping matrix <span class="math notranslate nohighlight">\(C\)</span>.</p>
@@ -710,7 +708,7 @@ X: [[15. 35.  0.  0.  0.]
  [ 0. 80.  0.  0. 70.]]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_40789/1014317504.py:24: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_21139/1014317504.py:24: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
   res = linprog(C_vec, A_eq=A, b_eq=b, method=&#39;Revised simplex&#39;)
 </pre></div>
 </div>
@@ -719,7 +717,7 @@ X: [[15. 35.  0.  0.  0.]
 <p><strong>Interpreting the warning:</strong></p>
 <p>The above warning message from SciPy points out that A is not full rank.</p>
 <p>This indicates that the linear program has been set up to include one or more redundant constraints.</p>
-<p>Here, the source of the redundancy is the structure of  restrictions <a class="reference internal" href="#equation-sumconstraints">(14.2)</a>.</p>
+<p>Here, the source of the redundancy is the structure of  restrictions <a class="reference internal" href="#equation-sumconstraints">(17.2)</a>.</p>
 <p>Let’s explore this further by printing out <span class="math notranslate nohighlight">\(A\)</span> and staring at it.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -740,7 +738,7 @@ X: [[15. 35.  0.  0.  0.]
 </div>
 </div>
 </div>
-<p>The singularity of <span class="math notranslate nohighlight">\(A\)</span> reflects that the  first three constraints and the last five constraints  both require  that “total requirements equal total capacities” expressed in <a class="reference internal" href="#equation-sumconstraints">(14.2)</a>.</p>
+<p>The singularity of <span class="math notranslate nohighlight">\(A\)</span> reflects that the  first three constraints and the last five constraints  both require  that “total requirements equal total capacities” expressed in <a class="reference internal" href="#equation-sumconstraints">(17.2)</a>.</p>
 <p>One  equality constraint here is redundant.</p>
 <p>Below we drop one of the equality constraints, and use only  7 of them.</p>
 <p>After doing this, we attain the same minimized cost.</p>
@@ -773,8 +771,8 @@ X: [[15. 35.  0.  0.  0.]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.82 ms, sys: 0 ns, total: 3.82 ms
-Wall time: 3.52 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.2 ms, sys: 13 µs, total: 4.21 ms
+Wall time: 3.74 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([0., 0., 0., 0., 0., 0., 0.])
@@ -797,8 +795,8 @@ Wall time: 3.52 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.26 ms, sys: 270 µs, total: 4.53 ms
-Wall time: 4.52 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.45 ms, sys: 0 ns, total: 6.45 ms
+Wall time: 5.71 ms
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;timed eval&gt;:1: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
@@ -851,7 +849,7 @@ Wall time: 4.52 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_40789/2305330369.py:8: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_21139/2305330369.py:8: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
   res_shuffle = linprog(C_vec, A_eq=A[arr], b_eq=b[arr], method=&#39;Revised simplex&#39;)
 </pre></div>
 </div>
@@ -866,9 +864,9 @@ Wall time: 4.52 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>transportation plan 0:  (0.0, 25.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 15.0, 15.0, 0.0, 0.0, 0.0, 70.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>transportation plan 0:  (15.0, 10.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 0.0, 30.0, 0.0, 0.0, 0.0, 70.0)
      minimized cost 0:  7225.0
-transportation plan 1:  (15.0, 10.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 0.0, 30.0, 0.0, 0.0, 0.0, 70.0)
+transportation plan 1:  (0.0, 25.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 15.0, 15.0, 0.0, 0.0, 0.0, 70.0)
      minimized cost 1:  7225.0
 </pre></div>
 </div>
@@ -917,7 +915,7 @@ transportation plan 1:  (15.0, 10.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 0.0, 
 <p>The minimized cost from the optimal transport plan is given by the <span class="math notranslate nohighlight">\(fun\)</span> variable.</p>
 </section>
 <section id="using-a-just-in-time-compiler">
-<h3><span class="section-number">14.3.3. </span>Using a Just-in-Time Compiler<a class="headerlink" href="#using-a-just-in-time-compiler" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">17.3.3. </span>Using a Just-in-Time Compiler<a class="headerlink" href="#using-a-just-in-time-compiler" title="Permalink to this headline">¶</a></h3>
 <p>We can also solve optimal transportation problems using a powerful tool from
 QuantEcon, namely,<code class="docutils literal notranslate"><span class="pre">quantecon.optimize.linprog_simplex</span></code>.</p>
 <p>While this routine uses the same simplex algorithm as
@@ -988,8 +986,8 @@ minimization, we need to put a negative sign before vector <code class="docutils
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.48 ms, sys: 15 µs, total: 4.49 ms
-Wall time: 4.08 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.07 ms, sys: 37 µs, total: 5.11 ms
+Wall time: 4.45 ms
 </pre></div>
 </div>
 </div>
@@ -1002,8 +1000,8 @@ Wall time: 4.08 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 109 µs, sys: 3 µs, total: 112 µs
-Wall time: 116 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 108 µs, sys: 0 ns, total: 108 µs
+Wall time: 111 µs
 </pre></div>
 </div>
 </div>
@@ -1015,11 +1013,11 @@ time.)</p>
 </section>
 </section>
 <section id="the-dual-problem">
-<h2><span class="section-number">14.4. </span>The Dual Problem<a class="headerlink" href="#the-dual-problem" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">17.4. </span>The Dual Problem<a class="headerlink" href="#the-dual-problem" title="Permalink to this headline">¶</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(u, v\)</span> denotes vectors of dual decision variables with entries <span class="math notranslate nohighlight">\((u_i), (v_j)\)</span>.</p>
-<p>The <strong>dual</strong> to  <strong>minimization</strong> problem <a class="reference internal" href="#equation-plannerproblem">(14.1)</a> is the <strong>maximization</strong> problem:</p>
+<p>The <strong>dual</strong> to  <strong>minimization</strong> problem <a class="reference internal" href="#equation-plannerproblem">(17.1)</a> is the <strong>maximization</strong> problem:</p>
 <div class="math notranslate nohighlight" id="equation-dualproblem">
-<span class="eqno">(14.5)<a class="headerlink" href="#equation-dualproblem" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(17.5)<a class="headerlink" href="#equation-dualproblem" title="Permalink to this equation">¶</a></span>\[\begin{split}
 \begin{aligned}
 \max_{u_i, v_j} \ &amp; \sum_{i=1}^m p_i u_i + \sum_{j=1}^n q_j v_j \\
 \mbox{subject to } \ &amp; u_i + v_j \le c_{ij}, \ i = 1, 2, \dots, m;\ j = 1, 2, \dots, n \\
@@ -1039,7 +1037,7 @@ time.)</p>
 <p>Components of the vectors <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> of per unit <strong>values</strong>  are <strong>shadow prices</strong> of the quantities appearing on the right sides of those constraints.</p>
 <p>We can write the dual problem as</p>
 <div class="math notranslate nohighlight" id="equation-dualproblem2">
-<span class="eqno">(14.6)<a class="headerlink" href="#equation-dualproblem2" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(17.6)<a class="headerlink" href="#equation-dualproblem2" title="Permalink to this equation">¶</a></span>\[\begin{split}
 \begin{aligned}
 \max_{u_i, v_j} \ &amp; p u + q v \\
 \mbox{subject to } \ &amp; A' \begin{pmatrix} u \\ v \\ \end{pmatrix} = \operatorname{vec}(C) \\
@@ -1112,8 +1110,8 @@ v: [ 5. 10.  0. 15.  0.]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.57 ms, sys: 16 µs, total: 4.59 ms
-Wall time: 4.82 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.12 ms, sys: 95 µs, total: 3.22 ms
+Wall time: 2.96 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([], dtype=float64)
@@ -1136,8 +1134,8 @@ Wall time: 4.82 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 395 µs, sys: 11 µs, total: 406 µs
-Wall time: 412 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 456 µs, sys: 14 µs, total: 470 µs
+Wall time: 475 µs
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SimplexResult(x=array([ 5., 15., 25.,  5., 10.,  0., 15.,  0.]), lambd=array([ 0., 35.,  0., 15.,  0., 25.,  0., 60., 15.,  0.,  0., 80.,  0.,
@@ -1193,7 +1191,7 @@ Wall time: 412 µs
 </div>
 </div>
 <section id="interpretation-of-dual-problem">
-<h3><span class="section-number">14.4.1. </span>Interpretation of dual problem<a class="headerlink" href="#interpretation-of-dual-problem" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">17.4.1. </span>Interpretation of dual problem<a class="headerlink" href="#interpretation-of-dual-problem" title="Permalink to this headline">¶</a></h3>
 <p>By <strong>strong duality</strong> (please see this lecture
 <a class="reference internal" href="lp_intro.html"><span class="doc">Linear Programming</span></a>), we know that:</p>
 <div class="math notranslate nohighlight">
@@ -1211,7 +1209,7 @@ Wall time: 412 µs
 </section>
 </section>
 <section id="the-python-optimal-transport-package">
-<h2><span class="section-number">14.5. </span>The Python Optimal Transport Package<a class="headerlink" href="#the-python-optimal-transport-package" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">17.5. </span>The Python Optimal Transport Package<a class="headerlink" href="#the-python-optimal-transport-package" title="Permalink to this headline">¶</a></h2>
 <p>There is an excellent <a class="reference external" href="https://pythonot.github.io/">Python package</a> for
 optimal transport that simplifies some of the steps we took above.</p>
 <p>In particular, the package takes care of the vectorization steps before
@@ -1219,7 +1217,7 @@ passing the data out to a linear programming routine.</p>
 <p>(That said, the discussion provided above on vectorization remains important,
 since we want to understand what happens under the hood.)</p>
 <section id="replicating-previous-results">
-<h3><span class="section-number">14.5.1. </span>Replicating Previous Results<a class="headerlink" href="#replicating-previous-results" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">17.5.1. </span>Replicating Previous Results<a class="headerlink" href="#replicating-previous-results" title="Permalink to this headline">¶</a></h3>
 <p>The following line of code solves the example application discussed above
 using linear programming.</p>
 <div class="cell docutils container">
@@ -1253,7 +1251,7 @@ using linear programming.</p>
 </div>
 </section>
 <section id="a-larger-application">
-<h3><span class="section-number">14.5.2. </span>A Larger Application<a class="headerlink" href="#a-larger-application" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">17.5.2. </span>A Larger Application<a class="headerlink" href="#a-larger-application" title="Permalink to this headline">¶</a></h3>
 <p>Now let’s try using the same package on a slightly larger application.</p>
 <p>The application has the same interpretation as above but we will also give
 each node (i.e., vertex) a location in the plane.</p>
@@ -1344,8 +1342,8 @@ and location.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 591 µs, sys: 18 µs, total: 609 µs
-Wall time: 479 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 661 µs, sys: 20 µs, total: 681 µs
+Wall time: 595 µs
 </pre></div>
 </div>
 </div>
@@ -1506,28 +1504,43 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   8. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   8. LLN and CLT
+   9. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   9. Two Meanings of Probability
+   10. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   10. Heavy-Tailed Distributions
+   11. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   11. Multivariate Normal Distribution
+   12. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   13. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   12. Univariate Time Series with Matrix Algebra
+   14. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   15. Introduction to Artificial Neural Networks
   </a>
  </li>
 </ul>
@@ -1539,17 +1552,17 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   13. Linear Programming
+   16. Linear Programming
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   14. Optimal Transport
+   17. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   15. Von Neumann Growth Model (and a Generalization)
+   18. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1561,62 +1574,62 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   16. Dynamics in One Dimension
+   19. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   17. AR1 Processes
+   20. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   18. Finite Markov Chains
+   21. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   19. Inventory Dynamics
+   22. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   20. Linear State Space Models
+   23. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   21. Application: The Samuelson Multiplier-Accelerator
+   24. Application: The Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   22. Kesten Processes and Firm Dynamics
+   25. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   23. Wealth Distribution Dynamics
+   26. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   24. A First Look at the Kalman Filter
+   27. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   25. Shortest Paths
+   28. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   26. Cass-Koopmans Planning Problem
+   29. Cass-Koopmans Planning Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   27. Cass-Koopmans Competitive Equilibrium
+   30. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
 </ul>
@@ -1628,32 +1641,32 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   28. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   29. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   30. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   31. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   32. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   33. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -1665,42 +1678,42 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   34. Cake Eating I: Introduction to Optimal Saving
+   37. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   35. Cake Eating II: Numerical Methods
+   38. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   36. Optimal Growth I: The Stochastic Optimal Growth Model
+   39. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   37. Optimal Growth II: Accelerating the Code with Numba
+   40. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   38. Optimal Growth III: Time Iteration
+   41. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   39. Optimal Growth IV: The Endogenous Grid Method
+   42. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   40. The Income Fluctuation Problem I: Basic Model
+   43. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   41. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   44. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1712,37 +1725,37 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   42. Job Search VII: Search with Learning
+   45. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   43. Likelihood Ratio Processes
+   46. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   44. Computing Mean of a Likelihood Ratio Process
+   47. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   45. A Problem that Stumped Milton Friedman
+   48. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   46. Exchangeability and Bayesian Updating
+   49. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   47. Likelihood Ratio Processes and Bayesian Learning
+   50. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   48. Bayesian versus Frequentist Decision Rules
+   51. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1754,32 +1767,32 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   49. LQ Control: Foundations
+   52. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   50. Lagrangian for LQ Control
+   53. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   51. Eliminating Cross Products
+   54. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   52. The Permanent Income Model
+   55. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   53. Permanent Income II: LQ Techniques
+   56. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   54. Production Smoothing via Inventories
+   57. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1791,37 +1804,37 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   55. Schelling’s Segregation Model
+   58. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   56. A Lake Model of Employment and Unemployment
+   59. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   57. Rational Expectations Equilibrium
+   60. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   58. Stability in Linear Rational Expectations Models
+   61. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   59. Markov Perfect Equilibrium
+   62. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   60. Uncertainty Traps
+   63. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   61. The Aiyagari Model
+   64. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1833,17 +1846,17 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   62. Asset Pricing: Finite State Models
+   65. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   63. Competitive Equilibria with Arrow Securities
+   66. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   64. Heterogeneous Beliefs and Bubbles
+   67. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1855,17 +1868,34 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   65. Pandas for Panel Data
+   68. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   66. Linear Regression in Python
+   69. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   67. Maximum Likelihood Estimation
+   70. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   71. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   72. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1877,17 +1907,17 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   68. Troubleshooting
+   73. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   69. References
+   74. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   70. Execution Statistics
+   75. Execution Statistics
   </a>
  </li>
 </ul>

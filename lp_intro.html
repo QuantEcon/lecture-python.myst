@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>13. Linear Programming &#8212; Quantitative Economics with Python</title>
+    <title>16. Linear Programming &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,8 +99,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="14. Optimal Transport" href="opt_transport.html" />
-    <link rel="prev" title="12. Univariate Time Series with Matrix Algebra" href="time_series_with_matrices.html" />
+    <link rel="next" title="17. Optimal Transport" href="opt_transport.html" />
+    <link rel="prev" title="15. Introduction to Artificial Neural Networks" href="back_prop.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -150,91 +150,91 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   13.1. Overview
+   16.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#objective-function-and-constraints">
-   13.2. Objective Function and Constraints
+   16.2. Objective Function and Constraints
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#example-1-production-problem">
-   13.3. Example 1: Production Problem
+   16.3. Example 1: Production Problem
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#example-2-investment-problem">
-   13.4. Example 2: Investment Problem
+   16.4. Example 2: Investment Problem
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#standard-form">
-   13.5. Standard Form
+   16.5. Standard Form
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#useful-transformations">
-     13.5.1. Useful Transformations
+     16.5.1. Useful Transformations
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id4">
-     13.5.2. Example 1: Production Problem
+     16.5.2. Example 1: Production Problem
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id5">
-     13.5.3. Example 2: Investment Problem
+     16.5.3. Example 2: Investment Problem
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#computations">
-   13.6. Computations
+   16.6. Computations
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id6">
-     13.6.1. Example 1: Production Problem
+     16.6.1. Example 1: Production Problem
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id7">
-     13.6.2. Example 2: Investment Problem
+     16.6.2. Example 2: Investment Problem
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#duality">
-   13.7. Duality
+   16.7. Duality
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#duality-theorems">
-   13.8. Duality Theorems
+   16.8. Duality Theorems
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#complementary-slackness">
-     13.8.1. Complementary Slackness
+     16.8.1. Complementary Slackness
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#interpretations">
-     13.8.2. Interpretations
+     16.8.2. Interpretations
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id9">
-     13.8.3. Example 1: Production Problem
+     16.8.3. Example 1: Production Problem
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id10">
-     13.8.4. Example 2: Investment Problem
+     16.8.4. Example 2: Investment Problem
     </a>
    </li>
   </ul>
@@ -285,9 +285,9 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="linear-programming">
-<h1><span class="section-number">13. </span>Linear Programming<a class="headerlink" href="#linear-programming" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">16. </span>Linear Programming<a class="headerlink" href="#linear-programming" title="Permalink to this headline">¶</a></h1>
 <section id="overview">
-<h2><span class="section-number">13.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">16.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p><strong>Linear programming</strong> problems either maximize or minimize
 a linear objective function subject to a set of  linear equality and/or inequality constraints.</p>
 <p>Linear programs come in pairs:</p>
@@ -314,7 +314,7 @@ a linear objective function subject to a set of  linear equality and/or inequali
 </div>
 </section>
 <section id="objective-function-and-constraints">
-<h2><span class="section-number">13.2. </span>Objective Function and Constraints<a class="headerlink" href="#objective-function-and-constraints" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">16.2. </span>Objective Function and Constraints<a class="headerlink" href="#objective-function-and-constraints" title="Permalink to this headline">¶</a></h2>
 <p>We want to minimize a <strong>cost function</strong> <span class="math notranslate nohighlight">\(c'x = \sum_{i=1}^n c_i x_i\)</span> over  feasible values of <span class="math notranslate nohighlight">\(x = (x_1,x_2,\dots,x_n)'\)</span>.</p>
 <p>Here</p>
 <ul class="simple">
@@ -330,9 +330,9 @@ a linear objective function subject to a set of  linear equality and/or inequali
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(b_i\)</span> for <span class="math notranslate nohighlight">\(i \in N_i\)</span>, where <span class="math notranslate nohighlight">\(N_1,N_2,N_3\)</span>  are each sets of indexes.</p></li>
 </ul>
-<p>A linear programming can be stated as <span id="id1">[<a class="reference internal" href="zreferences.html#id17">Ber97</a>]</span>:</p>
+<p>A linear programming can be stated as <span id="id1">[<a class="reference internal" href="zreferences.html#id25">Ber97</a>]</span>:</p>
 <div class="math notranslate nohighlight" id="equation-linprog">
-<span class="eqno">(13.1)<a class="headerlink" href="#equation-linprog" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(16.1)<a class="headerlink" href="#equation-linprog" title="Permalink to this equation">¶</a></span>\[\begin{split}
 \begin{aligned}
 \min_{x} \ &amp; c' x \\
 \mbox{subject to } \ &amp; a_i' x \ge b_i, &amp; i \in M_1 \\
@@ -351,8 +351,8 @@ a linear objective function subject to a set of  linear equality and/or inequali
 <p>If, for any <span class="math notranslate nohighlight">\(K \in \mathbb R\)</span>, there exists a feasible solution <span class="math notranslate nohighlight">\(x\)</span> such that <span class="math notranslate nohighlight">\(c'x &lt; K\)</span>, we say that the problem is <strong>unbounded</strong> or equivalently that the optimal value is <span class="math notranslate nohighlight">\(-\infty\)</span>.</p>
 </section>
 <section id="example-1-production-problem">
-<h2><span class="section-number">13.3. </span>Example 1: Production Problem<a class="headerlink" href="#example-1-production-problem" title="Permalink to this headline">¶</a></h2>
-<p>This example was created by <span id="id2">[<a class="reference internal" href="zreferences.html#id17">Ber97</a>]</span></p>
+<h2><span class="section-number">16.3. </span>Example 1: Production Problem<a class="headerlink" href="#example-1-production-problem" title="Permalink to this headline">¶</a></h2>
+<p>This example was created by <span id="id2">[<a class="reference internal" href="zreferences.html#id25">Ber97</a>]</span></p>
 <p>Suppose that a factory can produce two goods called Product <span class="math notranslate nohighlight">\(1\)</span> and Product <span class="math notranslate nohighlight">\(2\)</span>.</p>
 <p>To produce each product requires both material and labor.</p>
 <p>Selling each product generates revenue.</p>
@@ -443,8 +443,8 @@ to maximize its revenue.</p>
 <p>In this example, the optimal set is the point <span class="math notranslate nohighlight">\((2.5, 5)\)</span>.</p>
 </section>
 <section id="example-2-investment-problem">
-<h2><span class="section-number">13.4. </span>Example 2: Investment Problem<a class="headerlink" href="#example-2-investment-problem" title="Permalink to this headline">¶</a></h2>
-<p>We now consider a problem posed and solved by  <span id="id3">[<a class="reference internal" href="zreferences.html#id18">Hu18</a>]</span>.</p>
+<h2><span class="section-number">16.4. </span>Example 2: Investment Problem<a class="headerlink" href="#example-2-investment-problem" title="Permalink to this headline">¶</a></h2>
+<p>We now consider a problem posed and solved by  <span id="id3">[<a class="reference internal" href="zreferences.html#id26">Hu18</a>]</span>.</p>
 <p>A mutual fund has <span class="math notranslate nohighlight">\( \$ 100,000\)</span> to be invested over a three year horizon.</p>
 <p>Three investment options are available:</p>
 <ol class="simple">
@@ -534,7 +534,7 @@ leaving it with  a bank account balance equal to <span class="math notranslate n
 \end{split}\]</div>
 </section>
 <section id="standard-form">
-<h2><span class="section-number">13.5. </span>Standard Form<a class="headerlink" href="#standard-form" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">16.5. </span>Standard Form<a class="headerlink" href="#standard-form" title="Permalink to this headline">¶</a></h2>
 <p>For purposes of</p>
 <ul class="simple">
 <li><p>unifying linear programs that are initially stated in superficially different forms, and</p></li>
@@ -568,7 +568,7 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 \end{split}\]</div>
 <p>The standard form LP problem can be expressed concisely as:</p>
 <div class="math notranslate nohighlight" id="equation-lpproblem">
-<span class="eqno">(13.2)<a class="headerlink" href="#equation-lpproblem" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(16.2)<a class="headerlink" href="#equation-lpproblem" title="Permalink to this equation">¶</a></span>\[\begin{split}
 \begin{aligned}
 \min_{x} \ &amp; c'x \\
 \mbox{subject to } \ &amp; Ax = b\\
@@ -578,7 +578,7 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 <p>Here, <span class="math notranslate nohighlight">\(Ax = b\)</span> means that  the <span class="math notranslate nohighlight">\(i\)</span>-th entry of <span class="math notranslate nohighlight">\(Ax\)</span>  equals the <span class="math notranslate nohighlight">\(i\)</span>-th entry of <span class="math notranslate nohighlight">\(b\)</span> for every <span class="math notranslate nohighlight">\(i\)</span>.</p>
 <p>Similarly, <span class="math notranslate nohighlight">\(x &gt;= 0\)</span> means that  <span class="math notranslate nohighlight">\(x_j\)</span> is greater than <span class="math notranslate nohighlight">\(0\)</span> for every <span class="math notranslate nohighlight">\(j\)</span>.</p>
 <section id="useful-transformations">
-<h3><span class="section-number">13.5.1. </span>Useful Transformations<a class="headerlink" href="#useful-transformations" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">16.5.1. </span>Useful Transformations<a class="headerlink" href="#useful-transformations" title="Permalink to this headline">¶</a></h3>
 <p>It is useful to know how to transform a problem that initially is not stated in the standard form into one that is.</p>
 <p>By deploying the following steps, any linear programming problem can be transformed into an  equivalent  standard form linear programming problem.</p>
 <ol class="simple">
@@ -589,7 +589,7 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 <p>Let’s apply the above steps to the two examples described above.</p>
 </section>
 <section id="id4">
-<h3><span class="section-number">13.5.2. </span>Example 1: Production Problem<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">16.5.2. </span>Example 1: Production Problem<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>The original problem is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -612,7 +612,7 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 \end{split}\]</div>
 </section>
 <section id="id5">
-<h3><span class="section-number">13.5.3. </span>Example 2: Investment Problem<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">16.5.3. </span>Example 2: Investment Problem<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>The original problem is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -649,7 +649,7 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 </section>
 </section>
 <section id="computations">
-<h2><span class="section-number">13.6. </span>Computations<a class="headerlink" href="#computations" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">16.6. </span>Computations<a class="headerlink" href="#computations" title="Permalink to this headline">¶</a></h2>
 <p>The package <em>scipy.optimize</em> provides a function <em><strong>linprog</strong></em> to solve linear programming problems with a form below:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -666,7 +666,7 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 </div>
 <p>Let’s apply this great Python tool to solve our two example problems.</p>
 <section id="id6">
-<h3><span class="section-number">13.6.1. </span>Example 1: Production Problem<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">16.6.1. </span>Example 1: Production Problem<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>The problem is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -720,7 +720,7 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 </div>
 </section>
 <section id="id7">
-<h3><span class="section-number">13.6.2. </span>Example 2: Investment Problem<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">16.6.2. </span>Example 2: Investment Problem<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>The problem is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -791,9 +791,9 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 </section>
 </section>
 <section id="duality">
-<h2><span class="section-number">13.7. </span>Duality<a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
-<p>Associated with a  linear programming of form <a class="reference internal" href="#equation-linprog">(13.1)</a> with <span class="math notranslate nohighlight">\(m\)</span> constraints and <span class="math notranslate nohighlight">\(n\)</span> decision variables,
-there is an <strong>dual</strong> linear programming problem that takes the form (please see <span id="id8">[<a class="reference internal" href="zreferences.html#id17">Ber97</a>]</span>)</p>
+<h2><span class="section-number">16.7. </span>Duality<a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
+<p>Associated with a  linear programming of form <a class="reference internal" href="#equation-linprog">(16.1)</a> with <span class="math notranslate nohighlight">\(m\)</span> constraints and <span class="math notranslate nohighlight">\(n\)</span> decision variables,
+there is an <strong>dual</strong> linear programming problem that takes the form (please see <span id="id8">[<a class="reference internal" href="zreferences.html#id25">Ber97</a>]</span>)</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -820,7 +820,7 @@ a_2' \\
 a_m' \\ 
 \end{bmatrix}.
 \end{split}\]</div>
-<p>To construct the  dual of linear programming problem <a class="reference internal" href="#equation-linprog">(13.1)</a>, we proceed as follows:</p>
+<p>To construct the  dual of linear programming problem <a class="reference internal" href="#equation-linprog">(16.1)</a>, we proceed as follows:</p>
 <ol class="simple">
 <li><p>For every constraint <span class="math notranslate nohighlight">\(a_i' x \ge(\le or =) b_i\)</span>, <span class="math notranslate nohighlight">\(j = 1,2,...,m\)</span>, in the primal problem, we construct a corresponding dual variable <span class="math notranslate nohighlight">\(p_i\)</span>. <span class="math notranslate nohighlight">\(p_i\)</span> is restricted to be positive if <span class="math notranslate nohighlight">\(a_i' x \ge b_i\)</span> or negative if <span class="math notranslate nohighlight">\(a_i' x \le b_i\)</span> or unrestricted if <span class="math notranslate nohighlight">\(a_i' x = b_i\)</span>. We construct the <span class="math notranslate nohighlight">\(m\)</span>-dimensional vector   <span class="math notranslate nohighlight">\(p\)</span> with entries <span class="math notranslate nohighlight">\(p_i\)</span>.</p></li>
 <li><p>For every variable <span class="math notranslate nohighlight">\(x_j\)</span>, <span class="math notranslate nohighlight">\(j = 1,2,...,n\)</span>, we construct a corresponding dual constraint <span class="math notranslate nohighlight">\(A_j' p \ge(\le or =) c_j\)</span>. The constraint is <span class="math notranslate nohighlight">\(A_j' p \ge c_j\)</span> if <span class="math notranslate nohighlight">\(x_j \le 0\)</span>, <span class="math notranslate nohighlight">\(A_j' p \le c_j\)</span> if <span class="math notranslate nohighlight">\(x_j \ge 0\)</span> or <span class="math notranslate nohighlight">\(A_j' p = c_j\)</span> if <span class="math notranslate nohighlight">\(x_j \)</span> is unrestricted.</p></li>
@@ -862,7 +862,7 @@ a_m' \\
 </tr>
 </tbody>
 </table>
-<p>As an example, the dual problem of the standard form <a class="reference internal" href="#equation-lpproblem">(13.2)</a> is:</p>
+<p>As an example, the dual problem of the standard form <a class="reference internal" href="#equation-lpproblem">(16.2)</a> is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -872,7 +872,7 @@ a_m' \\
 \end{split}\]</div>
 <p>As another example, consider a linear programming problem with form:</p>
 <div class="math notranslate nohighlight" id="equation-linprog2">
-<span class="eqno">(13.3)<a class="headerlink" href="#equation-linprog2" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(16.3)<a class="headerlink" href="#equation-linprog2" title="Permalink to this equation">¶</a></span>\[\begin{split}
 \begin{aligned}
 \max_{x} \ &amp; c'x \\
 \mbox{subject to } \ &amp; A x \le b\\
@@ -890,15 +890,15 @@ a_m' \\
 \end{split}\]</div>
 </section>
 <section id="duality-theorems">
-<h2><span class="section-number">13.8. </span>Duality Theorems<a class="headerlink" href="#duality-theorems" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">16.8. </span>Duality Theorems<a class="headerlink" href="#duality-theorems" title="Permalink to this headline">¶</a></h2>
 <p>Primal and dual problems are linked by powerful <strong>duality theorems</strong> that have  <strong>weak</strong> and <strong>strong</strong> forms.</p>
 <p>The duality theorems provide the foundations of enlightening economic interpretations of linear programming problems.</p>
-<p><strong>Weak duality:</strong> For linear programming problem <a class="reference internal" href="#equation-linprog">(13.1)</a>, if <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p\)</span> are feasible solutions to the primal and the dual problems, respectively, then</p>
+<p><strong>Weak duality:</strong> For linear programming problem <a class="reference internal" href="#equation-linprog">(16.1)</a>, if <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p\)</span> are feasible solutions to the primal and the dual problems, respectively, then</p>
 <div class="math notranslate nohighlight">
 \[ 
 b'p \le c'x 
 \]</div>
-<p><strong>Strong duality:</strong> For linear programming problem <a class="reference internal" href="#equation-linprog">(13.1)</a>, if the primal problem has an optimal solution <span class="math notranslate nohighlight">\(x\)</span>, then the dual problem also has an optimal solution. Denote an optimal solution of the dual problem as <span class="math notranslate nohighlight">\(p\)</span>. Then</p>
+<p><strong>Strong duality:</strong> For linear programming problem <a class="reference internal" href="#equation-linprog">(16.1)</a>, if the primal problem has an optimal solution <span class="math notranslate nohighlight">\(x\)</span>, then the dual problem also has an optimal solution. Denote an optimal solution of the dual problem as <span class="math notranslate nohighlight">\(p\)</span>. Then</p>
 <div class="math notranslate nohighlight">
 \[ 
 b'p = c'x 
@@ -906,8 +906,8 @@ b'p = c'x
 <p>According to strong duality, we can find the optimal value for the primal problem by solving the dual problem.</p>
 <p>But the dual problem tells us even more as we shall see next.</p>
 <section id="complementary-slackness">
-<h3><span class="section-number">13.8.1. </span>Complementary Slackness<a class="headerlink" href="#complementary-slackness" title="Permalink to this headline">¶</a></h3>
-<p>Let <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p\)</span> be feasible solutions to the primal problem <a class="reference internal" href="#equation-linprog">(13.1)</a> and its dual problem, respectively.</p>
+<h3><span class="section-number">16.8.1. </span>Complementary Slackness<a class="headerlink" href="#complementary-slackness" title="Permalink to this headline">¶</a></h3>
+<p>Let <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p\)</span> be feasible solutions to the primal problem <a class="reference internal" href="#equation-linprog">(16.1)</a> and its dual problem, respectively.</p>
 <p>Then <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p\)</span> are also  optimal solutions of the primal and dual problems if and only if:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split} 
@@ -919,8 +919,8 @@ x_j (A_j' p - c_j) = 0, \quad \forall j.
 <p>Let’s interpret them.</p>
 </section>
 <section id="interpretations">
-<h3><span class="section-number">13.8.2. </span>Interpretations<a class="headerlink" href="#interpretations" title="Permalink to this headline">¶</a></h3>
-<p>Let’s take a version of problem <a class="reference internal" href="#equation-linprog2">(13.3)</a> as a production problem and consider its associated dual problem.</p>
+<h3><span class="section-number">16.8.2. </span>Interpretations<a class="headerlink" href="#interpretations" title="Permalink to this headline">¶</a></h3>
+<p>Let’s take a version of problem <a class="reference internal" href="#equation-linprog2">(16.3)</a> as a production problem and consider its associated dual problem.</p>
 <p>A factory produce <span class="math notranslate nohighlight">\(n\)</span> products with <span class="math notranslate nohighlight">\(m\)</span> types of resources.</p>
 <p>Where  <span class="math notranslate nohighlight">\(i=1,2,\dots,m\)</span> and <span class="math notranslate nohighlight">\(j=1,2,\dots,n\)</span>, let</p>
 <ul class="simple">
@@ -959,8 +959,8 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <p>Since producing product <span class="math notranslate nohighlight">\(j\)</span> is not optimal, <span class="math notranslate nohighlight">\(x_j\)</span> should equal <span class="math notranslate nohighlight">\(0\)</span>.</p>
 </section>
 <section id="id9">
-<h3><span class="section-number">13.8.3. </span>Example 1: Production Problem<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
-<p>This problem is one specific instance of the problem <a class="reference internal" href="#equation-linprog2">(13.3)</a>, whose economic meaning is interpreted above.</p>
+<h3><span class="section-number">16.8.3. </span>Example 1: Production Problem<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<p>This problem is one specific instance of the problem <a class="reference internal" href="#equation-linprog2">(16.3)</a>, whose economic meaning is interpreted above.</p>
 <p>Its dual problem is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1000,7 +1000,7 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <p>Shadow prices for materials and labor are 0.625 and 0.4375, respectively.</p>
 </section>
 <section id="id10">
-<h3><span class="section-number">13.8.4. </span>Example 2: Investment Problem<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">16.8.4. </span>Example 2: Investment Problem<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <p>The dual problem is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1185,28 +1185,43 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   8. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   8. LLN and CLT
+   9. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   9. Two Meanings of Probability
+   10. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   10. Heavy-Tailed Distributions
+   11. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   11. Multivariate Normal Distribution
+   12. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   13. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   12. Univariate Time Series with Matrix Algebra
+   14. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   15. Introduction to Artificial Neural Networks
   </a>
  </li>
 </ul>
@@ -1218,17 +1233,17 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   13. Linear Programming
+   16. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   14. Optimal Transport
+   17. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   15. Von Neumann Growth Model (and a Generalization)
+   18. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1240,62 +1255,62 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   16. Dynamics in One Dimension
+   19. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   17. AR1 Processes
+   20. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   18. Finite Markov Chains
+   21. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   19. Inventory Dynamics
+   22. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   20. Linear State Space Models
+   23. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   21. Application: The Samuelson Multiplier-Accelerator
+   24. Application: The Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   22. Kesten Processes and Firm Dynamics
+   25. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   23. Wealth Distribution Dynamics
+   26. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   24. A First Look at the Kalman Filter
+   27. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   25. Shortest Paths
+   28. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   26. Cass-Koopmans Planning Problem
+   29. Cass-Koopmans Planning Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   27. Cass-Koopmans Competitive Equilibrium
+   30. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
 </ul>
@@ -1307,32 +1322,32 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   28. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   29. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   30. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   31. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   32. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   33. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -1344,42 +1359,42 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   34. Cake Eating I: Introduction to Optimal Saving
+   37. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   35. Cake Eating II: Numerical Methods
+   38. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   36. Optimal Growth I: The Stochastic Optimal Growth Model
+   39. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   37. Optimal Growth II: Accelerating the Code with Numba
+   40. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   38. Optimal Growth III: Time Iteration
+   41. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   39. Optimal Growth IV: The Endogenous Grid Method
+   42. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   40. The Income Fluctuation Problem I: Basic Model
+   43. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   41. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   44. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1391,37 +1406,37 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   42. Job Search VII: Search with Learning
+   45. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   43. Likelihood Ratio Processes
+   46. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   44. Computing Mean of a Likelihood Ratio Process
+   47. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   45. A Problem that Stumped Milton Friedman
+   48. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   46. Exchangeability and Bayesian Updating
+   49. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   47. Likelihood Ratio Processes and Bayesian Learning
+   50. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   48. Bayesian versus Frequentist Decision Rules
+   51. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1433,32 +1448,32 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   49. LQ Control: Foundations
+   52. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   50. Lagrangian for LQ Control
+   53. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   51. Eliminating Cross Products
+   54. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   52. The Permanent Income Model
+   55. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   53. Permanent Income II: LQ Techniques
+   56. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   54. Production Smoothing via Inventories
+   57. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1470,37 +1485,37 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   55. Schelling’s Segregation Model
+   58. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   56. A Lake Model of Employment and Unemployment
+   59. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   57. Rational Expectations Equilibrium
+   60. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   58. Stability in Linear Rational Expectations Models
+   61. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   59. Markov Perfect Equilibrium
+   62. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   60. Uncertainty Traps
+   63. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   61. The Aiyagari Model
+   64. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1512,17 +1527,17 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   62. Asset Pricing: Finite State Models
+   65. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   63. Competitive Equilibria with Arrow Securities
+   66. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   64. Heterogeneous Beliefs and Bubbles
+   67. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1534,17 +1549,34 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   65. Pandas for Panel Data
+   68. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   66. Linear Regression in Python
+   69. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   67. Maximum Likelihood Estimation
+   70. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   71. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   72. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1556,17 +1588,17 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   68. Troubleshooting
+   73. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   69. References
+   74. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   70. Execution Statistics
+   75. Execution Statistics
   </a>
  </li>
 </ul>

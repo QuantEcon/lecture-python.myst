@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>16. Dynamics in One Dimension &#8212; Quantitative Economics with Python</title>
+    <title>19. Dynamics in One Dimension &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,8 +99,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="17. AR1 Processes" href="ar1_processes.html" />
-    <link rel="prev" title="15. Von Neumann Growth Model (and a Generalization)" href="von_neumann_model.html" />
+    <link rel="next" title="20. AR1 Processes" href="ar1_processes.html" />
+    <link rel="prev" title="18. Von Neumann Growth Model (and a Generalization)" href="von_neumann_model.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -150,73 +150,73 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   16.1. Overview
+   19.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#some-definitions">
-   16.2. Some Definitions
+   19.2. Some Definitions
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#difference-equations">
-     16.2.1. Difference Equations
+     19.2.1. Difference Equations
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#example-a-linear-model">
-     16.2.2. Example: A Linear Model
+     19.2.2. Example: A Linear Model
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#example-a-nonlinear-model">
-     16.2.3. Example: A Nonlinear Model
+     19.2.3. Example: A Nonlinear Model
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#stability">
-     16.2.4. Stability
+     19.2.4. Stability
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#graphical-analysis">
-   16.3. Graphical Analysis
+   19.3. Graphical Analysis
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#trajectories">
-     16.3.1. Trajectories
+     19.3.1. Trajectories
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#complex-dynamics">
-     16.3.2. Complex Dynamics
+     19.3.2. Complex Dynamics
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   16.4. Exercises
+   19.4. Exercises
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-1">
-     16.4.1. Exercise 1
+     19.4.1. Exercise 1
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
-   16.5. Solutions
+   19.5. Solutions
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id1">
-     16.5.1. Exercise 1
+     19.5.1. Exercise 1
     </a>
    </li>
   </ul>
@@ -271,7 +271,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="dynamics-in-one-dimension">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">16. </span><span class="target" id="index-0"></span>Dynamics in One Dimension</a><a class="headerlink" href="#dynamics-in-one-dimension" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id2"><span class="section-number">19. </span><span class="target" id="index-0"></span>Dynamics in One Dimension</a><a class="headerlink" href="#dynamics-in-one-dimension" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -287,7 +287,7 @@
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">16.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">19.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture we give a quick introduction to discrete time dynamics in one
 dimension.</p>
 <p>In one-dimensional models, the state of the system is described by a single variable.</p>
@@ -307,72 +307,72 @@ intuition.</p>
 </div>
 </section>
 <section id="some-definitions">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">16.2. </span>Some Definitions</a><a class="headerlink" href="#some-definitions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">19.2. </span>Some Definitions</a><a class="headerlink" href="#some-definitions" title="Permalink to this headline">¶</a></h2>
 <p>This section sets out the objects of interest and the kinds of properties we study.</p>
 <section id="difference-equations">
-<h3><span class="section-number">16.2.1. </span>Difference Equations<a class="headerlink" href="#difference-equations" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">19.2.1. </span>Difference Equations<a class="headerlink" href="#difference-equations" title="Permalink to this headline">¶</a></h3>
 <p>A <strong>time homogeneous first order difference equation</strong> is an equation of the
 form</p>
 <div class="math notranslate nohighlight" id="equation-sdsod">
-<span class="eqno">(16.1)<a class="headerlink" href="#equation-sdsod" title="Permalink to this equation">¶</a></span>\[x_{t+1} = g(x_t)\]</div>
+<span class="eqno">(19.1)<a class="headerlink" href="#equation-sdsod" title="Permalink to this equation">¶</a></span>\[x_{t+1} = g(x_t)\]</div>
 <p>where <span class="math notranslate nohighlight">\(g\)</span> is a function from some subset <span class="math notranslate nohighlight">\(S\)</span> of <span class="math notranslate nohighlight">\(\mathbb R\)</span> to itself.</p>
 <p>Here <span class="math notranslate nohighlight">\(S\)</span> is called the <strong>state space</strong> and <span class="math notranslate nohighlight">\(x\)</span> is called the <strong>state variable</strong>.</p>
 <p>In the definition,</p>
 <ul class="simple">
 <li><p>time homogeneity means that <span class="math notranslate nohighlight">\(g\)</span> is the same at each time <span class="math notranslate nohighlight">\(t\)</span></p></li>
-<li><p>first order means dependence on only one lag (i.e., earlier states such as <span class="math notranslate nohighlight">\(x_{t-1}\)</span> do not enter into <a class="reference internal" href="#equation-sdsod">(16.1)</a>).</p></li>
+<li><p>first order means dependence on only one lag (i.e., earlier states such as <span class="math notranslate nohighlight">\(x_{t-1}\)</span> do not enter into <a class="reference internal" href="#equation-sdsod">(19.1)</a>).</p></li>
 </ul>
-<p>If <span class="math notranslate nohighlight">\(x_0 \in S\)</span> is given, then <a class="reference internal" href="#equation-sdsod">(16.1)</a> recursively defines the sequence</p>
+<p>If <span class="math notranslate nohighlight">\(x_0 \in S\)</span> is given, then <a class="reference internal" href="#equation-sdsod">(19.1)</a> recursively defines the sequence</p>
 <div class="math notranslate nohighlight" id="equation-sdstraj">
-<span class="eqno">(16.2)<a class="headerlink" href="#equation-sdstraj" title="Permalink to this equation">¶</a></span>\[x_0, \quad
+<span class="eqno">(19.2)<a class="headerlink" href="#equation-sdstraj" title="Permalink to this equation">¶</a></span>\[x_0, \quad
 x_1 = g(x_0), \quad
 x_2 = g(x_1) = g(g(x_0)), \quad \text{etc.}\]</div>
 <p>This sequence is called the <strong>trajectory</strong> of <span class="math notranslate nohighlight">\(x_0\)</span> under <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>If we define <span class="math notranslate nohighlight">\(g^n\)</span> to be <span class="math notranslate nohighlight">\(n\)</span> compositions of <span class="math notranslate nohighlight">\(g\)</span> with itself, then we can write the trajectory more simply as <span class="math notranslate nohighlight">\(x_t = g^t(x_0)\)</span> for <span class="math notranslate nohighlight">\(t \geq 0\)</span>.</p>
 </section>
 <section id="example-a-linear-model">
-<h3><span class="section-number">16.2.2. </span>Example: A Linear Model<a class="headerlink" href="#example-a-linear-model" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">19.2.2. </span>Example: A Linear Model<a class="headerlink" href="#example-a-linear-model" title="Permalink to this headline">¶</a></h3>
 <p>One simple example is the <strong>linear difference equation</strong></p>
 <div class="math notranslate nohighlight">
 \[
 x_{t+1} = a x_t + b, \qquad S = \mathbb R
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(a, b\)</span> are fixed constants.</p>
-<p>In this case, given <span class="math notranslate nohighlight">\(x_0\)</span>, the trajectory <a class="reference internal" href="#equation-sdstraj">(16.2)</a> is</p>
+<p>In this case, given <span class="math notranslate nohighlight">\(x_0\)</span>, the trajectory <a class="reference internal" href="#equation-sdstraj">(19.2)</a> is</p>
 <div class="math notranslate nohighlight" id="equation-sdslinmodpath">
-<span class="eqno">(16.3)<a class="headerlink" href="#equation-sdslinmodpath" title="Permalink to this equation">¶</a></span>\[x_0, \quad
+<span class="eqno">(19.3)<a class="headerlink" href="#equation-sdslinmodpath" title="Permalink to this equation">¶</a></span>\[x_0, \quad
 a x_0 + b, \quad
 a^2 x_0 + a b + b, \quad \text{etc.}\]</div>
 <p>Continuing in this way, and using our knowledge of <a class="reference internal" href="geom_series.html"><span class="doc">geometric series</span></a>, we find that, for any <span class="math notranslate nohighlight">\(t \geq 0\)</span>,</p>
 <div class="math notranslate nohighlight" id="equation-sdslinmod">
-<span class="eqno">(16.4)<a class="headerlink" href="#equation-sdslinmod" title="Permalink to this equation">¶</a></span>\[x_t = a^t x_0 + b \frac{1 - a^t}{1 - a}\]</div>
+<span class="eqno">(19.4)<a class="headerlink" href="#equation-sdslinmod" title="Permalink to this equation">¶</a></span>\[x_t = a^t x_0 + b \frac{1 - a^t}{1 - a}\]</div>
 <p>This is about all we need to know about the linear model.</p>
 <p>We have an exact expression for <span class="math notranslate nohighlight">\(x_t\)</span> for all <span class="math notranslate nohighlight">\(t\)</span> and hence a full
 understanding of the dynamics.</p>
-<p>Notice in particular that <span class="math notranslate nohighlight">\(|a| &lt; 1\)</span>, then, by <a class="reference internal" href="#equation-sdslinmod">(16.4)</a>, we have</p>
+<p>Notice in particular that <span class="math notranslate nohighlight">\(|a| &lt; 1\)</span>, then, by <a class="reference internal" href="#equation-sdslinmod">(19.4)</a>, we have</p>
 <div class="math notranslate nohighlight" id="equation-sdslinmodc">
-<span class="eqno">(16.5)<a class="headerlink" href="#equation-sdslinmodc" title="Permalink to this equation">¶</a></span>\[x_t \to  \frac{b}{1 - a} \text{ as } t \to \infty\]</div>
+<span class="eqno">(19.5)<a class="headerlink" href="#equation-sdslinmodc" title="Permalink to this equation">¶</a></span>\[x_t \to  \frac{b}{1 - a} \text{ as } t \to \infty\]</div>
 <p>regardless of <span class="math notranslate nohighlight">\(x_0\)</span></p>
 <p>This is an example of what is called global stability, a topic we return to
 below.</p>
 </section>
 <section id="example-a-nonlinear-model">
-<h3><span class="section-number">16.2.3. </span>Example: A Nonlinear Model<a class="headerlink" href="#example-a-nonlinear-model" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">19.2.3. </span>Example: A Nonlinear Model<a class="headerlink" href="#example-a-nonlinear-model" title="Permalink to this headline">¶</a></h3>
 <p>In the linear example above, we obtained an exact analytical expression for <span class="math notranslate nohighlight">\(x_t\)</span>
 in terms of arbitrary <span class="math notranslate nohighlight">\(t\)</span> and <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
 <p>This made analysis of dynamics very easy.</p>
 <p>When models are nonlinear, however, the situation can be quite different.</p>
 <p>For example, recall how we <a class="reference external" href="https://python-programming.quantecon.org/python_oop.html#example-the-solow-growth-model">previously studied</a> the law of motion for the Solow growth model, a simplified version of which is</p>
 <div class="math notranslate nohighlight" id="equation-solow-lom2">
-<span class="eqno">(16.6)<a class="headerlink" href="#equation-solow-lom2" title="Permalink to this equation">¶</a></span>\[k_{t+1} = s z k_t^{\alpha} + (1 - \delta) k_t\]</div>
+<span class="eqno">(19.6)<a class="headerlink" href="#equation-solow-lom2" title="Permalink to this equation">¶</a></span>\[k_{t+1} = s z k_t^{\alpha} + (1 - \delta) k_t\]</div>
 <p>Here <span class="math notranslate nohighlight">\(k\)</span> is capital stock and <span class="math notranslate nohighlight">\(s, z, \alpha, \delta\)</span> are positive
 parameters with <span class="math notranslate nohighlight">\(0 &lt; \alpha, \delta &lt; 1\)</span>.</p>
-<p>If you try to iterate like we did in <a class="reference internal" href="#equation-sdslinmodpath">(16.3)</a>, you will find that
+<p>If you try to iterate like we did in <a class="reference internal" href="#equation-sdslinmodpath">(19.3)</a>, you will find that
 the algebra gets messy quickly.</p>
 <p>Analyzing the dynamics of this model requires a different method (see below).</p>
 </section>
 <section id="stability">
-<h3><span class="section-number">16.2.4. </span>Stability<a class="headerlink" href="#stability" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">19.2.4. </span>Stability<a class="headerlink" href="#stability" title="Permalink to this headline">¶</a></h3>
 <p>A <strong>steady state</strong> of the difference equation <span class="math notranslate nohighlight">\(x_{t+1} = g(x_t)\)</span> is a
 point <span class="math notranslate nohighlight">\(x^*\)</span> in <span class="math notranslate nohighlight">\(S\)</span> such that <span class="math notranslate nohighlight">\(x^* = g(x^*)\)</span>.</p>
 <p>In other words, <span class="math notranslate nohighlight">\(x^*\)</span> is a <strong>fixed point</strong> of the function <span class="math notranslate nohighlight">\(g\)</span> in
@@ -398,7 +398,7 @@ x_t = g^t(x_0) \to x^* \text{ as } t \to \infty
 <li><p>is globally stable if <span class="math notranslate nohighlight">\(|a| &lt; 1\)</span> and</p></li>
 <li><p>fails to be globally stable otherwise.</p></li>
 </ul>
-<p>This follows directly from <a class="reference internal" href="#equation-sdslinmod">(16.4)</a>.</p>
+<p>This follows directly from <a class="reference internal" href="#equation-sdslinmod">(19.4)</a>.</p>
 <p>A steady state <span class="math notranslate nohighlight">\(x^*\)</span> of <span class="math notranslate nohighlight">\(x_{t+1} = g(x_t)\)</span> is called
 <strong>locally stable</strong> if there exists an <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> such that</p>
 <div class="math notranslate nohighlight">
@@ -412,13 +412,13 @@ x_t = g^t(x_0) \to x^* \text{ as } t \to \infty
 </section>
 </section>
 <section id="graphical-analysis">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">16.3. </span>Graphical Analysis</a><a class="headerlink" href="#graphical-analysis" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">19.3. </span>Graphical Analysis</a><a class="headerlink" href="#graphical-analysis" title="Permalink to this headline">¶</a></h2>
 <p>As we saw above, analyzing the dynamics for nonlinear models is nontrivial.</p>
 <p>There is no single way to tackle all nonlinear models.</p>
 <p>However, there is one technique for one-dimensional models that provides a
 great deal of intuition.</p>
 <p>This is a graphical approach based on <strong>45 degree diagrams</strong>.</p>
-<p>Let’s look at an example: the Solow model with dynamics given in <a class="reference internal" href="#equation-solow-lom2">(16.6)</a>.</p>
+<p>Let’s look at an example: the Solow model with dynamics given in <a class="reference internal" href="#equation-solow-lom2">(19.6)</a>.</p>
 <p>We begin with some plotting code that you can ignore at first reading.</p>
 <p>The function of the code is to produce 45 degree diagrams and time series
 plots.</p>
@@ -563,7 +563,7 @@ value on the vertical axis.</p>
 k^* = \left( \frac{sz}{\delta} \right)^{1/(1-\alpha)}
 \]</div>
 <section id="trajectories">
-<h3><span class="section-number">16.3.1. </span>Trajectories<a class="headerlink" href="#trajectories" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">19.3.1. </span>Trajectories<a class="headerlink" href="#trajectories" title="Permalink to this headline">¶</a></h3>
 <p>By the preceding discussion, in regions where <span class="math notranslate nohighlight">\(g\)</span> lies above the 45 degree line, we know that the trajectory is increasing.</p>
 <p>The next figure traces out a trajectory in such a region so we can see this more clearly.</p>
 <p>The initial condition is <span class="math notranslate nohighlight">\(k_0 = 0.25\)</span>.</p>
@@ -576,7 +576,7 @@ k^* = \left( \frac{sz}{\delta} \right)^{1/(1-\alpha)}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_44968/2261905364.py:50: UserWarning: linestyle is redundantly defined by the &#39;linestyle&#39; keyword argument and the fmt string &quot;k-&quot; (-&gt; linestyle=&#39;-&#39;). The keyword argument will take precedence.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_30910/2261905364.py:50: UserWarning: linestyle is redundantly defined by the &#39;linestyle&#39; keyword argument and the fmt string &quot;k-&quot; (-&gt; linestyle=&#39;-&#39;). The keyword argument will take precedence.
   ax.plot((x, x), (0, x), &#39;k-&#39;, ls=&#39;dotted&#39;)
 </pre></div>
 </div>
@@ -617,7 +617,7 @@ it declines:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_44968/2261905364.py:50: UserWarning: linestyle is redundantly defined by the &#39;linestyle&#39; keyword argument and the fmt string &quot;k-&quot; (-&gt; linestyle=&#39;-&#39;). The keyword argument will take precedence.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_30910/2261905364.py:50: UserWarning: linestyle is redundantly defined by the &#39;linestyle&#39; keyword argument and the fmt string &quot;k-&quot; (-&gt; linestyle=&#39;-&#39;). The keyword argument will take precedence.
   ax.plot((x, x), (0, x), &#39;k-&#39;, ls=&#39;dotted&#39;)
 </pre></div>
 </div>
@@ -637,7 +637,7 @@ it declines:</p>
 </div>
 </section>
 <section id="complex-dynamics">
-<h3><span class="section-number">16.3.2. </span>Complex Dynamics<a class="headerlink" href="#complex-dynamics" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">19.3.2. </span>Complex Dynamics<a class="headerlink" href="#complex-dynamics" title="Permalink to this headline">¶</a></h3>
 <p>The Solow model is nonlinear but still generates very regular dynamics.</p>
 <p>One model that generates irregular dynamics is the <strong>quadratic map</strong></p>
 <div class="math notranslate nohighlight">
@@ -668,7 +668,7 @@ g(x) = 4 x (1 - x),
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_44968/2261905364.py:50: UserWarning: linestyle is redundantly defined by the &#39;linestyle&#39; keyword argument and the fmt string &quot;k-&quot; (-&gt; linestyle=&#39;-&#39;). The keyword argument will take precedence.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_30910/2261905364.py:50: UserWarning: linestyle is redundantly defined by the &#39;linestyle&#39; keyword argument and the fmt string &quot;k-&quot; (-&gt; linestyle=&#39;-&#39;). The keyword argument will take precedence.
   ax.plot((x, x), (0, x), &#39;k-&#39;, ls=&#39;dotted&#39;)
 </pre></div>
 </div>
@@ -701,9 +701,9 @@ g(x) = 4 x (1 - x),
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">16.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">19.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <section id="exercise-1">
-<h3><span class="section-number">16.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">19.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>Consider again the linear model <span class="math notranslate nohighlight">\(x_{t+1} = a x_t + b\)</span> with <span class="math notranslate nohighlight">\(a
 \not=1\)</span>.</p>
 <p>The unique steady state is <span class="math notranslate nohighlight">\(b / (1 - a)\)</span>.</p>
@@ -716,9 +716,9 @@ g(x) = 4 x (1 - x),
 </section>
 </section>
 <section id="solutions">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">16.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">19.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <section id="id1">
-<h3><span class="section-number">16.5.1. </span>Exercise 1<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">19.5.1. </span>Exercise 1<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>We will start with the case <span class="math notranslate nohighlight">\(a=0.5\)</span>.</p>
 <p>Let’s set up the model and plotting region:</p>
 <div class="cell docutils container">
@@ -739,7 +739,7 @@ g(x) = 4 x (1 - x),
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_44968/2261905364.py:50: UserWarning: linestyle is redundantly defined by the &#39;linestyle&#39; keyword argument and the fmt string &quot;k-&quot; (-&gt; linestyle=&#39;-&#39;). The keyword argument will take precedence.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_30910/2261905364.py:50: UserWarning: linestyle is redundantly defined by the &#39;linestyle&#39; keyword argument and the fmt string &quot;k-&quot; (-&gt; linestyle=&#39;-&#39;). The keyword argument will take precedence.
   ax.plot((x, x), (0, x), &#39;k-&#39;, ls=&#39;dotted&#39;)
 </pre></div>
 </div>
@@ -778,7 +778,7 @@ state.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_44968/2261905364.py:50: UserWarning: linestyle is redundantly defined by the &#39;linestyle&#39; keyword argument and the fmt string &quot;k-&quot; (-&gt; linestyle=&#39;-&#39;). The keyword argument will take precedence.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_30910/2261905364.py:50: UserWarning: linestyle is redundantly defined by the &#39;linestyle&#39; keyword argument and the fmt string &quot;k-&quot; (-&gt; linestyle=&#39;-&#39;). The keyword argument will take precedence.
   ax.plot((x, x), (0, x), &#39;k-&#39;, ls=&#39;dotted&#39;)
 </pre></div>
 </div>
@@ -897,28 +897,43 @@ and back again.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   8. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   8. LLN and CLT
+   9. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   9. Two Meanings of Probability
+   10. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   10. Heavy-Tailed Distributions
+   11. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   11. Multivariate Normal Distribution
+   12. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   13. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   12. Univariate Time Series with Matrix Algebra
+   14. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   15. Introduction to Artificial Neural Networks
   </a>
  </li>
 </ul>
@@ -930,17 +945,17 @@ and back again.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   13. Linear Programming
+   16. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   14. Optimal Transport
+   17. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   15. Von Neumann Growth Model (and a Generalization)
+   18. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -952,62 +967,62 @@ and back again.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   16. Dynamics in One Dimension
+   19. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   17. AR1 Processes
+   20. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   18. Finite Markov Chains
+   21. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   19. Inventory Dynamics
+   22. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   20. Linear State Space Models
+   23. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   21. Application: The Samuelson Multiplier-Accelerator
+   24. Application: The Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   22. Kesten Processes and Firm Dynamics
+   25. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   23. Wealth Distribution Dynamics
+   26. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   24. A First Look at the Kalman Filter
+   27. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   25. Shortest Paths
+   28. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   26. Cass-Koopmans Planning Problem
+   29. Cass-Koopmans Planning Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   27. Cass-Koopmans Competitive Equilibrium
+   30. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
 </ul>
@@ -1019,32 +1034,32 @@ and back again.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   28. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   29. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   30. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   31. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   32. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   33. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -1056,42 +1071,42 @@ and back again.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   34. Cake Eating I: Introduction to Optimal Saving
+   37. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   35. Cake Eating II: Numerical Methods
+   38. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   36. Optimal Growth I: The Stochastic Optimal Growth Model
+   39. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   37. Optimal Growth II: Accelerating the Code with Numba
+   40. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   38. Optimal Growth III: Time Iteration
+   41. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   39. Optimal Growth IV: The Endogenous Grid Method
+   42. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   40. The Income Fluctuation Problem I: Basic Model
+   43. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   41. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   44. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1103,37 +1118,37 @@ and back again.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   42. Job Search VII: Search with Learning
+   45. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   43. Likelihood Ratio Processes
+   46. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   44. Computing Mean of a Likelihood Ratio Process
+   47. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   45. A Problem that Stumped Milton Friedman
+   48. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   46. Exchangeability and Bayesian Updating
+   49. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   47. Likelihood Ratio Processes and Bayesian Learning
+   50. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   48. Bayesian versus Frequentist Decision Rules
+   51. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1145,32 +1160,32 @@ and back again.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   49. LQ Control: Foundations
+   52. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   50. Lagrangian for LQ Control
+   53. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   51. Eliminating Cross Products
+   54. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   52. The Permanent Income Model
+   55. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   53. Permanent Income II: LQ Techniques
+   56. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   54. Production Smoothing via Inventories
+   57. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1182,37 +1197,37 @@ and back again.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   55. Schelling’s Segregation Model
+   58. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   56. A Lake Model of Employment and Unemployment
+   59. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   57. Rational Expectations Equilibrium
+   60. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   58. Stability in Linear Rational Expectations Models
+   61. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   59. Markov Perfect Equilibrium
+   62. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   60. Uncertainty Traps
+   63. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   61. The Aiyagari Model
+   64. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1224,17 +1239,17 @@ and back again.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   62. Asset Pricing: Finite State Models
+   65. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   63. Competitive Equilibria with Arrow Securities
+   66. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   64. Heterogeneous Beliefs and Bubbles
+   67. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1246,17 +1261,34 @@ and back again.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   65. Pandas for Panel Data
+   68. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   66. Linear Regression in Python
+   69. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   67. Maximum Likelihood Estimation
+   70. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   71. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   72. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1268,17 +1300,17 @@ and back again.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   68. Troubleshooting
+   73. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   69. References
+   74. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   70. Execution Statistics
+   75. Execution Statistics
   </a>
  </li>
 </ul>

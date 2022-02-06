@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>61. The Aiyagari Model &#8212; Quantitative Economics with Python</title>
+    <title>64. The Aiyagari Model &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,8 +99,8 @@
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="62. Asset Pricing: Finite State Models" href="markov_asset.html" />
-    <link rel="prev" title="60. Uncertainty Traps" href="uncertainty_traps.html" />
+    <link rel="next" title="65. Asset Pricing: Finite State Models" href="markov_asset.html" />
+    <link rel="prev" title="63. Uncertainty Traps" href="uncertainty_traps.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -150,43 +150,43 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   61.1. Overview
+   64.1. Overview
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#references">
-     61.1.1. References
+     64.1.1. References
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-economy">
-   61.2. The Economy
+   64.2. The Economy
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#households">
-     61.2.1. Households
+     64.2.1. Households
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#firms">
-   61.3. Firms
+   64.3. Firms
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#equilibrium">
-     61.3.1. Equilibrium
+     64.3.1. Equilibrium
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#code">
-   61.4. Code
+   64.4. Code
   </a>
  </li>
 </ul>
@@ -239,7 +239,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="the-aiyagari-model">
-<h1><a class="toc-backref" href="#id8"><span class="section-number">61. </span>The Aiyagari Model</a><a class="headerlink" href="#the-aiyagari-model" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id8"><span class="section-number">64. </span>The Aiyagari Model</a><a class="headerlink" href="#the-aiyagari-model" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -352,6 +352,15 @@ Solving environment: \
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
@@ -361,9 +370,9 @@ Solving environment: \
 </div>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">61.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>In this lecture, we describe the structure of a class of models that build on work by Truman Bewley <span id="id1">[<a class="reference internal" href="zreferences.html#id150">Bew77</a>]</span>.</p>
-<p>We begin by discussing an example of a Bewley model due to Rao Aiyagari <span id="id2">[<a class="reference internal" href="zreferences.html#id114">Aiy94</a>]</span>.</p>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">64.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>In this lecture, we describe the structure of a class of models that build on work by Truman Bewley <span id="id1">[<a class="reference internal" href="zreferences.html#id158">Bew77</a>]</span>.</p>
+<p>We begin by discussing an example of a Bewley model due to Rao Aiyagari <span id="id2">[<a class="reference internal" href="zreferences.html#id122">Aiy94</a>]</span>.</p>
 <p>The model features</p>
 <ul class="simple">
 <li><p>Heterogeneous agents</p></li>
@@ -372,9 +381,9 @@ Solving environment: \
 </ul>
 <p>The Aiyagari model has been used to investigate many topics, including</p>
 <ul class="simple">
-<li><p>precautionary savings and the effect of liquidity constraints <span id="id3">[<a class="reference internal" href="zreferences.html#id114">Aiy94</a>]</span></p></li>
-<li><p>risk sharing and asset pricing <span id="id4">[<a class="reference internal" href="zreferences.html#id106">HL96</a>]</span></p></li>
-<li><p>the shape of the wealth distribution <span id="id5">[<a class="reference internal" href="zreferences.html#id107">BBZ15</a>]</span></p></li>
+<li><p>precautionary savings and the effect of liquidity constraints <span id="id3">[<a class="reference internal" href="zreferences.html#id122">Aiy94</a>]</span></p></li>
+<li><p>risk sharing and asset pricing <span id="id4">[<a class="reference internal" href="zreferences.html#id114">HL96</a>]</span></p></li>
+<li><p>the shape of the wealth distribution <span id="id5">[<a class="reference internal" href="zreferences.html#id115">BBZ15</a>]</span></p></li>
 <li><p>etc., etc., etc.</p></li>
 </ul>
 <p>Let’s start with some imports:</p>
@@ -392,16 +401,16 @@ Solving environment: \
 </div>
 </div>
 <section id="references">
-<h3><span class="section-number">61.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
-<p>The primary reference for this lecture is <span id="id6">[<a class="reference internal" href="zreferences.html#id114">Aiy94</a>]</span>.</p>
-<p>A textbook treatment is available in chapter 18 of <span id="id7">[<a class="reference internal" href="zreferences.html#id159">LS18</a>]</span>.</p>
+<h3><span class="section-number">64.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<p>The primary reference for this lecture is <span id="id6">[<a class="reference internal" href="zreferences.html#id122">Aiy94</a>]</span>.</p>
+<p>A textbook treatment is available in chapter 18 of <span id="id7">[<a class="reference internal" href="zreferences.html#id167">LS18</a>]</span>.</p>
 <p>A continuous time version of the model by SeHyoun Ahn and Benjamin Moll can be found <a class="reference external" href="http://nbviewer.jupyter.org/github/QuantEcon/QuantEcon.notebooks/blob/master/aiyagari_continuous_time.ipynb">here</a>.</p>
 </section>
 </section>
 <section id="the-economy">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">61.2. </span>The Economy</a><a class="headerlink" href="#the-economy" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">64.2. </span>The Economy</a><a class="headerlink" href="#the-economy" title="Permalink to this headline">¶</a></h2>
 <section id="households">
-<h3><span class="section-number">61.2.1. </span>Households<a class="headerlink" href="#households" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">64.2.1. </span>Households<a class="headerlink" href="#households" title="Permalink to this headline">¶</a></h3>
 <p>Infinitely lived households / consumers face idiosyncratic income shocks.</p>
 <p>A unit interval of  <em>ex-ante</em> identical households face a common borrowing constraint.</p>
 <p>The savings problem faced by a typical  household is</p>
@@ -433,7 +442,7 @@ a_t \geq -B
 </section>
 </section>
 <section id="firms">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">61.3. </span>Firms</a><a class="headerlink" href="#firms" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">64.3. </span>Firms</a><a class="headerlink" href="#firms" title="Permalink to this headline">¶</a></h2>
 <p>Firms produce output by hiring capital and labor.</p>
 <p>Firms act competitively and face constant returns to scale.</p>
 <p>Since returns to scale are constant the number of firms does not matter.</p>
@@ -457,13 +466,13 @@ max_{K, N} \left\{ A K_t^{\alpha} N^{1 - \alpha} - (r + \delta) K - w N \right\}
 <p>The parameter <span class="math notranslate nohighlight">\(\delta\)</span> is the depreciation rate.</p>
 <p>From the first-order condition with respect to capital, the firm’s inverse demand for capital is</p>
 <div class="math notranslate nohighlight" id="equation-aiy-rgk">
-<span class="eqno">(61.1)<a class="headerlink" href="#equation-aiy-rgk" title="Permalink to this equation">¶</a></span>\[r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta\]</div>
+<span class="eqno">(64.1)<a class="headerlink" href="#equation-aiy-rgk" title="Permalink to this equation">¶</a></span>\[r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta\]</div>
 <p>Using this expression and the firm’s first-order condition for labor, we can pin down
 the equilibrium wage rate as a function of <span class="math notranslate nohighlight">\(r\)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-aiy-wgr">
-<span class="eqno">(61.2)<a class="headerlink" href="#equation-aiy-wgr" title="Permalink to this equation">¶</a></span>\[w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)}\]</div>
+<span class="eqno">(64.2)<a class="headerlink" href="#equation-aiy-wgr" title="Permalink to this equation">¶</a></span>\[w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)}\]</div>
 <section id="equilibrium">
-<h3><span class="section-number">61.3.1. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">64.3.1. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this headline">¶</a></h3>
 <p>We construct  a <em>stationary rational expectations equilibrium</em> (SREE).</p>
 <p>In such an equilibrium</p>
 <ul class="simple">
@@ -480,7 +489,7 @@ the equilibrium wage rate as a function of <span class="math notranslate nohighl
 <p>In practice, once parameter values are set, we can check for an SREE by the following steps</p>
 <ol class="simple">
 <li><p>pick a proposed quantity <span class="math notranslate nohighlight">\(K\)</span> for aggregate capital</p></li>
-<li><p>determine corresponding prices, with interest rate <span class="math notranslate nohighlight">\(r\)</span> determined by <a class="reference internal" href="#equation-aiy-rgk">(61.1)</a> and a wage rate <span class="math notranslate nohighlight">\(w(r)\)</span> as given in <a class="reference internal" href="#equation-aiy-wgr">(61.2)</a></p></li>
+<li><p>determine corresponding prices, with interest rate <span class="math notranslate nohighlight">\(r\)</span> determined by <a class="reference internal" href="#equation-aiy-rgk">(64.1)</a> and a wage rate <span class="math notranslate nohighlight">\(w(r)\)</span> as given in <a class="reference internal" href="#equation-aiy-wgr">(64.2)</a></p></li>
 <li><p>determine the common optimal savings policy of the households given these prices</p></li>
 <li><p>compute aggregate capital as the mean of steady state capital given this savings policy</p></li>
 </ol>
@@ -488,7 +497,7 @@ the equilibrium wage rate as a function of <span class="math notranslate nohighl
 </section>
 </section>
 <section id="code">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">61.4. </span>Code</a><a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">64.4. </span>Code</a><a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
 <p>Let’s look at how we might compute such an equilibrium in practice.</p>
 <p>To solve the household’s dynamic programming problem we’ll use the <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/markov/ddp.py">DiscreteDP</a> class from <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>.</p>
 <p>Our first task is the least exciting one: write code that maps parameters for a household problem into the <code class="docutils literal notranslate"><span class="pre">R</span></code> and <code class="docutils literal notranslate"><span class="pre">Q</span></code> matrices needed to generate an instance of <code class="docutils literal notranslate"><span class="pre">DiscreteDP</span></code>.</p>
@@ -840,28 +849,43 @@ when the parameters change.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   8. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   8. LLN and CLT
+   9. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   9. Two Meanings of Probability
+   10. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   10. Heavy-Tailed Distributions
+   11. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   11. Multivariate Normal Distribution
+   12. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   13. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   12. Univariate Time Series with Matrix Algebra
+   14. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   15. Introduction to Artificial Neural Networks
   </a>
  </li>
 </ul>
@@ -873,17 +897,17 @@ when the parameters change.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   13. Linear Programming
+   16. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   14. Optimal Transport
+   17. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   15. Von Neumann Growth Model (and a Generalization)
+   18. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -895,62 +919,62 @@ when the parameters change.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   16. Dynamics in One Dimension
+   19. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   17. AR1 Processes
+   20. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   18. Finite Markov Chains
+   21. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   19. Inventory Dynamics
+   22. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   20. Linear State Space Models
+   23. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   21. Application: The Samuelson Multiplier-Accelerator
+   24. Application: The Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   22. Kesten Processes and Firm Dynamics
+   25. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   23. Wealth Distribution Dynamics
+   26. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   24. A First Look at the Kalman Filter
+   27. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   25. Shortest Paths
+   28. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   26. Cass-Koopmans Planning Problem
+   29. Cass-Koopmans Planning Problem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   27. Cass-Koopmans Competitive Equilibrium
+   30. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
 </ul>
@@ -962,32 +986,32 @@ when the parameters change.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   28. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   29. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   30. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   31. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   32. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   33. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -999,42 +1023,42 @@ when the parameters change.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   34. Cake Eating I: Introduction to Optimal Saving
+   37. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   35. Cake Eating II: Numerical Methods
+   38. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   36. Optimal Growth I: The Stochastic Optimal Growth Model
+   39. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   37. Optimal Growth II: Accelerating the Code with Numba
+   40. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   38. Optimal Growth III: Time Iteration
+   41. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   39. Optimal Growth IV: The Endogenous Grid Method
+   42. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   40. The Income Fluctuation Problem I: Basic Model
+   43. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   41. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   44. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1046,37 +1070,37 @@ when the parameters change.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   42. Job Search VII: Search with Learning
+   45. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   43. Likelihood Ratio Processes
+   46. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   44. Computing Mean of a Likelihood Ratio Process
+   47. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   45. A Problem that Stumped Milton Friedman
+   48. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   46. Exchangeability and Bayesian Updating
+   49. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   47. Likelihood Ratio Processes and Bayesian Learning
+   50. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   48. Bayesian versus Frequentist Decision Rules
+   51. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1088,32 +1112,32 @@ when the parameters change.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   49. LQ Control: Foundations
+   52. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   50. Lagrangian for LQ Control
+   53. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   51. Eliminating Cross Products
+   54. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   52. The Permanent Income Model
+   55. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   53. Permanent Income II: LQ Techniques
+   56. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   54. Production Smoothing via Inventories
+   57. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1125,37 +1149,37 @@ when the parameters change.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   55. Schelling’s Segregation Model
+   58. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   56. A Lake Model of Employment and Unemployment
+   59. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   57. Rational Expectations Equilibrium
+   60. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   58. Stability in Linear Rational Expectations Models
+   61. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   59. Markov Perfect Equilibrium
+   62. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   60. Uncertainty Traps
+   63. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   61. The Aiyagari Model
+   64. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1167,17 +1191,17 @@ when the parameters change.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   62. Asset Pricing: Finite State Models
+   65. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   63. Competitive Equilibria with Arrow Securities
+   66. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   64. Heterogeneous Beliefs and Bubbles
+   67. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1189,17 +1213,34 @@ when the parameters change.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   65. Pandas for Panel Data
+   68. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   66. Linear Regression in Python
+   69. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   67. Maximum Likelihood Estimation
+   70. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   71. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   72. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1211,17 +1252,17 @@ when the parameters change.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   68. Troubleshooting
+   73. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   69. References
+   74. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   70. Execution Statistics
+   75. Execution Statistics
   </a>
  </li>
 </ul>
