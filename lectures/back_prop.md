@@ -15,7 +15,7 @@ kernelspec:
 
 ```{code-cell} ipython3
 ---
-:tags: [hide-output]
+tags: [hide-output]
 ---
 
 !pip install --upgrade jax jaxlib
