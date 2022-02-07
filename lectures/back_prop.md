@@ -20,6 +20,13 @@ tags: [hide-output]
 !pip install --upgrade jax jaxlib
 ```
 
+```{code-cell} ipython3
+---
+tags: [hide-output]
+---
+!conda install -y -c plotly plotly plotly-orca retrying
+```
+
 ## Overview
 
 Substantial parts of **machine learning** and **artificial intelligence** are about 
