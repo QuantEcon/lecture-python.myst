@@ -13,6 +13,13 @@ kernelspec:
 
 # Multiple Good Allocation Mechanisms
 
+```{code-cell} ipython
+---
+tags: [hide-output]
+---
+!pip install prettytable
+```
+
 ##  Overview
 
 This lecture describes two mechanisms for allocating $n$ private goods ("houses")  to $m$ people ("buyers").
