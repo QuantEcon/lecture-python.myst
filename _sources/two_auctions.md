@@ -13,10 +13,21 @@ kernelspec:
 
 # First-Price and Second-Price Auctions
 
-In this lecture we'll learn about and simulate two classic auctions:
+This lecture is designed to set the stage for a subsequent lecture about [Multiple Good Allocation Mechanisms](https://python.quantecon.org/house_auction.html)
+
+In that lecture, a planner or auctioneer simultaneously allocates several goods to set of people.
+
+In the present lecture, a single good is allocated to one person within a set of people.
+
+
+Here  we'll learn about and simulate two classic auctions :
 
 * a First-Price Sealed-Bid Auction (FPSB)
 * a Second-Price Sealed-Bid Auction (SPSB) created by William Vickery {cite}`Vickrey_61`
+
+We'll also learn about and apply a
+
+* Revenue Equivalent Theorem
 
 
 We recommend watching this video about second price auctions by Anders Munk-Nielsen:

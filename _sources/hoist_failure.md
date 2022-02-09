@@ -32,6 +32,12 @@ We'll use the following concepts and tools:
 * fault tree analysis for approximating a failure rate of a multi-component system
 * a hierarchical probability model for describing uncertain probabilities  
 * Fourier transforms and inverse Fourier tranforms as efficient ways of computing convolutions of sequences
+  
+For more about Fourier transforms see this quantecon lecture [Circulant Matrices](https://python.quantecon.org/eig_circulant.html)
+as well as these  lecture  [Covariance Stationary Processes](https://python-advanced.quantecon.org/arma.html) and [Estimation of Spectra](https://python-advanced.quantecon.org/estspec.html).
+
+
+
 
 El-Shanawany, Ardron,  and Walker {cite}`Ardron_2018` and Greenfield and Sargent {cite}`Greenfield_Sargent_1993`  used some of the methods described here  to approximate probabilities of failures of safety systems in nuclear facilities.
 
