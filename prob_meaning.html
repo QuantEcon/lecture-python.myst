@@ -215,15 +215,15 @@
 <p>This lecture  illustrates two distinct interpretations of a  <strong>probability distribution</strong></p>
 <ul class="simple">
 <li><p>A frequentist interpretation as <strong>relative frequencies</strong> anticipated to occur in a large i.i.d. sample</p></li>
-<li><p>A Bayesian interpretation as a <strong>personal probability</strong> (about a parameter or list of parameters) after seeing a collection of observations</p></li>
+<li><p>A Bayesian interpretation as a <strong>personal opinion</strong> (about a parameter or list of parameters) after seeing a collection of observations</p></li>
 </ul>
-<p>We recommend watching this video about <strong>hypothesis testing</strong> according to the frequentist approach</p>
+<p>We recommend watching this video about <strong>hypothesis testing</strong> within  the frequentist approach</p>
 <div class="video_wrapper" style="">
 <iframe allowfullscreen="true" src="https://www.youtube.com/embed/8JIe_cz6qGA" style="border: 0; height: 345px; width: 560px">
 </iframe></div><p>After you watch that video, please watch the following video on the Bayesian approach to constructing <strong>coverage intervals</strong></p>
 <div class="video_wrapper" style="">
 <iframe allowfullscreen="true" src="https://www.youtube.com/embed/Pahyv9i_X2k" style="border: 0; height: 345px; width: 560px">
-</iframe></div><p>After you are familiar with the above material, this lecture uses the Socratic method to  to help consolidate your understanding of the different questions that are answered by</p>
+</iframe></div><p>After you are familiar with the material in these videos, this lecture uses the Socratic method to  to help consolidate your understanding of the different questions that are answered by</p>
 <ul class="simple">
 <li><p>a frequentist confidence interval</p></li>
 <li><p>a Bayesian coverage interval</p></li>
@@ -233,7 +233,7 @@
 proceeding to read the rest of the lecture.</p>
 <p>We provide our own answers as the lecture unfolds, but you’ll learn more if you try writing your own code before reading and running ours.</p>
 <p><strong>Code for answering questions:</strong></p>
-<p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
+<p>In addition to what’s in Anaconda, this lecture will deploy the following library:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">prettytable</span>
@@ -241,10 +241,17 @@ proceeding to read the rest of the lecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (3.0.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting prettytable
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from prettytable) (0.2.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading prettytable-3.0.0-py3-none-any.whl (24 kB)
+Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from prettytable) (0.2.5)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: prettytable
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed prettytable-3.0.0
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
@@ -278,20 +285,20 @@ proceeding to read the rest of the lecture.</p>
 \left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k} =
 \]</div>
 <p>where the fixed parameter <span class="math notranslate nohighlight">\(\theta \in (0,1)\)</span>.</p>
-<p>This is called the  the <strong>binomial distribution</strong>.</p>
+<p>This is called   the <strong>binomial distribution</strong>.</p>
 <p>Here</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\theta\)</span> is the probability that one toss of a coin will be a head, an outcome that we encode as  <span class="math notranslate nohighlight">\(Y = 1\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(1 -\theta\)</span> is the probability that one toss of the coin will be a tail, an outcome that we denote <span class="math notranslate nohighlight">\(Y = 0\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\(X\)</span> is the total number of heads that come up after flipping the coin <span class="math notranslate nohighlight">\(n\)</span> times.</p></li>
+<li><p><span class="math notranslate nohighlight">\(X\)</span> is the total number of heads that came up after flipping the coin <span class="math notranslate nohighlight">\(n\)</span> times.</p></li>
 </ul>
 <p>Consider the following experiment:</p>
-<p>Take <strong><span class="math notranslate nohighlight">\(I\)</span> independent sequences of <span class="math notranslate nohighlight">\(n\)</span>  independent flips of the coin</strong></p>
+<p>Take <span class="math notranslate nohighlight">\(I\)</span> <strong>independent</strong> sequences of <span class="math notranslate nohighlight">\(n\)</span>  <strong>independent</strong> flips of the coin**</p>
 <p>Notice the repeated use of the adjective <strong>independent</strong>:</p>
 <ul class="simple">
 <li><p>we use it once to describe that we are drawing <span class="math notranslate nohighlight">\(n\)</span> independent times from a <strong>Bernoulli</strong> distribution with parameter <span class="math notranslate nohighlight">\(\theta\)</span> to arrive at one draw from a <strong>Binomial</strong> distribution with parameters
 <span class="math notranslate nohighlight">\(\theta,n\)</span>.</p></li>
-<li><p>we use it again to describe that we are then drawing <span class="math notranslate nohighlight">\(I\)</span> such sequences of <span class="math notranslate nohighlight">\(n\)</span> coin draws.</p></li>
+<li><p>we use it again to describe that we are then drawing <span class="math notranslate nohighlight">\(I\)</span>  sequences of <span class="math notranslate nohighlight">\(n\)</span> coin draws.</p></li>
 </ul>
 <p>Let <span class="math notranslate nohighlight">\(y_h^i \in \{0, 1\}\)</span> be the realized value of <span class="math notranslate nohighlight">\(Y\)</span> on the <span class="math notranslate nohighlight">\(h\)</span>th flip during the <span class="math notranslate nohighlight">\(i\)</span>th sequence of flips.</p>
 <p>Let <span class="math notranslate nohighlight">\(\sum_{h=1}^n y_h^i\)</span> denote the total number of times  heads come up during the <span class="math notranslate nohighlight">\(i\)</span>th sequence of <span class="math notranslate nohighlight">\(n\)</span> independent coin flips.</p>
@@ -392,24 +399,24 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 +----+------------------------+-------------+
 | 1  | 1.6271660538000033e-09 |     0.0     |
 | 2  | 3.606884752589999e-08  |     0.0     |
-| 3  |  5.04963865362601e-07  |    1e-06    |
-| 4  | 5.007558331512455e-06  |    5e-06    |
-| 5  | 3.7389768875293014e-05 |   3.9e-05   |
-| 6  | 0.00021810698510587546 |   0.000225  |
-| 7  |  0.001017832597160754  |   0.00106   |
-| 8  |  0.003859281930901185  |   0.003913  |
-| 9  |  0.012006654896137007  |   0.011808  |
-| 10 |  0.030817080900085007  |   0.030998  |
-| 11 |   0.065369565545635    |   0.065595  |
-| 12 |  0.11439673970486108   |   0.114279  |
-| 13 |   0.1642619852172365   |    0.1632   |
-| 14 |  0.19163898275344246   |   0.192238  |
-| 15 |  0.17886305056987967   |   0.179499  |
-| 16 |   0.1304209743738704   |   0.13027   |
-| 17 |  0.07160367220526209   |   0.071588  |
-| 18 |  0.027845872524268643  |   0.02769   |
-| 19 |  0.006839337111223871  |   0.006811  |
-| 20 | 0.0007979226629761189  |   0.000781  |
+| 3  |  5.04963865362601e-07  |     0.0     |
+| 4  | 5.007558331512455e-06  |    6e-06    |
+| 5  | 3.7389768875293014e-05 |   4.2e-05   |
+| 6  | 0.00021810698510587546 |   0.000201  |
+| 7  |  0.001017832597160754  |   0.00099   |
+| 8  |  0.003859281930901185  |   0.00379   |
+| 9  |  0.012006654896137007  |   0.011961  |
+| 10 |  0.030817080900085007  |   0.030847  |
+| 11 |   0.065369565545635    |   0.065309  |
+| 12 |  0.11439673970486108   |   0.114357  |
+| 13 |   0.1642619852172365   |   0.164038  |
+| 14 |  0.19163898275344246   |   0.19225   |
+| 15 |  0.17886305056987967   |   0.178467  |
+| 16 |   0.1304209743738704   |   0.130811  |
+| 17 |  0.07160367220526209   |   0.071703  |
+| 18 |  0.027845872524268643  |   0.027565  |
+| 19 |  0.006839337111223871  |   0.006865  |
+| 20 | 0.0007979226629761189  |   0.000798  |
 +----+------------------------+-------------+
 </pre></div>
 </div>
@@ -421,9 +428,9 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 <p>Now we fix</p>
 <div class="math notranslate nohighlight">
 \[
-n=20, k=10, I=1,000,000
+n=20, k=10, I=1,000,000 
 \]</div>
-<p>and vary <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(0.01\)</span> to <span class="math notranslate nohighlight">\(0.99\)</span>.</p>
+<p>We’ll vary <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(0.01\)</span> to <span class="math notranslate nohighlight">\(0.99\)</span> and plot outcomes against <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">θ_low</span><span class="p">,</span> <span class="n">θ_high</span><span class="p">,</span> <span class="n">npt</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="mi">50</span>
@@ -462,6 +469,7 @@ n=20, k=10, I=1,000,000
 </div>
 <p><strong>Comparison with different <span class="math notranslate nohighlight">\(n\)</span></strong></p>
 <p>Now we fix <span class="math notranslate nohighlight">\(\theta=0.7, k=10, I=1,000,000\)</span> and vary <span class="math notranslate nohighlight">\(n\)</span> from <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(100\)</span>.</p>
+<p>Then we’ll plot outcomes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_low</span><span class="p">,</span> <span class="n">n_high</span><span class="p">,</span> <span class="n">nn</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span>
@@ -539,7 +547,8 @@ n=20, k=10, I=1,000,000
 </div>
 <p>From the above graphs, we can see that <strong><span class="math notranslate nohighlight">\(I\)</span>, the number of independent sequences,</strong> plays an important role.</p>
 <p>When <span class="math notranslate nohighlight">\(I\)</span> becomes larger, the difference between theoretical probability and frequentist estimate becomes smaller.</p>
-<p>Also, as long as <span class="math notranslate nohighlight">\(I\)</span> is large enough, changing <span class="math notranslate nohighlight">\(\theta\)</span> or <span class="math notranslate nohighlight">\(n\)</span> does not significantly change the accuracy of frequentist estimation.</p>
+<p>Also, as long as <span class="math notranslate nohighlight">\(I\)</span> is large enough, changing <span class="math notranslate nohighlight">\(\theta\)</span> or <span class="math notranslate nohighlight">\(n\)</span> does not substantially change the accuracy of the observed fraction
+as an approximation of <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p>The Law of Large Numbers is at work here.</p>
 <p>For each draw of an independent sequence, <span class="math notranslate nohighlight">\(\textrm{Prob}(X_i =  k | \theta)\)</span>  is the same, so aggregating all draws forms an i.i.d sequence of a binary random variable <span class="math notranslate nohighlight">\(\rho_{k,i},i=1,2,...I\)</span>, with a mean of <span class="math notranslate nohighlight">\(\textrm{Prob}(X =  k | \theta)\)</span> and a variance of</p>
 <div class="math notranslate nohighlight">
@@ -555,24 +564,29 @@ E[\rho_{k,i}] = \textrm{Prob}(X =  k | \theta) = \left(\frac{n!}{k! (n-k)!} \rig
 </section>
 <section id="bayesian-interpretation">
 <h2><span class="section-number">10.3. </span>Bayesian Interpretation<a class="headerlink" href="#bayesian-interpretation" title="Permalink to this headline">¶</a></h2>
-<p>Consider again a binomial distribution above, but now assume that the parameter <span class="math notranslate nohighlight">\(\theta\)</span> is a fixed number.</p>
-<p>Instead, we think of it as a <strong>random variable</strong> in the sense that it is itself described by a probability
-distribution.</p>
-<p>But now this probability distribution means something different than relative frequency that we anticipate in a large i.i.d. sample.</p>
-<p>Instead, the probability distribution for the parameter <span class="math notranslate nohighlight">\(\theta\)</span> is now a summary of our views about the likely values of <span class="math notranslate nohighlight">\(\theta\)</span> before we have seen any data, or any more data.</p>
+<p>We again a binomial distribution.</p>
+<p>But now we don’t regard  <span class="math notranslate nohighlight">\(\theta\)</span> as being a fixed number.</p>
+<p>Instead, we think of it as a <strong>random variable</strong>.</p>
+<p><span class="math notranslate nohighlight">\(\theta\)</span> is described by a probability distribution.</p>
+<p>But now this probability distribution means something different than a relative frequency that we can anticipate to occur in a large i.i.d. sample.</p>
+<p>Instead, the probability distribution of <span class="math notranslate nohighlight">\(\theta\)</span> is now a summary of our views about  likely values of <span class="math notranslate nohighlight">\(\theta\)</span> either</p>
+<ul class="simple">
+<li><p><strong>before</strong> we have seen <strong>any</strong> data at all, or</p></li>
+<li><p><strong>before</strong> we have seen <strong>more</strong> data, after we have seen <strong>some</strong> data</p></li>
+</ul>
 <p>Thus, suppose that, before seeing any data, you have a personal prior probability distribution saying that</p>
 <div class="math notranslate nohighlight">
 \[
 P(\theta) = \frac{\theta^{\alpha-1}(1-\theta)^{\beta -1}}{B(\alpha, \beta)}
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(B(\alpha, \beta)\)</span> the <strong>beta function</strong> so that <span class="math notranslate nohighlight">\(P(\theta)\)</span> is
-a beta distribution with parameters <span class="math notranslate nohighlight">\(\alpha, \beta\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(B(\alpha, \beta)\)</span> is a  <strong>beta function</strong> , so that <span class="math notranslate nohighlight">\(P(\theta)\)</span> is
+a <strong>beta distribution</strong> with parameters <span class="math notranslate nohighlight">\(\alpha, \beta\)</span>.</p>
 <p><strong>Exercise 2:</strong></p>
 <p><strong>a)</strong>  Please write down the <strong>likelihood function</strong> for a sample of length <span class="math notranslate nohighlight">\(n\)</span> from a binomial distribution with parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p><strong>b)</strong> Please write down the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of the coin.</p>
 <p><strong>c)</strong> Please pretend  that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span> and that someone who doesn’t know this has a beta prior distribution with parameters  with <span class="math notranslate nohighlight">\(\beta = \alpha = .5\)</span>.</p>
 <p><strong>d)</strong> Please write a Python class to simulate this person’s personal  posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span>  for a <em>single</em> sequence of <span class="math notranslate nohighlight">\(n\)</span> draws.</p>
-<p><strong>e)</strong> Please plot the posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span> as a function of <span class="math notranslate nohighlight">\(\theta\)</span> as <span class="math notranslate nohighlight">\(n\)</span> grows from <span class="math notranslate nohighlight">\(1, 2, \ldots\)</span>.</p>
+<p><strong>e)</strong> Please plot the posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span> as a function of <span class="math notranslate nohighlight">\(\theta\)</span> as <span class="math notranslate nohighlight">\(n\)</span> grows as <span class="math notranslate nohighlight">\(1, 2, \ldots\)</span>.</p>
 <p><strong>f)</strong> For various <span class="math notranslate nohighlight">\(n\)</span>’s, please describe and compute  a Bayesian coverage interval for the interval <span class="math notranslate nohighlight">\([.45, .55]\)</span>.</p>
 <p><strong>g)</strong> Please tell what question a Bayesian coverage interval answers.</p>
 <p><strong>h)</strong> Please compute the Posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> for various values of sample size <span class="math notranslate nohighlight">\(n\)</span>.</p>
@@ -592,7 +606,7 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 \[
 \textrm{Prob}(\theta) = \frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)}
 \]</div>
-<p>We can derive the posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span> by</p>
+<p>We can derive the posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span> via</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
   \textrm{Prob}(\theta | Y) &amp;= \frac{\textrm{Prob}(Y | \theta) \textrm{Prob}(\theta)}{\textrm{Prob}(Y)} \\
@@ -757,43 +771,43 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
   <tbody>
     <tr>
       <th>upper</th>
-      <td>0.001543</td>
-      <td>0.000868</td>
-      <td>0.000603</td>
-      <td>0.046007</td>
-      <td>0.036447</td>
-      <td>0.185116</td>
+      <td>0.228520</td>
+      <td>0.430741</td>
+      <td>0.555933</td>
+      <td>0.349293</td>
+      <td>0.437155</td>
+      <td>0.441873</td>
       <td>0.237639</td>
-      <td>0.264015</td>
-      <td>0.274075</td>
-      <td>0.348182</td>
-      <td>0.331729</td>
-      <td>0.386891</td>
-      <td>0.372306</td>
-      <td>0.383644</td>
+      <td>0.235206</td>
+      <td>0.329116</td>
+      <td>0.361765</td>
+      <td>0.418512</td>
+      <td>0.390159</td>
+      <td>0.384101</td>
+      <td>0.386610</td>
     </tr>
     <tr>
       <th>lower</th>
-      <td>0.771480</td>
-      <td>0.569259</td>
-      <td>0.444067</td>
-      <td>0.650707</td>
-      <td>0.562845</td>
-      <td>0.652678</td>
+      <td>0.998457</td>
+      <td>0.999132</td>
+      <td>0.999397</td>
+      <td>0.953993</td>
+      <td>0.963553</td>
+      <td>0.882671</td>
       <td>0.582446</td>
-      <td>0.549653</td>
-      <td>0.495929</td>
-      <td>0.540960</td>
-      <td>0.492070</td>
-      <td>0.480722</td>
-      <td>0.444479</td>
-      <td>0.434744</td>
+      <td>0.516350</td>
+      <td>0.555887</td>
+      <td>0.555092</td>
+      <td>0.581488</td>
+      <td>0.484073</td>
+      <td>0.456581</td>
+      <td>0.437766</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<p>As n increases, we can see that Bayesian coverage intervals narrow and move toward <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
+<p>As <span class="math notranslate nohighlight">\(n\)</span> increases, we can see that Bayesian coverage intervals narrow and move toward <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
 <p><strong>g)</strong> Please tell what question a Bayesian coverage interval answers.</p>
 <p>The Bayesian coverage interval tells the range of <span class="math notranslate nohighlight">\(\theta\)</span> that corresponds to the [<span class="math notranslate nohighlight">\(p_1\)</span>, <span class="math notranslate nohighlight">\(p_2\)</span>] quantiles of the cumulative probability distribution (CDF)  of the posterior distribution.</p>
 <p>To construct the coverage interval we first compute a posterior distribution of the unknown parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
@@ -825,16 +839,16 @@ F(a)=p_1,F(b)=p_2
 <img alt="_images/prob_meaning_24_0.png" src="_images/prob_meaning_24_0.png" />
 </div>
 </div>
-<p>Notice  that in the graph above the posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> exhibits a hump shape (in general) as n increases.</p>
+<p>Notice  that in the graph above the posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> typically exhibits a hump shape  as <span class="math notranslate nohighlight">\(n\)</span> increases.</p>
 <p>Two opposing forces are at work.</p>
 <p>The first force is that the individual  adjusts his belief as he observes new outcomes, so his posterior probability distribution  becomes more and more realistic, which explains the rise of the posterior probabililty.</p>
-<p>However, <span class="math notranslate nohighlight">\([.45, .55]\)</span> actually excludes the true <span class="math notranslate nohighlight">\(\theta\)</span> that generates the data (which is 0.4).</p>
+<p>However, <span class="math notranslate nohighlight">\([.45, .55]\)</span> actually excludes the true <span class="math notranslate nohighlight">\(\theta =.4 \)</span> that generates the data.</p>
 <p>As a result, the posterior probabililty drops as larger and larger samples refine his  posterior probability distribution of <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p>The descent seems precipitous only because of the scale of the graph  that has the number of observations increasing disproportionately.</p>
-<p>When the number of observations becomes large enough, our Bayesian becomes so confident about <span class="math notranslate nohighlight">\(\theta\)</span> that he considers <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> unlikely.</p>
+<p>When the number of observations becomes large enough, our Bayesian becomes so confident about <span class="math notranslate nohighlight">\(\theta\)</span> that he considers <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> very unlikely.</p>
 <p>That is why we see a nearly horizontal line when the number of observations exceeds 500.</p>
 <p><strong>i)</strong> Please use your Python class to study what happens to the posterior distribution as <span class="math notranslate nohighlight">\(n \rightarrow + \infty\)</span>, again assuming that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span>, though it is unknown to the person doing the updating via Bayes’ Law.</p>
-<p>Using the Python class we made above, we can see the evolution of posterior distributions as n approaches infinity.</p>
+<p>Using the Python class we made above, we can see the evolution of posterior distributions as <span class="math notranslate nohighlight">\(n\)</span> approaches infinity.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -857,9 +871,9 @@ F(a)=p_1,F(b)=p_2
 <img alt="_images/prob_meaning_26_0.png" src="_images/prob_meaning_26_0.png" />
 </div>
 </div>
-<p>As <span class="math notranslate nohighlight">\(n\)</span> increases, we can see that the probability density functions ‘concentrate’ on <span class="math notranslate nohighlight">\(0.4\)</span>, which is the true value of <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
-<p>Correspondingly, posterior means  converge to <span class="math notranslate nohighlight">\(0.4\)</span> while posterior standard deviations drop to <span class="math notranslate nohighlight">\(0\)</span>.</p>
-<p>To show this, we explicitly compute these statistics of the posterior distributions.</p>
+<p>As <span class="math notranslate nohighlight">\(n\)</span> increases, we can see that the probability density functions <em>concentrate</em> on <span class="math notranslate nohighlight">\(0.4\)</span>, the true value of <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>Here the  posterior means  converges to <span class="math notranslate nohighlight">\(0.4\)</span> while the posterior standard deviations converges to <span class="math notranslate nohighlight">\(0\)</span> from above.</p>
+<p>To show this, we compute the means and variances statistics of the posterior distributions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">ii</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">]</span>
@@ -888,8 +902,8 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <p>How shall we interpret the patterns above?</p>
-<p>The answer is encoded in the  Bayesian updating formulas</p>
-<p>It is natural to extend the one-step Bayesian update to n-step Bayesian update.</p>
+<p>The answer is encoded in the  Bayesian updating formulas.</p>
+<p>It is natural to extend the one-step Bayesian update to an <span class="math notranslate nohighlight">\(n\)</span>-step Bayesian update.</p>
 <div class="math notranslate nohighlight">
 \[
 \textrm{Prob}(\theta|k) = \frac{\textrm{Prob}(\theta,k)}{\textrm{Prob}(k)}=\frac{\textrm{Prob}(k|\theta)*\textrm{Prob}(\theta)}{\textrm{Prob}(k)}=\frac{\textrm{Prob}(k|\theta)*\textrm{Prob}(\theta)}{\int_0^1 \textrm{Prob}(k|\theta)*\textrm{Prob}(\theta) d\theta}
@@ -906,16 +920,17 @@ F(a)=p_1,F(b)=p_2
 \[
 ={Beta}(\alpha + k, \beta+N-k)
 \]</div>
-<p>A Beta Distribution with <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> has the following mean and variance.</p>
+<p>A beta Distribution with <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> has the following mean and variance.</p>
 <p>The mean is <span class="math notranslate nohighlight">\(\frac{\alpha}{\alpha + \beta}\)</span></p>
 <p>The variance is <span class="math notranslate nohighlight">\(\frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}\)</span></p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\alpha\)</span> can be viewed as the number of successes</p></li>
 <li><p><span class="math notranslate nohighlight">\(\beta\)</span> can be viewed as the number of failures</p></li>
 </ul>
-<p>The random variables <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> are governed by Binomial Distribution with <span class="math notranslate nohighlight">\(\theta=0.4\)</span> (that we call true data generation process).</p>
-<p>According to the Law of Large Numbers, for a large number of observations, observed frequencies of <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> will be described by the true data generation process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See Exercise <span class="math notranslate nohighlight">\(1\)</span>).</p>
-<p>Consequently, the  mean of the posterior distribution converges to <span class="math notranslate nohighlight">\(0.4\)</span> and the variance withers toward zero.</p>
+<p>The random variables <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> are governed by Binomial Distribution with <span class="math notranslate nohighlight">\(\theta=0.4\)</span>.</p>
+<p>Call this the true data generating process.</p>
+<p>According to the Law of Large Numbers, for a large number of observations, observed frequencies of <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> will be described by the true data generating process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See Exercise <span class="math notranslate nohighlight">\(1\)</span>).</p>
+<p>Consequently, the  mean of the posterior distribution converges to <span class="math notranslate nohighlight">\(0.4\)</span> and the variance withers to zero.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">upper_bound</span> <span class="o">=</span> <span class="p">[</span><span class="n">ii</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.95</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">]</span>
@@ -940,7 +955,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <p>After observing a large number of outcomes, the  posterior distribution collapses around <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
-<p>Thus, he comes to believe that <span class="math notranslate nohighlight">\(\theta\)</span> is near <span class="math notranslate nohighlight">\(.4\)</span>.</p>
+<p>Thus, the Bayesian statististian  comes to believe that <span class="math notranslate nohighlight">\(\theta\)</span> is near <span class="math notranslate nohighlight">\(.4\)</span>.</p>
 <p>As shown in the figure above, as the number of observations grows, the Bayesian coverage intervals (BCIs) become narrower and narrower   around  <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
 <p>However, if you take a closer look, you will find that the centers of the  are not exactly <span class="math notranslate nohighlight">\(0.4\)</span>, due to the persistent influence of the prior distribution and the randomness of the simulation path.</p>
 </section>
