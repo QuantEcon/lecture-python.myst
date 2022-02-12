@@ -658,7 +658,7 @@ To construct a DMD, we deploy the following steps:
   
   where evidently $b$ is an $\tilde r \times 1$ vector.
     
-With $\Lambda, \Phi, \Phi^{+}$ in hand, our least-squares fitted dynamics fitted to the $r$ dominant modes
+With $\Lambda, \Phi, \Phi^{+}$ in hand, our least-squares fitted dynamics fitted to the $\tilde r$ dominant modes
 are governed by
 
 $$
