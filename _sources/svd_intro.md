@@ -531,32 +531,47 @@ This is the **tall and skinny** case associated with **Dynamic Mode Decompositio
 
 You can read about Dynamic Mode Decomposition here {cite}`DMD_book`.
 
-Starting with an $m \times n $ matrix of data $X$, we form two matrices 
+We start  with an $m \times n $ matrix of data $\tilde X$ of the form 
+
 
 $$
-\tilde X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_{n-1}\end{bmatrix}
+ \tilde X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n\end{bmatrix}
+$$ 
+
+where for $t = 1, \ldots, n$,  the $m \times 1 $ vector $X_t$ is
+
+$$ X_t = \begin{bmatrix}  X_{1,t} & X_{2,t} & \cdots & X_{m,t}     \end{bmatrix}^T $$
+
+where $T$ denotes transposition and $X_{i,t}$ is an observations on variable $i$ at time $t$.
+
+From $\tilde X$,   form two matrices 
+
+$$
+ X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_{n-1}\end{bmatrix}
 $$ 
 
 and
 
 $$
-\tilde X' =  \begin{bmatrix} X_2 \mid X_3 \mid \cdots \mid X_n\end{bmatrix}
+X' =  \begin{bmatrix} X_2 \mid X_3 \mid \cdots \mid X_n\end{bmatrix}
 $$
 
-In forming $\tilde X$ and $\tilde X'$, we have in each case  dropped a column from $X$.
+(Note that here $'$ does not denote matrix transposition but instead is part of the name of the matrix $X'$.)
 
-Evidently, $\tilde X$ and $\tilde X'$ are both $m \times \tilde n$ matrices where $\tilde n = n - 1$.
+In forming $ X$ and $X'$, we have in each case  dropped a column from $\tilde X$.
+
+Evidently, $ X$ and $ X'$ are both $m \times \tilde n$ matrices where $\tilde n = n - 1$.
 
 We start with a system consisting of $m$ least squares regressions of **everything** on one lagged value of **everything**:
 
 $$
-\tilde X' = A \tilde X + \epsilon
+ X' = A  X + \epsilon
 $$
 
 where 
 
 $$
-A = \tilde X' \tilde X^{+}
+A =  X'  X^{+}
 $$
 
 and where the (huge) $m \times m $ matrix $X^{+}$ is the Moore-Penrose generalized inverse of $X$ that we could compute
@@ -574,13 +589,13 @@ The idea behind **dynamic mode decomposition** is to construct an approximation 
 
 * retains only the largest  $\tilde r< < r$ eigenvalues and associated eigenvectors of $U$ and $V^T$ 
 
-* constructs an $m \times \tilde r$ matrix $\Phi$ that captures effects of $r$ dynamic modes on all $m$ variables
+* constructs an $m \times \tilde r$ matrix $\Phi$ that captures effects  on all $m$ variables of $r$ dynamic modes
 
-* uses $\Phi$ and the $\tilde r$ leading singular values to forecast *future* $X_t$'s
+* uses $\Phi$ and  powers of $\tilde r$ leading singular values to forecast *future* $X_t$'s
 
 The magic of **dynamic mode decomposition** is that we accomplish this without ever computing the regression coefficients $A = X' X^{+}$.
 
-To accomplish a DMD, we deploy the following steps:
+To construct a DMD, we deploy the following steps:
 
 * Compute the singular value decomposition 
 
@@ -611,10 +626,10 @@ To accomplish a DMD, we deploy the following steps:
   
   $$
   U^T X' V \Sigma^{-1} = U^T A U \equiv \tilde A
-  $$
+  $$ (eq:tildeAform)
     
-* At this point, in constructing $\tilde A$ according to the above formula,
-  we take only the  columns of $U$ corresponding to the $\tilde r$ largest singular values.  
+* At this point,  we  deploy a reduced-dimension version of formula {eq}`eq:tildeAform} by
+* using only the  columns of $U$ that correspond to the $\tilde r$ largest singular values.  
   
   Tu et al. {cite}`tu_Rowley` verify that eigenvalues and eigenvectors of $\tilde A$ equal the leading eigenvalues and associated eigenvectors of $A$.
 
@@ -625,8 +640,7 @@ To accomplish a DMD, we deploy the following steps:
   $$
   
   where $\Lambda$ is a $\tilde r \times \tilde r$ diagonal matrix of eigenvalues and the columns of $W$ are corresponding eigenvectors
-  of $\tilde A$.
-  Both $\Lambda$ and $W$ are $\tilde r \times \tilde r$ matrices.
+  of $\tilde A$.   Both $\Lambda$ and $W$ are $\tilde r \times \tilde r$ matrices.
   
 * Construct the $m \times \tilde r$ matrix
 
@@ -644,7 +658,7 @@ To accomplish a DMD, we deploy the following steps:
   
   where evidently $b$ is an $\tilde r \times 1$ vector.
     
-With $\Lambda, \Phi$ in hand, our least-squares fitted dynamics fitted to the $r$ dominant modes
+With $\Lambda, \Phi, \Phi^{+}$ in hand, our least-squares fitted dynamics fitted to the $\tilde r$ dominant modes
 are governed by
 
 $$
@@ -652,7 +666,7 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
 $$
 
  
-Conditional on $X_t$, forecasts $\check X_{t+j} $ of $X_{t+j}, j = 1, 2, \ldots, $  are evidently given by 
+Conditional on $X_t$, we construct forecasts $\check X_{t+j} $ of $X_{t+j}, j = 1, 2, \ldots, $  from 
 
 $$
 \check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
