@@ -90,9 +90,9 @@ This means that bidders are in effect participating in  a game in which players 
 
 This is   a **Bayesian game**, a Nash equilibrium of which is called a **Bayesian Nash equilibrium**.
 
-To complete the specification of the situation, we'll  assume that  prospective buyers' valuations are independently and indentically distributed according to a probability distribution that is known by all bidders. 
+To complete the specification of the situation, we'll  assume that  prospective buyers' valuations are independently and identically distributed according to a probability distribution that is known by all bidders. 
 
-Bidder optimally chooses to  bid less than $v_i$.  
+Bidder optimally chooses to bid less than $v_i$.  
 
 ### Characterization of FPSB Auction 
 
@@ -112,7 +112,8 @@ $$ (eq:optbid2)
 
 
 
-A proof for this assertion is available  at this Wikepedia page about Vicker auctions (https://en.wikipedia.org/wiki/Vickrey_auction)
+A proof for this assertion is available  at the [Wikepedia
+        page(https://en.wikipedia.org/wiki/Vickrey_auction)] about Vickery auctions 
 
 +++
 
@@ -122,13 +123,14 @@ A proof for this assertion is available  at this Wikepedia page about Vicker auc
 
 **Protocols:** In a  second-price sealed-bid (SPSB) auction,  the winner pays the second-highest bid. 
 
-## Characterization of SPSB Auction.
+## Characterization of SPSB Auction
 
 In a  SPSB auction  bidders optimally choose to bid their  values.
 
 Formally, a dominant strategy profile in a SPSB auction with a single, indivisible item has each bidder  bidding its  value.
 
-A proof is provided at this Wikepedia page about Vicker auctions (https://en.wikipedia.org/wiki/Vickrey_auction)
+A proof is provided at [the Wikepedia
+        page](https://en.wikipedia.org/wiki/Vickrey_auction) about Vicker auctions 
 
 +++
 
@@ -138,13 +140,13 @@ A proof is provided at this Wikepedia page about Vicker auctions (https://en.wik
 
 We assume valuation $v_{i}$  of bidder $i$ is distributed $v_{i} \stackrel{\text{i.i.d.}}{\sim} U(0,1)$. 
 
-Under this assumption, we can analytically compute probabilitiy  distributions of  prices bid in both  FPSB and SPSB.
+Under this assumption, we can analytically compute probability  distributions of  prices bid in both  FPSB and SPSB.
 
-We'll  simulate outcomes and, by using  a law of large numbers verify,  that the simulated outcomes agree with analytical ones.
+We'll  simulate outcomes and, by using  a law of large numbers, verify that the simulated outcomes agree with analytical ones.
 
 We can use our  simulation to illustrate   a  **Revenue Equivalence Theorem** that asserts that on average first-price and second-price sealed bid auctions  provide a seller the same revenue.
 
-To read about the revenue equivalence theorem, see this Wikepdia page (https://en.wikipedia.org/wiki/Revenue_equivalence)
+To read about the revenue equivalence theorem, see [this Wikepedia page](https://en.wikipedia.org/wiki/Revenue_equivalence)
 
 +++
 
@@ -170,7 +172,7 @@ $$
 \end{aligned}
 $$
 
-and the PDF of $y$ is $\tilde{f}_{n-1}(y) = (n-1)y^{n-2}$.
+and the PDF of $y_i$ is $\tilde{f}_{n-1}(y) = (n-1)y^{n-2}$.
 
 Then bidder $i$'s   optimal bid in a **FPSB** auction is:
 
@@ -343,7 +345,7 @@ The Revenue Equivalence Theorem lets us an optimal bidding strategy for  a  FPSB
 
 Let  $b(v_{i})$ be the optimal bid in a FPSB auction. 
 
-The revenue equivlance  theorem tells us that a bidder agent with value $v_{i}$ on average receives the same  **payment** in the two  types of auction.
+The revenue equivalence  theorem tells us that a bidder agent with value $v_{i}$ on average receives the same  **payment** in the two  types of auction.
 
 Consequently, 
 
@@ -359,8 +361,8 @@ It follows that an optimal bidding strategy in a FPSB auction is $b(v_{i}) = \ma
 
 +++
 
-In equations {eq}`eq:optbid1` and {eq}`eq:optbid1`, we displayed formulas for optimal bids in a symmetric Bayesian Nash Equilibrium of a
-a FPSB auction"
+In equations {eq}`eq:optbid1` and {eq}`eq:optbid1`, we displayed formulas for
+optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.
 
 $$
 \mathbf{E}[y_{i} | y_{i} < v_{i}]
