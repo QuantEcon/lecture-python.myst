@@ -42,7 +42,7 @@ and
 ```{youtube} eYTGQCGpmXI
 ```
 
-Anders Munk-Nielsen put his code on github here <https://github.com/GamEconCph/Lectures-2021/tree/main/Bayesian%20Games>
+Anders Munk-Nielsen put his code [on GitHub](https://github.com/GamEconCph/Lectures-2021/tree/main/Bayesian%20Games).
 
 Much of our  Python code below is based on his.
 
@@ -112,8 +112,7 @@ $$ (eq:optbid2)
 
 
 
-A proof for this assertion is available  at the [Wikepedia
-        page(https://en.wikipedia.org/wiki/Vickrey_auction)] about Vickery auctions 
+A proof for this assertion is available  at the [Wikepedia page](https://en.wikipedia.org/wiki/Vickrey_auction) about Vickery auctions 
 
 +++
 
