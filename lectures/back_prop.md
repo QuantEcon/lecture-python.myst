@@ -16,7 +16,7 @@ kernelspec:
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install --upgrade jax jaxlib
+!conda install -y -c conda-forge jax jaxlib
 !conda install -y -c plotly plotly plotly-orca retrying
 ```
 
@@ -600,3 +600,4 @@ This lecture site is built in a server environment that doesn't have access to a
 If you run this lecture locally this lets you know where your code is being executed, either
 via the `cpu` or the `gpu`
 ```
+
