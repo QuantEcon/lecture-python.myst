@@ -270,17 +270,17 @@ We start with a bivariate normal distribution pinned down by
 
 $$
 \mu=\left[\begin{array}{c}
-0\\
-0
+.5 \\
+1.0
 \end{array}\right],\quad\Sigma=\left[\begin{array}{cc}
 1 & .5\\
-.5 & 2
+.5 & 1
 \end{array}\right]
 $$
 
 ```{code-cell} python3
-μ = np.array([0., 0.])
-Σ = np.array([[1., .5], [.5 ,2.]])
+μ = np.array([.5, 1.])
+Σ = np.array([[1., .5], [.5 ,1.]])
 
 # construction of the multivariate normal instance
 multi_normal = MultivariateNormal(μ, Σ)
@@ -291,14 +291,136 @@ k = 1 # choose partition
 
 # partition and compute regression coefficients
 multi_normal.partition(k)
-multi_normal.βs[0]
+multi_normal.βs[0],multi_normal.βs[1]
+```
+
+Let's illustrate the fact that you _can regress anything on anything else_.
+
+We have computed everything we need to compute two regression lines, one of $z_2$ on $z_1$, the other of $z_1$ on $z_2$.
+
+We'll represent  these regressions as
+
+$$
+z_1 = a_1 + b_1 z_2 + \epsilon_1 
+$$
+
+and
+
+$$ 
+z_2 = a_2 + b_2 z_1 + \epsilon_2
+$$
+
+where we have the population least squares orthogonality conditions
+
+$$
+E \epsilon_1 z_2 = 0 
+$$
+
+and 
+
+$$ 
+E \epsilon_2 z_1 = 0 
+$$
+
+Let's  compute $a_1, a_2, b_1, b_2$.
+
+```{code-cell} python3
+
+beta = multi_normal.βs 
+
+a1 = μ[0] - beta[0]*μ[1]
+b1 = beta[0]
+
+a2 = μ[1] - beta[1]*μ[0]
+b2 = beta[1]
+```
+
+Let's print out the intercepts and slopes.
+
+
+For the regression of $z_1$ on $z_2$ we have
+
+```{code-cell} python3
+print ("a1 = ", a1)
+print ("b1 = ", b1)
+```
+
+For the regression of $z_2$ on $z_1$ we have
+
+```{code-cell} python3
+print ("a2 = ", a2)
+print ("b2 = ", b2)
 ```
 
 
-To illustrate the idea that you _can regress anything on anything else_, let's first compute the mean and variance of the distribution of $z_2$
+
+Now let's plot the two regression lines and stare at them.
+
+
+```{code-cell} python3
+
+z2 = np.linspace(-4,4,100)
+
+
+a1 = np.squeeze(a1)
+b1 = np.squeeze(b1)
+
+a2 = np.squeeze(a2)
+b2 = np.squeeze(b2)
+
+z1  = b1*z2 + a1
+
+
+z1h = z2/b2 - a2/b2
+
+
+fig = plt.figure(figsize=(12,12))
+ax = fig.add_subplot(1, 1, 1)
+ax.set(xlim=(-4, 4), ylim=(-4, 4))
+ax.spines['left'].set_position('center')
+ax.spines['bottom'].set_position('zero')
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+ax.xaxis.set_ticks_position('bottom')
+ax.yaxis.set_ticks_position('left')
+plt.ylabel('$z_1$', loc = 'top')
+plt.xlabel('$z_2$,', loc = 'right')
+plt.title('two regressions')
+plt.plot(z2,z1, 'r', label = "$z_1$ on $z_2$")
+plt.plot(z2,z1h, 'b', label = "$z_2$ on $z_1$")
+plt.legend()
+plt.show()
+```
+
+The red line is the  expectation of $z_1$ conditional on $z_2$.
+
+The intercept and slope of the red line are
+
+```{code-cell} python3
+print("a1 = ", a1)
+print("b1 = ", b1)
+```
+
+The blue line is the expectation of $z_2$ conditional on $z_1$.  
+
+The intercept and slope of the blue line are
+
+```{code-cell} python3
+print("-a2/b2 = ", - a2/b2)
+print("1/b2 = ", 1/b2)
+```
+
+We can use these regression lines or our code to compute conditional expectations.
+
+Let's  compute the mean and variance of the distribution of $z_2$
 conditional on $z_1=5$.
 
 After that we'll reverse what are on the left and right sides of the regression.
+
+
+
+
+
 
 
 
