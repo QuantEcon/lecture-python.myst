@@ -216,9 +216,12 @@ rr = np.linalg.matrix_rank(X)
 rr
 ```
 
-```{todo}
-Add some words about the "economy SVD" and add an example here
-```
+**Remark:** The cells above illustrate application of the  `fullmatrices=True` and `full-matrices=False` options.
+Using `full-matrices=False` returns a reduced singular value decomposition. This option implements
+an optimal reduced rank approximation of a matrix, in the sense of  minimizing the Frobenius
+norm of the discrepancy between the approximating matrix and the matrix being approximated.
+Optimality in this sense is  established in the celebrated Eckart–Young theorem. See <https://en.wikipedia.org/wiki/Low-rank_approximation>.
+
 
 ## PCA with Eigenvalues and Eigenvectors
 
@@ -671,6 +674,153 @@ Conditional on $X_t$, we construct forecasts $\check X_{t+j} $ of $X_{t+j}, j = 
 $$
 \check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
 $$
+
+
+## Reduced-order VAR
+
+Consider a **vector autoregression**
+
+$$
+X_{t+1} = \check A X_t + C \epsilon_{t+1}
+$$ (eq:VARred)
+
+where 
+
+* $X_t$ is an $m \times 1$ vector
+* $\check A$ is an $m \times m$ matrix of rank $r$
+* $\epsilon_{t+1} \sim {\mathcal N}(0, I)$ is an $m \times 1$ vector of i.i.d. shocks
+* $E \epsilon_{t+1} X_t = 0$, so that the shocks are orthogonal to the regressors
+
+To link this model to a dynamic mode decomposition (DMD), again take
+
+$$ 
+X = [ X_1 \mid X_2 \mid \cdots \mid X_{n-1} ]
+$$
+
+$$
+X' =  [ X_2 \mid X_3 \mid \cdots \mid X_n ]
+$$
+
+so that according to  model {eq}`eq:VARred` 
+
+
+$$
+X' = [\check A X_1 + C \epsilon_2  \mid \check A X_2 + C \epsilon_3 \mid \cdots \mid \check A X_{n-1}  C 
+\epsilon_n ]
+$$
+
+To illustrate some useful calculations, assume that $n =3 $ and form
+
+$$
+X' X^T = [\check A X_1 + C \epsilon_2  \mid \check A X_2 + C \epsilon_3 ] 
+   \begin{bmatrix} X_1^T \cr X_2^T \end{bmatrix} 
+$$
+
+or 
+
+$$
+X' X^T = \check A ( X_1 X_1^T + X_2 X_2^T) + C( \epsilon_2 X_1^T + \epsilon_3 X_2^T) 
+$$
+
+but because 
+
+$$
+E C( \epsilon_2 X_1^T + \epsilon_3 X_2^T)  = 0 
+$$
+
+we have
+
+$$
+X' X^T = \check A ( X_1 X_1^T + X_2 X_2^T)
+$$
+
+Evidently,
+
+$$
+X X^T = ( X_1 X_1^T + X_2 X_2^T)
+$$
+
+so that our  matrix  $\check A$ of least squares regression coefficients is
+
+$$
+\check A = (X' X^T)  (X X^T)^+
+$$
+
+Our **assumption** that $\check A$ is a matrix of rank $r$ leads us to represent it as
+
+$$
+\check A = \Phi \Lambda \Phi^{+}
+$$
+
+where $\Phi$ and $\Lambda$ are computed with the DMD algorithm described above.
+
+Associated with the VAR representation {eq}`eq:VARred`
+is the usual moving average representation
+
+$$
+X_{t+j} = \check A^j X_t + C \epsilon_{t+j} + \check A C \epsilon_{t+j-1} + \cdots \check A^{j-1} \epsilon_{t+1}
+$$
+
+After computing $\check A$, we can construct sample versions
+of
+
+$$ 
+C \epsilon_{t+1} = X_{t+1} - \check A X_t , \quad t =1, \ldots, n-1
+$$
+
+and check whether they are serially uncorrelated as assumed.
+
+For example, we can compute spectra and cross-spectra of components of $C \epsilon_{t+1}$
+
+We can also estimate the covariance matrix of $C \epsilon_{t+1}$
+from
+
+$$
+\frac{1}{n} \sum_{j=1}^{n-1} (C \epsilon_{t+1} )( C \epsilon_{t+1})^T 
+$$
+
+It can be useful to transform variables in our reduced order VAR
+
+
+$$
+X_{t+1} = \Phi \Lambda \Phi^{+} X_t + C \epsilon_{t+1}
+$$
+
+according to
+
+$$
+\Phi^+ X_{t+1} = \Lambda  \Phi^{+} X_t +  \Phi^+ C \epsilon_{t+1}
+$$
+
+or
+
+$$
+\tilde X_{t+1} = \Lambda \tilde X_t + \tilde \epsilon_{t+1} 
+$$
+
+where $\tilde X_t $ is an $r \times 1$ **mode** and $\tilde \epsilon_{t+1}$ is an $r \times 1$
+shock.
+
+
+**Remark:** It is permissible for $X_t$ to contain lagged values of  observables. For example:
+
+$$
+X_t = \begin{bmatrix}
+y_{1t} \cr
+y_{1,t-1} \cr
+\vdots \cr
+y_{1, t-k}\cr
+y_{2,t} \cr
+y_{2, t-1} \cr
+\vdots
+\end{bmatrix}
+$$
+
+
+
+
+
+
 
 +++
 
