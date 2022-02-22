@@ -202,8 +202,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reduced-order-var">
+   6.11. Reduced-order VAR
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#source-for-some-python-code">
-   6.11. Source for Some Python Code
+   6.12. Source for Some Python Code
   </a>
  </li>
 </ul>
@@ -265,18 +270,18 @@
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading Quandl-3.7.0-py2.py3-none-any.whl (26 kB)
-Requirement already satisfied: numpy&gt;=1.8 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.20.3)
-Requirement already satisfied: pandas&gt;=0.14 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.3.4)
-Requirement already satisfied: requests&gt;=2.7.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.26.0)
-Requirement already satisfied: python-dateutil in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.8.2)
-Requirement already satisfied: more-itertools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (8.10.0)
-Requirement already satisfied: inflection&gt;=0.3.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (0.5.1)
-Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.16.0)
-Requirement already satisfied: pytz&gt;=2017.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.14-&gt;quandl) (2021.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: inflection&gt;=0.3.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (0.5.1)
+Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.16.0)
+Requirement already satisfied: numpy&gt;=1.8 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.20.3)
+Requirement already satisfied: more-itertools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (8.10.0)
+Requirement already satisfied: python-dateutil in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.8.2)
+Requirement already satisfied: requests&gt;=2.7.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.26.0)
+Requirement already satisfied: pandas&gt;=0.14 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.3.4)
+Requirement already satisfied: pytz&gt;=2017.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.14-&gt;quandl) (2021.3)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2021.10.8)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.2)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (1.26.7)
 Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.0.4)
 </pre></div>
@@ -444,14 +449,14 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[-0.36847254, -0.22284749, -0.16121119, -0.66949445, -0.58339961],
-        [-0.35194968, -0.67458464, -0.5009311 ,  0.35314011,  0.21313631],
-        [-0.25298774, -0.45743069,  0.84974039,  0.06260392,  0.02786371],
-        [-0.61149927,  0.44501049,  0.03186066,  0.52260801, -0.39230098],
-        [-0.54993204,  0.29664354,  0.00226895, -0.38733817,  0.6778948 ]]),
- array([1.49589505, 0.86130138]),
- array([[-0.88890671, -0.45808826],
-        [ 0.45808826, -0.88890671]]))
+ array([[-0.40810918,  0.60461947, -0.06502237, -0.63889464,  0.23551628],
+        [-0.42732388, -0.15866616, -0.79498454,  0.05770556, -0.39609217],
+        [-0.64976362, -0.50826526,  0.51480258, -0.1751699 , -0.15416704],
+        [-0.46524317,  0.42353336,  0.13554849,  0.74648838,  0.16896742],
+        [-0.11044109, -0.41418143, -0.28350765,  0.02354391,  0.85751129]]),
+ array([1.97258892, 0.20153886]),
+ array([[-0.71340205, -0.70075496],
+        [-0.70075496,  0.71340205]]))
 </pre></div>
 </div>
 </div>
@@ -467,14 +472,14 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[-0.36847254, -0.22284749],
-        [-0.35194968, -0.67458464],
-        [-0.25298774, -0.45743069],
-        [-0.61149927,  0.44501049],
-        [-0.54993204,  0.29664354]]),
- array([1.49589505, 0.86130138]),
- array([[-0.88890671, -0.45808826],
-        [ 0.45808826, -0.88890671]]))
+ array([[-0.40810918,  0.60461947],
+        [-0.42732388, -0.15866616],
+        [-0.64976362, -0.50826526],
+        [-0.46524317,  0.42353336],
+        [-0.11044109, -0.41418143]]),
+ array([1.97258892, 0.20153886]),
+ array([[-0.71340205, -0.70075496],
+        [-0.70075496,  0.71340205]]))
 </pre></div>
 </div>
 </div>
@@ -492,6 +497,11 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 </div>
 </div>
 </div>
+<p><strong>Remark:</strong> The cells above illustrate application of the  <code class="docutils literal notranslate"><span class="pre">fullmatrices=True</span></code> and <code class="docutils literal notranslate"><span class="pre">full-matrices=False</span></code> options.
+Using <code class="docutils literal notranslate"><span class="pre">full-matrices=False</span></code> returns a reduced singular value decomposition. This option implements
+an optimal reduced rank approximation of a matrix, in the sense of  minimizing the Frobenius
+norm of the discrepancy between the approximating matrix and the matrix being approximated.
+Optimality in this sense is  established in the celebrated Eckart–Young theorem. See <a class="reference external" href="https://en.wikipedia.org/wiki/Low-rank_approximation">https://en.wikipedia.org/wiki/Low-rank_approximation</a>.</p>
 </section>
 <section id="pca-with-eigenvalues-and-eigenvectors">
 <h2><span class="section-number">6.8. </span>PCA with Eigenvalues and Eigenvectors<a class="headerlink" href="#pca-with-eigenvalues-and-eigenvectors" title="Permalink to this headline">¶</a></h2>
@@ -773,7 +783,7 @@ obtained by different algorithms.</p>
 <h2><span class="section-number">6.10. </span>Dynamic Mode Decomposition (DMD)<a class="headerlink" href="#dynamic-mode-decomposition-dmd" title="Permalink to this headline">¶</a></h2>
 <p>We now turn to the case in which <span class="math notranslate nohighlight">\(m &gt;&gt;n \)</span> so that there are many more random variables <span class="math notranslate nohighlight">\(m\)</span> than observations <span class="math notranslate nohighlight">\(n\)</span>.</p>
 <p>This is the <strong>tall and skinny</strong> case associated with <strong>Dynamic Mode Decomposition</strong>.</p>
-<p>You can read about Dynamic Mode Decomposition here <span id="id2">[<a class="reference internal" href="zreferences.html#id24">KBBWP16</a>]</span>.</p>
+<p>You can read about Dynamic Mode Decomposition here <span id="id1">[<a class="reference internal" href="zreferences.html#id24">KBBWP16</a>]</span>.</p>
 <p>We start  with an <span class="math notranslate nohighlight">\(m \times n \)</span> matrix of data <span class="math notranslate nohighlight">\(\tilde X\)</span> of the form</p>
 <div class="math notranslate nohighlight">
 \[
@@ -850,7 +860,7 @@ X^{+} = V \Sigma^{-1} U^T
 </li>
 <li><p>At this point,  we  deploy a reduced-dimension version of formula {eq}`eq:tildeAform} by</p></li>
 <li><p>using only the  columns of <span class="math notranslate nohighlight">\(U\)</span> that correspond to the <span class="math notranslate nohighlight">\(\tilde r\)</span> largest singular values.</p>
-<p>Tu et al. <span id="id3">[<a class="reference internal" href="zreferences.html#id11">TRL+14</a>]</span> verify that eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(\tilde A\)</span> equal the leading eigenvalues and associated eigenvectors of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>Tu et al. <span id="id2">[<a class="reference internal" href="zreferences.html#id11">TRL+14</a>]</span> verify that eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(\tilde A\)</span> equal the leading eigenvalues and associated eigenvectors of <span class="math notranslate nohighlight">\(A\)</span>.</p>
 </li>
 <li><p>Construct an eigencomposition of <span class="math notranslate nohighlight">\(\tilde A\)</span> that satisfies</p>
 <div class="math notranslate nohighlight">
@@ -887,8 +897,131 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t
 \check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
 \]</div>
 </section>
+<section id="reduced-order-var">
+<h2><span class="section-number">6.11. </span>Reduced-order VAR<a class="headerlink" href="#reduced-order-var" title="Permalink to this headline">¶</a></h2>
+<p>DMD  is a natural tool for estimating a <strong>reduced order vector autoregression</strong>,
+an object that we define in terms of the populations regression equation</p>
+<div class="math notranslate nohighlight" id="equation-eq-varred">
+<span class="eqno">(6.4)<a class="headerlink" href="#equation-eq-varred" title="Permalink to this equation">¶</a></span>\[
+X_{t+1} = \check A X_t + C \epsilon_{t+1}
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(X_t\)</span> is an <span class="math notranslate nohighlight">\(m \times 1\)</span> vector</p></li>
+<li><p><span class="math notranslate nohighlight">\(\check A\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix of rank <span class="math notranslate nohighlight">\(r\)</span> whose eigenvalues are all less than <span class="math notranslate nohighlight">\(1\)</span> in modulus</p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon_{t+1} \sim {\mathcal N}(0, I)\)</span> is an <span class="math notranslate nohighlight">\(m \times 1\)</span> vector of i.i.d. shocks</p></li>
+<li><p><span class="math notranslate nohighlight">\(E \epsilon_{t+1} X_t = 0\)</span>, so that the shocks are orthogonal to the regressors</p></li>
+</ul>
+<p>To link this model to a dynamic mode decomposition (DMD), again take</p>
+<div class="math notranslate nohighlight">
+\[ 
+X = [ X_1 \mid X_2 \mid \cdots \mid X_{n-1} ]
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+X' =  [ X_2 \mid X_3 \mid \cdots \mid X_n ]
+\]</div>
+<p>so that according to  model <a class="reference internal" href="#equation-eq-varred">(6.4)</a></p>
+<div class="math notranslate nohighlight">
+\[
+X' = \begin{bmatrix} \check A X_1 + C \epsilon_2  \mid \check A X_2 + C \epsilon_3 \mid \cdots \mid \check A X_{n-1} +  C 
+\epsilon_n \end{bmatrix}
+\]</div>
+<p>To illustrate some useful calculations, assume that <span class="math notranslate nohighlight">\(n =3 \)</span> and form</p>
+<div class="math notranslate nohighlight">
+\[
+X' X^T = \begin{bmatrix} \check A X_1 + C \epsilon_2  &amp;  \check A X_2 + C \epsilon_3 \end{bmatrix} 
+   \begin{bmatrix} X_1^T \cr X_2^T \end{bmatrix} 
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[
+X' X^T = \check A ( X_1 X_1^T + X_2 X_2^T) + C( \epsilon_2 X_1^T + \epsilon_3 X_2^T) 
+\]</div>
+<p>but because</p>
+<div class="math notranslate nohighlight">
+\[
+E ( \epsilon_2 X_1^T + \epsilon_3 X_2^T)  = 0 
+\]</div>
+<p>we have</p>
+<div class="math notranslate nohighlight">
+\[
+X' X^T = \check A ( X_1 X_1^T + X_2 X_2^T)
+\]</div>
+<p>Evidently,</p>
+<div class="math notranslate nohighlight">
+\[
+X X^T = ( X_1 X_1^T + X_2 X_2^T)
+\]</div>
+<p>so that our  matrix  <span class="math notranslate nohighlight">\(\check A\)</span> of least squares regression coefficients is</p>
+<div class="math notranslate nohighlight">
+\[
+\check A = (X' X^T)  (X X^T)^+
+\]</div>
+<p>Our <strong>assumption</strong> that <span class="math notranslate nohighlight">\(\check A\)</span> is a matrix of rank <span class="math notranslate nohighlight">\(r\)</span> leads us to represent it as</p>
+<div class="math notranslate nohighlight">
+\[
+\check A = \Phi \Lambda \Phi^{+}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Phi\)</span> and <span class="math notranslate nohighlight">\(\Lambda\)</span> are computed with the DMD algorithm described above.</p>
+<p>Associated with the VAR representation <a class="reference internal" href="#equation-eq-varred">(6.4)</a>
+is the usual moving average representation</p>
+<div class="math notranslate nohighlight">
+\[
+X_{t+j} = \check A^j X_t + C \epsilon_{t+j} + \check A C \epsilon_{t+j-1} + \cdots \check A^{j-1} \epsilon_{t+1}
+\]</div>
+<p>After computing <span class="math notranslate nohighlight">\(\check A\)</span>, we can construct sample versions
+of</p>
+<div class="math notranslate nohighlight">
+\[ 
+C \epsilon_{t+1} = X_{t+1} - \check A X_t , \quad t =1, \ldots, n-1
+\]</div>
+<p>and check whether they are serially uncorrelated as assumed in <a class="reference internal" href="#equation-eq-varred">(6.4)</a>.</p>
+<p>For example, we can compute spectra and cross-spectra of components of <span class="math notranslate nohighlight">\(C \epsilon_{t+1}\)</span>
+and check for serial-uncorrelatedness in the usual ways.</p>
+<p>We can also estimate the covariance matrix of <span class="math notranslate nohighlight">\(C \epsilon_{t+1}\)</span>
+from</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{n-1} \sum_{t=1}^{n-1} (C \epsilon_{t+1} )( C \epsilon_{t+1})^T 
+\]</div>
+<p>It can be enlightening to diagonize  our reduced order VAR <a class="reference internal" href="#equation-eq-varred">(6.4)</a> by noting that it can
+be written</p>
+<div class="math notranslate nohighlight">
+\[
+X_{t+1} = \Phi \Lambda \Phi^{+} X_t + C \epsilon_{t+1}
+\]</div>
+<p>and then writing it as</p>
+<div class="math notranslate nohighlight">
+\[
+\Phi^+ X_{t+1} = \Lambda  \Phi^{+} X_t +  \Phi^+ C \epsilon_{t+1}
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight" id="equation-eq-varmodes">
+<span class="eqno">(6.5)<a class="headerlink" href="#equation-eq-varmodes" title="Permalink to this equation">¶</a></span>\[
+\tilde X_{t+1} = \Lambda \tilde X_t + \tilde \epsilon_{t+1} 
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tilde X_t \)</span> is an <span class="math notranslate nohighlight">\(r \times 1\)</span> <strong>mode</strong> and <span class="math notranslate nohighlight">\(\tilde \epsilon_{t+1}\)</span> is an <span class="math notranslate nohighlight">\(r \times 1\)</span>
+shock.</p>
+<p>The <span class="math notranslate nohighlight">\(r\)</span> modes <span class="math notranslate nohighlight">\(\tilde X_t\)</span> obey the  first-order VAR <a class="reference internal" href="#equation-eq-varmodes">(6.5)</a> in which <span class="math notranslate nohighlight">\(\Lambda\)</span> is an <span class="math notranslate nohighlight">\(r \times r\)</span> diagonal matrix.</p>
+<p>Note that while <span class="math notranslate nohighlight">\(\Lambda\)</span> is diagonal, the contemporaneous covariance matrix of <span class="math notranslate nohighlight">\(\tilde \epsilon_{t+1}\)</span> need not be.</p>
+<p><strong>Remark:</strong> It is permissible for <span class="math notranslate nohighlight">\(X_t\)</span> to contain lagged values of  observables.</p>
+<p>For example, we might have a setting in which</p>
+<div class="math notranslate nohighlight">
+\[
+X_t = \begin{bmatrix}
+y_{1t} \cr
+y_{1,t-1} \cr
+\vdots \cr
+y_{1, t-k}\cr
+y_{2,t} \cr
+y_{2, t-1} \cr
+\vdots
+\end{bmatrix}
+\]</div>
+</section>
 <section id="source-for-some-python-code">
-<h2><span class="section-number">6.11. </span>Source for Some Python Code<a class="headerlink" href="#source-for-some-python-code" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.12. </span>Source for Some Python Code<a class="headerlink" href="#source-for-some-python-code" title="Permalink to this headline">¶</a></h2>
 <p>You can find a Python implementation of DMD here:</p>
 <p><a class="reference external" href="https://mathlab.github.io/PyDMD/">https://mathlab.github.io/PyDMD/</a></p>
 </section>
