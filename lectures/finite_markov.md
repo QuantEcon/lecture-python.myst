@@ -920,8 +920,10 @@ h
   \right)
 $$
 
-The unconditional expectation {eq}`mc_une` is easy: We just sum over the
-distribution of $X_t$ to get
+Computing the unconditional expectation {eq}`mc_une` is easy.
+
+
+We just sum over the distribution  of $X_t$ to get
 
 $$
 \mathbb E [ h(X_t) ]
@@ -952,6 +954,25 @@ We already know that this is $P^k(x, \cdot)$, so
 
 The vector $P^k h$ stores the conditional expectation $\mathbb E [ h(X_{t + k})  \mid X_t = x]$ over all $x$.
 
+### Iterated Expectations
+
+The **law of iterated expectations** states that
+
+$$
+\mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \mathbb E [  h(X_{t + k}) ] 
+$$
+
+where the outer $ \mathbb E$ on the left side is an unconditional distribution taken with respect to the distribution  $\psi_t$ of $X_t$ 
+(again see equation {eq}`mdfmc2`).  
+
+To verify the law of iterated expectations, use  equation {eq}`mc_cce2` to substitute $ (P^k h)(x)$ for $E [ h(X_{t + k})  \mid X_t = x]$, write
+
+$$
+\mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \psi_t P^k h, 
+$$
+
+and note $\psi_t P^k h = \psi_{t+k} h = \mathbb E [  h(X_{t + k}) ] $.
+
 ### Expectations of Geometric Sums
 
 Sometimes we also want to compute expectations of a geometric sum, such as
@@ -960,9 +981,9 @@ $\sum_t \beta^t h(X_t)$.
 In view of the preceding discussion, this is
 
 $$
-\mathbb{E} \left[
+\mathbb{E} [
         \sum_{j=0}^\infty \beta^j h(X_{t+j}) \mid X_t = x
-    \right]
+    \Bigr]
 = [(I - \beta P)^{-1} h](x)
 $$
 
