@@ -690,7 +690,7 @@ where
 * $X_t$ is an $m \times 1$ vector
 * $\check A$ is an $m \times m$ matrix of rank $r$ whose eigenvalues are all less than $1$ in modulus
 * $\epsilon_{t+1} \sim {\mathcal N}(0, I)$ is an $m \times 1$ vector of i.i.d. shocks
-* $E \epsilon_{t+1} X_t = 0$, so that the shocks are orthogonal to the regressors
+* $E \epsilon_{t+1} X_t^T = 0$, so that all shocks are orthogonal to all regressors
 
 To link this model to a dynamic mode decomposition (DMD), again take
 
