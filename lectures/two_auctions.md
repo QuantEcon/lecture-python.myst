@@ -23,7 +23,7 @@ In the present lecture, a single good is allocated to one person within a set of
 Here  we'll learn about and simulate two classic auctions :
 
 * a First-Price Sealed-Bid Auction (FPSB)
-* a Second-Price Sealed-Bid Auction (SPSB) created by William Vickery {cite}`Vickrey_61`
+* a Second-Price Sealed-Bid Auction (SPSB) created by William Vickrey {cite}`Vickrey_61`
 
 We'll also learn about and apply a
 
@@ -112,7 +112,7 @@ $$ (eq:optbid2)
 
 
 
-A proof for this assertion is available  at the [Wikepedia page](https://en.wikipedia.org/wiki/Vickrey_auction) about Vickery auctions 
+A proof for this assertion is available  at the [Wikepedia page](https://en.wikipedia.org/wiki/Vickrey_auction) about Vickrey auctions 
 
 +++
 
@@ -129,7 +129,7 @@ In a  SPSB auction  bidders optimally choose to bid their  values.
 Formally, a dominant strategy profile in a SPSB auction with a single, indivisible item has each bidder  bidding its  value.
 
 A proof is provided at [the Wikepedia
-        page](https://en.wikipedia.org/wiki/Vickrey_auction) about Vicker auctions 
+        page](https://en.wikipedia.org/wiki/Vickrey_auction) about Vickrey auctions 
 
 +++
 
