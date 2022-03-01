@@ -545,7 +545,7 @@ where for $t = 1, \ldots, n$,  the $m \times 1 $ vector $X_t$ is
 
 $$ X_t = \begin{bmatrix}  X_{1,t} & X_{2,t} & \cdots & X_{m,t}     \end{bmatrix}^T $$
 
-where $T$ denotes transposition and $X_{i,t}$ is an observations on variable $i$ at time $t$.
+where $T$ denotes transposition and $X_{i,t}$ is an observation on variable $i$ at time $t$.
 
 From $\tilde X$,   form two matrices 
 
@@ -559,7 +559,7 @@ $$
 X' =  \begin{bmatrix} X_2 \mid X_3 \mid \cdots \mid X_n\end{bmatrix}
 $$
 
-(Note that here $'$ does not denote matrix transposition but instead is part of the name of the matrix $X'$.)
+Here $'$ does not denote matrix transposition but instead is part of the name of the matrix $X'$.
 
 In forming $ X$ and $X'$, we have in each case  dropped a column from $\tilde X$.
 
@@ -577,22 +577,34 @@ $$
 A =  X'  X^{+}
 $$
 
-and where the (huge) $m \times m $ matrix $X^{+}$ is the Moore-Penrose generalized inverse of $X$ that we could compute
+and where the (huge) $m \times m $ matrix $X^{+}$ is the Moore-Penrose generalized inverse of $X$.
+
+
+Think about  the singular value decomposition 
+
+  $$ 
+  X = \tilde U \tilde \Sigma \tilde V^T
+  $$
+  
+where $\tilde U$ is $m \times r$, $\tilde \Sigma$ is an $r \times r$ diagonal  matrix, and $\tilde V^T$ is an $r \times \tilde n$ matrix. 
+  
+
+We could compute the generalized inverse $X^+$ by using
 as 
 
 $$
-X^{+} = V \Sigma^{-1} U^T
+X^{+} = \tilde V \tilde \Sigma^{-1} \tilde U^T
 $$
 
-where the matrix $\Sigma^{-1}$ is constructed by replacing each non-zero element of $\Sigma$ with $\sigma_j^{-1}$.
+where the matrix $\tilde \Sigma^{-1}$ is constructed by replacing each non-zero element of $\tilde \Sigma$ with $\sigma_j^{-1}$.
 
 The idea behind **dynamic mode decomposition** is to construct an approximation that  
 
 * sidesteps computing the generalized inverse $X^{+}$
 
-* retains only the largest  $\tilde r< < r$ eigenvalues and associated eigenvectors of $U$ and $V^T$ 
+* retains only the largest  $\tilde r< < r$ eigenvalues and associated eigenvectors of $\tilde U$ and $\tilde V^T$ 
 
-* constructs an $m \times \tilde r$ matrix $\Phi$ that captures effects  on all $m$ variables of $r$ dynamic modes
+* constructs an $m \times \tilde r$ matrix $\Phi$ that captures effects  on all $m$ variables of $\tilde r$ dynamic modes that are associated with the $\tilde r$ largest singular values
 
 * uses $\Phi$ and  powers of $\tilde r$ leading singular values to forecast *future* $X_t$'s
 
@@ -600,43 +612,51 @@ The magic of **dynamic mode decomposition** is that we accomplish this without e
 
 To construct a DMD, we deploy the following steps:
 
-* Compute the singular value decomposition 
-
-  $$ 
-  X = U \Sigma V^T
-  $$
   
-  where $U$ is $m \times r$, $\Sigma$ is an $r \times r$ diagonal  matrix, and $V^T$ is an $r \times \tilde n$ matrix. 
-  
-  
-* Notice that (though it would be costly), we could compute $A$ by solving 
+* As described above, though it would be costly, we could compute $A$ by solving 
 
   $$
   A = X' V \Sigma^{-1} U^T
-  $$
+  $$ (eq:bigAformula)
   
   But we won't do that.  
   
-  Instead we'll proceed as follows.
+  The matrix $A$ is $m \times m$.
+ 
   
-  Note that since,  $X' = A U \Sigma V^T$, we know that 
-  
-  $$
-  A U  =  X' V \Sigma^{-1}
-  $$
-    
-  so that 
-  
-  $$
-  U^T X' V \Sigma^{-1} = U^T A U \equiv \tilde A
-  $$ (eq:tildeAform)
-    
-* At this point,  we  deploy a reduced-dimension version of formula {eq}`eq:tildeAform} by
-* using only the  columns of $U$ that correspond to the $\tilde r$ largest singular values.  
-  
-  Tu et al. {cite}`tu_Rowley` verify that eigenvalues and eigenvectors of $\tilde A$ equal the leading eigenvalues and associated eigenvectors of $A$.
+  We'll the instead work with a reduced-order system of dimension $\tilde r$ by forming an  $\tilde r \times \tilde r$ transition matrix
+  $\tilde A$ defined by  
 
-* Construct an eigencomposition of $\tilde A$ that satisfies
+  $$
+  \tilde A = \tilde U^T A \tilde U 
+  $$ (eq:tildeA_1)
+
+  The $\tilde A$ matrix governs the dynamics of the $\tilde r \times 1$ vector $\tilde x_t $
+  according to
+
+  $$ 
+    \tilde x_{t+1} = \tilde A \tilde x_t
+  $$
+
+  where an approximation to the original $m \times 1$ vector $x_t$ can be acquired from
+
+  $$ 
+   x_t = \tilde U \tilde x_t 
+  $$
+
+  From equation {eq}`eq:tildeA_1` and {eq}`eq:bigAformula` it follows that
+
+
+  $$
+  \tilde A = \tilde U^T X' \tilde V \Sigma^{-1}
+  $$ (eq:tildeAform)
+
+  
+    
+  
+* Tu et al. {cite}`tu_Rowley` verify that eigenvalues and eigenvectors of $\tilde A$ equal the leading eigenvalues and associated eigenvectors of $A$.
+
+* Construct an eigencomposition of $\tilde A$ 
 
   $$ 
   \tilde A W =  W \Lambda
@@ -649,7 +669,9 @@ To construct a DMD, we deploy the following steps:
 
   $$
   \Phi = X' V \Sigma^{-1} W
-  $$
+  $$ (eq:Phiformula)
+
+
   
   Let $\Phi^{+}$ be a generalized inverse of $\Phi$; $\Phi^{+}$ is an $\tilde r \times m$ matrix. 
   
@@ -674,6 +696,21 @@ Conditional on $X_t$, we construct forecasts $\check X_{t+j} $ of $X_{t+j}, j = 
 $$
 \check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
 $$
+
+
+### Useful Connections
+
+From formula {eq}`eq:Phiformula`, notice that
+
+$$ 
+\begin{aligned}
+A \Phi & =  (X' \tilde V \tilde \Sigma^{-1} \tilde U^T) (X' \tilde V \tilde \Sigma^{-1} W) \cr
+& = X' \tilde V \Sigma^{-1} \tilde A W \cr
+& = X' \tilde V \tilde \Sigma^{-1} W \Lambda \cr
+& = \Phi \Lambda 
+\end{aligned}
+$$
+
 
 
 ## Reduced-order VAR
