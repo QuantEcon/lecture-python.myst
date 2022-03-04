@@ -545,7 +545,7 @@ where for $t = 1, \ldots, n$,  the $m \times 1 $ vector $X_t$ is
 
 $$ X_t = \begin{bmatrix}  X_{1,t} & X_{2,t} & \cdots & X_{m,t}     \end{bmatrix}^T $$
 
-where $T$ denotes transposition and $X_{i,t}$ is an observations on variable $i$ at time $t$.
+where $T$ denotes transposition and $X_{i,t}$ is an observation on variable $i$ at time $t$.
 
 From $\tilde X$,   form two matrices 
 
@@ -559,7 +559,7 @@ $$
 X' =  \begin{bmatrix} X_2 \mid X_3 \mid \cdots \mid X_n\end{bmatrix}
 $$
 
-(Note that here $'$ does not denote matrix transposition but instead is part of the name of the matrix $X'$.)
+Here $'$ does not denote matrix transposition but instead is part of the name of the matrix $X'$.
 
 In forming $ X$ and $X'$, we have in each case  dropped a column from $\tilde X$.
 
@@ -577,96 +577,198 @@ $$
 A =  X'  X^{+}
 $$
 
-and where the (huge) $m \times m $ matrix $X^{+}$ is the Moore-Penrose generalized inverse of $X$ that we could compute
+and where the (huge) $m \times m $ matrix $X^{+}$ is the Moore-Penrose generalized inverse of $X$.
+
+
+Think about  the singular value decomposition 
+
+  $$ 
+  X =  U \Sigma  V^T
+  $$
+  
+where $U$ is $m \times p$, $\Sigma$ is a $p \times p$ diagonal  matrix, and $ V^T$ is a $p \times \tilde n$ matrix.
+
+Here $p$ is the rank of $X$, where necessarily $p \leq \tilde n$. 
+  
+
+We could compute the generalized inverse $X^+$ by using
 as 
 
 $$
-X^{+} = V \Sigma^{-1} U^T
+X^{+} =  V \Sigma^{-1}  U^T
 $$
 
-where the matrix $\Sigma^{-1}$ is constructed by replacing each non-zero element of $\Sigma$ with $\sigma_j^{-1}$.
+where the matrix $\Sigma^{-1}$ is constructed by replacing each non-zero element of $ \Sigma$ with $\sigma_j^{-1}$.
 
 The idea behind **dynamic mode decomposition** is to construct an approximation that  
 
 * sidesteps computing the generalized inverse $X^{+}$
 
-* retains only the largest  $\tilde r< < r$ eigenvalues and associated eigenvectors of $U$ and $V^T$ 
+* constructs an $m \times r$ matrix $\Phi$ that captures effects  on all $m$ variables of $r < < p$ dynamic modes that are associated with the $r$ largest singular values
 
-* constructs an $m \times \tilde r$ matrix $\Phi$ that captures effects  on all $m$ variables of $r$ dynamic modes
-
-* uses $\Phi$ and  powers of $\tilde r$ leading singular values to forecast *future* $X_t$'s
+   
+* uses $\Phi$ and  powers of $r$ singular values to forecast *future* $X_t$'s
 
 The magic of **dynamic mode decomposition** is that we accomplish this without ever computing the regression coefficients $A = X' X^{+}$.
 
 To construct a DMD, we deploy the following steps:
 
-* Compute the singular value decomposition 
-
-  $$ 
-  X = U \Sigma V^T
-  $$
   
-  where $U$ is $m \times r$, $\Sigma$ is an $r \times r$ diagonal  matrix, and $V^T$ is an $r \times \tilde n$ matrix. 
-  
-  
-* Notice that (though it would be costly), we could compute $A$ by solving 
+* As described above, though it would be costly, we could compute an $m \times m$ matrix $A$ by solving 
 
   $$
-  A = X' V \Sigma^{-1} U^T
-  $$
+  A = X'  V  \Sigma^{-1}  U^T
+  $$ (eq:bigAformula)
+
+  
   
   But we won't do that.  
-  
-  Instead we'll proceed as follows.
-  
-  Note that since,  $X' = A U \Sigma V^T$, we know that 
-  
-  $$
-  A U  =  X' V \Sigma^{-1}
-  $$
-    
-  so that 
-  
-  $$
-  U^T X' V \Sigma^{-1} = U^T A U \equiv \tilde A
-  $$ (eq:tildeAform)
-    
-* At this point,  we  deploy a reduced-dimension version of formula {eq}`eq:tildeAform} by
-* using only the  columns of $U$ that correspond to the $\tilde r$ largest singular values.  
-  
-  Tu et al. {cite}`tu_Rowley` verify that eigenvalues and eigenvectors of $\tilde A$ equal the leading eigenvalues and associated eigenvectors of $A$.
 
-* Construct an eigencomposition of $\tilde A$ that satisfies
+  We'll first compute the $r$ largest singular values of $X$.
+
+  We'll form matrices $\tilde V, \tilde U$ corresponding to those $r$ singular values. 
+  
+  
+ 
+  
+  We'll then construct  a reduced-order system of dimension $r$ by forming an  $r \times r$ transition matrix
+  $\tilde A$ defined by  
+
+  $$
+  \tilde A = \tilde U^T A \tilde U 
+  $$ (eq:tildeA_1)
+
+  The $\tilde A$ matrix governs the dynamics of an $r \times 1$ vector $\tilde X_t $
+  according to
+
+  $$ 
+    \tilde X_{t+1} = \tilde A \tilde X_t
+  $$
+
+  where an approximation to (i.e., a projection of)  the original $m \times 1$ vector $X_t$ can be acquired from inverting
+
+  $$ 
+   X_t = \tilde U \tilde X_t 
+  $$
+
+  From equation {eq}`eq:tildeA_1` and {eq}`eq:bigAformula` it follows that
+
+
+  $$
+  \tilde A = \tilde U^T X' \tilde V \Sigma^{-1}
+  $$ (eq:tildeAform)
+
+  
+    
+  
+* Tu et al. {cite}`tu_Rowley` verify that eigenvalues and eigenvectors of $\tilde A$ equal the leading eigenvalues and associated eigenvectors of $A$.
+
+* Construct an eigencomposition of $\tilde A$ 
 
   $$ 
   \tilde A W =  W \Lambda
-  $$
+  $$ (eq:tildeAeigen)
   
-  where $\Lambda$ is a $\tilde r \times \tilde r$ diagonal matrix of eigenvalues and the columns of $W$ are corresponding eigenvectors
-  of $\tilde A$.   Both $\Lambda$ and $W$ are $\tilde r \times \tilde r$ matrices.
+  where $\Lambda$ is a $r \times r$ diagonal matrix of eigenvalues and the columns of $W$ are corresponding eigenvectors
+  of $\tilde A$.   Both $\Lambda$ and $W$ are $r \times r$ matrices.
   
-* Construct the $m \times \tilde r$ matrix
+* Construct the $m \times r$ matrix
 
   $$
-  \Phi = X' V \Sigma^{-1} W
-  $$
+  \Phi = X' \tilde  V  \tilde \Sigma^{-1} W
+  $$ (eq:Phiformula)
+
+
   
-  Let $\Phi^{+}$ be a generalized inverse of $\Phi$; $\Phi^{+}$ is an $\tilde r \times m$ matrix. 
+  We can construct an $r \times m$ matrix generalized inverse  $\Phi^{+}$  of $\Phi$.
+
+
+  * We interrupt the flow with a digression at this point
+
+
+      * notice that from formula {eq}`eq:Phiformula`, we have
+
+       $$ 
+       \begin{aligned}
+       A \Phi & =  (X' \tilde V \tilde \Sigma^{-1} \tilde U^T) (X' \tilde V \tilde \Sigma^{-1} W) \cr
+       & = X' \tilde V \Sigma^{-1} \tilde A W \cr
+       & = X' \tilde V \tilde \Sigma^{-1} W \Lambda \cr
+       & = \Phi \Lambda 
+       \end{aligned}
+       $$ (eq:APhiLambda)
+
+       
+
+
+  
   
 * Define an initial vector $b$ of dominant modes by
 
   $$
   b= \Phi^{+} X_1
-  $$
+  $$ (eq:bphieqn)
   
-  where evidently $b$ is an $\tilde r \times 1$ vector.
+  where evidently $b$ is an $r \times 1$ vector.
+
+  (Since it involves smaller matrices, formula {eq}`eq:beqnsmall` below is a computationally more efficient way to compute $b$)
+
+* Then define _projected data_ $\hat X_1$ by
+
+  $$ 
+  \tilde X_1 = \Phi b 
+  $$ (eq:X1proj)
+
+* It follows that 
+ 
+  $$ 
+  \tilde U \tilde X_1 = X' \tilde V \tilde \Sigma^{-1} W b
+  $$
+
+  and
+
+  $$ 
+  \tilde X_1 = \tilde U^T X' \tilde V \tilde \Sigma^{-1} W b
+  $$
+
+* Recall that $ \tilde A = \tilde U^T X' \tilde V \tilde \Sigma^{-1}$ so that
+  
+  $$ 
+  \tilde X_1 = \tilde A W b
+  $$
+
+  and therefore, by the eigendecomposition  {eq}`eq:tildeAeigen` of $\tilde A$, we have
+
+  $$ 
+  \tilde X_1 = W \Lambda b
+  $$ 
+
+* Therefore, 
+  
+  $$ 
+  b = ( W \Lambda)^{-1} \tilde X_1
+  $$ (eq:beqnsmall)
+
+  which is  computationally more efficient than equation {eq}`eq:bphieqn`.
+
+
+
+### Putting Things Together
     
-With $\Lambda, \Phi, \Phi^{+}$ in hand, our least-squares fitted dynamics fitted to the $\tilde r$ dominant modes
+With $\Lambda, \Phi, \Phi^{+}$ in hand, our least-squares fitted dynamics fitted to the $r$  modes
 are governed by
 
 $$
-X_{t+1} = \Phi \Lambda \Phi^{+} X_t
+X_{t+1} = \Phi \Lambda \Phi^{+} X_t .
+$$ (eq:Xdynamicsapprox)
+
+But by virtue of equation {eq}`eq:APhiLambda`, it follows that **if we had kept $r = p$**,  this equation would be equivalent with
+
 $$
+X_{t+1} = A X_t .
+$$ (eq:Xdynamicstrue)
+
+When $r << p $, equation {eq}`eq:Xdynamicsapprox` is an approximation (of reduced  order $r$) to the $X$ dynamics in equation
+{eq}`eq:Xdynamicstrue`.
 
  
 Conditional on $X_t$, we construct forecasts $\check X_{t+j} $ of $X_{t+j}, j = 1, 2, \ldots, $  from 
@@ -676,10 +778,12 @@ $$
 $$
 
 
+
+
 ## Reduced-order VAR
 
 DMD  is a natural tool for estimating a **reduced order vector autoregression**,
-an object that we define in terms of the populations regression equation
+an object that we define in terms of the population regression equation
 
 $$
 X_{t+1} = \check A X_t + C \epsilon_{t+1}

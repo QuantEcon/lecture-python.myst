@@ -200,6 +200,13 @@
   <a class="reference internal nav-link" href="#dynamic-mode-decomposition-dmd">
    6.10. Dynamic Mode Decomposition (DMD)
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#putting-things-together">
+     6.10.1. Putting Things Together
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reduced-order-var">
@@ -270,20 +277,20 @@
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading Quandl-3.7.0-py2.py3-none-any.whl (26 kB)
+Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.16.0)
+Requirement already satisfied: inflection&gt;=0.3.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (0.5.1)
+Requirement already satisfied: python-dateutil in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.8.2)
+Requirement already satisfied: requests&gt;=2.7.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.26.0)
+Requirement already satisfied: numpy&gt;=1.8 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.20.3)
+Requirement already satisfied: pandas&gt;=0.14 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.3.4)
+Requirement already satisfied: more-itertools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (8.10.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas&gt;=0.14 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.3.4)
-Requirement already satisfied: python-dateutil in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.8.2)
-Requirement already satisfied: numpy&gt;=1.8 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.20.3)
-Requirement already satisfied: more-itertools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (8.10.0)
-Requirement already satisfied: inflection&gt;=0.3.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (0.5.1)
-Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (1.16.0)
-Requirement already satisfied: requests&gt;=2.7.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quandl) (2.26.0)
-Requirement already satisfied: pytz&gt;=2017.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.14-&gt;quandl) (2021.3)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (1.26.7)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytz&gt;=2017.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.14-&gt;quandl) (2021.3)
 Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.0.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2021.10.8)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.2)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2021.10.8)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.7.0-&gt;quandl) (1.26.7)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quandl
@@ -449,14 +456,14 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[-0.27686879,  0.23850321, -0.47166596,  0.04211084, -0.80138492],
-        [-0.39546972, -0.52389606, -0.63970632, -0.19918647,  0.34675236],
-        [-0.71169885, -0.30583425,  0.59792424, -0.05052901, -0.19970875],
-        [-0.06207997, -0.19653569, -0.0730198 ,  0.97412787,  0.057121  ],
-        [-0.50653549,  0.7324536 , -0.07390374,  0.08410201,  0.44090658]]),
- array([1.47723784, 0.44893461]),
- array([[-0.74994337, -0.66150204],
-        [ 0.66150204, -0.74994337]]))
+ array([[-0.54354044, -0.76488252, -0.08564631, -0.21525184, -0.25661232],
+        [-0.24672489, -0.21409748,  0.29954355,  0.23252632,  0.86573337],
+        [-0.2289861 ,  0.19520744,  0.89864893, -0.12073017, -0.29548901],
+        [-0.37084546,  0.12153363, -0.09480191,  0.87283481, -0.2772638 ],
+        [-0.67359456,  0.56235277, -0.29390657, -0.35097262,  0.14306247]]),
+ array([1.60590664, 0.39236953]),
+ array([[-0.44203478, -0.89699791],
+        [ 0.89699791, -0.44203478]]))
 </pre></div>
 </div>
 </div>
@@ -472,14 +479,14 @@ is a vector of loadings of variables <span class="math notranslate nohighlight">
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[-0.27686879,  0.23850321],
-        [-0.39546972, -0.52389606],
-        [-0.71169885, -0.30583425],
-        [-0.06207997, -0.19653569],
-        [-0.50653549,  0.7324536 ]]),
- array([1.47723784, 0.44893461]),
- array([[-0.74994337, -0.66150204],
-        [ 0.66150204, -0.74994337]]))
+ array([[-0.54354044, -0.76488252],
+        [-0.24672489, -0.21409748],
+        [-0.2289861 ,  0.19520744],
+        [-0.37084546,  0.12153363],
+        [-0.67359456,  0.56235277]]),
+ array([1.60590664, 0.39236953]),
+ array([[-0.44203478, -0.89699791],
+        [ 0.89699791, -0.44203478]]))
 </pre></div>
 </div>
 </div>
@@ -792,7 +799,7 @@ obtained by different algorithms.</p>
 <p>where for <span class="math notranslate nohighlight">\(t = 1, \ldots, n\)</span>,  the <span class="math notranslate nohighlight">\(m \times 1 \)</span> vector <span class="math notranslate nohighlight">\(X_t\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[ X_t = \begin{bmatrix}  X_{1,t} &amp; X_{2,t} &amp; \cdots &amp; X_{m,t}     \end{bmatrix}^T \]</div>
-<p>where <span class="math notranslate nohighlight">\(T\)</span> denotes transposition and <span class="math notranslate nohighlight">\(X_{i,t}\)</span> is an observations on variable <span class="math notranslate nohighlight">\(i\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(T\)</span> denotes transposition and <span class="math notranslate nohighlight">\(X_{i,t}\)</span> is an observation on variable <span class="math notranslate nohighlight">\(i\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>From <span class="math notranslate nohighlight">\(\tilde X\)</span>,   form two matrices</p>
 <div class="math notranslate nohighlight">
 \[
@@ -803,7 +810,7 @@ obtained by different algorithms.</p>
 \[
 X' =  \begin{bmatrix} X_2 \mid X_3 \mid \cdots \mid X_n\end{bmatrix}
 \]</div>
-<p>(Note that here <span class="math notranslate nohighlight">\('\)</span> does not denote matrix transposition but instead is part of the name of the matrix <span class="math notranslate nohighlight">\(X'\)</span>.)</p>
+<p>Here <span class="math notranslate nohighlight">\('\)</span> does not denote matrix transposition but instead is part of the name of the matrix <span class="math notranslate nohighlight">\(X'\)</span>.</p>
 <p>In forming <span class="math notranslate nohighlight">\( X\)</span> and <span class="math notranslate nohighlight">\(X'\)</span>, we have in each case  dropped a column from <span class="math notranslate nohighlight">\(\tilde X\)</span>.</p>
 <p>Evidently, <span class="math notranslate nohighlight">\( X\)</span> and <span class="math notranslate nohighlight">\( X'\)</span> are both <span class="math notranslate nohighlight">\(m \times \tilde n\)</span> matrices where <span class="math notranslate nohighlight">\(\tilde n = n - 1\)</span>.</p>
 <p>We start with a system consisting of <span class="math notranslate nohighlight">\(m\)</span> least squares regressions of <strong>everything</strong> on one lagged value of <strong>everything</strong>:</p>
@@ -816,93 +823,165 @@ X' =  \begin{bmatrix} X_2 \mid X_3 \mid \cdots \mid X_n\end{bmatrix}
 \[
 A =  X'  X^{+}
 \]</div>
-<p>and where the (huge) <span class="math notranslate nohighlight">\(m \times m \)</span> matrix <span class="math notranslate nohighlight">\(X^{+}\)</span> is the Moore-Penrose generalized inverse of <span class="math notranslate nohighlight">\(X\)</span> that we could compute
+<p>and where the (huge) <span class="math notranslate nohighlight">\(m \times m \)</span> matrix <span class="math notranslate nohighlight">\(X^{+}\)</span> is the Moore-Penrose generalized inverse of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>Think about  the singular value decomposition</p>
+<div class="math notranslate nohighlight">
+\[ 
+  X =  U \Sigma  V^T
+  \]</div>
+<p>where <span class="math notranslate nohighlight">\(U\)</span> is <span class="math notranslate nohighlight">\(m \times p\)</span>, <span class="math notranslate nohighlight">\(\Sigma\)</span> is a <span class="math notranslate nohighlight">\(p \times p\)</span> diagonal  matrix, and <span class="math notranslate nohighlight">\( V^T\)</span> is a <span class="math notranslate nohighlight">\(p \times \tilde n\)</span> matrix.</p>
+<p>Here <span class="math notranslate nohighlight">\(p\)</span> is the rank of <span class="math notranslate nohighlight">\(X\)</span>, where necessarily <span class="math notranslate nohighlight">\(p \leq \tilde n\)</span>.</p>
+<p>We could compute the generalized inverse <span class="math notranslate nohighlight">\(X^+\)</span> by using
 as</p>
 <div class="math notranslate nohighlight">
 \[
-X^{+} = V \Sigma^{-1} U^T
+X^{+} =  V \Sigma^{-1}  U^T
 \]</div>
-<p>where the matrix <span class="math notranslate nohighlight">\(\Sigma^{-1}\)</span> is constructed by replacing each non-zero element of <span class="math notranslate nohighlight">\(\Sigma\)</span> with <span class="math notranslate nohighlight">\(\sigma_j^{-1}\)</span>.</p>
+<p>where the matrix <span class="math notranslate nohighlight">\(\Sigma^{-1}\)</span> is constructed by replacing each non-zero element of <span class="math notranslate nohighlight">\( \Sigma\)</span> with <span class="math notranslate nohighlight">\(\sigma_j^{-1}\)</span>.</p>
 <p>The idea behind <strong>dynamic mode decomposition</strong> is to construct an approximation that</p>
 <ul class="simple">
 <li><p>sidesteps computing the generalized inverse <span class="math notranslate nohighlight">\(X^{+}\)</span></p></li>
-<li><p>retains only the largest  <span class="math notranslate nohighlight">\(\tilde r&lt; &lt; r\)</span> eigenvalues and associated eigenvectors of <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(V^T\)</span></p></li>
-<li><p>constructs an <span class="math notranslate nohighlight">\(m \times \tilde r\)</span> matrix <span class="math notranslate nohighlight">\(\Phi\)</span> that captures effects  on all <span class="math notranslate nohighlight">\(m\)</span> variables of <span class="math notranslate nohighlight">\(r\)</span> dynamic modes</p></li>
-<li><p>uses <span class="math notranslate nohighlight">\(\Phi\)</span> and  powers of <span class="math notranslate nohighlight">\(\tilde r\)</span> leading singular values to forecast <em>future</em> <span class="math notranslate nohighlight">\(X_t\)</span>’s</p></li>
+<li><p>constructs an <span class="math notranslate nohighlight">\(m \times r\)</span> matrix <span class="math notranslate nohighlight">\(\Phi\)</span> that captures effects  on all <span class="math notranslate nohighlight">\(m\)</span> variables of <span class="math notranslate nohighlight">\(r &lt; &lt; p\)</span> dynamic modes that are associated with the <span class="math notranslate nohighlight">\(r\)</span> largest singular values</p></li>
+<li><p>uses <span class="math notranslate nohighlight">\(\Phi\)</span> and  powers of <span class="math notranslate nohighlight">\(r\)</span> singular values to forecast <em>future</em> <span class="math notranslate nohighlight">\(X_t\)</span>’s</p></li>
 </ul>
 <p>The magic of <strong>dynamic mode decomposition</strong> is that we accomplish this without ever computing the regression coefficients <span class="math notranslate nohighlight">\(A = X' X^{+}\)</span>.</p>
 <p>To construct a DMD, we deploy the following steps:</p>
 <ul>
-<li><p>Compute the singular value decomposition</p>
-<div class="math notranslate nohighlight">
-\[ 
-  X = U \Sigma V^T
-  \]</div>
-<p>where <span class="math notranslate nohighlight">\(U\)</span> is <span class="math notranslate nohighlight">\(m \times r\)</span>, <span class="math notranslate nohighlight">\(\Sigma\)</span> is an <span class="math notranslate nohighlight">\(r \times r\)</span> diagonal  matrix, and <span class="math notranslate nohighlight">\(V^T\)</span> is an <span class="math notranslate nohighlight">\(r \times \tilde n\)</span> matrix.</p>
-</li>
-<li><p>Notice that (though it would be costly), we could compute <span class="math notranslate nohighlight">\(A\)</span> by solving</p>
-<div class="math notranslate nohighlight">
-\[
-  A = X' V \Sigma^{-1} U^T
+<li><p>As described above, though it would be costly, we could compute an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix <span class="math notranslate nohighlight">\(A\)</span> by solving</p>
+<div class="math notranslate nohighlight" id="equation-eq-bigaformula">
+<span class="eqno">(6.3)<a class="headerlink" href="#equation-eq-bigaformula" title="Permalink to this equation">¶</a></span>\[
+  A = X'  V  \Sigma^{-1}  U^T
   \]</div>
 <p>But we won’t do that.</p>
-<p>Instead we’ll proceed as follows.</p>
-<p>Note that since,  <span class="math notranslate nohighlight">\(X' = A U \Sigma V^T\)</span>, we know that</p>
-<div class="math notranslate nohighlight">
-\[
-  A U  =  X' V \Sigma^{-1}
+<p>We’ll first compute the <span class="math notranslate nohighlight">\(r\)</span> largest singular values of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>We’ll form matrices <span class="math notranslate nohighlight">\(\tilde V, \tilde U\)</span> corresponding to those <span class="math notranslate nohighlight">\(r\)</span> singular values.</p>
+<p>We’ll then construct  a reduced-order system of dimension <span class="math notranslate nohighlight">\(r\)</span> by forming an  <span class="math notranslate nohighlight">\(r \times r\)</span> transition matrix
+<span class="math notranslate nohighlight">\(\tilde A\)</span> defined by</p>
+<div class="math notranslate nohighlight" id="equation-eq-tildea-1">
+<span class="eqno">(6.4)<a class="headerlink" href="#equation-eq-tildea-1" title="Permalink to this equation">¶</a></span>\[
+  \tilde A = \tilde U^T A \tilde U 
   \]</div>
-<p>so that</p>
-<div class="math notranslate nohighlight" id="equation-eq-tildeaform">
-<span class="eqno">(6.3)<a class="headerlink" href="#equation-eq-tildeaform" title="Permalink to this equation">¶</a></span>\[
-  U^T X' V \Sigma^{-1} = U^T A U \equiv \tilde A
-  \]</div>
-</li>
-<li><p>At this point,  we  deploy a reduced-dimension version of formula {eq}`eq:tildeAform} by</p></li>
-<li><p>using only the  columns of <span class="math notranslate nohighlight">\(U\)</span> that correspond to the <span class="math notranslate nohighlight">\(\tilde r\)</span> largest singular values.</p>
-<p>Tu et al. <span id="id2">[<a class="reference internal" href="zreferences.html#id11">TRL+14</a>]</span> verify that eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(\tilde A\)</span> equal the leading eigenvalues and associated eigenvectors of <span class="math notranslate nohighlight">\(A\)</span>.</p>
-</li>
-<li><p>Construct an eigencomposition of <span class="math notranslate nohighlight">\(\tilde A\)</span> that satisfies</p>
+<p>The <span class="math notranslate nohighlight">\(\tilde A\)</span> matrix governs the dynamics of an <span class="math notranslate nohighlight">\(r \times 1\)</span> vector <span class="math notranslate nohighlight">\(\tilde X_t \)</span>
+according to</p>
 <div class="math notranslate nohighlight">
 \[ 
+    \tilde X_{t+1} = \tilde A \tilde X_t
+  \]</div>
+<p>where an approximation to (i.e., a projection of)  the original <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(X_t\)</span> can be acquired from inverting</p>
+<div class="math notranslate nohighlight">
+\[ 
+   X_t = \tilde U \tilde X_t 
+  \]</div>
+<p>From equation <a class="reference internal" href="#equation-eq-tildea-1">(6.4)</a> and <a class="reference internal" href="#equation-eq-bigaformula">(6.3)</a> it follows that</p>
+<div class="math notranslate nohighlight" id="equation-eq-tildeaform">
+<span class="eqno">(6.5)<a class="headerlink" href="#equation-eq-tildeaform" title="Permalink to this equation">¶</a></span>\[
+  \tilde A = \tilde U^T X' \tilde V \Sigma^{-1}
+  \]</div>
+</li>
+<li><p>Tu et al. <span id="id2">[<a class="reference internal" href="zreferences.html#id11">TRL+14</a>]</span> verify that eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(\tilde A\)</span> equal the leading eigenvalues and associated eigenvectors of <span class="math notranslate nohighlight">\(A\)</span>.</p></li>
+<li><p>Construct an eigencomposition of <span class="math notranslate nohighlight">\(\tilde A\)</span></p>
+<div class="math notranslate nohighlight" id="equation-eq-tildeaeigen">
+<span class="eqno">(6.6)<a class="headerlink" href="#equation-eq-tildeaeigen" title="Permalink to this equation">¶</a></span>\[ 
   \tilde A W =  W \Lambda
   \]</div>
-<p>where <span class="math notranslate nohighlight">\(\Lambda\)</span> is a <span class="math notranslate nohighlight">\(\tilde r \times \tilde r\)</span> diagonal matrix of eigenvalues and the columns of <span class="math notranslate nohighlight">\(W\)</span> are corresponding eigenvectors
-of <span class="math notranslate nohighlight">\(\tilde A\)</span>.   Both <span class="math notranslate nohighlight">\(\Lambda\)</span> and <span class="math notranslate nohighlight">\(W\)</span> are <span class="math notranslate nohighlight">\(\tilde r \times \tilde r\)</span> matrices.</p>
+<p>where <span class="math notranslate nohighlight">\(\Lambda\)</span> is a <span class="math notranslate nohighlight">\(r \times r\)</span> diagonal matrix of eigenvalues and the columns of <span class="math notranslate nohighlight">\(W\)</span> are corresponding eigenvectors
+of <span class="math notranslate nohighlight">\(\tilde A\)</span>.   Both <span class="math notranslate nohighlight">\(\Lambda\)</span> and <span class="math notranslate nohighlight">\(W\)</span> are <span class="math notranslate nohighlight">\(r \times r\)</span> matrices.</p>
 </li>
-<li><p>Construct the <span class="math notranslate nohighlight">\(m \times \tilde r\)</span> matrix</p>
-<div class="math notranslate nohighlight">
-\[
-  \Phi = X' V \Sigma^{-1} W
+<li><p>Construct the <span class="math notranslate nohighlight">\(m \times r\)</span> matrix</p>
+<div class="math notranslate nohighlight" id="equation-eq-phiformula">
+<span class="eqno">(6.7)<a class="headerlink" href="#equation-eq-phiformula" title="Permalink to this equation">¶</a></span>\[
+  \Phi = X' \tilde  V  \tilde \Sigma^{-1} W
   \]</div>
-<p>Let <span class="math notranslate nohighlight">\(\Phi^{+}\)</span> be a generalized inverse of <span class="math notranslate nohighlight">\(\Phi\)</span>; <span class="math notranslate nohighlight">\(\Phi^{+}\)</span> is an <span class="math notranslate nohighlight">\(\tilde r \times m\)</span> matrix.</p>
-</li>
-<li><p>Define an initial vector <span class="math notranslate nohighlight">\(b\)</span> of dominant modes by</p>
-<div class="math notranslate nohighlight">
-\[
-  b= \Phi^{+} X_1
-  \]</div>
-<p>where evidently <span class="math notranslate nohighlight">\(b\)</span> is an <span class="math notranslate nohighlight">\(\tilde r \times 1\)</span> vector.</p>
+<p>We can construct an <span class="math notranslate nohighlight">\(r \times m\)</span> matrix generalized inverse  <span class="math notranslate nohighlight">\(\Phi^{+}\)</span>  of <span class="math notranslate nohighlight">\(\Phi\)</span>.</p>
+<ul>
+<li><p>We interrupt the flow with a digression at this point</p>
+<ul class="simple">
+<li><p>notice that from formula <a class="reference internal" href="#equation-eq-phiformula">(6.7)</a>, we have</p></li>
+</ul>
+<div class="math notranslate nohighlight" id="equation-eq-aphilambda">
+<span class="eqno">(6.8)<a class="headerlink" href="#equation-eq-aphilambda" title="Permalink to this equation">¶</a></span>\[ 
+       \begin{aligned}
+       A \Phi &amp; =  (X' \tilde V \tilde \Sigma^{-1} \tilde U^T) (X' \tilde V \tilde \Sigma^{-1} W) \cr
+       &amp; = X' \tilde V \Sigma^{-1} \tilde A W \cr
+       &amp; = X' \tilde V \tilde \Sigma^{-1} W \Lambda \cr
+       &amp; = \Phi \Lambda 
+       \end{aligned}
+       \]</div>
 </li>
 </ul>
-<p>With <span class="math notranslate nohighlight">\(\Lambda, \Phi, \Phi^{+}\)</span> in hand, our least-squares fitted dynamics fitted to the <span class="math notranslate nohighlight">\(\tilde r\)</span> dominant modes
-are governed by</p>
+</li>
+<li><p>Define an initial vector <span class="math notranslate nohighlight">\(b\)</span> of dominant modes by</p>
+<div class="math notranslate nohighlight" id="equation-eq-bphieqn">
+<span class="eqno">(6.9)<a class="headerlink" href="#equation-eq-bphieqn" title="Permalink to this equation">¶</a></span>\[
+  b= \Phi^{+} X_1
+  \]</div>
+<p>where evidently <span class="math notranslate nohighlight">\(b\)</span> is an <span class="math notranslate nohighlight">\(r \times 1\)</span> vector.</p>
+<p>(Since it involves smaller matrices, formula <a class="reference internal" href="#equation-eq-beqnsmall">(6.11)</a> below is a computationally more efficient way to compute <span class="math notranslate nohighlight">\(b\)</span>)</p>
+</li>
+<li><p>Then define <em>projected data</em> <span class="math notranslate nohighlight">\(\hat X_1\)</span> by</p>
+<div class="math notranslate nohighlight" id="equation-eq-x1proj">
+<span class="eqno">(6.10)<a class="headerlink" href="#equation-eq-x1proj" title="Permalink to this equation">¶</a></span>\[ 
+  \tilde X_1 = \Phi b 
+  \]</div>
+</li>
+<li><p>It follows that</p>
 <div class="math notranslate nohighlight">
-\[
-X_{t+1} = \Phi \Lambda \Phi^{+} X_t
+\[ 
+  \tilde U \tilde X_1 = X' \tilde V \tilde \Sigma^{-1} W b
+  \]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[ 
+  \tilde X_1 = \tilde U^T X' \tilde V \tilde \Sigma^{-1} W b
+  \]</div>
+</li>
+<li><p>Recall that <span class="math notranslate nohighlight">\( \tilde A = \tilde U^T X' \tilde V \tilde \Sigma^{-1}\)</span> so that</p>
+<div class="math notranslate nohighlight">
+\[ 
+  \tilde X_1 = \tilde A W b
+  \]</div>
+<p>and therefore, by the eigendecomposition  <a class="reference internal" href="#equation-eq-tildeaeigen">(6.6)</a> of <span class="math notranslate nohighlight">\(\tilde A\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[ 
+  \tilde X_1 = W \Lambda b
+  \]</div>
+</li>
+<li><p>Therefore,</p>
+<div class="math notranslate nohighlight" id="equation-eq-beqnsmall">
+<span class="eqno">(6.11)<a class="headerlink" href="#equation-eq-beqnsmall" title="Permalink to this equation">¶</a></span>\[ 
+  b = ( W \Lambda)^{-1} \tilde X_1
+  \]</div>
+<p>which is  computationally more efficient than equation <a class="reference internal" href="#equation-eq-bphieqn">(6.9)</a>.</p>
+</li>
+</ul>
+<section id="putting-things-together">
+<h3><span class="section-number">6.10.1. </span>Putting Things Together<a class="headerlink" href="#putting-things-together" title="Permalink to this headline">¶</a></h3>
+<p>With <span class="math notranslate nohighlight">\(\Lambda, \Phi, \Phi^{+}\)</span> in hand, our least-squares fitted dynamics fitted to the <span class="math notranslate nohighlight">\(r\)</span>  modes
+are governed by</p>
+<div class="math notranslate nohighlight" id="equation-eq-xdynamicsapprox">
+<span class="eqno">(6.12)<a class="headerlink" href="#equation-eq-xdynamicsapprox" title="Permalink to this equation">¶</a></span>\[
+X_{t+1} = \Phi \Lambda \Phi^{+} X_t .
 \]</div>
+<p>But by virtue of equation <a class="reference internal" href="#equation-eq-aphilambda">(6.8)</a>, it follows that <strong>if we had kept <span class="math notranslate nohighlight">\(r = p\)</span></strong>,  this equation would be equivalent with</p>
+<div class="math notranslate nohighlight" id="equation-eq-xdynamicstrue">
+<span class="eqno">(6.13)<a class="headerlink" href="#equation-eq-xdynamicstrue" title="Permalink to this equation">¶</a></span>\[
+X_{t+1} = A X_t .
+\]</div>
+<p>When <span class="math notranslate nohighlight">\(r &lt;&lt; p \)</span>, equation <a class="reference internal" href="#equation-eq-xdynamicsapprox">(6.12)</a> is an approximation (of reduced  order <span class="math notranslate nohighlight">\(r\)</span>) to the <span class="math notranslate nohighlight">\(X\)</span> dynamics in equation
+<a class="reference internal" href="#equation-eq-xdynamicstrue">(6.13)</a>.</p>
 <p>Conditional on <span class="math notranslate nohighlight">\(X_t\)</span>, we construct forecasts <span class="math notranslate nohighlight">\(\check X_{t+j} \)</span> of <span class="math notranslate nohighlight">\(X_{t+j}, j = 1, 2, \ldots, \)</span>  from</p>
 <div class="math notranslate nohighlight">
 \[
 \check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
 \]</div>
 </section>
+</section>
 <section id="reduced-order-var">
 <h2><span class="section-number">6.11. </span>Reduced-order VAR<a class="headerlink" href="#reduced-order-var" title="Permalink to this headline">¶</a></h2>
 <p>DMD  is a natural tool for estimating a <strong>reduced order vector autoregression</strong>,
-an object that we define in terms of the populations regression equation</p>
+an object that we define in terms of the population regression equation</p>
 <div class="math notranslate nohighlight" id="equation-eq-varred">
-<span class="eqno">(6.4)<a class="headerlink" href="#equation-eq-varred" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(6.14)<a class="headerlink" href="#equation-eq-varred" title="Permalink to this equation">¶</a></span>\[
 X_{t+1} = \check A X_t + C \epsilon_{t+1}
 \]</div>
 <p>where</p>
@@ -921,7 +1000,7 @@ X = [ X_1 \mid X_2 \mid \cdots \mid X_{n-1} ]
 \[
 X' =  [ X_2 \mid X_3 \mid \cdots \mid X_n ]
 \]</div>
-<p>so that according to  model <a class="reference internal" href="#equation-eq-varred">(6.4)</a></p>
+<p>so that according to  model <a class="reference internal" href="#equation-eq-varred">(6.14)</a></p>
 <div class="math notranslate nohighlight">
 \[
 X' = \begin{bmatrix} \check A X_1 + C \epsilon_2  \mid \check A X_2 + C \epsilon_3 \mid \cdots \mid \check A X_{n-1} +  C 
@@ -964,7 +1043,7 @@ X X^T = ( X_1 X_1^T + X_2 X_2^T)
 \check A = \Phi \Lambda \Phi^{+}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\Phi\)</span> and <span class="math notranslate nohighlight">\(\Lambda\)</span> are computed with the DMD algorithm described above.</p>
-<p>Associated with the VAR representation <a class="reference internal" href="#equation-eq-varred">(6.4)</a>
+<p>Associated with the VAR representation <a class="reference internal" href="#equation-eq-varred">(6.14)</a>
 is the usual moving average representation</p>
 <div class="math notranslate nohighlight">
 \[
@@ -976,7 +1055,7 @@ of</p>
 \[ 
 C \epsilon_{t+1} = X_{t+1} - \check A X_t , \quad t =1, \ldots, n-1
 \]</div>
-<p>and check whether they are serially uncorrelated as assumed in <a class="reference internal" href="#equation-eq-varred">(6.4)</a>.</p>
+<p>and check whether they are serially uncorrelated as assumed in <a class="reference internal" href="#equation-eq-varred">(6.14)</a>.</p>
 <p>For example, we can compute spectra and cross-spectra of components of <span class="math notranslate nohighlight">\(C \epsilon_{t+1}\)</span>
 and check for serial-uncorrelatedness in the usual ways.</p>
 <p>We can also estimate the covariance matrix of <span class="math notranslate nohighlight">\(C \epsilon_{t+1}\)</span>
@@ -985,7 +1064,7 @@ from</p>
 \[
 \frac{1}{n-1} \sum_{t=1}^{n-1} (C \epsilon_{t+1} )( C \epsilon_{t+1})^T 
 \]</div>
-<p>It can be enlightening to diagonize  our reduced order VAR <a class="reference internal" href="#equation-eq-varred">(6.4)</a> by noting that it can
+<p>It can be enlightening to diagonize  our reduced order VAR <a class="reference internal" href="#equation-eq-varred">(6.14)</a> by noting that it can
 be written</p>
 <div class="math notranslate nohighlight">
 \[
@@ -998,12 +1077,12 @@ X_{t+1} = \Phi \Lambda \Phi^{+} X_t + C \epsilon_{t+1}
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-varmodes">
-<span class="eqno">(6.5)<a class="headerlink" href="#equation-eq-varmodes" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(6.15)<a class="headerlink" href="#equation-eq-varmodes" title="Permalink to this equation">¶</a></span>\[
 \tilde X_{t+1} = \Lambda \tilde X_t + \tilde \epsilon_{t+1} 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\tilde X_t \)</span> is an <span class="math notranslate nohighlight">\(r \times 1\)</span> <strong>mode</strong> and <span class="math notranslate nohighlight">\(\tilde \epsilon_{t+1}\)</span> is an <span class="math notranslate nohighlight">\(r \times 1\)</span>
 shock.</p>
-<p>The <span class="math notranslate nohighlight">\(r\)</span> modes <span class="math notranslate nohighlight">\(\tilde X_t\)</span> obey the  first-order VAR <a class="reference internal" href="#equation-eq-varmodes">(6.5)</a> in which <span class="math notranslate nohighlight">\(\Lambda\)</span> is an <span class="math notranslate nohighlight">\(r \times r\)</span> diagonal matrix.</p>
+<p>The <span class="math notranslate nohighlight">\(r\)</span> modes <span class="math notranslate nohighlight">\(\tilde X_t\)</span> obey the  first-order VAR <a class="reference internal" href="#equation-eq-varmodes">(6.15)</a> in which <span class="math notranslate nohighlight">\(\Lambda\)</span> is an <span class="math notranslate nohighlight">\(r \times r\)</span> diagonal matrix.</p>
 <p>Note that while <span class="math notranslate nohighlight">\(\Lambda\)</span> is diagonal, the contemporaneous covariance matrix of <span class="math notranslate nohighlight">\(\tilde \epsilon_{t+1}\)</span> need not be.</p>
 <p><strong>Remark:</strong> It is permissible for <span class="math notranslate nohighlight">\(X_t\)</span> to contain lagged values of  observables.</p>
 <p>For example, we might have a setting in which</p>
