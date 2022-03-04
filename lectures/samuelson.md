@@ -1216,7 +1216,7 @@ G = [[γ + g, ρ1,   ρ2],         # this is Y_{t+1}
      [γ,      α,    0],         # this is C_{t+1}
      [0,      β,   -β]]         # this is I_{t+1}
 
-μ_0 = [1, 100, 100]
+μ_0 = [1, 100, 50]
 C = np.zeros((3,1))
 C[1] = σ # stochastic
 
@@ -1273,7 +1273,7 @@ class SamuelsonLSS(LinearStateSpace):
     """
     def __init__(self,
                  y_0=100,
-                 y_1=100,
+                 y_1=50,
                  α=0.8,
                  β=0.9,
                  γ=10,
@@ -1309,17 +1309,17 @@ class SamuelsonLSS(LinearStateSpace):
     def plot_simulation(self, ts_length=100, stationary=True):
 
         # Temporarily store original parameters
-        temp_μ = self.μ_0
-        temp_Σ = self.Sigma_0
+        temp_mu = self.mu_0
+        temp_Sigma = self.Sigma_0
 
         # Set distribution parameters equal to their stationary
         # values for simulation
         if stationary == True:
             try:
-                self.μ_x, self.μ_y, self.σ_x, self.σ_y, self.σ_yx = \
+                self.mu_x, self.mu_y, self.Sigma_x, self.Sigma_y, self.Sigma_yx = \
                     self.stationary_distributions()
-                self.μ_0 = self.μ_y
-                self.Σ_0 = self.σ_y
+                self.mu_0 = self.mu_x
+                self.Sigma_0 = self.Sigma_x
             # Exception where no convergence achieved when
             #calculating stationary distributions
             except ValueError:
@@ -1338,8 +1338,8 @@ class SamuelsonLSS(LinearStateSpace):
         axes[-1].set_xlabel('Iteration')
 
         # Reset distribution parameters to their initial values
-        self.μ_0 = temp_μ
-        self.Sigma_0 = temp_Σ
+        self.mu_0 = temp_mu
+        self.Sigma_0 = temp_Sigma
 
         return fig
 
