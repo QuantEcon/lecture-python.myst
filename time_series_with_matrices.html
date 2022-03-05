@@ -254,6 +254,7 @@ a “forward-looking” linear difference equation.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 </pre></div>
 </div>
@@ -273,10 +274,13 @@ measure of aggregate activity called <strong>gross domestic product</strong> (GD
 <p>Equation <a class="reference internal" href="#equation-tswm-1">(14.1)</a> is called a <strong>second-order linear difference equation</strong>.</p>
 <p>But actually, it is a collection of <span class="math notranslate nohighlight">\(T\)</span> simultaneous linear
 equations in the <span class="math notranslate nohighlight">\(T\)</span> variables <span class="math notranslate nohighlight">\(y_1, y_2, \ldots, y_T\)</span>.</p>
-<p><strong>Note:</strong> To be able to solve a second-order linear difference
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To be able to solve a second-order linear difference
 equation, we require two <strong>boundary conditions</strong> that can take the form
 either of two <strong>initial conditions</strong> or two <strong>terminal conditions</strong> or
 possibly one of each.</p>
+</div>
 <p>Let’s write our equations as a stacked system</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -337,13 +341,12 @@ Samuelson’s multiplier-accelerator model.</p>
 </div>
 </div>
 </div>
+<p>Now we construct <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(b\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct A and b</span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>  <span class="c1"># The T x T identity matrix</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-    <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 
     <span class="k">if</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">𝛼1</span>
@@ -391,6 +394,7 @@ example.</p>
 <p>Now let’s solve for the path of <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <p>If <span class="math notranslate nohighlight">\(y_t\)</span> is GNP at time <span class="math notranslate nohighlight">\(t\)</span>, then we have a version of
 Samuelson’s model of the dynamics for GNP.</p>
+<p>To solve <span class="math notranslate nohighlight">\(y = A^{-1} b\)</span> we can either invert <span class="math notranslate nohighlight">\(A\)</span> directly, as in</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -400,6 +404,37 @@ Samuelson’s model of the dynamics for GNP.</p>
 </div>
 </div>
 </div>
+<p>or we can use <code class="docutils literal notranslate"><span class="pre">np.linalg.solve</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_second_method</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here make sure the two methods give the same result, at least up to floating
+point precision:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_second_method</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In general, <code class="docutils literal notranslate"><span class="pre">np.linalg.solve</span></code> is more numerically stable than using
+<code class="docutils literal notranslate"><span class="pre">np.linalg.inv</span></code> directly.
+However, stability is not an issue for this small example. Moreover, we will
+repeatedly use <code class="docutils literal notranslate"><span class="pre">A_inv</span></code> in what follows, so there is added value in computing
+it directly.</p>
+</div>
+<p>Now we can plot.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -411,19 +446,22 @@ Samuelson’s model of the dynamics for GNP.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_9_0.png" src="_images/time_series_with_matrices_9_0.png" />
+<img alt="_images/time_series_with_matrices_15_0.png" src="_images/time_series_with_matrices_15_0.png" />
 </div>
 </div>
-<p>If we set both initial values at the <strong>steady state</strong> value of <span class="math notranslate nohighlight">\(y_t\)</span>, namely,</p>
+<p>The <strong>steady state</strong> value <span class="math notranslate nohighlight">\(y^*\)</span> of <span class="math notranslate nohighlight">\(y_t\)</span> is obtained by setting <span class="math notranslate nohighlight">\(y_t = y_{t-1} =
+y_{t-2} = y^*\)</span> in <a class="reference internal" href="#equation-tswm-1">(14.1)</a>, which yields</p>
 <div class="math notranslate nohighlight">
 \[
-y_{0} = y_{-1} = \frac{\alpha_{0}}{1 - \alpha_{1} - \alpha_{2}}
+y^* = \frac{\alpha_{0}}{1 - \alpha_{1} - \alpha_{2}}
 \]</div>
-<p>then <span class="math notranslate nohighlight">\(y_{t}\)</span> will be constant</p>
+<p>If we set the initial values to <span class="math notranslate nohighlight">\(y_{0} = y_{-1} = y^*\)</span>, then <span class="math notranslate nohighlight">\(y_{t}\)</span> will be
+constant:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_1_steady</span> <span class="o">=</span> <span class="n">𝛼0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">𝛼1</span> <span class="o">-</span> <span class="n">𝛼2</span><span class="p">)</span> <span class="c1"># y_{-1}</span>
-<span class="n">y0_steady</span> <span class="o">=</span> <span class="n">𝛼0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">𝛼1</span> <span class="o">-</span> <span class="n">𝛼2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_star</span> <span class="o">=</span> <span class="n">𝛼0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">𝛼1</span> <span class="o">-</span> <span class="n">𝛼2</span><span class="p">)</span>
+<span class="n">y_1_steady</span> <span class="o">=</span> <span class="n">y_star</span> <span class="c1"># y_{-1}</span>
+<span class="n">y0_steady</span> <span class="o">=</span> <span class="n">y_star</span>
 
 <span class="n">b_steady</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">𝛼0</span><span class="p">)</span>
 <span class="n">b_steady</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">𝛼0</span> <span class="o">+</span> <span class="n">𝛼1</span> <span class="o">*</span> <span class="n">y0_steady</span> <span class="o">+</span> <span class="n">𝛼2</span> <span class="o">*</span> <span class="n">y_1_steady</span>
@@ -450,7 +488,7 @@ y_{0} = y_{-1} = \frac{\alpha_{0}}{1 - \alpha_{1} - \alpha_{2}}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_13_0.png" src="_images/time_series_with_matrices_13_0.png" />
+<img alt="_images/time_series_with_matrices_19_0.png" src="_images/time_series_with_matrices_19_0.png" />
 </div>
 </div>
 </section>
@@ -514,7 +552,7 @@ y = A^{-1} \left(b + u\right)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_17_0.png" src="_images/time_series_with_matrices_17_0.png" />
+<img alt="_images/time_series_with_matrices_23_0.png" src="_images/time_series_with_matrices_23_0.png" />
 </div>
 </div>
 <p>The above time series looks a lot like (detrended) GDP series for a
@@ -525,9 +563,10 @@ number of advanced countries in recent decades.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">())</span>  <span class="c1"># Choose a random color from viridis</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">𝜎u</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">A_inv</span> <span class="o">@</span> <span class="p">(</span><span class="n">b</span> <span class="o">+</span> <span class="n">u</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
@@ -537,7 +576,7 @@ number of advanced countries in recent decades.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_19_0.png" src="_images/time_series_with_matrices_19_0.png" />
+<img alt="_images/time_series_with_matrices_25_0.png" src="_images/time_series_with_matrices_25_0.png" />
 </div>
 </div>
 <p>Also consider the case when <span class="math notranslate nohighlight">\(y_{0}\)</span> and <span class="math notranslate nohighlight">\(y_{-1}\)</span> are at
@@ -547,9 +586,10 @@ steady state.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">())</span>  <span class="c1"># Choose a random color from viridis</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">𝜎u</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
     <span class="n">y_steady</span> <span class="o">=</span> <span class="n">A_inv</span> <span class="o">@</span> <span class="p">(</span><span class="n">b_steady</span> <span class="o">+</span> <span class="n">u</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_steady</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_steady</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
@@ -559,7 +599,7 @@ steady state.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_21_0.png" src="_images/time_series_with_matrices_21_0.png" />
+<img alt="_images/time_series_with_matrices_27_0.png" src="_images/time_series_with_matrices_27_0.png" />
 </div>
 </div>
 </section>
@@ -682,7 +722,7 @@ y_{T}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_28_0.png" src="_images/time_series_with_matrices_28_0.png" />
+<img alt="_images/time_series_with_matrices_34_0.png" src="_images/time_series_with_matrices_34_0.png" />
 </div>
 </div>
 <p>Can you explain why the trend of the price is downward over time?</p>
@@ -703,7 +743,7 @@ steady state.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_30_0.png" src="_images/time_series_with_matrices_30_0.png" />
+<img alt="_images/time_series_with_matrices_36_0.png" src="_images/time_series_with_matrices_36_0.png" />
 </div>
 </div>
 </section>
@@ -895,7 +935,7 @@ steady state.</p>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   24. Application: The Samuelson Multiplier-Accelerator
+   24. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">

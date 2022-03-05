@@ -49,6 +49,7 @@ We will use the following imports:
 import numpy as np
 %matplotlib inline
 import matplotlib.pyplot as plt
+from matplotlib import cm
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 ```
 
@@ -75,10 +76,12 @@ Equation {eq}`tswm_1` is called a **second-order linear difference equation**.
 But actually, it is a collection of $T$ simultaneous linear
 equations in the $T$ variables $y_1, y_2, \ldots, y_T$.
 
-**Note:** To be able to solve a second-order linear difference
+```{note}
+To be able to solve a second-order linear difference
 equation, we require two **boundary conditions** that can take the form
 either of two **initial conditions** or two **terminal conditions** or
 possibly one of each.
+```
 
 Let’s write our equations as a stacked system
 
@@ -144,12 +147,12 @@ y_1 = 28. # y_{-1}
 y0 = 24.
 ```
 
+Now we construct $A$ and $b$.
+
 ```{code-cell} python3
-# construct A and b
-A = np.zeros((T, T))
+A = np.identity(T)  # The T x T identity matrix
 
 for i in range(T):
-    A[i, i] = 1
 
     if i-1 >= 0:
         A[i, i-1] = -𝛼1
@@ -174,11 +177,37 @@ Now let’s solve for the path of $y$.
 If $y_t$ is GNP at time $t$, then we have a version of
 Samuelson’s model of the dynamics for GNP.
 
+To solve $y = A^{-1} b$ we can either invert $A$ directly, as in 
+
 ```{code-cell} python3
 A_inv = np.linalg.inv(A)
 
 y = A_inv @ b
 ```
+
+or we can use `np.linalg.solve`: 
+
+
+```{code-cell} python3
+y_second_method = np.linalg.solve(A, b)
+```
+
+Here make sure the two methods give the same result, at least up to floating
+point precision:
+
+```{code-cell} python3
+np.allclose(y, y_second_method)
+```
+
+```{note}
+In general, `np.linalg.solve` is more numerically stable than using
+`np.linalg.inv` directly. 
+However, stability is not an issue for this small example. Moreover, we will
+repeatedly use `A_inv` in what follows, so there is added value in computing
+it directly.
+```
+
+Now we can plot.
 
 ```{code-cell} python3
 plt.plot(np.arange(T)+1, y)
@@ -188,17 +217,20 @@ plt.ylabel('y')
 plt.show()
 ```
 
-If we set both initial values at the **steady state** value of $y_t$, namely,
+The **steady state** value $y^*$ of $y_t$ is obtained by setting $y_t = y_{t-1} =
+y_{t-2} = y^*$ in {eq}`tswm_1`, which yields
 
 $$
-y_{0} = y_{-1} = \frac{\alpha_{0}}{1 - \alpha_{1} - \alpha_{2}}
+y^* = \frac{\alpha_{0}}{1 - \alpha_{1} - \alpha_{2}}
 $$
 
-then $y_{t}$ will be constant
+If we set the initial values to $y_{0} = y_{-1} = y^*$, then $y_{t}$ will be
+constant:
 
 ```{code-cell} python3
-y_1_steady = 𝛼0 / (1 - 𝛼1 - 𝛼2) # y_{-1}
-y0_steady = 𝛼0 / (1 - 𝛼1 - 𝛼2)
+y_star = 𝛼0 / (1 - 𝛼1 - 𝛼2)
+y_1_steady = y_star # y_{-1}
+y0_steady = y_star
 
 b_steady = np.full(T, 𝛼0)
 b_steady[0] = 𝛼0 + 𝛼1 * y0_steady + 𝛼2 * y_1_steady
@@ -288,9 +320,10 @@ We can simulate $N$ paths.
 N = 100
 
 for i in range(N):
+    col = cm.viridis(np.random.rand())  # Choose a random color from viridis
     u = np.random.normal(0, 𝜎u, size=T)
     y = A_inv @ (b + u)
-    plt.plot(np.arange(T)+1, y, lw=0.5)
+    plt.plot(np.arange(T)+1, y, lw=0.5, color=col)
 
 plt.xlabel('t')
 plt.ylabel('y')
@@ -305,9 +338,10 @@ steady state.
 N = 100
 
 for i in range(N):
+    col = cm.viridis(np.random.rand())  # Choose a random color from viridis
     u = np.random.normal(0, 𝜎u, size=T)
     y_steady = A_inv @ (b_steady + u)
-    plt.plot(np.arange(T)+1, y_steady, lw=0.5)
+    plt.plot(np.arange(T)+1, y_steady, lw=0.5, color=col)
 
 plt.xlabel('t')
 plt.ylabel('y')
