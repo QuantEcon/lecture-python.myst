@@ -17,7 +17,7 @@ kernelspec:
 </div>
 ```
 
-# Application: The Samuelson Multiplier-Accelerator
+# Samuelson Multiplier-Accelerator
 
 ```{contents} Contents
 :depth: 2
