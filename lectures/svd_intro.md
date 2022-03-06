@@ -560,7 +560,7 @@ def compare_pca_svd(da):
 
 ## Dynamic Mode Decomposition (DMD)
 
-We now turn to the case in which $m >>n$ in which an $m \times n$  data matrix $\tilde X$ contains many more random variables $m$ than observations $n$.
+We turn to the case in which $m >>n$ in which an $m \times n$  data matrix $\tilde X$ contains many more random variables $m$ than observations $n$.
 
 This is the **tall and skinny** case associated with **Dynamic Mode Decomposition**.
 
@@ -597,60 +597,80 @@ In forming $ X$ and $X'$, we have in each case  dropped a column from $\tilde X$
 
 Evidently, $ X$ and $ X'$ are both $m \times \tilde n$ matrices where $\tilde n = n - 1$.
 
-We now let the rank of $X$ be $p \neq \min(m, \tilde n) = \tilde n$.
+We denote the rank of $X$ as $p \neq \min(m, \tilde n) = \tilde n$.
 
 We start with a system consisting of $m$ least squares regressions of **everything** on one lagged value of **everything**:
 
 $$
  X' = A  X + \epsilon
-$$
+$$ 
 
 where 
 
 $$
 A =  X'  X^{+}
-$$
+$$ (eq:Afullformula)
 
 and where the (possibly huge) $m \times m $ matrix $X^{+}$ is the Moore-Penrose generalized inverse of $X$.
 
-The $i$ the row of $A$ is an $m \times 1$ vector of regression coefficients of $X_{i,t+1}$ on $X_{j,t}, j = 1, \ldots, m$.
+The $i$th the row of $A$ is an $m \times 1$ vector of regression coefficients of $X_{i,t+1}$ on $X_{j,t}, j = 1, \ldots, m$.
 
 
-Think about  the (reduced) singular value decomposition 
+Consider the (reduced) singular value decomposition 
 
   $$ 
   X =  U \Sigma  V^T
   $$
+
+
   
 where $U$ is $m \times p$, $\Sigma$ is a $p \times p$ diagonal  matrix, and $ V^T$ is a $p \times \tilde n$ matrix.
 
 Here $p$ is the rank of $X$, where necessarily $p \leq \tilde n$. 
-  
+
+(We have described and illustrated a reduced singular value decomposition above, and compared it with a full singular value decomposition.)  
 
 We could construct the generalized inverse $X^+$  of $X$ by using
 a singular value decomposition  $X = U \Sigma V^T$ to compute
 
 $$
 X^{+} =  V \Sigma^{-1}  U^T
-$$
+$$ (eq:Xpinverse)
 
 where the matrix $\Sigma^{-1}$ is constructed by replacing each non-zero element of $ \Sigma$ with $\sigma_j^{-1}$.
 
-The idea behind **dynamic mode decomposition** is to construct an approximation that  
+We could use formula {eq}`eq:Xpinverse`   together with formula {eq}`eq:Afullformula` to compute the matrix  $A$ of regression coefficients.
+
+Instead of doing that, we'll use **dynamic mode decomposition** to compute a rank $r$ approximation to $A$,
+where $r < < p$.  
+
+
+The idea behind **dynamic mode decomposition** is to construct this low rank  approximation to $A$ that  
 
 * sidesteps computing the generalized inverse $X^{+}$
 
-* constructs an $m \times r$ matrix $\Phi$ that captures effects  on all $m$ variables of $r < < p$  **modes** that are associated with the $r$ largest singular values
+* constructs an $m \times r$ matrix $\Phi$ that captures effects  on all $m$ variables of $r < < p$  **modes** that are associated with the $r$ largest eigenvalues of $A$
 
    
-* uses $\Phi$ and  powers of $r$ singular values to forecast *future* $X_t$'s
+* uses $\Phi$ and  powers of the $r$ largest eigenvalues of $A$ to forecast *future* $X_t$'s
 
-The beauty of **dynamic mode decomposition** is that we accomplish this without ever computing the regression coefficients $A = X' X^{+}$.
+
+An important properities of the DMD algorithm that we shall describe soon is that
+
+* columns of the $m \times r$ matrix $\Phi$ are the  eigenvectors of $A$ that correspond to the $r$ largest eigenvalues of $A$
+* Tu et al. {cite}`tu_Rowley` verify these useful properties
+
+
+
+An attractive feature of  **dynamic mode decomposition** is that we avoid  computing the  huge matrix $A = X' X^{+}$ of regression coefficients, while under the right conditions, we acquire a good low-rank approximation of $A$ with low computational effort. 
+
+
+### Steps and Explanations
 
 To construct a DMD, we deploy the following steps:
 
   
-* As described above, though it would be costly, we could compute an $m \times m$ matrix $A$ by solving 
+* As mentioned above, though it would be costly, we could compute an $m \times m$ matrix $A$ by solving 
 
   $$
   A = X'  V  \Sigma^{-1}  U^T
@@ -660,10 +680,7 @@ To construct a DMD, we deploy the following steps:
   
   But we won't do that.  
 
-  We'll  compute the $r$ largest singular values of $X$.
-
-  We'll form matrices $\tilde V, \tilde U$ corresponding to those $r$ singular values. 
-  
+  We'll  compute the $r$ largest singular values of $X$ and  form matrices $\tilde V, \tilde U$ corresponding to those $r$ singular values. 
   
  
   
@@ -681,7 +698,8 @@ To construct a DMD, we deploy the following steps:
     \tilde X_{t+1} = \tilde A \tilde X_t
   $$
 
-  where an approximation  $\check X_t$ to (i.e., a projection of)  the original $m \times 1$ vector $X_t$ can be acquired from 
+  where an approximation  $\check X_t$ to   the original $m \times 1$ vector $X_t$ can be acquired by projecting $X_t$ onto a subspace spanned by
+  the columns of $\tilde U$:
 
   $$ 
    \check X_t = \tilde U \tilde X_t 
@@ -697,10 +715,6 @@ To construct a DMD, we deploy the following steps:
   $$ (eq:tildeAform)
 
   
-    
-  
-* Tu et al. {cite}`tu_Rowley` verify that eigenvalues and eigenvectors of $\tilde A$ equal the leading eigenvalues and associated eigenvectors of $A$.
-
 * Construct an eigencomposition of $\tilde A$ 
 
   $$ 
@@ -710,11 +724,13 @@ To construct a DMD, we deploy the following steps:
   where $\Lambda$ is a $r \times r$ diagonal matrix of eigenvalues and the columns of $W$ are corresponding eigenvectors
   of $\tilde A$.   Both $\Lambda$ and $W$ are $r \times r$ matrices.
   
-* Construct the $m \times r$ matrix
+* A key step now is to construct the $m \times r$ matrix
 
   $$
   \Phi = X' \tilde  V  \tilde \Sigma^{-1} W
   $$ (eq:Phiformula)
+
+  As asserted above,  columns of $\Phi$ are the eigenvectors of $A$ corresponding to the largest eigenvalues of $A$.
 
 
   
@@ -744,9 +760,46 @@ To construct a DMD, we deploy the following steps:
   $$ (eq:bphieqn)
   
   
-  (Since it involves smaller matrices, formula {eq}`eq:beqnsmall` below is a computationally more efficient way to compute $b$)
 
-* Then define _projected data_ $\tilde X_1$ by
+
+
+### Putting Things Together
+    
+With $\Lambda, \Phi, \Phi^{+}$ in hand, our least-squares fitted dynamics fitted to the $r$  modes
+are governed by
+
+$$
+X_{t+1}^{(r)} = \Phi \Lambda \Phi^{+} X_t^{(r)} .
+$$ (eq:Xdynamicsapprox)
+
+where $X_t^{(r)}$ is an $m \times 1$ vector.
+
+By virtue of equation {eq}`eq:APhiLambda`, it follows that **if we had kept $r = p$**,  this equation would be equivalent with
+
+$$
+X_{t+1} = A X_t .
+$$ (eq:Xdynamicstrue)
+
+When $r << p $, equation {eq}`eq:Xdynamicsapprox` is an approximation (of reduced  order $r$) to the $X$ dynamics in equation
+{eq}`eq:Xdynamicstrue`.
+
+ 
+Conditional on $X_t$, we construct forecasts $\check X_{t+j} $ of $X_{t+j}, j = 1, 2, \ldots, $  from 
+
+$$
+\check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
+$$ (eq:checkXevoln)
+
+
+
+## Some Refinements
+
+
+
+Because it involves smaller matrices, formula {eq}`eq:beqnsmall` below is a computationally more efficient way to compute $b$ than using equation {eq}`eq:bphieqn`. 
+
+
+Define  a projection  $\tilde X_1$ of $X_1$ onto the $r$ dominant modes by
 
   $$ 
   \tilde X_1 = \Phi b 
@@ -784,39 +837,11 @@ To construct a DMD, we deploy the following steps:
 
   which is  computationally more efficient than equation {eq}`eq:bphieqn`.
 
+* It follows that the following equation is equivalent with {eq}`eq:checkXevoln`
 
-
-### Putting Things Together
-    
-With $\Lambda, \Phi, \Phi^{+}$ in hand, our least-squares fitted dynamics fitted to the $r$  modes
-are governed by
-
-$$
-X_{t+1} = \Phi \Lambda \Phi^{+} X_t .
-$$ (eq:Xdynamicsapprox)
-
-But by virtue of equation {eq}`eq:APhiLambda`, it follows that **if we had kept $r = p$**,  this equation would be equivalent with
-
-$$
-X_{t+1} = A X_t .
-$$ (eq:Xdynamicstrue)
-
-When $r << p $, equation {eq}`eq:Xdynamicsapprox` is an approximation (of reduced  order $r$) to the $X$ dynamics in equation
-{eq}`eq:Xdynamicstrue`.
-
- 
-Conditional on $X_t$, we construct forecasts $\check X_{t+j} $ of $X_{t+j}, j = 1, 2, \ldots, $  from 
-
-$$
-\check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
-$$
-
-or
-
-$$ 
-\check X_{t+j} = \Phi \Lambda^j (W \Lambda)^{-1} \tilde X_t
-$$
-
+  $$ 
+  \check X_{t+j} = \Phi \Lambda^j (W \Lambda)^{-1} \tilde X_t
+  $$ (eq:checkXevoln2)
 
 
 
