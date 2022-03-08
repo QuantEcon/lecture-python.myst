@@ -642,14 +642,14 @@ where the matrix $\Sigma^{-1}$ is constructed by replacing each non-zero element
 We could use formula {eq}`eq:Xpinverse`   together with formula {eq}`eq:Afullformula` to compute the matrix  $A$ of regression coefficients.
 
 Instead of doing that, we'll use **dynamic mode decomposition** to compute a rank $r$ approximation to $A$,
-where $r < < p$.  
+where $r <  p$.  
 
 
 The idea behind **dynamic mode decomposition** is to construct this low rank  approximation to $A$ that  
 
 * sidesteps computing the generalized inverse $X^{+}$
 
-* constructs an $m \times r$ matrix $\Phi$ that captures effects  on all $m$ variables of $r < < p$  **modes** that are associated with the $r$ largest eigenvalues of $A$
+* constructs an $m \times r$ matrix $\Phi$ that captures effects  on all $m$ variables of $r \leq p$  **modes** that are associated with the $r$ largest eigenvalues of $A$
 
    
 * uses $\Phi$ and  powers of the $r$ largest eigenvalues of $A$ to forecast *future* $X_t$'s
@@ -657,8 +657,9 @@ The idea behind **dynamic mode decomposition** is to construct this low rank  ap
 
 An important properities of the DMD algorithm that we shall describe soon is that
 
-* columns of the $m \times r$ matrix $\Phi$ are the  eigenvectors of $A$ that correspond to the $r$ largest eigenvalues of $A$
-* Tu et al. {cite}`tu_Rowley` verify these useful properties
+* columns of the $m \times r$ matrix $\Phi$ are   eigenvectors of $A$ that correspond to the $r$ largest eigenvalues of $A$
+* Tu et al. {cite}`tu_Rowley` verify these useful properties 
+* We'll provide their proof below
 
 
 
@@ -730,23 +731,12 @@ To construct a DMD, we deploy the following steps:
   \Phi = X' \tilde  V  \tilde \Sigma^{-1} W
   $$ (eq:Phiformula)
 
-  As asserted above,  columns of $\Phi$ are the eigenvectors of $A$ corresponding to the largest eigenvalues of $A$.
+  As asserted above, and as we shall soon verify,   columns of $\Phi$ are  eigenvectors of $A$ corresponding to the largest  $r$  eigenvalues of $A$.
 
 
   
   We can construct an $r \times m$ matrix generalized inverse  $\Phi^{+}$  of $\Phi$.
 
-
-  * It will be helpful below to  notice that from formula {eq}`eq:Phiformula`, we have
-
-       $$  
-       \begin{aligned}
-       A \Phi & =  (X' \tilde V \tilde \Sigma^{-1} \tilde U^T) (X' \tilde V \tilde \Sigma^{-1} W) \cr
-       & = X' \tilde V \Sigma^{-1} \tilde A W \cr
-       & = X' \tilde V \tilde \Sigma^{-1} W \Lambda \cr
-       & = \Phi \Lambda 
-       \end{aligned}
-       $$ (eq:APhiLambda)
 
        
 
@@ -760,6 +750,42 @@ To construct a DMD, we deploy the following steps:
   $$ (eq:bphieqn)
   
   
+
+**Proof of Eigenvector Sharing** 
+
+From formula {eq}`eq:Phiformula` we have
+
+$$  
+\begin{aligned}
+  A \Phi & =  (X' \tilde V \tilde \Sigma^{-1} \tilde U^T) (X' \tilde V \tilde \Sigma^{-1} W) \cr
+  & = X' \tilde V \Sigma^{-1} \tilde A W \cr
+  & = X' \tilde V \tilde \Sigma^{-1} W \Lambda \cr
+  & = \Phi \Lambda 
+  \end{aligned}
+$$ 
+
+Thus, we can conclude that
+
+$$  
+A \Phi = \Phi \Lambda
+$$ (eq:APhiLambda)
+
+Let $\phi_i$ be the the $i$the column of $\Phi$ and $\lambda_i$ be the corresponding $i$ eigenvalue of $\tilde A$ from decomposition {eq}`eq:tildeAeigen`. 
+
+Writing out the $m \times r$ vectors on both sides of  equation {eq}`eq:APhiLambda` and equating them gives
+
+
+$$
+A \phi_i = \lambda_i \phi_i .
+$$
+
+Thus, $\phi_i$ is an eigenvector of $A$ corresponding to eigenvalue  $\lambda_i$ of $\tilde A$.
+
+
+
+
+
+
 
 
 
@@ -780,7 +806,7 @@ $$
 X_{t+1} = A X_t .
 $$ (eq:Xdynamicstrue)
 
-When $r << p $, equation {eq}`eq:Xdynamicsapprox` is an approximation (of reduced  order $r$) to the $X$ dynamics in equation
+When $r < p $, equation {eq}`eq:Xdynamicsapprox` is an approximation (of reduced  order $r$) to the $X$ dynamics in equation
 {eq}`eq:Xdynamicstrue`.
 
  
