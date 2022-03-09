@@ -638,7 +638,7 @@ $$
 ={Beta}(\alpha + k, \beta+N-k)
 $$
 
-A beta Distribution with $\alpha$ and $\beta$ has the following mean and variance.
+A beta distribution with $\alpha$ and $\beta$ has the following mean and variance.
 
 The mean is $\frac{\alpha}{\alpha + \beta}$
 
