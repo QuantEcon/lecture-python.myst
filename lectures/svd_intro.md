@@ -663,79 +663,129 @@ An important properities of the DMD algorithm that we shall describe soon is tha
 
 
 
-An attractive feature of  **dynamic mode decomposition** is that we avoid  computing the  huge matrix $A = X' X^{+}$ of regression coefficients, while under the right conditions, we acquire a good low-rank approximation of $A$ with low computational effort. 
+### Preliminary Analysis
+
+We'll put basic ideas on the table by starting with the special case in which $r = p$.
+
+Thus, we retain
+all $p$ singular values of $X$.
+
+(Later, we'll retain only $r < p$ of them)
+
+When $r = p$,  formula
+{eq}`eq:Xpinverse` implies that 
 
 
-### Steps and Explanations
+$$
+A = X' V \Sigma^{-1}  U^T
+$$ (eq:Aformbig)
 
-To construct a DMD, we deploy the following steps:
+where $V$ is an $\tilde n \times p$ matrix, $\Sigma^{-1}$ is a $p \times p$ matrix, and $U$ is a $p \times m$ matrix,
+and where $U^T  U = I_p$ and $V V^T = I_m $.
 
+We use the $p$  columns of $U$, and thus the $p$ rows of $U^T$,  to define   a $p \times 1$  vector $\tilde X_t$ to be used  in a lower-dimensional description of the evolution of the system:
+
+
+$$
+\tilde X_t = U^T X_t .
+$$
+
+Since $U^T U$ is a $p \times p$ identity matrix, we can recover $X_t$ from $\tilde X_t$ by using 
+
+$$
+X_t = U \tilde X_t .
+$$
+
+The following  $p \times p$ transition matrix governs the motion of $\tilde X_t$:
+
+$$
+ \tilde A = U^T A U = U^T X' V \Sigma^{-1} .
+$$ (eq:Atilde0)
+
+Evidently, 
+
+$$
+\tilde X_{t+1} = \tilde A \tilde X_t 
+$$ (eq:xtildemotion)
+
+Notice that if we multiply both sides of {eq}`eq:xtildemotion` by $U$ 
+we get
+
+$$
+U \tilde X_t = U \tilde A \tilde X_t =  U^T \tilde A U^T X_t 
+$$
+
+which gives
+
+$$
+X_{t+1} = A X_t .
+$$
+
+
+
+
+
+### Lower Rank Approximations
+
+
+An attractive feature of  **dynamic mode decomposition** is that we avoid  computing the  huge matrix $A = X' X^{+}$ of regression coefficients, while  with low computational effort, we possibly acquire  a  good low-rank approximation of $A$. 
+
+    
+Instead of using formula {eq}`eq:Aformbig`,  we'll  compute the $r$ largest singular values of $X$ and  form matrices $\tilde V, \tilde U$ corresponding to those $r$ singular values. 
   
-* As mentioned above, though it would be costly, we could compute an $m \times m$ matrix $A$ by solving 
+We'll then construct  a reduced-order system of dimension $r$ by forming an  $r \times r$ transition matrix
+$\tilde A$ redefined by  
 
-  $$
-  A = X'  V  \Sigma^{-1}  U^T
-  $$ (eq:bigAformula)
+$$
+ \tilde A = \tilde U^T A \tilde U 
+$$ (eq:tildeA_1)
 
-  
-  
-  But we won't do that.  
+This redefined  $\tilde A$ matrix governs the dynamics of a redefined  $r \times 1$ vector $\tilde X_t $
+according to
 
-  We'll  compute the $r$ largest singular values of $X$ and  form matrices $\tilde V, \tilde U$ corresponding to those $r$ singular values. 
-  
- 
-  
-  We'll then construct  a reduced-order system of dimension $r$ by forming an  $r \times r$ transition matrix
-  $\tilde A$ defined by  
-
-  $$
-  \tilde A = \tilde U^T A \tilde U 
-  $$ (eq:tildeA_1)
-
-  The $\tilde A$ matrix governs the dynamics of an $r \times 1$ vector $\tilde X_t $
-  according to
-
-  $$ 
+$$ 
     \tilde X_{t+1} = \tilde A \tilde X_t
-  $$
+$$
 
-  where an approximation  $\check X_t$ to   the original $m \times 1$ vector $X_t$ can be acquired by projecting $X_t$ onto a subspace spanned by
+where an approximation  $\check X_t$ to   the original $m \times 1$ vector $X_t$ can be acquired by projecting $X_t$ onto a subspace spanned by
   the columns of $\tilde U$:
 
-  $$ 
+$$ 
    \check X_t = \tilde U \tilde X_t 
-  $$
+$$
 
-  We'll provide a formula for $\tilde X_t$ soon.
+We'll provide a formula for $\tilde X_t$ soon.
 
-  From equation {eq}`eq:tildeA_1` and {eq}`eq:bigAformula` it follows that
+From equation {eq}`eq:tildeA_1` and {eq}`eq:Aformbig` it follows that
 
 
-  $$
+$$
   \tilde A = \tilde U^T X' \tilde V \Sigma^{-1}
-  $$ (eq:tildeAform)
+$$ (eq:tildeAform)
 
   
-* Construct an eigencomposition of $\tilde A$ 
+Next, we'll Construct an eigencomposition of $\tilde A$ 
 
-  $$ 
+$$ 
   \tilde A W =  W \Lambda
-  $$ (eq:tildeAeigen)
+$$ (eq:tildeAeigen)
   
-  where $\Lambda$ is a $r \times r$ diagonal matrix of eigenvalues and the columns of $W$ are corresponding eigenvectors
-  of $\tilde A$.   Both $\Lambda$ and $W$ are $r \times r$ matrices.
-  
-* A key step now is to construct the $m \times r$ matrix
+where $\Lambda$ is a $r \times r$ diagonal matrix of eigenvalues and the columns of $W$ are corresponding eigenvectors
+of $\tilde A$.   
 
-  $$
+Both $\Lambda$ and $W$ are $r \times r$ matrices.
+  
+A key step now is to construct the $m \times r$ matrix
+
+$$
   \Phi = X' \tilde  V  \tilde \Sigma^{-1} W
-  $$ (eq:Phiformula)
+$$ (eq:Phiformula)
 
-  As asserted above, and as we shall soon verify,   columns of $\Phi$ are  eigenvectors of $A$ corresponding to the largest  $r$  eigenvalues of $A$.
+As asserted above, and as we shall soon verify,   columns of $\Phi$ are  eigenvectors of $A$ corresponding to the largest  $r$  eigenvalues of $A$.
 
 
   
-  We can construct an $r \times m$ matrix generalized inverse  $\Phi^{+}$  of $\Phi$.
+We can construct an $r \times m$ matrix generalized inverse  $\Phi^{+}$  of $\Phi$.
 
 
        
@@ -743,11 +793,11 @@ To construct a DMD, we deploy the following steps:
 
   
   
-* Define an $ r \times 1$ initial vector $b$ of dominant modes by
+We define an $ r \times 1$ initial vector $b$ of dominant modes by
 
-  $$
+$$
   b= \Phi^{+} X_1
-  $$ (eq:bphieqn)
+$$ (eq:bphieqn)
   
   
 
@@ -779,7 +829,7 @@ $$
 A \phi_i = \lambda_i \phi_i .
 $$
 
-Thus, $\phi_i$ is an eigenvector of $A$ corresponding to eigenvalue  $\lambda_i$ of $\tilde A$.
+Thus, $\phi_i$ is an eigenvector of $A$ that corresponds to eigenvalue  $\lambda_i$ of $A$.
 
 
 
@@ -994,15 +1044,15 @@ $$
 or
 
 $$
-\tilde X_{t+1} = \Lambda \tilde X_t + \tilde \epsilon_{t+1} 
+\bar X_{t+1} = \Lambda \bar X_t + \bar \epsilon_{t+1} 
 $$ (eq:VARmodes)
 
-where $\tilde X_t $ is an $r \times 1$ **mode** and $\tilde \epsilon_{t+1}$ is an $r \times 1$
+where $\bar X_t $ is an $r \times 1$ **mode** and $\bar \epsilon_{t+1}$ is an $r \times 1$
 shock.
 
-The $r$ modes $\tilde X_t$ obey the  first-order VAR {eq}`eq:VARmodes` in which $\Lambda$ is an $r \times r$ diagonal matrix.  
+The $r$ modes $\bar X_t$ obey the  first-order VAR {eq}`eq:VARmodes` in which $\Lambda$ is an $r \times r$ diagonal matrix.  
 
-Note that while $\Lambda$ is diagonal, the contemporaneous covariance matrix of $\tilde \epsilon_{t+1}$ need not be.
+Note that while $\Lambda$ is diagonal, the contemporaneous covariance matrix of $\bar \epsilon_{t+1}$ need not be.
 
 
 **Remark:** It is permissible for $X_t$ to contain lagged values of  observables.
