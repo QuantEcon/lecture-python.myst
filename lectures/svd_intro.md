@@ -32,7 +32,7 @@ import pandas as pd
 ## Overview
 
 The **singular value decomposition** is a work-horse in applications of least squares projection that
-form the backbone of important parts of modern machine learning methods.
+form a foundation for  some important machine learning methods.
 
 This lecture describes the singular value decomposition and two of its uses:
 
@@ -40,7 +40,7 @@ This lecture describes the singular value decomposition and two of its uses:
 
  * dynamic mode decomposition (DMD)
 
- Each of these can be thought of as data-reduction methods that are designed to capture salient patterns in data by projecting data onto a limited set of factors.
+ Each of these can be thought of as a data-reduction procedure  designed to capture salient patterns by projecting data onto a limited set of factors.
 
 ##  The Setup
 
@@ -64,7 +64,7 @@ We'll be interested in  two  cases
    
 We'll apply a **singular value decomposition** of $X$ in both situations.
 
-In the first case in which there are many more observations $n$ than random variables $m$, we learn about the joint distribution of the  random variables by taking averages  across observations of functions of the observations. 
+In the first case in which there are many more observations $n$ than random variables $m$, we learn about a joint distribution  by taking averages  across observations of functions of the observations. 
 
 Here we'll look for **patterns** by using a **singular value decomposition** to do a **principal components analysis** (PCA).
 
@@ -102,42 +102,42 @@ $U_{ij}^T$ is the complex conjugate of $U_{ji}$.
 
 * Similarly, when $V$ is a complex valued matrix, $V^T$ denotes the **conjugate-transpose** or **Hermitian-transpose** of $V$
 
-The shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively. 
+In what is called a **full** SVD, the  shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively. 
 
-Below, we shall assume these shapes.
 
-The above description corresponds to a standard shape convention often called a **full** SVD.
 
-There is an alternative shape convention called **economy** or **reduced** SVD  that we could have used, and will sometimes use below.
+There is also an alternative shape convention called an **economy** or **reduced** SVD .
 
 Thus, note that because we assume that $A$ has rank $r$, there are only $r $ nonzero singular values, where $r=\textrm{rank}(A)\leq\min\left(m, n\right)$.  
 
-Therefore,  we could also write $U$, $\Sigma$, and $V$ as matrices with shapes $\left(m, r\right)$, $\left(r, r\right)$, $\left(r, n\right)$.
+A **reduced** SVD uses this fact to express $U$, $\Sigma$, and $V$ as matrices with shapes $\left(m, r\right)$, $\left(r, r\right)$, $\left(r, n\right)$.
 
-Sometimes, we will choose the former convention. 
+Sometimes, we will use a full SVD 
 
-At other times, we'll use the latter convention in which $\Sigma$ is an $r \times r$  diagonal matrix.
-
-Also, when we discuss the **dynamic mode decomposition** below, we'll use a special case of the latter  convention in which it is understood that
-$r$ is just a pre-specified small number of leading singular values that we think capture the  most interesting  dynamics.
+At other times, we'll use a reduced SVD  in which $\Sigma$ is an $r \times r$  diagonal matrix.
 
 ## Digression:  Polar Decomposition
 
- Through  the following identities, the singular value decomposition (SVD) is related to the **polar decomposition** of $X$
+A singular value decomposition (SVD) is related to the **polar decomposition** of $X$
+
+$$
+X  = SQ   
+$$
+
+where
 
 \begin{align*}
-X & = SQ  \cr  
-S & = U\Sigma U^T \cr
+ S & = U\Sigma U^T \cr
 Q & = U V^T 
 \end{align*}
 
-where $S$ is evidently a symmetric matrix and $Q$ is an orthogonal matrix.
+and $S$ is evidently a symmetric matrix and $Q$ is an orthogonal matrix.
 
 ## Principle Components Analysis (PCA)
 
 Let's begin with a case in which $n >> m$, so that we have many  more observations $n$ than random variables $m$.
 
-The data matrix $X$ is **short and fat**  in an  $n >> m$ case as opposed to a **tall and skinny** case with $m > > n $ to be discussed later.
+The  matrix $X$ is **short and fat**  in an  $n >> m$ case as opposed to a **tall and skinny** case with $m > > n $ to be discussed later.
 
 We regard  $X$ as an  $m \times n$ matrix of **data**:
 
@@ -151,7 +151,7 @@ In a **time series** setting, we would think of columns $j$ as indexing differen
 
 In a **cross section** setting, we would think of columns $j$ as indexing different __individuals__ for  which random variables are observed, while rows index different **random variables**.
 
-The number of singular values equals the rank of  matrix $X$.
+The number of positive singular values equals the rank of  matrix $X$.
 
 Arrange the singular values  in decreasing order.
 
@@ -189,14 +189,20 @@ $$ (eq:PCA2)
 Here is how we would interpret the objects in the  matrix equation {eq}`eq:PCA2` in 
 a time series context:
 
-* $ V_{k}^T= \begin{bmatrix}V_{k1} &  V_{k2} & \ldots & V_{kn}\end{bmatrix}  \quad \textrm{for each} \   k=1, \ldots, n $ is a time series  $\lbrace V_{kj} \rbrace_{j=1}^n$ for the $k$th principal component
+* $ V_{k}^T= \begin{bmatrix}V_{k1} &  V_{k2} & \ldots & V_{kn}\end{bmatrix}  \quad \textrm{for each} \   k=1, \ldots, n $ is a time series  $\lbrace V_{kj} \rbrace_{j=1}^n$ for the $k$th **principal component**
 
 * $U_j = \begin{bmatrix}U_{1k}\\U_{2k}\\\ldots\\U_{mk}\end{bmatrix} \  k=1, \ldots, m$
-is a vector of loadings of variables $X_i$ on the $k$th principle component,  $i=1, \ldots, m$
+is a vector of **loadings** of variables $X_i$ on the $k$th principle component,  $i=1, \ldots, m$
 
 * $\sigma_k $ for each $k=1, \ldots, r$ is the strength of $k$th **principal component**
 
 ## Reduced Versus Full SVD
+
+Earlier, we mentioned **full** and **reduced** SVD's.
+
+
+You can read about reduced and full SVD here
+<https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html>
 
 In a **full** SVD
 
@@ -210,10 +216,10 @@ In a **reduced** SVD
   * $\Sigma$ is $r \times r$
   * $V$ is $n \times r$ 
 
-You can read about reduced and full SVD here
-<https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html>
  
-Let's do a couple of small experiments to see the difference
+Let's do a some  small exerecise  to compare **full** and **reduced** SVD's.
+
+First, let's study a case in which $m = 5 > n = 2$.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -238,7 +244,7 @@ an optimal reduced rank approximation of a matrix, in the sense of  minimizing t
 norm of the discrepancy between the approximating matrix and the matrix being approximated.
 Optimality in this sense is  established in the celebrated Eckart–Young theorem. See <https://en.wikipedia.org/wiki/Low-rank_approximation>.
 
-Let's do another experiment now.
+Let's do another exercise, but now we'll set $m = 2 < 5 = n $
 
 ```{code-cell} ipython3
 import numpy as np
@@ -265,7 +271,7 @@ Let $X_{m \times n}$ be our $m \times n$ data matrix.
 
 Let's assume that sample means of all variables are zero.
 
-We can make sure that this is true by **pre-processing** the data by substracting sample means appropriately.
+We can assure  this  by **pre-processing** the data by subtracting sample means.
 
 Define the sample covariance matrix $\Omega$ as 
 
@@ -294,13 +300,13 @@ $$
 where 
 
 $$
-\epsilon\epsilon^T=\Lambda
+\epsilon\epsilon^T=\Lambda .
 $$ 
 
 We can verify that
 
 $$
-XX^T=P\Lambda P^T
+XX^T=P\Lambda P^T .
 $$
 
 It follows that we can represent the data matrix as 
@@ -314,12 +320,12 @@ X=\begin{bmatrix}X_1|X_2|\ldots|X_m\end{bmatrix} =\begin{bmatrix}P_1|P_2|\ldots|
 where 
 
 $$
-\epsilon\epsilon^T=\Lambda
+\epsilon\epsilon^T=\Lambda .
 $$
 
 To reconcile the preceding representation with the PCA that we obtained through the SVD above, we first note that $\epsilon_j^2=\lambda_j\equiv\sigma^2_j$.
 
-Now define  $\tilde{\epsilon_j} = \frac{\epsilon_j}{\sqrt{\lambda_j}}$
+Now define  $\tilde{\epsilon_j} = \frac{\epsilon_j}{\sqrt{\lambda_j}}$, 
 which evidently implies that $\tilde{\epsilon}_j\tilde{\epsilon}_j^T=1$.
 
 Therefore 
@@ -327,7 +333,7 @@ Therefore
 $$
 \begin{aligned}
 X&=\sqrt{\lambda_1}P_1\tilde{\epsilon_1}+\sqrt{\lambda_2}P_2\tilde{\epsilon_2}+\ldots+\sqrt{\lambda_m}P_m\tilde{\epsilon_m}\\
-&=\sigma_1P_1\tilde{\epsilon_2}+\sigma_2P_2\tilde{\epsilon_2}+\ldots+\sigma_mP_m\tilde{\epsilon_m}
+&=\sigma_1P_1\tilde{\epsilon_2}+\sigma_2P_2\tilde{\epsilon_2}+\ldots+\sigma_mP_m\tilde{\epsilon_m} ,
 \end{aligned}
 $$
 
@@ -345,7 +351,7 @@ provided that  we set
 
 Since there are several possible ways of computing  $P$ and $U$ for  given a data matrix $X$, depending on  algorithms used, we might have sign differences or different orders between eigenvectors.
 
-We resolve such ambiguities about  $U$ and $P$ by
+We can resolve such ambiguities about  $U$ and $P$ by
 
 1. sorting eigenvalues and singular values in descending order
 2. imposing positive diagonals on $P$ and $U$ and adjusting signs in $V^T$ accordingly
@@ -562,7 +568,7 @@ def compare_pca_svd(da):
 
 We turn to the case in which $m >>n$ in which an $m \times n$  data matrix $\tilde X$ contains many more random variables $m$ than observations $n$.
 
-This is the **tall and skinny** case associated with **Dynamic Mode Decomposition**.
+This  **tall and skinny** case is associated with **Dynamic Mode Decomposition**.
 
 You can read about Dynamic Mode Decomposition here {cite}`DMD_book`.
 
@@ -593,11 +599,11 @@ $$
 
 Here $'$ does not denote matrix transposition but instead is part of the name of the matrix $X'$.
 
-In forming $ X$ and $X'$, we have in each case  dropped a column from $\tilde X$, in the case of $X$ the last column, and in the case of $X'$ the first column.
+In forming $ X$ and $X'$, we have in each case  dropped a column from $\tilde X$,  the last column in the case of $X$, and  the first column in the case of $X'$.
 
 Evidently, $ X$ and $ X'$ are both $m \times \tilde n$ matrices where $\tilde n = n - 1$.
 
-We denote the rank of $X$ as $p \neq \min(m, \tilde n) = \tilde n$.
+We denote the rank of $X$ as $p \leq \min(m, \tilde n) = \tilde n$.
 
 We start with a system consisting of $m$ least squares regressions of **everything** on one lagged value of **everything**:
 
@@ -624,11 +630,11 @@ Consider the (reduced) singular value decomposition
 
 
   
-where $U$ is $m \times p$, $\Sigma$ is a $p \times p$ diagonal  matrix, and $ V^T$ is a $p \times \tilde n$ matrix.
+where $U$ is $m \times p$, $\Sigma$ is a $p \times p$ diagonal  matrix, and $ V^T$ is a $p \times m$ matrix.
 
 Here $p$ is the rank of $X$, where necessarily $p \leq \tilde n$. 
 
-(We have described and illustrated a reduced singular value decomposition above, and compared it with a full singular value decomposition.)  
+(We  described and illustrated a **reduced** singular value decomposition above, and compared it with a **full** singular value decomposition.)  
 
 We could construct the generalized inverse $X^+$  of $X$ by using
 a singular value decomposition  $X = U \Sigma V^T$ to compute
@@ -647,12 +653,11 @@ where $r <  p$.
 
 The idea behind **dynamic mode decomposition** is to construct this low rank  approximation to $A$ that  
 
-* sidesteps computing the generalized inverse $X^{+}$
 
 * constructs an $m \times r$ matrix $\Phi$ that captures effects  on all $m$ variables of $r \leq p$  **modes** that are associated with the $r$ largest eigenvalues of $A$
 
    
-* uses $\Phi$ and  powers of the $r$ largest eigenvalues of $A$ to forecast *future* $X_t$'s
+* uses $\Phi$, the current value of $X_t$, and  powers of the $r$ largest eigenvalues of $A$ to forecast *future* $X_{t+j}$'s
 
 
 An important properities of the DMD algorithm that we shall describe soon is that
@@ -680,21 +685,26 @@ $$
 A = X' V \Sigma^{-1}  U^T
 $$ (eq:Aformbig)
 
-where $V$ is an $\tilde n \times p$ matrix, $\Sigma^{-1}$ is a $p \times p$ matrix, and $U$ is a $p \times m$ matrix,
-and where $U^T  U = I_p$ and $V V^T = I_m $.
+where $V$ is an $\tilde n \times p$ matrix, $\Sigma^{-1}$ is a $p \times p$ matrix,  $U$ is a $p \times m$ matrix,
+and  $U^T  U = I_p$ and $V V^T = I_m $.
 
 We use the $p$  columns of $U$, and thus the $p$ rows of $U^T$,  to define   a $p \times 1$  vector $\tilde X_t$ to be used  in a lower-dimensional description of the evolution of the system:
 
 
 $$
 \tilde X_t = U^T X_t .
-$$
+$$ (eq:tildeXdef2)
 
-Since $U^T U$ is a $p \times p$ identity matrix, we can recover $X_t$ from $\tilde X_t$ by using 
+Since $U^T U$ is a $p \times p$ identity matrix, it follows from equation {eq}`eq:tildeXdef2` that we can recover $X_t$ from $\tilde X_t$ by using 
 
 $$
 X_t = U \tilde X_t .
-$$
+$$ (eq:Xdecoder)
+
+
+ * Equation {eq}`eq:tildeXdef2` serves as an **encoder** that reduces summarizes the $m \times 1$ vector $X_t$ by the $p \times 1$ vector $\tilde X_t$ 
+  
+ * Equation {eq}`eq:Xdecoder` serves as a **decoder** that recovers the $m \times 1$ vector $X_t$ from the $p \times 1$ vector $\tilde X_t$ 
 
 The following  $p \times p$ transition matrix governs the motion of $\tilde X_t$:
 
@@ -712,10 +722,10 @@ Notice that if we multiply both sides of {eq}`eq:xtildemotion` by $U$
 we get
 
 $$
-U \tilde X_t = U \tilde A \tilde X_t =  U^T \tilde A U^T X_t 
+U \tilde X_t = U \tilde A \tilde X_t =  U \tilde A U^T X_t 
 $$
 
-which gives
+which by virtue of decoder equation {eq}`eq:xtildemotion` recovers
 
 $$
 X_{t+1} = A X_t .
@@ -728,9 +738,6 @@ $$
 ### Lower Rank Approximations
 
 
-An attractive feature of  **dynamic mode decomposition** is that we avoid  computing the  huge matrix $A = X' X^{+}$ of regression coefficients, while  with low computational effort, we possibly acquire  a  good low-rank approximation of $A$. 
-
-    
 Instead of using formula {eq}`eq:Aformbig`,  we'll  compute the $r$ largest singular values of $X$ and  form matrices $\tilde V, \tilde U$ corresponding to those $r$ singular values. 
   
 We'll then construct  a reduced-order system of dimension $r$ by forming an  $r \times r$ transition matrix
@@ -739,6 +746,8 @@ $\tilde A$ redefined by
 $$
  \tilde A = \tilde U^T A \tilde U 
 $$ (eq:tildeA_1)
+
+Here we use $\tilde U$ rather than $U$ as we did earlier.
 
 This redefined  $\tilde A$ matrix governs the dynamics of a redefined  $r \times 1$ vector $\tilde X_t $
 according to
@@ -751,7 +760,7 @@ where an approximation  $\check X_t$ to   the original $m \times 1$ vector $X_t$
   the columns of $\tilde U$:
 
 $$ 
-   \check X_t = \tilde U \tilde X_t 
+   \check X_t = \tilde U \tilde X_t .
 $$
 
 We'll provide a formula for $\tilde X_t$ soon.
@@ -764,7 +773,7 @@ $$
 $$ (eq:tildeAform)
 
   
-Next, we'll Construct an eigencomposition of $\tilde A$ 
+Next, we'll Construct an eigencomposition of $\tilde A$ defined in equation {eq}`eq:tildeA_1`:
 
 $$ 
   \tilde A W =  W \Lambda
@@ -793,7 +802,7 @@ We can construct an $r \times m$ matrix generalized inverse  $\Phi^{+}$  of $\Ph
 
   
   
-We define an $ r \times 1$ initial vector $b$ of dominant modes by
+We define an $ r \times 1$  vector $b$ of $r$  modes associated with the $r$ largest singular values. 
 
 $$
   b= \Phi^{+} X_1
@@ -801,9 +810,9 @@ $$ (eq:bphieqn)
   
   
 
-**Proof of Eigenvector Sharing** 
+**Proposition** The $r$ columns of $\Phi$ are eigenvectors of $A$ that correspond to the largest $r$ eigenvalues of $A$. 
 
-From formula {eq}`eq:Phiformula` we have
+**Proof:** From formula {eq}`eq:Phiformula` we have
 
 $$  
 \begin{aligned}
@@ -830,6 +839,8 @@ A \phi_i = \lambda_i \phi_i .
 $$
 
 Thus, $\phi_i$ is an eigenvector of $A$ that corresponds to eigenvalue  $\lambda_i$ of $A$.
+
+This concludes the proof. 
 
 
 
