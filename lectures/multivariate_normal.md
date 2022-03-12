@@ -1908,7 +1908,7 @@ where
 1. $\Lambda$ is $n \times k$ coefficient matrix,
 1. $f$ is $k \times 1$ random vector,
    $E f f^{\prime} = I$,
-1. $U$ is $n \times 1$ random vector, and $U \perp f$.
+1. $U$ is $n \times 1$ random vector, and $U \perp f$ (i.e., $E U f' = 0 $ )
 1. It is presumed that $k$ is small relative to $n$; often
    $k$ is only $1$ or $2$, as in our IQ examples.
 
