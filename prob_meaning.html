@@ -244,17 +244,8 @@ proceeding to read the rest of the lecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting prettytable
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading prettytable-3.2.0-py3-none-any.whl (26 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (3.2.0)
 Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from prettytable) (0.2.5)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: prettytable
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed prettytable-3.2.0
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
@@ -285,7 +276,7 @@ Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/l
 <div class="math notranslate nohighlight">
 \[ 
 \textrm{Prob}(X =  k | \theta) = 
-\left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k} =
+\left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
 \]</div>
 <p>where the fixed parameter <span class="math notranslate nohighlight">\(\theta \in (0,1)\)</span>.</p>
 <p>This is called   the <strong>binomial distribution</strong>.</p>
@@ -296,7 +287,7 @@ Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/l
 <li><p><span class="math notranslate nohighlight">\(X\)</span> is the total number of heads that came up after flipping the coin <span class="math notranslate nohighlight">\(n\)</span> times.</p></li>
 </ul>
 <p>Consider the following experiment:</p>
-<p>Take <span class="math notranslate nohighlight">\(I\)</span> <strong>independent</strong> sequences of <span class="math notranslate nohighlight">\(n\)</span>  <strong>independent</strong> flips of the coin**</p>
+<p>Take <span class="math notranslate nohighlight">\(I\)</span> <strong>independent</strong> sequences of <span class="math notranslate nohighlight">\(n\)</span>  <strong>independent</strong> flips of the coin</p>
 <p>Notice the repeated use of the adjective <strong>independent</strong>:</p>
 <ul class="simple">
 <li><p>we use it once to describe that we are drawing <span class="math notranslate nohighlight">\(n\)</span> independent times from a <strong>Bernoulli</strong> distribution with parameter <span class="math notranslate nohighlight">\(\theta\)</span> to arrive at one draw from a <strong>Binomial</strong> distribution with parameters
@@ -401,25 +392,25 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 | k  |      Theoretical       | Frequentist |
 +----+------------------------+-------------+
 | 1  | 1.6271660538000033e-09 |     0.0     |
-| 2  | 3.606884752589999e-08  |     0.0     |
+| 2  | 3.606884752589999e-08  |    1e-06    |
 | 3  |  5.04963865362601e-07  |     0.0     |
-| 4  | 5.007558331512455e-06  |    3e-06    |
-| 5  | 3.7389768875293014e-05 |   4.5e-05   |
-| 6  | 0.00021810698510587546 |   0.000193  |
-| 7  |  0.001017832597160754  |   0.001009  |
-| 8  |  0.003859281930901185  |   0.003837  |
-| 9  |  0.012006654896137007  |   0.012017  |
-| 10 |  0.030817080900085007  |   0.030902  |
-| 11 |   0.065369565545635    |   0.065111  |
-| 12 |  0.11439673970486108   |   0.114935  |
-| 13 |   0.1642619852172365   |   0.164291  |
-| 14 |  0.19163898275344246   |   0.191705  |
-| 15 |  0.17886305056987967   |   0.178152  |
-| 16 |   0.1304209743738704   |   0.130449  |
-| 17 |  0.07160367220526209   |   0.071801  |
-| 18 |  0.027845872524268643  |   0.028016  |
-| 19 |  0.006839337111223871  |   0.006757  |
-| 20 | 0.0007979226629761189  |   0.000777  |
+| 4  | 5.007558331512455e-06  |    6e-06    |
+| 5  | 3.7389768875293014e-05 |   3.1e-05   |
+| 6  | 0.00021810698510587546 |   0.000234  |
+| 7  |  0.001017832597160754  |   0.001047  |
+| 8  |  0.003859281930901185  |   0.003767  |
+| 9  |  0.012006654896137007  |   0.011946  |
+| 10 |  0.030817080900085007  |   0.030838  |
+| 11 |   0.065369565545635    |   0.065653  |
+| 12 |  0.11439673970486108   |   0.114474  |
+| 13 |   0.1642619852172365   |   0.164321  |
+| 14 |  0.19163898275344246   |   0.191166  |
+| 15 |  0.17886305056987967   |   0.178821  |
+| 16 |   0.1304209743738704   |   0.130752  |
+| 17 |  0.07160367220526209   |   0.071735  |
+| 18 |  0.027845872524268643  |   0.027612  |
+| 19 |  0.006839337111223871  |   0.006793  |
+| 20 | 0.0007979226629761189  |   0.000803  |
 +----+------------------------+-------------+
 </pre></div>
 </div>
@@ -567,7 +558,7 @@ E[\rho_{k,i}] = \textrm{Prob}(X =  k | \theta) = \left(\frac{n!}{k! (n-k)!} \rig
 </section>
 <section id="bayesian-interpretation">
 <h2><span class="section-number">10.3. </span>Bayesian Interpretation<a class="headerlink" href="#bayesian-interpretation" title="Permalink to this headline">¶</a></h2>
-<p>We again a binomial distribution.</p>
+<p>We again use a binomial distribution.</p>
 <p>But now we don’t regard  <span class="math notranslate nohighlight">\(\theta\)</span> as being a fixed number.</p>
 <p>Instead, we think of it as a <strong>random variable</strong>.</p>
 <p><span class="math notranslate nohighlight">\(\theta\)</span> is described by a probability distribution.</p>
@@ -774,37 +765,37 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
   <tbody>
     <tr>
       <th>upper</th>
-      <td>0.001543</td>
-      <td>0.000868</td>
+      <td>0.228520</td>
+      <td>0.097308</td>
       <td>0.062413</td>
       <td>0.046007</td>
       <td>0.127776</td>
       <td>0.185116</td>
-      <td>0.237639</td>
-      <td>0.264015</td>
-      <td>0.238351</td>
-      <td>0.281482</td>
-      <td>0.303401</td>
-      <td>0.315543</td>
-      <td>0.335102</td>
-      <td>0.349123</td>
+      <td>0.280091</td>
+      <td>0.235206</td>
+      <td>0.274075</td>
+      <td>0.229671</td>
+      <td>0.275391</td>
+      <td>0.289876</td>
+      <td>0.344870</td>
+      <td>0.365874</td>
     </tr>
     <tr>
       <th>lower</th>
-      <td>0.771480</td>
-      <td>0.569259</td>
+      <td>0.998457</td>
+      <td>0.902692</td>
       <td>0.764466</td>
       <td>0.650707</td>
       <td>0.739366</td>
       <td>0.652678</td>
-      <td>0.582446</td>
-      <td>0.549653</td>
-      <td>0.454987</td>
-      <td>0.469087</td>
-      <td>0.461664</td>
-      <td>0.406443</td>
-      <td>0.406006</td>
-      <td>0.399415</td>
+      <td>0.629953</td>
+      <td>0.516350</td>
+      <td>0.495929</td>
+      <td>0.410037</td>
+      <td>0.430940</td>
+      <td>0.379155</td>
+      <td>0.416153</td>
+      <td>0.416592</td>
     </tr>
   </tbody>
 </table>
@@ -923,7 +914,7 @@ F(a)=p_1,F(b)=p_2
 \[
 ={Beta}(\alpha + k, \beta+N-k)
 \]</div>
-<p>A beta Distribution with <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> has the following mean and variance.</p>
+<p>A beta distribution with <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> has the following mean and variance.</p>
 <p>The mean is <span class="math notranslate nohighlight">\(\frac{\alpha}{\alpha + \beta}\)</span></p>
 <p>The variance is <span class="math notranslate nohighlight">\(\frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}\)</span></p>
 <ul class="simple">
@@ -960,7 +951,7 @@ F(a)=p_1,F(b)=p_2
 <p>After observing a large number of outcomes, the  posterior distribution collapses around <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
 <p>Thus, the Bayesian statististian  comes to believe that <span class="math notranslate nohighlight">\(\theta\)</span> is near <span class="math notranslate nohighlight">\(.4\)</span>.</p>
 <p>As shown in the figure above, as the number of observations grows, the Bayesian coverage intervals (BCIs) become narrower and narrower   around  <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
-<p>However, if you take a closer look, you will find that the centers of the  are not exactly <span class="math notranslate nohighlight">\(0.4\)</span>, due to the persistent influence of the prior distribution and the randomness of the simulation path.</p>
+<p>However, if you take a closer look, you will find that the centers of  the BCIs are not exactly <span class="math notranslate nohighlight">\(0.4\)</span>, due to the persistent influence of the prior distribution and the randomness of the simulation path.</p>
 </section>
 </section>
 

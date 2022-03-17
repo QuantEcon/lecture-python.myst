@@ -78,7 +78,7 @@ The random variable  $X $ takes on possible values $k = 0, 1, 2, \ldots, n$  wit
 
 $$ 
 \textrm{Prob}(X =  k | \theta) = 
-\left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k} =
+\left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
 $$ 
 
 where the fixed parameter $\theta \in (0,1)$.
@@ -95,7 +95,7 @@ Here
 
 Consider the following experiment:
 
-Take $I$ **independent** sequences of $n$  **independent** flips of the coin**
+Take $I$ **independent** sequences of $n$  **independent** flips of the coin
 
 Notice the repeated use of the adjective **independent**:
 
@@ -333,7 +333,7 @@ as $I$ goes to infinity.
 
 ## Bayesian Interpretation
 
-We again a binomial distribution.
+We again use a binomial distribution.
 
 But now we don't regard  $\theta$ as being a fixed number.
 
@@ -638,7 +638,7 @@ $$
 ={Beta}(\alpha + k, \beta+N-k)
 $$
 
-A beta Distribution with $\alpha$ and $\beta$ has the following mean and variance.
+A beta distribution with $\alpha$ and $\beta$ has the following mean and variance.
 
 The mean is $\frac{\alpha}{\alpha + \beta}$
 
@@ -679,4 +679,4 @@ Thus, the Bayesian statististian  comes to believe that $\theta$ is near $.4$.
 
 As shown in the figure above, as the number of observations grows, the Bayesian coverage intervals (BCIs) become narrower and narrower   around  $0.4$. 
 
-However, if you take a closer look, you will find that the centers of the  are not exactly $0.4$, due to the persistent influence of the prior distribution and the randomness of the simulation path.
+However, if you take a closer look, you will find that the centers of  the BCIs are not exactly $0.4$, due to the persistent influence of the prior distribution and the randomness of the simulation path.
