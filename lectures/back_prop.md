@@ -16,7 +16,7 @@ kernelspec:
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!conda install -y -c conda-forge jax=0.3.2 jaxlib
+!pip install --upgrade jax jaxlib
 !conda install -y -c plotly plotly plotly-orca retrying
 ```
 
