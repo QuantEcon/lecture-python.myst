@@ -594,8 +594,8 @@ from jax.lib import xla_bridge
 print(xla_bridge.get_backend().platform)
 ```
 
-```{note} Cloud Enivronment
-This lecture site is built in a server environment that doesn't have access to a `gpu`
+```{note}
+**Cloud Environment:** This lecture site is built in a server environment that doesn't have access to a `gpu`
 If you run this lecture locally this lets you know where your code is being executed, either
 via the `cpu` or the `gpu`
 ```
