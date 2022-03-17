@@ -628,7 +628,7 @@ $$
 A =  X'  X^{+} .
 $$ (eq:Afullformula)
 
-Here the (possibly huge) $m \times m $ matrix $X^{+}$ is the Moore-Penrose generalized inverse of $X$.
+Here the (possibly huge) $\tilde n \times m $ matrix $X^{+}$ is the Moore-Penrose generalized inverse of $X$.
 
 The $i$th the row of $A$ is an $m \times 1$ vector of regression coefficients of $X_{i,t+1}$ on $X_{j,t}, j = 1, \ldots, m$.
 
@@ -641,7 +641,7 @@ Consider the (reduced) singular value decomposition
 
 
   
-where $U$ is $m \times p$, $\Sigma$ is a $p \times p$ diagonal  matrix, and $ V^T$ is a $p \times m$ matrix.
+where $U$ is $m \times p$, $\Sigma$ is a $p \times p$ diagonal  matrix, and $ V^T$ is a $p \times \tilde n$ matrix.
 
 Here $p$ is the rank of $X$, where necessarily $p \leq \tilde n$. 
 
@@ -673,7 +673,7 @@ The idea behind **dynamic mode decomposition** is to construct this low rank  ap
 
 
 
-## Preliminary Analysis
+##  Analysis
 
 We'll put basic ideas on the table by starting with the special case in which $r = p$ so that we retain
 all $p$ singular values of $X$.
@@ -681,15 +681,28 @@ all $p$ singular values of $X$.
 (Later, we'll retain only $r < p$ of them)
 
 When $r = p$,  formula
-{eq}`eq:Xpinverse` implies that 
+{eq}`eq:Xpinverse`  for $X^+$ implies that 
 
 
 $$
 A = X' V \Sigma^{-1}  U^T
 $$ (eq:Aformbig)
 
-where $V$ is an $\tilde n \times p$ matrix, $\Sigma^{-1}$ is a $p \times p$ matrix,  $U$ is a $p \times m$ matrix,
+where $V$ is an $\tilde n \times p$ matrix, $\Sigma^{-1}$ is a $p \times p$ matrix,  $U^T$ is a $p \times m$ matrix,
 and  $U^T  U = I_p$ and $V V^T = I_m $.
+
+
+It is convenient to represent $A$ as computed in  equation {eq}`eq:Aformbig` as
+
+$$
+A = U \tilde A U^T
+$$ (eq:Afactortilde)
+
+where the   $p \times p$ transition matrix $\tilde A$ can be recovered from 
+
+$$
+ \tilde A = U^T A U = U^T X' V \Sigma^{-1} .
+$$ (eq:Atilde0)
 
 We use the $p$  columns of $U$, and thus the $p$ rows of $U^T$,  to define   a $p \times 1$  vector $\tilde X_t$ as follows
 
@@ -698,7 +711,7 @@ $$
 \tilde X_t = U^T X_t .
 $$ (eq:tildeXdef2)
 
-Since $U U^T$ is an $m \times m$ identity matrix, it follows from equation {eq}`eq:tildeXdef2` that we can recover $X_t$ from $\tilde X_t$ by using 
+Since $U U^T$ is an $m \times m$ identity matrix, it follows from equation {eq}`eq:tildeXdef2` that we can reconstruct  $X_t$ from $\tilde X_t$ by using 
 
 $$
 X_t = U \tilde X_t .
@@ -709,13 +722,9 @@ $$ (eq:Xdecoder)
   
  * Equation {eq}`eq:Xdecoder` serves as a **decoder** that recovers the $m \times 1$ vector $X_t$ from the $p \times 1$ vector $\tilde X_t$ 
 
-The following  $p \times p$ transition matrix governs the motion of $\tilde X_t$:
 
-$$
- \tilde A = U^T A U = U^T X' V \Sigma^{-1} .
-$$ (eq:Atilde0)
 
-Evidently, 
+Because $U^T U = I_p$, we have
 
 $$
 \tilde X_{t+1} = \tilde A \tilde X_t 
@@ -725,7 +734,7 @@ Notice that if we multiply both sides of {eq}`eq:xtildemotion` by $U$
 we get
 
 $$
-U \tilde X_t = U \tilde A \tilde X_t =  U \tilde A U^T X_t 
+U \tilde X_{t+1} = U \tilde A \tilde X_t =  U \tilde A U^T X_t 
 $$
 
 which by virtue of decoder equation {eq}`eq:xtildemotion` recovers
@@ -738,53 +747,9 @@ $$
 
 
 
-### Lower Rank Approximations
-
-
-Instead of using all $p$ modes $\tilde X_t$  calculated according to formula {eq}`eq:tildeXdef2`, we can use just the $r<p$ largest of them. 
-
-These are the ones that are most important in shaping
-the dynamics of $X$.   
-
-We can accomplish this by   computing the $r$ largest singular values of $X$ and  forming  matrices $\tilde V, \tilde U$ corresponding to those $r$ singular values. 
   
-We can  then construct  a reduced-order system of dimension $r$ by forming an  $r \times r$ transition matrix
-$\tilde A$ redefined by  
-
-$$
- \tilde A = \tilde U^T A \tilde U 
-$$ (eq:tildeA_1)
-
-Here we now use $\tilde U$ rather than $U$ as we did earlier in equation {eq}`eq:Atilde0`.
-
-This redefined  $\tilde A$ matrix governs the dynamics of a redefined  $r \times 1$ vector $\tilde X_t $
-according to
-
-$$ 
-    \tilde X_{t+1} = \tilde A \tilde X_t
-$$
-
-where now 
-
-$$
-\tilde X_t = \tilde U^T X_t 
-$$
-
-and 
-
-$$ 
-X_t = \tilde U \tilde X_t.
-$$
-
-From equation {eq}`eq:tildeA_1` and {eq}`eq:Aformbig` it follows that
-
-
-$$
-  \tilde A = \tilde U^T X' \tilde V \Sigma^{-1}
-$$ (eq:tildeAform)
-
-  
-Next, we'll construct an eigencomposition of $\tilde A$:  
+It is useful to  construct an eigencomposition of the $p \times p$ transition matrix  $\tilde A$ defined 
+in equation in {eq}`eq:Atilde0` above:  
 
 $$ 
   \tilde A W =  W \Lambda
@@ -793,17 +758,17 @@ $$ (eq:tildeAeigen)
 where $\Lambda$ is a $r \times r$ diagonal matrix of eigenvalues and the columns of $W$ are corresponding eigenvectors
 of $\tilde A$.   
 
-Both $\Lambda$ and $W$ are $r \times r$ matrices.
+Both $\Lambda$ and $W$ are $p \times p$ matrices.
   
-Construct the $m \times r$ matrix
+Construct the $m \times p$ matrix
 
 $$
-  \Phi = X' \tilde  V  \tilde \Sigma^{-1} W
+  \Phi = X'  V  \Sigma^{-1} W
 $$ (eq:Phiformula)
 
 
   
-The following very useful proposition was established by Tu et al. {cite}`tu_Rowley`. 
+Tu et al. {cite}`tu_Rowley` established the following  
 
 **Proposition** The $r$ columns of $\Phi$ are eigenvectors of $A$ that correspond to the largest $r$ eigenvalues of $A$. 
 
@@ -811,14 +776,14 @@ The following very useful proposition was established by Tu et al. {cite}`tu_Row
 
 $$  
 \begin{aligned}
-  A \Phi & =  (X' \tilde V \tilde \Sigma^{-1} \tilde U^T) (X' \tilde V \tilde \Sigma^{-1} W) \cr
-  & = X' \tilde V \Sigma^{-1} \tilde A W \cr
-  & = X' \tilde V \tilde \Sigma^{-1} W \Lambda \cr
+  A \Phi & =  (X' V \Sigma^{-1} U^T) (X' V \Sigma^{-1} W) \cr
+  & = X' V \Sigma^{-1} \tilde A W \cr
+  & = X' V \Sigma^{-1} W \Lambda \cr
   & = \Phi \Lambda 
   \end{aligned}
 $$ 
 
-Thus, we can conclude that
+Thus, we  have deduced  that
 
 $$  
 A \Phi = \Phi \Lambda
@@ -826,7 +791,7 @@ $$ (eq:APhiLambda)
 
 Let $\phi_i$ be the the $i$the column of $\Phi$ and $\lambda_i$ be the corresponding $i$ eigenvalue of $\tilde A$ from decomposition {eq}`eq:tildeAeigen`. 
 
-Writing out the $m \times r$ vectors on both sides of  equation {eq}`eq:APhiLambda` and equating them gives
+Writing out the $m \times p$ vectors on both sides of  equation {eq}`eq:APhiLambda` and equating them gives
 
 
 $$
@@ -841,72 +806,115 @@ This concludes the proof.
 Also see {cite}`DDSE_book` (p. 238)
 
 
+### Two Representations of $A$
+
+We  have constructed  two representations of (or approximations to) $A$.
+
+One from equation {eq}`eq:Afactortilde` is 
+
+$$ 
+A = U \tilde A U^T  
+$$ (eq:Aform11)
+
+while from equation the eigen decomposition {eq}`eq:APhiLambda` the other  is 
+
+$$ 
+A = \Phi \Lambda \Phi^+ 
+$$ (eq:Aform12)
 
 
+From formula {eq}`eq:Aform11` we can deduce 
+
+$$
+\tilde X_{t+1}  = \tilde A \tilde X_t 
+$$
+
+where 
+
+$$
+\begin{aligned}
+\tilde X_t & = U^T X_t \cr
+X_t & = U \tilde X_t
+\end{aligned}
+$$
 
 
+From formula {eq}`eq:Aform12` we can deduce 
 
-## Some Refinements
+$$ 
+b_{t+1} = \Lambda b_t 
+$$
 
-The following argument from {cite}`DDSE_book` (page 240) provides a computationally efficient way
-to compute projections of the time $t$ data onto  $r$ dominant **modes** at time $t$.  
+where
+
+$$
+\begin{aligned}
+b_t & = \Phi^+ X_t \cr 
+X_t & = \Phi b_t 
+\end{aligned}
+$$
+
+
+There is better formula for the $p \times 1$ vector $b_t$
+
+In particular, the following argument from {cite}`DDSE_book` (page 240) provides a computationally efficient way
+to compute $b_t$.  
 
 For convenience, we'll do this first for time $t=1$.
 
 
 
-Define  a projection  of $X_1$ onto  $r$ dominant **modes**  $b$ at time $1$  by
+For $t=1$, we have  
 
 $$ 
-   X_1 = \Phi b 
+   X_1 = \Phi b_1
 $$ (eq:X1proj)
 
-where $b$ is an $r \times 1$ vector. 
+where $b_1$ is a $p \times 1$ vector. 
 
-Since $X_1 = \tilde U \tilde X_1$, it follows that 
+Since $X_1 =  U \tilde X_1$, it follows that 
  
 $$ 
-  \tilde U \tilde X_1 = X' \tilde V \tilde \Sigma^{-1} W b
+  U \tilde X_1 = X' V \Sigma^{-1} W b_1
 $$
 
 and
 
 $$ 
-  \tilde X_1 = \tilde U^T X' \tilde V \tilde \Sigma^{-1} W b
+  \tilde X_1 = U^T X' V \Sigma^{-1} W b_1
 $$
 
-Recall from formula {eq}`eq:tildeAform` that $ \tilde A = \tilde U^T X' \tilde V \tilde \Sigma^{-1}$ so that
+Recall  that $ \tilde A = U^T X' V \Sigma^{-1}$ so that
   
 $$ 
-  \tilde X_1 = \tilde A W b
+  \tilde X_1 = \tilde A W b_1
 $$
 
 and therefore, by the eigendecomposition  {eq}`eq:tildeAeigen` of $\tilde A$, we have
 
 $$ 
-  \tilde X_1 = W \Lambda b
+  \tilde X_1 = W \Lambda b_1
 $$ 
 
 Therefore, 
   
 $$ 
-  b = ( W \Lambda)^{-1} \tilde X_1
+  b_1 = ( W \Lambda)^{-1} \tilde X_1
 $$ 
 
 or 
 
 
 $$ 
-  b = ( W \Lambda)^{-1} \tilde U^T X_1
+  b_1 = ( W \Lambda)^{-1} U^T X_1
 $$ (eq:beqnsmall)
 
 
 
-which is  computationally more efficient than the following alternative equation for computing the initial vector $b$ of $r$ dominant
-modes:
+which is  computationally more efficient than the following instance of our earlier equation for computing the initial vector $b_1$:
 
 $$
-  b= \Phi^{+} X_1
+  b_1= \Phi^{+} X_1
 $$ (eq:bphieqn)
 
 
@@ -921,33 +929,25 @@ $$ (eq:checkXevoln)
 or  the following equation 
 
 $$ 
-  \check X_{t+j} = \Phi \Lambda^j (W \Lambda)^{-1}  \tilde U^T X_t
+  \check X_{t+j} = \Phi \Lambda^j (W \Lambda)^{-1}  U^T X_t
 $$ (eq:checkXevoln2)
 
 
 
-### Putting Things Together
-    
-With $\Lambda, \Phi, \Phi^{+}$ in hand, our least-squares fitted dynamics fitted to the $r$  modes
-are governed by
+### Using Fewer Modes
 
-$$
-X_{t+1}^{(r)} = \Phi \Lambda \Phi^{+} X_t^{(r)} 
-$$ (eq:Xdynamicsapprox)
+The preceding formulas assume that we have retained all $p$ modes associated with the positive
+singular values of $X$.  
 
-where $X_t^{(r)}$ is an $m \times 1$ vector.
+We can easily adapt all of the formulas to describe a situation in which we instead retain only
+the $r < p$ largest singular values.  
 
-By virtue of equation {eq}`eq:APhiLambda`, it follows that **if we had kept $r = p$**,  this equation would be equivalent with
+In that case, we simply replace $\Sigma$ with the appropriate $r \times r$ matrix of singular values,
+$U$ with the $m \times r$ matrix of whose columns correspond to the $r$ largest singular values,
+and $V$ with the $\tilde n \times r$ matrix whose columns correspond to the $r$ largest  singular values.
 
-$$
-X_{t+1} = A X_t .
-$$ (eq:Xdynamicstrue)
+Counterparts of all of the salient formulas above then apply.
 
-When $r < p $, equation {eq}`eq:Xdynamicsapprox` is an approximation (of reduced  order $r$) to the $X$ dynamics in equation
-{eq}`eq:Xdynamicstrue`.
-
- 
-Conditional on $X_t$, we construct forecasts $\check X_{t+j} $ of $X_{t+j}, j = 1, 2, \ldots, $  from {eq}`eq:checkXevoln`.
 
 
 
