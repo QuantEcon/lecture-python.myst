@@ -16,7 +16,7 @@ kernelspec:
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install --upgrade jax jaxlib
+!pip install jax jaxlib
 !conda install -y -c plotly plotly plotly-orca retrying
 ```
 
@@ -302,7 +302,6 @@ import jax.numpy as jnp
 from jax import grad, jit, jacfwd, vmap
 from jax import random
 import jax
-from jax.ops import index_update
 import plotly.graph_objects as go
 ```
 
@@ -329,25 +328,25 @@ def compute_xδw_seq(params, x):
     
     h = jax.nn.sigmoid
     
-    xs = index_update(xs, 0, x)
+    xs = xs.at[0].set(x)
     for i, (w, b) in enumerate(params[:-1]):
         output = w * xs[i] + b
         activation = h(output[0, 0])
         
         # Store elements
-        δ = index_update(δ, i, grad(h)(output[0, 0]))
-        ws = index_update(ws, i, w[0, 0])
-        bs = index_update(bs, i, b[0])
-        xs = index_update(xs, i+1, activation)
+        δ = δ.at[i].set(grad(h)(output[0, 0]))
+        ws = ws.at[i].set(w[0, 0])
+        bs = bs.at[i].set(b[0])
+        xs = xs.at[i+1].set(activation)
 
     final_w, final_b = params[-1]
     preds = final_w * xs[-2] + final_b
     
     # Store elements
-    δ = index_update(δ, -1, 1.)
-    ws = index_update(ws, -1, final_w[0, 0])
-    bs = index_update(ws, -1, final_b[0])
-    xs = index_update(xs, -1, preds[0, 0])
+    δ = δ.at[-1].set(1.)
+    ws = ws.at[-1].set(final_w[0, 0])
+    bs = bs.at[-1].set(final_b[0])
+    xs = xs.at[-1].set(preds[0, 0])
     
     return xs, δ, ws, bs
     
