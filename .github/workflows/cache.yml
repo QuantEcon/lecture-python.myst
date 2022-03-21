@@ -35,9 +35,8 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -W --keep-going
-      - name: Upload Execution Reports
+      - name: Upload "_build" folder (cache)
         uses: actions/upload-artifact@v2
-        if: failure()
         with:
-          name: execution-reports
-          path: _build/html/reports
+          name: build-cache
+          path: _build
