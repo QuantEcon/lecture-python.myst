@@ -21,9 +21,9 @@ This lecture  illustrates two distinct interpretations of a  **probability distr
 
  * A frequentist interpretation as **relative frequencies** anticipated to occur in a large i.i.d. sample
 
- * A Bayesian interpretation as a **personal probability** (about a parameter or list of parameters) after seeing a collection of observations
+ * A Bayesian interpretation as a **personal opinion** (about a parameter or list of parameters) after seeing a collection of observations
 
-We recommend watching this video about **hypothesis testing** according to the frequentist approach
+We recommend watching this video about **hypothesis testing** within  the frequentist approach
 
 ```{youtube} 8JIe_cz6qGA
 ```
@@ -33,7 +33,7 @@ After you watch that video, please watch the following video on the Bayesian app
 ```{youtube} Pahyv9i_X2k
 ```
 
-After you are familiar with the above material, this lecture uses the Socratic method to  to help consolidate your understanding of the different questions that are answered by
+After you are familiar with the material in these videos, this lecture uses the Socratic method to  to help consolidate your understanding of the different questions that are answered by
 
  * a frequentist confidence interval
 
@@ -49,7 +49,7 @@ We provide our own answers as the lecture unfolds, but you'll learn more if you 
 **Code for answering questions:**
 
 
-In addition to what’s in Anaconda, this lecture will need the following libraries:
+In addition to what’s in Anaconda, this lecture will deploy the following library:
 
 ```{code-cell} ipython3
 :tags: [hide-output]
@@ -78,12 +78,12 @@ The random variable  $X $ takes on possible values $k = 0, 1, 2, \ldots, n$  wit
 
 $$ 
 \textrm{Prob}(X =  k | \theta) = 
-\left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k} =
+\left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
 $$ 
 
 where the fixed parameter $\theta \in (0,1)$.
 
-This is called the  the __binomial distribution__.  
+This is called   the __binomial distribution__.  
 
 Here 
 
@@ -91,18 +91,18 @@ Here
 
 * $1 -\theta$ is the probability that one toss of the coin will be a tail, an outcome that we denote $Y = 0$. 
 
-* $X$ is the total number of heads that come up after flipping the coin $n$ times.
+* $X$ is the total number of heads that came up after flipping the coin $n$ times.
 
 Consider the following experiment:
 
-Take **$I$ independent sequences of $n$  independent flips of the coin**
+Take $I$ **independent** sequences of $n$  **independent** flips of the coin
 
 Notice the repeated use of the adjective **independent**:
 
 * we use it once to describe that we are drawing $n$ independent times from a **Bernoulli** distribution with parameter $\theta$ to arrive at one draw from a **Binomial** distribution with parameters
 $\theta,n$.  
 
-* we use it again to describe that we are then drawing $I$ such sequences of $n$ coin draws.
+* we use it again to describe that we are then drawing $I$  sequences of $n$ coin draws.
 
 Let $y_h^i \in \{0, 1\}$ be the realized value of $Y$ on the $h$th flip during the $i$th sequence of flips.
 
@@ -210,10 +210,10 @@ Let's do some more calculations.
 Now we fix 
 
 $$
-n=20, k=10, I=1,000,000
+n=20, k=10, I=1,000,000 
 $$
 
-and vary $\theta$ from $0.01$ to $0.99$.
+We'll vary $\theta$ from $0.01$ to $0.99$ and plot outcomes against $\theta$.
 
 ```{code-cell} ipython3
 θ_low, θ_high, npt = 0.01, 0.99, 50
@@ -245,6 +245,8 @@ plt.show()
 **Comparison with different $n$**
 
 Now we fix $\theta=0.7, k=10, I=1,000,000$ and vary $n$ from $1$ to $100$.
+
+Then we'll plot outcomes.
 
 ```{code-cell} ipython3
 n_low, n_high, nn = 1, 100, 50
@@ -309,7 +311,8 @@ From the above graphs, we can see that **$I$, the number of independent sequence
 
 When $I$ becomes larger, the difference between theoretical probability and frequentist estimate becomes smaller.
 
-Also, as long as $I$ is large enough, changing $\theta$ or $n$ does not significantly change the accuracy of frequentist estimation. 
+Also, as long as $I$ is large enough, changing $\theta$ or $n$ does not substantially change the accuracy of the observed fraction
+as an approximation of $\theta$. 
 
 The Law of Large Numbers is at work here.
 
@@ -330,14 +333,20 @@ as $I$ goes to infinity.
 
 ## Bayesian Interpretation
 
-Consider again a binomial distribution above, but now assume that the parameter $\theta$ is a fixed number.
+We again use a binomial distribution.
 
-Instead, we think of it as a **random variable** in the sense that it is itself described by a probability
-distribution.
+But now we don't regard  $\theta$ as being a fixed number.
 
-But now this probability distribution means something different than relative frequency that we anticipate in a large i.i.d. sample. 
+Instead, we think of it as a **random variable**.
 
-Instead, the probability distribution for the parameter $\theta$ is now a summary of our views about the likely values of $\theta$ before we have seen any data, or any more data.
+$\theta$ is described by a probability distribution.
+
+But now this probability distribution means something different than a relative frequency that we can anticipate to occur in a large i.i.d. sample. 
+
+Instead, the probability distribution of $\theta$ is now a summary of our views about  likely values of $\theta$ either
+
+  * **before** we have seen **any** data at all, or
+  * **before** we have seen **more** data, after we have seen **some** data 
 
 Thus, suppose that, before seeing any data, you have a personal prior probability distribution saying that 
 
@@ -345,8 +354,8 @@ $$
 P(\theta) = \frac{\theta^{\alpha-1}(1-\theta)^{\beta -1}}{B(\alpha, \beta)}
 $$
 
-where $B(\alpha, \beta)$ the **beta function** so that $P(\theta)$ is
-a beta distribution with parameters $\alpha, \beta$.
+where $B(\alpha, \beta)$ is a  **beta function** , so that $P(\theta)$ is
+a **beta distribution** with parameters $\alpha, \beta$.
 
 **Exercise 2:**
 
@@ -358,7 +367,7 @@ a beta distribution with parameters $\alpha, \beta$.
 
 **d)** Please write a Python class to simulate this person's personal  posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
 
-**e)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows from $1, 2, \ldots$.  
+**e)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows as $1, 2, \ldots$.  
 
 **f)** For various $n$'s, please describe and compute  a Bayesian coverage interval for the interval $[.45, .55]$.
 
@@ -389,7 +398,7 @@ $$
 \textrm{Prob}(\theta) = \frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)}
 $$
 
-We can derive the posterior distribution for $\theta$ by
+We can derive the posterior distribution for $\theta$ via 
 
 \begin{align*}
   \textrm{Prob}(\theta | Y) &= \frac{\textrm{Prob}(Y | \theta) \textrm{Prob}(\theta)}{\textrm{Prob}(Y)} \\
@@ -511,7 +520,7 @@ interval_df = interval_df.T
 interval_df
 ```
 
-As n increases, we can see that Bayesian coverage intervals narrow and move toward $0.4$.
+As $n$ increases, we can see that Bayesian coverage intervals narrow and move toward $0.4$.
 
 **g)** Please tell what question a Bayesian coverage interval answers.
 
@@ -543,25 +552,25 @@ ax.set_xlabel('Number of Observations', fontsize=11)
 plt.show()
 ```
 
-Notice  that in the graph above the posterior probabililty that $\theta \in [.45, .55]$ exhibits a hump shape (in general) as n increases. 
+Notice  that in the graph above the posterior probabililty that $\theta \in [.45, .55]$ typically exhibits a hump shape  as $n$ increases. 
 
 Two opposing forces are at work. 
 
 The first force is that the individual  adjusts his belief as he observes new outcomes, so his posterior probability distribution  becomes more and more realistic, which explains the rise of the posterior probabililty. 
 
-However, $[.45, .55]$ actually excludes the true $\theta$ that generates the data (which is 0.4). 
+However, $[.45, .55]$ actually excludes the true $\theta =.4 $ that generates the data. 
 
 As a result, the posterior probabililty drops as larger and larger samples refine his  posterior probability distribution of $\theta$. 
 
 The descent seems precipitous only because of the scale of the graph  that has the number of observations increasing disproportionately.
 
-When the number of observations becomes large enough, our Bayesian becomes so confident about $\theta$ that he considers $\theta \in [.45, .55]$ unlikely.
+When the number of observations becomes large enough, our Bayesian becomes so confident about $\theta$ that he considers $\theta \in [.45, .55]$ very unlikely.
 
 That is why we see a nearly horizontal line when the number of observations exceeds 500.
 
 **i)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
 
-Using the Python class we made above, we can see the evolution of posterior distributions as n approaches infinity.
+Using the Python class we made above, we can see the evolution of posterior distributions as $n$ approaches infinity.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
@@ -579,11 +588,11 @@ ax.legend(fontsize=11)
 plt.show()
 ```
 
-As $n$ increases, we can see that the probability density functions 'concentrate' on $0.4$, which is the true value of $\theta$.
+As $n$ increases, we can see that the probability density functions _concentrate_ on $0.4$, the true value of $\theta$.
 
-Correspondingly, posterior means  converge to $0.4$ while posterior standard deviations drop to $0$. 
+Here the  posterior means  converges to $0.4$ while the posterior standard deviations converges to $0$ from above. 
 
-To show this, we explicitly compute these statistics of the posterior distributions. 
+To show this, we compute the means and variances statistics of the posterior distributions. 
 
 ```{code-cell} ipython3
 mean_list = [ii.mean() for ii in Bay_stat.posterior_list]
@@ -608,9 +617,9 @@ plt.show()
 
 How shall we interpret the patterns above? 
 
-The answer is encoded in the  Bayesian updating formulas
+The answer is encoded in the  Bayesian updating formulas.
 
-It is natural to extend the one-step Bayesian update to n-step Bayesian update.
+It is natural to extend the one-step Bayesian update to an $n$-step Bayesian update.
 
 
 $$
@@ -629,7 +638,7 @@ $$
 ={Beta}(\alpha + k, \beta+N-k)
 $$
 
-A Beta Distribution with $\alpha$ and $\beta$ has the following mean and variance.
+A beta distribution with $\alpha$ and $\beta$ has the following mean and variance.
 
 The mean is $\frac{\alpha}{\alpha + \beta}$
 
@@ -639,11 +648,13 @@ The variance is $\frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}$
  
 * $\beta$ can be viewed as the number of failures
 
-The random variables $k$ and $N-k$ are governed by Binomial Distribution with $\theta=0.4$ (that we call true data generation process).
+The random variables $k$ and $N-k$ are governed by Binomial Distribution with $\theta=0.4$.
 
-According to the Law of Large Numbers, for a large number of observations, observed frequencies of $k$ and $N-k$ will be described by the true data generation process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See Exercise $1$). 
+Call this the true data generating process.
 
-Consequently, the  mean of the posterior distribution converges to $0.4$ and the variance withers toward zero.
+According to the Law of Large Numbers, for a large number of observations, observed frequencies of $k$ and $N-k$ will be described by the true data generating process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See Exercise $1$). 
+
+Consequently, the  mean of the posterior distribution converges to $0.4$ and the variance withers to zero.
 
 ```{code-cell} ipython3
 upper_bound = [ii.ppf(0.95) for ii in Bay_stat.posterior_list]
@@ -664,8 +675,8 @@ plt.show()
 
 After observing a large number of outcomes, the  posterior distribution collapses around $0.4$. 
 
-Thus, he comes to believe that $\theta$ is near $.4$. 
+Thus, the Bayesian statististian  comes to believe that $\theta$ is near $.4$. 
 
 As shown in the figure above, as the number of observations grows, the Bayesian coverage intervals (BCIs) become narrower and narrower   around  $0.4$. 
 
-However, if you take a closer look, you will find that the centers of the  are not exactly $0.4$, due to the persistent influence of the prior distribution and the randomness of the simulation path.
+However, if you take a closer look, you will find that the centers of  the BCIs are not exactly $0.4$, due to the persistent influence of the prior distribution and the randomness of the simulation path.

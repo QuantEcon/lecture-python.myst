@@ -232,7 +232,7 @@ Mathematical induction implies
 $E\left[L\left(w^{t}\right)\bigm|q=g\right]=1$ for all
 $t \geq 1$.
 
-## Peculiar Property of Likelihood Ratio Process
+## Peculiar Property
 
 How can $E\left[L\left(w^{t}\right)\bigm|q=g\right]=1$ possibly be true when most  probability mass of the likelihood
 ratio process is piling up near $0$ as
@@ -545,7 +545,7 @@ control tests during World War II.
 A Navy Captain who had been ordered to perform tests of this kind had doubts about it that he
 presented to Milton Friedman, as we describe in  {doc}`this lecture <wald_friedman>`.
 
-## Kullback–Leibler divergence
+## Kullback–Leibler Divergence
 
 Now let’s consider a case in which neither $g$ nor $f$
 generates the data.
