@@ -53,7 +53,7 @@ Let's start with some imports.
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import linprog
-from quantecon.optimize import linprog_simplex
+from quantecon.optimize.linprog_simplex import linprog_simplex
 import ot
 from scipy.stats import binom, betabinom
 import networkx as nx
