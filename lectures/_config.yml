@@ -3,6 +3,19 @@ author: Thomas J. Sargent & John Stachurski
 logo: _static/qe-logo-large.png
 description: This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.
 
+parse:
+  myst_enable_extensions:
+    - amsmath
+    - colon_fence
+    - deflist
+    - dollarmath
+    - html_admonition
+    - html_image
+    - linkify
+    - replacements
+    - smartquotes
+    - substitution
+
 only_build_toc_files: true
 execute:
   execute_notebooks: "cache"
@@ -56,9 +69,9 @@ sphinx:
       description: This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.
       keywords: Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski
       google_analytics_id: UA-54984338-10
-    mathjax_config:
-      TeX:
-        Macros:
+    mathjax3_config:
+      tex:
+        macros:
           "argmax" : "arg\\,max"
           "argmin" : "arg\\,min"
     mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js

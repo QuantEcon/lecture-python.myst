@@ -18,12 +18,32 @@ jobs:
           python-version: 3.8
           environment-file: environment.yml
           activate-environment: quantecon
+      - name: Install latex dependencies
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y     \
+            texlive-latex-recommended \
+            texlive-latex-extra       \
+            texlive-fonts-recommended \
+            texlive-fonts-extra       \
+            texlive-xetex             \
+            latexmk                   \
+            xindy                     \
+            dvipng                    \
+            cm-super
       - name: Build HTML
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -W --keep-going
+      - name: Upload Execution Reports
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: execution-reports
+          path: _build/html/reports
       - name: Upload "_build" folder (cache)
         uses: actions/upload-artifact@v2
         with:
           name: build-cache
           path: _build
+      
