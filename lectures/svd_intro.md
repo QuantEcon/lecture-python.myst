@@ -595,10 +595,12 @@ $$ (eq:Xvector)
 
 and where $ T $ again denotes complex transposition and $ X_{i,t} $ is an observation on variable $ i $ at time $ t $.
 
-We want to fit equation {eq}`eq:VARfirstorder` in a situation in which we have a number $n$ of observations  that is small relative to the number $m$ of
-variables that appear in the vector $X_t$.
 
-In particular, our data takes the form of  an $ m \times n $ matrix o $ \tilde X $ 
+
+We want to fit equation {eq}`eq:VARfirstorder`. 
+
+
+Our data is assembled in the form of  an $ m \times n $ matrix  $ \tilde X $ 
 
 $$
 \tilde X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n\end{bmatrix}
@@ -607,6 +609,8 @@ $$
 where for $ t = 1, \ldots, n $,  the $ m \times 1 $ vector $ X_t $ is given by {eq}`eq:Xvector`. 
 
 We want to estimate system  {eq}`eq:VARfirstorder` consisting of $ m $ least squares regressions of **everything** on one lagged value of **everything**.
+
+
 
 
 We proceed as follows. 
@@ -630,9 +634,73 @@ In forming $ X $ and $ X' $, we have in each case  dropped a column from $ \tild
 
 Evidently, $ X $ and $ X' $ are both $ m \times \tilde n $ matrices where $ \tilde n = n - 1 $.
 
-We denote the rank of $ X $ as $ p \leq \min(m, \tilde n) = \tilde n $.
+We denote the rank of $ X $ as $ p \leq \min(m, \tilde n)  $.
 
-As our  estimator $\hat A$ of $A$ we form an  $m \times m$ matrix that  solves the least-squares best-fit problem
+Two possible cases are when
+
+ *  $ \tilde n > > m$, so that we have many more time series  observations $\tilde n$ than variables $m$
+ *  $m > > \tilde n$, so that we have many more variables $m $ than time series observations $\tilde n$
+
+At a general level that includes both of these special cases, a common formula describes the least squares estimator $\hat A$ of $A$ for both cases, but important  details differ.
+
+The common formula is
+
+$$ \hat A = X' X^+ $$
+
+where $X^+$ is the pseudo-inverse of $X$.
+
+Formulas for the pseudo-inverse differ for our two cases.
+
+When $ \tilde n > > m$, so that we have many more time series  observations $\tilde n$ than variables $m$ and when
+$X$ has linearly independent **rows**, $X X^T$ has an inverse and the pseudo-inverse $X^+$ is
+
+$$
+X^+ = X^T (X X^T)^{-1} 
+$$
+
+Here $X^+$ is a **right-inverse** that verifies $ X X^+ = I_{m \times m}$.
+
+In this case, our formula for the least-squares estimator of $A$ becomes
+
+$$ 
+\hat A = X' X^T (X X^T)^{-1}
+$$
+
+This is formula is widely used in economics to estimate vector autorgressions.   
+
+The left side is proportional to the empirical cross second moment matrix of $X_{t+1}$ and $X_t$ times the inverse
+of the second moment matrix of $X_t$, the least-squares formula widely used in econometrics.
+
+
+
+When $m > > \tilde n$, so that we have many more variables $m $ than time series observations $\tilde n$ and when $X$ has linearly independent **columns**,
+$X^T X$ has an inverse and the pseudo-inverse $X^+$ is
+
+$$
+X^+ = (X^T X)^{-1} X^T
+$$
+
+Here  $X^+$ is a **left-inverse** that verifies $X^+ X = I_{\tilde n \times \tilde n}$.
+
+In this case, our formula for a least-squares estimator of $A$ becomes
+
+$$
+\hat A = X' (X^T X)^{-1} X^T
+$$ (eq:hatAversion0)
+
+This is the case that we are interested in here. 
+
+
+Thus, we want to fit equation {eq}`eq:VARfirstorder` in a situation in which we have a number $n$ of observations  that is small relative to the number $m$ of
+variables that appear in the vector $X_t$.
+
+We'll use  efficient algorithms for computing and for constructing reduced rank approximations of  $\hat A$ in formula {eq}`eq:hatAversion0`.
+ 
+
+
+
+
+To reiterate and supply more  detail about how we can efficiently calculate the pseudo-inverse $X^+$, as our  estimator $\hat A$ of $A$ we form an  $m \times m$ matrix that  solves the least-squares best-fit problem
 
 $$ 
 \hat A = \textrm{argmin}_{\check A} || X' - \check  A X ||_F   
@@ -705,6 +773,8 @@ and
 $$ 
 X_t - U \tilde b_t
 $$ (eq:Xdecoder)
+
+(Here we use $b$ to remind us that we are creating a **basis** vector.)
 
 Since $U U^T$ is an $m \times m$ identity matrix, it follows from equation {eq}`eq:tildeXdef2` that we can reconstruct  $X_t$ from $\tilde b_t$ by using 
 
@@ -800,6 +870,20 @@ $$
 $$
 
 
+
+## Using Fewer Modes
+
+The preceding formulas assume that we have retained all $p$ modes associated with the positive
+singular values of $X$.  
+
+We can easily adapt all of the formulas to describe a situation in which we instead retain only
+the $r < p$ largest singular values.  
+
+In that case, we simply replace $\Sigma$ with the appropriate $r \times r$ matrix of singular values,
+$U$ with the $m \times r$ matrix of whose columns correspond to the $r$ largest singular values,
+and $V$ with the $\tilde n \times r$ matrix whose columns correspond to the $r$ largest  singular values.
+
+Counterparts of all of the salient formulas above then apply.
 
 
 
