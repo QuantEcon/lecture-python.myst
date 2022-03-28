@@ -728,11 +728,11 @@ $$ (eq:SVDDMD)
 
 where $ U $ is $ m \times p $, $ \Sigma $ is a $ p \times p $ diagonal  matrix, and $ V^T $ is a $ p \times \tilde n $ matrix.
 
-Here $ p $ is the rank of $ X $, where necessarily $ p \leq \tilde n $.
+Here $ p $ is the rank of $ X $, where necessarily $ p \leq \tilde n $ because we are in the case in which $m > > \tilde n$.
 
 
-We can use the singular value decomposition {eq}`eq:SVDDMD` efficiently to construct the pseudo-inverse $X^+$
-by exploiting the implication of  the following string of equalities:
+Since we are in the $m > > \tilde n$ case, we can use the singular value decomposition {eq}`eq:SVDDMD` efficiently to construct the pseudo-inverse $X^+$
+by recognizing the following string of equalities.  
 
 $$
 \begin{aligned}
@@ -743,12 +743,6 @@ X^{+} & = (X^T X)^{-1} X^T \\
   & = V \Sigma^{-1} U^T 
 \end{aligned}
 $$ (eq:efficientpseudoinverse)
-
-
-(We  described and illustrated a **reduced** singular value decomposition above, and compared it with a **full** singular value decomposition.)
-
-
-
 
 Thus, we shall  construct a pseudo-inverse $ X^+ $  of $ X $ by using
 a singular value decomposition of $X$ in equation {eq}`eq:SVDDMD`  to compute
@@ -771,6 +765,8 @@ $$
 In addition to doing that, we’ll eventually use **dynamic mode decomposition** to compute a rank $ r $ approximation to $ A $,
 where $ r <  p $.
   
+**Remark:** We  described and illustrated a **reduced** singular value decomposition above, and compared it with a **full** singular value decomposition.
+In our Python code, we'll typically use  a reduced SVD.
 
 
 Next, we turn to two alternative __reduced order__ representations of our dynamic system.
@@ -810,7 +806,7 @@ $$
 \tilde A = U^T \hat A U 
 $$
 
-We can evidently recover $A$ from
+We can evidently recover $\hat A$ from
 
 $$
 \hat A = U \tilde A U^T 
@@ -848,7 +844,7 @@ $\Lambda$.
 Note that
 
 $$ 
-A = U \tilde U^T = U W \Lambda W^{-1} U^T 
+A = U \tilde A U^T = U W \Lambda W^{-1} U^T 
 $$
 
 Thus, the systematic part of the $X_t$ dynamics captured by our first-order vector autoregressions   are described by
@@ -885,7 +881,10 @@ We can use this representation to predict future $X_t$'s via:
 
 $$
 \overline X_{t+1} = U W \Lambda^t W^{-1} U^T X_1 
-$$
+$$ (eq:DSSEbookrepr)
+
+**Remark**  {cite}`DDSE_book` (p. 238) constructs a version of representation {eq}`eq:DSSEbookrepr` in terms of an $m \times p$  matrix $\Phi = UW$.
+Also, see Tu et al. {cite}`tu_Rowley`.  
 
 
 
