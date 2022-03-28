@@ -37,7 +37,7 @@ We'll describe the following concepts that are brick and mortar for neural netwo
  * an activation function
  * a network of neurons 
  * A neural network as a composition of functions
- * back-propogation and its relationship  to the chain rule of differential calculus
+ * back-propagation and its relationship  to the chain rule of differential calculus
  
 
 ## A Deep (but not Wide) Artificial Neural Network
@@ -172,14 +172,14 @@ $$ (eq:sgd)
 
 where $\frac{d {\mathcal L}}{dx_{N+1}}=-\left(x_{N+1}-y\right)$ and $\alpha > 0 $ is a step size.
 
-(See [this](https://en.wikipedia.org/wiki/Gradient_descent#Description) and [this](https://en.wikipedia.org/wiki/Newton%27s_method)) to gather insights about how stochastic gradient descent
+(See [this](https://en.wikipedia.org/wiki/Gradient_descent#Description) and [this](https://en.wikipedia.org/wiki/Newton%27s_method) to gather insights about how stochastic gradient descent
 relates to Newton's method.)
 
 To implement one step of this parameter update rule, we want  the vector of derivatives $\frac{dx_{N+1}}{dp_k}$.
 
-In the neural network literature, this step is accomplished by what is known as **back propogation**
+In the neural network literature, this step is accomplished by what is known as **back propagation**.
 
-## Back Propogation and the Chain Rule
+## Back Propagation and the Chain Rule
 
 Thanks to  properties of
 
@@ -187,7 +187,7 @@ Thanks to  properties of
 
 * lower triangular matrices
    
-back propogation can actually be  accomplished in one step by
+back propagation can actually be  accomplished in one step by
 
  *  inverting a lower triangular matrix,  and 
  
@@ -284,7 +284,7 @@ We can then solve the above problem by applying our update for $p$ multiple time
 
 Choosing a  training set amounts to a choice of measure $\mu$ in the above  formulation of our  function approximation problem as a minimization problem.
 
-In this spirit,  we shall use a uniform grid of, say, 50 or 200 or $\ldots$  points. 
+In this spirit,  we shall use a uniform grid of, say, 50 or 200 points. 
 
 There are many possible approaches to the minimization  problem posed above:
 
@@ -294,7 +294,7 @@ There are many possible approaches to the minimization  problem posed above:
 
 * something in-between (so-called "mini-batch gradient descent")
  
-The update rule {eq}`eq:sgd` described above  amounts  to a stochastic gradient descent algorithm
+The update rule {eq}`eq:sgd` described above  amounts  to a stochastic gradient descent algorithm.
 
 ```{code-cell} ipython3
 from IPython.display import Image
@@ -356,7 +356,6 @@ def loss(params, x, y):
     preds = xs[-1]
     
     return 1 / 2 * (y - preds) ** 2
-    
 ```
 
 ```{code-cell} ipython3
@@ -512,8 +511,8 @@ Image(fig.to_image(format="png"))
 It  is  fun to think about how deepening the neural net for the above example affects the quality of  approximation 
 
 
-* if the network is too deep, you'll run into the [vanishing gradient problem](http://neuralnetworksanddeeplearning.com/chap5.html)
-* other parameters such as the step size and the number of epochs can be as  important or more important than the number of layers in the situation considered in this lecture.
+* If the network is too deep, you'll run into the [vanishing gradient problem](http://neuralnetworksanddeeplearning.com/chap5.html)
+* Other parameters such as the step size and the number of epochs can be as  important or more important than the number of layers in the situation considered in this lecture.
 * Indeed, since $f$ is a linear function of $x$, a one-layer network with the identity map as an activation would probably work best. 
   
 

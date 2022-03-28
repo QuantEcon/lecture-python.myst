@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.11.5
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -31,10 +33,9 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !conda install -y quantecon
 !pip install interpolation
 ```
@@ -64,7 +65,7 @@ Key ideas in play will be:
 
 We'll begin with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
 from numba import jit, prange, float64, int64
@@ -185,7 +186,7 @@ The next figure shows two beta distributions in the top panel.
 
 The bottom panel presents mixtures of these distributions, with various mixing probabilities $\pi_k$
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit(nopython=True)
 def p(x, a, b):
     r = gamma(a + b) / (gamma(a) * gamma(b))
@@ -393,7 +394,7 @@ $$
 
 First, we will construct a `jitclass` to store the parameters of the model
 
-```{code-cell} python3
+```{code-cell} ipython3
 wf_data = [('a0', float64),          # Parameters of beta distributions
            ('b0', float64),
            ('a1', float64),
@@ -408,7 +409,7 @@ wf_data = [('a0', float64),          # Parameters of beta distributions
            ('z1', float64[:])]
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jitclass(wf_data)
 class WaldFriedman:
 
@@ -467,7 +468,7 @@ As in the {doc}`optimal growth lecture <optgrowth>`, to approximate a continuous
 
 We define the operator function `Q` below.
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit(nopython=True, parallel=True)
 def Q(h, wf):
 
@@ -502,7 +503,7 @@ def Q(h, wf):
 
 To solve the model, we will iterate using `Q` to find the fixed point
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit(nopython=True)
 def solve_model(wf, tol=1e-4, max_iter=1000):
     """
@@ -534,7 +535,7 @@ Let's inspect outcomes.
 
 We will be using the default parameterization with distributions like so
 
-```{code-cell} python3
+```{code-cell} ipython3
 wf = WaldFriedman()
 
 fig, ax = plt.subplots(figsize=(10, 6))
@@ -550,14 +551,14 @@ plt.show()
 
 To solve the model, we will call our `solve_model` function
 
-```{code-cell} python3
+```{code-cell} ipython3
 h_star = solve_model(wf)    # Solve the model
 ```
 
 We will also set up a function to compute the cutoffs $\alpha$ and $\beta$
 and plot these on our value function plot
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit(nopython=True)
 def find_cutoff_rule(wf, h):
 
@@ -637,7 +638,7 @@ On the right is the fraction of correct decisions at the stopping time.
 
 In this case, the decision-maker is correct 80% of the time
 
-```{code-cell} python3
+```{code-cell} ipython3
 def simulate(wf, true_dist, h_star, π_0=0.5):
 
     """
@@ -741,7 +742,7 @@ Before you look, think about what will happen:
 - Will the decision-maker be correct more or less often?
 - Will he make decisions sooner or later?
 
-```{code-cell} python3
+```{code-cell} ipython3
 wf = WaldFriedman(c=2.5)
 simulation_plot(wf)
 ```

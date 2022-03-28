@@ -53,7 +53,7 @@ Let's start with some imports.
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import linprog
-from quantecon.optimize import linprog_simplex
+from quantecon.optimize.linprog_simplex import linprog_simplex
 import ot
 from scipy.stats import binom, betabinom
 import networkx as nx
@@ -366,6 +366,17 @@ print("z:", res.x)
 print("X:", res.x.reshape((m,n), order='F'))
 ```
 
+Notice how, in the line `C_vec = C.reshape((m*n, 1), order='F')`, we are
+careful to vectorize using the flag `order='F'`.
+
+This is consistent with converting $C$ into a vector by stacking all of its
+columns into a  column vector. 
+
+Here `'F'` stands for "Fortran", and we are using Fortran style column-major order.
+
+(For an alternative approach, using Python's default row-major ordering, see [this
+        lecture by Alfred
+        Galichon](https://www.math-econ-code.org/mec-optim-b04).)
 
 **Interpreting the warning:**  
 
