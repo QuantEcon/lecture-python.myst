@@ -694,11 +694,6 @@ This is the case that we are interested in here.
 Thus, we want to fit equation {eq}`eq:VARfirstorder` in a situation in which we have a number $n$ of observations  that is small relative to the number $m$ of
 variables that appear in the vector $X_t$.
 
-We'll use  efficient algorithms for computing and for constructing reduced rank approximations of  $\hat A$ in formula {eq}`eq:hatAversion0`.
- 
-
-
-
 
 To reiterate and supply more  detail about how we can efficiently calculate the pseudo-inverse $X^+$, as our  estimator $\hat A$ of $A$ we form an  $m \times m$ matrix that  solves the least-squares best-fit problem
 
@@ -711,10 +706,15 @@ where $|| \cdot ||_F$ denotes the Frobeneus norm of a matrix.
 The solution of the problem on the right side of equation {eq}`eq:ALSeqn` is
 
 $$
-\hat A =  X'  X^{+} . 
+\hat A =  X'  X^{+}  
 $$ (eq:hatAform)
 
-Here the (possibly huge) $ \tilde n \times m $ matrix $ X^{+} $ is the pseudo-inverse of $ X $.
+where the (possibly huge) $ \tilde n \times m $ matrix $ X^{+} = (X^T X)^{-1} X^T$ is again the pseudo-inverse of $ X $.
+
+For the situations that we are interested in, $X^T X $ can be close to singular, a situation that can lead some numerical algorithms to be error-prone.
+
+To confront that situationa, we'll use  efficient algorithms for computing and for constructing reduced rank approximations of  $\hat A$ in formula {eq}`eq:hatAversion0`.
+ 
 
 The $ i $th  row of $ \hat A $ is an $ m \times 1 $ vector of pseudo-regression coefficients of $ X_{i,t+1} $ on $ X_{j,t}, j = 1, \ldots, m $.
 
@@ -730,9 +730,27 @@ where $ U $ is $ m \times p $, $ \Sigma $ is a $ p \times p $ diagonal  matrix, 
 
 Here $ p $ is the rank of $ X $, where necessarily $ p \leq \tilde n $.
 
+
+We can use the singular value decomposition {eq}`eq:SVDDMD` efficiently to construct the pseudo-inverse $X^+$
+by exploiting the implication of  the following string of equalities:
+
+$$
+\begin{aligned}
+X^{+} & = (X^T X)^{-1} X^T \\
+  & = (V \Sigma U^T U \Sigma V^T)^{-1} V \Sigma U^T \\
+  & = (V \Sigma \Sigma V^T)^{-1} V \Sigma U^T \\
+  & = V \Sigma^{-1} \Sigma^{-1} V^T V \Sigma U^T \\
+  & = V \Sigma^{-1} U^T 
+\end{aligned}
+$$ (eq:efficientpseudoinverse)
+
+
 (We  described and illustrated a **reduced** singular value decomposition above, and compared it with a **full** singular value decomposition.)
 
-We can construct a pseudo-inverse $ X^+ $  of $ X $ by using
+
+
+
+Thus, we shall  construct a pseudo-inverse $ X^+ $  of $ X $ by using
 a singular value decomposition of $X$ in equation {eq}`eq:SVDDMD`  to compute
 
 
