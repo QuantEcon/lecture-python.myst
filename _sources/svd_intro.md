@@ -993,8 +993,13 @@ $$
 \overline X_{t+1} = \Phi_s \Lambda^t \Phi_s^+ X_1 
 $$ (eq:schmidrep)
 
+Components of the  basis vector $ \hat b_t = W^{-1} U^T X_t \equiv \Phi_s^+$ are often  called DMD **modes**, or sometimes also
+DMD **projected nodes**.    
+
+An alternative definition of DMD notes is motivate by the following observation. 
+
 A peculiar feature of representation {eq}`eq:schmidrep` is that while the diagonal components of $\Lambda$ are square roots of singular 
-values of $\check A$, the columns of $\Phi_s$ are **not** eigenvectors of corresponding eigenvectors of $\check A$.  
+values of $\check A$, the columns of $\Phi_s$ are **not** eigenvectors  corresponding to eigenvalues of $\check A$.  
 
 This feature led Tu et al. {cite}`tu_Rowley` to suggest an alternative representation that replaces $\Phi_s$ with another
 $m \times p$ matrix whose columns are eigenvectors of $\check A$.
@@ -1011,7 +1016,7 @@ As we did with representation 2, it is useful to  construct an eigencomposition 
 according the equation {eq}`eq:tildeAeigen`.
 
 
-Now construct the $m \times p$ matrix
+Now where $ 1 \leq r \leq p$,  construct an $m \times r$ matrix
 
 $$
   \Phi = X'  V  \Sigma^{-1} W
@@ -1021,7 +1026,7 @@ $$ (eq:Phiformula)
   
 Tu et al. {cite}`tu_Rowley` established the following  
 
-**Proposition** The $p$ columns of $\Phi$ are eigenvectors of $\check A$ that correspond to the largest $r$ eigenvalues of $A$. 
+**Proposition** The $r$ columns of $\Phi$ are eigenvectors of $\check A$ that correspond to the largest $r$ eigenvalues of $A$. 
 
 **Proof:** From formula {eq}`eq:Phiformula` we have
 
@@ -1042,7 +1047,7 @@ $$ (eq:APhiLambda)
 
 Let $\phi_i$ be the the $i$the column of $\Phi$ and $\lambda_i$ be the corresponding $i$ eigenvalue of $\tilde A$ from decomposition {eq}`eq:tildeAeigen`. 
 
-Writing out the $m \times p$ vectors on both sides of  equation {eq}`eq:APhiLambda` and equating them gives
+Writing out the $m \times 1$ vectors on both sides of  equation {eq}`eq:APhiLambda` and equating them gives
 
 
 $$
@@ -1065,10 +1070,7 @@ $$ (eq:Atilde10)
 
 where  in equation {eq}`eq:Atilde10` $U$ is now  the $m \times r$ matrix consisting of the eigevectors of $X X^T$ corresponding to the $r$
 largest singular values of $X$.
-
-**Beware:** We have **recycled** notation  here by temporarily redefining $U$ as being just $r$ columns instead of $p$ columns as we have up to now.
-
-The conclusions of the proposition follow with this altered definition of $U$.
+The conclusions of the proposition remain true  with this altered definition of $U$. (**Beware:** We have **recycled** notation  here by temporarily redefining $U$ as being just $r$ columns instead of $p$ columns as we have up to now.)
 
 
 Also see {cite}`DDSE_book` (p. 238)
@@ -1098,7 +1100,7 @@ X_t & = \Phi \check b_t
 $$
 
 
-There is a better way to compute the $p \times 1$ vector $\check b_t$
+There is a better way to compute the $r \times 1$ vector $\check b_t$
 
 In particular, the following argument from {cite}`DDSE_book` (page 240) provides a computationally efficient way
 to compute $\check b_t$.  
@@ -1113,36 +1115,38 @@ $$
    X_1 = \Phi \check b_1
 $$ (eq:X1proj)
 
-where $\check b_1$ is a $p \times 1$ vector. 
+where $\check b_1$ is an $r \times 1$ vector. 
 
-Since $X_1 =  U \tilde X_1$, it follows that 
+Recall from representation 1 above that  $X_1 =  U \tilde b_1$, where $\tilde b_1$ is the time $1$  basis vector for representation 1.
+
+It  then follows that 
  
 $$ 
-  U \tilde X_1 = X' V \Sigma^{-1} W b_1
+  U \tilde b_1 = X' V \Sigma^{-1} W \check b_1
 $$
 
-and
+and consequently
 
 $$ 
-  \tilde X_1 = U^T X' V \Sigma^{-1} W \check b_1
+  \tilde b_1 = U^T X' V \Sigma^{-1} W \check b_1
 $$
 
 Since $ \tilde A = U^T X' V \Sigma^{-1}$, it follows  that
   
 $$ 
-  \tilde  X_1 = \tilde A W \check b_1
+  \tilde  b_1 = \tilde A W \check b_1
 $$
 
-and therefore, by  eigendecomposition  {eq}`eq:tildeAeigen` of $\tilde A$, we have
+and therefore, by the  eigendecomposition  {eq}`eq:tildeAeigen` of $\tilde A$, we have
 
 $$ 
-  \tilde X_1 = W \Lambda \check b_1
+  \tilde b_1 = W \Lambda \check b_1
 $$ 
 
-Therefore, 
+Consesquently, 
   
 $$ 
-  \check b_1 = ( W \Lambda)^{-1} \tilde X_1
+  \check b_1 = ( W \Lambda)^{-1} \tilde b_1
 $$ 
 
 or 
@@ -1161,18 +1165,20 @@ $$
 $$ (eq:bphieqn)
 
 
-Conditional on $X_t$, we can construct forecasts $\bar X_{t+j} $ of $X_{t+j}, j = 1, 2, \ldots, $  from 
+Components of the  basis vector $\check b_t  = \Phi^+ X_t \equiv (W \Lambda)^{-1} U^T X_t$  are often called **exact** DMD nodes.  
+
+Conditional on $X_t$, we can construct forecasts $\overline X_{t+j} $ of $X_{t+j}, j = 1, 2, \ldots, $  from 
 either 
 
 $$
-\bar X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
+\overline X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
 $$ (eq:checkXevoln)
 
 
-or  the following equation 
+or  
 
 $$ 
-  \bar X_{t+j} = \Phi \Lambda^j (W \Lambda)^{-1}  U^T X_t
+  \overline X_{t+j} = \Phi \Lambda^j (W \Lambda)^{-1}  U^T X_t
 $$ (eq:checkXevoln2)
 
 
@@ -1180,7 +1186,7 @@ $$ (eq:checkXevoln2)
 
 ## Using Fewer Modes
 
-For the most part, the preceding formulas assume that we have retained all $p$ modes associated with the positive
+Some of the preceding formulas assume that we have retained all $p$ modes associated with the positive
 singular values of $X$.  
 
 We can easily adapt all of the formulas to describe a situation in which we instead retain only
