@@ -207,8 +207,8 @@ print('UUT, UTU = '), UUT, UTU
 
 
 ```{code-cell} ipython3
-UhatUhatT = Uhat.T@Uhat
-UhatTUThat = Uhat@Uhat.T
+UhatUhatT = Uhat@Uhat.T
+UhatTUhat = Uhat.T@Uhat
 print('UhatUhatT, UhatTUhat= '), UhatUhatT, UhatTUhat
 ```
 
