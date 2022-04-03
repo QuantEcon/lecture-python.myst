@@ -147,11 +147,104 @@ When we study Dynamic Mode Decomposition below, we shall want to remember this c
 
 
 
+## Reduced Versus Full SVD
+
+Earlier, we mentioned **full** and **reduced** SVD's.
+
+
+You can read about reduced and full SVD here
+<https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html>
+
+In a **full** SVD
+
+  * $U$ is $m \times m$
+  * $\Sigma$ is $m \times n$
+  * $V$ is $n \times n$
+
+In a **reduced** SVD
+
+  * $U$ is $m \times r$
+  * $\Sigma$ is $r \times r$
+  * $V$ is $n \times r$ 
+
+ 
+Let's do a some  small exercise  to compare **full** and **reduced** SVD's.
+
+First, let's study a case in which $m = 5 > n = 2$.
+
+(This is a small example of the **tall-skinny** that will concern us when we study **Dynamic Mode Decompositions** below.)
+
+```{code-cell} ipython3
+import numpy as np
+X = np.random.rand(5,2)
+U, S, V = np.linalg.svd(X,full_matrices=True)  # full SVD
+Uhat, Shat, Vhat = np.linalg.svd(X,full_matrices=False) # economy SVD
+print('U, S, V ='), U, S, V
+```
+
+```{code-cell} ipython3
+print('Uhat, Shat, Vhat = '), Uhat, Shat, Vhat
+```
+
+```{code-cell} ipython3
+rr = np.linalg.matrix_rank(X)
+print('rank of X - '), rr
+```
+
+
+**Properties:**
+
+* Where $U$ is constructed via a full SVD, $U^T U = I_{r \times r}$ and  $U U^T = I_{m \times m}$ 
+* Where $\hat U$ is constructed via a reduced SVD, although $\hat U^T \hat U = I_{r \times r}$ it happens that  $\hat U \hat U^T \neq I_{m \times m}$ 
+
+We illustrate these properties for our example with the following code cells.
+
+```{code-cell} ipython3
+UTU = U.T@U
+UUT = U@U.T
+print('UUT, UTU = '), UUT, UTU 
+```
+
+
+```{code-cell} ipython3
+UhatUhatT = Uhat.T@Uhat
+UhatTUThat = Uhat@Uhat.T
+print('UhatUhatT, UhatTUhat= '), UhatUhatT, UhatTUhat
+```
+
+
+
+
+**Remark:** The cells above illustrate application of the  `fullmatrices=True` and `full-matrices=False` options.
+Using `full-matrices=False` returns a reduced singular value decomposition. This option implements
+an optimal reduced rank approximation of a matrix, in the sense of  minimizing the Frobenius
+norm of the discrepancy between the approximating matrix and the matrix being approximated.
+Optimality in this sense is  established in the celebrated Eckart–Young theorem. See <https://en.wikipedia.org/wiki/Low-rank_approximation>.
+
+When we study Dynamic Mode Decompositions below, it  will be important for us to remember the following important properties of full and reduced SVD's in such tall-skinny cases.  
 
 
 
 
 
+Let's do another exercise, but now we'll set $m = 2 < 5 = n $
+
+```{code-cell} ipython3
+import numpy as np
+X = np.random.rand(2,5)
+U, S, V = np.linalg.svd(X,full_matrices=True)  # full SVD
+Uhat, Shat, Vhat = np.linalg.svd(X,full_matrices=False) # economy SVD
+print('U, S, V ='), U, S, V
+```
+
+```{code-cell} ipython3
+print('Uhat, Shat, Vhat = '), Uhat, Shat, Vhat
+```
+
+```{code-cell} ipython3
+rr = np.linalg.matrix_rank(X)
+print('rank X = '), rr
+```
 ## Digression:  Polar Decomposition
 
 A singular value decomposition (SVD) is related to the **polar decomposition** of $X$
@@ -231,101 +324,6 @@ a time series context:
 is a vector of **loadings** of variables $X_i$ on the $k$th principle component,  $i=1, \ldots, m$
 
 * $\sigma_k $ for each $k=1, \ldots, r$ is the strength of $k$th **principal component**
-
-## Reduced Versus Full SVD
-
-Earlier, we mentioned **full** and **reduced** SVD's.
-
-
-You can read about reduced and full SVD here
-<https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html>
-
-In a **full** SVD
-
-  * $U$ is $m \times m$
-  * $\Sigma$ is $m \times n$
-  * $V$ is $n \times n$
-
-In a **reduced** SVD
-
-  * $U$ is $m \times r$
-  * $\Sigma$ is $r \times r$
-  * $V$ is $n \times r$ 
-
- 
-Let's do a some  small exercise  to compare **full** and **reduced** SVD's.
-
-First, let's study a case in which $m = 5 > n = 2$.
-
-(This is a small example of the **tall-skinny** that will concern us when we study **Dynamic Mode Decompositions** below.)
-
-```{code-cell} ipython3
-import numpy as np
-X = np.random.rand(5,2)
-U, S, V = np.linalg.svd(X,full_matrices=True)  # full SVD
-Uhat, Shat, Vhat = np.linalg.svd(X,full_matrices=False) # economy SVD
-print('U, S, V ='), U, S, V
-```
-
-```{code-cell} ipython3
-print('Uhat, Shat, Vhat = '), Uhat, Shat, Vhat
-```
-
-```{code-cell} ipython3
-rr = np.linalg.matrix_rank(X)
-print('rank of X - '), rr
-```
-
-**Remark:** The cells above illustrate application of the  `fullmatrices=True` and `full-matrices=False` options.
-Using `full-matrices=False` returns a reduced singular value decomposition. This option implements
-an optimal reduced rank approximation of a matrix, in the sense of  minimizing the Frobenius
-norm of the discrepancy between the approximating matrix and the matrix being approximated.
-Optimality in this sense is  established in the celebrated Eckart–Young theorem. See <https://en.wikipedia.org/wiki/Low-rank_approximation>.
-
-When we study Dynamic Mode Decompositions below, it  will be important for us to remember the following important properties of full and reduced SVD's in such tall-skinny cases.  
-
-**Properties:**
-
-* Where $U$ is constructed via a full SVD, $U^T U = I_{r \times r}$ and  $U U^T = I_{m \times m}$ 
-* Where $\hat U$ is constructed via a reduced SVD, although $\hat U^T \hat U = I_{r \times r}$ it happens that  $\hat U \hat U^T \neq I_{m \times m}$ 
-
-We illustrate these properties for our example with the following code cells.
-
-```{code-cell} ipython3
-UTU = U.T@U
-UUT = U@U.T
-print('UUT, UTU = '), UUT, UTU 
-```
-
-
-```{code-cell} ipython3
-UTUhat = Uhat.T@Uhat
-UUThat = Uhat@Uhat.T
-print('UUThat, UTUhat= '), UUThat, UTUhat
-```
-
-
-
-
-
-Let's do another exercise, but now we'll set $m = 2 < 5 = n $
-
-```{code-cell} ipython3
-import numpy as np
-X = np.random.rand(2,5)
-U, S, V = np.linalg.svd(X,full_matrices=True)  # full SVD
-Uhat, Shat, Vhat = np.linalg.svd(X,full_matrices=False) # economy SVD
-print('U, S, V ='), U, S, V
-```
-
-```{code-cell} ipython3
-print('Uhat, Shat, Vhat = '), Uhat, Shat, Vhat
-```
-
-```{code-cell} ipython3
-rr = np.linalg.matrix_rank(X)
-print('rank X = '), rr
-```
 
 ## PCA with Eigenvalues and Eigenvectors
 
@@ -762,6 +760,14 @@ $$ (eq:hatAversion0)
 
 This is the case that we are interested in here. 
 
+If we use formula {eq}`eq:hatAversion0` to calculate $\hat A X$ we find that
+
+$$
+\hat A X = X'
+$$
+
+so that the regression equation **fits perfectly**, the usual outcome in an **underdetermined least-squares** model.
+
 
 Thus, we want to fit equation {eq}`eq:VARfirstorder` in a situation in which we have a number $n$ of observations  that is small relative to the number $m$ of
 variables that appear in the vector $X_t$.
@@ -781,14 +787,14 @@ $$
 \hat A =  X'  X^{+}  
 $$ (eq:hatAform)
 
-where the (possibly huge) $ \tilde n \times m $ matrix $ X^{+} = (X^T X)^{-1} X^T$ is again the pseudo-inverse of $ X $.
+where the (possibly huge) $ \tilde n \times m $ matrix $ X^{+} = (X^T X)^{-1} X^T$ is again a pseudo-inverse of $ X $.
 
-For some situations that we are interested in, $X^T X $ can be close to singular, a situation that can lead some numerical algorithms to be error-prone.
+For some situations that we are interested in, $X^T X $ can be close to singular, a situation that can make some numerical algorithms  be error-prone.
 
-To confront that situationa, we'll use  efficient algorithms for computing and for constructing reduced rank approximations of  $\hat A$ in formula {eq}`eq:hatAversion0`.
+To confront that possibility, we'll use  efficient algorithms for computing and for constructing reduced rank approximations of  $\hat A$ in formula {eq}`eq:hatAversion0`.
  
 
-The $ i $th  row of $ \hat A $ is an $ m \times 1 $ vector of pseudo-regression coefficients of $ X_{i,t+1} $ on $ X_{j,t}, j = 1, \ldots, m $.
+The $ i $th  row of $ \hat A $ is an $ m \times 1 $ vector of regression coefficients of $ X_{i,t+1} $ on $ X_{j,t}, j = 1, \ldots, m $.
 
 An efficient way to compute the pseudo-inverse $X^+$ is to start with  the (reduced) singular value decomposition
 
@@ -800,7 +806,7 @@ $$ (eq:SVDDMD)
 
 where $ U $ is $ m \times p $, $ \Sigma $ is a $ p \times p $ diagonal  matrix, and $ V^T $ is a $ p \times \tilde n $ matrix.
 
-Here $ p $ is the rank of $ X $, where necessarily $ p \leq \tilde n $ because we are in the case in which $m > > \tilde n$.
+Here $ p $ is the rank of $ X $, where necessarily $ p \leq \tilde n $ because we are in a situation in which $m > > \tilde n$.
 
 
 Since we are in the $m > > \tilde n$ case, we can use the singular value decomposition {eq}`eq:SVDDMD` efficiently to construct the pseudo-inverse $X^+$
@@ -847,8 +853,9 @@ Next, we describe some alternative __reduced order__ representations of our firs
 
 ## Representation 1
  
+In constructing this representation and also whenever we use it, we use a **full** SVD of $X$.
 
-We use the $p$  columns of $U$, and thus the $p$ rows of $U^T$,  to define   a $p \times 1$  vector $\tilde X_t$ as follows
+We use the $p$  columns of $U$, and thus the $p$ rows of $U^T$,  to define   a $p \times 1$  vector $\tilde b_t$ as follows
 
 
 $$
@@ -863,7 +870,9 @@ $$ (eq:Xdecoder)
 
 (Here we use the notation $b$ to remind ourselves that we are creating a **b**asis vector.)
 
-Since $U U^T$ is an $m \times m$ identity matrix, it follows from equation {eq}`eq:tildeXdef2` that we can reconstruct  $X_t$ from $\tilde b_t$ by using 
+Since we are using a **full** SVD, $U U^T$ is an $m \times m$ identity matrix.
+
+So it follows from equation {eq}`eq:tildeXdef2` that we can reconstruct  $X_t$ from $\tilde b_t$ by using 
 
 
 
@@ -910,8 +919,8 @@ This representation is the one originally proposed by  {cite}`schmid2010`.
 It can be regarded as an intermediate step to  a related and perhaps more useful  representation 3.
 
 
+As with Representation 1, we continue to
 
-To work it requires that we
 
 * use all $p$ singular values of $X$
 * use a **full** SVD and **not** a reduced SVD
@@ -937,7 +946,7 @@ where $\Lambda$ is a diagonal matrix of eigenvalues and $W$ is a $p \times p$
 matrix whose columns are eigenvectors  corresponding to rows (eigenvalues) in 
 $\Lambda$.
 
-Note that when $U U^T = I_{p \times p}$, as is true with a full SVD of X (but **not** true with a reduced SVD)
+Note that when $U U^T = I_{m \times m}$, as is true with a full SVD of X (but **not** true with a reduced SVD)
 
 $$ 
 \hat A = U \tilde A U^T = U W \Lambda W^{-1} U^T 
@@ -1065,12 +1074,12 @@ We also have the following
 {eq}`eq:Atilde0`, define it as the following $r \times r$ counterpart
 
 $$ 
-\tilde A = U^T \hat A U 
+\tilde A = \tilde U^T \hat A U 
 $$ (eq:Atilde10)
 
-where  in equation {eq}`eq:Atilde10` $U$ is now  the $m \times r$ matrix consisting of the eigevectors of $X X^T$ corresponding to the $r$
+where  in equation {eq}`eq:Atilde10` $\tilde U$ is now  the $m \times r$ matrix consisting of the eigevectors of $X X^T$ corresponding to the $r$
 largest singular values of $X$.
-The conclusions of the proposition remain true  with this altered definition of $U$. (**Beware:** We have **recycled** notation  here by temporarily redefining $U$ as being just $r$ columns instead of $p$ columns as we have up to now.)
+The conclusions of the proposition remain true when we replace $U$ by $\tilde U$. 
 
 
 Also see {cite}`DDSE_book` (p. 238)
@@ -1100,7 +1109,7 @@ X_t & = \Phi \check b_t
 $$
 
 
-There is a better way to compute the $r \times 1$ vector $\check b_t$
+But there is a better way to compute the $r \times 1$ vector $\check b_t$
 
 In particular, the following argument from {cite}`DDSE_book` (page 240) provides a computationally efficient way
 to compute $\check b_t$.  
