@@ -49,8 +49,8 @@ The present lecture uses  additional  ideas including
   problem and the Hicks-Arrow prices.
 - A **Big** $K$ **, little** $k$ trick widely used in
   macroeconomic dynamics.
-    * We shall encounter this trick in [this lecture](https://lectures.quantecon.org/py/rational_expectations.html#)
-      and also in [this lecture](https://lectures.quantecon.org/py/dyn_stack.html#).
+    * We shall encounter this trick in [this lecture](https://python.quantecon.org/rational_expectations.html)
+      and also in [this lecture](https://python-advanced.quantecon.org/dyn_stack.html).
 - A non-stochastic version of a theory of the **term structure of
   interest rates**.
 - An intimate connection between the cases for the optimality of two
@@ -399,8 +399,8 @@ In this lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>`, we  compu
 that solves the planning problem.
 
 (This allocation will constitute the **Big** $K$  to be in the present instance of the **Big** $K$ **, little** $k$ trick
-that we'll apply to  a competitive equilibrium in the spirit of [this lecture](https://lectures.quantecon.org/py/rational_expectations.html#)
-and  [this lecture](https://lectures.quantecon.org/py/dyn_stack.html#).)
+that we'll apply to  a competitive equilibrium in the spirit of [this lecture](https://python.quantecon.org/rational_expectations.html)
+and  [this lecture](https://python-advanced.quantecon.org/dyn_stack.html).)
 
 We use that allocation to construct a guess for the equilibrium
 price system.
