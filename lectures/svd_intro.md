@@ -108,13 +108,11 @@ In what is called a **full** SVD, the  shapes of $U$, $\Sigma$, and $V$ are $\le
 
 There is also an alternative shape convention called an **economy** or **reduced** SVD .
 
-Thus, note that because we assume that $A$ has rank $r$, there are only $r $ nonzero singular values, where $r=\textrm{rank}(A)\leq\min\left(m, n\right)$.  
+Thus, note that because we assume that $X$ has rank $r$, there are only $r $ nonzero singular values, where $r=\textrm{rank}(X)\leq\min\left(m, n\right)$.  
 
 A **reduced** SVD uses this fact to express $U$, $\Sigma$, and $V$ as matrices with shapes $\left(m, r\right)$, $\left(r, r\right)$, $\left(r, n\right)$.
 
-Sometimes, we will use a full SVD 
-
-At other times, we'll use a reduced SVD  in which $\Sigma$ is an $r \times r$  diagonal matrix.
+Sometimes, we will use a **full** SVD in which $U$, $\Sigma$, and $V$ have shapes $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$
 
 
 **Caveat:**
@@ -652,6 +650,9 @@ $$
 X_{t+1} = A X_t + C \epsilon_{t+1}
 $$ (eq:VARfirstorder)
 
+where $\epsilon_{t+1}$ is the time $t+1$ instance of an i.i.d. $m \times 1$ random vector with mean vector
+zero and identity  covariance matrix and
+
 where 
 the $ m \times 1 $ vector $ X_t $ is
 
@@ -666,15 +667,15 @@ and where $ T $ again denotes complex transposition and $ X_{i,t} $ is an observ
 We want to fit equation {eq}`eq:VARfirstorder`. 
 
 
-Our data is assembled in the form of  an $ m \times n $ matrix  $ \tilde X $ 
+Our data are organized in   an $ m \times (n+1) $ matrix  $ \tilde X $ 
 
 $$
-\tilde X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n\end{bmatrix}
+\tilde X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n \mid X_{n+1} \end{bmatrix}
 $$
 
-where for $ t = 1, \ldots, n $,  the $ m \times 1 $ vector $ X_t $ is given by {eq}`eq:Xvector`. 
+where for $ t = 1, \ldots, n +1 $,  the $ m \times 1 $ vector $ X_t $ is given by {eq}`eq:Xvector`. 
 
-We want to estimate system  {eq}`eq:VARfirstorder` consisting of $ m $ least squares regressions of **everything** on one lagged value of **everything**.
+Thus, we want to estimate a  system  {eq}`eq:VARfirstorder` that consists of $ m $ least squares regressions of **everything** on one lagged value of **everything**.
 
 The $i$'th equation of {eq}`eq:VARfirstorder` is a regression of $X_{i,t+1}$ on the vector $X_t$.
 
@@ -682,30 +683,30 @@ The $i$'th equation of {eq}`eq:VARfirstorder` is a regression of $X_{i,t+1}$ on 
 We proceed as follows. 
 
 
-From $ \tilde X $,  we  form two matrices
+From $ \tilde X $,  we  form two $m \times n$ matrices
 
 $$
-X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_{n-1}\end{bmatrix}
+X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_{n}\end{bmatrix}
 $$
 
 and
 
 $$
-X' =  \begin{bmatrix} X_2 \mid X_3 \mid \cdots \mid X_n\end{bmatrix}
+X' =  \begin{bmatrix} X_2 \mid X_3 \mid \cdots \mid X_{n+1}\end{bmatrix}
 $$
 
 Here $ ' $ does not indicate matrix transposition but instead is part of the name of the matrix $ X' $.
 
 In forming $ X $ and $ X' $, we have in each case  dropped a column from $ \tilde X $,  the last column in the case of $ X $, and  the first column in the case of $ X' $.
 
-Evidently, $ X $ and $ X' $ are both $ m \times \tilde n $ matrices where $ \tilde n = n - 1 $.
+Evidently, $ X $ and $ X' $ are both $ m \times  n $ matrices.
 
-We denote the rank of $ X $ as $ p \leq \min(m, \tilde n)  $.
+We denote the rank of $ X $ as $ p \leq \min(m, n)  $.
 
 Two possible cases are 
 
- *  $ \tilde n > > m$, so that we have many more time series  observations $\tilde n$ than variables $m$
- *  $m > > \tilde n$, so that we have many more variables $m $ than time series observations $\tilde n$
+ *  $ n > > m$, so that we have many more time series  observations $n$ than variables $m$
+ *  $m > > n$, so that we have many more variables $m $ than time series observations $n$
 
 At a general level that includes both of these special cases, a common formula describes the least squares estimator $\hat A$ of $A$ for both cases, but important  details differ.
 
@@ -719,7 +720,7 @@ where $X^+$ is the pseudo-inverse of $X$.
 
 Formulas for the pseudo-inverse differ for our two cases.
 
-When $ \tilde n > > m$, so that we have many more time series  observations $\tilde n$ than variables $m$ and when
+When $ n > > m$, so that we have many more time series  observations $n$ than variables $m$ and when
 $X$ has linearly independent **rows**, $X X^T$ has an inverse and the pseudo-inverse $X^+$ is
 
 $$
@@ -743,14 +744,14 @@ This least-squares formula widely used in econometrics.
 
 **Tall-Skinny Case:**
 
-When $m > > \tilde n$, so that we have many more variables $m $ than time series observations $\tilde n$ and when $X$ has linearly independent **columns**,
+When $m > > n$, so that we have many more variables $m $ than time series observations $n$ and when $X$ has linearly independent **columns**,
 $X^T X$ has an inverse and the pseudo-inverse $X^+$ is
 
 $$
 X^+ = (X^T X)^{-1} X^T
 $$
 
-Here  $X^+$ is a **left-inverse** that verifies $X^+ X = I_{\tilde n \times \tilde n}$.
+Here  $X^+$ is a **left-inverse** that verifies $X^+ X = I_{n \times n}$.
 
 In this case, our formula  {eq}`eq:commonA` for a least-squares estimator of $A$ becomes
 
@@ -773,7 +774,7 @@ Thus, we want to fit equation {eq}`eq:VARfirstorder` in a situation in which we 
 variables that appear in the vector $X_t$.
 
 
-To reiterate and provide more  detail about how we can efficiently calculate the pseudo-inverse $X^+$, as our  estimator $\hat A$ of $A$ we form an  $m \times m$ matrix that  solves the least-squares best-fit problem
+To reiterate and offer an idea about how we can efficiently calculate the pseudo-inverse $X^+$, as our  estimator $\hat A$ of $A$ we form an  $m \times m$ matrix that  solves the least-squares best-fit problem
 
 $$ 
 \hat A = \textrm{argmin}_{\check A} || X' - \check  A X ||_F   
@@ -781,13 +782,16 @@ $$ (eq:ALSeqn)
 
 where $|| \cdot ||_F$ denotes the Frobeneus norm of a matrix.
 
-The solution of the problem on the right side of equation {eq}`eq:ALSeqn` is
+The minimizer of the right side of equation {eq}`eq:ALSeqn` is
 
 $$
 \hat A =  X'  X^{+}  
 $$ (eq:hatAform)
 
-where the (possibly huge) $ \tilde n \times m $ matrix $ X^{+} = (X^T X)^{-1} X^T$ is again a pseudo-inverse of $ X $.
+where the (possibly huge) $ n \times m $ matrix $ X^{+} = (X^T X)^{-1} X^T$ is again a pseudo-inverse of $ X $.
+
+
+The $ i $th  row of $ \hat A $ is an $ m \times 1 $ vector of regression coefficients of $ X_{i,t+1} $ on $ X_{j,t}, j = 1, \ldots, m $.
 
 For some situations that we are interested in, $X^T X $ can be close to singular, a situation that can make some numerical algorithms  be error-prone.
 
@@ -796,7 +800,7 @@ To confront that possibility, we'll use  efficient algorithms for computing and 
 
 The $ i $th  row of $ \hat A $ is an $ m \times 1 $ vector of regression coefficients of $ X_{i,t+1} $ on $ X_{j,t}, j = 1, \ldots, m $.
 
-An efficient way to compute the pseudo-inverse $X^+$ is to start with  the (reduced) singular value decomposition
+An efficient way to compute the pseudo-inverse $X^+$ is to start with  a singular value decomposition
 
 
 
@@ -804,12 +808,8 @@ $$
 X =  U \Sigma  V^T 
 $$ (eq:SVDDMD)
 
-where $ U $ is $ m \times p $, $ \Sigma $ is a $ p \times p $ diagonal  matrix, and $ V^T $ is a $ p \times \tilde n $ matrix.
 
-Here $ p $ is the rank of $ X $, where necessarily $ p \leq \tilde n $ because we are in a situation in which $m > > \tilde n$.
-
-
-Since we are in the $m > > \tilde n$ case, we can use the singular value decomposition {eq}`eq:SVDDMD` efficiently to construct the pseudo-inverse $X^+$
+We can use the singular value decomposition {eq}`eq:SVDDMD` efficiently to construct the pseudo-inverse $X^+$
 by recognizing the following string of equalities.  
 
 $$
@@ -821,6 +821,10 @@ X^{+} & = (X^T X)^{-1} X^T \\
   & = V \Sigma^{-1} U^T 
 \end{aligned}
 $$ (eq:efficientpseudoinverse)
+
+
+(Since we are in the $m > > n$ case in which $V^T V = I$ in a reduced SVD, we can use the preceding
+string of equalities for a reduced SVD as well as for a full SVD.)
 
 Thus, we shall  construct a pseudo-inverse $ X^+ $  of $ X $ by using
 a singular value decomposition of $X$ in equation {eq}`eq:SVDDMD`  to compute
@@ -840,22 +844,22 @@ $$
 \hat A = X' V \Sigma^{-1}  U^T 
 $$
 
-In addition to doing that, we’ll eventually use **dynamic mode decomposition** to compute a rank $ r $ approximation to $ A $,
+In addition to doing that, we’ll eventually use **dynamic mode decomposition** to compute a rank $ r $ approximation to $ \hat A $,
 where $ r <  p $.
   
 **Remark:** We  described and illustrated a **reduced** singular value decomposition above, and compared it with a **full** singular value decomposition.
 In our Python code, we'll typically use  a reduced SVD.
 
 
-Next, we describe some alternative __reduced order__ representations of our first-order linear dynamic system.
+Next, we describe alternative representations of our first-order linear dynamic system.
 
 +++
 
 ## Representation 1
  
-In constructing this representation and also whenever we use it, we use a **full** SVD of $X$.
+In this representation, we shall use a **full** SVD of $X$.
 
-We use the $p$  columns of $U$, and thus the $p$ rows of $U^T$,  to define   a $p \times 1$  vector $\tilde b_t$ as follows
+We use the $m$  columns of $U$, and thus the $m$ rows of $U^T$,  to define   a $m \times 1$  vector $\tilde b_t$ as follows
 
 
 $$
@@ -876,13 +880,13 @@ So it follows from equation {eq}`eq:tildeXdef2` that we can reconstruct  $X_t$ f
 
 
 
- * Equation {eq}`eq:tildeXdef2` serves as an **encoder** that  summarizes the $m \times 1$ vector $X_t$ by a $p \times 1$ vector $\tilde b_t$ 
+ * Equation {eq}`eq:tildeXdef2` serves as an **encoder** that  rotates the $m \times 1$ vector $X_t$ to become an $m \times 1$ vector $\tilde b_t$ 
   
- * Equation {eq}`eq:Xdecoder` serves as a **decoder** that recovers the $m \times 1$ vector $X_t$ from the $p \times 1$ vector $\tilde b_t$ 
+ * Equation {eq}`eq:Xdecoder` serves as a **decoder** that recovers the $m \times 1$ vector $X_t$ by rotating  the $m \times 1$ vector $\tilde b_t$ 
 
 
 
-Define the  transition matrix for a reduced $p \times 1$ state $\tilde b_t$ as
+Define a  transition matrix for a rotated $m \times 1$ state $\tilde b_t$ by
 
 $$ 
 \tilde A = U^T \hat A U 
@@ -894,13 +898,14 @@ $$
 \hat A = U \tilde A U^T 
 $$
 
-Dynamics of the reduced $p \times 1$ state $\tilde b_t$ are governed by
+Dynamics of the rotated $m \times 1$ state $\tilde b_t$ are governed by
 
 $$
 \tilde b_{t+1} = \tilde A \tilde b_t 
 $$
 
-To construct forecasts $\overline X_t$ of  future values of $X_t$ conditional on $X_1$, we can apply  decoders to both sides of this 
+To construct forecasts $\overline X_t$ of  future values of $X_t$ conditional on $X_1$, we can apply  decoders
+(i.e., rotators) to both sides of this 
 equation and deduce
 
 $$
@@ -914,43 +919,45 @@ where we use $\overline X_t$ to denote a forecast.
 ## Representation 2
 
 
-This representation is the one originally proposed by  {cite}`schmid2010`.
+This representation is related to  one originally proposed by  {cite}`schmid2010`.
 
 It can be regarded as an intermediate step to  a related and perhaps more useful  representation 3.
 
 
 As with Representation 1, we continue to
 
-
-* use all $p$ singular values of $X$
 * use a **full** SVD and **not** a reduced SVD
 
 
 
-As we observed and illustrated  earlier in this lecture, under these two requirements,
+As we observed and illustrated  earlier in this lecture, for a full SVD
 $U U^T$ and $U^T U$ are both identity matrices; but under a reduced SVD of $X$, $U^T U$ is not an identity matrix.  
 
-As we shall see, these requirements will be too confining for what we ultimately want to do; these are situations in which  $U^T U$ is **not** an identity matrix because we want to use a reduced SVD of $X$.
+As we shall see, a full SVD is  too confining for what we ultimately want to do, namely,  situations in which  $U^T U$ is **not** an identity matrix because we  use a reduced SVD of $X$.
 
 But for now, let's proceed under the assumption that both of the  preceding two  requirements are satisfied.
 
  
 
-Form an eigendecomposition of the $p \times p$ matrix $\tilde A$ defined in equation {eq}`eq:Atilde0`:
+Form an eigendecomposition of the $m \times m$ matrix $\tilde A = U^T \check A U$ defined in equation {eq}`eq:Atilde0`:
 
 $$
 \tilde A = W \Lambda W^{-1} 
 $$ (eq:tildeAeigen)
 
-where $\Lambda$ is a diagonal matrix of eigenvalues and $W$ is a $p \times p$
+where $\Lambda$ is a diagonal matrix of eigenvalues and $W$ is an $m \times m$
 matrix whose columns are eigenvectors  corresponding to rows (eigenvalues) in 
 $\Lambda$.
 
-Note that when $U U^T = I_{m \times m}$, as is true with a full SVD of X (but **not** true with a reduced SVD)
+Note that when $U U^T = I_{m \times m}$, as is true with a full SVD of $X$ (but as is **not** true with a reduced SVD)
 
 $$ 
 \hat A = U \tilde A U^T = U W \Lambda W^{-1} U^T 
-$$
+$$ (eq:eqeigAhat)
+
+Evidently, according to equation {eq}`eq:eqeigAhat`, the diagonal matrix $\Lambda$ contains eigenvalues of 
+$\hat A$ and corresponding eigenvectors of $\hat A$ are columns of the matrix $UW$. 
+
 
 Thus, the systematic (i.e., not random) parts of the $X_t$ dynamics captured by our first-order vector autoregressions   are described by
 
@@ -982,7 +989,7 @@ $$
 X_t = U W \hat b_t
 $$
 
-We can use this representation to constructor a predictor $\overline X_{t+1}$ of $X_{t+1}$ conditional on $X_1$  via: 
+We can use this representation to construct a predictor $\overline X_{t+1}$ of $X_{t+1}$ conditional on $X_1$  via: 
 
 $$
 \overline X_{t+1} = U W \Lambda^t W^{-1} U^T X_1 
@@ -990,7 +997,7 @@ $$ (eq:DSSEbookrepr)
 
 
 In effect, 
-{cite}`schmid2010` defined an $m \times p$ matrix $\Phi_s$ as
+{cite}`schmid2010` defined an $m \times m$ matrix $\Phi_s$ as
 
 $$ 
 \Phi_s = UW 
@@ -1005,15 +1012,10 @@ $$ (eq:schmidrep)
 Components of the  basis vector $ \hat b_t = W^{-1} U^T X_t \equiv \Phi_s^+$ are often  called DMD **modes**, or sometimes also
 DMD **projected nodes**.    
 
-An alternative definition of DMD notes is motivate by the following observation. 
 
-A peculiar feature of representation {eq}`eq:schmidrep` is that while the diagonal components of $\Lambda$ are square roots of singular 
-values of $\check A$, the columns of $\Phi_s$ are **not** eigenvectors  corresponding to eigenvalues of $\check A$.  
 
-This feature led Tu et al. {cite}`tu_Rowley` to suggest an alternative representation that replaces $\Phi_s$ with another
-$m \times p$ matrix whose columns are eigenvectors of $\check A$.
 
-We turn to that representation next. 
+We turn next  to an alternative  representation suggested by  Tu et al. {cite}`tu_Rowley`. 
 
 
 
@@ -1021,21 +1023,34 @@ We turn to that representation next.
 ## Representation 3
 
  
-As we did with representation 2, it is useful to  construct an eigencomposition of the $p \times p$ transition matrix  $\tilde A$
+As we did with representation 2, it is useful to  construct an eigendecomposition of the $m \times m$ transition matrix  $\tilde A$
 according the equation {eq}`eq:tildeAeigen`.
 
 
-Now where $ 1 \leq r \leq p$,  construct an $m \times r$ matrix
+Departing from the procedures used to construct  Representations 1 and 2, each of which deployed a **full** SVD, we now use a **reduced** SVD.  
+
+As above, we let $p \leq \textrm{min}(m,n)$ be the rank of $X$ and consider a **reduced** SVD
 
 $$
-  \Phi = X'  V  \Sigma^{-1} W
+X = U \Sigma V^T
+$$
+
+where now $U$ is $m \times p$ and $\Sigma$ is $ p \times p$ and $V^T$ is $p \times n$. 
+
+
+
+
+Construct an $m \times p$ matrix
+
+$$
+  \Phi = X'   V  \Sigma^{-1} W
 $$ (eq:Phiformula)
 
 
   
 Tu et al. {cite}`tu_Rowley` established the following  
 
-**Proposition** The $r$ columns of $\Phi$ are eigenvectors of $\check A$ that correspond to the largest $r$ eigenvalues of $A$. 
+**Proposition** The $p$ columns of $\Phi$ are eigenvectors of $\check A$.
 
 **Proof:** From formula {eq}`eq:Phiformula` we have
 
@@ -1074,7 +1089,7 @@ We also have the following
 {eq}`eq:Atilde0`, define it as the following $r \times r$ counterpart
 
 $$ 
-\tilde A = \tilde U^T \hat A U 
+\tilde A = \tilde U^T \hat A \tilde U 
 $$ (eq:Atilde10)
 
 where  in equation {eq}`eq:Atilde10` $\tilde U$ is now  the $m \times r$ matrix consisting of the eigevectors of $X X^T$ corresponding to the $r$
@@ -1203,7 +1218,7 @@ the $r < p$ largest singular values.
 
 In that case, we simply replace $\Sigma$ with the appropriate $r \times r$ matrix of singular values,
 $U$ with the $m \times r$ matrix of whose columns correspond to the $r$ largest singular values,
-and $V$ with the $\tilde n \times r$ matrix whose columns correspond to the $r$ largest  singular values.
+and $V$ with the $n \times r$ matrix whose columns correspond to the $r$ largest  singular values.
 
 Counterparts of all of the salient formulas above then apply.
 
