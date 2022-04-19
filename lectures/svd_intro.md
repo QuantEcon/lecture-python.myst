@@ -939,7 +939,7 @@ But for now, let's proceed under the assumption that both of the  preceding two 
 
  
 
-Form an eigendecomposition of the $m \times m$ matrix $\tilde A = U^T \check A U$ defined in equation {eq}`eq:Atilde0`:
+Form an eigendecomposition of the $m \times m$ matrix $\tilde A = U^T \hat A U$ defined in equation {eq}`eq:Atilde0`:
 
 $$
 \tilde A = W \Lambda W^{-1} 
@@ -949,7 +949,7 @@ where $\Lambda$ is a diagonal matrix of eigenvalues and $W$ is an $m \times m$
 matrix whose columns are eigenvectors  corresponding to rows (eigenvalues) in 
 $\Lambda$.
 
-Note that when $U U^T = I_{m \times m}$, as is true with a full SVD of $X$ (but as is **not** true with a reduced SVD)
+When $U U^T = I_{m \times m}$, as is true with a full SVD of $X$, it follows that 
 
 $$ 
 \hat A = U \tilde A U^T = U W \Lambda W^{-1} U^T 
@@ -1085,8 +1085,7 @@ This concludes the proof.
 
 We also have the following
 
-**Corollary:**  Assume that the integer $r$ satisfies $1 \leq r < p$.  Instead of defining $\tilde A$ according to  equation
-{eq}`eq:Atilde0`, define it as the following $r \times r$ counterpart
+**Corollary:**  Assume that the integer $r$ satisfies $1 \leq r < p$. As a counterpart of $\tilde A$ defined above in equation {eq}`eq:Atilde0` with a full SVD, instead use a  reduced SVD to redefine  $\tilde A$ as the following $r \times r$ counterpart
 
 $$ 
 \tilde A = \tilde U^T \hat A \tilde U 
