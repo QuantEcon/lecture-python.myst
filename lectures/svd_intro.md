@@ -1001,7 +1001,7 @@ In effect,
 
 $$ 
 \Phi_s = UW 
-$$
+$$ (eq:Phisfull)
 
 and represented equation {eq}`eq:DSSEbookrepr` as
 
@@ -1015,32 +1015,87 @@ DMD **projected nodes**.
 
 
 
-We turn next  to an alternative  representation suggested by  Tu et al. {cite}`tu_Rowley`. 
+We turn next  to an alternative  representation suggested by  Tu et al. {cite}`tu_Rowley`, one that is more appropriate to use when, as in practice is typically the case, we use a reduced SVD.
 
 
 
 
 ## Representation 3
 
- 
-As we did with representation 2, it is useful to  construct an eigendecomposition of the $m \times m$ transition matrix  $\tilde A$
-according the equation {eq}`eq:tildeAeigen`.
-
-
 Departing from the procedures used to construct  Representations 1 and 2, each of which deployed a **full** SVD, we now use a **reduced** SVD.  
 
-As above, we let $p \leq \textrm{min}(m,n)$ be the rank of $X$ and consider a **reduced** SVD
+Again, we let  $p \leq \textrm{min}(m,n)$ be the rank of $X$.
+
+Construct a **reduced** SVD
 
 $$
-X = U \Sigma V^T
+X = \tilde U \tilde \Sigma \tilde V^T, 
 $$
 
 where now $U$ is $m \times p$ and $\Sigma$ is $ p \times p$ and $V^T$ is $p \times n$. 
 
+Our minimum-norm least-squares estimator  approximator of  $A$ now has representation 
+
+$$
+\hat A = X' \tilde V \tilde \Sigma^{-1} \tilde U^T
+$$
 
 
+Paralleling a step in Representation 1, define a  transition matrix for a rotated $p \times 1$ state $\tilde b_t$ by
 
-Construct an $m \times p$ matrix
+$$ 
+\tilde A =\tilde  U^T \hat A \tilde U 
+$$ (eq:Atildered)
+
+Because we are now working with a reduced SVD, so that $\tilde U \tilde U^T \neq I$, we can't  recover $\hat A$ from $ \hat A \neq \tilde U \tilde A \tilde U^T$. 
+
+
+Nevertheless, hoping for the best, we trudge on and construct an eigendecomposition of what  is now a 
+$p \times p$ matrix $\tilde A$:
+
+$$
+ \tilde A =  W  \Lambda  W^{-1}
+$$ (eq:tildeAeigenred)
+
+
+Mimicking our procedure in Representation 2, we cross our fingers and compute the $m \times p$ matrix
+
+$$
+\tilde \Phi_s = \tilde U W
+$$ (eq:Phisred)
+
+that  corresponds to {eq}`eq:Phisfull` for a full SVD.  
+
+At this point, it is interesting to compute $\hat A \tilde  \Phi_s$:
+
+$$
+\begin{aligned}
+\hat A \tilde \Phi_s & = (X' \tilde V \tilde \Sigma^{-1} \tilde U^T) (\tilde U W) \\
+  & = X' \tilde V \tilde \Sigma^{-1} W \\
+  & \neq (\tilde U W) \Lambda \\
+  & = \tilde \Phi_s \Lambda
+  \end{aligned}
+$$
+ 
+That 
+$ \hat A \tilde \Phi_s \neq \tilde \Phi_s \Lambda $ means, that unlike the  corresponding situation in Representation 2, columns of $\tilde \Phi_s = \tilde U W$
+are **not** eigenvectors of $\hat A$ corresponding to eigenvalues  $\Lambda$.
+
+But in the quest for eigenvectors of $\hat A$ that we can compute with a reduced SVD,  let's define 
+
+$$
+\Phi \equiv \hat A \tilde \Phi_s = X' \tilde V \tilde \Sigma^{-1} W
+$$
+
+It turns out that columns of $\Phi$ **are** eigenvectors of $\hat A$,
+ a consequence of a  result established by Tu et al. {cite}`tu_Rowley`.
+
+To present their result, for convenience we'll drop the tilde $\tilde \cdot$ for $U, V,$ and $\Sigma$
+and adopt the understanding that they are computed with a reduced SVD.  
+
+
+Thus, we now use the notation
+that ths  $m \times p$ matrix is defined as
 
 $$
   \Phi = X'   V  \Sigma^{-1} W
@@ -1048,15 +1103,13 @@ $$ (eq:Phiformula)
 
 
   
-Tu et al. {cite}`tu_Rowley` established the following  
-
 **Proposition** The $p$ columns of $\Phi$ are eigenvectors of $\check A$.
 
 **Proof:** From formula {eq}`eq:Phiformula` we have
 
 $$  
 \begin{aligned}
-  \check A \Phi & =  (X' V \Sigma^{-1} U^T) (X' V \Sigma^{-1} W) \cr
+  \hat A \Phi & =  (X' V \Sigma^{-1} U^T) (X' V \Sigma^{-1} W) \cr
   & = X' V \Sigma^{-1} \tilde A W \cr
   & = X' V \Sigma^{-1} W \Lambda \cr
   & = \Phi \Lambda 
@@ -1066,34 +1119,23 @@ $$
 Thus, we  have deduced  that
 
 $$  
-\check A \Phi = \Phi \Lambda
+\hat A \Phi = \Phi \Lambda
 $$ (eq:APhiLambda)
 
-Let $\phi_i$ be the the $i$the column of $\Phi$ and $\lambda_i$ be the corresponding $i$ eigenvalue of $\tilde A$ from decomposition {eq}`eq:tildeAeigen`. 
+Let $\phi_i$ be the the $i$the column of $\Phi$ and $\lambda_i$ be the corresponding $i$ eigenvalue of $\tilde A$ from decomposition {eq}`eq:tildeAeigenred`. 
 
 Writing out the $m \times 1$ vectors on both sides of  equation {eq}`eq:APhiLambda` and equating them gives
 
 
 $$
-\check A \phi_i = \lambda_i \phi_i .
+\hat A \phi_i = \lambda_i \phi_i .
 $$
 
-Thus, $\phi_i$ is an eigenvector of $A$ that corresponds to eigenvalue  $\lambda_i$ of $\check A$.
+Thus, $\phi_i$ is an eigenvector of $\hat A$ that corresponds to eigenvalue  $\lambda_i$ of $\tilde A$.
 
 This concludes the proof. 
 
 
-We also have the following
-
-**Corollary:**  Assume that the integer $r$ satisfies $1 \leq r < p$. As a counterpart of $\tilde A$ defined above in equation {eq}`eq:Atilde0` with a full SVD, instead use a  reduced SVD to redefine  $\tilde A$ as the following $r \times r$ counterpart
-
-$$ 
-\tilde A = \tilde U^T \hat A \tilde U 
-$$ (eq:Atilde10)
-
-where  in equation {eq}`eq:Atilde10` $\tilde U$ is now  the $m \times r$ matrix consisting of the eigevectors of $X X^T$ corresponding to the $r$
-largest singular values of $X$.
-The conclusions of the proposition remain true when we replace $U$ by $\tilde U$. 
 
 
 Also see {cite}`DDSE_book` (p. 238)
@@ -1123,7 +1165,7 @@ X_t & = \Phi \check b_t
 $$
 
 
-But there is a better way to compute the $r \times 1$ vector $\check b_t$
+But there is a better way to compute the $p \times 1$ vector $\check b_t$
 
 In particular, the following argument from {cite}`DDSE_book` (page 240) provides a computationally efficient way
 to compute $\check b_t$.  
