@@ -1095,7 +1095,7 @@ and adopt the understanding that they are computed with a reduced SVD.
 
 
 Thus, we now use the notation
-that ths  $m \times p$ matrix is defined as
+that the  $m \times p$ matrix is defined as
 
 $$
   \Phi = X'   V  \Sigma^{-1} W
