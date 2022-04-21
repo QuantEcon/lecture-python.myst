@@ -717,8 +717,7 @@ We'll dig deeper into some of the ideas used here in the following lectures:
 
 * {doc}`this lecture <likelihood_ratio_process>` describes **likelihood ratio processes**
   and their role in frequentist and Bayesian statistical theories
-* {doc}`this lecture <navy_captain>` returns to the subject of this lecture and studies
-  whether the Captain's hunch that the (frequentist) decision rule that the Navy had ordered
-  him to use can be expected to be better or worse than the rule sequential rule that Abraham
-  Wald designed
+* {doc}`this lecture <navy_captain>` studies  whether a World War II US Nay Captain's hunch that a (frequentist) decision rule that the Navy had told 
+  him to use was actually inferior to a sequential rule that Abraham
+  Wald would soon design
 
