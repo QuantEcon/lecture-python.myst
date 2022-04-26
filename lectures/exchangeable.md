@@ -44,8 +44,7 @@ plays in  Bayes' Law.
 We'll use such graphs to provide insights into the mechanics driving outcomes in {doc}`this lecture <odu>` about learning in an augmented McCall job
 search model.
 
-Among other things, this lecture discusses  connections between the statistical concepts of sequences of random variables
-that are
+Among other things, this lecture discusses  connections between the statistical concepts of sequences of random variables that are
 
 - independently and identically distributed
 - exchangeable
@@ -54,6 +53,14 @@ Understanding the distinction between these concepts is essential for appreciati
 works in our example.
 
 You can read about exchangeability [here](https://en.wikipedia.org/wiki/Exchangeable_random_variables).
+
+Another term for **exchangeable** is **conditionally independent**.
+
+In this lecture, we hope  to convey an answer to the question *conditional on what?* in the phrase
+*conditionally independent*.
+
+We also help to tell why  an assumption of independence precludes possibility of learning while 
+an assumption of conditional independence makes learning possible.
 
 Below, we'll often use
 
