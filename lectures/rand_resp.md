@@ -3,10 +3,8 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.13.4
 kernelspec:
-  display_name: Python 3 (ipykernel)
+  display_name: Python 3
   language: python
   name: python3
 ---
@@ -16,7 +14,7 @@ kernelspec:
 
 ## Overview
 
-Social stigmas can inhibit people from confessing   potentially embarrassing activities or opinions. 
+Social stigmas can inhibit people from confessing potentially embarrassing activities or opinions. 
 
 When people are reluctant to participate a sample survey about personally  sensitive issues, they  might decline  to participate, and even if they do participate, they might choose to provide incorrect answers to  sensitive questions.
 
@@ -61,34 +59,21 @@ Warner {cite}`warner1965randomized` proposed and analyzed the following procedur
 - Prepare a **random spinner** that with $p$ probability points to the Letter A and with $(1-p)$ probability points to the Letter B.
 - Each subject spins a random spinner and sees an outcome (A or B)  that the interviewer  does **not observe**.
 - The subject   states whether he belongs to the group to which the spinner points.
-- If the spinner points to  the group that the spinner  belongs, the subject   reports “yes”; otherwise he reports “no”.
+- If the spinner points to the group that the spinner belongs, the subject reports "yes"; otherwise he reports "no".
 - The  subject answers the question truthfully. 
-
 
 Warner constructed a maximum  likelihood estimators of the proportion of the population in set A.
 
-
 Let
 
-+++
-
 - $\pi$ : True probability of A in the population
-
-+++
-
 - $p$ : Probability that the spinner points to A
-
-+++
-
 - $X_{i}=\begin{cases}1,\text{ if the } i\text{th} \ \text{ subject  says yes}\\0,\text{ if the } i\text{th} \ \text{  subject  says no}\end{cases}$
 
-+++
 
 Index the sample set so that  the first $n_1$ report "yes", while the second $n-n_1$ report "no".
 
 The likelihood function of a sample set is 
-
-+++
 
 $$
 \begin{equation}
@@ -97,11 +82,7 @@ L=\left[\pi p + (1-\pi)(1-p)\right]^{n_{1}}\left[(1-\pi) p +\pi (1-p)\right]^{n-
 \end{equation}
 $$
 
-+++
-
 The log of the likelihood function is:
-
-+++
 
 $$
 \begin{equation}
@@ -109,21 +90,13 @@ $$
 \end{equation}
 $$
 
-+++
-
 The first-order necessary condition for maximimizng the log likelihood function with respect to  $\pi$ is:
-
-+++
 
 $$
 \frac{(n-n_1)(2p-1)}{(1-\pi) p +\pi (1-p)}=\frac{n_1 (2p-1)}{\pi p + (1-\pi)(1-p)} 
 $$
 
-+++
-
 or
-
-+++
 
 $$
 \begin{equation}
@@ -131,66 +104,42 @@ $$
 \end{equation}
 $$
 
-+++
-
 If  $p \neq \frac{1}{2}$, then the maximum likelihood estimator (MLE) of $\pi$ is:
 
-+++
-
 $$
-\begin{equation}
 \hat{\pi}=\frac{p-1}{2p-1}+\frac{n_1}{(2p-1)n} \tag{4}
-\end{equation}
 $$
-
-+++
 
 We compute the mean and variance of the MLE estimator $\hat \pi$ to be:
 
-+++
-
 $$
-\begin{align}
+\begin{aligned}
 \mathbb{E}(\hat{\pi})&= \frac{1}{2 p-1}\left[p-1+\frac{1}{n} \sum_{i=1}^{n} \mathbb{E} X_i \right] \\
 &=\frac{1}{2 p-1} \left[ p -1 + \pi p + (1-\pi)(1-p)\right] \\
 &=\pi  \tag{5}
-\end{align}
+\end{aligned}
 $$
-
-+++
 
 and
 
-+++
-
 $$
-\begin{align}
+\begin{aligned}
 Var(\hat{\pi})&=\frac{n Var(X_i)}{(2p - 1 )^2 n^2} \\
 &= \frac{\left[\pi p + (1-\pi)(1-p)\right]\left[(1-\pi) p +\pi (1-p)\right]}{(2p - 1 )^2 n^2}\\
 &=\frac{\frac{1}{4}+(2 p^2 - 2 p +\frac{1}{2})(- 2 \pi^2 + 2 \pi -\frac{1}{2})}{(2p - 1 )^2 n^2}\\
 &=\frac{1}{n}\left[\frac{1}{16(p-\frac{1}{2})^2}-(\pi-\frac{1}{2})^2 \right] \tag{6}
-\end{align}
+\end{aligned}
 $$
-
-+++
 
 Equation (5) indicates  that $\hat{\pi}$ is an **unbiased estimator** of $\pi$ while equation (6) tell us the variance of the estimator.
 
 To compute a  confidence interval, first  rewrite (6) as:
 
-+++
-
 $$
-\begin{equation}
 Var(\hat{\pi})=\frac{\frac{1}{4}-(\pi-\frac{1}{2})^2}{n}+\frac{\frac{1}{16(p-\frac{1}{2})^2}-\frac{1}{4}}{n} \tag{7}
-\end{equation}
 $$
-
-+++
 
 This equation indicates that the variance of $\hat{\pi}$ can be represented as a sum of the variance due to sampling plus the variance due to the random device.
-
-
 
 From the expressions above we can find that:
 
@@ -198,8 +147,6 @@ From the expressions above we can find that:
 
 - When $p$ is $1$ or $0$, the randomized estimate degenerates to an estimator without randomized sampling.
 
-
-+++
 
 We shall analyze only discuss the situation in which $p \in (\frac{1}{2},1)$
 
@@ -209,67 +156,42 @@ From expressions (5) and (7) we can deduce that:
 
 - The MSE of $\hat{\pi}$  decreases as $p$ increasing.
 
-+++
 
 ## Comparing Two Survey Designs 
 
 Let's compare the preceding randomized-response method with a stylized non-randomized response method.
 
-+++
-
 In our non-randomized response method, we suppose that:
 
-+++
-
 - Members of Group A tells the truth with probability of $T_a$ while the members of Group B tells the truth with probability of $T_b$
-
-+++
-
 - $Y_i$ is $1$ or $0$ according to whether the sample's $i\text{th}$ member's report is in Group A or not.
-
-+++
 
 Then we can estimate $\pi$ as:
 
-+++
-
 $$
-\begin{equation}
 \hat{\pi}=\frac{\sum_{i=1}^{n}Y_i}{n} \tag{8}
-\end{equation}
 $$
-
-+++
 
 We calculate the expectation, bias, and variance of the estimator to be:
 
-+++
-
 $$
-\begin{align}
+\begin{aligned}
 \mathbb{E}(\hat{\pi})&=\pi T_a + \left[ (1-\pi)(1-T_b)\right] \tag{9}\\
 \\
 Bias(\hat{\pi})&=\mathbb{E}(\hat{\pi}-\pi)\\
 &=\pi [T_a + T_b -2 ] + [1- T_b] \tag{10}\\
 \\
 Var(\hat{\pi})&=\frac{ \left[ \pi T_a + (1-\pi)(1-T_b)\right]  \left[1- \pi T_a -(1-\pi)(1-T_b)\right] }{n} \tag{11}
-\end{align}
+\end{aligned}
 $$
 
-
 It is useful to define a
-
-
 
 $$
 \text{MSE Ratio}=\frac{\text{Mean Square Error Randomized}}{\text{Mean Square Error Regular}}
 $$
 
-+++
-
 We can compute  MSE Ratios for different surveys and survey designs associated with different parameter values.
-
-+++
 
 The following Python code computes the objects we want to stare at in order to make comparisons
 under  different values of $\pi_A$ and $n$:
@@ -323,12 +245,8 @@ class Comparison:
 
 Let's put the code to work for parameter values
 
-+++
-
 - $\pi_A=0.6$
 - $n=1000$
-
-+++
 
 We can generate MSE Ratios theoretically using the above formulas.
 
@@ -351,18 +269,12 @@ We see that in many situations, especially when the bias is not small, the MSE o
 
 These differences become larger as  $p$ increases.
 
-+++
-
 By adjusting  parameters $\pi_A$ and $n$, we can study outcomes in different situations.
 
 For example, for another situation described in Warner {cite}`warner1965randomized`:
 
-+++
-
 - $\pi_A=0.5$
 - $n=1000$
-
-+++
 
 we can use the code
 
@@ -379,12 +291,8 @@ df2_mc
 
 We can also revisit a calculation in the  concluding section of Warner {cite}`warner1965randomized` in which 
 
-+++
-
 - $\pi_A=0.6$
 - $n=2000$
-
-+++
 
 We use the code
 
@@ -400,8 +308,6 @@ df3_mc
 ```
 
 Evidently, as $n$ increases, the randomized response method does  better performance in more situations.
-
-+++
 
 ## Concluding Remarks
 
