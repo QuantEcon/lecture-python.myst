@@ -53,15 +53,15 @@ $$
 These design probabilities in turn can be used to compute the conditional probability of belonging to the sensitive group $A$ for a given response, say $r$:
 
 $$
-\text{Pr}(A|r)=\frac{\pi_A \text{Pr}(r|A)}{\pi_A \text{Pr}(r|A)+ (1-\pi_A) \text{Pr}(r|A^{'})} \tag{1}
-$$
+\text{Pr}(A|r)=\frac{\pi_A \text{Pr}(r|A)}{\pi_A \text{Pr}(r|A)+ (1-\pi_A) \text{Pr}(r|A^{'})}
+$$ (eq:one)
 
 
 ## Zoo of Concepts
 
 At this point we describe some concepts proposed by various researchers
 
-###  Leysieffer and Warner(1976) {cite}`leysieffer1976respondent`
+###  Leysieffer and Warner(1976)
 
 The response $r$ is regarded as jeopardizing with respect to $A$ or $A^{'}$ if
 
@@ -69,15 +69,15 @@ $$
 \begin{aligned}
 \text{Pr}(A|r)&>\pi_A\\
 \text{or}&\\
-\text{Pr}(A^{'}|r)&>1-\pi_A  \tag{2}
+\text{Pr}(A^{'}|r)&>1-\pi_A
 \end{aligned}
-$$
+$$ (eq:two)
 
 From Bayes's rule:
 
 $$
-\frac{\text{Pr}(A|r)}{\text{Pr}(A^{'}|r)}\times \frac{(1-\pi_A)}{\pi_A} = \frac{\text{Pr}(r|A)}{\text{Pr}(r|A^{'})} \tag{3}
-$$
+\frac{\text{Pr}(A|r)}{\text{Pr}(A^{'}|r)}\times \frac{(1-\pi_A)}{\pi_A} = \frac{\text{Pr}(r|A)}{\text{Pr}(r|A^{'})}
+$$ (eq:three)
 
 If this expression is greater (less) than unity, it follows that r is jeopardizing with respect to $A$($A^{'}$). Then, the natural measure of jeopardy will be: 
 
@@ -85,9 +85,9 @@ $$
 \begin{aligned}
 g(r|A)&=\frac{\text{Pr}(r|A)}{\text{Pr}(r|A^{'})}\\
 &\text{and}\\
-g(r|A^{'})&=\frac{\text{Pr}(r|A^{'})}{\text{Pr}(r|A)} \tag{4}
+g(r|A^{'})&=\frac{\text{Pr}(r|A^{'})}{\text{Pr}(r|A)}
 \end{aligned}
-$$
+$$ (eq:four)
 
 
 Suppose, without loss of generality, that $\text{Pr}(\text{yes}|A)>\text{Pr}(\text{yes}|A^{'})$, then a yes (no) answer is jeopardizing with respect $A$($A^{'}$), that is,
@@ -118,58 +118,60 @@ $$
 \text{Pr}(A|\text{no})=0
 $$
 
-###  Lanke(1976) {cite}`lanke1976degree`
+###  Lanke(1976)
 
 Lanke (1975) {cite}`lanke1975choice` argued that "it is membership in Group A that people may want to hide, not membership in the complementary Group A'."
 
 For that reason, Lanke (1976) {cite}`lanke1976degree` argued  that ah appropriate measure of protection is to minimize
 
 $$
-\max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\} \tag{5}
-$$
+\max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}
+$$ (eq:five)
 
 Holding this measure constant, he explained under what conditions the smallest variance of the estimate was achieved with the unrelated question model or Warner's (1965) original model.
 
-### 2.3 Fligner, Policello, and Singh {cite}`fligner1977comparison`
+### 2.3 Fligner, Policello, and Singh 
 
-Fligner, Policello, and Singh reached similar conclusion as Lanke (1976).
+Fligner, Policello, and Singh reached similar conclusion as Lanke (1976). {cite}`fligner1977comparison`
 
 They measured "private protection" as
 
 $$
-\frac{1-\max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}}{1-\pi_A} \tag{6}
-$$
+\frac{1-\max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}}{1-\pi_A}
+$$ (eq:six)
 
 
-### 2.4 Greenberg, Kuebler, Abernathy, and Horvitz (1977) {cite}`greenberg1977respondent` 
+### 2.4 Greenberg, Kuebler, Abernathy, and Horvitz (1977)
+
+{cite}`greenberg1977respondent` 
 
 Greenberg, Kuebler, Abernathy, and Horvitz (1977) stressed the importance of examining the risk to respondents who do not belong to $A$ as well as the risk to those who do belong to the sensitive group. 
 
 They defined the hazard for an individual in $A$ as the probability that he or she is perceived as belonging to $A$:
 
 $$
-\text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A)\times \text{Pr}(A|\text{no}) \tag{7.a}
-$$
+\text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A)\times \text{Pr}(A|\text{no})
+$$ (eq:seven-a)
 
 Similarly, the hazard for an individual who does not belong to $A$ would be
 
 $$
-\text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A^{'}) \times \text{Pr}(A|\text{no}) \tag{7.b}
-$$
+\text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A^{'}) \times \text{Pr}(A|\text{no})
+$$ (eq:seven-b)
 
 Greenberg et al. (1977) also considered an alternative related measure of hazard that "is likely to be closer to the actual concern felt by a respondent."
 
 The "limited hazard" for an individual in $A$ and $A^{'}$ is
 
 $$
-\text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes}) \tag{8.a}
-$$
+\text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes})
+$$ (eq:eight-a)
 
 and
 
 $$
-\text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes}) \tag{8.b}
-$$
+\text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})
+$$ (eq:eight-b)
 
 This measure is just the first term in $(7)$, i.e., the probability that an individual answers "yes" and is perceived to belong to A.
 
@@ -207,29 +209,29 @@ Define:
 Then there is an $r_i$ such that
 
 $$
-\frac{\partial U_i\left(\text{Pr}(A|r_i),\phi_i\right) }{\partial \text{Pr}(A|r_i)} <0, \text{ for } \phi_i \in \left\{\text{truth},\text{lie}\right\} \tag{9.a}
-$$
+\frac{\partial U_i\left(\text{Pr}(A|r_i),\phi_i\right) }{\partial \text{Pr}(A|r_i)} <0, \text{ for } \phi_i \in \left\{\text{truth},\text{lie}\right\}
+$$ (eq:nine-a)
 
 and
 
 $$
-U_i\left(\text{Pr}(A|r_i),\text{truth}\right)>U_i\left(\text{Pr}(A|r_i),\text{lie}\right)  , \text{ for } \text{Pr}(A|r_i) \in [0,1] \tag{9.b}
-$$
+U_i\left(\text{Pr}(A|r_i),\text{truth}\right)>U_i\left(\text{Pr}(A|r_i),\text{lie}\right)  , \text{ for } \text{Pr}(A|r_i) \in [0,1]
+$$ (eq:nine-b)
 
 Suppose now that  correct answer for individual $i$ is "yes".
 
 Individual $i$ would  choose to answer truthfully if 
 
 $$
-U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)  \tag{10.a}
-$$
+U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)
+$$ (eq:ten-a)
 
 
 If the correct  answer is "no," individual $i$ would volunteer the correct answer only if
 
 $$
-U_i\left(\text{Pr}(A|\text{no}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\text{yes}),\text{lie}\right)  \tag{10.b}
-$$
+U_i\left(\text{Pr}(A|\text{no}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\text{yes}),\text{lie}\right)
+$$ (eq:ten-b)
 
 Assume that 
 
@@ -246,16 +248,16 @@ Consequently,  constraint $(10.\text{a})$ becomes the single necessarly conditio
 At equality, constraint $(10.\text{a})$ determines   conditional probabilities that make the individual indifferent between telling the truth and lying when the correct answer is "yes":
 
 $$
-U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)= U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)  \tag{11}
-$$
+U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)= U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)
+$$ (eq:eleven)
 
 Equation $(11)$ defines a  "truth border".
 
 Differentiating $(11)$ with respect to the conditional probabilities shows that the truth border has a positive slope in the space of conditional probabilities:
 
 $$
-\frac{\partial \text{Pr}(A|\text{no})}{\partial \text{Pr}(A|\text{yes})}=\frac{\frac{\partial U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right) }{\partial \text{Pr}(A|\text{yes})}}{\frac{\partial U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right) }{\partial \text{Pr}(A|\text{no})}}>0 \tag{12}
-$$
+\frac{\partial \text{Pr}(A|\text{no})}{\partial \text{Pr}(A|\text{yes})}=\frac{\frac{\partial U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right) }{\partial \text{Pr}(A|\text{yes})}}{\frac{\partial U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right) }{\partial \text{Pr}(A|\text{no})}}>0
+$$ (eq:twelve)
 
 The source of the positive relationship is:
 
@@ -346,9 +348,9 @@ Given a design that ensures truthful answers by all respondents, Anderson(1976, 
 $$
 \begin{aligned}
 V(\text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}))
-= &\frac{{\pi_A}^2 (1-\pi_A)^2}{n}\times \frac{1}{\text{Pr}(A|\text{yes})-\pi_A}\times \frac{1}{\pi_A-\text{Pr}(A|\text{no})} \tag{13}
+= &\frac{{\pi_A}^2 (1-\pi_A)^2}{n}\times \frac{1}{\text{Pr}(A|\text{yes})-\pi_A}\times \frac{1}{\pi_A-\text{Pr}(A|\text{no})}
 \end{aligned}
-$$
+$$ (eq:thirteen)
 
 where the random sample with replacement consists of $n$ individuals. 
 
@@ -358,13 +360,11 @@ The following inequalities restrict the shapes of iso-variance curves:
 
 $$
 \frac{d \text{ Pr}(A|\text{no})}{d\text{ Pr}(A|\text{yes})}\bigg|_{\text{constant variance}}=\frac{\pi_A-\text{Pr}(A|\text{no})}{\text{Pr}(A|\text{yes})-\pi_A}>0
-\tag{14.a}
-$$
+$$ (eq:fourteen-a)
 
 $$
 \frac{d^2 \text{ Pr}(A|\text{no})}{d\text{ Pr}(A|\text{yes})^2}\bigg|_{\text{constant variance}}=- \frac{2 \left[\pi_A-\text{Pr}(A|\text{no})\right]}{\left[\text{Pr}(A|\text{yes})-\pi_A \right]^2}<0
-\tag{14.b}
-$$
+$$ (eq:fourteen-b)
 
 From expression $(13)$ and $(14)$ we can see that:
 
@@ -476,8 +476,8 @@ We'll enlist Python Code to help us.
 Lanke (1976) recommends a privacy  protection criterion that minimizes:
 
 $$
-\max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\} \tag{5}
-$$
+\max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}
+$$ (eq:five)
 
 Following Lanke's suggestion, the statistician should find the highest possible $\text{ Pr}(A|\text{yes})$ consistent with truth telling while $\text{ Pr}(A|\text{no})$ is fixed at 0. The variance is then minimized at point $X$ in Figure 3.
 
@@ -536,7 +536,9 @@ $$
 
 This is  not an optimal  choice under a utilitarian approach.
 
-### Analysis on the Method of Chaudhuri and Mukerjee's (1988) {cite}`Chadhuri_Mukerjee_88`
+### Analysis on the Method of Chaudhuri and Mukerjee's (1988)
+
+{cite}`Chadhuri_Mukerjee_88`
 
 Chaudhuri and Mukerjee (1988) argued that the individual may find that since "yes" may sometimes relate to the sensitive group A, a clever respondent may falsely but safely always be inclined to respond "no". In this situation, the truth border is such that individuals choose to lie whenever the truthful answer is "yes" and 
 
@@ -605,33 +607,35 @@ plt.legend(loc=0,fontsize='large')
 plt.title('Figure 4')
 ```
 
-### Method of Greenberg et al. (1977) {cite}`greenberg1977respondent`
+### Method of Greenberg et al. (1977)
+
+ {cite}`greenberg1977respondent`
 
 Greenberg et al. (1977) defined the hazard for an individual in $A$ as the probability that he or she is perceived as belonging to $A$:
 
 $$
-\text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A)\times \text{Pr}(A|\text{no}) \tag{7.a}
-$$
+\text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A)\times \text{Pr}(A|\text{no})
+$$ (eq:seven-a)
 
 The hazard for an individual who does not belong to $A$ is
 
 $$
-\text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A^{'}) \times \text{Pr}(A|\text{no}) \tag{7.b}
-$$
+\text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A^{'}) \times \text{Pr}(A|\text{no})
+$$ (eq:seven-a)
 
 They also considered an alternative related measure of hazard that they said  "is likely to be closer to the actual concern felt by a respondent." 
 
 Their "limited hazard" for an individual in $A$ and $A^{'}$ is
 
 $$
-\text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes}) \tag{8.a}
-$$
+\text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes})
+$$ (eq:eight-a)
 
 and
 
 $$
-\text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes}) \tag{8.b}
-$$
+\text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})
+$$ (eq:eight-b)
 
 According to Greenberg et al. (1977), a respondent commits himself or herself to answer truthfully on the basis of a probability in $(7)$ or $(8)$ **before** randomly selecting the question to be answered. 
 

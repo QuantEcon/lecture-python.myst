@@ -37,8 +37,6 @@ Related ideas underlie  modern **differential privacy** systems.
 
 ## Warner's Strategy
 
-
-
 As usual, let's bring in the Python modules we'll be using.
 
 
@@ -76,19 +74,14 @@ Index the sample set so that  the first $n_1$ report "yes", while the second $n-
 The likelihood function of a sample set is 
 
 $$
-\begin{equation}
 L=\left[\pi p + (1-\pi)(1-p)\right]^{n_{1}}\left[(1-\pi) p +\pi (1-p)\right]^{n-n_{1}} 
- \tag{1}
-\end{equation}
-$$
+$$ (eq:one)
 
 The log of the likelihood function is:
 
 $$
-\begin{equation}
-\log(L)= n_1 \log \left[\pi p + (1-\pi)(1-p)\right] + (n-n_{1}) \log \left[(1-\pi) p +\pi (1-p)\right] \tag{2}
-\end{equation}
-$$
+\log(L)= n_1 \log \left[\pi p + (1-\pi)(1-p)\right] + (n-n_{1}) \log \left[(1-\pi) p +\pi (1-p)\right]
+$$ (eq:two)
 
 The first-order necessary condition for maximimizng the log likelihood function with respect to  $\pi$ is:
 
@@ -99,16 +92,14 @@ $$
 or
 
 $$
-\begin{equation}
-\pi p + (1-\pi)(1-p)=\frac{n_1}{n} \tag{3}
-\end{equation}
-$$
+\pi p + (1-\pi)(1-p)=\frac{n_1}{n}
+$$ (eq:3)
 
 If  $p \neq \frac{1}{2}$, then the maximum likelihood estimator (MLE) of $\pi$ is:
 
 $$
-\hat{\pi}=\frac{p-1}{2p-1}+\frac{n_1}{(2p-1)n} \tag{4}
-$$
+\hat{\pi}=\frac{p-1}{2p-1}+\frac{n_1}{(2p-1)n}
+$$ (eq:four)
 
 We compute the mean and variance of the MLE estimator $\hat \pi$ to be:
 
@@ -116,9 +107,9 @@ $$
 \begin{aligned}
 \mathbb{E}(\hat{\pi})&= \frac{1}{2 p-1}\left[p-1+\frac{1}{n} \sum_{i=1}^{n} \mathbb{E} X_i \right] \\
 &=\frac{1}{2 p-1} \left[ p -1 + \pi p + (1-\pi)(1-p)\right] \\
-&=\pi  \tag{5}
+&=\pi
 \end{aligned}
-$$
+$$ (eq:five)
 
 and
 
@@ -127,23 +118,23 @@ $$
 Var(\hat{\pi})&=\frac{n Var(X_i)}{(2p - 1 )^2 n^2} \\
 &= \frac{\left[\pi p + (1-\pi)(1-p)\right]\left[(1-\pi) p +\pi (1-p)\right]}{(2p - 1 )^2 n^2}\\
 &=\frac{\frac{1}{4}+(2 p^2 - 2 p +\frac{1}{2})(- 2 \pi^2 + 2 \pi -\frac{1}{2})}{(2p - 1 )^2 n^2}\\
-&=\frac{1}{n}\left[\frac{1}{16(p-\frac{1}{2})^2}-(\pi-\frac{1}{2})^2 \right] \tag{6}
+&=\frac{1}{n}\left[\frac{1}{16(p-\frac{1}{2})^2}-(\pi-\frac{1}{2})^2 \right]
 \end{aligned}
-$$
+$$ (eq:six)
 
-Equation (5) indicates  that $\hat{\pi}$ is an **unbiased estimator** of $\pi$ while equation (6) tell us the variance of the estimator.
+Equation {eq}`eq:five` indicates  that $\hat{\pi}$ is an **unbiased estimator** of $\pi$ while equation {eq}`eq:six` tell us the variance of the estimator.
 
-To compute a  confidence interval, first  rewrite (6) as:
+To compute a  confidence interval, first  rewrite {eq}`eq:six` as:
 
 $$
-Var(\hat{\pi})=\frac{\frac{1}{4}-(\pi-\frac{1}{2})^2}{n}+\frac{\frac{1}{16(p-\frac{1}{2})^2}-\frac{1}{4}}{n} \tag{7}
-$$
+Var(\hat{\pi})=\frac{\frac{1}{4}-(\pi-\frac{1}{2})^2}{n}+\frac{\frac{1}{16(p-\frac{1}{2})^2}-\frac{1}{4}}{n}
+$$ (eq:seven)
 
 This equation indicates that the variance of $\hat{\pi}$ can be represented as a sum of the variance due to sampling plus the variance due to the random device.
 
 From the expressions above we can find that:
 
-- When $p$ is $\frac{1}{2}$, expression (1) degenerates to a constant.
+- When $p$ is $\frac{1}{2}$, expression {eq}`eq:one` degenerates to a constant.
 
 - When $p$ is $1$ or $0$, the randomized estimate degenerates to an estimator without randomized sampling.
 
@@ -152,7 +143,7 @@ We shall analyze only discuss the situation in which $p \in (\frac{1}{2},1)$
 
 (the situation in which $p \in (0,\frac{1}{2})$ is symmetric).
 
-From expressions (5) and (7) we can deduce that: 
+From expressions {eq}`eq:five` and {eq}`eq:seven` we can deduce that: 
 
 - The MSE of $\hat{\pi}$  decreases as $p$ increasing.
 
@@ -169,21 +160,29 @@ In our non-randomized response method, we suppose that:
 Then we can estimate $\pi$ as:
 
 $$
-\hat{\pi}=\frac{\sum_{i=1}^{n}Y_i}{n} \tag{8}
-$$
+\hat{\pi}=\frac{\sum_{i=1}^{n}Y_i}{n}
+$$ (eq:eight)
 
 We calculate the expectation, bias, and variance of the estimator to be:
 
 $$
 \begin{aligned}
-\mathbb{E}(\hat{\pi})&=\pi T_a + \left[ (1-\pi)(1-T_b)\right] \tag{9}\\
-\\
-Bias(\hat{\pi})&=\mathbb{E}(\hat{\pi}-\pi)\\
-&=\pi [T_a + T_b -2 ] + [1- T_b] \tag{10}\\
-\\
-Var(\hat{\pi})&=\frac{ \left[ \pi T_a + (1-\pi)(1-T_b)\right]  \left[1- \pi T_a -(1-\pi)(1-T_b)\right] }{n} \tag{11}
+\mathbb{E}(\hat{\pi})&=\pi T_a + \left[ (1-\pi)(1-T_b)\right]\\
 \end{aligned}
+$$ (eq:nine)
+
 $$
+\begin{aligned}
+Bias(\hat{\pi})&=\mathbb{E}(\hat{\pi}-\pi)\\
+&=\pi [T_a + T_b -2 ] + [1- T_b] \\
+\end{aligned}
+$$ (eq:ten)
+
+$$
+\begin{aligned}
+Var(\hat{\pi})&=\frac{ \left[ \pi T_a + (1-\pi)(1-T_b)\right]  \left[1- \pi T_a -(1-\pi)(1-T_b)\right] }{n}
+\end{aligned}
+$$ (eq:eleven)
 
 It is useful to define a
 
