@@ -44,8 +44,7 @@ plays in  Bayes' Law.
 We'll use such graphs to provide insights into the mechanics driving outcomes in {doc}`this lecture <odu>` about learning in an augmented McCall job
 search model.
 
-Among other things, this lecture discusses  connections between the statistical concepts of sequences of random variables
-that are
+Among other things, this lecture discusses  connections between the statistical concepts of sequences of random variables that are
 
 - independently and identically distributed
 - exchangeable
@@ -54,6 +53,14 @@ Understanding the distinction between these concepts is essential for appreciati
 works in our example.
 
 You can read about exchangeability [here](https://en.wikipedia.org/wiki/Exchangeable_random_variables).
+
+Another term for **exchangeable** is **conditionally independent**.
+
+In this lecture, we hope  to convey an answer to the question *conditional on what?* in the phrase
+*conditionally independent*.
+
+We also help to tell why  an assumption of independence precludes possibility of learning while 
+an assumption of conditional independence makes learning possible.
 
 Below, we'll often use
 
@@ -717,8 +724,7 @@ We'll dig deeper into some of the ideas used here in the following lectures:
 
 * {doc}`this lecture <likelihood_ratio_process>` describes **likelihood ratio processes**
   and their role in frequentist and Bayesian statistical theories
-* {doc}`this lecture <navy_captain>` returns to the subject of this lecture and studies
-  whether the Captain's hunch that the (frequentist) decision rule that the Navy had ordered
-  him to use can be expected to be better or worse than the rule sequential rule that Abraham
-  Wald designed
+* {doc}`this lecture <navy_captain>` studies  whether a World War II US Nay Captain's hunch that a (frequentist) decision rule that the Navy had told 
+  him to use was actually inferior to a sequential rule that Abraham
+  Wald would soon design
 

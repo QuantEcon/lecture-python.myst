@@ -124,7 +124,7 @@ We'll formulate the problem using dynamic programming.
 The following presentation of the problem closely follows Dmitri
 Berskekas's treatment in **Dynamic Programming and Stochastic Control** {cite}`Bertekas75`.
 
-A decision-maker observes a sequence of draws of a random variable $z$.
+A decision-maker can observe a sequence of draws of a random variable $z$.
 
 He (or she) wants to know which of two probability distributions $f_0$ or $f_1$ governs $z$.
 
@@ -137,19 +137,23 @@ random variables is also independently and identically distributed (IID).
 But the observer does not know which of the two distributions generated the sequence.
 
 For reasons explained in  [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html), this means that the sequence is not
-IID and that the observer has something to learn, even though he knows both $f_0$ and $f_1$.
+IID.  
 
-The decision maker   chooses a number of draws (i.e., random samples from the unknown distribution) and uses them to decide
+The observer has something to learn, namely, whether the observations are drawn from  $f_0$ or from $f_1$.
+
+The decision maker   wants  to decide
 which of the  two distributions is generating outcomes.
 
-He starts with prior
+We adopt a Bayesian formulation.
+
+The decision maker begins  with a prior probability
 
 $$
 \pi_{-1} =
 \mathbb P \{ f = f_0 \mid \textrm{ no observations} \} \in (0, 1)
 $$
 
-After observing $k+1$ observations $z_k, z_{k-1}, \ldots, z_0$, he updates this value to
+After observing $k+1$ observations $z_k, z_{k-1}, \ldots, z_0$, he updates his personal probability that the observations are described by distribution $f_0$  to
 
 $$
 \pi_k = \mathbb P \{ f = f_0 \mid z_k, z_{k-1}, \ldots, z_0 \}
@@ -252,7 +256,7 @@ So when we treat $f=f_0$ as the null hypothesis
 
 ### Intuition
 
-Let's try to guess what an optimal decision rule might look like before we go further.
+Before proceeding,  let's try to guess what an optimal decision rule might look like.
 
 Suppose at some given point in time that $\pi$ is close to 1.
 
@@ -260,7 +264,7 @@ Then our prior beliefs and the evidence so far point strongly to $f = f_0$.
 
 If, on the other hand, $\pi$ is close to 0, then $f = f_1$ is strongly favored.
 
-Finally, if $\pi$ is in the middle of the interval $[0, 1]$, then we have little information in either direction.
+Finally, if $\pi$ is in the middle of the interval $[0, 1]$, then we are confronted with more uncertainty.
 
 This reasoning suggests a decision rule such as the one shown in the figure
 
@@ -270,8 +274,7 @@ This reasoning suggests a decision rule such as the one shown in the figure
 
 As we'll see, this is indeed the correct form of the decision rule.
 
-The key problem is to determine the threshold values $\alpha, \beta$,
-which will depend on the parameters listed above.
+Our problem is to determine threshold values $\alpha, \beta$ that somehow depend on the parameters described  above.
 
 You might like to pause at this point and try to predict the impact of a
 parameter such as $c$ or $L_0$ on $\alpha$ or $\beta$.
@@ -326,7 +329,7 @@ where $\pi \in [0,1]$ and
   $f_0$ (i.e., the cost of making a type II error).
 - $\pi L_1$ is the expected loss associated with accepting
   $f_1$ (i.e., the cost of making a type I error).
-- $h(\pi) :=  c + \mathbb E [J(\pi')]$ the continuation value; i.e.,
+- $h(\pi) :=  c + \mathbb E [J(\pi')]$; this is the continuation value; i.e.,
   the expected cost associated with drawing one more $z$.
 
 The optimal decision rule is characterized by two numbers $\alpha, \beta \in (0,1) \times (0,1)$ that satisfy
@@ -354,7 +357,7 @@ $$
 Our aim is to compute the value function $J$, and from it the associated cutoffs $\alpha$
 and $\beta$.
 
-To make our computations simpler, using {eq}`optdec`, we can write the continuation value $h(\pi)$ as
+To make our computations manageable, using {eq}`optdec`, we can write the continuation value $h(\pi)$ as
 
 ```{math}
 :label: optdec2
@@ -375,7 +378,7 @@ h(\pi) =
 c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
 ```
 
-can be understood as a functional equation, where $h$ is the unknown.
+is a **functional equation** in an unknown function  $h$.
 
 Using the functional equation, {eq}`funceq`, for the continuation value, we can back out
 optimal choices using the right side of {eq}`optdec`.
@@ -501,7 +504,7 @@ def Q(h, wf):
     return h_new
 ```
 
-To solve the model, we will iterate using `Q` to find the fixed point
+To solve the key functional equation, we will iterate using `Q` to find the fixed point
 
 ```{code-cell} ipython3
 @jit(nopython=True)
@@ -630,7 +633,7 @@ model $f_0$ falls below $\beta$ or above $\alpha$.
 
 The next figure shows the outcomes of 500 simulations of the decision process.
 
-On the left is a histogram of the stopping times, which equal the number of draws of $z_k$ required to make a decision.
+On the left is a histogram of **stopping times**, i.e.,  the number of draws of $z_k$ required to make a decision.
 
 The average number of draws is around 6.6.
 

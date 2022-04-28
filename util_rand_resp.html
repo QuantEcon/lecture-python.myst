@@ -1,0 +1,1636 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>16. Expected Utilities of Random Responses &#8212; Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/util_rand_resp.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="17. Singular Value Decomposition (SVD)" href="svd_intro.html" />
+    <link rel="prev" title="15. Randomized Response Surveys" href="rand_resp.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Expected Utilities of Random Responses"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Expected Utilities of Random Responses" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/util_rand_resp.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=util_rand_resp>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   16.1. Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#privacy-measures">
+   16.2. Privacy Measures
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#zoo-of-concepts">
+   16.3. Zoo of Concepts
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#leysieffer-and-warner-1976">
+     16.3.1. Leysieffer and Warner(1976)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lanke-1976">
+     16.3.2. Lanke(1976)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fligner-policello-and-singh">
+     16.3.3. 2.3 Fligner, Policello, and Singh
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#greenberg-kuebler-abernathy-and-horvitz-1977">
+     16.3.4. 2.4 Greenberg, Kuebler, Abernathy, and Horvitz (1977)
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#respondents-expected-utility">
+   16.4. Respondent’s Expected Utility
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#truth-border">
+     16.4.1. Truth Border
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#drawing-a-truth-border">
+     16.4.2. Drawing a  Truth Border
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#utilitarian-view-of-survey-design">
+   16.5. Utilitarian View of Survey Design
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#iso-variance-curves">
+     16.5.1. Iso-variance Curves
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#drawing-iso-variance-curves">
+     16.5.2. Drawing  Iso-variance Curves
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimal-survey">
+     16.5.3. Optimal Survey
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#criticisms-of-proposed-privacy-measures">
+   16.6. Criticisms of Proposed Privacy Measures
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#analysis-of-method-of-lankes-1976">
+     16.6.1. Analysis of Method of Lanke’s (1976)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#method-of-leysieffer-and-warner-1976">
+     16.6.2. Method of Leysieffer and Warner (1976)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#analysis-on-the-method-of-chaudhuri-and-mukerjees-1988">
+     16.6.3. Analysis on the Method of Chaudhuri and Mukerjee’s (1988)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#method-of-greenberg-et-al-1977">
+     16.6.4. Method of Greenberg et al. (1977)
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#concluding-remarks">
+   16.7. Concluding Remarks
+  </a>
+ </li>
+</ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="qe-page__header-subheading">Expected Utilities of Random Responses</p>
+
+                    </div>
+
+                    <p class="qe-page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">math</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="expected-utilities-of-random-responses">
+<h1><span class="section-number">16. </span>Expected Utilities of Random Responses<a class="headerlink" href="#expected-utilities-of-random-responses" title="Permalink to this headline">¶</a></h1>
+<section id="overview">
+<h2><span class="section-number">16.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="rand_resp.html"><span class="doc">This quantecon lecture</span></a> describe randomized response surveys in the tradition of Warner <span id="id1">[<a class="reference internal" href="zreferences.html#id4">War65</a>]</span> that are designed  to protect  respondents’ privacy.</p>
+<p>Lars Ljungqvist <span id="id2">[<a class="reference internal" href="zreferences.html#id5">Lju93</a>]</span>  analyzed how a respondent’s decision about whether to answer truthfully depends on  <strong>expected utility</strong>.</p>
+<p>The lecture tells how Ljungqvist  used his  framework to shed light on alternative randomized response survey techniques
+proposed, for example, by <span id="id3">[<a class="reference internal" href="zreferences.html#id12">Lan75</a>]</span>, <span id="id4">[<a class="reference internal" href="zreferences.html#id6">Lan76</a>]</span>, <span id="id5">[<a class="reference internal" href="zreferences.html#id7">LW76</a>]</span>,
+<span id="id6">[<a class="reference internal" href="zreferences.html#id8">And76</a>]</span>, <span id="id7">[<a class="reference internal" href="zreferences.html#id9">FPS77</a>]</span>, <span id="id8">[<a class="reference internal" href="zreferences.html#id10">GKAH77</a>]</span>,
+<span id="id9">[<a class="reference internal" href="zreferences.html#id11">GAESH69</a>]</span>.</p>
+</section>
+<section id="privacy-measures">
+<h2><span class="section-number">16.2. </span>Privacy Measures<a class="headerlink" href="#privacy-measures" title="Permalink to this headline">¶</a></h2>
+<p>We consider randomized response models with only  two possible answers, “yes” and “no.”</p>
+<p>The design determines probabilities</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\text{Pr}(\text{yes}|A)&amp;=1-\text{Pr}(\text{no}|A)\\
+\text{Pr}(\text{yes}|A^{'})&amp;=1-\text{Pr}(\text{no}|A^{'})
+\end{aligned}
+\end{split}\]</div>
+<p>These design probabilities in turn can be used to compute the conditional probability of belonging to the sensitive group <span class="math notranslate nohighlight">\(A\)</span> for a given response, say <span class="math notranslate nohighlight">\(r\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-one">
+<span class="eqno">(16.1)<a class="headerlink" href="#equation-eq-util-rand-one" title="Permalink to this equation">¶</a></span>\[
+\text{Pr}(A|r)=\frac{\pi_A \text{Pr}(r|A)}{\pi_A \text{Pr}(r|A)+ (1-\pi_A) \text{Pr}(r|A^{'})}
+\]</div>
+</section>
+<section id="zoo-of-concepts">
+<h2><span class="section-number">16.3. </span>Zoo of Concepts<a class="headerlink" href="#zoo-of-concepts" title="Permalink to this headline">¶</a></h2>
+<p>At this point we describe some concepts proposed by various researchers</p>
+<section id="leysieffer-and-warner-1976">
+<h3><span class="section-number">16.3.1. </span>Leysieffer and Warner(1976)<a class="headerlink" href="#leysieffer-and-warner-1976" title="Permalink to this headline">¶</a></h3>
+<p>The response <span class="math notranslate nohighlight">\(r\)</span> is regarded as jeopardizing with respect to <span class="math notranslate nohighlight">\(A\)</span> or <span class="math notranslate nohighlight">\(A^{'}\)</span> if</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-two">
+<span class="eqno">(16.2)<a class="headerlink" href="#equation-eq-util-rand-two" title="Permalink to this equation">¶</a></span>\[\begin{split}
+\begin{aligned}
+\text{Pr}(A|r)&amp;&gt;\pi_A\\
+\text{or}&amp;\\
+\text{Pr}(A^{'}|r)&amp;&gt;1-\pi_A
+\end{aligned}
+\end{split}\]</div>
+<p>From Bayes’s rule:</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-three">
+<span class="eqno">(16.3)<a class="headerlink" href="#equation-eq-util-rand-three" title="Permalink to this equation">¶</a></span>\[
+\frac{\text{Pr}(A|r)}{\text{Pr}(A^{'}|r)}\times \frac{(1-\pi_A)}{\pi_A} = \frac{\text{Pr}(r|A)}{\text{Pr}(r|A^{'})}
+\]</div>
+<p>If this expression is greater (less) than unity, it follows that r is jeopardizing with respect to <span class="math notranslate nohighlight">\(A\)</span>(<span class="math notranslate nohighlight">\(A^{'}\)</span>). Then, the natural measure of jeopardy will be:</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-four">
+<span class="eqno">(16.4)<a class="headerlink" href="#equation-eq-util-rand-four" title="Permalink to this equation">¶</a></span>\[\begin{split}
+\begin{aligned}
+g(r|A)&amp;=\frac{\text{Pr}(r|A)}{\text{Pr}(r|A^{'})}\\
+&amp;\text{and}\\
+g(r|A^{'})&amp;=\frac{\text{Pr}(r|A^{'})}{\text{Pr}(r|A)}
+\end{aligned}
+\end{split}\]</div>
+<p>Suppose, without loss of generality, that <span class="math notranslate nohighlight">\(\text{Pr}(\text{yes}|A)&gt;\text{Pr}(\text{yes}|A^{'})\)</span>, then a yes (no) answer is jeopardizing with respect <span class="math notranslate nohighlight">\(A\)</span>(<span class="math notranslate nohighlight">\(A^{'}\)</span>), that is,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+g(\text{yes}|A)&amp;&gt;1\\
+\text{and}&amp;\\
+g(\text{no}|A^{'})&amp;&gt;1 
+\end{aligned}
+\end{split}\]</div>
+<p>Leysieffer and Warner proved that the variance of the estimate can only be decreased through an increase in one or both of these two measures of jeopardy.</p>
+<p>An efficient randomized response model is, therefore, any model that attains the maximum acceptable levels of jeopardy that are consistent with cooperation of the respondents.</p>
+<p>As a special example, Leysieffer and Warner considered “a problem in which there is no jeopardy in a no answer”; that is, <span class="math notranslate nohighlight">\(g(\text{no}|A^{'})\)</span> can be of unlimited magnitude.</p>
+<p>Evidently, an  optimal design must have</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Pr}(\text{yes}|A)=1
+\]</div>
+<p>which implies that</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Pr}(A|\text{no})=0
+\]</div>
+</section>
+<section id="lanke-1976">
+<h3><span class="section-number">16.3.2. </span>Lanke(1976)<a class="headerlink" href="#lanke-1976" title="Permalink to this headline">¶</a></h3>
+<p>Lanke (1975) <span id="id10">[<a class="reference internal" href="zreferences.html#id12">Lan75</a>]</span> argued that “it is membership in Group A that people may want to hide, not membership in the complementary Group A’.”</p>
+<p>For that reason, Lanke (1976) <span id="id11">[<a class="reference internal" href="zreferences.html#id6">Lan76</a>]</span> argued  that ah appropriate measure of protection is to minimize</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-five-a">
+<span class="eqno">(16.5)<a class="headerlink" href="#equation-eq-util-rand-five-a" title="Permalink to this equation">¶</a></span>\[
+\max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}
+\]</div>
+<p>Holding this measure constant, he explained under what conditions the smallest variance of the estimate was achieved with the unrelated question model or Warner’s (1965) original model.</p>
+</section>
+<section id="fligner-policello-and-singh">
+<h3><span class="section-number">16.3.3. </span>2.3 Fligner, Policello, and Singh<a class="headerlink" href="#fligner-policello-and-singh" title="Permalink to this headline">¶</a></h3>
+<p>Fligner, Policello, and Singh reached similar conclusion as Lanke (1976). <span id="id12">[<a class="reference internal" href="zreferences.html#id9">FPS77</a>]</span></p>
+<p>They measured “private protection” as</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-six">
+<span class="eqno">(16.6)<a class="headerlink" href="#equation-eq-util-rand-six" title="Permalink to this equation">¶</a></span>\[
+\frac{1-\max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}}{1-\pi_A}
+\]</div>
+</section>
+<section id="greenberg-kuebler-abernathy-and-horvitz-1977">
+<h3><span class="section-number">16.3.4. </span>2.4 Greenberg, Kuebler, Abernathy, and Horvitz (1977)<a class="headerlink" href="#greenberg-kuebler-abernathy-and-horvitz-1977" title="Permalink to this headline">¶</a></h3>
+<p><span id="id13">[<a class="reference internal" href="zreferences.html#id10">GKAH77</a>]</span></p>
+<p>Greenberg, Kuebler, Abernathy, and Horvitz (1977) stressed the importance of examining the risk to respondents who do not belong to <span class="math notranslate nohighlight">\(A\)</span> as well as the risk to those who do belong to the sensitive group.</p>
+<p>They defined the hazard for an individual in <span class="math notranslate nohighlight">\(A\)</span> as the probability that he or she is perceived as belonging to <span class="math notranslate nohighlight">\(A\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-seven-a">
+<span class="eqno">(16.7)<a class="headerlink" href="#equation-eq-util-rand-seven-a" title="Permalink to this equation">¶</a></span>\[
+\text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A)\times \text{Pr}(A|\text{no})
+\]</div>
+<p>Similarly, the hazard for an individual who does not belong to <span class="math notranslate nohighlight">\(A\)</span> would be</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-seven-b">
+<span class="eqno">(16.8)<a class="headerlink" href="#equation-eq-util-rand-seven-b" title="Permalink to this equation">¶</a></span>\[
+\text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A^{'}) \times \text{Pr}(A|\text{no})
+\]</div>
+<p>Greenberg et al. (1977) also considered an alternative related measure of hazard that “is likely to be closer to the actual concern felt by a respondent.”</p>
+<p>The “limited hazard” for an individual in <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(A^{'}\)</span> is</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-eight-a">
+<span class="eqno">(16.9)<a class="headerlink" href="#equation-eq-util-rand-eight-a" title="Permalink to this equation">¶</a></span>\[
+\text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes})
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-eight-b">
+<span class="eqno">(16.10)<a class="headerlink" href="#equation-eq-util-rand-eight-b" title="Permalink to this equation">¶</a></span>\[
+\text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})
+\]</div>
+<p>This measure is just the first term in <span class="math notranslate nohighlight">\((7)\)</span>, i.e., the probability that an individual answers “yes” and is perceived to belong to A.</p>
+</section>
+</section>
+<section id="respondents-expected-utility">
+<h2><span class="section-number">16.4. </span>Respondent’s Expected Utility<a class="headerlink" href="#respondents-expected-utility" title="Permalink to this headline">¶</a></h2>
+<section id="truth-border">
+<h3><span class="section-number">16.4.1. </span>Truth Border<a class="headerlink" href="#truth-border" title="Permalink to this headline">¶</a></h3>
+<p>Key  assumptions  that underlie a randomized response technique for estimating the  fraction of a population that belongs to  A are:</p>
+<ul class="simple">
+<li><p><strong>Assumption 1</strong>: Respondents feel discomfort from being thought of as belonging to <span class="math notranslate nohighlight">\(A\)</span>.</p></li>
+<li><p><strong>Assumption 2</strong>: Respondents prefer to answer questions truthfully than to lie, so long as the cost of doing so is not too high. The cost is taken to be the discomfort in 1.</p></li>
+</ul>
+<p>Let <span class="math notranslate nohighlight">\(r_i\)</span> denote individual <span class="math notranslate nohighlight">\(i\)</span>’s response to the randomized question</p>
+<p><span class="math notranslate nohighlight">\(r_i\)</span> can only take values “yes” or “no”.</p>
+<p>For a given  design of a randomized response interview and a given belief about the fraction of  the population
+that belongs to <span class="math notranslate nohighlight">\(A\)</span>, the respondent’s  answer is associated with a conditional probability <span class="math notranslate nohighlight">\( \text{Pr}(A|r_i)\)</span> that the individual belongs to <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>Given <span class="math notranslate nohighlight">\(r_i\)</span> and complete privacy,  the individual’s utility  is higher if <span class="math notranslate nohighlight">\(r_i\)</span> represents a truthful answer rather than a lie.</p>
+<p>In terms of a respondent’s expected utility as a function of <span class="math notranslate nohighlight">\( \text{Pr}(A|r_i)\)</span> and <span class="math notranslate nohighlight">\(r_i\)</span></p>
+<ul class="simple">
+<li><p>The higher is <span class="math notranslate nohighlight">\( \text{Pr}(A|r_i)\)</span>, the lower isindividual <span class="math notranslate nohighlight">\(i\)</span>’s  expected utility.</p></li>
+<li><p>expected utility is higher if <span class="math notranslate nohighlight">\(r_i\)</span> represents a truthful answer rather than a lie</p></li>
+</ul>
+<p>Define:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\phi_i \in \left\{\text{truth},\text{lie}\right\}\)</span>, a dichotomous variable that indicates whether or not <span class="math notranslate nohighlight">\(r_i\)</span> is a truthful statement.</p></li>
+<li><p><span class="math notranslate nohighlight">\(U_i\left(\text{Pr}(A|r_i),\phi_i\right)\)</span>, a utility function that is differentiable in its first argument, summarizes individual <span class="math notranslate nohighlight">\(i\)</span>’s expected utility.</p></li>
+</ul>
+<p>Then there is an <span class="math notranslate nohighlight">\(r_i\)</span> such that</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-nine-a">
+<span class="eqno">(16.11)<a class="headerlink" href="#equation-eq-util-rand-nine-a" title="Permalink to this equation">¶</a></span>\[
+\frac{\partial U_i\left(\text{Pr}(A|r_i),\phi_i\right) }{\partial \text{Pr}(A|r_i)} &lt;0, \text{ for } \phi_i \in \left\{\text{truth},\text{lie}\right\}
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-nine-b">
+<span class="eqno">(16.12)<a class="headerlink" href="#equation-eq-util-rand-nine-b" title="Permalink to this equation">¶</a></span>\[
+U_i\left(\text{Pr}(A|r_i),\text{truth}\right)&gt;U_i\left(\text{Pr}(A|r_i),\text{lie}\right)  , \text{ for } \text{Pr}(A|r_i) \in [0,1]
+\]</div>
+<p>Suppose now that  correct answer for individual <span class="math notranslate nohighlight">\(i\)</span> is “yes”.</p>
+<p>Individual <span class="math notranslate nohighlight">\(i\)</span> would  choose to answer truthfully if</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-ten-a">
+<span class="eqno">(16.13)<a class="headerlink" href="#equation-eq-util-rand-ten-a" title="Permalink to this equation">¶</a></span>\[
+U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)
+\]</div>
+<p>If the correct  answer is “no,” individual <span class="math notranslate nohighlight">\(i\)</span> would volunteer the correct answer only if</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-ten-b">
+<span class="eqno">(16.14)<a class="headerlink" href="#equation-eq-util-rand-ten-b" title="Permalink to this equation">¶</a></span>\[
+U_i\left(\text{Pr}(A|\text{no}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\text{yes}),\text{lie}\right)
+\]</div>
+<p>Assume that</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Pr}(A|\text{yes})&gt;\pi_A&gt;\text{Pr}(A|\text{no})
+\]</div>
+<p>so that a “yes” answer increases the odds that an individual belongs to <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>Constraint <span class="math notranslate nohighlight">\((10.\text{b})\)</span> holds for sure.</p>
+<p>Consequently,  constraint <span class="math notranslate nohighlight">\((10.\text{a})\)</span> becomes the single necessarly condition for individual <span class="math notranslate nohighlight">\(i\)</span>  always to answer truthfully.</p>
+<p>At equality, constraint <span class="math notranslate nohighlight">\((10.\text{a})\)</span> determines   conditional probabilities that make the individual indifferent between telling the truth and lying when the correct answer is “yes”:</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-eleven">
+<span class="eqno">(16.15)<a class="headerlink" href="#equation-eq-util-rand-eleven" title="Permalink to this equation">¶</a></span>\[
+U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)= U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)
+\]</div>
+<p>Equation <span class="math notranslate nohighlight">\((11)\)</span> defines a  “truth border”.</p>
+<p>Differentiating <span class="math notranslate nohighlight">\((11)\)</span> with respect to the conditional probabilities shows that the truth border has a positive slope in the space of conditional probabilities:</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-twelve">
+<span class="eqno">(16.16)<a class="headerlink" href="#equation-eq-util-rand-twelve" title="Permalink to this equation">¶</a></span>\[
+\frac{\partial \text{Pr}(A|\text{no})}{\partial \text{Pr}(A|\text{yes})}=\frac{\frac{\partial U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right) }{\partial \text{Pr}(A|\text{yes})}}{\frac{\partial U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right) }{\partial \text{Pr}(A|\text{no})}}&gt;0
+\]</div>
+<p>The source of the positive relationship is:</p>
+<ul class="simple">
+<li><p>The individual is willing to volunteer a truthful “yes” answer so long as the utility from doing so (i.e., the left side of <span class="math notranslate nohighlight">\((11)\)</span>) is at least as high as the utility of lying on the right side of <span class="math notranslate nohighlight">\((11)\)</span>.</p></li>
+<li><p>Suppose now that <span class="math notranslate nohighlight">\(\text{Pr}(A|\text{yes})\)</span> increases. That reduces the utility of telling the truth. To preserve indifference between a truthful answer and a lie, <span class="math notranslate nohighlight">\(\text{Pr}(A|\text{no})\)</span> must increase to reduce the utility of lying.</p></li>
+</ul>
+</section>
+<section id="drawing-a-truth-border">
+<h3><span class="section-number">16.4.2. </span>Drawing a  Truth Border<a class="headerlink" href="#drawing-a-truth-border" title="Permalink to this headline">¶</a></h3>
+<p>We can deduce two things about the truth border:</p>
+<ul class="simple">
+<li><p>The truth border divides the space of conditional probabilities into two subsets: “truth telling” and “lying”. Thus, sufficient  privacy elicits a truthful answer, whereas insufficient privacy results in a lie. The truth border depends on a respondent’s utility function.</p></li>
+<li><p>Assumptions in <span class="math notranslate nohighlight">\((9)\)</span> are  sufficient only to guarantee a positive slope of the truth border. The truth border can have either a concave or a convex shape.</p></li>
+</ul>
+<p>We can draw some truth borders with the following Python code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">y1</span> <span class="o">=</span> <span class="n">x1</span><span class="o">-</span><span class="mf">0.4</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.4</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">y2</span> <span class="o">=</span> <span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)</span><span class="o">-</span><span class="mf">0.4</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">x3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.4</span><span class="o">**</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">y3</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">x3</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mf">0.4</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="s1">&#39;r-&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)+f(\phi_i)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="s1">&#39;b-&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)^</span><span class="si">{2}</span><span class="s1">+f(\phi_i)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="s1">&#39;y-&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-\sqrt{Pr(A|r_i)}+f(\phi_i)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y3</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x1</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Pr(A|yes)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Pr(A|no)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.42</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;Truth Telling&quot;</span><span class="p">,</span><span class="n">fontdict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span><span class="mi">28</span><span class="p">,</span><span class="s1">&#39;family&#39;</span><span class="p">:</span><span class="s1">&#39;Times New Roman&#39;</span><span class="p">,</span><span class="s1">&#39;style&#39;</span><span class="p">:</span><span class="s1">&#39;italic&#39;</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;Lying&quot;</span><span class="p">,</span><span class="n">fontdict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span><span class="mi">28</span><span class="p">,</span><span class="s1">&#39;family&#39;</span><span class="p">:</span><span class="s1">&#39;Times New Roman&#39;</span><span class="p">,</span><span class="s1">&#39;style&#39;</span><span class="p">:</span><span class="s1">&#39;italic&#39;</span><span class="p">})</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 1.1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Figure 1.1&#39;)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>findfont: Font family [&#39;Times New Roman&#39;] not found. Falling back to DejaVu Sans.
+</pre></div>
+</div>
+<img alt="_images/util_rand_resp_2_2.png" src="_images/util_rand_resp_2_2.png" />
+</div>
+</div>
+<p>Figure 1.1 three types of truth border.</p>
+<p>Without loss of generality, we consider the truth boder:</p>
+<div class="math notranslate nohighlight">
+\[
+U_i(\text{Pr}(A|r_i),\phi_i)=-\text{Pr}(A|r_i)+f(\phi_i)
+\]</div>
+<p>and plot the “truth telling” and “lying area” of individual <span class="math notranslate nohighlight">\(i\)</span> in Figure 1.2:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">y1</span> <span class="o">=</span> <span class="n">x1</span><span class="o">-</span><span class="mf">0.4</span>
+<span class="n">z1</span> <span class="o">=</span> <span class="n">x1</span>
+<span class="n">z2</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="s1">&#39;r-&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)+f(\phi_i)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x1</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;truth telling&#39;</span><span class="p">)</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;lying&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Pr(A|yes)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Pr(A|no)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;Truth Telling&quot;</span><span class="p">,</span><span class="n">fontdict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span><span class="mi">28</span><span class="p">,</span><span class="s1">&#39;family&#39;</span><span class="p">:</span><span class="s1">&#39;Times New Roman&#39;</span><span class="p">,</span><span class="s1">&#39;style&#39;</span><span class="p">:</span><span class="s1">&#39;italic&#39;</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;Lying&quot;</span><span class="p">,</span><span class="n">fontdict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span><span class="mi">28</span><span class="p">,</span><span class="s1">&#39;family&#39;</span><span class="p">:</span><span class="s1">&#39;Times New Roman&#39;</span><span class="p">,</span><span class="s1">&#39;style&#39;</span><span class="p">:</span><span class="s1">&#39;italic&#39;</span><span class="p">})</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 1.2&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Figure 1.2&#39;)
+</pre></div>
+</div>
+<img alt="_images/util_rand_resp_4_1.png" src="_images/util_rand_resp_4_1.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="utilitarian-view-of-survey-design">
+<h2><span class="section-number">16.5. </span>Utilitarian View of Survey Design<a class="headerlink" href="#utilitarian-view-of-survey-design" title="Permalink to this headline">¶</a></h2>
+<section id="iso-variance-curves">
+<h3><span class="section-number">16.5.1. </span>Iso-variance Curves<a class="headerlink" href="#iso-variance-curves" title="Permalink to this headline">¶</a></h3>
+<p>A statistician’s objective is</p>
+<ul class="simple">
+<li><p>to find a randomized response survey design that minimizes the bias and the variance of the estimator.</p></li>
+</ul>
+<p>Given a design that ensures truthful answers by all respondents, Anderson(1976, Theorem 1) <span id="id14">[<a class="reference internal" href="zreferences.html#id8">And76</a>]</span> showed that the minimum variance estimate in the two-response model has variance</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-thirteen">
+<span class="eqno">(16.17)<a class="headerlink" href="#equation-eq-util-rand-thirteen" title="Permalink to this equation">¶</a></span>\[
+\begin{aligned}
+V(\text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}))
+= &amp;\frac{{\pi_A}^2 (1-\pi_A)^2}{n}\times \frac{1}{\text{Pr}(A|\text{yes})-\pi_A}\times \frac{1}{\pi_A-\text{Pr}(A|\text{no})}
+\end{aligned}
+\]</div>
+<p>where the random sample with replacement consists of <span class="math notranslate nohighlight">\(n\)</span> individuals.</p>
+<p>We can use Expression <span class="math notranslate nohighlight">\((13)\)</span> to draw  iso-variance curves.</p>
+<p>The following inequalities restrict the shapes of iso-variance curves:</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-fourteen-a">
+<span class="eqno">(16.18)<a class="headerlink" href="#equation-eq-util-rand-fourteen-a" title="Permalink to this equation">¶</a></span>\[
+\frac{d \text{ Pr}(A|\text{no})}{d\text{ Pr}(A|\text{yes})}\bigg|_{\text{constant variance}}=\frac{\pi_A-\text{Pr}(A|\text{no})}{\text{Pr}(A|\text{yes})-\pi_A}&gt;0
+\]</div>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-fourteen-b">
+<span class="eqno">(16.19)<a class="headerlink" href="#equation-eq-util-rand-fourteen-b" title="Permalink to this equation">¶</a></span>\[
+\frac{d^2 \text{ Pr}(A|\text{no})}{d\text{ Pr}(A|\text{yes})^2}\bigg|_{\text{constant variance}}=- \frac{2 \left[\pi_A-\text{Pr}(A|\text{no})\right]}{\left[\text{Pr}(A|\text{yes})-\pi_A \right]^2}&lt;0
+\]</div>
+<p>From expression <span class="math notranslate nohighlight">\((13)\)</span> and <span class="math notranslate nohighlight">\((14)\)</span> we can see that:</p>
+<ul class="simple">
+<li><p>Variance can be reduced only by increasing the distance of  <span class="math notranslate nohighlight">\(\text{Pr}(A|\text{yes})\)</span>  and/or  <span class="math notranslate nohighlight">\(\text{Pr}(A|\text{no})\)</span>  from  <span class="math notranslate nohighlight">\(r_A\)</span>.</p></li>
+<li><p>Iso-variance curves are always upward-sloping and concave.</p></li>
+</ul>
+</section>
+<section id="drawing-iso-variance-curves">
+<h3><span class="section-number">16.5.2. </span>Drawing  Iso-variance Curves<a class="headerlink" href="#drawing-iso-variance-curves" title="Permalink to this headline">¶</a></h3>
+<p>We use Python code to draw iso-variance curves.</p>
+<p>The pairs of conditional probabilities can be attained using Warner’s (1965) model.</p>
+<p>Note that:</p>
+<ul class="simple">
+<li><p>Any point on the iso-variance curves can be attained with the unrelated question model as long as the statistician can completely control the model design.</p></li>
+<li><p>Warner’s (1965) original randomized response model is less  flexible than the unrelated question model.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Iso_Variance</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pi</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">=</span><span class="n">pi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">=</span><span class="n">n</span>
+    
+    <span class="k">def</span> <span class="nf">plotting_iso_variance_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">nv</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.27</span><span class="p">,</span><span class="mf">0.34</span><span class="p">,</span><span class="mf">0.49</span><span class="p">,</span><span class="mf">0.74</span><span class="p">,</span><span class="mf">0.92</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">1.47</span><span class="p">,</span><span class="mf">2.94</span><span class="p">,</span><span class="mf">14.7</span><span class="p">])</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+        <span class="n">y1</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pi</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x0</span><span class="p">]</span>
+        <span class="n">y2</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pi</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x2</span><span class="p">]</span>
+        <span class="n">y0</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">x0</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="s1">&#39;m-&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Warner&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;c:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="s1">&#39;c:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y2</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="s1">&#39;c:&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nv</span><span class="p">)):</span>
+            <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="n">nv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x0</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="o">+</span><span class="mf">1e-8</span><span class="p">))</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;k--&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="o">-</span><span class="mf">0.07</span><span class="o">*</span><span class="n">i</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;V&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Pr(A|yes)&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Pr(A|no)&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.32</span><span class="p">,</span><span class="mf">0.28</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;High Var&quot;</span><span class="p">,</span><span class="n">fontdict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="s1">&#39;family&#39;</span><span class="p">:</span><span class="s1">&#39;Times New Roman&#39;</span><span class="p">,</span><span class="s1">&#39;style&#39;</span><span class="p">:</span><span class="s1">&#39;italic&#39;</span><span class="p">})</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.91</span><span class="p">,</span><span class="mf">0.01</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;Low Var&quot;</span><span class="p">,</span><span class="n">fontdict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="s1">&#39;family&#39;</span><span class="p">:</span><span class="s1">&#39;Times New Roman&#39;</span><span class="p">,</span><span class="s1">&#39;style&#39;</span><span class="p">:</span><span class="s1">&#39;italic&#39;</span><span class="p">})</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 2&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Properties of  iso-variance curves  are:</p>
+<ul class="simple">
+<li><p>All points on one iso-variance curve share the same variance</p></li>
+<li><p>From <span class="math notranslate nohighlight">\(V_1\)</span> to <span class="math notranslate nohighlight">\(V_9\)</span>, the variance of the iso-variance curve increase monotonically, as colors  brighten monotonically</p></li>
+</ul>
+<p>Suppose the parameters of the iso-variance model follow those in article XXXX Ljungqvist, which are:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\pi=0.3\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(n=100\)</span></p></li>
+</ul>
+<p>Then we can plot the iso-variance curve in Figure 2:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">var</span><span class="o">=</span><span class="n">Iso_Variance</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">var</span><span class="o">.</span><span class="n">plotting_iso_variance_curve</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>findfont: Font family [&#39;Times New Roman&#39;] not found. Falling back to DejaVu Sans.
+</pre></div>
+</div>
+<img alt="_images/util_rand_resp_8_1.png" src="_images/util_rand_resp_8_1.png" />
+</div>
+</div>
+</section>
+<section id="optimal-survey">
+<h3><span class="section-number">16.5.3. </span>Optimal Survey<a class="headerlink" href="#optimal-survey" title="Permalink to this headline">¶</a></h3>
+<p>A point on an iso-variance curves can be attained with the unrelated question design.</p>
+<p>We now focus on finding an “optimal survey design” that</p>
+<ul class="simple">
+<li><p>Minimizes the variance of the estimator subject to privacy restrictions.</p></li>
+</ul>
+<p>To obtain an optimal  design, we first superimpose all individuals’ truth borders  on the iso-variance mapping.</p>
+<p>To construct an optimal  design</p>
+<ul class="simple">
+<li><p>The statistician should  find the intersection of  areas above all truth borders; that is, the set of conditional probabilities ensuring truthful answers from all respondents.</p></li>
+<li><p>The point where this set touches the lowest possible iso-variance curve determines an optimal survey design.</p></li>
+</ul>
+<p>Consquently, a minimum variance unbiased estimator  is pinned down by an individual who is the least willing to volunteer a truthful answer.</p>
+<p>Here are some comments about the model design:</p>
+<ul class="simple">
+<li><p>An individual’s decision of whether or not to answer truthfully depends on his or her belief about other respondents’ behavior, because this determines the individual’s calculation of <span class="math notranslate nohighlight">\(\text{ Pr}(A|\text{yes})\)</span> and <span class="math notranslate nohighlight">\(\text{ Pr}(A|\text{no})\)</span>.</p></li>
+<li><p>An  equilibrium of the optimal design model is a Nash equilibrium of a noncooperative game.</p></li>
+<li><p>Assumption <span class="math notranslate nohighlight">\((9.\text{b})\)</span> is sufficient to guarantee  existence of an optimal model design. By choosing <span class="math notranslate nohighlight">\(\text{ Pr}(A|\text{yes})\)</span> and <span class="math notranslate nohighlight">\(\text{ Pr}(A|\text{no})\)</span> sufficiently close to each other, all respondents will find it optimal to answer truthfully. The closer are these probabilities, the higher the variance of the estimator becomes.</p></li>
+<li><p>If  respondents experience a large enough increase in expected utility from telling the truth, then there is no need to use a randomized response model. The smallest possible variance of the estimate is then obtained at <span class="math notranslate nohighlight">\(\text{ Pr}(A|\text{yes})=1\)</span> and <span class="math notranslate nohighlight">\(\text{ Pr}(A|\text{no})=0\)</span> ; that is, when respondents answer truthfully to direct questioning.</p></li>
+<li><p>A more general design problem would be to minimize some weighted sum of the estimator’s variance and bias. It would be optimal to accept some lies from the most “reluctant” respondents.</p></li>
+</ul>
+</section>
+</section>
+<section id="criticisms-of-proposed-privacy-measures">
+<h2><span class="section-number">16.6. </span>Criticisms of Proposed Privacy Measures<a class="headerlink" href="#criticisms-of-proposed-privacy-measures" title="Permalink to this headline">¶</a></h2>
+<p>We can use a utilitarian approach to analyze some  privacy measures.</p>
+<p>We’ll enlist Python Code to help us.</p>
+<section id="analysis-of-method-of-lankes-1976">
+<h3><span class="section-number">16.6.1. </span>Analysis of Method of Lanke’s (1976)<a class="headerlink" href="#analysis-of-method-of-lankes-1976" title="Permalink to this headline">¶</a></h3>
+<p>Lanke (1976) recommends a privacy  protection criterion that minimizes:</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-five-b">
+<span class="eqno">(16.20)<a class="headerlink" href="#equation-eq-util-rand-five-b" title="Permalink to this equation">¶</a></span>\[
+\max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}
+\]</div>
+<p>Following Lanke’s suggestion, the statistician should find the highest possible <span class="math notranslate nohighlight">\(\text{ Pr}(A|\text{yes})\)</span> consistent with truth telling while <span class="math notranslate nohighlight">\(\text{ Pr}(A|\text{no})\)</span> is fixed at 0. The variance is then minimized at point <span class="math notranslate nohighlight">\(X\)</span> in Figure 3.</p>
+<p>However, we can see that in Figure 3, point <span class="math notranslate nohighlight">\(Z\)</span> offers a smaller variance that still allows cooperation of the respondents, and it is achievable following our discussion of the truth border in Part III:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pi</span><span class="o">=</span><span class="mf">0.3</span>
+<span class="n">n</span><span class="o">=</span><span class="mi">100</span>
+<span class="n">nv</span><span class="o">=</span><span class="p">[</span><span class="mf">0.27</span><span class="p">,</span><span class="mf">0.34</span><span class="p">,</span><span class="mf">0.49</span><span class="p">,</span><span class="mf">0.74</span><span class="p">,</span><span class="mf">0.92</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">1.47</span><span class="p">,</span><span class="mf">2.94</span><span class="p">,</span><span class="mf">14.7</span><span class="p">]</span>
+<span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">y</span><span class="o">=</span><span class="n">x</span><span class="o">-</span><span class="mf">0.4</span>
+<span class="n">z</span><span class="o">=</span><span class="n">x</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">pi</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">y1</span><span class="o">=</span><span class="p">[</span><span class="n">pi</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x0</span><span class="p">]</span>
+<span class="n">y2</span><span class="o">=</span><span class="p">[</span><span class="n">pi</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x2</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;c:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="s1">&#39;c:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y2</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="s1">&#39;c:&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;r-&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Truth Border&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;truth telling&#39;</span><span class="p">)</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;lying&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nv</span><span class="p">)):</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">pi</span><span class="o">-</span><span class="p">(</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="n">nv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x0</span><span class="o">-</span><span class="n">pi</span><span class="o">+</span><span class="mf">1e-8</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;k--&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="o">-</span><span class="mf">0.07</span><span class="o">*</span><span class="n">i</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;V&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mf">0.498</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Z&#39;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Pr(A|yes)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Pr(A|no)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.45</span><span class="p">,</span><span class="mf">0.35</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;Truth Telling&quot;</span><span class="p">,</span><span class="n">fontdict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span><span class="mi">28</span><span class="p">,</span><span class="s1">&#39;family&#39;</span><span class="p">:</span><span class="s1">&#39;Times New Roman&#39;</span><span class="p">,</span><span class="s1">&#39;style&#39;</span><span class="p">:</span><span class="s1">&#39;italic&#39;</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.85</span><span class="p">,</span><span class="mf">0.35</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;Lying&quot;</span><span class="p">,</span><span class="n">fontdict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span><span class="mi">28</span><span class="p">,</span><span class="s1">&#39;family&#39;</span><span class="p">:</span><span class="s1">&#39;Times New Roman&#39;</span><span class="p">,</span><span class="s1">&#39;style&#39;</span><span class="p">:</span><span class="s1">&#39;italic&#39;</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.515</span><span class="p">,</span><span class="mf">0.095</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;Optimal Design&quot;</span><span class="p">,</span><span class="n">fontdict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span><span class="mi">16</span><span class="p">,</span><span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;family&#39;</span><span class="p">:</span><span class="s1">&#39;Times New Roman&#39;</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Figure 3&#39;)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>findfont: Font family [&#39;Times New Roman&#39;] not found. Falling back to DejaVu Sans.
+</pre></div>
+</div>
+<img alt="_images/util_rand_resp_10_2.png" src="_images/util_rand_resp_10_2.png" />
+</div>
+</div>
+</section>
+<section id="method-of-leysieffer-and-warner-1976">
+<h3><span class="section-number">16.6.2. </span>Method of Leysieffer and Warner (1976)<a class="headerlink" href="#method-of-leysieffer-and-warner-1976" title="Permalink to this headline">¶</a></h3>
+<p>Leysieffer and Warner (1976) recommend a  two-dimensional measure of jeopardy that reduces to a single dimension when there is no jeopardy in a ‘no’ answer”, which means that</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Pr}(\text{yes}|A)=1
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Pr}(A|\text{no})=0
+\]</div>
+<p>This is  not an optimal  choice under a utilitarian approach.</p>
+</section>
+<section id="analysis-on-the-method-of-chaudhuri-and-mukerjees-1988">
+<h3><span class="section-number">16.6.3. </span>Analysis on the Method of Chaudhuri and Mukerjee’s (1988)<a class="headerlink" href="#analysis-on-the-method-of-chaudhuri-and-mukerjees-1988" title="Permalink to this headline">¶</a></h3>
+<p><span id="id15">[<a class="reference internal" href="zreferences.html#id3">CM88</a>]</span></p>
+<p>Chaudhuri and Mukerjee (1988) argued that the individual may find that since “yes” may sometimes relate to the sensitive group A, a clever respondent may falsely but safely always be inclined to respond “no”. In this situation, the truth border is such that individuals choose to lie whenever the truthful answer is “yes” and</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Pr}(A|\text{no})=0
+\]</div>
+<p>Here the gain from lying is too high for someone to volunteer a “yes” answer.</p>
+<p>This  means that</p>
+<div class="math notranslate nohighlight">
+\[
+U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)&lt; U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right) 
+\]</div>
+<p>in any situation always.</p>
+<p>As a result, there is no attainable model design.</p>
+<p>However, under a utilitarian approach there should exist other survey designs that are consistent with truthful answers.</p>
+<p>In particular, respondents will choose to answer truthfully if the relative advantage from lying is eliminated.</p>
+<p>We can use Python to show that the optimal model design corresponds to point Q in Figure 4:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span><span class="o">&lt;</span><span class="mf">0.16</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)</span><span class="o">-</span><span class="mf">0.4</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pi</span><span class="o">=</span><span class="mf">0.3</span>
+<span class="n">n</span><span class="o">=</span><span class="mi">100</span>
+<span class="n">nv</span><span class="o">=</span><span class="p">[</span><span class="mf">0.27</span><span class="p">,</span><span class="mf">0.34</span><span class="p">,</span><span class="mf">0.49</span><span class="p">,</span><span class="mf">0.74</span><span class="p">,</span><span class="mf">0.92</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">1.47</span><span class="p">,</span><span class="mf">2.94</span><span class="p">,</span><span class="mf">14.7</span><span class="p">]</span>
+<span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+<span class="n">z</span><span class="o">=</span><span class="n">x</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">pi</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">y1</span><span class="o">=</span><span class="p">[</span><span class="n">pi</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x0</span><span class="p">]</span>
+<span class="n">y2</span><span class="o">=</span><span class="p">[</span><span class="n">pi</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x2</span><span class="p">]</span>
+<span class="n">x3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.16</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">y3</span> <span class="o">=</span> <span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)</span><span class="o">-</span><span class="mf">0.4</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;c:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="s1">&#39;c:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y2</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="s1">&#39;c:&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="s1">&#39;b-&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Truth Border&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;truth telling&#39;</span><span class="p">)</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;lying&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nv</span><span class="p">)):</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">pi</span><span class="o">-</span><span class="p">(</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="p">(</span><span class="n">nv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x0</span><span class="o">-</span><span class="n">pi</span><span class="o">+</span><span class="mf">1e-8</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;k--&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="o">-</span><span class="mf">0.07</span><span class="o">*</span><span class="n">i</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;V&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mf">0.61</span><span class="p">,</span><span class="mf">0.146</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Z&#39;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Pr(A|yes)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Pr(A|no)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.45</span><span class="p">,</span><span class="mf">0.35</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;Truth Telling&quot;</span><span class="p">,</span><span class="n">fontdict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span><span class="mi">28</span><span class="p">,</span><span class="s1">&#39;family&#39;</span><span class="p">:</span><span class="s1">&#39;Times New Roman&#39;</span><span class="p">,</span><span class="s1">&#39;style&#39;</span><span class="p">:</span><span class="s1">&#39;italic&#39;</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;Lying&quot;</span><span class="p">,</span><span class="n">fontdict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span><span class="mi">28</span><span class="p">,</span><span class="s1">&#39;family&#39;</span><span class="p">:</span><span class="s1">&#39;Times New Roman&#39;</span><span class="p">,</span><span class="s1">&#39;style&#39;</span><span class="p">:</span><span class="s1">&#39;italic&#39;</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.63</span><span class="p">,</span><span class="mf">0.141</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;Optimal Design&quot;</span><span class="p">,</span><span class="n">fontdict</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span><span class="mi">16</span><span class="p">,</span><span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="s1">&#39;family&#39;</span><span class="p">:</span><span class="s1">&#39;Times New Roman&#39;</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 4&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Figure 4&#39;)
+</pre></div>
+</div>
+<img alt="_images/util_rand_resp_13_1.png" src="_images/util_rand_resp_13_1.png" />
+</div>
+</div>
+</section>
+<section id="method-of-greenberg-et-al-1977">
+<h3><span class="section-number">16.6.4. </span>Method of Greenberg et al. (1977)<a class="headerlink" href="#method-of-greenberg-et-al-1977" title="Permalink to this headline">¶</a></h3>
+<p><span id="id16">[<a class="reference internal" href="zreferences.html#id10">GKAH77</a>]</span></p>
+<p>Greenberg et al. (1977) defined the hazard for an individual in <span class="math notranslate nohighlight">\(A\)</span> as the probability that he or she is perceived as belonging to <span class="math notranslate nohighlight">\(A\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-seven-aa">
+<span class="eqno">(16.21)<a class="headerlink" href="#equation-eq-util-rand-seven-aa" title="Permalink to this equation">¶</a></span>\[
+\text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A)\times \text{Pr}(A|\text{no})
+\]</div>
+<p>The hazard for an individual who does not belong to <span class="math notranslate nohighlight">\(A\)</span> is</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-seven-bb">
+<span class="eqno">(16.22)<a class="headerlink" href="#equation-eq-util-rand-seven-bb" title="Permalink to this equation">¶</a></span>\[
+\text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A^{'}) \times \text{Pr}(A|\text{no})
+\]</div>
+<p>They also considered an alternative related measure of hazard that they said  “is likely to be closer to the actual concern felt by a respondent.”</p>
+<p>Their “limited hazard” for an individual in <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(A^{'}\)</span> is</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-eight-aa">
+<span class="eqno">(16.23)<a class="headerlink" href="#equation-eq-util-rand-eight-aa" title="Permalink to this equation">¶</a></span>\[
+\text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes})
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight" id="equation-eq-util-rand-eight-bb">
+<span class="eqno">(16.24)<a class="headerlink" href="#equation-eq-util-rand-eight-bb" title="Permalink to this equation">¶</a></span>\[
+\text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})
+\]</div>
+<p>According to Greenberg et al. (1977), a respondent commits himself or herself to answer truthfully on the basis of a probability in <span class="math notranslate nohighlight">\((7)\)</span> or <span class="math notranslate nohighlight">\((8)\)</span> <strong>before</strong> randomly selecting the question to be answered.</p>
+<p>Suppose that the appropriate privacy measure is captured by the notion of “limited hazard” in <span class="math notranslate nohighlight">\((8)\)</span>.</p>
+<p>Consider an unrelated question model where the unrelated question is replaced by the instruction “Say the word ‘no,’ ” which implies that</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Pr}(A|\text{yes})=1
+\]</div>
+<p>and it follows that:</p>
+<ul class="simple">
+<li><p>Hazard for an individual in <span class="math notranslate nohighlight">\(A^{'}\)</span> is 0.</p></li>
+<li><p>Hazard for an individual in A can also be made arbitrarily small by choosing a sufficiently small <span class="math notranslate nohighlight">\(\text{Pr}(\text{yes}|A)\)</span>.</p></li>
+</ul>
+<p>Even though this hazard can be set arbitrarily close to 0, an individual in <span class="math notranslate nohighlight">\(A\)</span> will completely reveal his or her identity whenever truthfully answering the sensitive question.</p>
+<p>However, under utilitarian framework, it is obviously contradictory.</p>
+<p>If the individuals are willing to volunteer this information, it seems that the randomized response design was not necessary in the first place.</p>
+<p>It ignores the fact that respondents retain the option of lying until they have seen the question to be answered.</p>
+</section>
+</section>
+<section id="concluding-remarks">
+<h2><span class="section-number">16.7. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
+<p>The justifications for a randomized response procedure are that</p>
+<ul class="simple">
+<li><p>Respondents are thought to feel discomfort from being perceived as belonging to the sensitive group.</p></li>
+<li><p>Respondents prefer to answer questions truthfully than to lie, unless it is too revealing.</p></li>
+</ul>
+<p>If a privacy measure is not completely consistent with the rational behavior of the respondents, all efforts to derive an optimal model design are futile.</p>
+<p>A utilitarian approach provides a systematic way to model respondents’ behavior under the assumption that they maximize their expected utilities.</p>
+<p>In  a utilitarian analysis:</p>
+<ul class="simple">
+<li><p>A truth border divides the space of conditional probabilities of being perceived as belonging to the sensitive group, <span class="math notranslate nohighlight">\(\text{Pr}(A|\text{yes})\)</span> and <span class="math notranslate nohighlight">\(\text{Pr}(A|\text{no})\)</span>, into the truth-telling region and the lying region.</p></li>
+<li><p>The optimal model design is obtained at the point where the truth border touches the lowest possible iso-variance curve.</p></li>
+</ul>
+<p>A practical implication of the  analysis of <span id="id17">[<a class="reference internal" href="zreferences.html#id5">Lju93</a>]</span> is that uncertainty about respondents’ demands for privacy can be acknowledged by <strong>choosing <span class="math notranslate nohighlight">\(\text{Pr}(A|\text{yes})\)</span> and <span class="math notranslate nohighlight">\(\text{Pr}(A|\text{no})\)</span> sufficiently close to each other</strong>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   2. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   3. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   4. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   6. Circulant Matrices
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Elementary Statistics
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   7. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   8. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   9. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   10. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   11. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   12. Fault Tree Uncertainties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   13. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   14. Introduction to Artificial Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rand_resp.html">
+   15. Randomized Response Surveys
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   16. Expected Utilities of Random Responses
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   17. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lp_intro.html">
+   18. Linear Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   19. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   20. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   21. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   22. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   23. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   24. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   25. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   26. Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   27. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   28. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   29. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   30. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   31. Cass-Koopmans Planning Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   32. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   33. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   34. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   35. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   36. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   37. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   38. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Consumption, Savings and Growth
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   39. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   40. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   41. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   42. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   43. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   44. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   45. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   46. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   47. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   48. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   49. Computing Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   50. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   51. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   52. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   53. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   54. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   55. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   56. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   57. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   58. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   59. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   60. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   61. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   62. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   63. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   64. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   65. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   66. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   67. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   68. Competitive Equilibria with Arrow Securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   69. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   70. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   71. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   72. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   73. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   74. Multiple Good Allocation Mechanisms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   75. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   76. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   77. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="_notebooks/util_rand_resp.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/util_rand_resp.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/util_rand_resp.ipynb">BinderHub</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/util_rand_resp.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/util_rand_resp.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "util_rand_resp";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/util_rand_resp.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-54984338-10', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </body>
+</html>
