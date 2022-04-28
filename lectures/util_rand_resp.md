@@ -126,7 +126,7 @@ For that reason, Lanke (1976) {cite}`lanke1976degree` argued  that ah appropriat
 
 $$
 \max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}
-$$ (eq:util-rand-five)
+$$ (eq:util-rand-five-a)
 
 Holding this measure constant, he explained under what conditions the smallest variance of the estimate was achieved with the unrelated question model or Warner's (1965) original model.
 
@@ -477,7 +477,7 @@ Lanke (1976) recommends a privacy  protection criterion that minimizes:
 
 $$
 \max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}
-$$ (eq:util-rand-five)
+$$ (eq:util-rand-five-b)
 
 Following Lanke's suggestion, the statistician should find the highest possible $\text{ Pr}(A|\text{yes})$ consistent with truth telling while $\text{ Pr}(A|\text{no})$ is fixed at 0. The variance is then minimized at point $X$ in Figure 3.
 
@@ -615,13 +615,13 @@ Greenberg et al. (1977) defined the hazard for an individual in $A$ as the proba
 
 $$
 \text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A)\times \text{Pr}(A|\text{no})
-$$ (eq:util-rand-seven-a)
+$$ (eq:util-rand-seven-aa)
 
 The hazard for an individual who does not belong to $A$ is
 
 $$
 \text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A^{'}) \times \text{Pr}(A|\text{no})
-$$ (eq:util-rand-seven-a)
+$$ (eq:util-rand-seven-bb)
 
 They also considered an alternative related measure of hazard that they said  "is likely to be closer to the actual concern felt by a respondent." 
 
@@ -629,13 +629,13 @@ Their "limited hazard" for an individual in $A$ and $A^{'}$ is
 
 $$
 \text{Pr}(\text{yes}|A)\times \text{Pr}(A|\text{yes})
-$$ (eq:util-rand-eight-a)
+$$ (eq:util-rand-eight-aa)
 
 and
 
 $$
 \text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})
-$$ (eq:util-rand-eight-b)
+$$ (eq:util-rand-eight-bb)
 
 According to Greenberg et al. (1977), a respondent commits himself or herself to answer truthfully on the basis of a probability in $(7)$ or $(8)$ **before** randomly selecting the question to be answered. 
 
