@@ -24,9 +24,9 @@ To illustrate how social scientists have thought about estimating the prevalence
 
 Warner  used elementary  probability to construct a  way to protect the privacy  of **individual** respondents to surveys while still    estimating  the fraction of a **collection** of individuals   who have a socially stigmatized characteristic or who engage in  a socially stigmatized activity.  
 
-Warner's idea was to  add **noise** between the respondent's answer and the **signal** about that answer that the  survey taker ultimately receives. 
+Warner's idea was to  add **noise** between the respondent's answer and the **signal** about that answer that the  survey maker ultimately receives. 
 
-Knowing about the structure of the noise assures the respondent that the survey taker does not observe his answer.
+Knowing about the structure of the noise assures the respondent that the survey maker does not observe his answer.
 
 Statistical properties of the  noise injection procedure provide the respondent  **plausible deniability**.   
 
