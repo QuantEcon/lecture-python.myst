@@ -271,7 +271,7 @@ df1_mc
 
 The theoretical calculations  do a good job of predicting the Monte Carlo results.
 
-We see that in many situations, especially when the bias is not small, the MSE of the randomized-samplijng  methods is smaller than that of the non-randomized sampling method. 
+We see that in many situations, especially when the bias is not small, the MSE of the randomized-sampling  methods is smaller than that of the non-randomized sampling method. 
 
 These differences become larger as  $p$ increases.
 
