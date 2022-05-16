@@ -227,7 +227,7 @@ U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\t
 $$ (eq:util-rand-ten-a)
 
 
-If the correct  answer is "no," individual $i$ would volunteer the correct answer only if
+If the correct  answer is "no", individual $i$ would volunteer the correct answer only if
 
 $$
 U_i\left(\text{Pr}(A|\text{no}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\text{yes}),\text{lie}\right)
@@ -243,7 +243,7 @@ so that a "yes" answer increases the odds that an individual belongs to $A$.
 
 Constraint {eq}`eq:util-rand-ten-b` holds for sure.
 
-Consequently,  constraint {eq}`eq:util-rand-ten-a` becomes the single necessarly condition for individual $i$  always to answer truthfully. 
+Consequently,  constraint {eq}`eq:util-rand-ten-a` becomes the single necessary condition for individual $i$  always to answer truthfully. 
 
 At equality, constraint $(10.\text{a})$ determines   conditional probabilities that make the individual indifferent between telling the truth and lying when the correct answer is "yes":
 
