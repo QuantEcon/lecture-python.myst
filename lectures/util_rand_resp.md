@@ -173,7 +173,7 @@ $$
 \text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})
 $$ (eq:util-rand-eight-b)
 
-This measure is just the first term in `ref:util-rand-seven-a`, i.e., the probability that an individual answers "yes" and is perceived to belong to $A$.
+This measure is just the first term in {eq}`eq:util-rand-seven-a`, i.e., the probability that an individual answers "yes" and is perceived to belong to $A$.
 
 ##  Respondent's Expected Utility
 
@@ -241,9 +241,9 @@ $$
 
 so that a "yes" answer increases the odds that an individual belongs to $A$. 
 
-Constraint `ref:util-rand-ten-b` holds for sure.
+Constraint {eq}`eq:util-rand-ten-b` holds for sure.
 
-Consequently,  constraint `ref:util-rand-ten-a` becomes the single necessarly condition for individual $i$  always to answer truthfully. 
+Consequently,  constraint {eq}`eq:util-rand-ten-a` becomes the single necessarly condition for individual $i$  always to answer truthfully. 
 
 At equality, constraint $(10.\text{a})$ determines   conditional probabilities that make the individual indifferent between telling the truth and lying when the correct answer is "yes":
 
@@ -251,9 +251,9 @@ $$
 U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)= U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)
 $$ (eq:util-rand-eleven)
 
-Equation `ref:util-rand-eleven` defines a  "truth border".
+Equation {eq}`eq:util-rand-eleven` defines a  "truth border".
 
-Differentiating `ref:util-rand-eleven` with respect to the conditional probabilities shows that the truth border has a positive slope in the space of conditional probabilities:
+Differentiating {eq}`eq:util-rand-eleven` with respect to the conditional probabilities shows that the truth border has a positive slope in the space of conditional probabilities:
 
 $$
 \frac{\partial \text{Pr}(A|\text{no})}{\partial \text{Pr}(A|\text{yes})}=\frac{\frac{\partial U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right) }{\partial \text{Pr}(A|\text{yes})}}{\frac{\partial U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right) }{\partial \text{Pr}(A|\text{no})}}>0
@@ -261,7 +261,7 @@ $$ (eq:util-rand-twelve)
 
 The source of the positive relationship is:
 
--  The individual is willing to volunteer a truthful "yes" answer so long as the utility from doing so (i.e., the left side of `ref:util-rand-eleven`) is at least as high as the utility of lying on the right side of `ref:util-rand-eleven`.
+-  The individual is willing to volunteer a truthful "yes" answer so long as the utility from doing so (i.e., the left side of {eq}`eq:util-rand-eleven`) is at least as high as the utility of lying on the right side of {eq}`eq:util-rand-eleven`.
 
 - Suppose now that $\text{Pr}(A|\text{yes})$ increases. That reduces the utility of telling the truth. To preserve indifference between a truthful answer and a lie, $\text{Pr}(A|\text{no})$ must increase to reduce the utility of lying.
 
@@ -271,7 +271,7 @@ We can deduce two things about the truth border:
 
 - The truth border divides the space of conditional probabilities into two subsets: "truth telling" and "lying". Thus, sufficient  privacy elicits a truthful answer, whereas insufficient privacy results in a lie. The truth border depends on a respondent's utility function. 
 
-- Assumptions in `ref:util-rand-nine-a` and `ref:util-rand-nine-a` are  sufficient only to guarantee a positive slope of the truth border. The truth border can have either a concave or a convex shape.
+- Assumptions in {eq}`eq:util-rand-nine-a` and {eq}`eq:util-rand-nine-a` are  sufficient only to guarantee a positive slope of the truth border. The truth border can have either a concave or a convex shape.
 
 We can draw some truth borders with the following Python code:
 
@@ -356,7 +356,7 @@ $$ (eq:util-rand-thirteen)
 
 where the random sample with replacement consists of $n$ individuals. 
 
-We can use Expression `ref:util-rand-thirteen` to draw  iso-variance curves.
+We can use Expression {eq}`eq:util-rand-thirteen` to draw  iso-variance curves.
 
 The following inequalities restrict the shapes of iso-variance curves:
 
@@ -368,7 +368,7 @@ $$
 \frac{d^2 \text{ Pr}(A|\text{no})}{d\text{ Pr}(A|\text{yes})^2}\bigg|_{\text{constant variance}}=- \frac{2 \left[\pi_A-\text{Pr}(A|\text{no})\right]}{\left[\text{Pr}(A|\text{yes})-\pi_A \right]^2}<0
 $$ (eq:util-rand-fourteen-b)
 
-From expression `ref:util-rand-thirteen`, `ref:util-rand-fourteen-a` and `ref:util-rand-fourteen-b` we can see that:
+From expression {eq}`eq:util-rand-thirteen`, {eq}`eq:util-rand-fourteen-a` and {eq}`eq:util-rand-fourteen-b` we can see that:
 
 - Variance can be reduced only by increasing the distance of  $\text{Pr}(A|\text{yes})$  and/or  $\text{Pr}(A|\text{no})$  from  $r_A$.
 
@@ -466,7 +466,7 @@ Here are some comments about the model design:
 
 - An  equilibrium of the optimal design model is a Nash equilibrium of a noncooperative game.
 
-- Assumption `ref:util-rand-nine-b` is sufficient to guarantee  existence of an optimal model design. By choosing $\text{ Pr}(A|\text{yes})$ and $\text{ Pr}(A|\text{no})$ sufficiently close to each other, all respondents will find it optimal to answer truthfully. The closer are these probabilities, the higher the variance of the estimator becomes.
+- Assumption {eq}`eq:util-rand-nine-b` is sufficient to guarantee  existence of an optimal model design. By choosing $\text{ Pr}(A|\text{yes})$ and $\text{ Pr}(A|\text{no})$ sufficiently close to each other, all respondents will find it optimal to answer truthfully. The closer are these probabilities, the higher the variance of the estimator becomes.
 
 - If  respondents experience a large enough increase in expected utility from telling the truth, then there is no need to use a randomized response model. The smallest possible variance of the estimate is then obtained at $\text{ Pr}(A|\text{yes})=1$ and $\text{ Pr}(A|\text{no})=0$ ; that is, when respondents answer truthfully to direct questioning.
 
@@ -648,9 +648,9 @@ $$
 \text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})
 $$ (eq:util-rand-eight-bb)
 
-According to Greenberg et al. (1977), a respondent commits himself or herself to answer truthfully on the basis of a probability in `ref:util-rand-seven-aa` or `ref:util-rand-eight-aa` **before** randomly selecting the question to be answered. 
+According to Greenberg et al. (1977), a respondent commits himself or herself to answer truthfully on the basis of a probability in {eq}`eq:util-rand-seven-aa` or {eq}`eq:util-rand-eight-aa` **before** randomly selecting the question to be answered. 
 
-Suppose that the appropriate privacy measure is captured by the notion of "limited hazard" in `ref:util-rand-eight-aa` and `ref:util-rand-eight-bb`.
+Suppose that the appropriate privacy measure is captured by the notion of "limited hazard" in {eq}`eq:util-rand-eight-aa` and {eq}`eq:util-rand-eight-bb`.
 
 Consider an unrelated question model where the unrelated question is replaced by the instruction "Say the word 'no,' " which implies that
 
