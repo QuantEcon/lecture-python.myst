@@ -256,7 +256,7 @@ Let's put the code to work for parameter values
 
 We can generate MSE Ratios theoretically using the above formulas.
 
-We can also perform a  Monte-Carlo simulation  of the MSE Ratio.
+We can also perform a  Monte Carlo simulation  of the MSE Ratio.
 
 ```{code-cell} ipython3
 cp1 = Comparison(0.6, 1000)
