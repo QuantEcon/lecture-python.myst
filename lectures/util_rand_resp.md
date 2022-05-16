@@ -429,7 +429,7 @@ Properties of  iso-variance curves  are:
 
 - From $V_1$ to $V_9$, the variance of the iso-variance curve increase monotonically, as colors  brighten monotonically
 
-Suppose the parameters of the iso-variance model follow those in article XXXX Ljungqvist, which are:
+Suppose the parameters of the iso-variance model follow those in Ljungqvist {cite}`ljungqvist1993unified`, which are:
 
 - $\pi=0.3$
 
@@ -652,7 +652,7 @@ According to Greenberg et al. (1977), a respondent commits himself or herself to
 
 Suppose that the appropriate privacy measure is captured by the notion of "limited hazard" in {eq}`eq:util-rand-eight-aa` and {eq}`eq:util-rand-eight-bb`.
 
-Consider an unrelated question model where the unrelated question is replaced by the instruction "Say the word 'no,' " which implies that
+Consider an unrelated question model where the unrelated question is replaced by the instruction "Say the word 'no'", which implies that
 
 $$
 \text{Pr}(A|\text{yes})=1
