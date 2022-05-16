@@ -83,7 +83,7 @@ $$
 \log(L)= n_1 \log \left[\pi p + (1-\pi)(1-p)\right] + (n-n_{1}) \log \left[(1-\pi) p +\pi (1-p)\right]
 $$ (eq:two)
 
-The first-order necessary condition for maximimizng the log likelihood function with respect to  $\pi$ is:
+The first-order necessary condition for maximizing the log likelihood function with respect to  $\pi$ is:
 
 $$
 \frac{(n-n_1)(2p-1)}{(1-\pi) p +\pi (1-p)}=\frac{n_1 (2p-1)}{\pi p + (1-\pi)(1-p)} 
@@ -321,4 +321,3 @@ Evidently, as $n$ increases, the randomized response method does  better perform
 
 That lecture presents the utilitarian analysis of those alternatives conducted by Lars Ljungqvist
 {cite}`ljungqvist1993unified`.
-
