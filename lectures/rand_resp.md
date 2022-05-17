@@ -22,13 +22,13 @@ These problems induce  **selection**  biases that present challenges to interpre
 
 To illustrate how social scientists have thought about estimating the prevalence of such embarrassing activities and opinions, this lecture describes a classic approach  of S. L. Warner {cite}`warner1965randomized`.
 
-Warner  used elementary  probability to construct a  way to protect the privacy  of **individual** respondents to surveys while still    estimating  the fraction of a **collection** of individuals   who have a socially stichmatized characteristic or who engage in  a socially stimatized activity.  
+Warner  used elementary  probability to construct a  way to protect the privacy  of **individual** respondents to surveys while still    estimating  the fraction of a **collection** of individuals   who have a socially stigmatized characteristic or who engage in  a socially stigmatized activity.  
 
-Warner's idea was to  add **noise** between the respondent's answer and the **signal** about that answer that the  survey taker ultimately receives. 
+Warner's idea was to  add **noise** between the respondent's answer and the **signal** about that answer that the  survey maker ultimately receives. 
 
-Knowing about the structure of the noise assures the respondent that survey taker does not observe his answer.
+Knowing about the structure of the noise assures the respondent that the survey maker does not observe his answer.
 
-Statistical properties of the  noise injection procedure provide the a respondent  **plausible deniability**.   
+Statistical properties of the  noise injection procedure provide the respondent  **plausible deniability**.   
 
 Related ideas underlie  modern **differential privacy** systems.
 
@@ -83,7 +83,7 @@ $$
 \log(L)= n_1 \log \left[\pi p + (1-\pi)(1-p)\right] + (n-n_{1}) \log \left[(1-\pi) p +\pi (1-p)\right]
 $$ (eq:two)
 
-The first-order necessary condition for maximimizng the log likelihood function with respect to  $\pi$ is:
+The first-order necessary condition for maximizing the log likelihood function with respect to  $\pi$ is:
 
 $$
 \frac{(n-n_1)(2p-1)}{(1-\pi) p +\pi (1-p)}=\frac{n_1 (2p-1)}{\pi p + (1-\pi)(1-p)} 
@@ -197,48 +197,55 @@ under  different values of $\pi_A$ and $n$:
 
 ```{code-cell} ipython3
 class Comparison:
-    def __init__(self,A,n):
+    def __init__(self, A, n):
         self.A = A
         self.n = n
-        TaTb = np.array([[0.95,1],[0.9,1],[0.7,1],[0.5,1],[1,0.95],[1,0.9],[1,0.7],[1,0.5],[0.95,0.95],[0.9,0.9],[0.7,0.7],[0.5,0.5]])
-        self.p_arr = np.array([0.6,0.7,0.8,0.9])
-        self.p_map = dict(zip(self.p_arr,["MSE Ratio: p=" + str(x) for x in self.p_arr]))
-        self.template = pd.DataFrame(columns = self.p_arr)
+        TaTb = np.array([[0.95,  1], [0.9,   1], [0.7,    1], 
+                         [0.5,   1], [1,  0.95], [1,    0.9], 
+                         [1,   0.7], [1,   0.5], [0.95, 0.95], 
+                         [0.9, 0.9], [0.7, 0.7], [0.5,  0.5]])
+        self.p_arr = np.array([0.6, 0.7, 0.8, 0.9])
+        self.p_map = dict(zip(self.p_arr, [f"MSE Ratio: p = {x}" for x in self.p_arr]))
+        self.template = pd.DataFrame(columns=self.p_arr)
         self.template[['T_a','T_b']] = TaTb
-        self.template['Bias']=None
+        self.template['Bias'] = None
     
     def theoretical(self):
+        A = self.A
+        n = self.n
         df = self.template.copy()
-        df['Bias']=self.A*(df['T_a']+df['T_b']-2)+(1-df['T_b'])
+        df['Bias'] = A * (df['T_a'] + df['T_b'] - 2) + (1 - df['T_b'])
         for p in self.p_arr:
-            df[p] = (1 / (16 * (p - 1/2)**2) - (self.A - 1/2)**2)/self.n / \
-                    (df['Bias']**2 + ((self.A * df['T_a'] + (1 - self.A)*(1 - df['T_b']))*(1 - self.A*df['T_a'] - (1 - self.A)*(1 - df['T_b'])) / self.n))
+            df[p] = (1 / (16 * (p - 1/2)**2) - (A - 1/2)**2) / n / \
+                    (df['Bias']**2 + ((A * df['T_a'] + (1 - A) * (1 - df['T_b'])) * (1 - A * df['T_a'] - (1 - A) * (1 - df['T_b'])) / n))
             df[p] = df[p].round(2)
-        df = df.set_index(["T_a", "T_b","Bias"]).rename(columns=self.p_map)
+        df = df.set_index(["T_a", "T_b", "Bias"]).rename(columns=self.p_map)
         return df
         
     def MCsimulation(self, size=1000, seed=123456):
+        A = self.A
+        n = self.n
         df = self.template.copy()
         np.random.seed(seed)
-        sample = np.random.rand(size, self.n) <= self.A
-        random_device = np.random.rand(size, self.n)
+        sample = np.random.rand(size, self.n) <= A
+        random_device = np.random.rand(size, n)
         mse_rd = {}
         for p in self.p_arr:
             spinner = random_device <= p
-            rd_answer = sample*spinner + (1-sample)*(1-spinner)
+            rd_answer = sample * spinner + (1 - sample) * (1 - spinner)
             n1 = rd_answer.sum(axis=1)
-            pi_hat = (p-1)/(2*p-1) + n1 / self.n / (2*p-1)
-            mse_rd[p] = np.sum((pi_hat - self.A)**2)
+            pi_hat = (p - 1) / (2 * p - 1) + n1 / n / (2 * p - 1)
+            mse_rd[p] = np.sum((pi_hat - A)**2)
         for inum, irow in df.iterrows():
             truth_a = np.random.rand(size, self.n) <= irow.T_a
             truth_b = np.random.rand(size, self.n) <= irow.T_b
-            trad_answer = sample * truth_a + (1-sample) * (1-truth_b)
-            pi_trad = trad_answer.sum(axis=1) / self.n
-            df.loc[inum,'Bias'] = pi_trad.mean() - self.A
-            mse_trad = np.sum((pi_trad - self.A)**2)
+            trad_answer = sample * truth_a + (1 - sample) * (1 - truth_b)
+            pi_trad = trad_answer.sum(axis=1) / n
+            df.loc[inum, 'Bias'] = pi_trad.mean() - A
+            mse_trad = np.sum((pi_trad - A)**2)
             for p in self.p_arr:
-                df.loc[inum,p] = (mse_rd[p] / mse_trad).round(2)
-        df = df.set_index(["T_a", "T_b","Bias"]).rename(columns=self.p_map)
+                df.loc[inum, p] = (mse_rd[p] / mse_trad).round(2)
+        df = df.set_index(["T_a", "T_b", "Bias"]).rename(columns=self.p_map)
         return df
 ```
 
@@ -249,10 +256,10 @@ Let's put the code to work for parameter values
 
 We can generate MSE Ratios theoretically using the above formulas.
 
-We can also perform a  Monte-Carlo simulation  of the MSE Ratio.
+We can also perform a  Monte Carlo simulation  of the MSE Ratio.
 
 ```{code-cell} ipython3
-cp1 = Comparison(0.6,1000)
+cp1 = Comparison(0.6, 1000)
 df1_theoretical = cp1.theoretical()
 df1_theoretical
 ```
@@ -264,7 +271,7 @@ df1_mc
 
 The theoretical calculations  do a good job of predicting the Monte Carlo results.
 
-We see that in many situations, especially when the bias is not small, the MSE of the randomized-samplijng  methods is smaller than that of the non-randomized sampling method. 
+We see that in many situations, especially when the bias is not small, the MSE of the randomized-sampling  methods is smaller than that of the non-randomized sampling method. 
 
 These differences become larger as  $p$ increases.
 
@@ -278,7 +285,7 @@ For example, for another situation described in Warner {cite}`warner1965randomiz
 we can use the code
 
 ```{code-cell} ipython3
-cp2=Comparison(0.5,1000)
+cp2 = Comparison(0.5, 1000)
 df2_theoretical = cp2.theoretical()
 df2_theoretical
 ```
@@ -296,7 +303,7 @@ We can also revisit a calculation in the  concluding section of Warner {cite}`wa
 We use the code
 
 ```{code-cell} ipython3
-cp3=Comparison(0.6,2000)
+cp3 = Comparison(0.6, 2000)
 df3_theoretical = cp3.theoretical()
 df3_theoretical
 ```
@@ -310,8 +317,7 @@ Evidently, as $n$ increases, the randomized response method does  better perform
 
 ## Concluding Remarks
 
-{doc}`This quantecon lecture <util_rand_resp>`  describes some alternative randomized response surveys.
+{doc}`This QuantEcon lecture <util_rand_resp>`  describes some alternative randomized response surveys.
 
 That lecture presents the utilitarian analysis of those alternatives conducted by Lars Ljungqvist
 {cite}`ljungqvist1993unified`.
-
