@@ -224,10 +224,10 @@
 <p>When people are reluctant to participate a sample survey about personally  sensitive issues, they  might decline  to participate, and even if they do participate, they might choose to provide incorrect answers to  sensitive questions.</p>
 <p>These problems induce  <strong>selection</strong>  biases that present challenges to interpreting and designing surveys.</p>
 <p>To illustrate how social scientists have thought about estimating the prevalence of such embarrassing activities and opinions, this lecture describes a classic approach  of S. L. Warner <span id="id1">[<a class="reference internal" href="zreferences.html#id4">War65</a>]</span>.</p>
-<p>Warner  used elementary  probability to construct a  way to protect the privacy  of <strong>individual</strong> respondents to surveys while still    estimating  the fraction of a <strong>collection</strong> of individuals   who have a socially stichmatized characteristic or who engage in  a socially stimatized activity.</p>
-<p>Warner’s idea was to  add <strong>noise</strong> between the respondent’s answer and the <strong>signal</strong> about that answer that the  survey taker ultimately receives.</p>
-<p>Knowing about the structure of the noise assures the respondent that survey taker does not observe his answer.</p>
-<p>Statistical properties of the  noise injection procedure provide the a respondent  <strong>plausible deniability</strong>.</p>
+<p>Warner  used elementary  probability to construct a  way to protect the privacy  of <strong>individual</strong> respondents to surveys while still    estimating  the fraction of a <strong>collection</strong> of individuals   who have a socially stigmatized characteristic or who engage in  a socially stigmatized activity.</p>
+<p>Warner’s idea was to  add <strong>noise</strong> between the respondent’s answer and the <strong>signal</strong> about that answer that the  survey maker ultimately receives.</p>
+<p>Knowing about the structure of the noise assures the respondent that the survey maker does not observe his answer.</p>
+<p>Statistical properties of the  noise injection procedure provide the respondent  <strong>plausible deniability</strong>.</p>
 <p>Related ideas underlie  modern <strong>differential privacy</strong> systems.</p>
 <p>(See <a class="reference external" href="https://en.wikipedia.org/wiki/Differential_privacy">https://en.wikipedia.org/wiki/Differential_privacy</a>)</p>
 </section>
@@ -272,7 +272,7 @@ L=\left[\pi p + (1-\pi)(1-p)\right]^{n_{1}}\left[(1-\pi) p +\pi (1-p)\right]^{n-
 <span class="eqno">(15.2)<a class="headerlink" href="#equation-eq-two" title="Permalink to this equation">¶</a></span>\[
 \log(L)= n_1 \log \left[\pi p + (1-\pi)(1-p)\right] + (n-n_{1}) \log \left[(1-\pi) p +\pi (1-p)\right]
 \]</div>
-<p>The first-order necessary condition for maximimizng the log likelihood function with respect to  <span class="math notranslate nohighlight">\(\pi\)</span> is:</p>
+<p>The first-order necessary condition for maximizing the log likelihood function with respect to  <span class="math notranslate nohighlight">\(\pi\)</span> is:</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{(n-n_1)(2p-1)}{(1-\pi) p +\pi (1-p)}=\frac{n_1 (2p-1)}{\pi p + (1-\pi)(1-p)} 
@@ -369,48 +369,55 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Comparison</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">A</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
-        <span class="n">TaTb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.95</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mf">0.9</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mf">0.7</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.95</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.9</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.7</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.5</span><span class="p">],[</span><span class="mf">0.95</span><span class="p">,</span><span class="mf">0.95</span><span class="p">],[</span><span class="mf">0.9</span><span class="p">,</span><span class="mf">0.9</span><span class="p">],[</span><span class="mf">0.7</span><span class="p">,</span><span class="mf">0.7</span><span class="p">],[</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">]])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">p_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span><span class="mf">0.7</span><span class="p">,</span><span class="mf">0.8</span><span class="p">,</span><span class="mf">0.9</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">p_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_arr</span><span class="p">,[</span><span class="s2">&quot;MSE Ratio: p=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_arr</span><span class="p">]))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_arr</span><span class="p">)</span>
+        <span class="n">TaTb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.95</span><span class="p">,</span>  <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span>   <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span>    <span class="mi">1</span><span class="p">],</span> 
+                         <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span>   <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span>  <span class="mf">0.95</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span>    <span class="mf">0.9</span><span class="p">],</span> 
+                         <span class="p">[</span><span class="mi">1</span><span class="p">,</span>   <span class="mf">0.7</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span>   <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">],</span> 
+                         <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span>  <span class="mf">0.5</span><span class="p">]])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_arr</span><span class="p">,</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;MSE Ratio: p = </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_arr</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">p_arr</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">[[</span><span class="s1">&#39;T_a&#39;</span><span class="p">,</span><span class="s1">&#39;T_b&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">TaTb</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">[</span><span class="s1">&#39;Bias&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">[</span><span class="s1">&#39;Bias&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     
     <span class="k">def</span> <span class="nf">theoretical</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
         <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Bias&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_a&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_b&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_b&#39;</span><span class="p">])</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Bias&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_a&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_b&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_b&#39;</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_arr</span><span class="p">:</span>
-            <span class="n">df</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">/</span> \
-                    <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Bias&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_a&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_b&#39;</span><span class="p">]))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">*</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_a&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_b&#39;</span><span class="p">]))</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">16</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span> <span class="o">/</span> \
+                    <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Bias&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">((</span><span class="n">A</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_a&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">A</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_b&#39;</span><span class="p">]))</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">A</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_a&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">A</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;T_b&#39;</span><span class="p">]))</span> <span class="o">/</span> <span class="n">n</span><span class="p">))</span>
             <span class="n">df</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;T_a&quot;</span><span class="p">,</span> <span class="s2">&quot;T_b&quot;</span><span class="p">,</span><span class="s2">&quot;Bias&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">p_map</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;T_a&quot;</span><span class="p">,</span> <span class="s2">&quot;T_b&quot;</span><span class="p">,</span> <span class="s2">&quot;Bias&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">p_map</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">df</span>
         
     <span class="k">def</span> <span class="nf">MCsimulation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123456</span><span class="p">):</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
         <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-        <span class="n">sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span>
-        <span class="n">random_device</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">A</span>
+        <span class="n">random_device</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="n">mse_rd</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_arr</span><span class="p">:</span>
             <span class="n">spinner</span> <span class="o">=</span> <span class="n">random_device</span> <span class="o">&lt;=</span> <span class="n">p</span>
-            <span class="n">rd_answer</span> <span class="o">=</span> <span class="n">sample</span><span class="o">*</span><span class="n">spinner</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">sample</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">spinner</span><span class="p">)</span>
+            <span class="n">rd_answer</span> <span class="o">=</span> <span class="n">sample</span> <span class="o">*</span> <span class="n">spinner</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">sample</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">spinner</span><span class="p">)</span>
             <span class="n">n1</span> <span class="o">=</span> <span class="n">rd_answer</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">pi_hat</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">n1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">mse_rd</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">pi_hat</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">pi_hat</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">n1</span> <span class="o">/</span> <span class="n">n</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">mse_rd</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">pi_hat</span> <span class="o">-</span> <span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">inum</span><span class="p">,</span> <span class="n">irow</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="n">truth_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">irow</span><span class="o">.</span><span class="n">T_a</span>
             <span class="n">truth_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">irow</span><span class="o">.</span><span class="n">T_b</span>
-            <span class="n">trad_answer</span> <span class="o">=</span> <span class="n">sample</span> <span class="o">*</span> <span class="n">truth_a</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">sample</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">truth_b</span><span class="p">)</span>
-            <span class="n">pi_trad</span> <span class="o">=</span> <span class="n">trad_answer</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
-            <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">inum</span><span class="p">,</span><span class="s1">&#39;Bias&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pi_trad</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span>
-            <span class="n">mse_trad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">pi_trad</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">trad_answer</span> <span class="o">=</span> <span class="n">sample</span> <span class="o">*</span> <span class="n">truth_a</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">sample</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">truth_b</span><span class="p">)</span>
+            <span class="n">pi_trad</span> <span class="o">=</span> <span class="n">trad_answer</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">inum</span><span class="p">,</span> <span class="s1">&#39;Bias&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pi_trad</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">A</span>
+            <span class="n">mse_trad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">pi_trad</span> <span class="o">-</span> <span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_arr</span><span class="p">:</span>
-                <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">inum</span><span class="p">,</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mse_rd</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">/</span> <span class="n">mse_trad</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;T_a&quot;</span><span class="p">,</span> <span class="s2">&quot;T_b&quot;</span><span class="p">,</span><span class="s2">&quot;Bias&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">p_map</span><span class="p">)</span>
+                <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">inum</span><span class="p">,</span> <span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mse_rd</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">/</span> <span class="n">mse_trad</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;T_a&quot;</span><span class="p">,</span> <span class="s2">&quot;T_b&quot;</span><span class="p">,</span> <span class="s2">&quot;Bias&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">p_map</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">df</span>
 </pre></div>
 </div>
@@ -422,10 +429,10 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
 <li><p><span class="math notranslate nohighlight">\(n=1000\)</span></p></li>
 </ul>
 <p>We can generate MSE Ratios theoretically using the above formulas.</p>
-<p>We can also perform a  Monte-Carlo simulation  of the MSE Ratio.</p>
+<p>We can also perform a  Monte Carlo simulation  of the MSE Ratio.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cp1</span> <span class="o">=</span> <span class="n">Comparison</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cp1</span> <span class="o">=</span> <span class="n">Comparison</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">df1_theoretical</span> <span class="o">=</span> <span class="n">cp1</span><span class="o">.</span><span class="n">theoretical</span><span class="p">()</span>
 <span class="n">df1_theoretical</span>
 </pre></div>
@@ -452,10 +459,10 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
       <th></th>
       <th></th>
       <th></th>
-      <th>MSE Ratio: p=0.6</th>
-      <th>MSE Ratio: p=0.7</th>
-      <th>MSE Ratio: p=0.8</th>
-      <th>MSE Ratio: p=0.9</th>
+      <th>MSE Ratio: p = 0.6</th>
+      <th>MSE Ratio: p = 0.7</th>
+      <th>MSE Ratio: p = 0.8</th>
+      <th>MSE Ratio: p = 0.9</th>
     </tr>
     <tr>
       <th>T_a</th>
@@ -605,10 +612,10 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
       <th></th>
       <th></th>
       <th></th>
-      <th>MSE Ratio: p=0.6</th>
-      <th>MSE Ratio: p=0.7</th>
-      <th>MSE Ratio: p=0.8</th>
-      <th>MSE Ratio: p=0.9</th>
+      <th>MSE Ratio: p = 0.6</th>
+      <th>MSE Ratio: p = 0.7</th>
+      <th>MSE Ratio: p = 0.8</th>
+      <th>MSE Ratio: p = 0.9</th>
     </tr>
     <tr>
       <th>T_a</th>
@@ -731,7 +738,7 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
 </div></div></div>
 </div>
 <p>The theoretical calculations  do a good job of predicting the Monte Carlo results.</p>
-<p>We see that in many situations, especially when the bias is not small, the MSE of the randomized-samplijng  methods is smaller than that of the non-randomized sampling method.</p>
+<p>We see that in many situations, especially when the bias is not small, the MSE of the randomized-sampling  methods is smaller than that of the non-randomized sampling method.</p>
 <p>These differences become larger as  <span class="math notranslate nohighlight">\(p\)</span> increases.</p>
 <p>By adjusting  parameters <span class="math notranslate nohighlight">\(\pi_A\)</span> and <span class="math notranslate nohighlight">\(n\)</span>, we can study outcomes in different situations.</p>
 <p>For example, for another situation described in Warner <span id="id3">[<a class="reference internal" href="zreferences.html#id4">War65</a>]</span>:</p>
@@ -742,7 +749,7 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
 <p>we can use the code</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cp2</span><span class="o">=</span><span class="n">Comparison</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cp2</span> <span class="o">=</span> <span class="n">Comparison</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">df2_theoretical</span> <span class="o">=</span> <span class="n">cp2</span><span class="o">.</span><span class="n">theoretical</span><span class="p">()</span>
 <span class="n">df2_theoretical</span>
 </pre></div>
@@ -769,10 +776,10 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
       <th></th>
       <th></th>
       <th></th>
-      <th>MSE Ratio: p=0.6</th>
-      <th>MSE Ratio: p=0.7</th>
-      <th>MSE Ratio: p=0.8</th>
-      <th>MSE Ratio: p=0.9</th>
+      <th>MSE Ratio: p = 0.6</th>
+      <th>MSE Ratio: p = 0.7</th>
+      <th>MSE Ratio: p = 0.8</th>
+      <th>MSE Ratio: p = 0.9</th>
     </tr>
     <tr>
       <th>T_a</th>
@@ -922,10 +929,10 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
       <th></th>
       <th></th>
       <th></th>
-      <th>MSE Ratio: p=0.6</th>
-      <th>MSE Ratio: p=0.7</th>
-      <th>MSE Ratio: p=0.8</th>
-      <th>MSE Ratio: p=0.9</th>
+      <th>MSE Ratio: p = 0.6</th>
+      <th>MSE Ratio: p = 0.7</th>
+      <th>MSE Ratio: p = 0.8</th>
+      <th>MSE Ratio: p = 0.9</th>
     </tr>
     <tr>
       <th>T_a</th>
@@ -1055,7 +1062,7 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
 <p>We use the code</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cp3</span><span class="o">=</span><span class="n">Comparison</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span><span class="mi">2000</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cp3</span> <span class="o">=</span> <span class="n">Comparison</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
 <span class="n">df3_theoretical</span> <span class="o">=</span> <span class="n">cp3</span><span class="o">.</span><span class="n">theoretical</span><span class="p">()</span>
 <span class="n">df3_theoretical</span>
 </pre></div>
@@ -1082,10 +1089,10 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
       <th></th>
       <th></th>
       <th></th>
-      <th>MSE Ratio: p=0.6</th>
-      <th>MSE Ratio: p=0.7</th>
-      <th>MSE Ratio: p=0.8</th>
-      <th>MSE Ratio: p=0.9</th>
+      <th>MSE Ratio: p = 0.6</th>
+      <th>MSE Ratio: p = 0.7</th>
+      <th>MSE Ratio: p = 0.8</th>
+      <th>MSE Ratio: p = 0.9</th>
     </tr>
     <tr>
       <th>T_a</th>
@@ -1235,10 +1242,10 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
       <th></th>
       <th></th>
       <th></th>
-      <th>MSE Ratio: p=0.6</th>
-      <th>MSE Ratio: p=0.7</th>
-      <th>MSE Ratio: p=0.8</th>
-      <th>MSE Ratio: p=0.9</th>
+      <th>MSE Ratio: p = 0.6</th>
+      <th>MSE Ratio: p = 0.7</th>
+      <th>MSE Ratio: p = 0.8</th>
+      <th>MSE Ratio: p = 0.9</th>
     </tr>
     <tr>
       <th>T_a</th>
@@ -1364,7 +1371,7 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
 </section>
 <section id="concluding-remarks">
 <h2><span class="section-number">15.4. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="util_rand_resp.html"><span class="doc">This quantecon lecture</span></a>  describes some alternative randomized response surveys.</p>
+<p><a class="reference internal" href="util_rand_resp.html"><span class="doc">This QuantEcon lecture</span></a>  describes some alternative randomized response surveys.</p>
 <p>That lecture presents the utilitarian analysis of those alternatives conducted by Lars Ljungqvist
 <span id="id5">[<a class="reference internal" href="zreferences.html#id5">Lju93</a>]</span>.</p>
 </section>

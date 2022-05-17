@@ -22,7 +22,7 @@ import math
 ## Overview
 
 
-{doc}`This quantecon lecture <rand_resp>` describe randomized response surveys in the tradition of Warner {cite}`warner1965randomized` that are designed  to protect  respondents' privacy. 
+{doc}`This QuantEcon lecture <rand_resp>` describes randomized response surveys in the tradition of Warner {cite}`warner1965randomized` that are designed  to protect  respondents' privacy. 
 
 
 Lars Ljungqvist {cite}`ljungqvist1993unified`  analyzed how a respondent's decision about whether to answer truthfully depends on  **expected utility**. 
@@ -79,7 +79,7 @@ $$
 \frac{\text{Pr}(A|r)}{\text{Pr}(A^{'}|r)}\times \frac{(1-\pi_A)}{\pi_A} = \frac{\text{Pr}(r|A)}{\text{Pr}(r|A^{'})}
 $$ (eq:util-rand-three)
 
-If this expression is greater (less) than unity, it follows that r is jeopardizing with respect to $A$($A^{'}$). Then, the natural measure of jeopardy will be: 
+If this expression is greater (less) than unity, it follows that $r$ is jeopardizing with respect to $A$($A^{'}$). Then, the natural measure of jeopardy will be: 
 
 $$
 \begin{aligned}
@@ -122,7 +122,7 @@ $$
 
 Lanke (1975) {cite}`lanke1975choice` argued that "it is membership in Group A that people may want to hide, not membership in the complementary Group A'."
 
-For that reason, Lanke (1976) {cite}`lanke1976degree` argued  that ah appropriate measure of protection is to minimize
+For that reason, Lanke (1976) {cite}`lanke1976degree` argued  that an appropriate measure of protection is to minimize
 
 $$
 \max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}
@@ -173,19 +173,19 @@ $$
 \text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})
 $$ (eq:util-rand-eight-b)
 
-This measure is just the first term in $(7)$, i.e., the probability that an individual answers "yes" and is perceived to belong to A.
+This measure is just the first term in {eq}`eq:util-rand-seven-a`, i.e., the probability that an individual answers "yes" and is perceived to belong to $A$.
 
 ##  Respondent's Expected Utility
 
 ### Truth Border
 
-Key  assumptions  that underlie a randomized response technique for estimating the  fraction of a population that belongs to  A are:
+Key  assumptions  that underlie a randomized response technique for estimating the  fraction of a population that belongs to  $A$ are:
 
 - **Assumption 1**: Respondents feel discomfort from being thought of as belonging to $A$.
 
 - **Assumption 2**: Respondents prefer to answer questions truthfully than to lie, so long as the cost of doing so is not too high. The cost is taken to be the discomfort in 1.
 
-Let $r_i$ denote individual $i$'s response to the randomized question
+Let $r_i$ denote individual $i$'s response to the randomized question.
 
 $r_i$ can only take values "yes" or "no".
 
@@ -227,7 +227,7 @@ U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\t
 $$ (eq:util-rand-ten-a)
 
 
-If the correct  answer is "no," individual $i$ would volunteer the correct answer only if
+If the correct  answer is "no", individual $i$ would volunteer the correct answer only if
 
 $$
 U_i\left(\text{Pr}(A|\text{no}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\text{yes}),\text{lie}\right)
@@ -241,9 +241,9 @@ $$
 
 so that a "yes" answer increases the odds that an individual belongs to $A$. 
 
-Constraint $(10.\text{b})$ holds for sure.
+Constraint {eq}`eq:util-rand-ten-b` holds for sure.
 
-Consequently,  constraint $(10.\text{a})$ becomes the single necessarly condition for individual $i$  always to answer truthfully. 
+Consequently,  constraint {eq}`eq:util-rand-ten-a` becomes the single necessary condition for individual $i$  always to answer truthfully. 
 
 At equality, constraint $(10.\text{a})$ determines   conditional probabilities that make the individual indifferent between telling the truth and lying when the correct answer is "yes":
 
@@ -251,9 +251,9 @@ $$
 U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)= U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)
 $$ (eq:util-rand-eleven)
 
-Equation $(11)$ defines a  "truth border".
+Equation {eq}`eq:util-rand-eleven` defines a  "truth border".
 
-Differentiating $(11)$ with respect to the conditional probabilities shows that the truth border has a positive slope in the space of conditional probabilities:
+Differentiating {eq}`eq:util-rand-eleven` with respect to the conditional probabilities shows that the truth border has a positive slope in the space of conditional probabilities:
 
 $$
 \frac{\partial \text{Pr}(A|\text{no})}{\partial \text{Pr}(A|\text{yes})}=\frac{\frac{\partial U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right) }{\partial \text{Pr}(A|\text{yes})}}{\frac{\partial U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right) }{\partial \text{Pr}(A|\text{no})}}>0
@@ -261,7 +261,7 @@ $$ (eq:util-rand-twelve)
 
 The source of the positive relationship is:
 
--  The individual is willing to volunteer a truthful "yes" answer so long as the utility from doing so (i.e., the left side of $(11)$) is at least as high as the utility of lying on the right side of $(11)$.
+-  The individual is willing to volunteer a truthful "yes" answer so long as the utility from doing so (i.e., the left side of {eq}`eq:util-rand-eleven`) is at least as high as the utility of lying on the right side of {eq}`eq:util-rand-eleven`.
 
 - Suppose now that $\text{Pr}(A|\text{yes})$ increases. That reduces the utility of telling the truth. To preserve indifference between a truthful answer and a lie, $\text{Pr}(A|\text{no})$ must increase to reduce the utility of lying.
 
@@ -271,41 +271,42 @@ We can deduce two things about the truth border:
 
 - The truth border divides the space of conditional probabilities into two subsets: "truth telling" and "lying". Thus, sufficient  privacy elicits a truthful answer, whereas insufficient privacy results in a lie. The truth border depends on a respondent's utility function. 
 
-- Assumptions in $(9)$ are  sufficient only to guarantee a positive slope of the truth border. The truth border can have either a concave or a convex shape.
+- Assumptions in {eq}`eq:util-rand-nine-a` and {eq}`eq:util-rand-nine-a` are  sufficient only to guarantee a positive slope of the truth border. The truth border can have either a concave or a convex shape.
 
 We can draw some truth borders with the following Python code:
 
 ```{code-cell} ipython3
-x1 = np.arange(0,1,0.001)
-y1 = x1-0.4
-x2 = np.arange(0.4**2,1,0.001)
-y2 = (pow(x2,0.5)-0.4)**2
-x3 = np.arange(0.4**0.5,1,0.001)
-y3 = pow(x3**2-0.4,0.5)
-plt.figure(figsize=(12,10))
-plt.plot(x1,y1,'r-',label='Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)+f(\phi_i)$')
-plt.fill_between(x1, 0, y1,facecolor='red',alpha=0.05)
-plt.plot(x2,y2,'b-',label='Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)^{2}+f(\phi_i)$')
-plt.fill_between(x2, 0, y2,facecolor='blue',alpha=0.05)
-plt.plot(x3,y3,'y-',label='Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-\sqrt{Pr(A|r_i)}+f(\phi_i)$')
-plt.fill_between(x3, 0, y3,facecolor='green',alpha=0.05)
-plt.plot(x1,x1, ':', linewidth=2)
-plt.xlim([0,1])
-plt.ylim([0,1])
+x1 = np.arange(0, 1, 0.001)
+y1 = x1 - 0.4
+x2 = np.arange(0.4**2, 1, 0.001)
+y2 = (pow(x2, 0.5) - 0.4)**2
+x3 = np.arange(0.4**0.5, 1, 0.001)
+y3 = pow(x3**2 - 0.4, 0.5)
+plt.figure(figsize=(12, 10))
+plt.plot(x1, y1, 'r-', label='Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)+f(\phi_i)$')
+plt.fill_between(x1, 0, y1, facecolor='red', alpha=0.05)
+plt.plot(x2, y2, 'b-', label='Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)^{2}+f(\phi_i)$')
+plt.fill_between(x2, 0, y2, facecolor='blue', alpha=0.05)
+plt.plot(x3, y3, 'y-', label='Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-\sqrt{Pr(A|r_i)}+f(\phi_i)$')
+plt.fill_between(x3, 0, y3, facecolor='green', alpha=0.05)
+plt.plot(x1, x1, ':', linewidth=2)
+plt.xlim([0, 1])
+plt.ylim([0, 1])
 
 plt.xlabel('Pr(A|yes)')
 plt.ylabel('Pr(A|no)')
-plt.text(0.42,0.3,r"Truth Telling",fontdict={'size':28,'family':'Times New Roman','style':'italic'})
-plt.text(0.8,0.1,r"Lying",fontdict={'size':28,'family':'Times New Roman','style':'italic'})
+plt.text(0.42, 0.3, "Truth Telling", fontdict={'size':28, 'style':'italic'})
+plt.text(0.8, 0.1, "Lying", fontdict={'size':28, 'style':'italic'})
 
-plt.legend(loc=0,fontsize='large')
+plt.legend(loc=0, fontsize='large')
 plt.title('Figure 1.1')
+plt.show()
 ```
 
 Figure 1.1 three types of truth border. 
 
 
-Without loss of generality, we consider the truth boder:
+Without loss of generality, we consider the truth border:
 
 $$
 U_i(\text{Pr}(A|r_i),\phi_i)=-\text{Pr}(A|r_i)+f(\phi_i)
@@ -314,25 +315,26 @@ $$
 and plot the "truth telling" and "lying area" of individual $i$ in Figure 1.2:
 
 ```{code-cell} ipython3
-x1 = np.arange(0,1,0.001)
-y1 = x1-0.4
+x1 = np.arange(0, 1, 0.001)
+y1 = x1 - 0.4
 z1 = x1
 z2 = 0
-plt.figure(figsize=(12,10))
-plt.plot(x1,y1,'r-',label='Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)+f(\phi_i)$')
-plt.plot(x1,x1, ':', linewidth=2)
-plt.fill_between(x1, y1, z1, facecolor='blue',alpha=0.05,label='truth telling') 
-plt.fill_between(x1, z2, y1,facecolor='green',alpha=0.05,label='lying')
-plt.xlim([0,1])
-plt.ylim([0,1])
+plt.figure(figsize=(12, 10))
+plt.plot(x1, y1,'r-',label='Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)+f(\phi_i)$')
+plt.plot(x1, x1, ':', linewidth=2)
+plt.fill_between(x1, y1, z1, facecolor='blue', alpha=0.05, label='truth telling') 
+plt.fill_between(x1, z2, y1, facecolor='green', alpha=0.05, label='lying')
+plt.xlim([0, 1])
+plt.ylim([0, 1])
 
 plt.xlabel('Pr(A|yes)')
 plt.ylabel('Pr(A|no)')
-plt.text(0.5,0.4,r"Truth Telling",fontdict={'size':28,'family':'Times New Roman','style':'italic'})
-plt.text(0.8,0.2,r"Lying",fontdict={'size':28,'family':'Times New Roman','style':'italic'})
+plt.text(0.5, 0.4, "Truth Telling", fontdict={'size':28, 'style':'italic'})
+plt.text(0.8, 0.2, "Lying", fontdict={'size':28, 'style':'italic'})
 
-plt.legend(loc=0,fontsize='large')
+plt.legend(loc=0, fontsize='large')
 plt.title('Figure 1.2')
+plt.show()
 ```
 
 ## Utilitarian View of Survey Design
@@ -354,7 +356,7 @@ $$ (eq:util-rand-thirteen)
 
 where the random sample with replacement consists of $n$ individuals. 
 
-We can use Expression $(13)$ to draw  iso-variance curves.
+We can use Expression {eq}`eq:util-rand-thirteen` to draw  iso-variance curves.
 
 The following inequalities restrict the shapes of iso-variance curves:
 
@@ -366,7 +368,7 @@ $$
 \frac{d^2 \text{ Pr}(A|\text{no})}{d\text{ Pr}(A|\text{yes})^2}\bigg|_{\text{constant variance}}=- \frac{2 \left[\pi_A-\text{Pr}(A|\text{no})\right]}{\left[\text{Pr}(A|\text{yes})-\pi_A \right]^2}<0
 $$ (eq:util-rand-fourteen-b)
 
-From expression $(13)$ and $(14)$ we can see that:
+From expression {eq}`eq:util-rand-thirteen`, {eq}`eq:util-rand-fourteen-a` and {eq}`eq:util-rand-fourteen-b` we can see that:
 
 - Variance can be reduced only by increasing the distance of  $\text{Pr}(A|\text{yes})$  and/or  $\text{Pr}(A|\text{no})$  from  $r_A$.
 
@@ -386,34 +388,39 @@ Note that:
 
 ```{code-cell} ipython3
 class Iso_Variance:
-    def __init__(self,pi,n):
-        self.pi=pi
-        self.n=n
+    def __init__(self, pi, n):
+        self.pi = pi
+        self.n = n
     
     def plotting_iso_variance_curve(self):
-        nv=np.array([0.27,0.34,0.49,0.74,0.92,1.1,1.47,2.94,14.7])
-        x = np.arange(0,1,0.001)
-        x0 = np.arange(self.pi,1,0.001)
-        x2 = np.arange(0,self.pi,0.001)
-        y1=[self.pi for i in x0]
-        y2=[self.pi for i in x2]
-        y0=1/(1+(x0*(1-self.pi)**2)/((1-x0)*self.pi**2))
-        plt.figure(figsize=(12,10))
-        plt.plot(x0,y0,'m-',label='Warner')
-        plt.plot(x,x, 'c:', linewidth=2)
-        plt.plot(x0,y1,'c:', linewidth=2)
-        plt.plot(y2,x2,'c:',linewidth=2)
+        pi = self.pi
+        n = self.n
+        
+        nv = np.array([0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7])
+        x = np.arange(0, 1, 0.001)
+        x0 = np.arange(pi, 1, 0.001)
+        x2 = np.arange(0, pi, 0.001)
+        y1 = [pi for i in x0]
+        y2 = [pi for i in x2]
+        y0 = 1 / (1 + (x0 * (1 - pi)**2) / ((1 - x0) * pi**2))
+        
+        plt.figure(figsize=(12, 10))
+        plt.plot(x0, y0, 'm-', label='Warner')
+        plt.plot(x, x, 'c:', linewidth=2)
+        plt.plot(x0, y1,'c:', linewidth=2)
+        plt.plot(y2, x2, 'c:', linewidth=2)
         for i in range(len(nv)):
-            y=self.pi-(self.pi**2 * (1-self.pi)**2)/(self.n*(nv[i]/self.n)*(x0-self.pi+1e-8))
-            plt.plot(x0,y,'k--',alpha=1-0.07*i,label='V'+str(i+1))
-        plt.xlim([0,1])
-        plt.ylim([0,0.5])
+            y = pi - (pi**2 * (1 - pi)**2) / (n * (nv[i] / n) * (x0 - pi + 1e-8))
+            plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
+        plt.xlim([0, 1])
+        plt.ylim([0, 0.5])
         plt.xlabel('Pr(A|yes)')
         plt.ylabel('Pr(A|no)')
-        plt.legend(loc=0,fontsize='large')
-        plt.text(0.32,0.28,r"High Var",fontdict={'size':15,'family':'Times New Roman','style':'italic'})
-        plt.text(0.91,0.01,r"Low Var",fontdict={'size':15,'family':'Times New Roman','style':'italic'})
+        plt.legend(loc=0, fontsize='large')
+        plt.text(0.32, 0.28, "High Var", fontdict={'size':15, 'style':'italic'})
+        plt.text(0.91, 0.01, "Low Var", fontdict={'size':15, 'style':'italic'})
         plt.title('Figure 2')
+        plt.show()
 ```
 
 Properties of  iso-variance curves  are:
@@ -422,7 +429,7 @@ Properties of  iso-variance curves  are:
 
 - From $V_1$ to $V_9$, the variance of the iso-variance curve increase monotonically, as colors  brighten monotonically
 
-Suppose the parameters of the iso-variance model follow those in article XXXX Ljungqvist, which are:
+Suppose the parameters of the iso-variance model follow those in Ljungqvist {cite}`ljungqvist1993unified`, which are:
 
 - $\pi=0.3$
 
@@ -431,7 +438,7 @@ Suppose the parameters of the iso-variance model follow those in article XXXX Lj
 Then we can plot the iso-variance curve in Figure 2:
 
 ```{code-cell} ipython3
-var=Iso_Variance(pi=0.3,n=100)
+var = Iso_Variance(pi=0.3, n=100)
 var.plotting_iso_variance_curve()
 ```
 
@@ -459,7 +466,7 @@ Here are some comments about the model design:
 
 - An  equilibrium of the optimal design model is a Nash equilibrium of a noncooperative game.
 
-- Assumption $(9.\text{b})$ is sufficient to guarantee  existence of an optimal model design. By choosing $\text{ Pr}(A|\text{yes})$ and $\text{ Pr}(A|\text{no})$ sufficiently close to each other, all respondents will find it optimal to answer truthfully. The closer are these probabilities, the higher the variance of the estimator becomes.
+- Assumption {eq}`eq:util-rand-nine-b` is sufficient to guarantee  existence of an optimal model design. By choosing $\text{ Pr}(A|\text{yes})$ and $\text{ Pr}(A|\text{no})$ sufficiently close to each other, all respondents will find it optimal to answer truthfully. The closer are these probabilities, the higher the variance of the estimator becomes.
 
 - If  respondents experience a large enough increase in expected utility from telling the truth, then there is no need to use a randomized response model. The smallest possible variance of the estimate is then obtained at $\text{ Pr}(A|\text{yes})=1$ and $\text{ Pr}(A|\text{no})=0$ ; that is, when respondents answer truthfully to direct questioning.
 
@@ -484,39 +491,41 @@ Following Lanke's suggestion, the statistician should find the highest possible 
 However, we can see that in Figure 3, point $Z$ offers a smaller variance that still allows cooperation of the respondents, and it is achievable following our discussion of the truth border in Part III:
 
 ```{code-cell} ipython3
-pi=0.3
-n=100
-nv=[0.27,0.34,0.49,0.74,0.92,1.1,1.47,2.94,14.7]
-x=np.arange(0,1,0.001)
-y=x-0.4
-z=x
-x0 = np.arange(pi,1,0.001)
-x2 = np.arange(0,pi,0.001)
-y1=[pi for i in x0]
-y2=[pi for i in x2]
-plt.figure(figsize=(12,10))
-plt.plot(x,x, 'c:', linewidth=2)
-plt.plot(x0,y1,'c:', linewidth=2)
-plt.plot(y2,x2,'c:',linewidth=2)
-plt.plot(x,y,'r-',label='Truth Border')
-plt.fill_between(x, y, z, facecolor='blue',alpha=0.05,label='truth telling') 
-plt.fill_between(x,0,y,facecolor='green',alpha=0.05,label='lying')
+pi = 0.3
+n = 100
+nv = [0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7]
+x = np.arange(0, 1, 0.001)
+y = x - 0.4
+z = x
+x0 = np.arange(pi, 1, 0.001)
+x2 = np.arange(0, pi, 0.001)
+y1 = [pi for i in x0]
+y2 = [pi for i in x2]
+
+plt.figure(figsize=(12, 10))
+plt.plot(x, x, 'c:', linewidth=2)
+plt.plot(x0, y1, 'c:', linewidth=2)
+plt.plot(y2, x2, 'c:', linewidth=2)
+plt.plot(x, y, 'r-', label='Truth Border')
+plt.fill_between(x, y, z, facecolor='blue', alpha=0.05, label='truth telling') 
+plt.fill_between(x, 0, y, facecolor='green', alpha=0.05, label='lying')
 for i in range(len(nv)):
-    y=pi-(pi**2 * (1-pi)**2)/(n*(nv[i]/n)*(x0-pi+1e-8))
-    plt.plot(x0,y,'k--',alpha=1-0.07*i,label='V'+str(i+1))
+    y = pi - (pi**2 * (1 - pi)**2) / (n * (nv[i] / n) * (x0 - pi + 1e-8))
+    plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
     
 
-plt.scatter(0.498,0.1,c='b',marker='*',label='Z',s=150)
-plt.scatter(0.4,0,c='y',label='X',s=150)
-plt.xlim([0,1])
-plt.ylim([0,0.5])
+plt.scatter(0.498, 0.1, c='b', marker='*', label='Z', s=150)
+plt.scatter(0.4, 0, c='y', label='X', s=150)
+plt.xlim([0, 1])
+plt.ylim([0, 0.5])
 plt.xlabel('Pr(A|yes)')
 plt.ylabel('Pr(A|no)')
-plt.text(0.45,0.35,r"Truth Telling",fontdict={'size':28,'family':'Times New Roman','style':'italic'})
-plt.text(0.85,0.35,r"Lying",fontdict={'size':28,'family':'Times New Roman','style':'italic'})
-plt.text(0.515,0.095,r"Optimal Design",fontdict={'size':16,'color':'b','family':'Times New Roman'})
-plt.legend(loc=0,fontsize='large')
+plt.text(0.45, 0.35, "Truth Telling", fontdict={'size':28, 'style':'italic'})
+plt.text(0.85, 0.35, "Lying",fontdict = {'size':28, 'style':'italic'})
+plt.text(0.515, 0.095, "Optimal Design", fontdict={'size':16,'color':'b'})
+plt.legend(loc=0, fontsize='large')
 plt.title('Figure 3')
+plt.show()
 ```
 
 ### Method of Leysieffer and Warner (1976)
@@ -566,45 +575,47 @@ We can use Python to show that the optimal model design corresponds to point Q i
 
 ```{code-cell} ipython3
 def f(x):
-    if x<0.16:
+    if x < 0.16:
         return 0
     else:
-        return (pow(x,0.5)-0.4)**2
+        return (pow(x, 0.5) - 0.4)**2
 ```
 
 ```{code-cell} ipython3
-pi=0.3
-n=100
-nv=[0.27,0.34,0.49,0.74,0.92,1.1,1.47,2.94,14.7]
-x=np.arange(0,1,0.001)
-y=[f(i) for i in x]
-z=x
-x0 = np.arange(pi,1,0.001)
-x2 = np.arange(0,pi,0.001)
-y1=[pi for i in x0]
-y2=[pi for i in x2]
-x3 = np.arange(0.16,1,0.001)
-y3 = (pow(x3,0.5)-0.4)**2
-plt.figure(figsize=(12,10))
-plt.plot(x,x, 'c:', linewidth=2)
-plt.plot(x0,y1,'c:', linewidth=2)
-plt.plot(y2,x2,'c:',linewidth=2)
-plt.plot(x3,y3,'b-',label='Truth Border')
-plt.fill_between(x, y, z, facecolor='blue',alpha=0.05,label='truth telling') 
-plt.fill_between(x3,0,y3,facecolor='green',alpha=0.05,label='lying')
+pi = 0.3
+n = 100
+nv = [0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7]
+x = np.arange(0, 1, 0.001)
+y = [f(i) for i in x]
+z = x
+x0 = np.arange(pi, 1, 0.001)
+x2 = np.arange(0, pi, 0.001)
+y1 = [pi for i in x0]
+y2 = [pi for i in x2]
+x3 = np.arange(0.16, 1, 0.001)
+y3 = (pow(x3, 0.5) - 0.4)**2
+
+plt.figure(figsize=(12, 10))
+plt.plot(x, x, 'c:', linewidth=2)
+plt.plot(x0, y1,'c:', linewidth=2)
+plt.plot(y2, x2,'c:', linewidth=2)
+plt.plot(x3, y3,'b-', label='Truth Border')
+plt.fill_between(x, y, z, facecolor='blue', alpha=0.05, label='Truth telling') 
+plt.fill_between(x3, 0, y3,facecolor='green', alpha=0.05, label='Lying')
 for i in range(len(nv)):
-    y=pi-(pi**2 * (1-pi)**2)/(n*(nv[i]/n)*(x0-pi+1e-8))
-    plt.plot(x0,y,'k--',alpha=1-0.07*i,label='V'+str(i+1))
-plt.scatter(0.61,0.146,c='r',marker='*',label='Z',s=150)
-plt.xlim([0,1])
-plt.ylim([0,0.5])
+    y = pi - (pi**2 * (1 - pi)**2) / (n * (nv[i] / n) * (x0 - pi + 1e-8))
+    plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
+plt.scatter(0.61, 0.146, c='r', marker='*', label='Z', s=150)
+plt.xlim([0, 1])
+plt.ylim([0, 0.5])
 plt.xlabel('Pr(A|yes)')
 plt.ylabel('Pr(A|no)')
-plt.text(0.45,0.35,r"Truth Telling",fontdict={'size':28,'family':'Times New Roman','style':'italic'})
-plt.text(0.8,0.1,r"Lying",fontdict={'size':28,'family':'Times New Roman','style':'italic'})
-plt.text(0.63,0.141,r"Optimal Design",fontdict={'size':16,'color':'r','family':'Times New Roman'})
-plt.legend(loc=0,fontsize='large')
+plt.text(0.45, 0.35, "Truth Telling", fontdict={'size':28, 'style':'italic'})
+plt.text(0.8, 0.1, "Lying", fontdict={'size':28, 'style':'italic'})
+plt.text(0.63, 0.141, "Optimal Design", fontdict={'size':16,'color':'r'})
+plt.legend(loc=0, fontsize='large')
 plt.title('Figure 4')
+plt.show()
 ```
 
 ### Method of Greenberg et al. (1977)
@@ -637,11 +648,11 @@ $$
 \text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})
 $$ (eq:util-rand-eight-bb)
 
-According to Greenberg et al. (1977), a respondent commits himself or herself to answer truthfully on the basis of a probability in $(7)$ or $(8)$ **before** randomly selecting the question to be answered. 
+According to Greenberg et al. (1977), a respondent commits himself or herself to answer truthfully on the basis of a probability in {eq}`eq:util-rand-seven-aa` or {eq}`eq:util-rand-eight-aa` **before** randomly selecting the question to be answered. 
 
-Suppose that the appropriate privacy measure is captured by the notion of "limited hazard" in $(8)$.
+Suppose that the appropriate privacy measure is captured by the notion of "limited hazard" in {eq}`eq:util-rand-eight-aa` and {eq}`eq:util-rand-eight-bb`.
 
-Consider an unrelated question model where the unrelated question is replaced by the instruction "Say the word 'no,' " which implies that
+Consider an unrelated question model where the unrelated question is replaced by the instruction "Say the word 'no'", which implies that
 
 $$
 \text{Pr}(A|\text{yes})=1
