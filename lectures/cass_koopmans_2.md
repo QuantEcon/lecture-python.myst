@@ -28,15 +28,15 @@ kernelspec:
 
 This lecture continues our analysis in this  lecture
 {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>` about the  model that Tjalling Koopmans {cite}`Koopmans`
-and David Cass {cite}`Cass` used to study optimal growth.
+and David Cass {cite}`Cass` used to study optimal capital accumulation.
 
 This lecture illustrates what is, in fact, a
 more general connection between a **planned economy** and an economy
-organized as a **competitive equilibrium**.
+organized as a competitive equilibrium or a **market economy**.
 
 The earlier  lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>` studied a planning problem and used ideas including
 
-- A min-max problem for solving the planning problem.
+- A Lagrangian formulation of the  planning problem that leads to a system of difference equations.
 - A **shooting algorithm** for solving difference equations subject
   to initial and terminal conditions.
 - A **turnpike** property that describes optimal paths for
@@ -44,8 +44,8 @@ The earlier  lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>` studi
 
 The present lecture uses  additional  ideas including
 
-- Hicks-Arrow prices named after John R. Hicks and Kenneth Arrow.
-- A connection between some Lagrange multipliers in the min-max
+- Hicks-Arrow prices, named after John R. Hicks and Kenneth Arrow.
+- A connection between some Lagrange multipliers from the planning 
   problem and the Hicks-Arrow prices.
 - A **Big** $K$ **, little** $k$ trick widely used in
   macroeconomic dynamics.
@@ -53,14 +53,14 @@ The present lecture uses  additional  ideas including
       and also in [this lecture](https://python-advanced.quantecon.org/dyn_stack.html).
 - A non-stochastic version of a theory of the **term structure of
   interest rates**.
-- An intimate connection between the cases for the optimality of two
-  competing visions of good ways to organize an economy, namely:
+- An intimate connection between  two
+   ways to organize an economy, namely:
     * **socialism** in which a central planner commands the
       allocation of resources, and
-    * **capitalism** (also known as **a  market economy**) in
+    * **competitive markets** in
       which competitive equilibrium **prices** induce individual
       consumers and producers to choose a socially optimal allocation
-      as an unintended consequence of their selfish
+      as  unintended consequences of their selfish
       decisions
 
 Let's start with some standard imports:
@@ -134,7 +134,7 @@ where $\delta \in (0,1)$ is a depreciation rate of capital.
 In this lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>`, we studied a problem in which a planner chooses an allocation $\{\vec{C},\vec{K}\}$ to
 maximize {eq}`utility-functional` subject to {eq}`allocation`.
 
-The allocation that solves the planning problem plays an important role in a competitive equilibrium as we shall see below.
+The allocation that solves the planning problem reappears in a competitive equilibrium, as we shall see below.
 
 ## Competitive Equilibrium
 
@@ -145,14 +145,16 @@ technology and preference structure as the planned economy studied in this lectu
 
 But now there is no planner.
 
-Market prices adjust to reconcile distinct decisions that are made
+There are (unit masses of) price taking consumers and firms.
+
+Market prices are set to reconcile distinct decisions that are made
 separately by a representative household and a representative firm.
 
 There is a representative consumer who has the same preferences over
-consumption plans as did the consumer in the planned economy.
+consumption plans as did a consumer in the planned economy.
 
-Instead of being told what to consume and save by a planner, the
-household chooses for itself subject to a budget constraint
+Instead of being told what to consume and save by a planner, a
+consumer (also known as a *household*) chooses for itself subject to a budget constraint
 
 - At each time $t$, the household receives wages and rentals
   of capital from a firm -- these comprise its **income** at
@@ -175,8 +177,7 @@ household chooses for itself subject to a budget constraint
 - The representative household and the representative firm are both
   **price takers** who believe that prices are not affected by their choices
 
-**Note:** We can think of there being a large number
-$M$ of identical representative consumers and $M$
+**Note:** We can think of there being  unit measures of identical representative consumers and 
 identical representative firms.
 
 ## Market Structure
@@ -195,25 +196,28 @@ all other dates $t=1, 2, \ldots, T$.
 
 There are  sequences of prices
 $\{w_t,\eta_t\}_{t=0}^T= \{\vec{w}, \vec{\eta} \}$
-where $w_t$ is a wage or rental rate for labor at time $t$ and
-$\eta_t$ is a rental rate for capital at time $t$.
+where 
 
-In addition there is are intertemporal prices that work as follows.
+- $w_t$ is a wage or rental rate for labor at time $t$
 
-Let $q^0_t$ be the price of a good at date $t$ relative
+- $\eta_t$ is a rental rate for capital at time $t$
+
+In addition there is a vector $\{q_t^0\}$ of  intertemporal prices where  
+
+- $q^0_t$ is the price of a good at date $t$ relative
 to a good at date $0$.
 
 We call $\{q^0_t\}_{t=0}^T$  a vector of **Hicks-Arrow prices**,
 named after the 1972 economics Nobel prize winners.
 
-Evidently,
+Units of $q_t^0$ could be 
 
 $$
-q^0_t=\frac{\text{number of time 0 goods}}{\text{number of time t goods}}
+\frac{\text{number of time 0 goods}}{\text{number of time t goods}}
 $$
 
-Because $q^0_t$ is a **relative price**, the units in terms of
-which prices are quoted are arbitrary -- we are free to normalize them.
+But because $q^0_t$ is a **relative price**, the units in terms of
+which prices are quoted are arbitrary, we are free to re-normalize them.
 
 ## Firm Problem
 
@@ -296,7 +300,7 @@ $\tilde k_t$ and $\tilde n_t$.
 
 If $\frac{\partial F}{\partial \tilde k_t}> \eta_t$, then the
 firm makes positive profits on each additional unit of
-$\tilde k_t$, so it will want to make $\tilde k_t$
+$\tilde k_t$, so it would want to make $\tilde k_t$
 arbitrarily large.
 
 But setting $\tilde k_t = + \infty$ is not physically feasible,
@@ -307,7 +311,7 @@ A similar argument applies if
 $\frac{\partial F}{\partial \tilde n_t}> w_t$.
 
 If $\frac{\partial \tilde k_t}{\partial \tilde k_t}< \eta_t$,
-the firm will set $\tilde k_t$ to zero, something that is not feasible.
+the firm would want to set  $\tilde k_t$ to zero, which is not feasible.
 
 It is convenient to define
 $\vec{w} =\{w_0, \dots,w_T\}$and $\vec{\eta}= \{\eta_0, \dots, \eta_T\}$.
@@ -520,7 +524,7 @@ k_t: \quad -\lambda q_t^0 \left[(1-\delta)+\eta_t \right]+\lambda q^0_{t-1}=0 \q
 k_{T+1}: \quad -\lambda q_0^{T+1} \leq 0, \ \leq 0 \text{ if } k_{T+1}=0; \ =0 \text{ if } k_{T+1}>0
 ```
 
-Now we plug in our guesses of prices and embark on some algebra in the hope of derived all first-order necessary conditions
+Now we plug in our guesses of prices and embark on some algebra in the hope of recovering all first-order necessary conditions
 {eq}`constraint1`-{eq}`constraint4` for the planning problem from this lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>`.
 
 Combining {eq}`cond1` and {eq}`eq-price`, we get:
@@ -563,7 +567,7 @@ $$
 \sum_{t=0}^T \beta^t \mu_{t} \left(C_t+ (K_{t+1} -(1-\delta)K_t)-f(K_t)+K_t f'(K_t)-f'(K_t)K_t\right) \leq 0
 $$
 
-which simplifies
+which simplifies to
 
 $$
 \sum_{t=0}^T  \beta^t \mu_{t} \left(C_t +K_{t+1} -(1-\delta)K_t - F(K_t,1)\right) \leq 0
@@ -616,7 +620,7 @@ $$
 
 which is exactly {eq}`eq-pr4`.
 
-So at our guess for the equilibrium price system, the allocation
+Thus, at our guess for the equilibrium price system, the allocation
 that solves the planning problem also solves the problem faced by a firm
 within a competitive equilibrium.
 
@@ -962,7 +966,4 @@ Now we plot when $t_0=20$
 ```{code-cell} python3
 plot_yield_curves(pp, 20, 0.3, k_ss/3, T_arr)
 ```
-
-We aim to have more to say about the term structure of interest rates
-in a planned lecture on the topic.
 
