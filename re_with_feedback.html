@@ -89,15 +89,14 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/re_with_feedback.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -363,20 +362,8 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: - 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+Solving environment: | 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
@@ -452,12 +439,6 @@ Solving environment: -
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -484,9 +465,9 @@ Solving environment: -
 <section id="overview">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">63.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture studies stability in the context of an elementary rational expectations model.</p>
-<p>We study a rational expectations version of Philip Cagan’s model <span id="id1">[<a class="reference internal" href="zreferences.html#id86">Cag56</a>]</span> linking
+<p>We study a rational expectations version of Philip Cagan’s model <span id="id1">[<a class="reference internal" href="zreferences.html#id86" title="Philip Cagan. The monetary dynamics of hyperinflation. In Milton Friedman, editor, Studies in the Quantity Theory of Money, pages 25–117. University of Chicago Press, Chicago, 1956.">Cag56</a>]</span> linking
 the price level to the money supply.</p>
-<p>Cagan did not use a rational expectations version of his model, but Sargent <span id="id2">[<a class="reference internal" href="zreferences.html#id87">Sar77</a>]</span> did.</p>
+<p>Cagan did not use a rational expectations version of his model, but Sargent <span id="id2">[<a class="reference internal" href="zreferences.html#id87" title="Thomas J Sargent. The Demand for Money During Hyperinflations under Rational Expectations: I. International Economic Review, 18(1):59-82, February 1977.">Sar77</a>]</span> did.</p>
 <p>We study a rational expectations version of this model because it is intrinsically interesting and  because it
 has a mathematical structure that
 appears in virtually all  linear rational expectations model, namely, that a key  endogenous variable equals
@@ -497,7 +478,7 @@ a mathematical expectation of a geometric sum of future values of another variab
 <li><p>a convenient formula for the expectation of geometric sum of future values of a variable</p></li>
 <li><p>a way of solving an expectational difference equation by mapping it into a vector first-order difference equation and appropriately manipulating an eigen decomposition of the transition matrix in order to impose stability</p></li>
 <li><p>a way to use a Big <span class="math notranslate nohighlight">\(K\)</span>, little <span class="math notranslate nohighlight">\(k\)</span> argument to allow apparent feedback from endogenous to exogenous variables within a rational expectations equilibrium</p></li>
-<li><p>a use of eigenvector decompositions of matrices that allowed Blanchard and Khan (1981) <span id="id3">[<a class="reference internal" href="zreferences.html#id245">BK80</a>]</span> and Whiteman (1983) <span id="id4">[<a class="reference internal" href="zreferences.html#id246">Whi83</a>]</span> to solve a class of linear rational expectations models</p></li>
+<li><p>a use of eigenvector decompositions of matrices that allowed Blanchard and Khan (1981) <span id="id3">[<a class="reference internal" href="zreferences.html#id245" title="Olivier Jean Blanchard and Charles M Kahn. The Solution of Linear Difference Models under Rational Expectations. Econometrica, 48(5):1305-1311, July 1980.">BK80</a>]</span> and Whiteman (1983) <span id="id4">[<a class="reference internal" href="zreferences.html#id246" title="Charles Whiteman. Linear Rational Expectations Models: A User's Guide. University of Minnesota Press, Minneapolis, Minnesota, 1983.">Whi83</a>]</span> to solve a class of linear rational expectations models</p></li>
 <li><p>how to use <strong>SymPy</strong> to get analytical formulas for some key objects comprising a rational expectations equilibrium</p></li>
 </ul>
 <p>Matrix decompositions employed here are described in more depth in this lecture <a class="reference internal" href="lagrangian_lqdp.html"><span class="doc">Lagrangian formulations</span></a>.</p>
@@ -595,9 +576,9 @@ unstable root (in this case <span class="math notranslate nohighlight">\(\lambda
 </section>
 <section id="illustration-cagans-model">
 <h2><a class="toc-backref" href="#id11"><span class="section-number">63.3. </span>Illustration: Cagan’s Model</a><a class="headerlink" href="#illustration-cagans-model" title="Permalink to this headline">¶</a></h2>
-<p>Now let’s use linear difference equations to represent and solve Sargent’s  <span id="id5">[<a class="reference internal" href="zreferences.html#id87">Sar77</a>]</span> rational expectations version of
-Cagan’s model <span id="id6">[<a class="reference internal" href="zreferences.html#id86">Cag56</a>]</span> that connects the price level to the public’s anticipations of future money supplies.</p>
-<p>Cagan did not use a rational expectations version of his model, but Sargent <span id="id7">[<a class="reference internal" href="zreferences.html#id87">Sar77</a>]</span></p>
+<p>Now let’s use linear difference equations to represent and solve Sargent’s  <span id="id5">[<a class="reference internal" href="zreferences.html#id87" title="Thomas J Sargent. The Demand for Money During Hyperinflations under Rational Expectations: I. International Economic Review, 18(1):59-82, February 1977.">Sar77</a>]</span> rational expectations version of
+Cagan’s model <span id="id6">[<a class="reference internal" href="zreferences.html#id86" title="Philip Cagan. The monetary dynamics of hyperinflation. In Milton Friedman, editor, Studies in the Quantity Theory of Money, pages 25–117. University of Chicago Press, Chicago, 1956.">Cag56</a>]</span> that connects the price level to the public’s anticipations of future money supplies.</p>
+<p>Cagan did not use a rational expectations version of his model, but Sargent <span id="id7">[<a class="reference internal" href="zreferences.html#id87" title="Thomas J Sargent. The Demand for Money During Hyperinflations under Rational Expectations: I. International Economic Review, 18(1):59-82, February 1977.">Sar77</a>]</span></p>
 <p>Let</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(m_t^d\)</span> be the log of the demand for money</p></li>
@@ -1425,20 +1406,6 @@ with <span class="math notranslate nohighlight">\(F^*\)</span> and check for the
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_png function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_rgba function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_mask function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-</pre></div>
-</div>
 <div class="output text_latex math notranslate nohighlight">
 \[\begin{split}\displaystyle \left[\begin{matrix}ρ &amp; δ\\\frac{λ - 1}{λ} &amp; \frac{1}{λ}\end{matrix}\right]\end{split}\]</div>
 </div>
@@ -1450,20 +1417,6 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_png function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_rgba function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_mask function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-</pre></div>
-</div>
 <div class="output text_latex math notranslate nohighlight">
 \[\displaystyle \left\{ \frac{λ ρ + 1}{2 λ} - \frac{\sqrt{4 δ λ^{2} - 4 δ λ + λ^{2} ρ^{2} - 2 λ ρ + 1}}{2 λ} : 1, \  \frac{λ ρ + 1}{2 λ} + \frac{\sqrt{4 δ λ^{2} - 4 δ λ + λ^{2} ρ^{2} - 2 λ ρ + 1}}{2 λ} : 1\right\}\]</div>
 </div>
@@ -1475,20 +1428,6 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_png function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_rgba function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_mask function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-</pre></div>
-</div>
 <div class="output text_latex math notranslate nohighlight">
 \[\begin{split}\displaystyle \left[ \left( \frac{λ ρ + 1}{2 λ} - \frac{\sqrt{4 δ λ^{2} - 4 δ λ + λ^{2} ρ^{2} - 2 λ ρ + 1}}{2 λ}, \  1, \  \left[ \left[\begin{matrix}\frac{λ \left(\frac{λ ρ + 1}{2 λ} - \frac{\sqrt{4 δ λ^{2} - 4 δ λ + λ^{2} ρ^{2} - 2 λ ρ + 1}}{2 λ}\right)}{λ - 1} - \frac{1}{λ - 1}\\1\end{matrix}\right]\right]\right), \  \left( \frac{λ ρ + 1}{2 λ} + \frac{\sqrt{4 δ λ^{2} - 4 δ λ + λ^{2} ρ^{2} - 2 λ ρ + 1}}{2 λ}, \  1, \  \left[ \left[\begin{matrix}\frac{λ \left(\frac{λ ρ + 1}{2 λ} + \frac{\sqrt{4 δ λ^{2} - 4 δ λ + λ^{2} ρ^{2} - 2 λ ρ + 1}}{2 λ}\right)}{λ - 1} - \frac{1}{λ - 1}\\1\end{matrix}\right]\right]\right)\right]\end{split}\]</div>
 </div>
@@ -1508,20 +1447,6 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_png function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_rgba function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_mask function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-</pre></div>
-</div>
 <div class="output text_latex math notranslate nohighlight">
 \[\begin{split}\displaystyle \left[\begin{matrix}ρ &amp; 0\\\frac{λ - 1}{λ} &amp; \frac{1}{λ}\end{matrix}\right]\end{split}\]</div>
 </div>
@@ -1533,20 +1458,6 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_png function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_rgba function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_mask function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-</pre></div>
-</div>
 <div class="output text_latex math notranslate nohighlight">
 \[\displaystyle \left\{ \frac{1}{λ} : 1, \  ρ : 1\right\}\]</div>
 </div>
@@ -1558,20 +1469,6 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_png function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_rgba function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_mask function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-</pre></div>
-</div>
 <div class="output text_latex math notranslate nohighlight">
 \[\begin{split}\displaystyle \left[ \left( \frac{1}{λ}, \  1, \  \left[ \left[\begin{matrix}0\\1\end{matrix}\right]\right]\right), \  \left( ρ, \  1, \  \left[ \left[\begin{matrix}\frac{λ ρ - 1}{λ - 1}\\1\end{matrix}\right]\right]\right)\right]\end{split}\]</div>
 </div>
@@ -1611,20 +1508,6 @@ is the eigenvector associated with <span class="math notranslate nohighlight">\(
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_png function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_rgba function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_mask function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-</pre></div>
-</div>
 <div class="output text_latex math notranslate nohighlight">
 \[\begin{split}\displaystyle \left[\begin{matrix}\frac{λ ρ - 1}{λ - 1} &amp; 0\\1 &amp; 1\end{matrix}\right]\end{split}\]</div>
 </div>
@@ -1638,20 +1521,6 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_png function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_rgba function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_mask function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-</pre></div>
-</div>
 <div class="output text_latex math notranslate nohighlight">
 \[\begin{split}\displaystyle \left[\begin{matrix}\frac{λ - 1}{λ ρ - 1} &amp; 0\\\frac{1 - λ}{λ ρ - 1} &amp; 1\end{matrix}\right]\end{split}\]</div>
 </div>
@@ -1664,20 +1533,6 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_png function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_rgba function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_mask function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-</pre></div>
-</div>
 <div class="output text_latex math notranslate nohighlight">
 \[\displaystyle \frac{λ - 1}{λ ρ - 1}\]</div>
 </div>
@@ -1690,20 +1545,6 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_png function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_rgba function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The to_mask function was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-/usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages/IPython/lib/latextools.py:126: MatplotlibDeprecationWarning: 
-The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be removed two minor releases later. Use mathtext.math_to_image instead.
-  mt.to_png(f, s, fontsize=12, dpi=dpi, color=color)
-</pre></div>
-</div>
 <div class="output text_latex math notranslate nohighlight">
 \[\displaystyle - \frac{1 - λ}{λ ρ - 1}\]</div>
 </div>
@@ -1937,16 +1778,6 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
    30. Shortest Paths
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   31. Cass-Koopmans Planning Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_2.html">
-   32. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1956,41 +1787,51 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Growth
+  Consumption, Savings and Capital
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   37. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   38. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    39. Cake Eating I: Introduction to Optimal Saving
@@ -2268,7 +2109,7 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/re_with_feedback.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/re_with_feedback.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/re_with_feedback.md" download><i data-feather="github"></i></a></li>
@@ -2283,7 +2124,7 @@ The MathtextBackendBitmap class was deprecated in Matplotlib 3.4 and will be rem
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

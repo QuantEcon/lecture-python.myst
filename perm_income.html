@@ -89,15 +89,14 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/perm_income.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -383,32 +382,8 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: / 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+Solving environment: - 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
@@ -484,12 +459,6 @@ Solving environment: /
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -502,8 +471,8 @@ Solving environment: /
 </div>
 <section id="overview">
 <h2><a class="toc-backref" href="#id25"><span class="section-number">57.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>This lecture describes a rational expectations version of the famous permanent income model of Milton Friedman <span id="id1">[<a class="reference internal" href="zreferences.html#id157">Fri56</a>]</span>.</p>
-<p>Robert Hall cast Friedman’s model within a linear-quadratic setting <span id="id2">[<a class="reference internal" href="zreferences.html#id158">Hal78</a>]</span>.</p>
+<p>This lecture describes a rational expectations version of the famous permanent income model of Milton Friedman <span id="id1">[<a class="reference internal" href="zreferences.html#id157" title="M. Friedman. A Theory of the Consumption Function. Princeton University Press, 1956.">Fri56</a>]</span>.</p>
+<p>Robert Hall cast Friedman’s model within a linear-quadratic setting <span id="id2">[<a class="reference internal" href="zreferences.html#id158" title="Robert E Hall. Stochastic Implications of the Life Cycle-Permanent Income Hypothesis: Theory and Evidence. Journal of Political Economy, 86(6):971–987, 1978.">Hal78</a>]</span>.</p>
 <p>Like Hall, we formulate an infinite-horizon linear-quadratic savings problem.</p>
 <p>We use the model as a vehicle for illustrating</p>
 <ul class="simple">
@@ -512,7 +481,7 @@ Solving environment: /
 <li><p>impulse response functions</p></li>
 <li><p>the idea that changes in consumption are useful as predictors of movements in income</p></li>
 </ul>
-<p>Background readings on the linear-quadratic-Gaussian permanent income model are Hall’s  <span id="id3">[<a class="reference internal" href="zreferences.html#id158">Hal78</a>]</span>  and chapter 2 of  <span id="id4">[<a class="reference internal" href="zreferences.html#id179">LS18</a>]</span>.</p>
+<p>Background readings on the linear-quadratic-Gaussian permanent income model are Hall’s  <span id="id3">[<a class="reference internal" href="zreferences.html#id158" title="Robert E Hall. Stochastic Implications of the Life Cycle-Permanent Income Hypothesis: Theory and Evidence. Journal of Political Economy, 86(6):971–987, 1978.">Hal78</a>]</span>  and chapter 2 of  <span id="id4">[<a class="reference internal" href="zreferences.html#id179" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>.</p>
 <p>Let’s start with some imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -901,7 +870,7 @@ C =
 consumption by representing their dynamics in several different ways.</p>
 <section id="halls-representation">
 <h3><span class="section-number">57.3.1. </span>Hall’s Representation<a class="headerlink" href="#halls-representation" title="Permalink to this headline">¶</a></h3>
-<p id="index-3">Hall <span id="id7">[<a class="reference internal" href="zreferences.html#id158">Hal78</a>]</span> suggested an insightful way to summarize the implications of LQ permanent income theory.</p>
+<p id="index-3">Hall <span id="id7">[<a class="reference internal" href="zreferences.html#id158" title="Robert E Hall. Stochastic Implications of the Life Cycle-Permanent Income Hypothesis: Theory and Evidence. Journal of Political Economy, 86(6):971–987, 1978.">Hal78</a>]</span> suggested an insightful way to summarize the implications of LQ permanent income theory.</p>
 <p>First, to represent the solution for <span class="math notranslate nohighlight">\(b_t\)</span>, shift <a class="reference internal" href="#equation-sprob8">(57.9)</a> forward one period and eliminate <span class="math notranslate nohighlight">\(b_{t+1}\)</span> by using <a class="reference internal" href="#equation-sprob2">(57.2)</a> to obtain</p>
 <div class="math notranslate nohighlight">
 \[
@@ -952,7 +921,7 @@ c_{t+1} = (1-\beta)\sum_{j=0}^\infty \beta^j  \mathbb{E}_{t+1} [y_{t+j+1}] -
 </section>
 <section id="cointegration">
 <span id="coint-pi"></span><h3><span class="section-number">57.3.2. </span>Cointegration<a class="headerlink" href="#cointegration" title="Permalink to this headline">¶</a></h3>
-<p>Representation <a class="reference internal" href="#equation-sprob16abcd">(57.18)</a> reveals that the joint process <span class="math notranslate nohighlight">\(\{c_t, b_t\}\)</span> possesses the property that Engle and Granger <span id="id8">[<a class="reference internal" href="zreferences.html#id155">EG87</a>]</span> called <a class="reference external" href="https://en.wikipedia.org/wiki/Cointegration">cointegration</a>.</p>
+<p>Representation <a class="reference internal" href="#equation-sprob16abcd">(57.18)</a> reveals that the joint process <span class="math notranslate nohighlight">\(\{c_t, b_t\}\)</span> possesses the property that Engle and Granger <span id="id8">[<a class="reference internal" href="zreferences.html#id155" title="Robert F Engle and Clive W J Granger. Co-integration and Error Correction: Representation, Estimation, and Testing. Econometrica, 55(2):251–276, 1987.">EG87</a>]</span> called <a class="reference external" href="https://en.wikipedia.org/wiki/Cointegration">cointegration</a>.</p>
 <p>Cointegration is a tool that allows us to apply powerful results from the theory of stationary stochastic processes to (certain transformations of) nonstationary models.</p>
 <p>To apply cointegration in the present context, suppose that <span class="math notranslate nohighlight">\(z_t\)</span> is asymptotically stationary <a class="footnote-reference brackets" href="#fn-as" id="id9">3</a>.</p>
 <p>Despite this, both <span class="math notranslate nohighlight">\(c_t\)</span> and <span class="math notranslate nohighlight">\(b_t\)</span> will be non-stationary because they have unit roots (see <a class="reference internal" href="#equation-pi-ssr">(57.11)</a> for <span class="math notranslate nohighlight">\(b_t\)</span>).</p>
@@ -996,7 +965,7 @@ c_t = c_0 + \sum_{j=1}^t \hat w_j
 <p>Let the distribution of <span class="math notranslate nohighlight">\(c_0\)</span> represent the cross-section of initial consumption values.</p>
 <p>Equation <a class="reference internal" href="#equation-pi-vt">(57.22)</a> tells us that the variance of <span class="math notranslate nohighlight">\(c_t\)</span> increases over time at a rate proportional to <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>A number of different studies have investigated this prediction and found some support for it
-(see, e.g., <span id="id11">[<a class="reference internal" href="zreferences.html#id151">DP94</a>]</span>, <span id="id12">[<a class="reference internal" href="zreferences.html#id216">STY04</a>]</span>).</p>
+(see, e.g., <span id="id11">[<a class="reference internal" href="zreferences.html#id151" title="Angus Deaton and Christina Paxson. Intertemporal Choice and Inequality. Journal of Political Economy, 102(3):437–467, 1994.">DP94</a>]</span>, <span id="id12">[<a class="reference internal" href="zreferences.html#id216" title="Kjetil Storesletten, Christopher I Telmer, and Amir Yaron. Consumption and risk sharing over the life cycle. Journal of Monetary Economics, 51(3):609–633, 2004.">STY04</a>]</span>).</p>
 </section>
 <section id="impulse-response-functions">
 <h3><span class="section-number">57.3.4. </span>Impulse Response Functions<a class="headerlink" href="#impulse-response-functions" title="Permalink to this headline">¶</a></h3>
@@ -1134,7 +1103,7 @@ permanent income shocks using impulse-response functions</p>
 <h3><span class="section-number">57.4.2. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h3>
 <p>Assume now that at time <span class="math notranslate nohighlight">\(t\)</span> the consumer observes <span class="math notranslate nohighlight">\(y_t\)</span>, and its history up to <span class="math notranslate nohighlight">\(t\)</span>, but not <span class="math notranslate nohighlight">\(z_t\)</span>.</p>
 <p>Under this assumption, it is appropriate to use an <em>innovation representation</em> to form <span class="math notranslate nohighlight">\(A, C, U\)</span> in <a class="reference internal" href="#equation-sprob16abcd">(57.18)</a>.</p>
-<p>The discussion in sections 2.9.1 and 2.11.3 of <span id="id15">[<a class="reference internal" href="zreferences.html#id179">LS18</a>]</span> shows that the pertinent state space representation for <span class="math notranslate nohighlight">\(y_t\)</span> is</p>
+<p>The discussion in sections 2.9.1 and 2.11.3 of <span id="id15">[<a class="reference internal" href="zreferences.html#id179" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span> shows that the pertinent state space representation for <span class="math notranslate nohighlight">\(y_t\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -1173,7 +1142,7 @@ permanent income shocks using impulse-response functions</p>
 <li><p><span class="math notranslate nohighlight">\(K :=\)</span> the stationary Kalman gain</p></li>
 <li><p><span class="math notranslate nohighlight">\(a_t := y_t - E [ y_t \,|\, y_{t-1}, \ldots, y_0]\)</span></p></li>
 </ul>
-<p>In the same discussion in <span id="id16">[<a class="reference internal" href="zreferences.html#id179">LS18</a>]</span> it is shown that <span class="math notranslate nohighlight">\(K \in [0,1]\)</span> and that <span class="math notranslate nohighlight">\(K\)</span> increases as <span class="math notranslate nohighlight">\(\sigma_1/\sigma_2\)</span> does.</p>
+<p>In the same discussion in <span id="id16">[<a class="reference internal" href="zreferences.html#id179" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span> it is shown that <span class="math notranslate nohighlight">\(K \in [0,1]\)</span> and that <span class="math notranslate nohighlight">\(K\)</span> increases as <span class="math notranslate nohighlight">\(\sigma_1/\sigma_2\)</span> does.</p>
 <p>In other words, <span class="math notranslate nohighlight">\(K\)</span> increases as the ratio of the standard deviation of the permanent shock to that of the transitory shock increases.</p>
 <p>Please see  <a class="reference internal" href="kalman.html"><span class="doc">first look at the Kalman filter</span></a>.</p>
 <p>Applying formulas <a class="reference internal" href="#equation-sprob16abcd">(57.18)</a> implies</p>
@@ -1204,7 +1173,7 @@ permanent income shocks using impulse-response functions</p>
 consumption.</p>
 <p>While Hall’s model does a remarkably good job as a first approximation to consumption data, it’s widely believed that it doesn’t capture important aspects of some consumption/savings data.</p>
 <p>For example, liquidity constraints and precautionary savings appear to be present sometimes.</p>
-<p>Further discussion can be found in, e.g., <span id="id17">[<a class="reference internal" href="zreferences.html#id159">HM82</a>]</span>, <span id="id18">[<a class="reference internal" href="zreferences.html#id194">Par99</a>]</span>, <span id="id19">[<a class="reference internal" href="zreferences.html#id150">Dea91</a>]</span>, <span id="id20">[<a class="reference internal" href="zreferences.html#id146">Car01</a>]</span>.</p>
+<p>Further discussion can be found in, e.g., <span id="id17">[<a class="reference internal" href="zreferences.html#id159" title="Robert E Hall and Frederic S Mishkin. The Sensitivity of Consumption to Transitory Income: Estimates from Panel Data on Households. National Bureau of Economic Research Working Paper Series, 1982.">HM82</a>]</span>, <span id="id18">[<a class="reference internal" href="zreferences.html#id194" title="Jonathan A Parker. The Reaction of Household Consumption to Predictable Changes in Social Security Taxes. American Economic Review, 89(4):959–973, 1999.">Par99</a>]</span>, <span id="id19">[<a class="reference internal" href="zreferences.html#id150" title="Angus Deaton. Saving and Liquidity Constraints. Econometrica, 59(5):1221–1248, 1991.">Dea91</a>]</span>, <span id="id20">[<a class="reference internal" href="zreferences.html#id146" title="Christopher D Carroll. A Theory of the Consumption Function, with and without Liquidity Constraints. Journal of Economic Perspectives, 15(3):23–45, 2001.">Car01</a>]</span>.</p>
 </section>
 <section id="appendix-the-euler-equation">
 <span id="perm-income-appendix"></span><h2><a class="toc-backref" href="#id30"><span class="section-number">57.6. </span>Appendix: The Euler Equation</a><a class="headerlink" href="#appendix-the-euler-equation" title="Permalink to this headline">¶</a></h2>
@@ -1249,7 +1218,7 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
 <dd><p>This would be the case if, for example, the <a class="reference internal" href="linear_algebra.html#la-neumann-remarks"><span class="std std-ref">spectral radius</span></a> of <span class="math notranslate nohighlight">\(A\)</span> is strictly less than one.</p>
 </dd>
 <dt class="label" id="f8"><span class="brackets"><a class="fn-backref" href="#id10">4</a></span></dt>
-<dd><p>See <span id="id21">[<a class="reference internal" href="zreferences.html#id99">JYC88</a>]</span>, <span id="id22">[<a class="reference internal" href="zreferences.html#id98">LL01</a>]</span>, <span id="id23">[<a class="reference internal" href="zreferences.html#id97">LL04</a>]</span> for interesting applications of related ideas.</p>
+<dd><p>See <span id="id21">[<a class="reference internal" href="zreferences.html#id99" title="Robert J. Shiller John Y. Campbell. The Dividend-Price Ratio and Expectations of Future Dividends and Discount Factors. Review of Financial Studies, 1(3):195-228, 1988.">JYC88</a>]</span>, <span id="id22">[<a class="reference internal" href="zreferences.html#id98" title="Martin Lettau and Sydney Ludvigson. Consumption, Aggregate Wealth, and Expected Stock Returns. Journal of Finance, 56(3):815-849, 06 2001.">LL01</a>]</span>, <span id="id23">[<a class="reference internal" href="zreferences.html#id97" title="Martin Lettau and Sydney C. Ludvigson. Understanding Trend and Cycle in Asset Values: Reevaluating the Wealth Effect on Consumption. American Economic Review, 94(1):276-299, March 2004.">LL04</a>]</span> for interesting applications of related ideas.</p>
 </dd>
 <dt class="label" id="f4"><span class="brackets"><a class="fn-backref" href="#id13">5</a></span></dt>
 <dd><p>Representation <a class="reference internal" href="#equation-sprob15ab">(57.3)</a> implies that <span class="math notranslate nohighlight">\(d(L) = U (I - A L)^{-1} C\)</span>.</p>
@@ -1487,16 +1456,6 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
    30. Shortest Paths
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   31. Cass-Koopmans Planning Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_2.html">
-   32. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1506,41 +1465,51 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Growth
+  Consumption, Savings and Capital
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   37. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   38. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    39. Cake Eating I: Introduction to Optimal Saving
@@ -1818,7 +1787,7 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/perm_income.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/perm_income.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/perm_income.md" download><i data-feather="github"></i></a></li>
@@ -1833,7 +1802,7 @@ u'(c_0) = \beta R  \,\mathbb{E}_0 [u'(c_1)]
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

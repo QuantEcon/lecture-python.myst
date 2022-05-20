@@ -89,15 +89,14 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/likelihood_ratio_process.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -330,7 +329,7 @@ L(w^t) = \ell (w_t) L (w^{t-1}) .
 \]</div>
 <p>The likelihood ratio and its logarithm are key tools for making
 inferences using a classic frequentist approach due to Neyman and
-Pearson <span id="id2">[<a class="reference internal" href="zreferences.html#id248">NP33</a>]</span>.</p>
+Pearson <span id="id2">[<a class="reference internal" href="zreferences.html#id248" title="J. Neyman and E. S Pearson. On the problem of the most efficient tests of statistical hypotheses. Phil. Trans. R. Soc. Lond. A. 231 (694–706), pages 289–337, 1933.">NP33</a>]</span>.</p>
 <p>To help us appreciate how things work, the following Python code evaluates <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> as two different
 beta distributions, then computes and simulates an associated likelihood
 ratio process by generating a sequence <span class="math notranslate nohighlight">\(w^t\)</span> from one of the two
@@ -418,7 +417,7 @@ paths <span class="math notranslate nohighlight">\(L\left(w^{t}\right)\)</span> 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f8ba1eff400&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f512185ba00&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_9_1.png" src="_images/likelihood_ratio_process_9_1.png" />
@@ -530,7 +529,7 @@ diverges toward <span class="math notranslate nohighlight">\(+ \infty\)</span>.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f8ba0993070&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f51227ebd00&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_14_1.png" src="_images/likelihood_ratio_process_14_1.png" />
@@ -546,7 +545,7 @@ fast probability mass diverges  to <span class="math notranslate nohighlight">\(
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f8ba096d520&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f512284d2e0&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_16_1.png" src="_images/likelihood_ratio_process_16_1.png" />
@@ -556,7 +555,7 @@ fast probability mass diverges  to <span class="math notranslate nohighlight">\(
 <section id="likelihood-ratio-test">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">48.6. </span>Likelihood Ratio Test</a><a class="headerlink" href="#likelihood-ratio-test" title="Permalink to this headline">¶</a></h2>
 <p>We now describe how to employ the machinery
-of Neyman and Pearson <span id="id3">[<a class="reference internal" href="zreferences.html#id248">NP33</a>]</span> to test the hypothesis that  history <span class="math notranslate nohighlight">\(w^t\)</span> is generated by repeated
+of Neyman and Pearson <span id="id3">[<a class="reference internal" href="zreferences.html#id248" title="J. Neyman and E. S Pearson. On the problem of the most efficient tests of statistical hypotheses. Phil. Trans. R. Soc. Lond. A. 231 (694–706), pages 289–337, 1933.">NP33</a>]</span> to test the hypothesis that  history <span class="math notranslate nohighlight">\(w^t\)</span> is generated by repeated
 IID draws from density <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>Denote <span class="math notranslate nohighlight">\(q\)</span> as the data generating process, so that
 <span class="math notranslate nohighlight">\(q=f \text{ or } g\)</span>.</p>
@@ -879,7 +878,7 @@ integration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.7902536603660161, 0.08554075759988769)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.7902536603660174, 0.0855407575998879)
 </pre></div>
 </div>
 </div>
@@ -907,7 +906,7 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f8ba5217070&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f512051fc10&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_37_1.png" src="_images/likelihood_ratio_process_37_1.png" />
@@ -931,7 +930,7 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.01239249754452668, 0.35377684280997646)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.012392497544526692, 0.35377684280997646)
 </pre></div>
 </div>
 </div>
@@ -954,7 +953,7 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f8ba51883a0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f5121b015b0&gt;]
 </pre></div>
 </div>
 <img alt="_images/likelihood_ratio_process_43_1.png" src="_images/likelihood_ratio_process_43_1.png" />
@@ -1196,16 +1195,6 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
    30. Shortest Paths
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   31. Cass-Koopmans Planning Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_2.html">
-   32. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1215,41 +1204,51 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Growth
+  Consumption, Savings and Capital
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   37. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   38. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    39. Cake Eating I: Introduction to Optimal Saving
@@ -1527,7 +1526,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/likelihood_ratio_process.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/likelihood_ratio_process.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/likelihood_ratio_process.md" download><i data-feather="github"></i></a></li>
@@ -1542,7 +1541,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

@@ -89,15 +89,14 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/prob_meaning.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -244,17 +243,8 @@ proceeding to read the rest of the lecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting prettytable
-  Downloading prettytable-3.3.0-py3-none-any.whl (26 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from prettytable) (0.2.5)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: prettytable
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed prettytable-3.3.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (3.3.0)
+Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from prettytable) (0.2.5)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
@@ -403,23 +393,23 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 | 1  | 1.6271660538000033e-09 |     0.0     |
 | 2  | 3.606884752589999e-08  |     0.0     |
 | 3  |  5.04963865362601e-07  |     0.0     |
-| 4  | 5.007558331512455e-06  |    4e-06    |
-| 5  | 3.7389768875293014e-05 |    3e-05    |
-| 6  | 0.00021810698510587546 |   0.000214  |
-| 7  |  0.001017832597160754  |   0.001048  |
-| 8  |  0.003859281930901185  |   0.003916  |
-| 9  |  0.012006654896137007  |   0.012012  |
-| 10 |  0.030817080900085007  |   0.03058   |
-| 11 |   0.065369565545635    |   0.065661  |
-| 12 |  0.11439673970486108   |   0.114357  |
-| 13 |   0.1642619852172365   |   0.163904  |
-| 14 |  0.19163898275344246   |   0.191858  |
-| 15 |  0.17886305056987967   |   0.179384  |
-| 16 |   0.1304209743738704   |   0.130467  |
-| 17 |  0.07160367220526209   |   0.071041  |
-| 18 |  0.027845872524268643  |   0.027798  |
-| 19 |  0.006839337111223871  |   0.006892  |
-| 20 | 0.0007979226629761189  |   0.000834  |
+| 4  | 5.007558331512455e-06  |    3e-06    |
+| 5  | 3.7389768875293014e-05 |   3.2e-05   |
+| 6  | 0.00021810698510587546 |   0.000234  |
+| 7  |  0.001017832597160754  |    0.001    |
+| 8  |  0.003859281930901185  |   0.003829  |
+| 9  |  0.012006654896137007  |   0.011835  |
+| 10 |  0.030817080900085007  |   0.030804  |
+| 11 |   0.065369565545635    |   0.065398  |
+| 12 |  0.11439673970486108   |   0.114255  |
+| 13 |   0.1642619852172365   |   0.164393  |
+| 14 |  0.19163898275344246   |   0.191332  |
+| 15 |  0.17886305056987967   |   0.179066  |
+| 16 |   0.1304209743738704   |   0.130561  |
+| 17 |  0.07160367220526209   |   0.071674  |
+| 18 |  0.027845872524268643  |   0.02792   |
+| 19 |  0.006839337111223871  |   0.006857  |
+| 20 | 0.0007979226629761189  |   0.000807  |
 +----+------------------------+-------------+
 </pre></div>
 </div>
@@ -774,37 +764,37 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
   <tbody>
     <tr>
       <th>upper</th>
-      <td>0.228520</td>
-      <td>0.430741</td>
-      <td>0.235534</td>
-      <td>0.16528</td>
-      <td>0.127776</td>
+      <td>0.001543</td>
+      <td>0.097308</td>
+      <td>0.062413</td>
+      <td>0.046007</td>
+      <td>0.036447</td>
       <td>0.117329</td>
-      <td>0.280091</td>
-      <td>0.293487</td>
-      <td>0.292234</td>
+      <td>0.196953</td>
+      <td>0.207092</td>
+      <td>0.220799</td>
       <td>0.294656</td>
-      <td>0.266127</td>
-      <td>0.315543</td>
-      <td>0.329249</td>
-      <td>0.365874</td>
+      <td>0.331729</td>
+      <td>0.373839</td>
+      <td>0.354654</td>
+      <td>0.372780</td>
     </tr>
     <tr>
       <th>lower</th>
-      <td>0.998457</td>
-      <td>0.999132</td>
-      <td>0.937587</td>
-      <td>0.83472</td>
-      <td>0.739366</td>
+      <td>0.771480</td>
+      <td>0.902692</td>
+      <td>0.764466</td>
+      <td>0.650707</td>
+      <td>0.562845</td>
       <td>0.558127</td>
-      <td>0.629953</td>
-      <td>0.582293</td>
-      <td>0.516104</td>
+      <td>0.533165</td>
+      <td>0.482348</td>
+      <td>0.434206</td>
       <td>0.483627</td>
-      <td>0.420626</td>
-      <td>0.406443</td>
-      <td>0.399911</td>
-      <td>0.416592</td>
+      <td>0.492070</td>
+      <td>0.467296</td>
+      <td>0.426283</td>
+      <td>0.423655</td>
     </tr>
   </tbody>
 </table>
@@ -1190,16 +1180,6 @@ F(a)=p_1,F(b)=p_2
    30. Shortest Paths
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   31. Cass-Koopmans Planning Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_2.html">
-   32. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1209,41 +1189,51 @@ F(a)=p_1,F(b)=p_2
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Growth
+  Consumption, Savings and Capital
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   37. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   38. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    39. Cake Eating I: Introduction to Optimal Saving
@@ -1521,7 +1511,7 @@ F(a)=p_1,F(b)=p_2
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/prob_meaning.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/prob_meaning.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/prob_meaning.md" download><i data-feather="github"></i></a></li>
@@ -1536,7 +1526,7 @@ F(a)=p_1,F(b)=p_2
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

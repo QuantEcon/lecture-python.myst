@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>37. Job Search V: Modeling Career Choice &#8212; Quantitative Economics with Python</title>
+    <title>35. Job Search V: Modeling Career Choice &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -89,21 +89,20 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/career.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="38. Job Search VI: On-the-Job Search" href="jv.html" />
-    <link rel="prev" title="36. Job Search IV: Correlated Wage Offers" href="mccall_correlated.html" />
+    <link rel="next" title="36. Job Search VI: On-the-Job Search" href="jv.html" />
+    <link rel="prev" title="34. Job Search IV: Correlated Wage Offers" href="mccall_correlated.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -153,73 +152,73 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   37.1. Overview
+   35.1. Overview
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#model-features">
-     37.1.1. Model Features
+     35.1.1. Model Features
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#model">
-   37.2. Model
+   35.2. Model
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#parameterization">
-     37.2.1. Parameterization
+     35.2.1. Parameterization
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#implementation">
-   37.3. Implementation
+   35.3. Implementation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   37.4. Exercises
+   35.4. Exercises
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-1">
-     37.4.1. Exercise 1
+     35.4.1. Exercise 1
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-2">
-     37.4.2. Exercise 2
+     35.4.2. Exercise 2
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-3">
-     37.4.3. Exercise 3
+     35.4.3. Exercise 3
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
-   37.5. Solutions
+   35.5. Solutions
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id4">
-     37.5.1. Exercise 1
+     35.5.1. Exercise 1
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id5">
-     37.5.2. Exercise 2
+     35.5.2. Exercise 2
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id6">
-     37.5.3. Exercise 3
+     35.5.3. Exercise 3
     </a>
    </li>
   </ul>
@@ -274,7 +273,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="job-search-v-modeling-career-choice">
-<h1><a class="toc-backref" href="#id7"><span class="section-number">37. </span>Job Search V: Modeling Career Choice</a><a class="headerlink" href="#job-search-v-modeling-career-choice" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id7"><span class="section-number">35. </span>Job Search V: Modeling Career Choice</a><a class="headerlink" href="#job-search-v-modeling-career-choice" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -339,44 +338,8 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: \ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+Solving environment: / 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
@@ -463,10 +426,10 @@ Solving environment: \
 </div>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">37.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">35.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Next, we study a computational problem concerning career and job choices.</p>
-<p>The model is originally due to Derek Neal <span id="id1">[<a class="reference internal" href="zreferences.html#id193">Nea99</a>]</span>.</p>
-<p>This exposition draws on the presentation in <span id="id2">[<a class="reference internal" href="zreferences.html#id179">LS18</a>]</span>, section 6.5.</p>
+<p>The model is originally due to Derek Neal <span id="id1">[<a class="reference internal" href="zreferences.html#id193" title="Derek Neal. The Complexity of Job Mobility among Young Men. Journal of Labor Economics, 17(2):237–261, 1999.">Nea99</a>]</span>.</p>
+<p>This exposition draws on the presentation in <span id="id2">[<a class="reference internal" href="zreferences.html#id179" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 6.5.</p>
 <p>We begin with some imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -485,7 +448,7 @@ Solving environment: \
 </div>
 </div>
 <section id="model-features">
-<h3><span class="section-number">37.1.1. </span>Model Features<a class="headerlink" href="#model-features" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">35.1.1. </span>Model Features<a class="headerlink" href="#model-features" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Career and job within career both chosen to maximize expected discounted wage flow.</p></li>
 <li><p>Infinite horizon dynamic programming with two state variables.</p></li>
@@ -493,7 +456,7 @@ Solving environment: \
 </section>
 </section>
 <section id="model">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">37.2. </span>Model</a><a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">35.2. </span>Model</a><a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
 <p>In what follows we distinguish between a career and a job, where</p>
 <ul class="simple">
 <li><p>a <em>career</em> is understood to be a general field encompassing many possible jobs, and</p></li>
@@ -527,10 +490,10 @@ past values, with</p>
 a career — starting a new career always requires starting a new job.</p>
 <p>A young worker aims to maximize the expected sum of discounted wages</p>
 <div class="math notranslate nohighlight" id="equation-exw">
-<span class="eqno">(37.1)<a class="headerlink" href="#equation-exw" title="Permalink to this equation">¶</a></span>\[\mathbb{E} \sum_{t=0}^{\infty} \beta^t w_t\]</div>
+<span class="eqno">(35.1)<a class="headerlink" href="#equation-exw" title="Permalink to this equation">¶</a></span>\[\mathbb{E} \sum_{t=0}^{\infty} \beta^t w_t\]</div>
 <p>subject to the choice restrictions specified above.</p>
 <p>Let <span class="math notranslate nohighlight">\(v(\theta, \epsilon)\)</span> denote the value function, which is the
-maximum of <a class="reference internal" href="#equation-exw">(37.1)</a> overall feasible (career, job) policies, given the
+maximum of <a class="reference internal" href="#equation-exw">(35.1)</a> overall feasible (career, job) policies, given the
 initial state <span class="math notranslate nohighlight">\((\theta, \epsilon)\)</span>.</p>
 <p>The value function obeys</p>
 <div class="math notranslate nohighlight">
@@ -539,15 +502,15 @@ v(\theta, \epsilon) = \max\{I, II, III\}
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-eyes">
-<span class="eqno">(37.2)<a class="headerlink" href="#equation-eyes" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(35.2)<a class="headerlink" href="#equation-eyes" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
 &amp; I = \theta + \epsilon + \beta v(\theta, \epsilon) \\
 &amp; II = \theta + \int \epsilon' G(d \epsilon') + \beta \int v(\theta, \epsilon') G(d \epsilon') \nonumber \\
 &amp; III = \int \theta' F(d \theta') + \int \epsilon' G(d \epsilon') + \beta \int \int v(\theta', \epsilon') G(d \epsilon') F(d \theta') \nonumber
 \end{aligned}\end{split}\]</div>
 <p>Evidently <span class="math notranslate nohighlight">\(I\)</span>, <span class="math notranslate nohighlight">\(II\)</span> and <span class="math notranslate nohighlight">\(III\)</span> correspond to “stay put”, “new job” and “new life”, respectively.</p>
 <section id="parameterization">
-<h3><span class="section-number">37.2.1. </span>Parameterization<a class="headerlink" href="#parameterization" title="Permalink to this headline">¶</a></h3>
-<p>As in <span id="id3">[<a class="reference internal" href="zreferences.html#id179">LS18</a>]</span>, section 6.5, we will focus on a discrete version of the model, parameterized as follows:</p>
+<h3><span class="section-number">35.2.1. </span>Parameterization<a class="headerlink" href="#parameterization" title="Permalink to this headline">¶</a></h3>
+<p>As in <span id="id3">[<a class="reference internal" href="zreferences.html#id179" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 6.5, we will focus on a discrete version of the model, parameterized as follows:</p>
 <ul class="simple">
 <li><p>both <span class="math notranslate nohighlight">\(\theta\)</span> and <span class="math notranslate nohighlight">\(\epsilon\)</span> take values in the set
 <code class="docutils literal notranslate"><span class="pre">np.linspace(0,</span> <span class="pre">B,</span> <span class="pre">grid_size)</span></code> — an even grid of points between
@@ -605,7 +568,7 @@ p(k \,|\, n, a, b)
 </section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">37.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">35.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>We will first create a class <code class="docutils literal notranslate"><span class="pre">CareerWorkerProblem</span></code> which will hold the
 default parameterizations of the model and an initial guess for the value function.</p>
 <div class="cell docutils container">
@@ -641,7 +604,7 @@ default parameterizations of the model and an initial guess for the value functi
 <p>The following function takes an instance of <code class="docutils literal notranslate"><span class="pre">CareerWorkerProblem</span></code> and returns
 the corresponding Bellman operator <span class="math notranslate nohighlight">\(T\)</span> and the greedy policy function.</p>
 <p>In this model, <span class="math notranslate nohighlight">\(T\)</span> is defined by <span class="math notranslate nohighlight">\(Tv(\theta, \epsilon) = \max\{I, II, III\}\)</span>, where
-<span class="math notranslate nohighlight">\(I\)</span>, <span class="math notranslate nohighlight">\(II\)</span> and <span class="math notranslate nohighlight">\(III\)</span> are as given in <a class="reference internal" href="#equation-eyes">(37.2)</a>.</p>
+<span class="math notranslate nohighlight">\(I\)</span>, <span class="math notranslate nohighlight">\(II\)</span> and <span class="math notranslate nohighlight">\(III\)</span> are as given in <a class="reference internal" href="#equation-eyes">(35.2)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">operator_factory</span><span class="p">(</span><span class="n">cw</span><span class="p">,</span> <span class="n">parallel_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -797,9 +760,9 @@ the worker cannot change careers without changing jobs.</p>
 </ul>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">37.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">35.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <section id="exercise-1">
-<span id="career-ex1"></span><h3><span class="section-number">37.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<span id="career-ex1"></span><h3><span class="section-number">35.4.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>Using the default parameterization in the class <code class="docutils literal notranslate"><span class="pre">CareerWorkerProblem</span></code>,
 generate and plot typical sample paths for <span class="math notranslate nohighlight">\(\theta\)</span> and <span class="math notranslate nohighlight">\(\epsilon\)</span>
 when the worker follows the optimal policy.</p>
@@ -810,7 +773,7 @@ when the worker follows the optimal policy.</p>
 <p>Hint: To generate the draws from the distributions <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(G\)</span>, use <code class="docutils literal notranslate"><span class="pre">quantecon.random.draw()</span></code>.</p>
 </section>
 <section id="exercise-2">
-<span id="career-ex2"></span><h3><span class="section-number">37.4.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
+<span id="career-ex2"></span><h3><span class="section-number">35.4.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
 <p>Let’s now consider how long it takes for the worker to settle down to a
 permanent job, given a starting point of <span class="math notranslate nohighlight">\((\theta, \epsilon) = (0, 0)\)</span>.</p>
 <p>In other words, we want to study the distribution of the random variable</p>
@@ -830,15 +793,15 @@ T^* := \inf\{t \geq 0 \,|\, (\theta_t, \epsilon_t) \in S\}
 <p>Repeat the exercise with <span class="math notranslate nohighlight">\(\beta=0.99\)</span> and interpret the change.</p>
 </section>
 <section id="exercise-3">
-<span id="career-ex3"></span><h3><span class="section-number">37.4.3. </span>Exercise 3<a class="headerlink" href="#exercise-3" title="Permalink to this headline">¶</a></h3>
+<span id="career-ex3"></span><h3><span class="section-number">35.4.3. </span>Exercise 3<a class="headerlink" href="#exercise-3" title="Permalink to this headline">¶</a></h3>
 <p>Set the parameterization to <code class="docutils literal notranslate"><span class="pre">G_a</span> <span class="pre">=</span> <span class="pre">G_b</span> <span class="pre">=</span> <span class="pre">100</span></code> and generate a new optimal policy
 figure – interpret.</p>
 </section>
 </section>
 <section id="solutions">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">37.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">35.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <section id="id4">
-<h3><span class="section-number">37.5.1. </span>Exercise 1<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">35.5.1. </span>Exercise 1<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>Simulate job/career paths.</p>
 <p>In reading the code, recall that <code class="docutils literal notranslate"><span class="pre">optimal_policy[i,</span> <span class="pre">j]</span></code> = policy at
 <span class="math notranslate nohighlight">\((\theta_i, \epsilon_j)\)</span> = either 1, 2 or 3; meaning ‘stay put’,
@@ -887,7 +850,7 @@ figure – interpret.</p>
 </div>
 </section>
 <section id="id5">
-<h3><span class="section-number">37.5.2. </span>Exercise 2<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">35.5.2. </span>Exercise 2<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>The median for the original parameterization can be computed as follows</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -935,7 +898,7 @@ value <span class="math notranslate nohighlight">\(\beta=0.95\)</span>, replace 
 <p>Not surprisingly, more patient workers will wait longer to settle down to their final job.</p>
 </section>
 <section id="id6">
-<h3><span class="section-number">37.5.3. </span>Exercise 3<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">35.5.3. </span>Exercise 3<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cw</span> <span class="o">=</span> <span class="n">CareerWorkerProblem</span><span class="p">(</span><span class="n">G_a</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
@@ -1194,16 +1157,6 @@ less realistic.</p>
    30. Shortest Paths
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   31. Cass-Koopmans Planning Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_2.html">
-   32. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1213,41 +1166,51 @@ less realistic.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   37. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Growth
+  Consumption, Savings and Capital
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   37. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   38. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    39. Cake Eating I: Introduction to Optimal Saving
@@ -1525,7 +1488,7 @@ less realistic.</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/career.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/career.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/career.md" download><i data-feather="github"></i></a></li>
@@ -1540,7 +1503,7 @@ less realistic.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

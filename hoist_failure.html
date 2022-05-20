@@ -89,15 +89,14 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/hoist_failure.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -260,8 +259,8 @@ entire system, we’ll compute the convolution of those <span class="math notran
 </ul>
 <p>For more about Fourier transforms see this quantecon lecture <a class="reference external" href="https://python.quantecon.org/eig_circulant.html">Circulant Matrices</a>
 as well as these  lecture  <a class="reference external" href="https://python-advanced.quantecon.org/arma.html">Covariance Stationary Processes</a> and <a class="reference external" href="https://python-advanced.quantecon.org/estspec.html">Estimation of Spectra</a>.</p>
-<p>El-Shanawany, Ardron,  and Walker <span id="id1">[<a class="reference internal" href="zreferences.html#id16">ESAW18</a>]</span> and Greenfield and Sargent <span id="id2">[<a class="reference internal" href="zreferences.html#id15">GS93</a>]</span>  used some of the methods described here  to approximate probabilities of failures of safety systems in nuclear facilities.</p>
-<p>These methods respond to some of the recommendations made by Apostolakis  <span id="id3">[<a class="reference internal" href="zreferences.html#id14">Apo90</a>]</span> for constructing procedures for quantifying
+<p>El-Shanawany, Ardron,  and Walker <span id="id1">[<a class="reference internal" href="zreferences.html#id16" title="Ashraf Ben El-Shanawany, Keith H Ardron, and Simon P Walker. Lognormal approximations of fault tree uncertainty distributions. Risk Analysis, 38(8):1576–1584, 2018.">ESAW18</a>]</span> and Greenfield and Sargent <span id="id2">[<a class="reference internal" href="zreferences.html#id15" title="Moses A Greenfield and Thomas J Sargent. A probabilistic analysis of a catastrophic transuranic waste hoise accident at the wipp. Environmental Evaluation Group, Albuquerque, New Mexico, June 1993. URL: http://www.tomsargent.com/research/EEG-53.pdf.">GS93</a>]</span>  used some of the methods described here  to approximate probabilities of failures of safety systems in nuclear facilities.</p>
+<p>These methods respond to some of the recommendations made by Apostolakis  <span id="id3">[<a class="reference internal" href="zreferences.html#id14" title="George Apostolakis. The concept of probability in safety assessments of technological systems. Science, 250(4986):1359–1364, 1990.">Apo90</a>]</span> for constructing procedures for quantifying
 uncertainty about the reliability of a safety system.</p>
 <p>We’ll start by bringing in some Python machinery.</p>
 <div class="cell docutils container">
@@ -271,16 +270,7 @@ uncertainty about the reliability of a safety system.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting tabulate
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading tabulate-0.8.9-py3-none-any.whl (25 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: tabulate
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed tabulate-0.8.9
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: tabulate in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.8.9)
 </pre></div>
 </div>
 </div>
@@ -473,7 +463,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(244.69193226422038, 243.26806320152505, 5.0, 1.0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2.4469193226422038e+02, 245.15725782884735, 5.0, 1.0)
 </pre></div>
 </div>
 </div>
@@ -530,7 +520,7 @@ to compute a convolution of two sequences (discrete distributions).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_35658/2130497458.py:10: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_56362/2130497458.py:10: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
 Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
   plt.plot(x[:np.int(NT)],p1[:np.int(NT)],label = &#39;&#39;)
 </pre></div>
@@ -549,7 +539,7 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(244.69059898302908, 244.69193226422038)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2.446905989830291e+02, 244.69193226422038)
 </pre></div>
 </div>
 </div>
@@ -622,7 +612,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time with np.convolve =  83.20997645200009 ; time with fftconvolve =  0.1591323340001054
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time with np.convolve =  84.06904855199991 ; time with fftconvolve =  0.12166545199988832
 </pre></div>
 </div>
 </div>
@@ -646,7 +636,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_35658/2364144025.py:5: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_56362/2364144025.py:5: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
 Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
   plt.plot(x[:np.int(NT)],c1f[:np.int(NT)]/m,label = &#39;&#39;)
 </pre></div>
@@ -670,7 +660,7 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_35658/3883904051.py:4: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_56362/3883904051.py:4: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
 Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
   plt.plot(x[:np.int(NT)],c2f[:np.int(NT)]/m,label = &#39;&#39;)
 </pre></div>
@@ -688,7 +678,7 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(489.3810974093853, 489.38386452844077)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(489.38109740938546, 489.38386452844077)
 </pre></div>
 </div>
 </div>
@@ -703,7 +693,7 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(734.0714863312277, 734.0757967926611)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(734.0714863312252, 734.0757967926611)
 </pre></div>
 </div>
 </div>
@@ -715,7 +705,7 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 <p>We shall soon apply the convolution theorem to compute the probability of a <strong>top event</strong> in a failure tree analysis.</p>
 <p>Before applying the convolution theorem, we first describe the model that connects constituent events to the <strong>top</strong> end whose
 failure rate we seek to quantify.</p>
-<p>The model is an example of the widely used  <strong>failure tree analysis</strong> described by  El-Shanawany, Ardron,  and Walker <span id="id4">[<a class="reference internal" href="zreferences.html#id16">ESAW18</a>]</span>.</p>
+<p>The model is an example of the widely used  <strong>failure tree analysis</strong> described by  El-Shanawany, Ardron,  and Walker <span id="id4">[<a class="reference internal" href="zreferences.html#id16" title="Ashraf Ben El-Shanawany, Keith H Ardron, and Simon P Walker. Lognormal approximations of fault tree uncertainty distributions. Risk Analysis, 38(8):1576–1584, 2018.">ESAW18</a>]</span>.</p>
 <p>To construct the statistical model, we repeatedly use  what is called the <strong>rare event approximation</strong>.</p>
 <p>We want to compute the probabilty of an event <span class="math notranslate nohighlight">\(A \cup B\)</span>.</p>
 <ul class="simple">
@@ -753,8 +743,8 @@ P(F) \approx \sum_{i=1}^n P (A_i)
 </section>
 <section id="failure-rates-unknown">
 <h2><span class="section-number">12.8. </span>Failure Rates Unknown<a class="headerlink" href="#failure-rates-unknown" title="Permalink to this headline">¶</a></h2>
-<p>Now we come to the problem that really interests us, following  <span id="id5">[<a class="reference internal" href="zreferences.html#id16">ESAW18</a>]</span> and Greenfield and Sargent
-<span id="id6">[<a class="reference internal" href="zreferences.html#id15">GS93</a>]</span>  in the spirit of Apostolakis  <span id="id7">[<a class="reference internal" href="zreferences.html#id14">Apo90</a>]</span>.</p>
+<p>Now we come to the problem that really interests us, following  <span id="id5">[<a class="reference internal" href="zreferences.html#id16" title="Ashraf Ben El-Shanawany, Keith H Ardron, and Simon P Walker. Lognormal approximations of fault tree uncertainty distributions. Risk Analysis, 38(8):1576–1584, 2018.">ESAW18</a>]</span> and Greenfield and Sargent
+<span id="id6">[<a class="reference internal" href="zreferences.html#id15" title="Moses A Greenfield and Thomas J Sargent. A probabilistic analysis of a catastrophic transuranic waste hoise accident at the wipp. Environmental Evaluation Group, Albuquerque, New Mexico, June 1993. URL: http://www.tomsargent.com/research/EEG-53.pdf.">GS93</a>]</span>  in the spirit of Apostolakis  <span id="id7">[<a class="reference internal" href="zreferences.html#id14" title="George Apostolakis. The concept of probability in safety assessments of technological systems. Science, 250(4986):1359–1364, 1990.">Apo90</a>]</span>.</p>
 <p>The constituent probabilities or failure rates <span class="math notranslate nohighlight">\(P(A_i)\)</span> are not known a priori and have to be estimated.</p>
 <p>We address this problem by specifying <strong>probabilities of probabilities</strong> that  capture one  notion of not knowing the constituent probabilities that are inputs into a failure tree analysis.</p>
 <p>Thus, we assume that a system analyst is uncertain about  the failure rates <span class="math notranslate nohighlight">\(P(A_i), i =1, \ldots, n\)</span> for components of a system.</p>
@@ -786,11 +776,11 @@ of the systems failure probability <span class="math notranslate nohighlight">\(
 <p>We’ll take close to a real world example by assuming that <span class="math notranslate nohighlight">\(n = 14\)</span>.</p>
 <p>The example estimates the annual failure rate of a critical  hoist at a nuclear waste facility.</p>
 <p>A regulatory agency wants the sytem to be designed in a way that makes the failure rate of the top event small with high probability.</p>
-<p>This example is Design Option B-2 (Case I) described in Table 10 on page 27 of <span id="id8">[<a class="reference internal" href="zreferences.html#id15">GS93</a>]</span>.</p>
+<p>This example is Design Option B-2 (Case I) described in Table 10 on page 27 of <span id="id8">[<a class="reference internal" href="zreferences.html#id15" title="Moses A Greenfield and Thomas J Sargent. A probabilistic analysis of a catastrophic transuranic waste hoise accident at the wipp. Environmental Evaluation Group, Albuquerque, New Mexico, June 1993. URL: http://www.tomsargent.com/research/EEG-53.pdf.">GS93</a>]</span>.</p>
 <p>The table describes parameters <span class="math notranslate nohighlight">\(\mu_i, \sigma_i\)</span> for  fourteen log normal random variables that consist of  <strong>seven pairs</strong> of random variables that are identically and independently distributed.</p>
 <ul class="simple">
 <li><p>Within a pair, parameters <span class="math notranslate nohighlight">\(\mu_i, \sigma_i\)</span> are the same</p></li>
-<li><p>As described in table 10 of <span id="id9">[<a class="reference internal" href="zreferences.html#id15">GS93</a>]</span>  p. 27, parameters of log normal distributions for  the seven unique probabilities <span class="math notranslate nohighlight">\(P(A_i)\)</span> have been calibrated to be the values in the following Python code:</p></li>
+<li><p>As described in table 10 of <span id="id9">[<a class="reference internal" href="zreferences.html#id15" title="Moses A Greenfield and Thomas J Sargent. A probabilistic analysis of a catastrophic transuranic waste hoise accident at the wipp. Environmental Evaluation Group, Albuquerque, New Mexico, June 1993. URL: http://www.tomsargent.com/research/EEG-53.pdf.">GS93</a>]</span>  p. 27, parameters of log normal distributions for  the seven unique probabilities <span class="math notranslate nohighlight">\(P(A_i)\)</span> have been calibrated to be the values in the following Python code:</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -822,7 +812,7 @@ above parameter values actually describe <span class="math notranslate nohighlig
 <p>We compute the required thirteen convolutions in the following code.</p>
 <p>(Please feel free to try different values of the power parameter <span class="math notranslate nohighlight">\(p\)</span> that we use to set the number of points in our grid for constructing
 the probability mass functions that discretize the continuous log normal distributions.)</p>
-<p>We’ll plot a counterpart to the cumulative distribution function (CDF) in  figure 5 on page 29 of <span id="id10">[<a class="reference internal" href="zreferences.html#id15">GS93</a>]</span>
+<p>We’ll plot a counterpart to the cumulative distribution function (CDF) in  figure 5 on page 29 of <span id="id10">[<a class="reference internal" href="zreferences.html#id15" title="Moses A Greenfield and Thomas J Sargent. A probabilistic analysis of a catastrophic transuranic waste hoise accident at the wipp. Environmental Evaluation Group, Albuquerque, New Mexico, June 1993. URL: http://www.tomsargent.com/research/EEG-53.pdf.">GS93</a>]</span>
 and we’ll also present a counterpart to their Table 11 on page 28.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -873,7 +863,7 @@ and we’ll also present a counterpart to their Table 11 on page 28.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time for 13 convolutions =  9.629077803999962
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time for 13 convolutions =  6.588472966000154
 </pre></div>
 </div>
 </div>
@@ -921,10 +911,10 @@ and we’ll also present a counterpart to their Table 11 on page 28.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_35658/3082528578.py:2: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_56362/3082528578.py:2: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
 Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
   Nx=np.int(1400)
-/tmp/ipykernel_35658/3082528578.py:4: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+/tmp/ipykernel_56362/3082528578.py:4: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
 Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
   plt.plot(x[0:np.int(Nx/m)],d13[0:np.int(Nx/m)])  # show Yad this -- I multiplied by m -- step size
 </pre></div>
@@ -946,7 +936,7 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 </div>
-<p>The above table agrees closely with column 2 of  Table 11 on p. 28 of  of <span id="id11">[<a class="reference internal" href="zreferences.html#id15">GS93</a>]</span>.</p>
+<p>The above table agrees closely with column 2 of  Table 11 on p. 28 of  of <span id="id11">[<a class="reference internal" href="zreferences.html#id15" title="Moses A Greenfield and Thomas J Sargent. A probabilistic analysis of a catastrophic transuranic waste hoise accident at the wipp. Environmental Evaluation Group, Albuquerque, New Mexico, June 1993. URL: http://www.tomsargent.com/research/EEG-53.pdf.">GS93</a>]</span>.</p>
 <p>Discrepancies are probably due to slight differences in the number of digits retained in inputting <span class="math notranslate nohighlight">\(\mu_i, \sigma_i, i = 1, \ldots, 14\)</span>
 and in the number of points deployed in the discretizations.</p>
 </section>
@@ -1178,16 +1168,6 @@ and in the number of points deployed in the discretizations.</p>
    30. Shortest Paths
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   31. Cass-Koopmans Planning Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_2.html">
-   32. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1197,41 +1177,51 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Growth
+  Consumption, Savings and Capital
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   37. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   38. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    39. Cake Eating I: Introduction to Optimal Saving
@@ -1509,7 +1499,7 @@ and in the number of points deployed in the discretizations.</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/hoist_failure.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/hoist_failure.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/hoist_failure.md" download><i data-feather="github"></i></a></li>
@@ -1524,7 +1514,7 @@ and in the number of points deployed in the discretizations.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

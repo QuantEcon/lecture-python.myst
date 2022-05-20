@@ -89,15 +89,14 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/house_auction.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -311,8 +310,8 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (3.3.0)
-Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from prettytable) (0.2.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (3.3.0)
+Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from prettytable) (0.2.5)
 </pre></div>
 </div>
 </div>
@@ -331,7 +330,7 @@ Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/l
 <p>We describe two distinct mechanisms</p>
 <ul class="simple">
 <li><p>A multiple rounds, ascending bid auction</p></li>
-<li><p>A special case of a Groves-Clarke <span id="id1">[<a class="reference internal" href="zreferences.html#id17">Gro73</a>]</span>, <span id="id2">[<a class="reference internal" href="zreferences.html#id18">Cla71</a>]</span> mechanism with a benevolent social planner</p></li>
+<li><p>A special case of a Groves-Clarke <span id="id1">[<a class="reference internal" href="zreferences.html#id17" title="T. Groves. Incentives in teams. Econometrica, 41:617-631, 1973.">Gro73</a>]</span>, <span id="id2">[<a class="reference internal" href="zreferences.html#id18" title="E. Clarke. Multipart pricing of public goods. Public Choice, 8:19-33, 1971.">Cla71</a>]</span> mechanism with a benevolent social planner</p></li>
 </ul>
 <p><strong>Note:</strong> In 1994, the multiple rounds, ascending bid auction was actually used by Stanford University to sell leases to 9 lots on the Stanford campus to eligible faculty members.</p>
 <p>We begin with  overviews of the two mechanisms.</p>
@@ -1480,9 +1479,9 @@ The minimum increment of bid price is 1.00
 
 
 Auction starts successfully
-
-
-Round 1
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Round 1
 The bid information is
 +--------------+-----+-----+-------+
 | House Number |  0  |  1  |   2   |
@@ -1499,9 +1498,9 @@ The winners are
 [2, 1, 0]
 The losers are
 [3]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Round 2
+
+
+Round 2
 The bid information is
 +--------------+-----+-----+-----+
 | House Number |  0  |  1  |  2  |
@@ -1781,9 +1780,7 @@ The bid prices for houses are
 The winners are
 [2, 4, 3]
 The losers are
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0, 1]
+[0, 1]
 
 
 Round 2
@@ -1847,9 +1844,9 @@ Auction ends
 
 
 The final result is as follows
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The allocation plan is
+
+
+The allocation plan is
 +--------------+-----+-----+-----+
 | House Number |  0  |  1  |  2  |
 +--------------+-----+-----+-----+
@@ -1889,7 +1886,9 @@ The total revenue is 12.00
 
 
 Basic Information: 5 houses, 3 buyers
-The valuation matrix is as follows
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The valuation matrix is as follows
 +--------------+---+----+---+
 | Buyer Number | 0 | 1  | 2 |
 +--------------+---+----+---+
@@ -1966,9 +1965,9 @@ The winners are
 [1, 2]
 The losers are
 [0]
-
-
-Round 4
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Round 4
 The bid information is
 +--------------+-----+-----+
 | House Number |  1  |  2  |
@@ -2113,9 +2112,7 @@ The total revenue is 12.00
 
 Basic Information: 5 houses, 3 buyers
 The valuation matrix is as follows
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------------+---+----+---+
++--------------+---+----+---+
 | Buyer Number | 0 | 1  | 2 |
 +--------------+---+----+---+
 |   House 0    | 8 | 5  | 4 |
@@ -2134,9 +2131,9 @@ The minimum increment of bid price is 1.00
 
 
 Auction starts successfully
-
-
-Round 1
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Round 1
 The bid information is
 +--------------+-----+-------+
 | House Number |  1  |   2   |
@@ -2171,10 +2168,12 @@ The bid prices for houses are
 The winners are
 [1, 2]
 The losers are
-[0]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Round 3
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0]
+
+
+Round 3
 The bid information is
 +--------------+-----+-----+
 | House Number |  1  |  2  |
@@ -2383,7 +2382,7 @@ The auction can not start because of high reservation prices
 <p>We now decribe an alternative way for society to allocate <span class="math notranslate nohighlight">\(n\)</span>  houses to <span class="math notranslate nohighlight">\(m\)</span> possible buyers in a way that maximizes
 total value across all potential buyers.</p>
 <p>We continue to assume that each buyer can purchase at most one house.</p>
-<p>The mechanism  is a very special case of a Groves-Clarke mechanism <span id="id3">[<a class="reference internal" href="zreferences.html#id17">Gro73</a>]</span>, <span id="id4">[<a class="reference internal" href="zreferences.html#id18">Cla71</a>]</span>.</p>
+<p>The mechanism  is a very special case of a Groves-Clarke mechanism <span id="id3">[<a class="reference internal" href="zreferences.html#id17" title="T. Groves. Incentives in teams. Econometrica, 41:617-631, 1973.">Gro73</a>]</span>, <span id="id4">[<a class="reference internal" href="zreferences.html#id18" title="E. Clarke. Multipart pricing of public goods. Public Choice, 8:19-33, 1971.">Cla71</a>]</span>.</p>
 <p>Its special structure substantially simplifies writing Python code to find an optimal allocation.</p>
 <p>Our mechanims works like this.</p>
 <ul class="simple">
@@ -2772,9 +2771,9 @@ House 1 is sold to buyer 1 at price 7
 
 
 House 2 is sold to buyer 3 at price 6
-
-
-House 3 is sold to buyer 4 at price 6
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>House 3 is sold to buyer 4 at price 6
 
 
 Prices of house:
@@ -2802,7 +2801,7 @@ The surplus matrix:
 <p>Here we use some additional notation designed to conform with standard notation in parts of the VCG literature.</p>
 <p>We want to verify that our pseudo code is indeed a <strong>pivot mechanism</strong>, also called a <strong>VCG</strong> (Vickrey-Clarke-Groves) mechanism.</p>
 <ul class="simple">
-<li><p>The mechanism is named after <span id="id5">[<a class="reference internal" href="zreferences.html#id17">Gro73</a>]</span>, <span id="id6">[<a class="reference internal" href="zreferences.html#id18">Cla71</a>]</span>, and <span id="id7">[<a class="reference internal" href="zreferences.html#id19">Vic61</a>]</span>.</p></li>
+<li><p>The mechanism is named after <span id="id5">[<a class="reference internal" href="zreferences.html#id17" title="T. Groves. Incentives in teams. Econometrica, 41:617-631, 1973.">Gro73</a>]</span>, <span id="id6">[<a class="reference internal" href="zreferences.html#id18" title="E. Clarke. Multipart pricing of public goods. Public Choice, 8:19-33, 1971.">Cla71</a>]</span>, and <span id="id7">[<a class="reference internal" href="zreferences.html#id19" title="W. Vickrey. Counterspeculation, auctions, and competitive sealed tenders. Journal of Finance, 16:8-37, 1961.">Vic61</a>]</span>.</p></li>
 </ul>
 <p>To prepare for verifying this, we add some notation.</p>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> be the set of feasible allocations of houses under the protocols above (i.e., at most one house to each person).</p>
@@ -2858,9 +2857,9 @@ V =\begin{bmatrix} 10 &amp; 9 &amp; 8 &amp; 7 &amp; 6 \cr
 
 
 House 1 is sold to buyer 1 at price 7
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>House 2 is sold to buyer 2 at price 5
+
+
+House 2 is sold to buyer 2 at price 5
 
 
 Prices of house:
@@ -2903,7 +2902,10 @@ House 2 is sold to buyer 3 at price 4
 
 
 Prices of house:
- [8. 6. 4.]
+ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[8. 6. 4.]
 
 
 The status matrix:
@@ -3012,7 +3014,10 @@ The status matrix:
 
 
 The surplus matrix:
- [[ 1.  0. -0.  0.  0.]
+ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.  0. -0.  0.  0.]
  [ 0.  2. -0.  0.  0.]
  [ 0.  0. -0.  1.  0.]]
 
@@ -3251,16 +3256,6 @@ The social cost of buyer 2: 5.0
    30. Shortest Paths
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   31. Cass-Koopmans Planning Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_2.html">
-   32. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -3270,41 +3265,51 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Growth
+  Consumption, Savings and Capital
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   37. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   38. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    39. Cake Eating I: Introduction to Optimal Saving
@@ -3582,7 +3587,7 @@ The social cost of buyer 2: 5.0
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/house_auction.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/house_auction.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/house_auction.md" download><i data-feather="github"></i></a></li>
@@ -3597,7 +3602,7 @@ The social cost of buyer 2: 5.0
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

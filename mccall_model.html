@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>33. Job Search I: The McCall Search Model &#8212; Quantitative Economics with Python</title>
+    <title>31. Job Search I: The McCall Search Model &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -89,21 +89,20 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/mccall_model.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="34. Job Search II: Search and Separation" href="mccall_model_with_separation.html" />
-    <link rel="prev" title="32. Cass-Koopmans Competitive Equilibrium" href="cass_koopmans_2.html" />
+    <link rel="next" title="32. Job Search II: Search and Separation" href="mccall_model_with_separation.html" />
+    <link rel="prev" title="30. Shortest Paths" href="short_path.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -153,93 +152,93 @@
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   33.1. Overview
+   31.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-mccall-model">
-   33.2. The McCall Model
+   31.2. The McCall Model
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#a-trade-off">
-     33.2.1. A Trade-Off
+     31.2.1. A Trade-Off
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-value-function">
-     33.2.2. The Value Function
+     31.2.2. The Value Function
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-optimal-policy">
-     33.2.3. The Optimal Policy
+     31.2.3. The Optimal Policy
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#computing-the-optimal-policy-take-1">
-   33.3. Computing the Optimal Policy: Take 1
+   31.3. Computing the Optimal Policy: Take 1
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-algorithm">
-     33.3.1. The Algorithm
+     31.3.1. The Algorithm
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-fixed-point-theory">
-     33.3.2. The Fixed Point Theory
+     31.3.2. The Fixed Point Theory
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#implementation">
-     33.3.3. Implementation
+     31.3.3. Implementation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#comparative-statics">
-     33.3.4. Comparative Statics
+     31.3.4. Comparative Statics
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#computing-the-optimal-policy-take-2">
-   33.4. Computing the Optimal Policy: Take 2
+   31.4. Computing the Optimal Policy: Take 2
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   33.5. Exercises
+   31.5. Exercises
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-1">
-     33.5.1. Exercise 1
+     31.5.1. Exercise 1
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exercise-2">
-     33.5.2. Exercise 2
+     31.5.2. Exercise 2
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
-   33.6. Solutions
+   31.6. Solutions
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id2">
-     33.6.1. Exercise 1
+     31.6.1. Exercise 1
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id3">
-     33.6.2. Exercise 2
+     31.6.2. Exercise 2
     </a>
    </li>
   </ul>
@@ -294,7 +293,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="job-search-i-the-mccall-search-model">
-<h1><a class="toc-backref" href="#id4"><span class="section-number">33. </span>Job Search I: The McCall Search Model</a><a class="headerlink" href="#job-search-i-the-mccall-search-model" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id4"><span class="section-number">31. </span>Job Search I: The McCall Search Model</a><a class="headerlink" href="#job-search-i-the-mccall-search-model" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -370,32 +369,8 @@ and the pros and cons as they themselves see them.” – Robert E. Lucas, Jr.</
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: | 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+Solving environment: - 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
@@ -468,21 +443,6 @@ Solving environment: |
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -494,8 +454,8 @@ Solving environment: |
 </div>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">33.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>The McCall search model <span id="id1">[<a class="reference internal" href="zreferences.html#id187">McC70</a>]</span> helped transform economists’ way of thinking about labor markets.</p>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">31.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The McCall search model <span id="id1">[<a class="reference internal" href="zreferences.html#id187" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McC70</a>]</span> helped transform economists’ way of thinking about labor markets.</p>
 <p>To clarify vague notions such as “involuntary” unemployment, McCall modeled the decision problem of unemployed agents directly, in terms of factors such as</p>
 <ul class="simple">
 <li><p>current and likely future wages</p></li>
@@ -522,7 +482,7 @@ Solving environment: |
 </div>
 </section>
 <section id="the-mccall-model">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">33.2. </span>The McCall Model</a><a class="headerlink" href="#the-mccall-model" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">31.2. </span>The McCall Model</a><a class="headerlink" href="#the-mccall-model" title="Permalink to this headline">¶</a></h2>
 <p id="index-0">An unemployed agent receives in each period a job offer at wage <span class="math notranslate nohighlight">\(w_t\)</span>.</p>
 <p>The wage offer is a nonnegative function of some underlying state:</p>
 <div class="math notranslate nohighlight">
@@ -562,7 +522,7 @@ sum of earnings</p>
 <p>The agent is assumed to know that <span class="math notranslate nohighlight">\(\{s_t\}\)</span> is IID with common
 distribution <span class="math notranslate nohighlight">\(q\)</span> and can use this when computing expectations.</p>
 <section id="a-trade-off">
-<h3><span class="section-number">33.2.1. </span>A Trade-Off<a class="headerlink" href="#a-trade-off" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.2.1. </span>A Trade-Off<a class="headerlink" href="#a-trade-off" title="Permalink to this headline">¶</a></h3>
 <p>The worker faces a trade-off:</p>
 <ul class="simple">
 <li><p>Waiting too long for a good offer is costly, since the future is discounted.</p></li>
@@ -577,7 +537,7 @@ distribution <span class="math notranslate nohighlight">\(q\)</span> and can use
 <p>We’ll go through these steps in turn.</p>
 </section>
 <section id="the-value-function">
-<h3><span class="section-number">33.2.2. </span>The Value Function<a class="headerlink" href="#the-value-function" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.2.2. </span>The Value Function<a class="headerlink" href="#the-value-function" title="Permalink to this headline">¶</a></h3>
 <p>In order to optimally trade-off current and future rewards, we need to think about two things:</p>
 <ol class="simple">
 <li><p>the current payoffs we get from different choices</p></li>
@@ -590,7 +550,7 @@ unemployed worker who enters the current period unemployed when the state is
 <span class="math notranslate nohighlight">\(s \in \mathbb{S}\)</span>.</p>
 <p>In particular, the agent has wage offer <span class="math notranslate nohighlight">\(w(s)\)</span> in hand.</p>
 <p>More precisely, <span class="math notranslate nohighlight">\(v^*(s)\)</span> denotes the value of the objective function
-<a class="reference internal" href="mccall_model_with_separation.html#equation-objective">(34.1)</a> when an agent in this situation makes <em>optimal</em> decisions now
+<a class="reference internal" href="mccall_model_with_separation.html#equation-objective">(32.1)</a> when an agent in this situation makes <em>optimal</em> decisions now
 and at all future points in time.</p>
 <p>Of course <span class="math notranslate nohighlight">\(v^*(s)\)</span> is not trivial to calculate because we don’t yet know
 what decisions are optimal and what aren’t!</p>
@@ -600,7 +560,7 @@ hand.</p>
 <p>A crucial observation is that this function <span class="math notranslate nohighlight">\(v^*\)</span> must satisfy the
 recursion</p>
 <div class="math notranslate nohighlight" id="equation-odu-pv">
-<span class="eqno">(33.1)<a class="headerlink" href="#equation-odu-pv" title="Permalink to this equation">¶</a></span>\[v^*(s)
+<span class="eqno">(31.1)<a class="headerlink" href="#equation-odu-pv" title="Permalink to this equation">¶</a></span>\[v^*(s)
 = \max \left\{
         \frac{w(s)}{1 - \beta}, \, c + \beta
         \sum_{s' \in \mathbb{S}} v^*(s') q (s')
@@ -620,19 +580,19 @@ ubiquitous in economic dynamics and other fields involving planning over time.</
 <li><p>the second term inside the max operation is the <strong>continuation value</strong>, which is the lifetime payoff from rejecting the current offer and then behaving optimally in all subsequent periods</p></li>
 </ul>
 <p>If we optimize and pick the best of these two options, we obtain maximal lifetime value from today, given current state <span class="math notranslate nohighlight">\(s\)</span>.</p>
-<p>But this is precisely <span class="math notranslate nohighlight">\(v^*(s)\)</span>, which is the l.h.s. of <a class="reference internal" href="#equation-odu-pv">(33.1)</a>.</p>
+<p>But this is precisely <span class="math notranslate nohighlight">\(v^*(s)\)</span>, which is the l.h.s. of <a class="reference internal" href="#equation-odu-pv">(31.1)</a>.</p>
 </section>
 <section id="the-optimal-policy">
-<h3><span class="section-number">33.2.3. </span>The Optimal Policy<a class="headerlink" href="#the-optimal-policy" title="Permalink to this headline">¶</a></h3>
-<p>Suppose for now that we are able to solve <a class="reference internal" href="#equation-odu-pv">(33.1)</a> for the unknown
+<h3><span class="section-number">31.2.3. </span>The Optimal Policy<a class="headerlink" href="#the-optimal-policy" title="Permalink to this headline">¶</a></h3>
+<p>Suppose for now that we are able to solve <a class="reference internal" href="#equation-odu-pv">(31.1)</a> for the unknown
 function <span class="math notranslate nohighlight">\(v^*\)</span>.</p>
 <p>Once we have this function in hand we can behave optimally (i.e., make the
 right choice between accept and reject).</p>
-<p>All we have to do is select the maximal choice on the r.h.s. of <a class="reference internal" href="#equation-odu-pv">(33.1)</a>.</p>
+<p>All we have to do is select the maximal choice on the r.h.s. of <a class="reference internal" href="#equation-odu-pv">(31.1)</a>.</p>
 <p>The optimal action is best thought of as a <strong>policy</strong>, which is, in general, a map from
 states to actions.</p>
 <p>Given <em>any</em> <span class="math notranslate nohighlight">\(s\)</span>, we can read off the corresponding best choice (accept or
-reject) by picking the max on the r.h.s. of <a class="reference internal" href="#equation-odu-pv">(33.1)</a>.</p>
+reject) by picking the max on the r.h.s. of <a class="reference internal" href="#equation-odu-pv">(31.1)</a>.</p>
 <p>Thus, we have a map from <span class="math notranslate nohighlight">\(\mathbb R\)</span> to <span class="math notranslate nohighlight">\(\{0, 1\}\)</span>, with 1 meaning accept and 0 meaning reject.</p>
 <p>We can write the policy as follows</p>
 <div class="math notranslate nohighlight">
@@ -651,22 +611,22 @@ reject) by picking the max on the r.h.s. of <a class="reference internal" href="
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-reswage">
-<span class="eqno">(33.2)<a class="headerlink" href="#equation-reswage" title="Permalink to this equation">¶</a></span>\[\bar w := (1 - \beta) \left\{ c + \beta \sum_{s'} v^*(s') q (s') \right\}\]</div>
+<span class="eqno">(31.2)<a class="headerlink" href="#equation-reswage" title="Permalink to this equation">¶</a></span>\[\bar w := (1 - \beta) \left\{ c + \beta \sum_{s'} v^*(s') q (s') \right\}\]</div>
 <p>Here <span class="math notranslate nohighlight">\(\bar w\)</span> (called the <em>reservation wage</em>) is a constant depending on <span class="math notranslate nohighlight">\(\beta, c\)</span> and the wage distribution.</p>
 <p>The agent should accept if and only if the current wage offer exceeds the reservation wage.</p>
-<p>In view of <a class="reference internal" href="#equation-reswage">(33.2)</a>, we can compute this reservation wage if we can compute the value function.</p>
+<p>In view of <a class="reference internal" href="#equation-reswage">(31.2)</a>, we can compute this reservation wage if we can compute the value function.</p>
 </section>
 </section>
 <section id="computing-the-optimal-policy-take-1">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">33.3. </span>Computing the Optimal Policy: Take 1</a><a class="headerlink" href="#computing-the-optimal-policy-take-1" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">31.3. </span>Computing the Optimal Policy: Take 1</a><a class="headerlink" href="#computing-the-optimal-policy-take-1" title="Permalink to this headline">¶</a></h2>
 <p>To put the above ideas into action, we need to compute the value function at
 each possible state <span class="math notranslate nohighlight">\(s \in \mathbb S\)</span>.</p>
 <p>Let’s suppose that <span class="math notranslate nohighlight">\(\mathbb S = \{1, \ldots, n\}\)</span>.</p>
 <p>The value function is then represented by the vector <span class="math notranslate nohighlight">\(v^* =
 (v^*(i))_{i=1}^n\)</span>.</p>
-<p>In view of <a class="reference internal" href="#equation-odu-pv">(33.1)</a>, this vector satisfies the nonlinear system of equations</p>
+<p>In view of <a class="reference internal" href="#equation-odu-pv">(31.1)</a>, this vector satisfies the nonlinear system of equations</p>
 <div class="math notranslate nohighlight" id="equation-odu-pv2">
-<span class="eqno">(33.3)<a class="headerlink" href="#equation-odu-pv2" title="Permalink to this equation">¶</a></span>\[v^*(i)
+<span class="eqno">(31.3)<a class="headerlink" href="#equation-odu-pv2" title="Permalink to this equation">¶</a></span>\[v^*(i)
 = \max \left\{
         \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{1 \leq j \leq n}
             v^*(j) q (j)
@@ -674,12 +634,12 @@ each possible state <span class="math notranslate nohighlight">\(s \in \mathbb S
 \quad
 \text{for } i = 1, \ldots, n\]</div>
 <section id="the-algorithm">
-<h3><span class="section-number">33.3.1. </span>The Algorithm<a class="headerlink" href="#the-algorithm" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.3.1. </span>The Algorithm<a class="headerlink" href="#the-algorithm" title="Permalink to this headline">¶</a></h3>
 <p>To compute this vector, we use successive approximations:</p>
 <p>Step 1: pick an arbitrary initial guess <span class="math notranslate nohighlight">\(v \in \mathbb R^n\)</span>.</p>
 <p>Step 2: compute a new vector <span class="math notranslate nohighlight">\(v' \in \mathbb R^n\)</span> via</p>
 <div class="math notranslate nohighlight" id="equation-odu-pv2p">
-<span class="eqno">(33.4)<a class="headerlink" href="#equation-odu-pv2p" title="Permalink to this equation">¶</a></span>\[v'(i)
+<span class="eqno">(31.4)<a class="headerlink" href="#equation-odu-pv2p" title="Permalink to this equation">¶</a></span>\[v'(i)
 = \max \left\{
         \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{1 \leq j \leq n}
             v(j) q (j)
@@ -693,12 +653,12 @@ each possible state <span class="math notranslate nohighlight">\(s \in \mathbb S
 <p>The theory below elaborates on this point.</p>
 </section>
 <section id="the-fixed-point-theory">
-<h3><span class="section-number">33.3.2. </span>The Fixed Point Theory<a class="headerlink" href="#the-fixed-point-theory" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.3.2. </span>The Fixed Point Theory<a class="headerlink" href="#the-fixed-point-theory" title="Permalink to this headline">¶</a></h3>
 <p>What’s the mathematics behind these ideas?</p>
 <p>First, one defines a mapping <span class="math notranslate nohighlight">\(T\)</span> from <span class="math notranslate nohighlight">\(\mathbb R^n\)</span> to
 itself via</p>
 <div class="math notranslate nohighlight" id="equation-odu-pv3">
-<span class="eqno">(33.5)<a class="headerlink" href="#equation-odu-pv3" title="Permalink to this equation">¶</a></span>\[(Tv)(i)
+<span class="eqno">(31.5)<a class="headerlink" href="#equation-odu-pv3" title="Permalink to this equation">¶</a></span>\[(Tv)(i)
 = \max \left\{
         \frac{w(i)}{1 - \beta}, \, c + \beta \sum_{1 \leq j \leq n}
             v(j) q (j)
@@ -726,7 +686,7 @@ point is <span class="math notranslate nohighlight">\(v^*\)</span>.</p>
 <span class="math notranslate nohighlight">\(v\)</span>.</p>
 </section>
 <section id="implementation">
-<h3><span class="section-number">33.3.3. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.3.3. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
 <p>Our default for <span class="math notranslate nohighlight">\(q\)</span>, the distribution of the state process, will be
 <a class="reference external" href="https://en.wikipedia.org/wiki/Beta-binomial_distribution">Beta-binomial</a>.</p>
 <div class="cell docutils container">
@@ -780,7 +740,7 @@ point is <span class="math notranslate nohighlight">\(v^*\)</span>.</p>
 </div>
 </div>
 <p>Here’s a class that stores the data and computes the values of state-action pairs,
-i.e. the value in the maximum bracket on the right hand side of the Bellman equation <a class="reference internal" href="#equation-odu-pv2p">(33.4)</a>,
+i.e. the value in the maximum bracket on the right hand side of the Bellman equation <a class="reference internal" href="#equation-odu-pv2p">(31.4)</a>,
 given the current state and an arbitrary feasible action.</p>
 <p>Default parameter values are embedded in the class.</p>
 <div class="cell docutils container">
@@ -910,7 +870,7 @@ the reservation wage.</p>
 </div>
 </section>
 <section id="comparative-statics">
-<h3><span class="section-number">33.3.4. </span>Comparative Statics<a class="headerlink" href="#comparative-statics" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.3.4. </span>Comparative Statics<a class="headerlink" href="#comparative-statics" title="Permalink to this headline">¶</a></h3>
 <p>Now we know how to compute the reservation wage, let’s see how it varies with
 parameters.</p>
 <p>In particular, let’s look at what happens when we change <span class="math notranslate nohighlight">\(\beta\)</span> and
@@ -961,14 +921,14 @@ unemployment compensation.</p>
 </section>
 </section>
 <section id="computing-the-optimal-policy-take-2">
-<span id="mm-op2"></span><h2><a class="toc-backref" href="#id8"><span class="section-number">33.4. </span>Computing the Optimal Policy: Take 2</a><a class="headerlink" href="#computing-the-optimal-policy-take-2" title="Permalink to this headline">¶</a></h2>
+<span id="mm-op2"></span><h2><a class="toc-backref" href="#id8"><span class="section-number">31.4. </span>Computing the Optimal Policy: Take 2</a><a class="headerlink" href="#computing-the-optimal-policy-take-2" title="Permalink to this headline">¶</a></h2>
 <p>The approach to dynamic programming just described is very standard and
 broadly applicable.</p>
 <p>For this particular problem, there’s also an easier way, which circumvents the
 need to compute the value function.</p>
 <p>Let <span class="math notranslate nohighlight">\(h\)</span> denote the continuation value:</p>
 <div class="math notranslate nohighlight" id="equation-j1">
-<span class="eqno">(33.6)<a class="headerlink" href="#equation-j1" title="Permalink to this equation">¶</a></span>\[h
+<span class="eqno">(31.6)<a class="headerlink" href="#equation-j1" title="Permalink to this equation">¶</a></span>\[h
 = c + \beta
     \sum_{s'} v^*(s') q (s')
 \quad\]</div>
@@ -978,9 +938,9 @@ need to compute the value function.</p>
 v^*(s')
 = \max \left\{ \frac{w(s')}{1 - \beta}, \, h \right\}
 \]</div>
-<p>Substituting this last equation into <a class="reference internal" href="#equation-j1">(33.6)</a> gives</p>
+<p>Substituting this last equation into <a class="reference internal" href="#equation-j1">(31.6)</a> gives</p>
 <div class="math notranslate nohighlight" id="equation-j2">
-<span class="eqno">(33.7)<a class="headerlink" href="#equation-j2" title="Permalink to this equation">¶</a></span>\[h
+<span class="eqno">(31.7)<a class="headerlink" href="#equation-j2" title="Permalink to this equation">¶</a></span>\[h
 = c + \beta
     \sum_{s' \in \mathbb S}
     \max \left\{
@@ -992,7 +952,7 @@ v^*(s')
 <p>Step 1: pick an initial guess <span class="math notranslate nohighlight">\(h\)</span>.</p>
 <p>Step 2: compute the update <span class="math notranslate nohighlight">\(h'\)</span> via</p>
 <div class="math notranslate nohighlight" id="equation-j3">
-<span class="eqno">(33.8)<a class="headerlink" href="#equation-j3" title="Permalink to this equation">¶</a></span>\[h'
+<span class="eqno">(31.8)<a class="headerlink" href="#equation-j3" title="Permalink to this equation">¶</a></span>\[h'
 = c + \beta
     \sum_{s' \in \mathbb S}
     \max \left\{
@@ -1039,9 +999,9 @@ v^*(s')
 <p>You can use this code to solve the exercise below.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">33.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">31.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <section id="exercise-1">
-<h3><span class="section-number">33.5.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.5.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
 <p>Compute the average duration of unemployment when <span class="math notranslate nohighlight">\(\beta=0.99\)</span> and
 <span class="math notranslate nohighlight">\(c\)</span> takes the following values</p>
 <blockquote>
@@ -1053,23 +1013,23 @@ given the parameters, and then simulate to see how long it takes to accept.</p>
 <p>Plot mean unemployment duration as a function of <span class="math notranslate nohighlight">\(c\)</span> in <code class="docutils literal notranslate"><span class="pre">c_vals</span></code>.</p>
 </section>
 <section id="exercise-2">
-<h3><span class="section-number">33.5.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.5.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
 <p>The purpose of this exercise is to show how to replace the discrete wage
 offer distribution used above with a continuous distribution.</p>
 <p>This is a significant topic because many convenient distributions are
 continuous (i.e., have a density).</p>
 <p>Fortunately, the theory changes little in our simple model.</p>
-<p>Recall that <span class="math notranslate nohighlight">\(h\)</span> in <a class="reference internal" href="#equation-j1">(33.6)</a> denotes the value of not accepting a job in this period but
+<p>Recall that <span class="math notranslate nohighlight">\(h\)</span> in <a class="reference internal" href="#equation-j1">(31.6)</a> denotes the value of not accepting a job in this period but
 then behaving optimally in all subsequent periods:</p>
-<p>To shift to a continuous offer distribution, we can replace <a class="reference internal" href="#equation-j1">(33.6)</a> by</p>
+<p>To shift to a continuous offer distribution, we can replace <a class="reference internal" href="#equation-j1">(31.6)</a> by</p>
 <div class="math notranslate nohighlight" id="equation-j1c">
-<span class="eqno">(33.9)<a class="headerlink" href="#equation-j1c" title="Permalink to this equation">¶</a></span>\[h
+<span class="eqno">(31.9)<a class="headerlink" href="#equation-j1c" title="Permalink to this equation">¶</a></span>\[h
 = c + \beta
     \int v^*(s') q (s') ds'.
 \quad\]</div>
-<p>Equation <a class="reference internal" href="#equation-j2">(33.7)</a> becomes</p>
+<p>Equation <a class="reference internal" href="#equation-j2">(31.7)</a> becomes</p>
 <div class="math notranslate nohighlight" id="equation-j2c">
-<span class="eqno">(33.10)<a class="headerlink" href="#equation-j2c" title="Permalink to this equation">¶</a></span>\[h
+<span class="eqno">(31.10)<a class="headerlink" href="#equation-j2c" title="Permalink to this equation">¶</a></span>\[h
 = c + \beta
     \int
     \max \left\{
@@ -1091,9 +1051,9 @@ assumes a lognormal wage distribution.</p>
 </section>
 </section>
 <section id="solutions">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">33.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">31.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <section id="id2">
-<h3><span class="section-number">33.6.1. </span>Exercise 1<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.6.1. </span>Exercise 1<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>Here’s one solution</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1145,7 +1105,7 @@ assumes a lognormal wage distribution.</p>
 </div>
 </section>
 <section id="id3">
-<h3><span class="section-number">33.6.2. </span>Exercise 2<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.6.2. </span>Exercise 2<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mccall_data_continuous</span> <span class="o">=</span> <span class="p">[</span>
@@ -1468,16 +1428,6 @@ assumes a lognormal wage distribution.</p>
    30. Shortest Paths
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   31. Cass-Koopmans Planning Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_2.html">
-   32. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1487,41 +1437,51 @@ assumes a lognormal wage distribution.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   33. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Growth
+  Consumption, Savings and Capital
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   37. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   38. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    39. Cake Eating I: Introduction to Optimal Saving
@@ -1799,7 +1759,7 @@ assumes a lognormal wage distribution.</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/mccall_model.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/mccall_model.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/mccall_model.md" download><i data-feather="github"></i></a></li>
@@ -1814,7 +1774,7 @@ assumes a lognormal wage distribution.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

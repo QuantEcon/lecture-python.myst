@@ -89,15 +89,14 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/von_neumann_model.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -283,8 +282,8 @@
 </ul>
 </div>
 <p>This lecture uses the class <code class="docutils literal notranslate"><span class="pre">Neumann</span></code> to calculate key objects of a
-linear growth model of John von Neumann <span id="id1">[<a class="reference internal" href="zreferences.html#id69">vN37</a>]</span> that was generalized by
-Kemeny, Morgenstern and Thompson <span id="id2">[<a class="reference internal" href="zreferences.html#id72">KMT56</a>]</span>.</p>
+linear growth model of John von Neumann <span id="id1">[<a class="reference internal" href="zreferences.html#id69" title="John von Neumann. Uber ein okonomsiches gleichungssystem und eine verallgemeinering des browerschen fixpunktsatzes. In Erge. Math. Kolloq., volume 8, 73–83. 1937.">vN37</a>]</span> that was generalized by
+Kemeny, Morgenstern and Thompson <span id="id2">[<a class="reference internal" href="zreferences.html#id72" title="John G Kemeny, Oskar Morgenstern, and Gerald L Thompson. A generalization of the von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 115–135, 1956.">KMT56</a>]</span>.</p>
 <p>Objects of interest are the maximal expansion rate (<span class="math notranslate nohighlight">\(\alpha\)</span>), the
 interest factor (<span class="math notranslate nohighlight">\(β\)</span>), the optimal intensities (<span class="math notranslate nohighlight">\(x\)</span>), and
 prices (<span class="math notranslate nohighlight">\(p\)</span>).</p>
@@ -661,7 +660,7 @@ that <span class="math notranslate nohighlight">\(a_{i,j}=0\)</span> <span class
 for all <span class="math notranslate nohighlight">\(j\in S\)</span>, <span class="math notranslate nohighlight">\(\exists i\in T\)</span> for which  <span class="math notranslate nohighlight">\(b_{i,j}&gt;0\)</span>.
 The economy is <strong>irreducible</strong> if there are no proper independent
 subsets.</p>
-<p>We study two examples, both in  Chapter 9.6 of Gale <span id="id3">[<a class="reference internal" href="zreferences.html#id74">Gal89</a>]</span></p>
+<p>We study two examples, both in  Chapter 9.6 of Gale <span id="id3">[<a class="reference internal" href="zreferences.html#id74" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gal89</a>]</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># (1) Irreducible (A, B) example: α_0 = β_0</span>
@@ -810,7 +809,7 @@ and a number <span class="math notranslate nohighlight">\(\alpha\in\mathbb{R}\)<
     &amp;\text{s.t. }\hspace{2mm}x^T B \geq \alpha x^T A
     \end{aligned}
 \end{split}\]</div>
-<p>Theorem 9.3 of David Gale’s book <span id="id4">[<a class="reference internal" href="zreferences.html#id74">Gal89</a>]</span> asserts that if Assumptions I and II are
+<p>Theorem 9.3 of David Gale’s book <span id="id4">[<a class="reference internal" href="zreferences.html#id74" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gal89</a>]</span> asserts that if Assumptions I and II are
 both satisfied, then a maximum value of <span class="math notranslate nohighlight">\(\alpha\)</span> exists and that it is
 positive.</p>
 <p>The maximal value is called the <em>technological expansion rate</em> and is denoted
@@ -835,11 +834,11 @@ the optimality of <span class="math notranslate nohighlight">\(x_0\)</span> and 
 positive scale factor.</p>
 <p>For convenience (and to emphasize a close connection to zero-sum games),  we normalize both vectors
 <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(p_0\)</span> to have unit length.</p>
-<p>A standard duality argument (see Lemma 9.4. in (Gale, 1960) <span id="id5">[<a class="reference internal" href="zreferences.html#id74">Gal89</a>]</span>) implies
+<p>A standard duality argument (see Lemma 9.4. in (Gale, 1960) <span id="id5">[<a class="reference internal" href="zreferences.html#id74" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gal89</a>]</span>) implies
 that under Assumptions I and II, <span class="math notranslate nohighlight">\(\beta_0\leq \alpha_0\)</span>.</p>
 <p>But to deduce that <span class="math notranslate nohighlight">\(\beta_0\geq \alpha_0\)</span>,
 Assumptions I and II are not sufficient.</p>
-<p>Therefore, von Neumann <span id="id6">[<a class="reference internal" href="zreferences.html#id69">vN37</a>]</span>  went on to prove the following remarkable
+<p>Therefore, von Neumann <span id="id6">[<a class="reference internal" href="zreferences.html#id69" title="John von Neumann. Uber ein okonomsiches gleichungssystem und eine verallgemeinering des browerschen fixpunktsatzes. In Erge. Math. Kolloq., volume 8, 73–83. 1937.">vN37</a>]</span>  went on to prove the following remarkable
 “duality” result that connects TEP and EEP.</p>
 <p><strong>Theorem 1 (von Neumann):</strong> If the economy <span class="math notranslate nohighlight">\((A,B)\)</span> satisfies
 Assumptions I and II, then there exist
@@ -886,7 +885,7 @@ with balanced growth.</p>
 fact, it does not rule out (trivial) cases with <span class="math notranslate nohighlight">\(x_0^TBp_0 = 0\)</span> so
 that nothing of value is produced.</p>
 <p>To exclude such uninteresting cases,
-Kemeny, Morgenstern and Thomspson <span id="id7">[<a class="reference internal" href="zreferences.html#id72">KMT56</a>]</span> add an extra requirement</p>
+Kemeny, Morgenstern and Thomspson <span id="id7">[<a class="reference internal" href="zreferences.html#id72" title="John G Kemeny, Oskar Morgenstern, and Gerald L Thompson. A generalization of the von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 115–135, 1956.">KMT56</a>]</span> add an extra requirement</p>
 <div class="math notranslate nohighlight">
 \[
 x^T_0 B p_0 &gt; 0
@@ -935,7 +934,7 @@ maximizing player’s choice)</p></li>
 <p>A famous theorem of Nash (1951) tells us that there always
 exists a mixed strategy Nash equilibrium for any <em>finite</em> two-player
 zero-sum game.</p>
-<p>Moreover, von Neumann’s Minmax Theorem <span id="id8">[<a class="reference internal" href="zreferences.html#id70">vN28</a>]</span> implies that</p>
+<p>Moreover, von Neumann’s Minmax Theorem <span id="id8">[<a class="reference internal" href="zreferences.html#id70" title="John von Neumann. Zur theorie der gesellschaftsspiele. Mathematische annalen, 100(1):295–320, 1928.">vN28</a>]</span> implies that</p>
 <div class="math notranslate nohighlight">
 \[
 V(C) = \max_x \min_p \hspace{2mm} x^T C p = \min_p \max_x \hspace{2mm} x^T C p = (x^*)^T C p^*
@@ -971,7 +970,7 @@ p &amp;\geq \mathbf{0} \\
 \iota_m^T p &amp; = 1
 \end{aligned}
 \end{split}\]</div>
-<p>Hamburger, Thompson and Weil <span id="id9">[<a class="reference internal" href="zreferences.html#id73">HTW67</a>]</span> view the input-output pair of the
+<p>Hamburger, Thompson and Weil <span id="id9">[<a class="reference internal" href="zreferences.html#id73" title="Michael J Hamburger, Gerald L Thompson, and Roman L Weil. Computation of expansion rates for the generalized von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 542–547, 1967.">HTW67</a>]</span> view the input-output pair of the
 economy as payoff matrices of two-player zero-sum games.</p>
 <p>Using this interpretation, they restate Assumption I and II as follows</p>
 <div class="math notranslate nohighlight">
@@ -1048,7 +1047,7 @@ M(\gamma)p'' = M(\gamma'') + (\gamma'' - \gamma)Ap'' \leq \mathbf{0}
 <p>hence <span class="math notranslate nohighlight">\(V(M(\gamma))\leq 0\)</span>.</p>
 <p>It is clear from the above argument that <span class="math notranslate nohighlight">\(\beta_0\)</span>, <span class="math notranslate nohighlight">\(\alpha_0\)</span> are the minimal and maximal <span class="math notranslate nohighlight">\(\gamma\)</span> for which
 <span class="math notranslate nohighlight">\(V(M(\gamma))=0\)</span>.</p>
-<p>Furthermore, Hamburger et al. <span id="id10">[<a class="reference internal" href="zreferences.html#id73">HTW67</a>]</span> show that the
+<p>Furthermore, Hamburger et al. <span id="id10">[<a class="reference internal" href="zreferences.html#id73" title="Michael J Hamburger, Gerald L Thompson, and Roman L Weil. Computation of expansion rates for the generalized von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 542–547, 1967.">HTW67</a>]</span> show that the
 function <span class="math notranslate nohighlight">\(\gamma \mapsto V(M(\gamma))\)</span> is continuous and
 nonincreasing in <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
 <p>This suggests an algorithm to compute
@@ -1057,7 +1056,7 @@ input-output pair <span class="math notranslate nohighlight">\((A, B)\)</span>.<
 </section>
 <section id="algorithm">
 <h3><span class="section-number">20.5.2. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
-<p>Hamburger, Thompson and Weil <span id="id11">[<a class="reference internal" href="zreferences.html#id73">HTW67</a>]</span> propose a simple bisection algorithm
+<p>Hamburger, Thompson and Weil <span id="id11">[<a class="reference internal" href="zreferences.html#id73" title="Michael J Hamburger, Gerald L Thompson, and Roman L Weil. Computation of expansion rates for the generalized von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 542–547, 1967.">HTW67</a>]</span> propose a simple bisection algorithm
 to find the minimal and maximal roots (i.e. <span class="math notranslate nohighlight">\(\beta_0\)</span> and
 <span class="math notranslate nohighlight">\(\alpha_0\)</span>) of the function <span class="math notranslate nohighlight">\(\gamma \mapsto V(M(\gamma))\)</span>.</p>
 <section id="step-1">
@@ -1141,7 +1140,7 @@ associated with a given <span class="math notranslate nohighlight">\(\gamma\)</s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Value of the game with γ = 2
--0.2400000009785035
+-0.24000000097850305
 Intensity vector (from the primal)
 [0.32 0.28 0.4 ]
 Price vector (from the dual)
@@ -1239,9 +1238,9 @@ input-output pair <span class="math notranslate nohighlight">\((A, B)\)</span></
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>α_0 = 1.1343201892450452
-x_0 = [1.67e-11 1.84e-11 3.24e-01 2.61e-01 4.15e-01]
-The corresponding p from the dual = [5.04e-01 4.96e-01 2.97e-12 2.24e-12 3.08e-12 3.56e-12]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>α_0 = 1.1343231229111552
+x_0 = [1.67e-11 1.83e-11 3.24e-01 2.61e-01 4.15e-01]
+The corresponding p from the dual = [5.04e-01 4.96e-01 2.96e-12 2.24e-12 3.08e-12 3.56e-12]
 </pre></div>
 </div>
 </div>
@@ -1256,7 +1255,7 @@ The corresponding p from the dual = [5.04e-01 4.96e-01 2.97e-12 2.24e-12 3.08e-1
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>β_0 = 1.2579826647415757
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>β_0 = 1.2579826870933175
 p_0 = [5.11e-01 4.89e-01 2.73e-08 2.17e-08 1.88e-08 2.66e-09]
 The corresponding x from the primal = [1.61e-09 1.65e-09 3.27e-01 2.60e-01 4.12e-01]
 </pre></div>
@@ -1276,7 +1275,7 @@ many economic solutions, meaning that there are only finitely many
 is a self-contained part of the economy (a sub-economy) that in
 equilibrium can expand independently with the expansion
 coefficient <span class="math notranslate nohighlight">\(\gamma^*_i\)</span>.</p>
-<p>The following theorem (see Theorem 9.10. in Gale <span id="id12">[<a class="reference internal" href="zreferences.html#id74">Gal89</a>]</span>) asserts that
+<p>The following theorem (see Theorem 9.10. in Gale <span id="id12">[<a class="reference internal" href="zreferences.html#id74" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gal89</a>]</span>) asserts that
 imposing irreducibility is sufficient for uniqueness of
 <span class="math notranslate nohighlight">\((\gamma^*, x_0, p_0)\)</span>.</p>
 <p><strong>Theorem II:</strong> Adopt the conditions of Theorem 1. If the economy
@@ -1296,7 +1295,7 @@ for non-negative matrices.</p>
 <p>These assumptions imply that <span class="math notranslate nohighlight">\(B=I_n\)</span>, i.e., that <span class="math notranslate nohighlight">\(B\)</span> can be
 written as an identity matrix (possibly after reshuffling its rows and
 columns).</p>
-<p>The simple model has the following special property (Theorem 9.11. in Gale <span id="id13">[<a class="reference internal" href="zreferences.html#id74">Gal89</a>]</span>): if <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(\alpha_0&gt;0\)</span> solve the TEP
+<p>The simple model has the following special property (Theorem 9.11. in Gale <span id="id13">[<a class="reference internal" href="zreferences.html#id74" title="David Gale. The theory of linear economic models. University of Chicago press, 1989.">Gal89</a>]</span>): if <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(\alpha_0&gt;0\)</span> solve the TEP
 with <span class="math notranslate nohighlight">\((A,I_n)\)</span>, then</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1550,16 +1549,6 @@ associated expansion and interest factors, respectively. Then we have</p>
    30. Shortest Paths
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   31. Cass-Koopmans Planning Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_2.html">
-   32. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1569,41 +1558,51 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Growth
+  Consumption, Savings and Capital
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   37. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   38. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    39. Cake Eating I: Introduction to Optimal Saving
@@ -1881,7 +1880,7 @@ associated expansion and interest factors, respectively. Then we have</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/von_neumann_model.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/von_neumann_model.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/von_neumann_model.md" download><i data-feather="github"></i></a></li>
@@ -1896,7 +1895,7 @@ associated expansion and interest factors, respectively. Then we have</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

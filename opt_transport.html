@@ -89,15 +89,14 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/opt_transport.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -269,8 +268,8 @@ economic theory.</p>
 key tool for solving it, and then provide some examples.</p>
 <p>We will provide other applications in followup lectures.</p>
 <p>The optimal transport problem was studied in early work about linear
-programming, as summarized for example by <span id="id1">[<a class="reference internal" href="zreferences.html#id33">DSS58</a>]</span>.  A modern reference
-about applications in economics is <span id="id2">[<a class="reference internal" href="zreferences.html#id34">Gal16</a>]</span>.</p>
+programming, as summarized for example by <span id="id1">[<a class="reference internal" href="zreferences.html#id33" title="Robert Dorfman, Paul A. Samuelson, and Robert M. Solow. Linear Programming and Economic Analysis: Revised Edition. McGraw Hill, New York, 1958.">DSS58</a>]</span>.  A modern reference
+about applications in economics is <span id="id2">[<a class="reference internal" href="zreferences.html#id34" title="Alfred Galichon. Optimal Transport Methods in Economics. Princeton University Press, Princeton, New Jersey, 2016.">Gal16</a>]</span>.</p>
 <p>Below, we show how to solve the optimal transport problem using
 several implementations of linear programming, including, in order,</p>
 <ol class="simple">
@@ -288,151 +287,113 @@ solver from SciPy,</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (0.5.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
+Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
+Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
+Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
+Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
+Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
+Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.5.3-py3-none-any.whl (179 kB)
-?25l
-     |█▉                              | 10 kB 17.2 MB/s eta 0:00:01
-     |███▋                            | 20 kB 19.3 MB/s eta 0:00:01
-     |█████▌                          | 30 kB 14.1 MB/s eta 0:00:01
-     |███████▎                        | 40 kB 16.0 MB/s eta 0:00:01
-     |█████████▏                      | 51 kB 12.2 MB/s eta 0:00:01
-     |███████████                     | 61 kB 13.9 MB/s eta 0:00:01
-     |████████████▊                   | 71 kB 15.4 MB/s eta 0:00:01
-     |██████████████▋                 | 81 kB 16.9 MB/s eta 0:00:01
-     |████████████████▍               | 92 kB 17.6 MB/s eta 0:00:01
-     |██████████████████▎             | 102 kB 17.8 MB/s eta 0:00:01
-     |████████████████████            | 112 kB 17.8 MB/s eta 0:00:01
-     |██████████████████████          | 122 kB 17.8 MB/s eta 0:00:01
-     |███████████████████████▊        | 133 kB 17.8 MB/s eta 0:00:01
-     |█████████████████████████▌      | 143 kB 17.8 MB/s eta 0:00:01
-     |███████████████████████████▍    | 153 kB 17.8 MB/s eta 0:00:01
-     |█████████████████████████████▏  | 163 kB 17.8 MB/s eta 0:00:01
-     |███████████████████████████████ | 174 kB 17.8 MB/s eta 0:00:01
-     |████████████████████████████████| 179 kB 17.8 MB/s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.9)
-Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.7.1)
-Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (1.20.3)
-Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (2.26.0)
-Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from quantecon) (0.55.1)
-Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba-&gt;quantecon) (58.0.4)
-Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba-&gt;quantecon) (0.38.0)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (1.26.7)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (2021.10.8)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests-&gt;quantecon) (3.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from sympy-&gt;quantecon) (1.2.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
-  Attempting uninstall: quantecon
-    Found existing installation: quantecon 0.5.0
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Uninstalling quantecon-0.5.0:
-      Successfully uninstalled quantecon-0.5.0
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed quantecon-0.5.3
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
+Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting POT
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading POT-0.8.2-cp38-cp38-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (682 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading POT-0.8.2-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (670 kB)
 ?25l
-     |▌                               | 10 kB 29.6 MB/s eta 0:00:01
-     |█                               | 20 kB 32.7 MB/s eta 0:00:01
-     |█▍                              | 30 kB 35.6 MB/s eta 0:00:01
-     |██                              | 40 kB 23.0 MB/s eta 0:00:01
-     |██▍                             | 51 kB 18.8 MB/s eta 0:00:01
-     |██▉                             | 61 kB 21.5 MB/s eta 0:00:01
-     |███▍                            | 71 kB 23.3 MB/s eta 0:00:01
-     |███▉                            | 81 kB 23.3 MB/s eta 0:00:01
-     |████▎                           | 92 kB 25.1 MB/s eta 0:00:01
-     |████▉                           | 102 kB 26.2 MB/s eta 0:00:01
-     |█████▎                          | 112 kB 26.2 MB/s eta 0:00:01
-     |█████▊                          | 122 kB 26.2 MB/s eta 0:00:01
-     |██████▎                         | 133 kB 26.2 MB/s eta 0:00:01
-     |██████▊                         | 143 kB 26.2 MB/s eta 0:00:01
-     |███████▏                        | 153 kB 26.2 MB/s eta 0:00:01
-     |███████▊                        | 163 kB 26.2 MB/s eta 0:00:01
-     |████████▏                       | 174 kB 26.2 MB/s eta 0:00:01
-     |████████▋                       | 184 kB 26.2 MB/s eta 0:00:01
-     |█████████▏                      | 194 kB 26.2 MB/s eta 0:00:01
-     |█████████▋                      | 204 kB 26.2 MB/s eta 0:00:01
-     |██████████                      | 215 kB 26.2 MB/s eta 0:00:01
-     |██████████▋                     | 225 kB 26.2 MB/s eta 0:00:01
-     |███████████                     | 235 kB 26.2 MB/s eta 0:00:01
-     |███████████▌                    | 245 kB 26.2 MB/s eta 0:00:01
-     |████████████                    | 256 kB 26.2 MB/s eta 0:00:01
-     |████████████▌                   | 266 kB 26.2 MB/s eta 0:00:01
-     |█████████████                   | 276 kB 26.2 MB/s eta 0:00:01
-     |█████████████▌                  | 286 kB 26.2 MB/s eta 0:00:01
-     |██████████████                  | 296 kB 26.2 MB/s eta 0:00:01
-     |██████████████▍                 | 307 kB 26.2 MB/s eta 0:00:01
-     |██████████████▉                 | 317 kB 26.2 MB/s eta 0:00:01
-     |███████████████▍                | 327 kB 26.2 MB/s eta 0:00:01
-     |███████████████▉                | 337 kB 26.2 MB/s eta 0:00:01
-     |████████████████▎               | 348 kB 26.2 MB/s eta 0:00:01
-     |████████████████▉               | 358 kB 26.2 MB/s eta 0:00:01
-     |█████████████████▎              | 368 kB 26.2 MB/s eta 0:00:01
-     |█████████████████▊              | 378 kB 26.2 MB/s eta 0:00:01
-     |██████████████████▎             | 389 kB 26.2 MB/s eta 0:00:01
-     |██████████████████▊             | 399 kB 26.2 MB/s eta 0:00:01
-     |███████████████████▏            | 409 kB 26.2 MB/s eta 0:00:01
-     |███████████████████▊            | 419 kB 26.2 MB/s eta 0:00:01
-     |████████████████████▏           | 430 kB 26.2 MB/s eta 0:00:01
-     |████████████████████▋           | 440 kB 26.2 MB/s eta 0:00:01
-     |█████████████████████▏          | 450 kB 26.2 MB/s eta 0:00:01
-     |█████████████████████▋          | 460 kB 26.2 MB/s eta 0:00:01
-     |██████████████████████          | 471 kB 26.2 MB/s eta 0:00:01
-     |██████████████████████▋         | 481 kB 26.2 MB/s eta 0:00:01
-     |███████████████████████         | 491 kB 26.2 MB/s eta 0:00:01
-     |███████████████████████▌        | 501 kB 26.2 MB/s eta 0:00:01
-     |████████████████████████        | 512 kB 26.2 MB/s eta 0:00:01
-     |████████████████████████▌       | 522 kB 26.2 MB/s eta 0:00:01
-     |█████████████████████████       | 532 kB 26.2 MB/s eta 0:00:01
-     |█████████████████████████▌      | 542 kB 26.2 MB/s eta 0:00:01
-     |██████████████████████████      | 552 kB 26.2 MB/s eta 0:00:01
-     |██████████████████████████▍     | 563 kB 26.2 MB/s eta 0:00:01
-     |███████████████████████████     | 573 kB 26.2 MB/s eta 0:00:01
-     |███████████████████████████▍    | 583 kB 26.2 MB/s eta 0:00:01
-     |███████████████████████████▉    | 593 kB 26.2 MB/s eta 0:00:01
-     |████████████████████████████▍   | 604 kB 26.2 MB/s eta 0:00:01
-     |████████████████████████████▉   | 614 kB 26.2 MB/s eta 0:00:01
-     |█████████████████████████████▎  | 624 kB 26.2 MB/s eta 0:00:01
-     |█████████████████████████████▊  | 634 kB 26.2 MB/s eta 0:00:01
-     |██████████████████████████████▎ | 645 kB 26.2 MB/s eta 0:00:01
-     |██████████████████████████████▊ | 655 kB 26.2 MB/s eta 0:00:01
-     |███████████████████████████████▏| 665 kB 26.2 MB/s eta 0:00:01
-     |███████████████████████████████▊| 675 kB 26.2 MB/s eta 0:00:01
-     |████████████████████████████████| 682 kB 26.2 MB/s 
+     |▌                               | 10 kB 36.7 MB/s eta 0:00:01
+     |█                               | 20 kB 23.4 MB/s eta 0:00:01
+     |█▌                              | 30 kB 12.5 MB/s eta 0:00:01
+     |██                              | 40 kB 5.7 MB/s eta 0:00:01
+     |██▌                             | 51 kB 5.6 MB/s eta 0:00:01
+     |███                             | 61 kB 6.6 MB/s eta 0:00:01
+     |███▍                            | 71 kB 7.0 MB/s eta 0:00:01
+     |████                            | 81 kB 5.5 MB/s eta 0:00:01
+     |████▍                           | 92 kB 6.1 MB/s eta 0:00:01
+     |█████                           | 102 kB 6.5 MB/s eta 0:00:01
+     |█████▍                          | 112 kB 6.5 MB/s eta 0:00:01
+     |█████▉                          | 122 kB 6.5 MB/s eta 0:00:01
+     |██████▍                         | 133 kB 6.5 MB/s eta 0:00:01
+     |██████▉                         | 143 kB 6.5 MB/s eta 0:00:01
+     |███████▍                        | 153 kB 6.5 MB/s eta 0:00:01
+     |███████▉                        | 163 kB 6.5 MB/s eta 0:00:01
+     |████████▎                       | 174 kB 6.5 MB/s eta 0:00:01
+     |████████▉                       | 184 kB 6.5 MB/s eta 0:00:01
+     |█████████▎                      | 194 kB 6.5 MB/s eta 0:00:01
+     |█████████▉                      | 204 kB 6.5 MB/s eta 0:00:01
+     |██████████▎                     | 215 kB 6.5 MB/s eta 0:00:01
+     |██████████▊                     | 225 kB 6.5 MB/s eta 0:00:01
+     |███████████▎                    | 235 kB 6.5 MB/s eta 0:00:01
+     |███████████▊                    | 245 kB 6.5 MB/s eta 0:00:01
+     |████████████▎                   | 256 kB 6.5 MB/s eta 0:00:01
+     |████████████▊                   | 266 kB 6.5 MB/s eta 0:00:01
+     |█████████████▏                  | 276 kB 6.5 MB/s eta 0:00:01
+     |█████████████▊                  | 286 kB 6.5 MB/s eta 0:00:01
+     |██████████████▏                 | 296 kB 6.5 MB/s eta 0:00:01
+     |██████████████▊                 | 307 kB 6.5 MB/s eta 0:00:01
+     |███████████████▏                | 317 kB 6.5 MB/s eta 0:00:01
+     |███████████████▋                | 327 kB 6.5 MB/s eta 0:00:01
+     |████████████████▏               | 337 kB 6.5 MB/s eta 0:00:01
+     |████████████████▋               | 348 kB 6.5 MB/s eta 0:00:01
+     |█████████████████▏              | 358 kB 6.5 MB/s eta 0:00:01
+     |█████████████████▋              | 368 kB 6.5 MB/s eta 0:00:01
+     |██████████████████              | 378 kB 6.5 MB/s eta 0:00:01
+     |██████████████████▋             | 389 kB 6.5 MB/s eta 0:00:01
+     |███████████████████             | 399 kB 6.5 MB/s eta 0:00:01
+     |███████████████████▋            | 409 kB 6.5 MB/s eta 0:00:01
+     |████████████████████            | 419 kB 6.5 MB/s eta 0:00:01
+     |████████████████████▌           | 430 kB 6.5 MB/s eta 0:00:01
+     |█████████████████████           | 440 kB 6.5 MB/s eta 0:00:01
+     |█████████████████████▌          | 450 kB 6.5 MB/s eta 0:00:01
+     |██████████████████████          | 460 kB 6.5 MB/s eta 0:00:01
+     |██████████████████████▌         | 471 kB 6.5 MB/s eta 0:00:01
+     |███████████████████████         | 481 kB 6.5 MB/s eta 0:00:01
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: jax in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (0.3.13)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |███████████████████████▌        | 491 kB 6.5 MB/s eta 0:00:01
+     |████████████████████████        | 501 kB 6.5 MB/s eta 0:00:01
+     |████████████████████████▌       | 512 kB 6.5 MB/s eta 0:00:01
+     |█████████████████████████       | 522 kB 6.5 MB/s eta 0:00:01
+     |█████████████████████████▍      | 532 kB 6.5 MB/s eta 0:00:01
+     |██████████████████████████      | 542 kB 6.5 MB/s eta 0:00:01
+     |██████████████████████████▍     | 552 kB 6.5 MB/s eta 0:00:01
+     |███████████████████████████     | 563 kB 6.5 MB/s eta 0:00:01
+     |███████████████████████████▍    | 573 kB 6.5 MB/s eta 0:00:01
+     |███████████████████████████▉    | 583 kB 6.5 MB/s eta 0:00:01
+     |████████████████████████████▍   | 593 kB 6.5 MB/s eta 0:00:01
+     |████████████████████████████▉   | 604 kB 6.5 MB/s eta 0:00:01
+     |█████████████████████████████▍  | 614 kB 6.5 MB/s eta 0:00:01
+     |█████████████████████████████▉  | 624 kB 6.5 MB/s eta 0:00:01
+     |██████████████████████████████▎ | 634 kB 6.5 MB/s eta 0:00:01
+     |██████████████████████████████▉ | 645 kB 6.5 MB/s eta 0:00:01
+     |███████████████████████████████▎| 655 kB 6.5 MB/s eta 0:00:01
+     |███████████████████████████████▉| 665 kB 6.5 MB/s eta 0:00:01
+     |████████████████████████████████| 670 kB 6.5 MB/s 
+?25hRequirement already satisfied: jax in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.3.13)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jaxlib in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (0.3.10)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jaxlib in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.3.10)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from POT) (1.7.1)
-Requirement already satisfied: numpy&gt;=1.16 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from POT) (1.20.3)
-Requirement already satisfied: absl-py in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from jax) (1.0.0)
-Requirement already satisfied: opt-einsum in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from jax) (3.3.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.16 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from POT) (1.21.5)
+Requirement already satisfied: scipy&gt;=1.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from POT) (1.7.3)
+Requirement already satisfied: absl-py in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from jax) (1.0.0)
+Requirement already satisfied: opt-einsum in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from jax) (3.3.0)
+Requirement already satisfied: typing-extensions in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from jax) (4.1.1)
+Requirement already satisfied: flatbuffers&lt;3.0,&gt;=1.12 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from jaxlib) (2.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: typing-extensions in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from jax) (3.10.0.2)
-Requirement already satisfied: flatbuffers&lt;3.0,&gt;=1.12 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from jaxlib) (2.0)
-Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from absl-py-&gt;jax) (1.16.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from absl-py-&gt;jax) (1.16.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: POT
@@ -720,7 +681,7 @@ X: [[15. 35.  0.  0.  0.]
  [ 0. 80.  0.  0. 70.]]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_30605/1014317504.py:24: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_29513/1014317504.py:24: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
   res = linprog(C_vec, A_eq=A, b_eq=b, method=&#39;Revised simplex&#39;)
 </pre></div>
 </div>
@@ -791,8 +752,8 @@ Galichon</a>.)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 9.53 ms, sys: 0 ns, total: 9.53 ms
-Wall time: 10.3 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.65 ms, sys: 81 µs, total: 4.73 ms
+Wall time: 5.18 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([0., 0., 0., 0., 0., 0., 0.])
@@ -815,8 +776,8 @@ Wall time: 10.3 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.99 ms, sys: 0 ns, total: 6.99 ms
-Wall time: 6.32 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.46 ms, sys: 184 µs, total: 5.65 ms
+Wall time: 5.74 ms
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;timed eval&gt;:1: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
@@ -869,7 +830,7 @@ Wall time: 6.32 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_30605/2305330369.py:8: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_29513/2305330369.py:8: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
   res_shuffle = linprog(C_vec, A_eq=A[arr], b_eq=b[arr], method=&#39;Revised simplex&#39;)
 </pre></div>
 </div>
@@ -884,9 +845,9 @@ Wall time: 6.32 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>transportation plan 0:  (0.0, 25.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 15.0, 15.0, 0.0, 0.0, 0.0, 70.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>transportation plan 0:  (15.0, 10.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 0.0, 30.0, 0.0, 0.0, 0.0, 70.0)
      minimized cost 0:  7225.0
-transportation plan 1:  (15.0, 10.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 0.0, 30.0, 0.0, 0.0, 0.0, 70.0)
+transportation plan 1:  (0.0, 25.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 15.0, 15.0, 0.0, 0.0, 0.0, 70.0)
      minimized cost 1:  7225.0
 </pre></div>
 </div>
@@ -1006,8 +967,8 @@ minimization, we need to put a negative sign before vector <code class="docutils
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.58 ms, sys: 4.01 ms, total: 7.59 ms
-Wall time: 6.81 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.12 ms, sys: 10 µs, total: 4.13 ms
+Wall time: 3.82 ms
 </pre></div>
 </div>
 </div>
@@ -1020,8 +981,8 @@ Wall time: 6.81 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 123 µs, sys: 4 µs, total: 127 µs
-Wall time: 138 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 108 µs, sys: 4 µs, total: 112 µs
+Wall time: 116 µs
 </pre></div>
 </div>
 </div>
@@ -1130,8 +1091,8 @@ v: [ 5. 10.  0. 15.  0.]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.28 ms, sys: 0 ns, total: 6.28 ms
-Wall time: 5.55 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.15 ms, sys: 0 ns, total: 3.15 ms
+Wall time: 2.9 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([], dtype=float64)
@@ -1154,8 +1115,8 @@ Wall time: 5.55 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 609 µs, sys: 0 ns, total: 609 µs
-Wall time: 615 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 459 µs, sys: 16 µs, total: 475 µs
+Wall time: 481 µs
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SimplexResult(x=array([ 5., 15., 25.,  5., 10.,  0., 15.,  0.]), lambd=array([ 0., 35.,  0., 15.,  0., 25.,  0., 60., 15.,  0.,  0., 80.,  0.,
@@ -1248,7 +1209,7 @@ using linear programming.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_30605/1617639716.py:1: UserWarning: Input histogram consists of integer. The transport plan will be casted accordingly, possibly resulting in a loss of precision. If this behaviour is unwanted, please make sure your input histogram consists of floating point elements.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_29513/1617639716.py:1: UserWarning: Input histogram consists of integer. The transport plan will be casted accordingly, possibly resulting in a loss of precision. If this behaviour is unwanted, please make sure your input histogram consists of floating point elements.
   X = ot.emd(p, q, C)
 </pre></div>
 </div>
@@ -1366,8 +1327,8 @@ and location.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.16 ms, sys: 40 µs, total: 1.2 ms
-Wall time: 856 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 627 µs, sys: 22 µs, total: 649 µs
+Wall time: 1.51 ms
 </pre></div>
 </div>
 </div>
@@ -1663,16 +1624,6 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
    30. Shortest Paths
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   31. Cass-Koopmans Planning Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_2.html">
-   32. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1682,41 +1633,51 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Growth
+  Consumption, Savings and Capital
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   37. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   38. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    39. Cake Eating I: Introduction to Optimal Saving
@@ -1994,7 +1955,7 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/opt_transport.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/opt_transport.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/opt_transport.md" download><i data-feather="github"></i></a></li>
@@ -2009,7 +1970,7 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

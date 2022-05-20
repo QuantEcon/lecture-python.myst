@@ -89,15 +89,14 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/heavy_tails.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -381,32 +380,8 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: \ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+Solving environment: / 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
@@ -497,35 +472,58 @@ Solving environment: \
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting yfinance
-  Downloading yfinance-0.1.70-py2.py3-none-any.whl (26 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests&gt;=2.26 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from yfinance) (2.26.0)
-Collecting multitasking&gt;=0.0.7
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading yfinance-0.1.70-py2.py3-none-any.whl (26 kB)
+Requirement already satisfied: lxml&gt;=4.5.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (4.8.0)
+Requirement already satisfied: requests&gt;=2.26 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (2.27.1)
+Requirement already satisfied: pandas&gt;=0.24.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.4.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting multitasking&gt;=0.0.7
   Downloading multitasking-0.0.10.tar.gz (8.2 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas&gt;=0.24.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from yfinance) (1.3.4)
-Requirement already satisfied: numpy&gt;=1.15 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from yfinance) (1.20.3)
-Requirement already satisfied: lxml&gt;=4.5.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from yfinance) (4.6.3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.15 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.21.5)
+Requirement already satisfied: python-dateutil&gt;=2.8.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pandas&gt;=0.24.0-&gt;yfinance) (2.8.2)
+Requirement already satisfied: pytz&gt;=2020.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pandas&gt;=0.24.0-&gt;yfinance) (2021.3)
+Requirement already satisfied: six&gt;=1.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from python-dateutil&gt;=2.8.1-&gt;pandas&gt;=0.24.0-&gt;yfinance) (1.16.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (2022.5.18)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (1.26.9)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (3.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: python-dateutil&gt;=2.7.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.24.0-&gt;yfinance) (2.8.2)
-Requirement already satisfied: pytz&gt;=2017.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.24.0-&gt;yfinance) (2021.3)
-Requirement already satisfied: six&gt;=1.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from python-dateutil&gt;=2.7.3-&gt;pandas&gt;=0.24.0-&gt;yfinance) (1.16.0)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.26-&gt;yfinance) (1.26.7)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.26-&gt;yfinance) (3.2)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.26-&gt;yfinance) (2021.10.8)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.26-&gt;yfinance) (2.0.4)
-Building wheels for collected packages: multitasking
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building wheels for collected packages: multitasking
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for multitasking (setup.py) ... ?25l-
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for multitasking: filename=multitasking-0.0.10-py3-none-any.whl size=8500 sha256=16db23c91f1b494bf977f134ede3bda00803fe9d48d2764e24aea0f9ff83aaa5
-  Stored in directory: /home/runner/.cache/pip/wheels/21/c9/66/b41c847de65c7985db52ec21d59996841598b8b0e93f2b9500
+?25h  Created wheel for multitasking: filename=multitasking-0.0.10-py3-none-any.whl size=8500 sha256=1adeed88194d8a6a3d0ef7a1bd439b2c67b267c4039badd69bb45fed27d40df9
+  Stored in directory: /home/runner/.cache/pip/wheels/f2/b5/2c/59ba95dcf854e542944c75fe3da584e4e3833b319735a0546c
 Successfully built multitasking
 </pre></div>
 </div>
@@ -554,10 +552,10 @@ frequently.</p>
 <p>Examples of heavy-tailed distributions observed in economic and financial
 settings include</p>
 <ul class="simple">
-<li><p>the income distributions and the wealth distribution (see, e.g., <span id="id1">[<a class="reference internal" href="zreferences.html#id64">Vil96</a>]</span>, <span id="id2">[<a class="reference internal" href="zreferences.html#id63">BB18</a>]</span>),</p></li>
-<li><p>the firm size distribution (<span id="id3">[<a class="reference internal" href="zreferences.html#id62">Axt01</a>]</span>, <span id="id4">[<a class="reference internal" href="zreferences.html#id61">Gab16</a>]</span>}),</p></li>
-<li><p>the distribution of returns on holding assets over short time horizons (<span id="id5">[<a class="reference internal" href="zreferences.html#id60">Man63</a>]</span>, <span id="id6">[<a class="reference internal" href="zreferences.html#id59">Rac03</a>]</span>), and</p></li>
-<li><p>the distribution of city sizes (<span id="id7">[<a class="reference internal" href="zreferences.html#id58">RRGM11</a>]</span>, <span id="id8">[<a class="reference internal" href="zreferences.html#id61">Gab16</a>]</span>).</p></li>
+<li><p>the income distributions and the wealth distribution (see, e.g., <span id="id1">[<a class="reference internal" href="zreferences.html#id64" title="Pareto Vilfredo. Cours d'économie politique. Rouge, Lausanne, 1896.">Vil96</a>]</span>, <span id="id2">[<a class="reference internal" href="zreferences.html#id63" title="Jess Benhabib and Alberto Bisin. Skewed wealth distributions: theory and empirics. Journal of Economic Literature, 56(4):1261–91, 2018.">BB18</a>]</span>),</p></li>
+<li><p>the firm size distribution (<span id="id3">[<a class="reference internal" href="zreferences.html#id62" title="Robert L Axtell. Zipf distribution of us firm sizes. science, 293(5536):1818–1820, 2001.">Axt01</a>]</span>, <span id="id4">[<a class="reference internal" href="zreferences.html#id61" title="Xavier Gabaix. Power laws in economics: an introduction. Journal of Economic Perspectives, 30(1):185–206, 2016.">Gab16</a>]</span>}),</p></li>
+<li><p>the distribution of returns on holding assets over short time horizons (<span id="id5">[<a class="reference internal" href="zreferences.html#id60" title="Benoit Mandelbrot. The variation of certain speculative prices. The Journal of Business, 36(4):394–419, 1963.">Man63</a>]</span>, <span id="id6">[<a class="reference internal" href="zreferences.html#id59" title="Svetlozar Todorov Rachev. Handbook of heavy tailed distributions in finance: Handbooks in finance. Volume 1. Elsevier, 2003.">Rac03</a>]</span>), and</p></li>
+<li><p>the distribution of city sizes (<span id="id7">[<a class="reference internal" href="zreferences.html#id58" title="Hernán D Rozenfeld, Diego Rybski, Xavier Gabaix, and Hernán A Makse. The area and population of cities: new insights from a different perspective on cities. American Economic Review, 101(5):2205–25, 2011.">RRGM11</a>]</span>, <span id="id8">[<a class="reference internal" href="zreferences.html#id61" title="Xavier Gabaix. Power laws in economics: an introduction. Journal of Economic Perspectives, 30(1):185–206, 2016.">Gab16</a>]</span>).</p></li>
 </ul>
 <p>These heavy tails turn out to be important for our understanding of economic outcomes.</p>
 <p>As one example, the heaviness of the tail in the wealth distribution is one
@@ -566,7 +564,7 @@ natural measure of inequality.</p>
 policies, as well as for flow-on effects for productivity growth, business
 cycles, and political economy</p>
 <ul class="simple">
-<li><p>see, e.g., <span id="id9">[<a class="reference internal" href="zreferences.html#id57">AR02</a>]</span>, <span id="id10">[<a class="reference internal" href="zreferences.html#id56">GSS03</a>]</span>, <span id="id11">[<a class="reference internal" href="zreferences.html#id55">BEGS18</a>]</span> or <span id="id12">[<a class="reference internal" href="zreferences.html#id54">AKM+18</a>]</span>.</p></li>
+<li><p>see, e.g., <span id="id9">[<a class="reference internal" href="zreferences.html#id57" title="Daron Acemoglu and James A. Robinson. The political economy of the Kuznets curve. Review of Development Economics, 6(2):183–203, 2002.">AR02</a>]</span>, <span id="id10">[<a class="reference internal" href="zreferences.html#id56" title="Edward Glaeser, Jose Scheinkman, and Andrei Shleifer. The injustice of inequality. Journal of Monetary Economics, 50(1):199–222, 2003.">GSS03</a>]</span>, <span id="id11">[<a class="reference internal" href="zreferences.html#id55" title="Anmol Bhandari, David Evans, Mikhail Golosov, and Thomas J Sargent. Inequality, business cycles, and monetary-fiscal policy. Technical Report, National Bureau of Economic Research, 2018.">BEGS18</a>]</span> or <span id="id12">[<a class="reference internal" href="zreferences.html#id54" title="SeHyoun Ahn, Greg Kaplan, Benjamin Moll, Thomas Winberry, and Christian Wolf. When inequality matters for macro and macro matters for inequality. NBER Macroeconomics Annual, 32(1):1–75, 2018.">AKM+18</a>]</span>.</p></li>
 </ul>
 <p>This lecture formalizes some of the concepts introduced above and reviews the
 key ideas.</p>
@@ -795,7 +793,7 @@ log size against log rank of the population (i.e., location in the population
 when sorted from smallest to largest).</p>
 <p>Often just the largest 5 or 10% of observations are plotted.</p>
 <p>For a sufficiently large number of draws from a Pareto distribution, the plot generates a straight line. For distributions with thinner tails, the data points are concave.</p>
-<p>A discussion of why this occurs can be found in <span id="id13">[<a class="reference internal" href="zreferences.html#id53">NOM04</a>]</span>.</p>
+<p>A discussion of why this occurs can be found in <span id="id13">[<a class="reference internal" href="zreferences.html#id53" title="Y Nishiyama, S Osada, and K Morimune. Estimation and testing for rank size rule regression under pareto distribution. In Proceedings of the International Environmental Modelling and Software Society iEMSs 2004 International Conference. Citeseer, 2004.">NOM04</a>]</span>.</p>
 <p>The figure below provides one example, using simulated data.</p>
 <p>The rank-size plots shows draws from three different distributions: folded normal, chi-squared with 1 degree of freedom and Pareto.</p>
 <p>The Pareto sample produces a straight line, while the lines produced by the other samples are concave.</p>
@@ -835,7 +833,7 @@ Cauchy) with three Pareto distributions using different choices of
 <h3><span class="section-number">11.5.5. </span>Exercise 5<a class="headerlink" href="#exercise-5" title="Permalink to this headline">¶</a></h3>
 <p>There is an ongoing argument about whether the firm size distribution should
 be modeled as a Pareto distribution or a lognormal distribution (see, e.g.,
-<span id="id14">[<a class="reference internal" href="zreferences.html#id47">FDGA+04</a>]</span>, <span id="id15">[<a class="reference internal" href="zreferences.html#id45">KLS18</a>]</span> or <span id="id16">[<a class="reference internal" href="zreferences.html#id46">ST19a</a>]</span>).</p>
+<span id="id14">[<a class="reference internal" href="zreferences.html#id47" title="Yoshi Fujiwara, Corrado Di Guilmi, Hideaki Aoyama, Mauro Gallegati, and Wataru Souma. Do pareto–zipf and gibrat laws hold true? an analysis with european firms. Physica A: Statistical Mechanics and its Applications, 335(1-2):197–216, 2004.">FDGA+04</a>]</span>, <span id="id15">[<a class="reference internal" href="zreferences.html#id45" title="Illenin Kondo, Logan T Lewis, and Andrea Stella. On the us firm and establishment size distributions. Technical Report, SSRN, 2018.">KLS18</a>]</span> or <span id="id16">[<a class="reference internal" href="zreferences.html#id46" title="Christian Schluter and Mark Trede. Size distributions reconsidered. Econometric Reviews, 38(6):695–710, 2019.">ST19a</a>]</span>).</p>
 <p>This sounds esoteric but has real implications for a variety of economic
 phenomena.</p>
 <p>To illustrate this fact in a simple way, let us consider an economy with
@@ -856,7 +854,7 @@ tax revenue over the next 10 years.</p>
 <li><p>summing the results with discounting to obtain present value.</p></li>
 </ol>
 <p>The Pareto distribution is assumed to take the form <a class="reference internal" href="#equation-pareto">(11.5)</a> with <span class="math notranslate nohighlight">\(\bar x = 1\)</span> and <span class="math notranslate nohighlight">\(\alpha = 1.05\)</span>.</p>
-<p>(The value the tail index <span class="math notranslate nohighlight">\(\alpha\)</span> is plausible given the data <span id="id17">[<a class="reference internal" href="zreferences.html#id61">Gab16</a>]</span>.)</p>
+<p>(The value the tail index <span class="math notranslate nohighlight">\(\alpha\)</span> is plausible given the data <span id="id17">[<a class="reference internal" href="zreferences.html#id61" title="Xavier Gabaix. Power laws in economics: an introduction. Journal of Economic Perspectives, 30(1):185–206, 2016.">Gab16</a>]</span>.)</p>
 <p>To make the lognormal option as similar as possible to the Pareto option, choose its parameters such that the mean and median of both distributions are the same.</p>
 <p>Note that, for each distribution, your estimate of tax revenue will be random because it is based on a finite number of draws.</p>
 <p>To take this into account, generate 100 replications (evaluations of tax revenue) for each of the two distributions and compare the two samples by</p>
@@ -1117,7 +1115,7 @@ choice of distribution <code class="docutils literal notranslate"><span class="p
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1458729.0546623734, 406089.3613661567)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.4587290546623734e+06, 406089.3613661567)
 </pre></div>
 </div>
 </div>
@@ -1366,16 +1364,6 @@ assumption leads to a lower mean and greater dispersion.</p>
    30. Shortest Paths
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   31. Cass-Koopmans Planning Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_2.html">
-   32. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1385,41 +1373,51 @@ assumption leads to a lower mean and greater dispersion.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Growth
+  Consumption, Savings and Capital
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   37. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   38. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    39. Cake Eating I: Introduction to Optimal Saving
@@ -1697,7 +1695,7 @@ assumption leads to a lower mean and greater dispersion.</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/heavy_tails.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/heavy_tails.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/heavy_tails.md" download><i data-feather="github"></i></a></li>
@@ -1712,7 +1710,7 @@ assumption leads to a lower mean and greater dispersion.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

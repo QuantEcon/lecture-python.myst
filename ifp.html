@@ -89,15 +89,14 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/ifp.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -375,32 +374,8 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: | 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+Solving environment: / 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
@@ -476,12 +451,6 @@ Solving environment: |
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -490,24 +459,24 @@ Solving environment: |
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># All requested packages already installed.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (2.2.1)
-Requirement already satisfied: numpy&gt;=1.18.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (1.20.3)
-Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (0.55.1)
-Requirement already satisfied: scipy&gt;=1.4.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (1.7.1)
-Requirement already satisfied: tempita&gt;=0.5.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from interpolation) (0.5.2)
-Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (58.0.4)
-Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.38.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (2.2.1)
+Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.55.1)
+Requirement already satisfied: scipy&gt;=1.4.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.7.3)
+Requirement already satisfied: tempita&gt;=0.5.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.5.2)
+Requirement already satisfied: numpy&gt;=1.18.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.21.5)
+Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (61.2.0)
+Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.38.0)
 </pre></div>
 </div>
 </div>
 </div>
 <section id="overview">
 <h2><a class="toc-backref" href="#id20"><span class="section-number">45.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>In this lecture, we study an optimal savings problem for an infinitely lived consumer—the “common ancestor” described in <span id="id1">[<a class="reference internal" href="zreferences.html#id179">LS18</a>]</span>, section 1.3.</p>
+<p>In this lecture, we study an optimal savings problem for an infinitely lived consumer—the “common ancestor” described in <span id="id1">[<a class="reference internal" href="zreferences.html#id179" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 1.3.</p>
 <p>This is an essential sub-problem for many representative macroeconomic models</p>
 <ul class="simple">
-<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id134">Aiy94</a>]</span></p></li>
-<li><p><span id="id3">[<a class="reference internal" href="zreferences.html#id169">Hug93</a>]</span></p></li>
+<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id134" title="S Rao Aiyagari. Uninsured Idiosyncratic Risk and Aggregate Saving. The Quarterly Journal of Economics, 109(3):659–684, 1994.">Aiy94</a>]</span></p></li>
+<li><p><span id="id3">[<a class="reference internal" href="zreferences.html#id169" title="Mark Huggett. The risk-free rate in heterogeneous-agent incomplete-insurance economies. Journal of Economic Dynamics and Control, 17(5-6):953–969, 1993.">Hug93</a>]</span></p></li>
 <li><p>etc.</p></li>
 </ul>
 <p>It is related to the decision problem in the <a class="reference internal" href="optgrowth.html"><span class="doc">stochastic optimal growth model</span></a> and yet differs in important ways.</p>
@@ -536,10 +505,10 @@ the <a class="reference internal" href="optgrowth.html"><span class="doc">stocha
 </div>
 <section id="references">
 <h3><span class="section-number">45.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
-<p>Our presentation is a simplified version of <span id="id4">[<a class="reference internal" href="zreferences.html#id249">MST20</a>]</span>.</p>
-<p>Other references include <span id="id5">[<a class="reference internal" href="zreferences.html#id150">Dea91</a>]</span>, <span id="id6">[<a class="reference internal" href="zreferences.html#id152">DH10</a>]</span>,
-<span id="id7">[<a class="reference internal" href="zreferences.html#id175">Kuh13</a>]</span>, <span id="id8">[<a class="reference internal" href="zreferences.html#id199">Rab02</a>]</span>,  <span id="id9">[<a class="reference internal" href="zreferences.html#id201">Rei09</a>]</span>  and
-<span id="id10">[<a class="reference internal" href="zreferences.html#id204">SE77</a>]</span>.</p>
+<p>Our presentation is a simplified version of <span id="id4">[<a class="reference internal" href="zreferences.html#id249" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span>.</p>
+<p>Other references include <span id="id5">[<a class="reference internal" href="zreferences.html#id150" title="Angus Deaton. Saving and Liquidity Constraints. Econometrica, 59(5):1221–1248, 1991.">Dea91</a>]</span>, <span id="id6">[<a class="reference internal" href="zreferences.html#id152" title="Wouter J Den Haan. Comparison of solutions to the incomplete markets model with aggregate uncertainty. Journal of Economic Dynamics and Control, 34(1):4–27, 2010.">DH10</a>]</span>,
+<span id="id7">[<a class="reference internal" href="zreferences.html#id175" title="Moritz Kuhn. Recursive Equilibria In An Aiyagari-Style Economy With Permanent Income Shocks. International Economic Review, 54:807–835, 2013.">Kuh13</a>]</span>, <span id="id8">[<a class="reference internal" href="zreferences.html#id199" title="Guillaume Rabault. When do borrowing constraints bind? Some new results on the income fluctuation problem. Journal of Economic Dynamics and Control, 26(2):217–245, 2002.">Rab02</a>]</span>,  <span id="id9">[<a class="reference internal" href="zreferences.html#id201" title="Michael Reiter. Solving heterogeneous-agent models by projection and perturbation. Journal of Economic Dynamics and Control, 33(3):649–665, 2009.">Rei09</a>]</span>  and
+<span id="id10">[<a class="reference internal" href="zreferences.html#id204" title="Jack Schechtman and Vera L S Escudero. Some results on an income fluctuation problem. Journal of Economic Theory, 16(2):151–166, 1977.">SE77</a>]</span>.</p>
 </section>
 </section>
 <section id="the-optimal-savings-problem">
@@ -635,7 +604,7 @@ equivalent to</p>
 </section>
 <section id="optimality-results">
 <h3><span class="section-number">45.2.3. </span>Optimality Results<a class="headerlink" href="#optimality-results" title="Permalink to this headline">¶</a></h3>
-<p>As shown in <span id="id11">[<a class="reference internal" href="zreferences.html#id249">MST20</a>]</span>,</p>
+<p>As shown in <span id="id11">[<a class="reference internal" href="zreferences.html#id249" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span>,</p>
 <ol class="simple">
 <li><p>For each <span class="math notranslate nohighlight">\((a,z) \in \mathsf S\)</span>, a unique optimal consumption path from <span class="math notranslate nohighlight">\((a,z)\)</span> exists</p></li>
 <li><p>This path is the unique feasible path from <span class="math notranslate nohighlight">\((a,z)\)</span> satisfying the
@@ -713,7 +682,7 @@ follows.</p>
 <p>We refer to <span class="math notranslate nohighlight">\(K\)</span> as the Coleman–Reffett operator.</p>
 <p>The operator <span class="math notranslate nohighlight">\(K\)</span> is constructed so that fixed points of <span class="math notranslate nohighlight">\(K\)</span>
 coincide with solutions to the functional equation <a class="reference internal" href="#equation-eqeul1">(45.7)</a>.</p>
-<p>It is shown in <span id="id12">[<a class="reference internal" href="zreferences.html#id249">MST20</a>]</span> that the unique optimal policy can be
+<p>It is shown in <span id="id12">[<a class="reference internal" href="zreferences.html#id249" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span> that the unique optimal policy can be
 computed by picking any <span class="math notranslate nohighlight">\(\sigma \in \mathscr{C}\)</span> and iterating with the
 operator <span class="math notranslate nohighlight">\(K\)</span> defined in <a class="reference internal" href="#equation-eqsifc">(45.9)</a>.</p>
 </section>
@@ -721,7 +690,7 @@ operator <span class="math notranslate nohighlight">\(K\)</span> defined in <a c
 <h3><span class="section-number">45.3.2. </span>Some Technical Details<a class="headerlink" href="#some-technical-details" title="Permalink to this headline">¶</a></h3>
 <p>The proof of the last statement is somewhat technical but here is a quick
 summary:</p>
-<p>It is shown in <span id="id13">[<a class="reference internal" href="zreferences.html#id249">MST20</a>]</span> that <span class="math notranslate nohighlight">\(K\)</span> is a contraction mapping on
+<p>It is shown in <span id="id13">[<a class="reference internal" href="zreferences.html#id249" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span> that <span class="math notranslate nohighlight">\(K\)</span> is a contraction mapping on
 <span class="math notranslate nohighlight">\(\mathscr{C}\)</span> under the metric</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1044,7 +1013,7 @@ a \mapsto R (a - \sigma^*(a, z)) + y(z)
 diverge even in the highest state.</p>
 <p>In fact there is a unique stationary distribution of assets that we can calculate by simulation</p>
 <ul class="simple">
-<li><p>Can be proved via theorem 2 of <span id="id14">[<a class="reference internal" href="zreferences.html#id166">HP92</a>]</span>.</p></li>
+<li><p>Can be proved via theorem 2 of <span id="id14">[<a class="reference internal" href="zreferences.html#id166" title="Hugo A Hopenhayn and Edward C Prescott. Stochastic Monotonicity and Stationary Distributions for Dynamic Economies. Econometrica, 60(6):1387–1406, 1992.">HP92</a>]</span>.</p></li>
 <li><p>It represents the long run dispersion of assets across households when households have idiosyncratic shocks.</p></li>
 </ul>
 <p>Ergodicity is valid here, so stationary probabilities can be calculated by averaging over a single long time series.</p>
@@ -1063,7 +1032,7 @@ z_0)\)</span> will not matter.</p></li>
 <p>Following on from exercises 1 and 2, let’s look at how savings and aggregate
 asset holdings vary with the interest rate</p>
 <ul class="simple">
-<li><p>Note: <span id="id15">[<a class="reference internal" href="zreferences.html#id179">LS18</a>]</span> section 18.6 can be consulted for more
+<li><p>Note: <span id="id15">[<a class="reference internal" href="zreferences.html#id179" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span> section 18.6 can be consulted for more
 background on the topic treated in this exercise.</p></li>
 </ul>
 <p>For a given parameterization of the model, the mean of the stationary
@@ -1490,16 +1459,6 @@ more realistic features to the model.</p>
    30. Shortest Paths
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   31. Cass-Koopmans Planning Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_2.html">
-   32. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1509,41 +1468,51 @@ more realistic features to the model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Growth
+  Consumption, Savings and Capital
  </span>
 </p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   37. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   38. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    39. Cake Eating I: Introduction to Optimal Saving
@@ -1821,7 +1790,7 @@ more realistic features to the model.</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/ifp.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/ifp.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/ifp.md" download><i data-feather="github"></i></a></li>
@@ -1836,7 +1805,7 @@ more realistic features to the model.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

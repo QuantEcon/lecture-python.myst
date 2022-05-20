@@ -89,15 +89,14 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/kesten_processes.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -393,32 +392,8 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: \ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+Solving environment: / 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
@@ -500,9 +475,6 @@ Solving environment: \
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
@@ -511,23 +483,21 @@ Solving environment: \
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># All requested packages already installed.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: yfinance in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (0.1.70)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: yfinance in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.1.70)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: lxml&gt;=4.5.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from yfinance) (4.6.3)
-Requirement already satisfied: multitasking&gt;=0.0.7 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from yfinance) (0.0.10)
-Requirement already satisfied: requests&gt;=2.26 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from yfinance) (2.26.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas&gt;=0.24.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from yfinance) (1.3.4)
-Requirement already satisfied: numpy&gt;=1.15 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from yfinance) (1.20.3)
-Requirement already satisfied: python-dateutil&gt;=2.7.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.24.0-&gt;yfinance) (2.8.2)
-Requirement already satisfied: pytz&gt;=2017.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from pandas&gt;=0.24.0-&gt;yfinance) (2021.3)
-Requirement already satisfied: six&gt;=1.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from python-dateutil&gt;=2.7.3-&gt;pandas&gt;=0.24.0-&gt;yfinance) (1.16.0)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.26-&gt;yfinance) (1.26.7)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.26-&gt;yfinance) (2.0.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.26-&gt;yfinance) (2021.10.8)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.8/site-packages (from requests&gt;=2.26-&gt;yfinance) (3.2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas&gt;=0.24.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.4.2)
+Requirement already satisfied: lxml&gt;=4.5.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (4.8.0)
+Requirement already satisfied: requests&gt;=2.26 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (2.27.1)
+Requirement already satisfied: numpy&gt;=1.15 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.21.5)
+Requirement already satisfied: multitasking&gt;=0.0.7 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (0.0.10)
+Requirement already satisfied: python-dateutil&gt;=2.8.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pandas&gt;=0.24.0-&gt;yfinance) (2.8.2)
+Requirement already satisfied: pytz&gt;=2020.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pandas&gt;=0.24.0-&gt;yfinance) (2021.3)
+Requirement already satisfied: six&gt;=1.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from python-dateutil&gt;=2.8.1-&gt;pandas&gt;=0.24.0-&gt;yfinance) (1.16.0)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (3.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (2022.5.18)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (1.26.9)
 </pre></div>
 </div>
 </div>
@@ -566,7 +536,7 @@ compatibility issues between pandas and matplotlib.</p>
 </div>
 </div>
 <p>Additional technical background related to this lecture can be found in the
-monograph of <span id="id1">[<a class="reference internal" href="zreferences.html#id52">BDM+16</a>]</span>.</p>
+monograph of <span id="id1">[<a class="reference internal" href="zreferences.html#id52" title="Dariusz Buraczewski, Ewa Damek, Thomas Mikosch, and others. Stochastic models with power-law tails. Springer, 2016.">BDM+16</a>]</span>.</p>
 </section>
 <section id="kesten-processes">
 <h2><a class="toc-backref" href="#id19"><span class="section-number">27.2. </span>Kesten Processes</a><a class="headerlink" href="#kesten-processes" title="Permalink to this headline">¶</a></h2>
@@ -705,7 +675,7 @@ strictly less than 1 most of the time.</p>
 \mathbb E \eta_t &lt; \infty\]</div>
 <p>then a unique stationary distribution exists on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span>.</p>
 <ul class="simple">
-<li><p>See, for example, theorem 2.1.3 of <span id="id2">[<a class="reference internal" href="zreferences.html#id52">BDM+16</a>]</span>, which provides slightly weaker conditions.</p></li>
+<li><p>See, for example, theorem 2.1.3 of <span id="id2">[<a class="reference internal" href="zreferences.html#id52" title="Dariusz Buraczewski, Ewa Damek, Thomas Mikosch, and others. Stochastic models with power-law tails. Springer, 2016.">BDM+16</a>]</span>, which provides slightly weaker conditions.</p></li>
 </ul>
 <p>As one application of this result, we see that the wealth process
 <a class="reference internal" href="#equation-wealth-dynam">(27.4)</a> will have a unique stationary distribution whenever
@@ -722,7 +692,7 @@ a Pareto tail.</p>
 <h3><span class="section-number">27.3.1. </span>The Kesten–Goldie Theorem<a class="headerlink" href="#the-kestengoldie-theorem" title="Permalink to this headline">¶</a></h3>
 <p>To state the conditions under which the stationary distribution of a Kesten process has a Pareto tail, we first recall that a random variable is called <strong>nonarithmetic</strong> if its distribution is not concentrated on <span class="math notranslate nohighlight">\(\{\dots, -2t, -t, 0, t, 2t, \ldots \}\)</span> for any <span class="math notranslate nohighlight">\(t \geq 0\)</span>.</p>
 <p>For example, any random variable with a density is nonarithmetic.</p>
-<p>The famous Kesten–Goldie Theorem (see, e.g., <span id="id3">[<a class="reference internal" href="zreferences.html#id52">BDM+16</a>]</span>, theorem 2.4.4) states that if</p>
+<p>The famous Kesten–Goldie Theorem (see, e.g., <span id="id3">[<a class="reference internal" href="zreferences.html#id52" title="Dariusz Buraczewski, Ewa Damek, Thomas Mikosch, and others. Stochastic models with power-law tails. Springer, 2016.">BDM+16</a>]</span>, theorem 2.4.4) states that if</p>
 <ol class="simple">
 <li><p>the stationarity conditions in <a class="reference internal" href="#equation-kp-stat-cond">(27.7)</a> hold,</p></li>
 <li><p>the random variable <span class="math notranslate nohighlight">\(a_t\)</span> is positive with probability one and nonarithmetic,</p></li>
@@ -794,11 +764,11 @@ is stationary, and <span class="math notranslate nohighlight">\(\mathbb E a_t^\a
 </section>
 <section id="application-firm-dynamics">
 <h2><a class="toc-backref" href="#id21"><span class="section-number">27.4. </span>Application: Firm Dynamics</a><a class="headerlink" href="#application-firm-dynamics" title="Permalink to this headline">¶</a></h2>
-<p>As noted in our <a class="reference internal" href="heavy_tails.html"><span class="doc">lecture on heavy tails</span></a>, for common measures of firm size such as revenue or employment, the US firm size distribution exhibits a Pareto tail (see, e.g., <span id="id4">[<a class="reference internal" href="zreferences.html#id62">Axt01</a>]</span>, <span id="id5">[<a class="reference internal" href="zreferences.html#id61">Gab16</a>]</span>).</p>
+<p>As noted in our <a class="reference internal" href="heavy_tails.html"><span class="doc">lecture on heavy tails</span></a>, for common measures of firm size such as revenue or employment, the US firm size distribution exhibits a Pareto tail (see, e.g., <span id="id4">[<a class="reference internal" href="zreferences.html#id62" title="Robert L Axtell. Zipf distribution of us firm sizes. science, 293(5536):1818–1820, 2001.">Axt01</a>]</span>, <span id="id5">[<a class="reference internal" href="zreferences.html#id61" title="Xavier Gabaix. Power laws in economics: an introduction. Journal of Economic Perspectives, 30(1):185–206, 2016.">Gab16</a>]</span>).</p>
 <p>Let us try to explain this rather striking fact using the Kesten–Goldie Theorem.</p>
 <section id="gibrats-law">
 <h3><span class="section-number">27.4.1. </span>Gibrat’s Law<a class="headerlink" href="#gibrats-law" title="Permalink to this headline">¶</a></h3>
-<p>It was postulated many years ago by Robert Gibrat <span id="id6">[<a class="reference internal" href="zreferences.html#id51">Gib31</a>]</span> that firm size evolves according to a simple rule whereby size next period is proportional to current size.</p>
+<p>It was postulated many years ago by Robert Gibrat <span id="id6">[<a class="reference internal" href="zreferences.html#id51" title="Robert Gibrat. Les inégalités économiques: Applications d'une loi nouvelle, la loi de l'effet proportionnel. PhD thesis, Recueil Sirey, 1931.">Gib31</a>]</span> that firm size evolves according to a simple rule whereby size next period is proportional to current size.</p>
 <p>This is now known as <a class="reference external" href="https://en.wikipedia.org/wiki/Gibrat%27s_law">Gibrat’s law of proportional growth</a>.</p>
 <p>We can express this idea by stating that a suitably defined measure
 <span class="math notranslate nohighlight">\(s_t\)</span> of firm size obeys</p>
@@ -811,11 +781,11 @@ does not depend on their size.</p>
 accumulated in the literature.</p>
 <p>For example, it is commonly found that, on average,</p>
 <ol class="simple">
-<li><p>small firms grow faster than large firms (see, e.g., <span id="id7">[<a class="reference internal" href="zreferences.html#id50">Eva87</a>]</span> and <span id="id8">[<a class="reference internal" href="zreferences.html#id49">Hal87</a>]</span>) and</p></li>
-<li><p>the growth rate of small firms is more volatile than that of large firms <span id="id9">[<a class="reference internal" href="zreferences.html#id48">DRS89</a>]</span>.</p></li>
+<li><p>small firms grow faster than large firms (see, e.g., <span id="id7">[<a class="reference internal" href="zreferences.html#id50" title="David S Evans. The relationship between firm growth, size, and age: estimates for 100 manufacturing industries. The Journal of Industrial Economics, pages 567–581, 1987.">Eva87</a>]</span> and <span id="id8">[<a class="reference internal" href="zreferences.html#id49" title="Bronwyn H Hall. The relationship between firm size and firm growth in the us manufacturing sector. The Journal of Industrial Economics, pages 583–606, 1987.">Hal87</a>]</span>) and</p></li>
+<li><p>the growth rate of small firms is more volatile than that of large firms <span id="id9">[<a class="reference internal" href="zreferences.html#id48" title="Timothy Dunne, Mark J Roberts, and Larry Samuelson. The growth and failure of us manufacturing plants. The Quarterly Journal of Economics, 104(4):671–698, 1989.">DRS89</a>]</span>.</p></li>
 </ol>
 <p>On the other hand, Gibrat’s law is generally found to be a reasonable
-approximation for large firms <span id="id10">[<a class="reference internal" href="zreferences.html#id50">Eva87</a>]</span>.</p>
+approximation for large firms <span id="id10">[<a class="reference internal" href="zreferences.html#id50" title="David S Evans. The relationship between firm growth, size, and age: estimates for 100 manufacturing industries. The Journal of Industrial Economics, pages 567–581, 1987.">Eva87</a>]</span>.</p>
 <p>We can accommodate these empirical findings by modifying <a class="reference internal" href="#equation-firm-dynam-gb">(27.8)</a>
 to</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam">
@@ -874,7 +844,7 @@ hold.</p>
 <p>One unrealistic aspect of the firm dynamics specified in <a class="reference internal" href="#equation-firm-dynam">(27.9)</a> is
 that it ignores entry and exit.</p>
 <p>In any given period and in any given market, we observe significant numbers of firms entering and exiting the market.</p>
-<p>Empirical discussion of this can be found in a famous paper by Hugo Hopenhayn <span id="id12">[<a class="reference internal" href="zreferences.html#id167">Hop92</a>]</span>.</p>
+<p>Empirical discussion of this can be found in a famous paper by Hugo Hopenhayn <span id="id12">[<a class="reference internal" href="zreferences.html#id167" title="Hugo A Hopenhayn. Entry, exit, and firm dynamics in long run equilibrium. Econometrica: Journal of the Econometric Society, pages 1127–1150, 1992.">Hop92</a>]</span>.</p>
 <p>In the same paper, Hopenhayn builds a model of entry and exit that
 incorporates profit maximization by firms and market clearing quantities, wages and prices.</p>
 <p>In his model, a stationary equilibrium occurs when the number of entrants
@@ -1314,16 +1284,6 @@ of all orders), the only other condition in doubt is existence of a positive con
    30. Shortest Paths
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_1.html">
-   31. Cass-Koopmans Planning Problem
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cass_koopmans_2.html">
-   32. Cass-Koopmans Competitive Equilibrium
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1333,41 +1293,51 @@ of all orders), the only other condition in doubt is existence of a positive con
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   31. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   32. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   33. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   34. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   35. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   36. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Consumption, Savings and Growth
+  Consumption, Savings and Capital
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   37. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   38. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
    39. Cake Eating I: Introduction to Optimal Saving
@@ -1645,7 +1615,7 @@ of all orders), the only other condition in doubt is existence of a positive con
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="_notebooks/kesten_processes.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/kesten_processes.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/kesten_processes.md" download><i data-feather="github"></i></a></li>
@@ -1660,7 +1630,7 @@ of all orders), the only other condition in doubt is existence of a positive con
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>
