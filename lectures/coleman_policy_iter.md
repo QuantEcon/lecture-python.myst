@@ -441,6 +441,7 @@ Compute and plot the optimal policy.
 ## Solutions
 
 ```{solution-start} exercise_1
+:class: dropdown
 ```
 
 We use the class `OptimalGrowthModel_CRRA` from our {doc}`VFI lecture <optgrowth_fast>`.

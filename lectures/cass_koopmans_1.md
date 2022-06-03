@@ -878,6 +878,7 @@ state in which $f'(K)=\rho +\delta$.
 ### Solution
 
 ```{solution-start} exercise_1
+:class: dropdown
 ```
 
 ```{code-cell} python3

@@ -515,6 +515,7 @@ modification in the exercise above).
 ## Solutions
 
 ```{solution-start} exercise_1
+:class: dropdown
 ```
 
 We need to create a class to hold our primitives and return the right hand side of the Bellman equation.
@@ -594,6 +595,7 @@ Consumption is higher when $\alpha < 1$ because, at least for large $x$, the ret
 
 
 ```{solution-start} exercise_2
+:class: dropdown
 ```
 
 Here's one way to implement time iteration.

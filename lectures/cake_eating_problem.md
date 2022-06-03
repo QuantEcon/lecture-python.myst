@@ -529,6 +529,7 @@ Bellman equation.
 ## Solutions
 
 ```{solution} cep_ex1
+:class: dropdown
 
 We start with the conjecture $c_t^*=\theta x_t$, which leads to a path
 for the state variable (cake size) given by

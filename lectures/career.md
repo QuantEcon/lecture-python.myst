@@ -416,6 +416,7 @@ figure -- interpret.
 ## Solutions
 
 ```{solution-start} career_ex1
+:class: dropdown
 ```
 
 Simulate job/career paths.
@@ -465,6 +466,7 @@ plt.show()
 
 
 ```{solution-start} career_ex2
+:class: dropdown
 ```
 
 The median for the original parameterization can be computed as follows
@@ -513,6 +515,7 @@ Not surprisingly, more patient workers will wait longer to settle down to their 
 
 
 ```{solution-start} career_ex3
+:class: dropdown
 ```
 
 ```{code-cell} python3

@@ -451,6 +451,7 @@ theoretical distribution.
 ## Solutions
 
 ```{solution-start} exercise_1
+:class: dropdown
 ```
 
 ```{code-cell} python3
@@ -494,6 +495,7 @@ plt.show()
 
 
 ```{solution-start} exercise_2
+:class: dropdown
 ```
 
 Here is one solution:
@@ -552,6 +554,7 @@ distribution is smooth but less so otherwise.
 
 
 ```{solution-start} exercise_3
+:class: dropdown
 ```
 
 Here is our solution
