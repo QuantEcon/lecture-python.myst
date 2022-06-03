@@ -424,7 +424,8 @@ and accuracy, at least for this model.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: exercise_1
 
 Solve the model with CRRA utility
 
@@ -435,10 +436,12 @@ $$
 Set `γ = 1.5`.
 
 Compute and plot the optimal policy.
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} exercise_1
+```
 
 We use the class `OptimalGrowthModel_CRRA` from our {doc}`VFI lecture <optgrowth_fast>`.
 
@@ -468,3 +471,5 @@ ax.legend()
 plt.show()
 ```
 
+```{solution-end}
+```
