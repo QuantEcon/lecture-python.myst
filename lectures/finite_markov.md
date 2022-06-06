@@ -1205,7 +1205,6 @@ When you solve for the ranking, you will find that the highest ranked node is in
 
 ```{exercise}
 :label: mc_ex3
-```
 
 In numerical work, it is sometimes convenient to replace a continuous model with a discrete one.
 
