@@ -323,7 +323,7 @@ important concept for statistics and simulation.
 ## Exercises
 
 ```{exercise}
-:label: exercise_1
+:label: ar1p_ex1
 
 Let $k$ be a natural number.
 
@@ -360,7 +360,7 @@ Confirm this by simulation at a range of $k$ using the default parameters from t
 
 
 ```{exercise}
-:label: exercise_2
+:label: ar1p_ex2
 
 Write your own version of a one dimensional [kernel density
 estimator](https://en.wikipedia.org/wiki/Kernel_density_estimation),
@@ -406,7 +406,7 @@ of these distributions?)
 
 
 ```{exercise}
-:label: exercise_3
+:label: ar1p_ex3
 
 In the lecture we discussed the following fact: for the $AR(1)$ process
 
@@ -450,7 +450,7 @@ theoretical distribution.
 
 ## Solutions
 
-```{solution-start} exercise_1
+```{solution-start} ar1p_ex1
 :class: dropdown
 ```
 
@@ -494,7 +494,7 @@ plt.show()
 ```
 
 
-```{solution-start} exercise_2
+```{solution-start} ar1p_ex2
 :class: dropdown
 ```
 
@@ -553,7 +553,7 @@ distribution is smooth but less so otherwise.
 ```
 
 
-```{solution-start} exercise_3
+```{solution-start} ar1p_ex3
 :class: dropdown
 ```
 
