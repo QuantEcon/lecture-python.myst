@@ -631,8 +631,10 @@ n \to \infty
 
 ## Exercises
 
-(lln_ex1)=
-### Exercise 1
+
+```{exercise-start}
+:label: lln_ex1
+```
 
 One very useful consequence of the central limit theorem is as follows.
 
@@ -663,8 +665,13 @@ What happens when you replace $[0, \pi / 2]$ with $[0, \pi]$?
 
 What is the source of the problem?
 
-(lln_ex2)=
-### Exercise 2
+```{exercise-end}
+```
+
+
+```{exercise-start}
+:label: lln_ex2
+```
 
 Here's a result that's often used in developing statistical tests, and is connected to the multivariate central limit theorem.
 
@@ -769,9 +776,13 @@ Hints:
 1. `scipy.linalg.sqrtm(A)` computes the square root of `A`.  You still need to invert it.
 1. You should be able to work out $\Sigma$ from the preceding information.
 
+```{exercise-end}
+```
+
 ## Solutions
 
-### Exercise 1
+```{solution-start} lln_ex1
+```
 
 Here is one solution
 
@@ -816,7 +827,12 @@ $\pi/2$, and since $g' = \cos$, we have $g'(\mu) = 0$.
 
 Hence the conditions of the delta theorem are not satisfied.
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} lln_ex2
+```
 
 First we want to verify the claim that
 
@@ -908,3 +924,5 @@ ax.hist(chisq_obs, bins=50, density=True)
 plt.show()
 ```
 
+```{solution-end}
+```
