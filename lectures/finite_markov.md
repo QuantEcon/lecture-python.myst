@@ -997,8 +997,8 @@ Premultiplication by $(I - \beta P)^{-1}$ amounts to "applying the **resolvent o
 
 ## Exercises
 
-(mc_ex1)=
-### Exercise 1
+```{exercise} 
+:label: mc_ex1
 
 According to the discussion {ref}`above <mc_eg1-2>`, if a worker's employment dynamics obey the stochastic matrix
 
@@ -1033,9 +1033,12 @@ it is close to $p$.
 You will see that this statement is true regardless of the choice of initial
 condition or the values of $\alpha, \beta$, provided both lie in
 $(0, 1)$.
+```
 
-(mc_ex2)=
-### Exercise 2
+
+```{exercise-start}
+:label: mc_ex2
+```
 
 A topic of interest for economics and many other disciplines is *ranking*.
 
@@ -1059,7 +1062,6 @@ is known as [PageRank](https://en.wikipedia.org/wiki/PageRank).
 To illustrate the idea, consider the following diagram
 
 ```{figure} /_static/lecture_specific/finite_markov/web_graph.png
-
 ```
 
 Imagine that this is a miniature version of the WWW, with
@@ -1197,8 +1199,13 @@ re.findall('\w', 'a ^^ b &&& $$ c')
 
 When you solve for the ranking, you will find that the highest ranked node is in fact `g`, while the lowest is `a`.
 
-(mc_ex3)=
-### Exercise 3
+```{exercise-end}
+```
+
+
+```{exercise}
+:label: mc_ex3
+```
 
 In numerical work, it is sometimes convenient to replace a continuous model with a discrete one.
 
@@ -1260,10 +1267,12 @@ $\{x_0, \ldots, x_{n-1}\} \subset \mathbb R$ and $n \times n$ matrix
 $P$ as described above.
 
 * Even better, write a function that returns an instance of [QuantEcon.py's](http://quantecon.org/quantecon-py) MarkovChain class.
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} mc_ex1
+```
 
 We will address this exercise graphically.
 
@@ -1301,7 +1310,12 @@ ax.legend(loc='upper right')
 plt.show()
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} mc_ex2
+```
 
 ```{code-cell} python3
 """
@@ -1340,10 +1354,14 @@ for name, rank in sorted(ranked_pages.items(), key=itemgetter(1), reverse=1):
     print(f'{name}: {rank:.4}')
 ```
 
-### Exercise 3
+```{solution-end}
+```
 
+
+```{solution} mc_ex3
 A solution from the [QuantEcon.py](http://quantecon.org/quantecon-py) library
 can be found [here](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/markov/approximation.py).
 
 [^pm]: Hint: First show that if $P$ and $Q$ are stochastic matrices then so is their product --- to check the row sums, try post multiplying by a column vector of ones.  Finally, argue that $P^n$ is a stochastic matrix using induction.
+```
 
