@@ -544,14 +544,15 @@ Success!
 
 ## Exercises
 
-### Exercise 1
+```{exercise-start}
+:label: ifp_ex1
+```
 
 Let's consider how the interest rate affects consumption.
 
 Reproduce the following figure, which shows (approximately) optimal consumption policies for different interest rates
 
 ```{figure} /_static/lecture_specific/ifp/ifp_policies.png
-
 ```
 
 * Other than `r`, all parameters are at their default values.
@@ -560,8 +561,13 @@ Reproduce the following figure, which shows (approximately) optimal consumption 
 
 The figure shows that higher interest rates boost savings and hence suppress consumption.
 
-(ifp_lrex)=
-### Exercise 2
+```{exercise-end}
+```
+
+
+```{exercise-start}
+:label: ifp_ex2
+```
 
 Now let's consider the long run asset levels held by households under the
 default parameters.
@@ -614,7 +620,12 @@ Your task is to generate such a histogram.
   z_0)$ will not matter.
 * You might find it helpful to use the `MarkovChain` class from `quantecon`.
 
-### Exercise 3
+```{exercise-end}
+```
+
+
+```{exercise}
+:label: ifp_ex3
 
 Following on from exercises 1 and 2, let's look at how savings and aggregate
 asset holdings vary with the interest rate
@@ -634,10 +645,13 @@ Following tradition, put the price (i.e., interest rate) on the vertical axis.
 
 On the horizontal axis put aggregate capital, computed as the mean of the
 stationary distribution given the interest rate.
+```
+
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} ifp_ex1
+```
 
 Here's one solution:
 
@@ -655,7 +669,12 @@ ax.legend()
 plt.show()
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} ifp_ex2
+```
 
 First we write a function to compute a long asset series.
 
@@ -704,7 +723,12 @@ Here it is left skewed when in reality it has a long right tail.
 In a {doc}`subsequent lecture <ifp_advanced>` we will rectify this by adding
 more realistic features to the model.
 
-### Exercise 3
+```{solution-end}
+```
+
+
+```{solution-start} ifp_ex3
+```
 
 Here's one solution
 
@@ -728,3 +752,5 @@ plt.show()
 
 As expected, aggregate savings increases with the interest rate.
 
+```{solution-end}
+```

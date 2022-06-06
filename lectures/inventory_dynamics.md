@@ -278,7 +278,8 @@ histogram just above.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: id_ex1
 
 This model is asymptotically stationary, with a unique stationary
 distribution.
@@ -300,17 +301,22 @@ distribution.)
 You should see convergence, in the sense that differences between successive distributions are getting smaller.
 
 Try different initial conditions to verify that, in the long run, the distribution is invariant across initial conditions.
+```
 
-### Exercise 2
+
+```{exercise}
+:label: id_ex2
 
 Using simulation, calculate the probability that firms that start with
 $X_0 = 70$ need to order twice or more in the first 50 periods.
 
 You will need a large sample size to get an accurate reading.
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} id_ex1
+```
 
 Below is one possible solution:
 
@@ -377,7 +383,12 @@ testing a few of them.
 For example, try rerunning the code above will all firms starting at
 $X_0 = 20$ or $X_0 = 80$.
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} id_ex2
+```
 
 Here is one solution.
 
@@ -426,3 +437,5 @@ Depending on your system, the difference can be substantial.
 
 (On our desktop machine, the speed up is by a factor of 5.)
 
+```{solution-end}
+```

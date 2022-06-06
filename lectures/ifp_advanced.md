@@ -591,7 +591,8 @@ diverge even in the highest state.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: ifpa_ex1
 
 Let's repeat our {ref}`earlier exercise <ifp_lrex>` on the long-run
 cross sectional distribution of assets.
@@ -605,10 +606,12 @@ In particular, we failed to match the long right tail of the wealth distribution
 Your task is to try again, repeating the exercise, but now with our more sophisticated model.
 
 Use the default parameters.
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} ifpa_ex1
+```
 
 First we write a function to compute a long asset series.
 
@@ -678,3 +681,5 @@ ax.set(xlabel='assets')
 plt.show()
 ```
 
+```{solution-end}
+```
