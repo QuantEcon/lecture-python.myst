@@ -365,18 +365,25 @@ You are asked to reproduce this figure in the exercises.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: ht_ex1
 
 Replicate {ref}`the figure presented above <light_heavy_fig1>` that compares normal and Cauchy draws.
 
 Use `np.random.seed(11)` to set the seed.
+```
 
-### Exercise 2
+
+```{exercise}
+:label: ht_ex2
 
 Prove: If $X$ has a Pareto tail with tail index $\alpha$, then
 $\mathbb E[X^r] = \infty$ for all $r \geq \alpha$.
+```
 
-### Exercise 3
+
+```{exercise}
+:label: ht_ex3
 
 Repeat exercise 1, but replace the three distributions (two normal, one
 Cauchy) with three Pareto distributions using different choices of
@@ -385,16 +392,21 @@ $\alpha$.
 For $\alpha$, try 1.15, 1.5 and 1.75.
 
 Use `np.random.seed(11)` to set the seed.
+```
 
-### Exercise 4
+
+```{exercise}
+:label: ht_ex4
 
 Replicate the rank-size plot figure {ref}`presented above <rank_size_fig1>`.
 
 If you like you can use the function `qe.rank_size` from the `quantecon` library to generate the plots.
 
 Use `np.random.seed(13)` to set the seed.
+```
 
-### Exercise 5
+```{exercise}
+:label: ht_ex5
 
 There is an ongoing argument about whether the firm size distribution should
 be modeled as a Pareto distribution or a lognormal distribution (see, e.g.,
@@ -443,10 +455,12 @@ What differences do you observe?
 (Note: a better approach to this problem would be to model firm dynamics and
 try to track individual firms given the current distribution.  We will discuss
 firm dynamics in later lectures.)
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} ht_ex1
+```
 
 ```{code-cell} python3
 n = 120
@@ -477,8 +491,11 @@ plt.subplots_adjust(hspace=0.25)
 plt.show()
 ```
 
-### Exercise 2
+```{solution-end}
+```
 
+
+```{solution} ht_ex2
 Let $X$ have a Pareto tail with tail index $\alpha$ and let $F$ be its cdf.
 
 Fix $r \geq \alpha$.
@@ -501,8 +518,11 @@ $$
 We know that $\int_{\bar x}^\infty x^{r-\alpha-1} x = \infty$ whenever $r - \alpha - 1 \geq -1$.
 
 Since $r \geq \alpha$, we have $\mathbb E X^r = \infty$.
+```
 
-### Exercise 3
+
+```{solution-start} ht_ex3
+```
 
 ```{code-cell} ipython3
 from scipy.stats import pareto
@@ -526,7 +546,12 @@ plt.subplots_adjust(hspace=0.4)
 plt.show()
 ```
 
-### Exercise 4
+```{solution-end}
+```
+
+
+```{solution-start} ht_ex4
+```
 
 First let's generate the data for the plots:
 
@@ -564,7 +589,13 @@ fig.subplots_adjust(hspace=0.4)
 plt.show()
 ```
 
-### Exercise 5
+```{solution-end}
+```
+
+
+
+```{solution-start} ht_ex5
+```
 
 To do the exercise, we need to choose the parameters $\mu$
 and $\sigma$ of the lognormal distribution to match the mean and median
@@ -672,3 +703,5 @@ tax_rev_lognorm.mean(), tax_rev_lognorm.std()
 Looking at the output of the code, our main conclusion is that the Pareto
 assumption leads to a lower mean and greater dispersion.
 
+```{solution-end}
+```

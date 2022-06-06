@@ -516,7 +516,9 @@ He emphasizes how limiting short sales and limiting leverage have opposite effec
 
 ## Exercises
 
-### Exercise 1
+```{exercise-start}
+:label: hk_ex1
+```
 
 This exercise invites you to recreate the summary table using the functions we have built above.
 
@@ -563,9 +565,13 @@ $$
 
 We'll use these transition matrices when we present our solution of exercise 1 below.
 
+```{exercise-end}
+```
+
 ## Solutions
 
-### Exercise 1
+```{solution-start} hk_ex1
+```
 
 First, we will obtain equilibrium price vectors with homogeneous beliefs, including when all
 investors are optimistic or pessimistic.
@@ -613,3 +619,5 @@ with **permanently optimistic** investors - this is due to the marginal investor
 
 [^f1]: By assuming that both types of agents always have "deep enough pockets" to purchase all of the asset, the model takes wealth dynamics off the table. The Harrison-Kreps model generates high trading volume when the state changes either from 0 to 1 or from 1 to 0.
 
+```{solution-end}
+```
