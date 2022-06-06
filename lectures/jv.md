@@ -413,8 +413,9 @@ Overall, the policies match well with our predictions from {ref}`above <jvboecal
 
 ## Exercises
 
-(jv_ex1)=
-### Exercise 1
+```{exercise-start}
+:label: jv_ex1
+```
 
 Let's look at the dynamics for the state process $\{x_t\}$ associated with these policies.
 
@@ -446,10 +447,14 @@ $x_t$ will converge to a constant value $\bar x$ close to unity.
 
 Argue that at the steady state, $s_t \approx 0$ and $\phi_t \approx 0.6$.
 
-(jv_ex2)=
-### Exercise 2
+```{exercise-end}
+```
 
-In the preceding exercise, we found that $s_t$ converges to zero
+
+```{exercise}
+:label: jv_ex2
+
+In {ref}`jv_ex1`, we found that $s_t$ converges to zero
 and $\phi_t$ converges to about 0.6.
 
 Since these results were calculated at a value of $\beta$ close to
@@ -470,10 +475,12 @@ Graph $w^*(\phi)$ with respect to $\phi$, and examine the best
 choice of $\phi$.
 
 Can you give a rough interpretation for the value that you see?
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} jv_ex1
+```
 
 Here’s code to produce the 45 degree diagram
 
@@ -523,7 +530,12 @@ Referring back to the figure {ref}`here <jv_policies>` we see that $x_t \approx 
 $s_t = s(x_t) \approx 0$ and
 $\phi_t = \phi(x_t) \approx 0.6$.
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} jv_ex2
+```
 
 The figure can be produced as follows
 
@@ -546,7 +558,7 @@ plt.show()
 Observe that the maximizer is around 0.6.
 
 This is similar to the long-run value for $\phi$ obtained in
-exercise 1.
+{ref}`jv_ex1`.
 
 Hence the behavior of the infinitely patent worker is similar to that
 of the worker with $\beta = 0.96$.
@@ -554,3 +566,5 @@ of the worker with $\beta = 0.96$.
 This seems reasonable and helps us confirm that our dynamic programming
 solutions are probably correct.
 
+```{solution-end}
+```
