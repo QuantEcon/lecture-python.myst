@@ -1124,7 +1124,7 @@ The next figure shows one simulation based on this procedure.
 
 ```
 
-The full set of parameters used in the simulation is discussed in {ref}`qc_ex2`, where you are asked to replicate the figure.
+The full set of parameters used in the simulation is discussed in {ref}`lqc_ex2`, where you are asked to replicate the figure.
 
 Once again, the dominant feature observable in the simulation is consumption
 smoothing.
