@@ -594,7 +594,7 @@ diverge even in the highest state.
 ```{exercise}
 :label: ifpa_ex1
 
-Let's repeat our {ref}`earlier exercise <ifp_lrex>` on the long-run
+Let's repeat our {ref}`earlier exercise <ifp_ex2>` on the long-run
 cross sectional distribution of assets.
 
 In that exercise, we used a relatively simple income fluctuation model.
