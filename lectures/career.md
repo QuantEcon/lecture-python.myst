@@ -362,8 +362,9 @@ the worker cannot change careers without changing jobs.
 
 ## Exercises
 
-```{exercise}
+```{exercise-start}
 :label: career_ex1
+```
 
 Using the default parameterization in the class `CareerWorkerProblem`,
 generate and plot typical sample paths for $\theta$ and $\epsilon$
@@ -375,6 +376,8 @@ In particular, modulo randomness, reproduce the following figure (where the hori
 ```
 
 Hint: To generate the draws from the distributions $F$ and $G$, use `quantecon.random.draw()`.
+
+```{exercise-end}
 ```
 
 
