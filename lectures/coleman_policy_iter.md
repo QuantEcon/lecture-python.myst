@@ -425,7 +425,7 @@ and accuracy, at least for this model.
 ## Exercises
 
 ```{exercise}
-:label: exercise_1
+:label: cpi_ex1
 
 Solve the model with CRRA utility
 
@@ -440,7 +440,7 @@ Compute and plot the optimal policy.
 
 ## Solutions
 
-```{solution-start} exercise_1
+```{solution-start} cpi_ex1
 :class: dropdown
 ```
 
