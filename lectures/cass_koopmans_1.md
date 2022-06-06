@@ -867,7 +867,7 @@ state in which $f'(K)=\rho +\delta$.
 ### Exercise
 
 ```{exercise}
-:label: exercise_1
+:label: ck1_ex1
 
 - Plot the optimal consumption, capital, and saving paths when the
   initial capital level begins at 1.5 times the steady state level
@@ -877,7 +877,7 @@ state in which $f'(K)=\rho +\delta$.
 
 ### Solution
 
-```{solution-start} exercise_1
+```{solution-start} ck1_ex1
 :class: dropdown
 ```
 
