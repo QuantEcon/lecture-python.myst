@@ -483,7 +483,7 @@ This is due to
 ## Exercises
 
 ```{exercise}
-:label: exercise_1
+:label: cen_ex1
 
 Try the following modification of the problem.
 
@@ -505,7 +505,7 @@ Try to reuse as much code as possible.
 
 
 ```{exercise}
-:label: exercise_2
+:label: cen_ex2
 
 Implement time iteration, returning to the original case (i.e., dropping the
 modification in the exercise above).
@@ -514,7 +514,7 @@ modification in the exercise above).
 
 ## Solutions
 
-```{solution-start} exercise_1
+```{solution-start} cen_ex1
 :class: dropdown
 ```
 
@@ -594,7 +594,7 @@ Consumption is higher when $\alpha < 1$ because, at least for large $x$, the ret
 ```
 
 
-```{solution-start} exercise_2
+```{solution-start} cen_ex2
 :class: dropdown
 ```
 
