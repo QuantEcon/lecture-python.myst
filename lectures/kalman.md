@@ -544,8 +544,9 @@ You can view the program [on GitHub](https://github.com/QuantEcon/QuantEcon.py/b
 
 ## Exercises
 
-(kalman_ex1)=
-### Exercise 1
+```{exercise-start}
+:label: kalman_ex1
+```
 
 Consider the following simple application of the Kalman filter, loosely based
 on {cite}`Ljungqvist2012`, section 2.9.2.
@@ -568,11 +569,14 @@ In the simulation, take $\theta = 10$, $\hat x_0 = 8$ and $\Sigma_0 = 1$.
 Your figure should -- modulo randomness -- look something like this
 
 ```{figure} /_static/lecture_specific/kalman/kl_ex1_fig.png
-
 ```
 
-(kalman_ex2)=
-### Exercise 2
+```{exercise-end}
+```
+
+```{exercise-start}
+:label: kalman_ex2
+```
 
 The preceding figure gives some support to the idea that probability mass
 converges to $\theta$.
@@ -590,11 +594,15 @@ Plot $z_t$ against $T$, setting $\epsilon = 0.1$ and $T = 600$.
 Your figure should show error erratically declining something like this
 
 ```{figure} /_static/lecture_specific/kalman/kl_ex2_fig.png
-
 ```
 
-(kalman_ex3)=
-### Exercise 3
+```{exercise-end}
+```
+
+
+```{exercise-start}
+:label: kalman_ex3
+```
 
 As discussed {ref}`above <kalman_convergence>`, if the shock sequence $\{w_t\}$ is not degenerate, then it is not in general possible to predict $x_t$ without error at time $t-1$ (and this would be the case even if we could observe $x_{t-1}$).
 
@@ -650,23 +658,28 @@ Finally, set $x_0 = (0, 0)$.
 You should end up with a figure similar to the following (modulo randomness)
 
 ```{figure} /_static/lecture_specific/kalman/kalman_ex3.png
-
 ```
 
 Observe how, after an initial learning period, the Kalman filter performs quite well, even relative to the competitor who predicts optimally with knowledge of the latent state.
 
-(kalman_ex4)=
-### Exercise 4
+```{exercise-end}
+```
+
+
+```{exercise}
+:label: kalman_ex4
 
 Try varying the coefficient $0.3$ in $Q = 0.3 I$ up and down.
 
 Observe how the diagonal values in the stationary solution $\Sigma$ (see {eq}`kalman_dare`) increase and decrease in line with this coefficient.
 
 The interpretation is that more randomness in the law of motion for $x_t$ causes more (permanent) uncertainty in prediction.
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} kalman_ex1
+```
 
 ```{code-cell} python3
 # Parameters
@@ -699,7 +712,12 @@ ax.legend(loc='upper left')
 plt.show()
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} kalman_ex2
+```
 
 ```{code-cell} python3
 ϵ = 0.1
@@ -733,7 +751,12 @@ ax.fill_between(range(T), np.zeros(T), z, color="blue", alpha=0.2)
 plt.show()
 ```
 
-### Exercise 3
+```{solution-end}
+```
+
+
+```{solution-start} kalman_ex3
+```
 
 ```{code-cell} python3
 # Define A, C, G, H
@@ -788,3 +811,5 @@ plt.show()
 
 [^f1]: See, for example, page 93 of {cite}`Bishop2006`. To get from his expressions to the ones used above, you will also need to apply the [Woodbury matrix identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity).
 
+```{solution-end}
+```
