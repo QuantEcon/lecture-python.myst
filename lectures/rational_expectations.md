@@ -544,8 +544,8 @@ $(\kappa_0, \kappa_1, h_0, h_1, h_2)$ in {eq}`ree_hlom2`--{eq}`ree_ex5`.
 
 ## Exercises
 
-(ree_ex1)=
-### Exercise 1
+```{exercise}
+:label: ree_ex1
 
 Consider the firm problem {ref}`described above <ree_fp>`.
 
@@ -562,27 +562,31 @@ $$
 Express the solution of the firm's problem in the form {eq}`ree_ex5` and give the values for each $h_j$.
 
 If there were a unit measure of  identical competitive firms all behaving according to {eq}`ree_ex5`, what would {eq}`ree_ex5`  imply for the *actual* law of motion {eq}`ree_hlom` for market supply.
+```
 
-(ree_ex2)=
-### Exercise 2
+
+```{exercise}
+:label: ree_ex2
 
 Consider the following $\kappa_0, \kappa_1$ pairs as candidates for the
 aggregate law of motion component of a rational expectations equilibrium (see
 {eq}`ree_hlom2`).
 
-Extending the program that you wrote for exercise 1, determine which if any
+Extending the program that you wrote for {ref}`ree_ex1`, determine which if any
 satisfy {ref}`the definition <ree_def>` of a rational expectations equilibrium
 
 * (94.0886298678, 0.923409232937)
 * (93.2119845412, 0.984323478873)
 * (95.0818452486, 0.952459076301)
 
-Describe an iterative algorithm that uses the program that you wrote for exercise 1 to compute a rational expectations equilibrium.
+Describe an iterative algorithm that uses the program that you wrote for {ref}`ree_ex1` to compute a rational expectations equilibrium.
 
 (You are not being asked actually to use the algorithm you are suggesting)
+```
 
-(ree_ex3)=
-### Exercise 3
+
+```{exercise}
+:label: ree_ex3
 
 Recall the planner's problem {ref}`described above <ree_pp>`
 
@@ -591,9 +595,11 @@ Recall the planner's problem {ref}`described above <ree_pp>`
     * $a_0= 100, a_1= 0.05, \beta = 0.95, \gamma=10$
 1. Represent the solution in the form $Y_{t+1} = \kappa_0 + \kappa_1 Y_t$.
 1. Compare your answer with the results from exercise 2.
+```
 
-(ree_ex4)=
-### Exercise 4
+
+```{exercise}
+:label: ree_ex4
 
 A monopolist faces the industry demand curve {eq}`ree_comp3d`  and chooses $\{Y_t\}$ to maximize $\sum_{t=0}^{\infty} \beta^t r_t$ where
 
@@ -603,7 +609,7 @@ $$
 
 Formulate this problem as an LQ problem.
 
-Compute the optimal policy using the same parameters as the previous exercise.
+Compute the optimal policy using the same parameters as {ref}`ree_ex2`.
 
 In particular, solve for the parameters in
 
@@ -611,11 +617,14 @@ $$
 Y_{t+1} = m_0 + m_1 Y_t
 $$
 
-Compare your results with the previous exercise -- comment.
+Compare your results with {ref}`ree_ex2` -- comment.
+```
 
 ## Solutions
 
-### Exercise 1
+
+```{solution-start} ree_ex1
+```
 
 To map a problem into a [discounted optimal linear control
 problem](https://python.quantecon.org/lqcontrol.html), we need to define
@@ -727,7 +736,12 @@ Y_{t+1}
 = n 96.949 + (1 - n 0.046) Y_t
 $$
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} ree_ex2
+```
 
 To determine whether a $\kappa_0, \kappa_1$ pair forms the
 aggregate law of motion component of a rational expectations
@@ -790,7 +804,12 @@ lecture.
 (There is in general no guarantee that this iterative process will
 converge to a rational expectations equilibrium)
 
-### Exercise 3
+```{solution-end}
+```
+
+
+```{solution-start} ree_ex3
+```
 
 We are asked to write the planner problem as an LQ problem.
 
@@ -853,7 +872,12 @@ print(κ0, κ1)
 The output yields the same $(\kappa_0, \kappa_1)$ pair obtained as
 an equilibrium from the previous exercise.
 
-### Exercise 4
+```{solution-end}
+```
+
+
+```{soluution-start} ree_ex4
+```
 
 The monopolist's LQ problem is almost identical to the planner's problem
 from the previous exercise, except that
@@ -898,6 +922,9 @@ lower long-run quantity than obtained by the competitive market,
 implying a higher market price.
 
 This is analogous to the elementary static-case results
+
+```{solution-end}
+```
 
 [^fn_im]: A literature that studies whether models populated  with agents
 who learn can converge  to rational expectations equilibria features
