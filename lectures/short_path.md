@@ -252,8 +252,10 @@ But, importantly, we now have a methodology for tackling large graphs.
 
 ## Exercises
 
-(short_path_ex1)=
-### Exercise 1
+
+```{exercise-start}
+:label: short_path_ex1
+```
 
 The text below describes a weighted directed graph.
 
@@ -376,9 +378,14 @@ node98, node99 0.33
 node99,
 ```
 
+```{exercise-end}
+```
+
 ## Solutions
 
-### Exercise 1
+
+```{solution-start} short_path_ex1
+```
 
 First let's write a function that reads in the graph data above and builds a distance matrix.
 
@@ -476,4 +483,7 @@ The total cost of the path should agree with $J[0]$ so let's check this.
 
 ```{code-cell} python3
 J[0]
+```
+
+```{solution-end}
 ```
