@@ -121,7 +121,8 @@ The probability  $\textrm{Prob}(X =  k | \theta)$ answers the following question
   
 As usual, a law of large numbers justifies this answer.
 
-**Exercise 1:** 
+```{exercise}
+:label: pm_ex1
 
 1. Please write a Python class to compute $f_k^I$
 
@@ -129,10 +130,10 @@ As usual, a law of large numbers justifies this answer.
   $\textrm{Prob}(X =  k | \theta)$ for various values of $\theta, n$ and $I$
 
 3. With  the Law of Large numbers in mind, use your code to say something
+```
 
-+++
-
-**Answer Code:**
+```{solution-start} pm_ex1
+```
 
 ```{code-cell} ipython3
 class frequentist:
@@ -202,6 +203,9 @@ freq.compare()
 ```
 
 From the table above, can you see the law of large numbers at work?
+
+```{solution-end}
+```
 
 Let's do some more calculations.
 
@@ -357,7 +361,8 @@ $$
 where $B(\alpha, \beta)$ is a  **beta function** , so that $P(\theta)$ is
 a **beta distribution** with parameters $\alpha, \beta$.
 
-**Exercise 2:**
+```{exercise}
+:label: pm_ex2
 
 **a)**  Please write down the **likelihood function** for a sample of length $n$ from a binomial distribution with parameter $\theta$. 
 
@@ -376,8 +381,11 @@ a **beta distribution** with parameters $\alpha, \beta$.
 **h)** Please compute the Posterior probabililty that $\theta \in [.45, .55]$ for various values of sample size $n$. 
 
 **i)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
+```
 
-**Answer:**
+
+```{solution-start} pm_ex2
+```
 
 **a)** Please write down the **likelihood function** and the **posterior** distribution for $\theta$ after observing  one flip of our coin.
 
@@ -615,6 +623,9 @@ ax[1].set_xlabel('Number of Observations', fontsize=11)
 plt.show()
 ```
 
+```{solution-end}
+```
+
 How shall we interpret the patterns above? 
 
 The answer is encoded in the  Bayesian updating formulas.
@@ -652,7 +663,7 @@ The random variables $k$ and $N-k$ are governed by Binomial Distribution with $\
 
 Call this the true data generating process.
 
-According to the Law of Large Numbers, for a large number of observations, observed frequencies of $k$ and $N-k$ will be described by the true data generating process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See Exercise $1$). 
+According to the Law of Large Numbers, for a large number of observations, observed frequencies of $k$ and $N-k$ will be described by the true data generating process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See {ref}`pm_ex1`). 
 
 Consequently, the  mean of the posterior distribution converges to $0.4$ and the variance withers to zero.
 
