@@ -876,7 +876,7 @@ an equilibrium from the previous exercise.
 ```
 
 
-```{soluution-start} ree_ex4
+```{solution-start} ree_ex4
 ```
 
 The monopolist's LQ problem is almost identical to the planner's problem
