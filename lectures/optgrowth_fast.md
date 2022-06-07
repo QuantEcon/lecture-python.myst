@@ -261,7 +261,7 @@ Set `γ = 1.5` as the default value and maintaining other specifications.
 have to copy the class and change the relevant parameters and methods.)
 
 Compute an estimate of the optimal policy, plot it and compare visually with
-the same plot from the {ref}`analogous exercise <ogex1>` in the first optimal
+the same plot from the {ref}`analogous exercise <og_ex1>` in the first optimal
 growth lecture.
 
 Compare execution time as well.
@@ -365,7 +365,7 @@ plt.show()
 ```
 
 This matches the solution that we obtained in our non-jitted code,
-{ref}`in the exercises <ogex1>`.
+{ref}`in the exercises <og_ex1>`.
 
 Execution time is an order of magnitude faster.
 
