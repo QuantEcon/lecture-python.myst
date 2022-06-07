@@ -654,7 +654,8 @@ $\bar w$.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: odu_ex1
 
 Use the default parameters and `Q_factory` to compute an optimal
 policy.
@@ -664,10 +665,12 @@ policy [shown above](#Take-1:-Solution-by-VFI).
 
 Try experimenting with different parameters, and confirm that the change
 in the optimal policy coincides with your intuition.
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} odu_ex1
+```
 
 This code solves the “Offer Distribution Unknown” model by iterating on
 a guess of the reservation wage function.
@@ -729,6 +732,9 @@ ax.text(0.7, 0.9, 'accept')
 ax.set(xlabel='$\pi$', ylabel='$w$')
 ax.grid()
 plt.show()
+```
+
+```{solution-end}
 ```
 
 ## Appendix A
