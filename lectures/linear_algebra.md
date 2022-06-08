@@ -1217,6 +1217,7 @@ If we don't care about the Lagrange multipliers, we can substitute the constrain
 ## Solutions
 
 ```{solution-start} la_ex1
+:class: dropdown
 ```
 
 We have an optimization problem:

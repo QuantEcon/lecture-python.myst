@@ -459,6 +459,7 @@ Set $b=1$ throughout.
 ## Solutions
 
 ```{solution-start} sd_ex1
+:class: dropdown
 ```
 
 We will start with the case $a=0.5$.

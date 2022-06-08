@@ -651,6 +651,7 @@ stationary distribution given the interest rate.
 ## Solutions
 
 ```{solution-start} ifp_ex1
+:class: dropdown
 ```
 
 Here's one solution:
@@ -674,6 +675,7 @@ plt.show()
 
 
 ```{solution-start} ifp_ex2
+:class: dropdown
 ```
 
 First we write a function to compute a long asset series.
@@ -728,6 +730,7 @@ more realistic features to the model.
 
 
 ```{solution-start} ifp_ex3
+:class: dropdown
 ```
 
 Here's one solution

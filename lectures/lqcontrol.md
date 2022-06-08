@@ -1309,6 +1309,7 @@ For parameters, use $a_0 = 5, a_1 = 0.5, \sigma = 0.15, \rho = 0.9,
 ## Solutions
 
 ```{solution-start} lqc_ex1
+:class: dropdown
 ```
 
 Here’s one solution.
@@ -1402,6 +1403,7 @@ plt.show()
 
 
 ```{solution-start} lqc_ex2
+:class: dropdown
 ```
 
 This is a permanent income / life-cycle model with polynomial growth in
@@ -1515,6 +1517,7 @@ plt.show()
 
 
 ```{solution-start} lqc_ex3
+:class: dropdown
 ```
 
 The first task is to find the matrices $A, B, C, Q, R$ that define

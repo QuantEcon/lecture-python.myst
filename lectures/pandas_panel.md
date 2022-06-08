@@ -532,6 +532,7 @@ by age group and sex.
 ## Solutions
 
 ```{solution-start} pp_ex1
+:class: dropdown
 ```
 
 ```{code-cell} python3
@@ -562,6 +563,7 @@ for name in employ.columns.names:
 
 
 ```{solution-start} pp_ex2
+:class: dropdown
 ```
 
 To easily filter by country, swap `GEO` to the top level and sort the

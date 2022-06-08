@@ -316,6 +316,7 @@ You will need a large sample size to get an accurate reading.
 ## Solutions
 
 ```{solution-start} id_ex1
+:class: dropdown
 ```
 
 Below is one possible solution:

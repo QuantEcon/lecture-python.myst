@@ -593,6 +593,7 @@ Here is one solution, which produces a good match between theory and
 simulation.
 
 ```{solution-start} wd_ex1
+:class: dropdown
 ```
 
 ```{code-cell} ipython3
@@ -622,6 +623,7 @@ More equality translates to a lower Gini index.
 
 
 ```{solution-start} wd_ex2
+:class: dropdown
 ```
 
 First let's generate the distribution:

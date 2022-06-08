@@ -611,6 +611,7 @@ Use the default parameters.
 ## Solutions
 
 ```{solution-start} ifpa_ex1
+:class: dropdown
 ```
 
 First we write a function to compute a long asset series.

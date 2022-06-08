@@ -460,6 +460,7 @@ firm dynamics in later lectures.)
 ## Solutions
 
 ```{solution-start} ht_ex1
+:class: dropdown
 ```
 
 ```{code-cell} python3
@@ -496,6 +497,8 @@ plt.show()
 
 
 ```{solution} ht_ex2
+:class: dropdown
+
 Let $X$ have a Pareto tail with tail index $\alpha$ and let $F$ be its cdf.
 
 Fix $r \geq \alpha$.
@@ -522,6 +525,7 @@ Since $r \geq \alpha$, we have $\mathbb E X^r = \infty$.
 
 
 ```{solution-start} ht_ex3
+:class: dropdown
 ```
 
 ```{code-cell} ipython3
@@ -551,6 +555,7 @@ plt.show()
 
 
 ```{solution-start} ht_ex4
+:class: dropdown
 ```
 
 First let's generate the data for the plots:
@@ -595,6 +600,7 @@ plt.show()
 
 
 ```{solution-start} ht_ex5
+:class: dropdown
 ```
 
 To do the exercise, we need to choose the parameters $\mu$

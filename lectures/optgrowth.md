@@ -792,6 +792,7 @@ Use the model specification in the previous exercise.
 ## Solutions
 
 ```{solution-start} og_ex1
+:class: dropdown
 ```
 
 Here we set up the model.
@@ -829,6 +830,7 @@ plt.show()
 
 
 ```{solution-start} og_ex2
+:class: dropdown
 ```
 
 Let's set up:

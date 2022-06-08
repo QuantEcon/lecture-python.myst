@@ -624,6 +624,7 @@ Compare your results with {ref}`ree_ex2` -- comment.
 
 
 ```{solution-start} ree_ex1
+:class: dropdown
 ```
 
 To map a problem into a [discounted optimal linear control
@@ -741,6 +742,7 @@ $$
 
 
 ```{solution-start} ree_ex2
+:class: dropdown
 ```
 
 To determine whether a $\kappa_0, \kappa_1$ pair forms the
@@ -809,6 +811,7 @@ converge to a rational expectations equilibrium)
 
 
 ```{solution-start} ree_ex3
+:class: dropdown
 ```
 
 We are asked to write the planner problem as an LQ problem.
@@ -877,6 +880,7 @@ an equilibrium from the previous exercise.
 
 
 ```{solution-start} ree_ex4
+:class: dropdown
 ```
 
 The monopolist's LQ problem is almost identical to the planner's problem

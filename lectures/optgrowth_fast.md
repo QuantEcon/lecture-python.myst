@@ -304,6 +304,7 @@ Replicate the figure modulo randomness.
 ## Solutions
 
 ```{solution-start} ogfast_ex1
+:class: dropdown
 ```
 
 Let's set up the initial condition.
@@ -330,6 +331,7 @@ value function iteration, the JIT-compiled code is usually an order of magnitude
 
 
 ```{solution-start} ogfast_ex2
+:class: dropdown
 ```
 
 Here's our CRRA version of `OptimalGrowthModel`:
@@ -374,6 +376,7 @@ Execution time is an order of magnitude faster.
 
 
 ```{solution-start} ogfast_ex3
+:class: dropdown
 ```
 
 Here's one solution:

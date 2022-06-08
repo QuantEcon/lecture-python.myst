@@ -1380,6 +1380,7 @@ what must the modulus for every eigenvalue of $A$ be less than?
 ## Solutions
 
 ```{solution} lss_ex1
+:class: dropdown
 
 Suppose that every eigenvalue of $A$ has modulus strictly less than $\frac{1}{\beta}$.
 
@@ -1402,6 +1403,8 @@ $$
 = G[I - \beta A]^{-1} x_t
 $$
 
+```
+
 [^foot1]: The eigenvalues of $A$ are $(1,-1, i,-i)$.
 
 [^fn_ag]: The correct way to argue this is by induction.  Suppose that
@@ -1409,4 +1412,3 @@ $x_t$ is Gaussian.  Then {eq}`st_space_rep` and
 {eq}`lss_glig` imply that $x_{t+1}$ is Gaussian.  Since $x_0$
 is assumed to be Gaussian, it follows that every $x_t$ is Gaussian.
 Evidently, this implies that each $y_t$ is Gaussian.
-```

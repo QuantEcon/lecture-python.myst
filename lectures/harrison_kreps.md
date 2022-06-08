@@ -571,6 +571,7 @@ We'll use these transition matrices when we present our solution of exercise 1 b
 ## Solutions
 
 ```{solution-start} hk_ex1
+:class: dropdown
 ```
 
 First, we will obtain equilibrium price vectors with homogeneous beliefs, including when all
@@ -617,7 +618,7 @@ for p, label in zip(opt_beliefs, labels):
 Notice that the equilibrium price with heterogeneous beliefs is equal to the price under single beliefs
 with **permanently optimistic** investors - this is due to the marginal investor in the heterogeneous beliefs equilibrium always being the type who is  temporarily optimistic.
 
-[^f1]: By assuming that both types of agents always have "deep enough pockets" to purchase all of the asset, the model takes wealth dynamics off the table. The Harrison-Kreps model generates high trading volume when the state changes either from 0 to 1 or from 1 to 0.
-
 ```{solution-end}
 ```
+
+[^f1]: By assuming that both types of agents always have "deep enough pockets" to purchase all of the asset, the model takes wealth dynamics off the table. The Harrison-Kreps model generates high trading volume when the state changes either from 0 to 1 or from 1 to 0.

@@ -178,6 +178,7 @@ Use 250 agents of each type.
 ## Solutions
 
 ```{solution-start} schelling_ex1
+:class: dropdown
 ```
 
 Here's one solution that does the job we want.

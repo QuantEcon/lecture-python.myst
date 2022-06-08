@@ -1271,6 +1271,7 @@ $P$ as described above.
 ## Solutions
 
 ```{solution-start} mc_ex1
+:class: dropdown
 ```
 
 We will address this exercise graphically.
@@ -1314,6 +1315,7 @@ plt.show()
 
 
 ```{solution-start} mc_ex2
+:class: dropdown
 ```
 
 ```{code-cell} python3
@@ -1358,9 +1360,11 @@ for name, rank in sorted(ranked_pages.items(), key=itemgetter(1), reverse=1):
 
 
 ```{solution} mc_ex3
+:class: dropdown
+
 A solution from the [QuantEcon.py](http://quantecon.org/quantecon-py) library
 can be found [here](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/markov/approximation.py).
 
-[^pm]: Hint: First show that if $P$ and $Q$ are stochastic matrices then so is their product --- to check the row sums, try post multiplying by a column vector of ones.  Finally, argue that $P^n$ is a stochastic matrix using induction.
 ```
 
+[^pm]: Hint: First show that if $P$ and $Q$ are stochastic matrices then so is their product --- to check the row sums, try post multiplying by a column vector of ones.  Finally, argue that $P^n$ is a stochastic matrix using induction.

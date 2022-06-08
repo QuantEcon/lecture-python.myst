@@ -480,6 +480,7 @@ Can you give a rough interpretation for the value that you see?
 ## Solutions
 
 ```{solution-start} jv_ex1
+:class: dropdown
 ```
 
 Here’s code to produce the 45 degree diagram
@@ -535,6 +536,7 @@ $\phi_t = \phi(x_t) \approx 0.6$.
 
 
 ```{solution-start} jv_ex2
+:class: dropdown
 ```
 
 The figure can be produced as follows

@@ -967,6 +967,7 @@ How long does the economy take to return to its original steady state?
 ## Solutions
 
 ```{solution-start} lm_ex1
+:class: dropdown
 ```
 
 ```{code-cell} python3
@@ -1116,6 +1117,7 @@ class LakeModelModified:
 
 
 ```{solution-start} lm_ex2
+:class: dropdown
 ```
 
 We begin by constructing the class containing the default parameters and assigning the
@@ -1192,6 +1194,7 @@ steady state levels.
 
 
 ```{solution-start} lm_ex3
+:class: dropdown
 ```
 
 This next exercise has the economy experiencing a boom in entrances to

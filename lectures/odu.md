@@ -670,6 +670,7 @@ in the optimal policy coincides with your intuition.
 ## Solutions
 
 ```{solution-start} odu_ex1
+:class: dropdown
 ```
 
 This code solves the “Offer Distribution Unknown” model by iterating on

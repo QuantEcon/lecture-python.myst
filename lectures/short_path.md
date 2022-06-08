@@ -385,6 +385,7 @@ node99,
 
 
 ```{solution-start} short_path_ex1
+:class: dropdown
 ```
 
 First let's write a function that reads in the graph data above and builds a distance matrix.

@@ -679,6 +679,7 @@ The interpretation is that more randomness in the law of motion for $x_t$ causes
 ## Solutions
 
 ```{solution-start} kalman_ex1
+:class: dropdown
 ```
 
 ```{code-cell} python3
@@ -717,6 +718,7 @@ plt.show()
 
 
 ```{solution-start} kalman_ex2
+:class: dropdown
 ```
 
 ```{code-cell} python3
@@ -756,6 +758,7 @@ plt.show()
 
 
 ```{solution-start} kalman_ex3
+:class: dropdown
 ```
 
 ```{code-cell} python3
@@ -809,7 +812,8 @@ ax.legend()
 plt.show()
 ```
 
-[^f1]: See, for example, page 93 of {cite}`Bishop2006`. To get from his expressions to the ones used above, you will also need to apply the [Woodbury matrix identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity).
-
 ```{solution-end}
 ```
+
+[^f1]: See, for example, page 93 of {cite}`Bishop2006`. To get from his expressions to the ones used above, you will also need to apply the [Woodbury matrix identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity).
+

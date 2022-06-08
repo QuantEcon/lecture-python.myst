@@ -643,6 +643,7 @@ using `numpy` - your results should be the same as those in the
 ## Solutions
 
 ```{solution-start} ols_ex1
+:class: dropdown
 ```
 
 ```{code-cell} python3
@@ -676,6 +677,7 @@ significant, indicating $avexpr_i$ is endogenous.
 
 
 ```{solution-start} ols_ex2
+:class: dropdown
 ```
 
 ```{code-cell} python3

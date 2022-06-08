@@ -741,7 +741,10 @@ Change parameters of $C(Q_t)$ and $d(I_t, S_t)$.
 ```
 
 
+## Solutions
+
 ```{solution-start} lqi_ex1
+:class: dropdown
 ```
 
 ```{code-cell} python3
@@ -807,6 +810,7 @@ ex1_no_noise.simulate(x_bar1, T=T)
 
 
 ```{solution-start} lqi_ex2
+:class: dropdown
 ```
 
 ```{code-cell} python3

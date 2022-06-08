@@ -367,6 +367,7 @@ Modulo randomness, replicate the simulation figures shown above.
 ## Solutions
 
 ```{solution} uncertainty_traps_ex1
+:class: dropdown
 
 This exercise asked you to validate the laws of motion for
 $\gamma$ and $\mu$ given in the lecture, based on the stated
@@ -394,6 +395,7 @@ expressions for $\mu'$ and $\gamma'$ given in the lecture.
 
 
 ```{solution-start} uncertainty_traps_ex2
+:class: dropdown
 ```
 
 First, let's replicate the plot that illustrates the law of motion for

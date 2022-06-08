@@ -564,6 +564,7 @@ s_init = 1.0      # initial condition for each firm
 ## Solutions
 
 ```{solution-start} kp_ex1
+:class: dropdown
 ```
 
 Here is one solution:
@@ -600,6 +601,7 @@ plt.show()
 
 
 ```{solution-start} kp_ex2
+:class: dropdown
 ```
 
 The empirical findings are that
@@ -641,6 +643,7 @@ Moreover, the law of motion {eq}`firm_dynam_2` clearly approaches Gibrat's law
 
 
 ```{solution-start} kp_ex3
+:class: dropdown
 ```
 
 Since $a_t$ has a density it is nonarithmetic.
@@ -671,6 +674,7 @@ Solving for $\alpha$ gives $\alpha = -2\mu / \sigma^2$.
 
 
 ```{solution-start} kp_ex4
+:class: dropdown
 ```
 
 Here's one solution.  First we generate the observations:

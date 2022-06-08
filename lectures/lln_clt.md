@@ -782,6 +782,7 @@ Hints:
 ## Solutions
 
 ```{solution-start} lln_ex1
+:class: dropdown
 ```
 
 Here is one solution
@@ -832,6 +833,7 @@ Hence the conditions of the delta theorem are not satisfied.
 
 
 ```{solution-start} lln_ex2
+:class: dropdown
 ```
 
 First we want to verify the claim that
