@@ -959,7 +959,7 @@ Do the same for
 * the call option on the consol when $\zeta = 1$ and $p_S = 150.0$
 
 ```{exercise-end}
-
+```
 
 ```{exercise}
 :label: ma_ex3
