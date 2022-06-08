@@ -133,7 +133,7 @@ chain $\{X_t\}$ as follows:
 
 By construction, the resulting process satisfies {eq}`mpp`.
 
-(mc_eg1)=
+(fm_eg1)=
 ### Example 1
 
 Consider a worker who, at any given time $t$, is either unemployed (state 0) or employed (state 1).
@@ -170,7 +170,7 @@ Once we have the values $\alpha$ and $\beta$, we can address a range of question
 
 We'll cover such applications below.
 
-(mc_eg2)=
+(fm_eg2)=
 ### Example 2
 
 Using  US unemployment data, Hamilton {cite}`Hamilton2005` estimated the stochastic matrix
@@ -345,7 +345,7 @@ If we want to simulate with output as indices rather than state values we can us
 mc.simulate_indices(ts_length=4)
 ```
 
-(mc_md)=
+(fm_md)=
 ## {index}`Marginal Distributions <single: Marginal Distributions>`
 
 ```{index} single: Markov Chains; Marginal Distributions
@@ -444,7 +444,7 @@ $$
 ```{index} single: Markov Chains; Future Probabilities
 ```
 
-Recall the stochastic matrix $P$ for recession and growth {ref}`considered above <mc_eg2>`.
+Recall the stochastic matrix $P$ for recession and growth {ref}`considered above <fm_eg2>`.
 
 Suppose that the current state is unknown --- perhaps statistics are available only  at the *end* of the current month.
 
@@ -464,7 +464,7 @@ $$
 \right)
 $$
 
-(mc_eg1-1)=
+(fm_eg1-1)=
 ### Example 2: Cross-Sectional Distributions
 
 ```{index} single: Markov Chains; Cross-Sectional Distributions
@@ -473,7 +473,7 @@ $$
 The marginal distributions we have been studying can be viewed either as
 probabilities or as cross-sectional frequencies in large samples.
 
-To illustrate, recall our model of employment/unemployment dynamics for a given worker {ref}`discussed above <mc_eg1>`.
+To illustrate, recall our model of employment/unemployment dynamics for a given worker {ref}`discussed above <fm_eg1>`.
 
 Consider a large population of workers, each of whose lifetime experience is described by the specified dynamics, independent of one another.
 
@@ -671,7 +671,7 @@ P = np.array([[0.4, 0.6],
 
 Such distributions are called **stationary**, or **invariant**.
 
-(mc_stat_dd)=
+(fm_stat_dd)=
 Formally, a distribution $\psi^*$ on $S$ is called **stationary** for $P$ if $\psi^* = \psi^* P$.
 
 (This is the same notion of stationarity that we learned about in the
@@ -702,7 +702,7 @@ state space cannot be accessed from other regions, which is the opposite of irre
 
 This gives some intuition for the following fundamental theorem.
 
-(mc_conv_thm)=
+(fm_conv_thm)=
 **Theorem.** If $P$ is both aperiodic and irreducible, then
 
 1. $P$ has exactly one stationary distribution $\psi^*$.
@@ -721,7 +721,7 @@ One easy sufficient condition for aperiodicity and irreducibility is that every 
 
 ### Example
 
-Recall our model of employment/unemployment dynamics for a given worker {ref}`discussed above <mc_eg1>`.
+Recall our model of employment/unemployment dynamics for a given worker {ref}`discussed above <fm_eg1>`.
 
 Assuming $\alpha \in (0,1)$ and $\beta \in (0,1)$, the uniform ergodicity condition is satisfied.
 
@@ -784,7 +784,7 @@ mc.stationary_distributions  # Show all stationary distributions
 ```{index} single: Markov Chains; Convergence to Stationarity
 ```
 
-Part 2 of the Markov chain convergence theorem {ref}`stated above <mc_conv_thm>` tells us that the distribution of $X_t$ converges to the stationary distribution regardless of where we start off.
+Part 2 of the Markov chain convergence theorem {ref}`stated above <fm_conv_thm>` tells us that the distribution of $X_t$ converges to the stationary distribution regardless of where we start off.
 
 This adds considerable weight to our interpretation of $\psi^*$ as a stochastic steady state.
 
@@ -825,7 +825,7 @@ plt.show()
 
 Here
 
-* $P$ is the stochastic matrix for recession and growth {ref}`considered above <mc_eg2>`.
+* $P$ is the stochastic matrix for recession and growth {ref}`considered above <fm_eg2>`.
 * The highest red dot is an arbitrarily chosen initial probability distribution  $\psi$, represented as a vector in $\mathbb R^3$.
 * The other red dots are the distributions $\psi P^t$ for $t = 1, 2, \ldots$.
 * The black dot is $\psi^*$.
@@ -860,10 +860,10 @@ This gives us another way to interpret the stationary distribution --- provided 
 
 The convergence in {eq}`llnfmc0` is a special case of a law of large numbers result for Markov chains --- see [EDTC](http://johnstachurski.net/edtc.html), section 4.3.4 for some additional information.
 
-(mc_eg1-2)=
+(fm_eg1-2)=
 ### Example
 
-Recall our cross-sectional interpretation of the employment/unemployment model {ref}`discussed above <mc_eg1-1>`.
+Recall our cross-sectional interpretation of the employment/unemployment model {ref}`discussed above <fm_eg1-1>`.
 
 Assume that $\alpha \in (0,1)$ and $\beta \in (0,1)$, so that irreducibility and aperiodicity both hold.
 
@@ -890,7 +890,7 @@ This is one interpretation of the notion of ergodicity.
 We are interested in computing expectations of the form
 
 ```{math}
-:label: mc_une
+:label: fm_une
 
 \mathbb E [ h(X_t) ]
 ```
@@ -898,7 +898,7 @@ We are interested in computing expectations of the form
 and conditional expectations such as
 
 ```{math}
-:label: mc_cce
+:label: fm_cce
 
 \mathbb E [ h(X_{t + k})  \mid X_t = x]
 ```
@@ -920,7 +920,7 @@ h
   \right)
 $$
 
-Computing the unconditional expectation {eq}`mc_une` is easy.
+Computing the unconditional expectation {eq}`fm_une` is easy.
 
 
 We just sum over the distribution  of $X_t$ to get
@@ -940,13 +940,13 @@ $$
 =  \psi P^t h
 $$
 
-For the conditional expectation {eq}`mc_cce`, we need to sum over
+For the conditional expectation {eq}`fm_cce`, we need to sum over
 the conditional distribution of $X_{t + k}$ given $X_t = x$.
 
 We already know that this is $P^k(x, \cdot)$, so
 
 ```{math}
-:label: mc_cce2
+:label: fm_cce2
 
 \mathbb E [ h(X_{t + k})  \mid X_t = x]
 = (P^k h)(x)
@@ -965,7 +965,7 @@ $$
 where the outer $ \mathbb E$ on the left side is an unconditional distribution taken with respect to the distribution  $\psi_t$ of $X_t$ 
 (again see equation {eq}`mdfmc2`).  
 
-To verify the law of iterated expectations, use  equation {eq}`mc_cce2` to substitute $ (P^k h)(x)$ for $E [ h(X_{t + k})  \mid X_t = x]$, write
+To verify the law of iterated expectations, use  equation {eq}`fm_cce2` to substitute $ (P^k h)(x)$ for $E [ h(X_{t + k})  \mid X_t = x]$, write
 
 $$
 \mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \psi_t P^k h, 
@@ -998,9 +998,9 @@ Premultiplication by $(I - \beta P)^{-1}$ amounts to "applying the **resolvent o
 ## Exercises
 
 ```{exercise} 
-:label: mc_ex1
+:label: fm_ex1
 
-According to the discussion {ref}`above <mc_eg1-2>`, if a worker's employment dynamics obey the stochastic matrix
+According to the discussion {ref}`above <fm_eg1-2>`, if a worker's employment dynamics obey the stochastic matrix
 
 $$
 P
@@ -1037,7 +1037,7 @@ $(0, 1)$.
 
 
 ```{exercise-start}
-:label: mc_ex2
+:label: fm_ex2
 ```
 
 A topic of interest for economics and many other disciplines is *ranking*.
@@ -1204,7 +1204,7 @@ When you solve for the ranking, you will find that the highest ranked node is in
 
 
 ```{exercise}
-:label: mc_ex3
+:label: fm_ex3
 
 In numerical work, it is sometimes convenient to replace a continuous model with a discrete one.
 
@@ -1270,7 +1270,7 @@ $P$ as described above.
 
 ## Solutions
 
-```{solution-start} mc_ex1
+```{solution-start} fm_ex1
 :class: dropdown
 ```
 
@@ -1314,7 +1314,7 @@ plt.show()
 ```
 
 
-```{solution-start} mc_ex2
+```{solution-start} fm_ex2
 :class: dropdown
 ```
 
@@ -1359,7 +1359,7 @@ for name, rank in sorted(ranked_pages.items(), key=itemgetter(1), reverse=1):
 ```
 
 
-```{solution} mc_ex3
+```{solution} fm_ex3
 :class: dropdown
 
 A solution from the [QuantEcon.py](http://quantecon.org/quantecon-py) library

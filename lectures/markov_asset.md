@@ -309,7 +309,7 @@ You can think of
 
 The next figure shows a simulation, where
 
-* $\{X_t\}$ evolves as a discretized AR1 process produced using {ref}`Tauchen's method <mc_ex3>`.
+* $\{X_t\}$ evolves as a discretized AR1 process produced using {ref}`Tauchen's method <fm_ex3>`.
 * $g_t = \exp(X_t)$, so that $\ln g_t = X_t$ is the growth rate.
 
 ```{code-cell} ipython
@@ -397,7 +397,7 @@ v = (I - \beta K)^{-1} \beta K{\mathbb 1}
 
 Let's calculate and plot the price-dividend ratio at some parameters.
 
-As before, we'll generate $\{X_t\}$  as a {ref}`discretized AR1 process <mc_ex3>` and set $g_t = \exp(X_t)$.
+As before, we'll generate $\{X_t\}$  as a {ref}`discretized AR1 process <fm_ex3>` and set $g_t = \exp(X_t)$.
 
 Here's the code, including a test of the spectral radius condition
 
@@ -959,6 +959,7 @@ Do the same for
 * the call option on the consol when $\zeta = 1$ and $p_S = 150.0$
 
 ```{exercise-end}
+```
 
 
 ```{exercise}
