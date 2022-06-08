@@ -998,7 +998,7 @@ Premultiplication by $(I - \beta P)^{-1}$ amounts to "applying the **resolvent o
 ## Exercises
 
 ```{exercise} 
-:label: mc_ex1
+:label: fm_ex1
 
 According to the discussion {ref}`above <mc_eg1-2>`, if a worker's employment dynamics obey the stochastic matrix
 
@@ -1037,7 +1037,7 @@ $(0, 1)$.
 
 
 ```{exercise-start}
-:label: mc_ex2
+:label: fm_ex2
 ```
 
 A topic of interest for economics and many other disciplines is *ranking*.
@@ -1204,7 +1204,7 @@ When you solve for the ranking, you will find that the highest ranked node is in
 
 
 ```{exercise}
-:label: mc_ex3
+:label: fm_ex3
 
 In numerical work, it is sometimes convenient to replace a continuous model with a discrete one.
 
@@ -1270,7 +1270,7 @@ $P$ as described above.
 
 ## Solutions
 
-```{solution-start} mc_ex1
+```{solution-start} fm_ex1
 :class: dropdown
 ```
 
@@ -1314,7 +1314,7 @@ plt.show()
 ```
 
 
-```{solution-start} mc_ex2
+```{solution-start} fm_ex2
 :class: dropdown
 ```
 
@@ -1359,7 +1359,7 @@ for name, rank in sorted(ranked_pages.items(), key=itemgetter(1), reverse=1):
 ```
 
 
-```{solution} mc_ex3
+```{solution} fm_ex3
 :class: dropdown
 
 A solution from the [QuantEcon.py](http://quantecon.org/quantecon-py) library
