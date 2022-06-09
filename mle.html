@@ -70,6 +70,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
@@ -213,35 +214,11 @@ const thebe_selector_output = ".output, .cell_output"
   <a class="reference internal nav-link" href="#exercises">
    72.8. Exercises
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-1">
-     72.8.1. Exercise 1
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-2">
-     72.8.2. Exercise 2
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
    72.9. Solutions
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id3">
-     72.9.1. Exercise 1
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id4">
-     72.9.2. Exercise 2
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -293,27 +270,27 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="maximum-likelihood-estimation">
-<h1><a class="toc-backref" href="#id5"><span class="section-number">72. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#maximum-likelihood-estimation" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id3"><span class="section-number">72. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#maximum-likelihood-estimation" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#maximum-likelihood-estimation" id="id5">Maximum Likelihood Estimation</a></p>
+<li><p><a class="reference internal" href="#maximum-likelihood-estimation" id="id3">Maximum Likelihood Estimation</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id6">Overview</a></p></li>
-<li><p><a class="reference internal" href="#set-up-and-assumptions" id="id7">Set Up and Assumptions</a></p></li>
-<li><p><a class="reference internal" href="#conditional-distributions" id="id8">Conditional Distributions</a></p></li>
-<li><p><a class="reference internal" href="#id2" id="id9">Maximum Likelihood Estimation</a></p></li>
-<li><p><a class="reference internal" href="#mle-with-numerical-methods" id="id10">MLE with Numerical Methods</a></p></li>
-<li><p><a class="reference internal" href="#maximum-likelihood-estimation-with-statsmodels" id="id11">Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a></p></li>
-<li><p><a class="reference internal" href="#summary" id="id12">Summary</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id13">Exercises</a></p></li>
-<li><p><a class="reference internal" href="#solutions" id="id14">Solutions</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id4">Overview</a></p></li>
+<li><p><a class="reference internal" href="#set-up-and-assumptions" id="id5">Set Up and Assumptions</a></p></li>
+<li><p><a class="reference internal" href="#conditional-distributions" id="id6">Conditional Distributions</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id7">Maximum Likelihood Estimation</a></p></li>
+<li><p><a class="reference internal" href="#mle-with-numerical-methods" id="id8">MLE with Numerical Methods</a></p></li>
+<li><p><a class="reference internal" href="#maximum-likelihood-estimation-with-statsmodels" id="id9">Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a></p></li>
+<li><p><a class="reference internal" href="#summary" id="id10">Summary</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id11">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#solutions" id="id12">Solutions</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">72.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">72.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In a <a class="reference internal" href="ols.html"><span class="doc">previous lecture</span></a>, we estimated the relationship between
 dependent and explanatory variables using linear regression.</p>
 <p>But what if a linear relationship is not an appropriate assumption for our model?</p>
@@ -349,7 +326,7 @@ economic factors such as market size and tax rate predict.</p>
 </section>
 </section>
 <section id="set-up-and-assumptions">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">72.2. </span>Set Up and Assumptions</a><a class="headerlink" href="#set-up-and-assumptions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">72.2. </span>Set Up and Assumptions</a><a class="headerlink" href="#set-up-and-assumptions" title="Permalink to this headline">¶</a></h2>
 <p>Let’s consider the steps we need to go through in maximum likelihood estimation and how they pertain to this study.</p>
 <section id="flow-of-ideas">
 <h3><span class="section-number">72.2.1. </span>Flow of Ideas<a class="headerlink" href="#flow-of-ideas" title="Permalink to this headline">¶</a></h3>
@@ -561,7 +538,7 @@ dropped for plotting purposes)</p>
 </section>
 </section>
 <section id="conditional-distributions">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">72.3. </span>Conditional Distributions</a><a class="headerlink" href="#conditional-distributions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">72.3. </span>Conditional Distributions</a><a class="headerlink" href="#conditional-distributions" title="Permalink to this headline">¶</a></h2>
 <p>In Treisman’s paper, the dependent variable — the number of billionaires <span class="math notranslate nohighlight">\(y_i\)</span> in country <span class="math notranslate nohighlight">\(i\)</span> — is modeled as a function of GDP per capita, population size, and years membership in GATT and WTO.</p>
 <p>Hence, the distribution of <span class="math notranslate nohighlight">\(y_i\)</span> needs to be conditioned on the vector of explanatory variables <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span>.</p>
 <p>The standard formulation — the so-called <em>poisson regression</em> model — is as follows:</p>
@@ -622,7 +599,7 @@ dropped for plotting purposes)</p>
 <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> (<span class="math notranslate nohighlight">\(\mu_i\)</span> is no longer constant).</p>
 </section>
 <section id="id2">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">72.4. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">72.4. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>In our model for number of billionaires, the conditional distribution
 contains 4 (<span class="math notranslate nohighlight">\(k = 4\)</span>) parameters that we need to estimate.</p>
 <p>We will label our entire parameter vector as <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> where</p>
@@ -735,7 +712,7 @@ differentiating <span class="math notranslate nohighlight">\(f(x) = x \exp(x)\)<
 we need to use numerical methods.</p>
 </section>
 <section id="mle-with-numerical-methods">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">72.5. </span>MLE with Numerical Methods</a><a class="headerlink" href="#mle-with-numerical-methods" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">72.5. </span>MLE with Numerical Methods</a><a class="headerlink" href="#mle-with-numerical-methods" title="Permalink to this headline">¶</a></h2>
 <p>Many distributions do not have nice, analytical solutions and therefore require
 numerical methods to solve for parameter estimates.</p>
 <p>One such numerical method is the Newton-Raphson algorithm.</p>
@@ -1013,7 +990,7 @@ basic — for more robust implementations see,
 for example, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html">scipy.optimize</a>.</p>
 </section>
 <section id="maximum-likelihood-estimation-with-statsmodels">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">72.6. </span>Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a><a class="headerlink" href="#maximum-likelihood-estimation-with-statsmodels" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">72.6. </span>Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a><a class="headerlink" href="#maximum-likelihood-estimation-with-statsmodels" title="Permalink to this headline">¶</a></h2>
 <p>Now that we know what’s going on under the hood, we can apply MLE to an interesting application.</p>
 <p>We’ll use the Poisson regression model in <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> to obtain
 a richer output with standard errors, test values, and more.</p>
@@ -1045,8 +1022,8 @@ to confirm we obtain the same coefficients and log-likelihood value.</p>
 Dep. Variable:                      y   No. Observations:                    5
 Model:                        Poisson   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Fri, 20 May 2022   Pseudo R-squ.:                  0.2546
-Time:                        02:00:43   Log-Likelihood:                -3.3784
+Date:                Thu, 09 Jun 2022   Pseudo R-squ.:                  0.2546
+Time:                        10:37:42   Log-Likelihood:                -3.3784
 converged:                       True   LL-Null:                       -4.5325
 Covariance Type:            nonrobust   LLR p-value:                    0.3153
 ==============================================================================
@@ -1112,8 +1089,8 @@ model.</p>
 Dep. Variable:                numbil0   No. Observations:                  197
 Model:                        Poisson   Df Residuals:                      193
 Method:                           MLE   Df Model:                            3
-Date:                Fri, 20 May 2022   Pseudo R-squ.:                  0.8574
-Time:                        02:00:43   Log-Likelihood:                -438.54
+Date:                Thu, 09 Jun 2022   Pseudo R-squ.:                  0.8574
+Time:                        10:37:42   Log-Likelihood:                -438.54
 converged:                       True   LL-Null:                       -3074.7
 Covariance Type:                  HC0   LLR p-value:                     0.000
 ==============================================================================
@@ -1245,7 +1222,7 @@ Russia, the political climate, and the history of privatization in the
 years after the USSR.</p>
 </section>
 <section id="summary">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">72.7. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">72.7. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we used Maximum Likelihood Estimation to estimate the
 parameters of a Poisson model.</p>
 <p><code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> contains other built-in likelihood models such as
@@ -1258,9 +1235,11 @@ example notebook can be found
 <a class="reference external" href="http://www.statsmodels.org/dev/examples/notebooks/generated/generic_mle.html">here</a>.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">72.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
-<section id="exercise-1">
-<h3><span class="section-number">72.8.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">72.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="exercise admonition" id="mle_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 72.1 </span></p>
+<section id="exercise-content">
 <p>Suppose we wanted to estimate the probability of an event <span class="math notranslate nohighlight">\(y_i\)</span>
 occurring, given some observations.</p>
 <p>We could use a probit regression model, where the pmf of <span class="math notranslate nohighlight">\(y_i\)</span> is</p>
@@ -1282,8 +1261,11 @@ Hessian.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">scipy</span></code> module <code class="docutils literal notranslate"><span class="pre">stats.norm</span></code> contains the functions needed to
 compute the cmf and pmf of the normal distribution.</p>
 </section>
-<section id="exercise-2">
-<h3><span class="section-number">72.8.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="exercise admonition" id="mle_ex2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 72.2 </span></p>
+<section id="exercise-content">
 <p>Use the following dataset and initial values of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> to
 estimate the MLE with the Newton-Raphson algorithm developed earlier in
 the lecture</p>
@@ -1327,12 +1309,15 @@ function with the following import statement</p>
 is very sensitive to initial values, and therefore you may fail to
 achieve convergence with different starting values.</p>
 </section>
+</div>
 </section>
 <section id="solutions">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">72.9. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<section id="id3">
-<h3><span class="section-number">72.9.1. </span>Exercise 1<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<p>The log-likelihood can be written as</p>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">72.9. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<div class="solution dropdown admonition" id="mle-solution-2">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex1"> Exercise 72.1</a></p>
+<section id="s">
+<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>The log-likelihood can be written as</p>
 <div class="math notranslate nohighlight">
 \[
 \log \mathcal{L} = \sum_{i=1}^n
@@ -1406,9 +1391,12 @@ follows</p>
 </div>
 </div>
 </section>
-<section id="id4">
-<h3><span class="section-number">72.9.2. </span>Exercise 2<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
+</div>
+<div class="solution dropdown admonition" id="mle-solution-3">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex2"> Exercise 72.2</a></p>
+<section id="s">
+<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
@@ -1457,15 +1445,13 @@ Number of iterations: 4
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully.
          Current function value: 0.473746
          Iterations 6
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                          Probit Regression Results                           
+                          Probit Regression Results                           
 ==============================================================================
 Dep. Variable:                      y   No. Observations:                    5
 Model:                         Probit   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Fri, 20 May 2022   Pseudo R-squ.:                  0.2961
-Time:                        02:00:44   Log-Likelihood:                -2.3687
+Date:                Thu, 09 Jun 2022   Pseudo R-squ.:                  0.2961
+Time:                        10:37:43   Log-Likelihood:                -2.3687
 converged:                       True   LL-Null:                       -3.3651
 Covariance Type:            nonrobust   LLR p-value:                    0.3692
 ==============================================================================
@@ -1480,6 +1466,7 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 </div>
 </div>
 </section>
+</div>
 </section>
 </section>
 

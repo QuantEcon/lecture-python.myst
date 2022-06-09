@@ -236,15 +236,18 @@ np.max(np.abs(v_greedy - σ_star(og.grid, og.α, og.β)))
 
 ## Exercises
 
-(ogfast_ex1)=
-### Exercise 1
+```{exercise}
+:label: ogfast_ex1
 
 Time how long it takes to iterate with the Bellman operator
 20 times, starting from initial condition $v(y) = u(y)$.
 
 Use the default parameterization.
+```
 
 ### Exercise 2
+```{exercise}
+:label: ogfast_ex2
 
 Modify the optimal growth model to use the CRRA utility specification.
 
@@ -258,13 +261,16 @@ Set `γ = 1.5` as the default value and maintaining other specifications.
 have to copy the class and change the relevant parameters and methods.)
 
 Compute an estimate of the optimal policy, plot it and compare visually with
-the same plot from the {ref}`analogous exercise <ogex1>` in the first optimal
+the same plot from the {ref}`analogous exercise <og_ex1>` in the first optimal
 growth lecture.
 
 Compare execution time as well.
+```
 
-(ogfast_ex3)=
-### Exercise 3
+
+```{exercise-start}
+:label: ogfast_ex3
+```
 
 In this exercise we return to the original log utility specification.
 
@@ -278,7 +284,6 @@ The next figure shows a simulation of 100 elements of this sequence for three
 different discount factors (and hence three different policies).
 
 ```{figure} /_static/lecture_specific/optgrowth/solution_og_ex2.png
-
 ```
 
 In each sequence, the initial condition is $y_0 = 0.1$.
@@ -293,9 +298,14 @@ Notice that more patient agents typically have higher wealth.
 
 Replicate the figure modulo randomness.
 
+```{exercise-end}
+```
+
 ## Solutions
 
-### Exercise 1
+```{solution-start} ogfast_ex1
+:class: dropdown
+```
 
 Let's set up the initial condition.
 
@@ -316,7 +326,13 @@ for i in range(20):
 Compared with our {ref}`timing <og_ex2>` for the non-compiled version of
 value function iteration, the JIT-compiled code is usually an order of magnitude faster.
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} ogfast_ex2
+:class: dropdown
+```
 
 Here's our CRRA version of `OptimalGrowthModel`:
 
@@ -351,11 +367,17 @@ plt.show()
 ```
 
 This matches the solution that we obtained in our non-jitted code,
-{ref}`in the exercises <ogex1>`.
+{ref}`in the exercises <og_ex1>`.
 
 Execution time is an order of magnitude faster.
 
-### Exercise 3
+```{solution-end}
+```
+
+
+```{solution-start} ogfast_ex3
+:class: dropdown
+```
 
 Here's one solution:
 
@@ -390,3 +412,5 @@ ax.legend(loc='lower right')
 plt.show()
 ```
 
+```{solution-end}
+```

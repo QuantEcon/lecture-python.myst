@@ -896,7 +896,8 @@ The level that maximizes steady state welfare is approximately 62.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: lm_ex1
 
 In the Lake Model, there is derived data such as $A$ which depends on primitives like $\alpha$
 and $\lambda$.
@@ -918,8 +919,11 @@ This is safer and means we don't need to create a fresh instance for every new p
 In this exercise, your task is to arrange the `LakeModel` class by using descriptors and decorators such as `@property`.
 
 (If you need to refresh your understanding of how these work, consult [this lecture](https://python-programming.quantecon.org/python_advanced_features.html).)
+```
 
-### Exercise 2
+
+```{exercise}
+:label: lm_ex2
 
 Consider an economy with an initial stock  of workers $N_0 = 100$ at the
 steady state level of employment in the baseline parameterization
@@ -942,8 +946,11 @@ How long does the economy take to converge to its new steady state?
 What is the new steady state level of employment?
 
 Note: it may be easier to use the class created in exercise 1 to help with changing variables.
+```
 
-### Exercise 3
+
+```{exercise}
+:label: lm_ex3
 
 Consider an economy with an initial stock  of workers $N_0 = 100$ at the
 steady state level of employment in the baseline parameterization.
@@ -955,10 +962,13 @@ Plot the transition dynamics of the unemployment and employment stocks for 50 pe
 Plot the transition dynamics for the rates.
 
 How long does the economy take to return to its original steady state?
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} lm_ex1
+:class: dropdown
+```
 
 ```{code-cell} python3
 class LakeModelModified:
@@ -1102,7 +1112,13 @@ class LakeModelModified:
             x = self.A_hat @ x
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} lm_ex2
+:class: dropdown
+```
 
 We begin by constructing the class containing the default parameters and assigning the
 steady state values to `x0`
@@ -1172,7 +1188,14 @@ plt.show()
 We see that it takes 20 periods for the economy to converge to its new
 steady state levels.
 
-### Exercise 3
+```{solution-end}
+```
+
+
+
+```{solution-start} lm_ex3
+:class: dropdown
+```
 
 This next exercise has the economy experiencing a boom in entrances to
 the labor market and then later returning to the original levels.
@@ -1258,3 +1281,5 @@ plt.tight_layout()
 plt.show()
 ```
 
+```{solution-end}
+```

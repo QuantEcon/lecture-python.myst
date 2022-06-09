@@ -706,7 +706,8 @@ ex6.simulate(x03, T=20)
 Please try to analyze some inventory sales smoothing problems using the
 `SmoothingExample` class.
 
-### Exercise 1
+```{exercise}
+:label: lqi_ex1
 
 Assume that the demand shock follows AR(2) process below:
 
@@ -726,16 +727,25 @@ $\epsilon_t$. Compute the stationary states $\bar{x}$ by
 simulating for a long period. Then try to add shocks with different
 magnitude to $\bar{\nu}_t$ and simulate paths. You should see how
 firms respond differently by staring at the production plans.
+```
 
-### Exercise 2
+
+```{exercise}
+:label: lqi_ex2
 
 Change parameters of $C(Q_t)$ and $d(I_t, S_t)$.
 
 1. Make production more costly, by setting $c_2=5$.
 1. Increase the cost of having inventories deviate from sales, by
    setting $d_2=5$.
+```
 
-### Solution 1
+
+## Solutions
+
+```{solution-start} lqi_ex1
+:class: dropdown
+```
 
 ```{code-cell} python3
 # set parameters
@@ -795,7 +805,13 @@ x_bar1[2] += 10
 ex1_no_noise.simulate(x_bar1, T=T)
 ```
 
-### Solution 2
+```{solution-end}
+```
+
+
+```{solution-start} lqi_ex2
+:class: dropdown
+```
 
 ```{code-cell} python3
 x0 = [0, 1, 0]
@@ -809,3 +825,5 @@ SmoothingExample(c2=5).simulate(x0)
 SmoothingExample(d2=5).simulate(x0)
 ```
 
+```{solution-end}
+```

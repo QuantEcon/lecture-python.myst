@@ -431,7 +431,8 @@ quantitative analysis.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: kp_ex1
 
 Simulate and plot 15 years of daily returns (consider each year as having 250
 working days) using the GARCH(1, 1) process in {eq}`garch11v`--{eq}`garch11r`.
@@ -443,16 +444,20 @@ Set $\alpha_0 = 0.00001, \alpha_1 = 0.1, \beta = 0.9$ and $\sigma_0 = 0$.
 Compare visually with the Nasdaq Composite Index returns {ref}`shown above <ndcode>`.
 
 While the time path differs, you should see bursts of high volatility.
+```
 
-### Exercise 2
+```{exercise}
+:label: kp_ex2
 
 In our discussion of firm dynamics, it was claimed that {eq}`firm_dynam` is more consistent with the empirical literature than Gibrat's law in {eq}`firm_dynam_gb`.
 
 (The empirical literature was reviewed immediately above {eq}`firm_dynam`.)
 
 In what sense is this true (or false)?
+```
 
-### Exercise 3
+```{exercise}
+:label: kp_ex3
 
 Consider an arbitrary Kesten process as given in {eq}`kesproc`.
 
@@ -469,8 +474,12 @@ only if $\mu < 0$.
 
 Obtain the value of $\alpha$ that makes the Kesten--Goldie conditions
 hold.
+```
 
-### Exercise 4
+
+```{exercise-start}
+:label: kp_ex4
+```
 
 One unrealistic aspect of the firm dynamics specified in {eq}`firm_dynam` is
 that it ignores entry and exit.
@@ -549,9 +558,14 @@ M = 1_000_000     # number of firms
 s_init = 1.0      # initial condition for each firm
 ```
 
+```{exercise-end}
+```
+
 ## Solutions
 
-### Exercise 1
+```{solution-start} kp_ex1
+:class: dropdown
+```
 
 Here is one solution:
 
@@ -582,7 +596,13 @@ ax.set(xlabel='time', ylabel='$\\sigma_t^2$')
 plt.show()
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} kp_ex2
+:class: dropdown
+```
 
 The empirical findings are that
 
@@ -618,7 +638,13 @@ Both of these decline with firm size $s$, consistent with the data.
 Moreover, the law of motion {eq}`firm_dynam_2` clearly approaches Gibrat's law
 {eq}`firm_dynam_gb` as $s_t$ gets large.
 
-### Exercise 3
+```{solution-end}
+```
+
+
+```{solution-start} kp_ex3
+:class: dropdown
+```
 
 Since $a_t$ has a density it is nonarithmetic.
 
@@ -643,7 +669,13 @@ $$
 
 Solving for $\alpha$ gives $\alpha = -2\mu / \sigma^2$.
 
-### Exercise 4
+```{solution-end}
+```
+
+
+```{solution-start} kp_ex4
+:class: dropdown
+```
 
 Here's one solution.  First we generate the observations:
 
@@ -697,3 +729,5 @@ plt.show()
 
 The plot produces a straight line, consistent with a Pareto tail.
 
+```{solution-end}
+```

@@ -70,6 +70,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
@@ -186,25 +187,11 @@ const thebe_selector_output = ".output, .cell_output"
   <a class="reference internal nav-link" href="#exercises">
    30.5. Exercises
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-1">
-     30.5.1. Exercise 1
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
    30.6. Solutions
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     30.6.1. Exercise 1
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -256,24 +243,24 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="shortest-paths">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">30. </span>Shortest Paths</a><a class="headerlink" href="#shortest-paths" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id1"><span class="section-number">30. </span>Shortest Paths</a><a class="headerlink" href="#shortest-paths" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#shortest-paths" id="id2">Shortest Paths</a></p>
+<li><p><a class="reference internal" href="#shortest-paths" id="id1">Shortest Paths</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id3">Overview</a></p></li>
-<li><p><a class="reference internal" href="#outline-of-the-problem" id="id4">Outline of the Problem</a></p></li>
-<li><p><a class="reference internal" href="#finding-least-cost-paths" id="id5">Finding Least-Cost Paths</a></p></li>
-<li><p><a class="reference internal" href="#solving-for-minimum-cost-to-go" id="id6">Solving for Minimum Cost-to-Go</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id7">Exercises</a></p></li>
-<li><p><a class="reference internal" href="#solutions" id="id8">Solutions</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p></li>
+<li><p><a class="reference internal" href="#outline-of-the-problem" id="id3">Outline of the Problem</a></p></li>
+<li><p><a class="reference internal" href="#finding-least-cost-paths" id="id4">Finding Least-Cost Paths</a></p></li>
+<li><p><a class="reference internal" href="#solving-for-minimum-cost-to-go" id="id5">Solving for Minimum Cost-to-Go</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id6">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#solutions" id="id7">Solutions</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">30.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id2"><span class="section-number">30.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>The shortest path problem is a <a class="reference external" href="https://en.wikipedia.org/wiki/Shortest_path">classic problem</a> in mathematics and computer science with applications in</p>
 <ul class="simple">
 <li><p>Economics (sequential decision making, analysis of social networks, etc.)</p></li>
@@ -299,7 +286,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </section>
 <section id="outline-of-the-problem">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">30.2. </span>Outline of the Problem</a><a class="headerlink" href="#outline-of-the-problem" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">30.2. </span>Outline of the Problem</a><a class="headerlink" href="#outline-of-the-problem" title="Permalink to this headline">¶</a></h2>
 <p>The shortest path problem is one of finding how to traverse a <a class="reference external" href="https://en.wikipedia.org/wiki/Graph_%28mathematics%29">graph</a> from one specified node to another at minimum cost.</p>
 <p>Consider the following graph</p>
 <figure class="align-default">
@@ -332,7 +319,7 @@ const thebe_selector_output = ".output, .cell_output"
 </figure>
 </section>
 <section id="finding-least-cost-paths">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">30.3. </span>Finding Least-Cost Paths</a><a class="headerlink" href="#finding-least-cost-paths" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">30.3. </span>Finding Least-Cost Paths</a><a class="headerlink" href="#finding-least-cost-paths" title="Permalink to this headline">¶</a></h2>
 <p>For large graphs, we need a systematic solution.</p>
 <p>Let <span class="math notranslate nohighlight">\(J(v)\)</span> denote the minimum cost-to-go from node <span class="math notranslate nohighlight">\(v\)</span>, understood as the total cost from <span class="math notranslate nohighlight">\(v\)</span> if we take the best route.</p>
 <p>Suppose that we know <span class="math notranslate nohighlight">\(J(v)\)</span> for each node <span class="math notranslate nohighlight">\(v\)</span>, as shown below for the graph from the preceding example</p>
@@ -364,7 +351,7 @@ satisfy.</p>
 <p>What we want to do now is use this restriction to compute <span class="math notranslate nohighlight">\(J\)</span>.</p>
 </section>
 <section id="solving-for-minimum-cost-to-go">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">30.4. </span>Solving for Minimum Cost-to-Go</a><a class="headerlink" href="#solving-for-minimum-cost-to-go" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">30.4. </span>Solving for Minimum Cost-to-Go</a><a class="headerlink" href="#solving-for-minimum-cost-to-go" title="Permalink to this headline">¶</a></h2>
 <p>Let’s look at an algorithm for computing <span class="math notranslate nohighlight">\(J\)</span> and then think about how to
 implement it.</p>
 <section id="the-algorithm">
@@ -470,9 +457,11 @@ Q(1, 2)
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">30.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
-<section id="exercise-1">
-<span id="short-path-ex1"></span><h3><span class="section-number">30.5.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">30.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="exercise admonition" id="short_path_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 30.1 </span></p>
+<section id="exercise-content">
 <p>The text below describes a weighted directed graph.</p>
 <p>The line <code class="docutils literal notranslate"><span class="pre">node0,</span> <span class="pre">node1</span> <span class="pre">0.04,</span> <span class="pre">node8</span> <span class="pre">11.11,</span> <span class="pre">node14</span> <span class="pre">72.21</span></code> means that from node0 we can go to</p>
 <ul class="simple">
@@ -598,12 +587,15 @@ integers, so consider replacing <code class="docutils literal notranslate"><span
 </div>
 </div>
 </section>
+</div>
 </section>
 <section id="solutions">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">30.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<section id="id1">
-<h3><span class="section-number">30.6.1. </span>Exercise 1<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>First let’s write a function that reads in the graph data above and builds a distance matrix.</p>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">30.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<div class="solution dropdown admonition" id="short_path-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#short_path_ex1"> Exercise 30.1</a></p>
+<section id="s">
+<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>First let’s write a function that reads in the graph data above and builds a distance matrix.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_nodes</span> <span class="o">=</span> <span class="mi">100</span>
@@ -744,6 +736,7 @@ Cost:  160.55000000000007
 </div>
 </div>
 </section>
+</div>
 </section>
 </section>
 

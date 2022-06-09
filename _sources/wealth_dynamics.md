@@ -529,7 +529,8 @@ We see that greater volatility has the effect of increasing inequality in this m
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: wd_ex1
 
 For a wealth or income distribution with Pareto tail, a higher tail index suggests lower inequality.
 
@@ -547,8 +548,11 @@ Use sample of size 1,000 for each $a$ and the sampling method for generating Par
 
 To the extent that you can, interpret the monotone relationship between the
 Gini index and $a$.
+```
 
-### Exercise 2
+```{exercise-start}
+:label: wd_ex2
+```
 
 The wealth process {eq}`wealth_dynam_ah` is similar to a {doc}`Kesten process <kesten_processes>`.
 
@@ -580,12 +584,17 @@ T = 500                                      # shift forward T periods
 z_0 = wdy.z_mean
 ```
 
+```{exercise-end}
+```
+
 ## Solutions
 
 Here is one solution, which produces a good match between theory and
 simulation.
 
-### Exercise 1
+```{solution-start} wd_ex1
+:class: dropdown
+```
 
 ```{code-cell} ipython3
 a_vals = np.linspace(1, 10, 25)  # Pareto tail index
@@ -609,7 +618,13 @@ This means less extreme values for wealth and hence more equality.
 
 More equality translates to a lower Gini index.
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} wd_ex2
+:class: dropdown
+```
 
 First let's generate the distribution:
 
@@ -635,3 +650,5 @@ ax.set_ylabel("log size")
 plt.show()
 ```
 
+```{solution-end}
+```

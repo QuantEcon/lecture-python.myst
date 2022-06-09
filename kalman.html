@@ -70,6 +70,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
@@ -191,50 +192,11 @@ const thebe_selector_output = ".output, .cell_output"
   <a class="reference internal nav-link" href="#exercises">
    29.5. Exercises
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-1">
-     29.5.1. Exercise 1
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-2">
-     29.5.2. Exercise 2
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-3">
-     29.5.3. Exercise 3
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-4">
-     29.5.4. Exercise 4
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
    29.6. Solutions
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id10">
-     29.6.1. Exercise 1
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id11">
-     29.6.2. Exercise 2
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id12">
-     29.6.3. Exercise 3
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -286,18 +248,18 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="a-first-look-at-the-kalman-filter">
-<h1><a class="toc-backref" href="#id14"><span class="section-number">29. </span>A First Look at the Kalman Filter</a><a class="headerlink" href="#a-first-look-at-the-kalman-filter" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id11"><span class="section-number">29. </span>A First Look at the Kalman Filter</a><a class="headerlink" href="#a-first-look-at-the-kalman-filter" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#a-first-look-at-the-kalman-filter" id="id14">A First Look at the Kalman Filter</a></p>
+<li><p><a class="reference internal" href="#a-first-look-at-the-kalman-filter" id="id11">A First Look at the Kalman Filter</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id15">Overview</a></p></li>
-<li><p><a class="reference internal" href="#the-basic-idea" id="id16">The Basic Idea</a></p></li>
-<li><p><a class="reference internal" href="#convergence" id="id17">Convergence</a></p></li>
-<li><p><a class="reference internal" href="#implementation" id="id18">Implementation</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id19">Exercises</a></p></li>
-<li><p><a class="reference internal" href="#solutions" id="id20">Solutions</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id12">Overview</a></p></li>
+<li><p><a class="reference internal" href="#the-basic-idea" id="id13">The Basic Idea</a></p></li>
+<li><p><a class="reference internal" href="#convergence" id="id14">Convergence</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id15">Implementation</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id16">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#solutions" id="id17">Solutions</a></p></li>
 </ul>
 </li>
 </ul>
@@ -431,16 +393,43 @@ Solving environment: /
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># All requested packages already installed.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>## Package Plan ##
+
+  environment location: /usr/share/miniconda3/envs/quantecon
+
+  added / updated specs:
+    - quantecon
+
+
+The following packages will be SUPERSEDED by a higher-priority channel:
+
+  certifi            conda-forge::certifi-2022.5.18.1-py39~ --&gt; pkgs/main::certifi-2022.5.18.1-py39h06a4308_0
+
+
+Preparing transaction: / 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
+Verifying transaction: \ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
+Executing transaction: / 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
 </pre></div>
 </div>
 </div>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">29.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">29.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture provides a simple and intuitive introduction to the Kalman filter, for those who either</p>
 <ul class="simple">
 <li><p>have heard of the Kalman filter but don’t know how it works, or</p></li>
@@ -473,7 +462,7 @@ Solving environment: /
 </div>
 </section>
 <section id="the-basic-idea">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">29.2. </span>The Basic Idea</a><a class="headerlink" href="#the-basic-idea" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">29.2. </span>The Basic Idea</a><a class="headerlink" href="#the-basic-idea" title="Permalink to this headline">¶</a></h2>
 <p>The Kalman filter has many applications in economics, but for now
 let’s pretend that we are rocket scientists.</p>
 <p>A missile has been launched from country Y and our mission is to track it.</p>
@@ -815,7 +804,7 @@ as the current prior.</p>
 </section>
 </section>
 <section id="convergence">
-<span id="kalman-convergence"></span><h2><a class="toc-backref" href="#id17"><span class="section-number">29.3. </span>Convergence</a><a class="headerlink" href="#convergence" title="Permalink to this headline">¶</a></h2>
+<span id="kalman-convergence"></span><h2><a class="toc-backref" href="#id14"><span class="section-number">29.3. </span>Convergence</a><a class="headerlink" href="#convergence" title="Permalink to this headline">¶</a></h2>
 <p>The matrix <span class="math notranslate nohighlight">\(\Sigma_t\)</span> is a measure of the uncertainty of our prediction <span class="math notranslate nohighlight">\(\hat x_t\)</span> of <span class="math notranslate nohighlight">\(x_t\)</span>.</p>
 <p>Apart from special cases, this uncertainty will never be fully resolved, regardless of how much time elapses.</p>
 <p>One reason is that our prediction <span class="math notranslate nohighlight">\(\hat x_t\)</span> is made based on information available at <span class="math notranslate nohighlight">\(t-1\)</span>, not <span class="math notranslate nohighlight">\(t\)</span>.</p>
@@ -837,7 +826,7 @@ as the current prior.</p>
 <p>In this case, for any initial choice of <span class="math notranslate nohighlight">\(\Sigma_0\)</span> that is both non-negative and symmetric, the sequence <span class="math notranslate nohighlight">\(\{\Sigma_t\}\)</span> in <a class="reference internal" href="#equation-kalman-sdy">(29.8)</a> converges to a non-negative symmetric matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> that solves <a class="reference internal" href="#equation-kalman-dare">(29.9)</a>.</p>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id18"><span class="section-number">29.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">29.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p id="index-2">The class <code class="docutils literal notranslate"><span class="pre">Kalman</span></code> from the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a> package implements the Kalman filter</p>
 <ul class="simple">
 <li><p>Instance data consists of:</p>
@@ -876,9 +865,11 @@ Q := CC' \quad \text{and} \quad R := HH'
 <p>You can view the program <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/kalman.py">on GitHub</a>.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id19"><span class="section-number">29.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
-<section id="exercise-1">
-<span id="kalman-ex1"></span><h3><span class="section-number">29.5.1. </span>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">29.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<div class="exercise admonition" id="kalman_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 29.1 </span></p>
+<section id="exercise-content">
 <p>Consider the following simple application of the Kalman filter, loosely based
 on <span id="id8">[<a class="reference internal" href="zreferences.html#id179" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 2.9.2.</p>
 <p>Suppose that</p>
@@ -896,8 +887,11 @@ on <span id="id8">[<a class="reference internal" href="zreferences.html#id179" t
 <img alt="_images/kl_ex1_fig.png" src="_images/kl_ex1_fig.png" />
 </figure>
 </section>
-<section id="exercise-2">
-<span id="kalman-ex2"></span><h3><span class="section-number">29.5.2. </span>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="exercise admonition" id="kalman_ex2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 29.2 </span></p>
+<section id="exercise-content">
 <p>The preceding figure gives some support to the idea that probability mass
 converges to <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p>To get a better idea, choose a small <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> and calculate</p>
@@ -912,8 +906,11 @@ z_t := 1 - \int_{\theta - \epsilon}^{\theta + \epsilon} p_t(x) dx
 <img alt="_images/kl_ex2_fig.png" src="_images/kl_ex2_fig.png" />
 </figure>
 </section>
-<section id="exercise-3">
-<span id="kalman-ex3"></span><h3><span class="section-number">29.5.3. </span>Exercise 3<a class="headerlink" href="#exercise-3" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="exercise admonition" id="kalman_ex3">
+
+<p class="admonition-title"><span class="caption-number">Exercise 29.3 </span></p>
+<section id="exercise-content">
 <p>As discussed <a class="reference internal" href="#kalman-convergence"><span class="std std-ref">above</span></a>, if the shock sequence <span class="math notranslate nohighlight">\(\{w_t\}\)</span> is not degenerate, then it is not in general possible to predict <span class="math notranslate nohighlight">\(x_t\)</span> without error at time <span class="math notranslate nohighlight">\(t-1\)</span> (and this would be the case even if we could observe <span class="math notranslate nohighlight">\(x_{t-1}\)</span>).</p>
 <p>Let’s now compare the prediction <span class="math notranslate nohighlight">\(\hat x_t\)</span> made by the Kalman filter
 against a competitor who <strong>is</strong> allowed to observe <span class="math notranslate nohighlight">\(x_{t-1}\)</span>.</p>
@@ -958,18 +955,24 @@ A
 </figure>
 <p>Observe how, after an initial learning period, the Kalman filter performs quite well, even relative to the competitor who predicts optimally with knowledge of the latent state.</p>
 </section>
-<section id="exercise-4">
-<span id="kalman-ex4"></span><h3><span class="section-number">29.5.4. </span>Exercise 4<a class="headerlink" href="#exercise-4" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="exercise admonition" id="kalman_ex4">
+
+<p class="admonition-title"><span class="caption-number">Exercise 29.4 </span></p>
+<section id="exercise-content">
 <p>Try varying the coefficient <span class="math notranslate nohighlight">\(0.3\)</span> in <span class="math notranslate nohighlight">\(Q = 0.3 I\)</span> up and down.</p>
 <p>Observe how the diagonal values in the stationary solution <span class="math notranslate nohighlight">\(\Sigma\)</span> (see <a class="reference internal" href="#equation-kalman-dare">(29.9)</a>) increase and decrease in line with this coefficient.</p>
 <p>The interpretation is that more randomness in the law of motion for <span class="math notranslate nohighlight">\(x_t\)</span> causes more (permanent) uncertainty in prediction.</p>
 </section>
+</div>
 </section>
 <section id="solutions">
-<h2><a class="toc-backref" href="#id20"><span class="section-number">29.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<section id="id10">
-<h3><span class="section-number">29.6.1. </span>Exercise 1<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
+<h2><a class="toc-backref" href="#id17"><span class="section-number">29.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<div class="solution dropdown admonition" id="kalman-solution-4">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#kalman_ex1"> Exercise 29.1</a></p>
+<section id="s">
+<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameters</span>
 <span class="n">θ</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Constant value of state x_t</span>
@@ -1007,9 +1010,12 @@ A
 </div>
 </div>
 </section>
-<section id="id11">
-<h3><span class="section-number">29.6.2. </span>Exercise 2<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
+</div>
+<div class="solution dropdown admonition" id="kalman-solution-5">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#kalman_ex2"> Exercise 29.2</a></p>
+<section id="s">
+<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ϵ</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="n">θ</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Constant value of state x_t</span>
@@ -1048,9 +1054,12 @@ A
 </div>
 </div>
 </section>
-<section id="id12">
-<h3><span class="section-number">29.6.3. </span>Exercise 3<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
+</div>
+<div class="solution dropdown admonition" id="kalman-solution-6">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#kalman_ex3"> Exercise 29.3</a></p>
+<section id="s">
+<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define A, C, G, H</span>
 <span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -1114,13 +1123,14 @@ Stationary prediction error variance:
 <img alt="_images/kalman_17_1.png" src="_images/kalman_17_1.png" />
 </div>
 </div>
+</section>
+</div>
 <hr class="footnotes docutils" />
 <dl class="footnote brackets">
 <dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id3">1</a></span></dt>
-<dd><p>See, for example, page 93 of <span id="id13">[<a class="reference internal" href="zreferences.html#id144" title="C. M. Bishop. Pattern Recognition and Machine Learning. Springer, 2006.">Bis06</a>]</span>. To get from his expressions to the ones used above, you will also need to apply the <a class="reference external" href="https://en.wikipedia.org/wiki/Woodbury_matrix_identity">Woodbury matrix identity</a>.</p>
+<dd><p>See, for example, page 93 of <span id="id10">[<a class="reference internal" href="zreferences.html#id144" title="C. M. Bishop. Pattern Recognition and Machine Learning. Springer, 2006.">Bis06</a>]</span>. To get from his expressions to the ones used above, you will also need to apply the <a class="reference external" href="https://en.wikipedia.org/wiki/Woodbury_matrix_identity">Woodbury matrix identity</a>.</p>
 </dd>
 </dl>
-</section>
 </section>
 </section>
 

@@ -777,7 +777,9 @@ example notebook can be found
 
 ## Exercises
 
-### Exercise 1
+
+```{exercise}
+:label: mle_ex1
 
 Suppose we wanted to estimate the probability of an event $y_i$
 occurring, given some observations.
@@ -805,8 +807,12 @@ Hessian.
 
 The `scipy` module `stats.norm` contains the functions needed to
 compute the cmf and pmf of the normal distribution.
+```
 
-### Exercise 2
+
+```{exercise-start}
+:label: mle_ex2
+```
 
 Use the following dataset and initial values of $\boldsymbol{\beta}$ to
 estimate the MLE with the Newton-Raphson algorithm developed earlier in
@@ -850,9 +856,14 @@ Note that the simple Newton-Raphson algorithm developed in this lecture
 is very sensitive to initial values, and therefore you may fail to
 achieve convergence with different starting values.
 
+```{exercise-end}
+```
+
 ## Solutions
 
-### Exercise 1
+```{solution-start} mle_ex1
+:class: dropdown
+```
 
 The log-likelihood can be written as
 
@@ -930,7 +941,13 @@ class ProbitRegression:
         return -(ϕ * (y * a + (1 - y) * b) * X.T) @ X
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} mle_ex2
+:class: dropdown
+```
 
 ```{code-cell} python3
 X = np.array([[1, 2, 4],
@@ -957,3 +974,5 @@ newton_raphson(prob)
 print(Probit(y, X).fit().summary())
 ```
 
+```{solution-end}
+```

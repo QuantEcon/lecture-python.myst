@@ -482,7 +482,8 @@ This is due to
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: cen_ex1
 
 Try the following modification of the problem.
 
@@ -500,15 +501,22 @@ where $\alpha$ is a parameter satisfying $0 < \alpha < 1$.
 Make the required changes to value function iteration code and plot the value and policy functions.
 
 Try to reuse as much code as possible.
+```
 
-### Exercise 2
+
+```{exercise}
+:label: cen_ex2
 
 Implement time iteration, returning to the original case (i.e., dropping the
 modification in the exercise above).
+```
+
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} cen_ex1
+:class: dropdown
+```
 
 We need to create a class to hold our primitives and return the right hand side of the Bellman equation.
 
@@ -582,7 +590,13 @@ plt.show()
 
 Consumption is higher when $\alpha < 1$ because, at least for large $x$, the return to savings is lower.
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} cen_ex2
+:class: dropdown
+```
 
 Here's one way to implement time iteration.
 
@@ -670,3 +684,5 @@ ax.legend(fontsize=12)
 plt.show()
 ```
 
+```{solution-end}
+```

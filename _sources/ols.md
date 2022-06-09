@@ -556,7 +556,8 @@ If you are familiar with R, you may want to use the [formula interface](http://w
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: ols_ex1
 
 In the lecture, we think the original model suffers from endogeneity
 bias due to the likely effect income has on institutional development.
@@ -596,8 +597,11 @@ endogenous.
 
 Using the above information, estimate a Hausman test and interpret your
 results.
+```
 
-### Exercise 2
+
+```{exercise}
+:label: ols_ex2
 
 The OLS parameter $\beta$ can also be estimated using matrix
 algebra and `numpy` (you may need to review the
@@ -634,10 +638,13 @@ $$
 Using the above information, compute $\hat{\beta}$ from model 1
 using `numpy` - your results should be the same as those in the
 `statsmodels` output from earlier in the lecture.
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} ols_ex1
+:class: dropdown
+```
 
 ```{code-cell} python3
 # Load in data
@@ -665,7 +672,13 @@ print(reg2.summary())
 The output shows that the coefficient on the residuals is statistically
 significant, indicating $avexpr_i$ is endogenous.
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} ols_ex2
+:class: dropdown
+```
 
 ```{code-cell} python3
 # Load in data
@@ -691,3 +704,5 @@ It is also possible to use `np.linalg.inv(X.T @ X) @ X.T @ y` to solve
 for $\beta$, however `.solve()` is preferred as it involves fewer
 computations.
 
+```{solution-end}
+```

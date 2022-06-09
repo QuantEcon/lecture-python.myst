@@ -416,15 +416,20 @@ This is because the value of waiting increases with unemployment compensation.
 ## Exercises
 
 ### Exercise 1
+```{exercise}
+:label: mc_ex1
 
 Investigate how mean unemployment duration varies with the discount factor $\beta$.
 
 * What is your prior expectation?
 * Do your results match up?
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} mc_ex1
+:class: dropdown
+```
 
 Here is one solution.
 
@@ -447,3 +452,5 @@ plt.show()
 
 The figure shows that more patient individuals tend to wait longer before accepting an offer.
 
+```{solution-end}
+```

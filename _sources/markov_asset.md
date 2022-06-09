@@ -309,7 +309,7 @@ You can think of
 
 The next figure shows a simulation, where
 
-* $\{X_t\}$ evolves as a discretized AR1 process produced using {ref}`Tauchen's method <mc_ex3>`.
+* $\{X_t\}$ evolves as a discretized AR1 process produced using {ref}`Tauchen's method <fm_ex3>`.
 * $g_t = \exp(X_t)$, so that $\ln g_t = X_t$ is the growth rate.
 
 ```{code-cell} ipython
@@ -397,7 +397,7 @@ v = (I - \beta K)^{-1} \beta K{\mathbb 1}
 
 Let's calculate and plot the price-dividend ratio at some parameters.
 
-As before, we'll generate $\{X_t\}$  as a {ref}`discretized AR1 process <mc_ex3>` and set $g_t = \exp(X_t)$.
+As before, we'll generate $\{X_t\}$  as a {ref}`discretized AR1 process <fm_ex3>` and set $g_t = \exp(X_t)$.
 
 Here's the code, including a test of the spectral radius condition
 
@@ -915,7 +915,8 @@ Then $m_1 = \beta M$, and $m_{j+1} = M m_j$ for $j \geq 1$.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: ma_ex1
 
 In the lecture, we considered **ex-dividend assets**.
 
@@ -929,8 +930,12 @@ price of a cum-dividend asset?
 
 With a growing, non-random dividend process $d_t = g d_t$ where $0 < g \beta < 1$,
 what is the equilibrium price of a cum-dividend asset?
+```
 
-### Exercise 2
+
+```{exercise-start}
+:label: ma_ex2
+```
 
 Consider the following primitives
 
@@ -953,7 +958,11 @@ Do the same for
 * the price of the risk-free consol when $\zeta = 1$
 * the call option on the consol when $\zeta = 1$ and $p_S = 150.0$
 
-### Exercise 3
+```{exercise-end}
+```
+
+```{exercise}
+:label: ma_ex3
 
 Let's consider finite horizon call options, which are more common than 
 infinite horizon ones.
@@ -991,13 +1000,15 @@ $$
 
 Write a function that computes $w_k$ for any given $k$.
 
-Compute the value of the option with `k = 5` and `k = 25` using parameter values as in Exercise 1.
+Compute the value of the option with `k = 5` and `k = 25` using parameter values as in {ref}`ma_ex1`.
 
 Is one higher than the other?  Can you give intuition?
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution} ma_ex1
+:class: dropdown
 
 For a cum-dividend asset, the basic risk-neutral asset pricing equation is
 
@@ -1017,8 +1028,12 @@ With a growing, non-random dividend process, the equilibrium price is
 $$
 p_t = \frac{1}{1 - \beta g} d_t
 $$
+```
 
-### Exercise 2
+
+```{solution-start} ma_ex2
+:class: dropdown
+```
 
 First, let's enter the parameters:
 
@@ -1066,7 +1081,13 @@ ax.legend()
 plt.show()
 ```
 
-### Exercise 3
+```{solution-end}
+```
+
+
+```{solution-start} ma_ex3
+:class: dropdown
+```
 
 Here's a suitable function:
 
@@ -1109,3 +1130,5 @@ Not surprisingly,  options with larger $k$ are worth more.
 This is because an owner has a longer  horizon over which 
  the option can be exercised.
 
+```{solution-end}
+```

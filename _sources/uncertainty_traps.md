@@ -322,7 +322,6 @@ To get a clearer idea of the dynamics, let's look at all the main time series
 at once, for a given set of shocks
 
 ```{figure} /_static/lecture_specific/uncertainty_traps/uncertainty_traps_sim.png
-
 ```
 
 Notice how the traps only take hold after a sequence of bad draws for the fundamental.
@@ -331,8 +330,8 @@ Thus, the model gives us a *propagation mechanism* that maps bad random draws in
 
 ## Exercises
 
-(uncertainty_traps_ex1)=
-### Exercise 1
+```{exercise}
+:label: uncertainty_traps_ex1
 
 Fill in the details behind {eq}`update_mean` and {eq}`update_prec` based on
 the following standard result (see, e.g., p. 24 of {cite}`young2005`).
@@ -354,16 +353,21 @@ $$
 \quad \text{and} \quad
 \gamma_0 = \gamma + M \gamma_x
 $$
+```
 
-### Exercise 2
+
+```{exercise}
+:label: uncertainty_traps_ex2
 
 Modulo randomness, replicate the simulation figures shown above.
 
 * Use the parameter values listed as defaults in the __init__ method of the UncertaintyTrapEcon class.
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution} uncertainty_traps_ex1
+:class: dropdown
 
 This exercise asked you to validate the laws of motion for
 $\gamma$ and $\mu$ given in the lecture, based on the stated
@@ -387,8 +391,12 @@ If we take a random variable $\theta$ with this distribution and
 then evaluate the distribution of $\rho \theta + \sigma_\theta w$
 where $w$ is independent and standard normal, we get the
 expressions for $\mu'$ and $\gamma'$ given in the lecture.
+```
 
-### Exercise 2
+
+```{solution-start} uncertainty_traps_ex2
+:class: dropdown
+```
 
 First, let's replicate the plot that illustrates the law of motion for
 precision, which is
@@ -509,3 +517,5 @@ series.
 distributions for the shocks, but this is a big exercise since it takes
 us outside the world of the standard Kalman filter)
 
+```{solution-end}
+```

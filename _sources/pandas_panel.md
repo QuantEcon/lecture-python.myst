@@ -492,7 +492,9 @@ extends pandas to N-dimensional data structures.
 
 ## Exercises
 
-### Exercise 1
+```{exercise-start}
+:label: pp_ex1
+```
 
 In these exercises, you'll work with a dataset of employment rates
 in Europe by age and sex from [Eurostat](http://ec.europa.eu/eurostat/data/database).
@@ -511,7 +513,12 @@ Start off by exploring the dataframe and the variables available in the
 
 Write a program that quickly returns all values in the `MultiIndex`.
 
-### Exercise 2
+```{exercise-end}
+```
+
+
+```{exercise}
+:label: pp_ex2
 
 Filter the above dataframe to only include employment as a percentage of
 'active population'.
@@ -520,10 +527,13 @@ Create a grouped boxplot using `seaborn` of employment rates in 2015
 by age group and sex.
 
 **Hint:** `GEO` includes both areas and countries.
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} pp_ex1
+:class: dropdown
+```
 
 ```{code-cell} python3
 employ = pd.read_csv(url3)
@@ -548,7 +558,13 @@ for name in employ.columns.names:
     print(name, employ.columns.get_level_values(name).unique())
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} pp_ex2
+:class: dropdown
+```
 
 To easily filter by country, swap `GEO` to the top level and sort the
 `MultiIndex`
@@ -597,3 +613,5 @@ plt.legend(bbox_to_anchor=(1,0.5))
 plt.show()
 ```
 
+```{solution-end}
+```

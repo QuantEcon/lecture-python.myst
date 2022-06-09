@@ -70,6 +70,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
@@ -306,15 +307,23 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 <li><p>As <span class="math notranslate nohighlight">\(I\)</span> becomes large, in what   fraction of  <span class="math notranslate nohighlight">\(I\)</span> independent  draws of  <span class="math notranslate nohighlight">\(n\)</span> coin flips should we anticipate  <span class="math notranslate nohighlight">\(k\)</span> heads to occur?</p></li>
 </ul>
 <p>As usual, a law of large numbers justifies this answer.</p>
-<p><strong>Exercise 1:</strong></p>
+<div class="exercise admonition" id="pm_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 8.1 </span></p>
+<section id="exercise-content">
 <ol class="simple">
 <li><p>Please write a Python class to compute <span class="math notranslate nohighlight">\(f_k^I\)</span></p></li>
 <li><p>Please use your code to compute <span class="math notranslate nohighlight">\(f_k^I, k = 0, \ldots , n\)</span> and compare them to
 <span class="math notranslate nohighlight">\(\textrm{Prob}(X =  k | \theta)\)</span> for various values of <span class="math notranslate nohighlight">\(\theta, n\)</span> and <span class="math notranslate nohighlight">\(I\)</span></p></li>
 <li><p>With  the Law of Large numbers in mind, use your code to say something</p></li>
 </ol>
-<p><strong>Answer Code:</strong></p>
-<div class="cell docutils container">
+</section>
+</div>
+<div class="solution admonition" id="prob_meaning-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex1"> Exercise 8.1</a></p>
+<section id="s">
+<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">frequentist</span><span class="p">:</span>
 
@@ -393,29 +402,31 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 | 1  | 1.6271660538000033e-09 |     0.0     |
 | 2  | 3.606884752589999e-08  |     0.0     |
 | 3  |  5.04963865362601e-07  |     0.0     |
-| 4  | 5.007558331512455e-06  |    3e-06    |
-| 5  | 3.7389768875293014e-05 |   3.2e-05   |
-| 6  | 0.00021810698510587546 |   0.000234  |
-| 7  |  0.001017832597160754  |    0.001    |
-| 8  |  0.003859281930901185  |   0.003829  |
-| 9  |  0.012006654896137007  |   0.011835  |
-| 10 |  0.030817080900085007  |   0.030804  |
-| 11 |   0.065369565545635    |   0.065398  |
-| 12 |  0.11439673970486108   |   0.114255  |
-| 13 |   0.1642619852172365   |   0.164393  |
-| 14 |  0.19163898275344246   |   0.191332  |
-| 15 |  0.17886305056987967   |   0.179066  |
-| 16 |   0.1304209743738704   |   0.130561  |
-| 17 |  0.07160367220526209   |   0.071674  |
-| 18 |  0.027845872524268643  |   0.02792   |
-| 19 |  0.006839337111223871  |   0.006857  |
-| 20 | 0.0007979226629761189  |   0.000807  |
+| 4  | 5.007558331512455e-06  |    2e-06    |
+| 5  | 3.7389768875293014e-05 |   4.6e-05   |
+| 6  | 0.00021810698510587546 |   0.00021   |
+| 7  |  0.001017832597160754  |   0.001046  |
+| 8  |  0.003859281930901185  |   0.003886  |
+| 9  |  0.012006654896137007  |   0.011916  |
+| 10 |  0.030817080900085007  |   0.031031  |
+| 11 |   0.065369565545635    |   0.065449  |
+| 12 |  0.11439673970486108   |   0.114313  |
+| 13 |   0.1642619852172365   |   0.164306  |
+| 14 |  0.19163898275344246   |   0.19148   |
+| 15 |  0.17886305056987967   |   0.179266  |
+| 16 |   0.1304209743738704   |   0.130072  |
+| 17 |  0.07160367220526209   |   0.071417  |
+| 18 |  0.027845872524268643  |   0.027842  |
+| 19 |  0.006839337111223871  |   0.006903  |
+| 20 | 0.0007979226629761189  |   0.000815  |
 +----+------------------------+-------------+
 </pre></div>
 </div>
 </div>
 </div>
 <p>From the table above, can you see the law of large numbers at work?</p>
+</section>
+</div>
 <p>Let’s do some more calculations.</p>
 <p><strong>Comparison with different <span class="math notranslate nohighlight">\(\theta\)</span></strong></p>
 <p>Now we fix</p>
@@ -457,7 +468,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_meaning_10_0.png" src="_images/prob_meaning_10_0.png" />
+<img alt="_images/prob_meaning_9_0.png" src="_images/prob_meaning_9_0.png" />
 </div>
 </div>
 <p><strong>Comparison with different <span class="math notranslate nohighlight">\(n\)</span></strong></p>
@@ -496,7 +507,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_meaning_13_0.png" src="_images/prob_meaning_13_0.png" />
+<img alt="_images/prob_meaning_12_0.png" src="_images/prob_meaning_12_0.png" />
 </div>
 </div>
 <p><strong>Comparison with different <span class="math notranslate nohighlight">\(I\)</span></strong></p>
@@ -535,7 +546,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_meaning_16_0.png" src="_images/prob_meaning_16_0.png" />
+<img alt="_images/prob_meaning_15_0.png" src="_images/prob_meaning_15_0.png" />
 </div>
 </div>
 <p>From the above graphs, we can see that <strong><span class="math notranslate nohighlight">\(I\)</span>, the number of independent sequences,</strong> plays an important role.</p>
@@ -574,7 +585,10 @@ P(\theta) = \frac{\theta^{\alpha-1}(1-\theta)^{\beta -1}}{B(\alpha, \beta)}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(B(\alpha, \beta)\)</span> is a  <strong>beta function</strong> , so that <span class="math notranslate nohighlight">\(P(\theta)\)</span> is
 a <strong>beta distribution</strong> with parameters <span class="math notranslate nohighlight">\(\alpha, \beta\)</span>.</p>
-<p><strong>Exercise 2:</strong></p>
+<div class="exercise admonition" id="pm_ex2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 8.2 </span></p>
+<section id="exercise-content">
 <p><strong>a)</strong>  Please write down the <strong>likelihood function</strong> for a sample of length <span class="math notranslate nohighlight">\(n\)</span> from a binomial distribution with parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p><strong>b)</strong> Please write down the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of the coin.</p>
 <p><strong>c)</strong> Please pretend  that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span> and that someone who doesn’t know this has a beta prior distribution with parameters  with <span class="math notranslate nohighlight">\(\beta = \alpha = .5\)</span>.</p>
@@ -584,8 +598,13 @@ a <strong>beta distribution</strong> with parameters <span class="math notransla
 <p><strong>g)</strong> Please tell what question a Bayesian coverage interval answers.</p>
 <p><strong>h)</strong> Please compute the Posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> for various values of sample size <span class="math notranslate nohighlight">\(n\)</span>.</p>
 <p><strong>i)</strong> Please use your Python class to study what happens to the posterior distribution as <span class="math notranslate nohighlight">\(n \rightarrow + \infty\)</span>, again assuming that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span>, though it is unknown to the person doing the updating via Bayes’ Law.</p>
-<p><strong>Answer:</strong></p>
-<p><strong>a)</strong> Please write down the <strong>likelihood function</strong> and the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of our coin.</p>
+</section>
+</div>
+<div class="solution admonition" id="prob_meaning-solution-3">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex2"> Exercise 8.2</a></p>
+<section id="s">
+<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p><strong>a)</strong> Please write down the <strong>likelihood function</strong> and the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of our coin.</p>
 <p>Suppose the outcome is <strong>Y</strong>.</p>
 <p>The likelihood function is:</p>
 <div class="math notranslate nohighlight">
@@ -708,7 +727,7 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_meaning_20_0.png" src="_images/prob_meaning_20_0.png" />
+<img alt="_images/prob_meaning_19_0.png" src="_images/prob_meaning_19_0.png" />
 </div>
 </div>
 <p><strong>f)</strong> For various <span class="math notranslate nohighlight">\(n\)</span>’s, please describe and compute  <span class="math notranslate nohighlight">\(.05\)</span> and <span class="math notranslate nohighlight">\(.95\)</span> quantiles for  posterior probabilities.</p>
@@ -768,16 +787,16 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
       <td>0.097308</td>
       <td>0.062413</td>
       <td>0.046007</td>
-      <td>0.036447</td>
-      <td>0.117329</td>
-      <td>0.196953</td>
-      <td>0.207092</td>
-      <td>0.220799</td>
-      <td>0.294656</td>
-      <td>0.331729</td>
-      <td>0.373839</td>
-      <td>0.354654</td>
-      <td>0.372780</td>
+      <td>0.127776</td>
+      <td>0.185116</td>
+      <td>0.121508</td>
+      <td>0.127460</td>
+      <td>0.169506</td>
+      <td>0.204337</td>
+      <td>0.275391</td>
+      <td>0.370581</td>
+      <td>0.374270</td>
+      <td>0.376729</td>
     </tr>
     <tr>
       <th>lower</th>
@@ -785,16 +804,16 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
       <td>0.902692</td>
       <td>0.764466</td>
       <td>0.650707</td>
-      <td>0.562845</td>
-      <td>0.558127</td>
-      <td>0.533165</td>
-      <td>0.482348</td>
-      <td>0.434206</td>
-      <td>0.483627</td>
-      <td>0.492070</td>
-      <td>0.467296</td>
-      <td>0.426283</td>
-      <td>0.423655</td>
+      <td>0.739366</td>
+      <td>0.652678</td>
+      <td>0.428620</td>
+      <td>0.375605</td>
+      <td>0.370492</td>
+      <td>0.379940</td>
+      <td>0.430940</td>
+      <td>0.463935</td>
+      <td>0.446497</td>
+      <td>0.427689</td>
     </tr>
   </tbody>
 </table>
@@ -829,7 +848,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_meaning_24_0.png" src="_images/prob_meaning_24_0.png" />
+<img alt="_images/prob_meaning_23_0.png" src="_images/prob_meaning_23_0.png" />
 </div>
 </div>
 <p>Notice  that in the graph above the posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> typically exhibits a hump shape  as <span class="math notranslate nohighlight">\(n\)</span> increases.</p>
@@ -861,7 +880,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_meaning_26_0.png" src="_images/prob_meaning_26_0.png" />
+<img alt="_images/prob_meaning_25_0.png" src="_images/prob_meaning_25_0.png" />
 </div>
 </div>
 <p>As <span class="math notranslate nohighlight">\(n\)</span> increases, we can see that the probability density functions <em>concentrate</em> on <span class="math notranslate nohighlight">\(0.4\)</span>, the true value of <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
@@ -891,8 +910,10 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_meaning_28_0.png" src="_images/prob_meaning_28_0.png" />
+<img alt="_images/prob_meaning_27_0.png" src="_images/prob_meaning_27_0.png" />
 </div>
+</div>
+</section>
 </div>
 <p>How shall we interpret the patterns above?</p>
 <p>The answer is encoded in the  Bayesian updating formulas.</p>
@@ -922,7 +943,7 @@ F(a)=p_1,F(b)=p_2
 </ul>
 <p>The random variables <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> are governed by Binomial Distribution with <span class="math notranslate nohighlight">\(\theta=0.4\)</span>.</p>
 <p>Call this the true data generating process.</p>
-<p>According to the Law of Large Numbers, for a large number of observations, observed frequencies of <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> will be described by the true data generating process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See Exercise <span class="math notranslate nohighlight">\(1\)</span>).</p>
+<p>According to the Law of Large Numbers, for a large number of observations, observed frequencies of <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> will be described by the true data generating process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See <a class="reference internal" href="#pm_ex1"><span class="std std-numref">Exercise 8.1</span></a>).</p>
 <p>Consequently, the  mean of the posterior distribution converges to <span class="math notranslate nohighlight">\(0.4\)</span> and the variance withers to zero.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -944,7 +965,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_meaning_30_0.png" src="_images/prob_meaning_30_0.png" />
+<img alt="_images/prob_meaning_29_0.png" src="_images/prob_meaning_29_0.png" />
 </div>
 </div>
 <p>After observing a large number of outcomes, the  posterior distribution collapses around <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
