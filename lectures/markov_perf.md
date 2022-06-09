@@ -512,15 +512,20 @@ As expected, output is higher and prices are lower under duopoly than monopoly.
 
 ## Exercises
 
-### Exercise 1
+```{exercise} 
+:label: mp_ex1
 
 Replicate the {ref}`pair of figures <mpe_vs_monopolist>` showing the comparison of output and prices for the monopolist and duopoly under MPE.
 
 Parameters are as in duopoly_mpe.py and you can use that code to compute MPE policies under duopoly.
 
 The optimal policy in the monopolist case can be computed using [QuantEcon.py](http://quantecon.org/quantecon-py)'s LQ class.
+```
 
-### Exercise 2
+
+```{exercise-start}
+:label: mp_ex2
+```
 
 In this exercise, we consider a slightly more sophisticated duopoly problem.
 
@@ -600,7 +605,6 @@ e1 = e2 = np.array([10, 10, 3])
 ```
 
 ```{figure} /_static/lecture_specific/markov_perf/judd_fig2.png
-
 ```
 
 Inventories trend to a common steady state.
@@ -610,12 +614,17 @@ If we increase the depreciation rate to $\delta = 0.05$, then we expect steady s
 This is indeed the case, as the next figure shows
 
 ```{figure} /_static/lecture_specific/markov_perf/judd_fig1.png
+```
 
+```{exercise-end}
 ```
 
 ## Solutions
 
 ### Exercise 1
+```{solution-start} mp_ex1
+:class: dropdown
+```
 
 First, let's compute the duopoly MPE under the stated parameters
 
@@ -728,7 +737,13 @@ ax.legend(loc='upper right', frameon=0)
 plt.show()
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} mp_ex2
+:class: dropdown
+```
 
 We treat the case $\delta = 0.02$
 
@@ -833,3 +848,5 @@ ax.legend()
 plt.show()
 ```
 
+```{solution-end}
+```

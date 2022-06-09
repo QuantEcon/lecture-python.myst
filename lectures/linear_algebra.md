@@ -1151,7 +1151,7 @@ Then
 1. $\frac{\partial y'B z}{\partial y} = B z$
 1. $\frac{\partial y'B z}{\partial B} = y z'$
 
-Exercise 1 below asks you to apply these formulas.
+{ref}`la_ex1` below asks you to apply these formulas.
 
 ### Further Reading
 
@@ -1165,7 +1165,9 @@ is {cite}`Janich1994`.
 
 ## Exercises
 
-### Exercise 1
+```{exercise-start}
+:label: la_ex1
+```
 
 Let $x$ be a given $n \times 1$ vector and consider the problem
 
@@ -1209,9 +1211,14 @@ As we will see, in economic contexts Lagrange multipliers often are shadow price
 If we don't care about the Lagrange multipliers, we can substitute the constraint into the objective function, and then just maximize $-(Ax + Bu)'P (Ax + Bu) - u' Q u$ with respect to $u$.  You can verify that this leads to the same maximizer.
 ```
 
+```{exercise-end}
+```
+
 ## Solutions
 
-### Solution to Exercise 1
+```{solution-start} la_ex1
+:class: dropdown
+```
 
 We have an optimization problem:
 
@@ -1361,8 +1368,10 @@ Therefore, the solution to the optimization problem
 $v(x) = -x' \tilde{P}x$ follows the above result by denoting
 $\tilde{P} := A'PA - A'PB(Q + B'PB)^{-1}B'PA$
 
+```{solution-end}
+```
+
 [^fn_mdt]: Although there is a specialized matrix data type defined in NumPy, it's more standard to work with ordinary NumPy arrays.
 See [this discussion](https://python-programming.quantecon.org/numpy.html#matrix-multiplication).
 
 [^cfn]: Suppose that $\|S \| < 1$. Take any nonzero vector $x$, and let $r := \|x\|$. We have $\| Sx \| = r \| S (x/r) \| \leq r \| S \| < r = \| x\|$. Hence every point is pulled towards the origin.
-

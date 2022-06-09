@@ -322,7 +322,8 @@ important concept for statistics and simulation.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: ar1p_ex1
 
 Let $k$ be a natural number.
 
@@ -355,8 +356,11 @@ $$
 when $m$ is large.
 
 Confirm this by simulation at a range of $k$ using the default parameters from the lecture.
+```
 
-### Exercise 2
+
+```{exercise}
+:label: ar1p_ex2
 
 Write your own version of a one dimensional [kernel density
 estimator](https://en.wikipedia.org/wiki/Kernel_density_estimation),
@@ -398,8 +402,11 @@ Use $n=500$.
 
 Make a comment on your results. (Do you think this is a good estimator
 of these distributions?)
+```
 
-### Exercise 3
+
+```{exercise}
+:label: ar1p_ex3
 
 In the lecture we discussed the following fact: for the $AR(1)$ process
 
@@ -438,10 +445,14 @@ color) as follows:
 Try this for $n=2000$ and confirm that the
 simulation based estimate of $\psi_{t+1}$ does converge to the
 theoretical distribution.
+```
+
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} ar1p_ex1
+:class: dropdown
+```
 
 ```{code-cell} python3
 from numba import njit
@@ -479,7 +490,13 @@ ax.legend()
 plt.show()
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} ar1p_ex2
+:class: dropdown
+```
 
 Here is one solution:
 
@@ -532,7 +549,13 @@ for α, β in parameter_pairs:
 We see that the kernel density estimator is effective when the underlying
 distribution is smooth but less so otherwise.
 
-### Exercise 3
+```{solution-end}
+```
+
+
+```{solution-start} ar1p_ex3
+:class: dropdown
+```
 
 Here is our solution
 
@@ -579,3 +602,5 @@ plt.show()
 The simulated distribution approximately coincides with the theoretical
 distribution, as predicted.
 
+```{solution-end}
+```

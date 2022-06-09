@@ -757,8 +757,9 @@ the true policy.
 
 ## Exercises
 
-(ogex1)=
-### Exercise 1
+
+```{exercise}
+:label: og_ex1
 
 A common choice for utility function in this kind of work is the CRRA
 specification
@@ -774,9 +775,11 @@ utility specification.
 Setting $\gamma = 1.5$, compute and plot an estimate of the optimal policy.
 
 Time how long this function takes to run, so you can compare it to faster code developed in the {doc}`next lecture <optgrowth_fast>`.
+```
 
-(og_ex2)=
-### Exercise 2
+
+```{exercise}
+:label: og_ex2
 
 Time how long it takes to iterate with the Bellman operator
 20 times, starting from initial condition $v(y) = u(y)$.
@@ -784,10 +787,13 @@ Time how long it takes to iterate with the Bellman operator
 Use the model specification in the previous exercise.
 
 (As before, we will compare this number with that for the faster code developed in the {doc}`next lecture <optgrowth_fast>`.)
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} og_ex1
+:class: dropdown
+```
 
 Here we set up the model.
 
@@ -819,7 +825,13 @@ ax.legend()
 plt.show()
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} og_ex2
+:class: dropdown
+```
 
 Let's set up:
 
@@ -838,3 +850,5 @@ for i in range(20):
     v = v_new
 ```
 
+```{solution-end}
+```

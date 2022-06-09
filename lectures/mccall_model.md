@@ -650,7 +650,8 @@ You can use this code to solve the exercise below.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: mm_ex1
 
 Compute the average duration of unemployment when $\beta=0.99$ and
 $c$ takes the following values
@@ -663,8 +664,12 @@ given the parameters, and then simulate to see how long it takes to accept.
 Repeat a large number of times and take the average.
 
 Plot mean unemployment duration as a function of $c$ in `c_vals`.
+```
 
-### Exercise 2
+
+```{exercise-start}
+:label: mm_ex2
+```
 
 The purpose of this exercise is to show how to replace the discrete wage
 offer distribution used above with a continuous distribution.
@@ -719,9 +724,14 @@ For default parameters, use `c=25, β=0.99, σ=0.5, μ=2.5`.
 
 Once your code is working, investigate how the reservation wage changes with $c$ and $\beta$.
 
+```{exercise-end}
+```
+
 ## Solutions
 
-### Exercise 1
+```{solution-start} mm_ex1
+:class: dropdown
+```
 
 Here's one solution
 
@@ -767,7 +777,13 @@ ax.legend()
 plt.show()
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{solution-start} mm_ex2
+:class: dropdown
+```
 
 ```{code-cell} python3
 mccall_data_continuous = [
@@ -851,3 +867,5 @@ ax.ticklabel_format(useOffset=False)
 plt.show()
 ```
 
+```{solution-end}
+```

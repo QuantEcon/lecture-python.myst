@@ -866,15 +866,26 @@ state in which $f'(K)=\rho +\delta$.
 
 ### Exercise
 
+```{exercise}
+:label: ck1_ex1
+
 - Plot the optimal consumption, capital, and saving paths when the
   initial capital level begins at 1.5 times the steady state level
   as we shoot towards the steady state at $T=130$.
 - Why does the saving rate respond as it does?
+```
 
 ### Solution
 
+```{solution-start} ck1_ex1
+:class: dropdown
+```
+
 ```{code-cell} python3
 plot_saving_rate(pp, 0.3, k_ss*1.5, [130], k_ter=k_ss, k_ss=k_ss, s_ss=s_ss)
+```
+
+```{solution-end}
 ```
 
 ## Concluding Remarks
