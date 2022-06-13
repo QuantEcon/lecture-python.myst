@@ -842,7 +842,7 @@ Thus, our  estimator $\hat A = X' X^+$ of the $m \times m$ matrix of coefficient
 
 $$
 \hat A = X' V \Sigma^{-1}  U^T 
-$$
+$$ (eq:AhatSVDformula)
 
 In addition to doing that, we’ll eventually use **dynamic mode decomposition** to compute a rank $ r $ approximation to $ \hat A $,
 where $ r <  p $.
@@ -977,7 +977,7 @@ $$
 \hat b_{t+1} = \Lambda \hat b_t
 $$
 
-where now our endoder is
+where now our encoder is
 
 $$ 
 \hat b_t = W^{-1} U^T X_t
@@ -1158,14 +1158,71 @@ $$
 where
 
 $$
-\begin{aligned}
-\check b_t & = \Phi^+ X_t \cr 
-X_t & = \Phi \check b_t 
-\end{aligned}
+\check b_t  = \Phi^+ X_t  
+$$ (eq:decoder102)
+
+
+Here $\check b_t$ is a $p \times 1$ vector of regression coefficients, being component of $\check b$
+corresponding to column $t$ of the $p \times n$  matrix of regression coefficients
+
+$$
+\check b = \Phi^{\dagger} X .
+$$ (eq:decoder103)
+
+Furthermore, $\check X_t$ is the $m\times 1$ vector of decoded or projected values of $X_t$ corresponding
+to column $t$ of the $m \times n$  matrix $X$.
+
+Since $\Phi$ has $p$ linearly independent columns, the generalized inverse of $\Phi$ is
+
+$$
+\Phi^{\dagger} = (\Phi^T \Phi)^{-1} \Phi^T
 $$
 
+and so
 
-But there is a better way to compute the $p \times 1$ vector $\check b_t$
+$$ 
+\check b = (\Phi^T \Phi)^{-1} \Phi^T X
+$$ (eq:checkbform)
+
+Here $\check b$  can be recognized as a matrix of least squares regression coefficients of the matrix
+$X$ on the matrix $\Phi$ and $\Phi \check b$ is the least squares projection of $X$ on $\Phi$.
+
+ 
+
+In more detail, by virtue of least-squares projection theory discussed here <https://python-advanced.quantecon.org/orth_proj.html>,
+we can represent $X$ as the sum of the projection $\check X$ of $X$ on $\Phi$ 
+
+$$
+\check X_t  = \Phi \check b_t
+$$
+
+The least squares projection $\check X$ is related to $X$ by
+
+
+$$
+X = \Phi \check b + \epsilon
+$$
+
+where $\epsilon$ is an $m \times n$ matrix of least squares errors satisfying the least squares
+orthogonality conditions $\epsilon^T \Phi =0 $ or
+
+$$ 
+(X - \Phi \check b)^T \Phi = 0_{m \times p}
+$$ (eq:orthls)
+
+Rearranging  the orthogonality conditions {eq}`eq:orthls` gives $X^T \Phi = \check b \Phi^T \Phi$
+which implies formula {eq}`eq:checkbform`. 
+
+
+
+
+
+### Alternative algorithm
+
+
+
+There is a better way to compute the $p \times 1$ vector $\check b_t$ than provided by formula
+{eq}`eq:decoder102`.
 
 In particular, the following argument from {cite}`DDSE_book` (page 240) provides a computationally efficient way
 to compute $\check b_t$.  
@@ -1184,7 +1241,7 @@ where $\check b_1$ is an $r \times 1$ vector.
 
 Recall from representation 1 above that  $X_1 =  U \tilde b_1$, where $\tilde b_1$ is the time $1$  basis vector for representation 1.
 
-It  then follows that 
+It  then follows from equation {eq}`eq:Phiformula` that 
  
 $$ 
   U \tilde b_1 = X' V \Sigma^{-1} W \check b_1
@@ -1196,7 +1253,9 @@ $$
   \tilde b_1 = U^T X' V \Sigma^{-1} W \check b_1
 $$
 
-Since $ \tilde A = U^T X' V \Sigma^{-1}$, it follows  that
+Recall that  from equation {eq}`eq:AhatSVDformula`,  $ \tilde A = U^T X' V \Sigma^{-1}$.
+
+It then follows  that
   
 $$ 
   \tilde  b_1 = \tilde A W \check b_1
@@ -1208,7 +1267,7 @@ $$
   \tilde b_1 = W \Lambda \check b_1
 $$ 
 
-Consesquently, 
+Consequently, 
   
 $$ 
   \check b_1 = ( W \Lambda)^{-1} \tilde b_1
@@ -1218,34 +1277,35 @@ or
 
 
 $$ 
-  \check b_1 = ( W \Lambda)^{-1} U^T X_1
+  \check b_1 = ( W \Lambda)^{-1} U^T X_1 ,
 $$ (eq:beqnsmall)
 
 
 
-which is  computationally more efficient than the following instance of our earlier equation for computing the initial vector $\check b_1$:
+which is  computationally more efficient than the following instance of  equation {eq}`eq:decoder102` for computing the initial vector $\check b_1$:
 
 $$
   \check b_1= \Phi^{+} X_1
 $$ (eq:bphieqn)
 
 
-Components of the  basis vector $\check b_t  = \Phi^+ X_t \equiv (W \Lambda)^{-1} U^T X_t$  are often called **exact** DMD nodes.  
+The literature on DMD sometimes labels  components of the  basis vector $\check b_t  = \Phi^+ X_t \equiv (W \Lambda)^{-1} U^T X_t$  as  **exact** DMD nodes.  
 
-Conditional on $X_t$, we can construct forecasts $\overline X_{t+j} $ of $X_{t+j}, j = 1, 2, \ldots, $  from 
+Conditional on $X_t$, we can compute our decoded $\check X_{t+j},   j = 1, 2, \ldots $  from 
 either 
 
 $$
-\overline X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
+\check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
 $$ (eq:checkXevoln)
 
 
 or  
 
 $$ 
-  \overline X_{t+j} = \Phi \Lambda^j (W \Lambda)^{-1}  U^T X_t
+  \check X_{t+j} = \Phi \Lambda^j (W \Lambda)^{-1}  U^T X_t .
 $$ (eq:checkXevoln2)
 
+We can then use $\check X_{t+j}$ to forcast $X_{t+j}$.
 
 
 
@@ -1254,7 +1314,7 @@ $$ (eq:checkXevoln2)
 Some of the preceding formulas assume that we have retained all $p$ modes associated with the positive
 singular values of $X$.  
 
-We can easily adapt all of the formulas to describe a situation in which we instead retain only
+We can  adjust our  formulas to describe a situation in which we instead retain only
 the $r < p$ largest singular values.  
 
 In that case, we simply replace $\Sigma$ with the appropriate $r \times r$ matrix of singular values,

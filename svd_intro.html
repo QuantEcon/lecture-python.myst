@@ -215,6 +215,13 @@ const thebe_selector_output = ".output, .cell_output"
   <a class="reference internal nav-link" href="#representation-3">
    17.13. Representation 3
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#alternative-algorithm">
+     17.13.1. Alternative algorithm
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#using-fewer-modes">
@@ -285,30 +292,30 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading Quandl-3.7.0-py2.py3-none-any.whl (26 kB)
-Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quandl) (1.16.0)
-Requirement already satisfied: requests&gt;=2.7.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quandl) (2.27.1)
 Requirement already satisfied: pandas&gt;=0.14 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quandl) (1.4.2)
 Requirement already satisfied: inflection&gt;=0.3.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quandl) (0.5.1)
+Requirement already satisfied: six in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quandl) (1.16.0)
+Requirement already satisfied: python-dateutil in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quandl) (2.8.2)
 Requirement already satisfied: numpy&gt;=1.8 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quandl) (1.21.5)
+Requirement already satisfied: requests&gt;=2.7.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quandl) (2.27.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting more-itertools
   Downloading more_itertools-8.13.0-py3-none-any.whl (51 kB)
 ?25l
-     |██████▍                         | 10 kB 35.8 MB/s eta 0:00:01
-     |████████████▊                   | 20 kB 44.5 MB/s eta 0:00:01
-     |███████████████████             | 30 kB 50.4 MB/s eta 0:00:01
-     |█████████████████████████▍      | 40 kB 58.3 MB/s eta 0:00:01
-     |███████████████████████████████▊| 51 kB 63.8 MB/s eta 0:00:01
-     |████████████████████████████████| 51 kB 1.6 MB/s 
-?25hRequirement already satisfied: python-dateutil in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quandl) (2.8.2)
+     |██████▍                         | 10 kB 35.1 MB/s eta 0:00:01
+     |████████████▊                   | 20 kB 38.1 MB/s eta 0:00:01
+     |███████████████████             | 30 kB 42.3 MB/s eta 0:00:01
+     |█████████████████████████▍      | 40 kB 46.9 MB/s eta 0:00:01
+     |███████████████████████████████▊| 51 kB 50.6 MB/s eta 0:00:01
+     |████████████████████████████████| 51 kB 1.2 MB/s 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytz&gt;=2020.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pandas&gt;=0.14-&gt;quandl) (2021.3)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: pytz&gt;=2020.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pandas&gt;=0.14-&gt;quandl) (2021.3)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.7.0-&gt;quandl) (1.26.9)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.3)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2022.5.18.1)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.0.4)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: more-itertools, quandl
@@ -447,14 +454,14 @@ VV^T &amp; = I &amp; \quad V^T V \neq I
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[-0.4679126 ,  0.17838918, -0.50334006, -0.56828193, -0.41585999],
-        [-0.289874  , -0.65347949,  0.55830125, -0.18378459, -0.37876186],
-        [-0.41906258,  0.66794544,  0.60727751, -0.04587324,  0.08570369],
-        [-0.56875563, -0.07130422, -0.23349849,  0.76915588, -0.15909252],
-        [-0.44489825, -0.29984405, -0.10789334, -0.22265165,  0.80681123]]),
- array([1.72984408, 0.59816557]),
- array([[-0.51917945, -0.85466525],
-        [-0.85466525,  0.51917945]]))
+ array([[-0.45424321,  0.31164412,  0.0258711 ,  0.17112204, -0.81644901],
+        [-0.53164679, -0.0933526 , -0.45907401, -0.69860583,  0.09918629],
+        [-0.31741681, -0.38157486,  0.83054956, -0.25261819,  0.00432061],
+        [-0.38924037, -0.65846644, -0.27626117,  0.57672512,  0.077342  ],
+        [-0.50867799,  0.56123596,  0.14982967,  0.29366533,  0.56353584]]),
+ array([1.46113045, 0.53953915]),
+ array([[-0.90728912, -0.42050737],
+        [ 0.42050737, -0.90728912]]))
 </pre></div>
 </div>
 </div>
@@ -470,14 +477,14 @@ VV^T &amp; = I &amp; \quad V^T V \neq I
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[-0.4679126 ,  0.17838918],
-        [-0.289874  , -0.65347949],
-        [-0.41906258,  0.66794544],
-        [-0.56875563, -0.07130422],
-        [-0.44489825, -0.29984405]]),
- array([1.72984408, 0.59816557]),
- array([[-0.51917945, -0.85466525],
-        [-0.85466525,  0.51917945]]))
+ array([[-0.45424321,  0.31164412],
+        [-0.53164679, -0.0933526 ],
+        [-0.31741681, -0.38157486],
+        [-0.38924037, -0.65846644],
+        [-0.50867799,  0.56123596]]),
+ array([1.46113045, 0.53953915]),
+ array([[-0.90728912, -0.42050737],
+        [ 0.42050737, -0.90728912]]))
 </pre></div>
 </div>
 </div>
@@ -517,26 +524,26 @@ VV^T &amp; = I &amp; \quad V^T V \neq I
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[ 1.00000000e+00,  2.46242742e-16, -2.93222650e-17,
-          7.18058649e-17,  1.39856748e-16],
-        [ 2.46242742e-16,  1.00000000e+00,  1.31859809e-16,
-          8.00930728e-17,  1.07317170e-16],
-        [-2.93222650e-17,  1.31859809e-16,  1.00000000e+00,
-         -3.70906968e-17, -5.64560433e-17],
-        [ 7.18058649e-17,  8.00930728e-17, -3.70906968e-17,
-          1.00000000e+00,  2.10291670e-17],
-        [ 1.39856748e-16,  1.07317170e-16, -5.64560433e-17,
-          2.10291670e-17,  1.00000000e+00]]),
- array([[ 1.00000000e+00,  1.31083190e-16,  4.62641436e-17,
-          9.98711357e-17,  1.49925168e-16],
-        [ 1.31083190e-16,  1.00000000e+00,  1.57930528e-16,
-          2.17230452e-17, -2.66435130e-17],
-        [ 4.62641436e-17,  1.57930528e-16,  1.00000000e+00,
-          1.77527618e-17,  3.84194356e-17],
-        [ 9.98711357e-17,  2.17230452e-17,  1.77527618e-17,
-          1.00000000e+00,  6.13328285e-17],
-        [ 1.49925168e-16, -2.66435130e-17,  3.84194356e-17,
-          6.13328285e-17,  1.00000000e+00]]))
+ array([[1.00000000e+00, 2.01991083e-16, 4.49519748e-17, 5.70499312e-17,
+         1.62334242e-16],
+        [2.01991083e-16, 1.00000000e+00, 2.30635753e-17, 5.44144876e-17,
+         1.77333804e-16],
+        [4.49519748e-17, 2.30635753e-17, 1.00000000e+00, 3.10114059e-17,
+         3.12777894e-17],
+        [5.70499312e-17, 5.44144876e-17, 3.10114059e-17, 1.00000000e+00,
+         4.36369508e-17],
+        [1.62334242e-16, 1.77333804e-16, 3.12777894e-17, 4.36369508e-17,
+         1.00000000e+00]]),
+ array([[ 1.00000000e+00, -2.01972142e-16,  5.42158603e-17,
+         -4.77029222e-17,  1.41737915e-16],
+        [-2.01972142e-16,  1.00000000e+00, -8.12245277e-18,
+         -5.32055372e-17, -5.76894225e-17],
+        [ 5.42158603e-17, -8.12245277e-18,  1.00000000e+00,
+          7.17486632e-18,  3.68687901e-17],
+        [-4.77029222e-17, -5.32055372e-17,  7.17486632e-18,
+          1.00000000e+00, -4.52313377e-17],
+        [ 1.41737915e-16, -5.76894225e-17,  3.68687901e-17,
+         -4.52313377e-17,  1.00000000e+00]]))
 </pre></div>
 </div>
 </div>
@@ -554,13 +561,13 @@ VV^T &amp; = I &amp; \quad V^T V \neq I
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[ 0.2507649 ,  0.01906202,  0.3152389 ,  0.25340802,  0.15468456],
-        [ 0.01906202,  0.51106238, -0.3150133 ,  0.21146331,  0.32490637],
-        [ 0.3152389 , -0.3150133 ,  0.62176455,  0.19071687, -0.01383925],
-        [ 0.25340802,  0.21146331,  0.19071687,  0.32856726,  0.27441853],
-        [ 0.15468456,  0.32490637, -0.01383925,  0.27441853,  0.28784091]]),
- array([[1.0000000e+00, 1.3108319e-16],
-        [1.3108319e-16, 1.0000000e+00]]))
+ array([[ 0.30345895,  0.21240416,  0.02526887, -0.0283974 ,  0.40596941],
+        [ 0.21240416,  0.29136302,  0.20437464,  0.26840794,  0.21804419],
+        [ 0.02526887,  0.20437464,  0.24635281,  0.37480568, -0.05269059],
+        [-0.0283974 ,  0.26840794,  0.37480568,  0.58508612, -0.17155704],
+        [ 0.40596941,  0.21804419, -0.05269059, -0.17155704,  0.5737391 ]]),
+ array([[ 1.00000000e+00, -2.01972142e-16],
+        [-2.01972142e-16,  1.00000000e+00]]))
 </pre></div>
 </div>
 </div>
@@ -587,14 +594,14 @@ Optimality in this sense is  established in the celebrated Eckart–Young theore
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[ 0.90173453, -0.43229022],
-        [ 0.43229022,  0.90173453]]),
- array([1.60756067, 0.51285859]),
- array([[ 0.24652978,  0.49630093,  0.10908327,  0.67866681,  0.46948978],
-        [ 0.31919616, -0.46479354,  0.56114344,  0.42948177, -0.42748594],
-        [-0.35569731,  0.39751625,  0.78763672, -0.30713306,  0.02753057],
-        [-0.81126677, -0.03229833, -0.142444  ,  0.51051057, -0.24472783],
-        [-0.22948319, -0.61529668,  0.18043553, -0.00223698,  0.73224687]]))
+ array([[ 0.81604555, -0.5779876 ],
+        [ 0.5779876 ,  0.81604555]]),
+ array([2.12655314, 0.48058024]),
+ array([[ 0.56087187,  0.45677019,  0.12228148,  0.58745224,  0.34165896],
+        [ 0.11984941, -0.17100193,  0.76317551,  0.19647605, -0.57909824],
+        [-0.45611689,  0.63083032,  0.48549502, -0.30480825,  0.25572837],
+        [-0.67457268,  0.0027123 , -0.1417127 ,  0.71970476, -0.0829874 ],
+        [-0.08926333, -0.60346092,  0.38317422,  0.07358   ,  0.68965968]]))
 </pre></div>
 </div>
 </div>
@@ -610,11 +617,11 @@ Optimality in this sense is  established in the celebrated Eckart–Young theore
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(None,
- array([[ 0.90173453, -0.43229022],
-        [ 0.43229022,  0.90173453]]),
- array([1.60756067, 0.51285859]),
- array([[ 0.24652978,  0.49630093,  0.10908327,  0.67866681,  0.46948978],
-        [ 0.31919616, -0.46479354,  0.56114344,  0.42948177, -0.42748594]]))
+ array([[ 0.81604555, -0.5779876 ],
+        [ 0.5779876 ,  0.81604555]]),
+ array([2.12655314, 0.48058024]),
+ array([[ 0.56087187,  0.45677019,  0.12228148,  0.58745224,  0.34165896],
+        [ 0.11984941, -0.17100193,  0.76317551,  0.19647605, -0.57909824]]))
 </pre></div>
 </div>
 </div>
@@ -1117,8 +1124,8 @@ X^{+} =  V \Sigma^{-1}  U^T
 <p>where the matrix <span class="math notranslate nohighlight">\( \Sigma^{-1} \)</span> is constructed by replacing each non-zero element of <span class="math notranslate nohighlight">\( \Sigma \)</span> with <span class="math notranslate nohighlight">\( \sigma_j^{-1} \)</span>.</p>
 <p>We can  use formula <a class="reference internal" href="#equation-eq-xplusformula">(17.11)</a>   together with formula <a class="reference internal" href="#equation-eq-hataform">(17.8)</a> to compute the matrix  <span class="math notranslate nohighlight">\( \hat A \)</span> of regression coefficients.</p>
 <p>Thus, our  estimator <span class="math notranslate nohighlight">\(\hat A = X' X^+\)</span> of the <span class="math notranslate nohighlight">\(m \times m\)</span> matrix of coefficients <span class="math notranslate nohighlight">\(A\)</span>    is</p>
-<div class="math notranslate nohighlight">
-\[
+<div class="math notranslate nohighlight" id="equation-eq-ahatsvdformula">
+<span class="eqno">(17.12)<a class="headerlink" href="#equation-eq-ahatsvdformula" title="Permalink to this equation">¶</a></span>\[
 \hat A = X' V \Sigma^{-1}  U^T 
 \]</div>
 <p>In addition to doing that, we’ll eventually use <strong>dynamic mode decomposition</strong> to compute a rank <span class="math notranslate nohighlight">\( r \)</span> approximation to <span class="math notranslate nohighlight">\( \hat A \)</span>,
@@ -1132,24 +1139,24 @@ In our Python code, we’ll typically use  a reduced SVD.</p>
 <p>In this representation, we shall use a <strong>full</strong> SVD of <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <p>We use the <span class="math notranslate nohighlight">\(m\)</span>  columns of <span class="math notranslate nohighlight">\(U\)</span>, and thus the <span class="math notranslate nohighlight">\(m\)</span> rows of <span class="math notranslate nohighlight">\(U^T\)</span>,  to define   a <span class="math notranslate nohighlight">\(m \times 1\)</span>  vector <span class="math notranslate nohighlight">\(\tilde b_t\)</span> as follows</p>
 <div class="math notranslate nohighlight" id="equation-eq-tildexdef2">
-<span class="eqno">(17.12)<a class="headerlink" href="#equation-eq-tildexdef2" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(17.13)<a class="headerlink" href="#equation-eq-tildexdef2" title="Permalink to this equation">¶</a></span>\[
 \tilde b_t = U^T X_t 
 \]</div>
 <p>and</p>
 <div class="math notranslate nohighlight" id="equation-eq-xdecoder">
-<span class="eqno">(17.13)<a class="headerlink" href="#equation-eq-xdecoder" title="Permalink to this equation">¶</a></span>\[ 
+<span class="eqno">(17.14)<a class="headerlink" href="#equation-eq-xdecoder" title="Permalink to this equation">¶</a></span>\[ 
 X_t = U \tilde b_t
 \]</div>
 <p>(Here we use the notation <span class="math notranslate nohighlight">\(b\)</span> to remind ourselves that we are creating a <strong>b</strong>asis vector.)</p>
 <p>Since we are using a <strong>full</strong> SVD, <span class="math notranslate nohighlight">\(U U^T\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span> identity matrix.</p>
-<p>So it follows from equation <a class="reference internal" href="#equation-eq-tildexdef2">(17.12)</a> that we can reconstruct  <span class="math notranslate nohighlight">\(X_t\)</span> from <span class="math notranslate nohighlight">\(\tilde b_t\)</span> by using</p>
+<p>So it follows from equation <a class="reference internal" href="#equation-eq-tildexdef2">(17.13)</a> that we can reconstruct  <span class="math notranslate nohighlight">\(X_t\)</span> from <span class="math notranslate nohighlight">\(\tilde b_t\)</span> by using</p>
 <ul class="simple">
-<li><p>Equation <a class="reference internal" href="#equation-eq-tildexdef2">(17.12)</a> serves as an <strong>encoder</strong> that  rotates the <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(X_t\)</span> to become an <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(\tilde b_t\)</span></p></li>
-<li><p>Equation <a class="reference internal" href="#equation-eq-xdecoder">(17.13)</a> serves as a <strong>decoder</strong> that recovers the <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(X_t\)</span> by rotating  the <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(\tilde b_t\)</span></p></li>
+<li><p>Equation <a class="reference internal" href="#equation-eq-tildexdef2">(17.13)</a> serves as an <strong>encoder</strong> that  rotates the <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(X_t\)</span> to become an <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(\tilde b_t\)</span></p></li>
+<li><p>Equation <a class="reference internal" href="#equation-eq-xdecoder">(17.14)</a> serves as a <strong>decoder</strong> that recovers the <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(X_t\)</span> by rotating  the <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(\tilde b_t\)</span></p></li>
 </ul>
 <p>Define a  transition matrix for a rotated <span class="math notranslate nohighlight">\(m \times 1\)</span> state <span class="math notranslate nohighlight">\(\tilde b_t\)</span> by</p>
 <div class="math notranslate nohighlight" id="equation-eq-atilde0">
-<span class="eqno">(17.14)<a class="headerlink" href="#equation-eq-atilde0" title="Permalink to this equation">¶</a></span>\[ 
+<span class="eqno">(17.15)<a class="headerlink" href="#equation-eq-atilde0" title="Permalink to this equation">¶</a></span>\[ 
 \tilde A = U^T \hat A U 
 \]</div>
 <p>We can evidently recover <span class="math notranslate nohighlight">\(\hat A\)</span> from</p>
@@ -1183,9 +1190,9 @@ equation and deduce</p>
 <span class="math notranslate nohighlight">\(U U^T\)</span> and <span class="math notranslate nohighlight">\(U^T U\)</span> are both identity matrices; but under a reduced SVD of <span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\(U^T U\)</span> is not an identity matrix.</p>
 <p>As we shall see, a full SVD is  too confining for what we ultimately want to do, namely,  situations in which  <span class="math notranslate nohighlight">\(U^T U\)</span> is <strong>not</strong> an identity matrix because we  use a reduced SVD of <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <p>But for now, let’s proceed under the assumption that both of the  preceding two  requirements are satisfied.</p>
-<p>Form an eigendecomposition of the <span class="math notranslate nohighlight">\(m \times m\)</span> matrix <span class="math notranslate nohighlight">\(\tilde A = U^T \hat A U\)</span> defined in equation <a class="reference internal" href="#equation-eq-atilde0">(17.14)</a>:</p>
+<p>Form an eigendecomposition of the <span class="math notranslate nohighlight">\(m \times m\)</span> matrix <span class="math notranslate nohighlight">\(\tilde A = U^T \hat A U\)</span> defined in equation <a class="reference internal" href="#equation-eq-atilde0">(17.15)</a>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-tildeaeigen">
-<span class="eqno">(17.15)<a class="headerlink" href="#equation-eq-tildeaeigen" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(17.16)<a class="headerlink" href="#equation-eq-tildeaeigen" title="Permalink to this equation">¶</a></span>\[
 \tilde A = W \Lambda W^{-1} 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\Lambda\)</span> is a diagonal matrix of eigenvalues and <span class="math notranslate nohighlight">\(W\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span>
@@ -1193,10 +1200,10 @@ matrix whose columns are eigenvectors  corresponding to rows (eigenvalues) in
 <span class="math notranslate nohighlight">\(\Lambda\)</span>.</p>
 <p>When <span class="math notranslate nohighlight">\(U U^T = I_{m \times m}\)</span>, as is true with a full SVD of <span class="math notranslate nohighlight">\(X\)</span>, it follows that</p>
 <div class="math notranslate nohighlight" id="equation-eq-eqeigahat">
-<span class="eqno">(17.16)<a class="headerlink" href="#equation-eq-eqeigahat" title="Permalink to this equation">¶</a></span>\[ 
+<span class="eqno">(17.17)<a class="headerlink" href="#equation-eq-eqeigahat" title="Permalink to this equation">¶</a></span>\[ 
 \hat A = U \tilde A U^T = U W \Lambda W^{-1} U^T 
 \]</div>
-<p>Evidently, according to equation <a class="reference internal" href="#equation-eq-eqeigahat">(17.16)</a>, the diagonal matrix <span class="math notranslate nohighlight">\(\Lambda\)</span> contains eigenvalues of
+<p>Evidently, according to equation <a class="reference internal" href="#equation-eq-eqeigahat">(17.17)</a>, the diagonal matrix <span class="math notranslate nohighlight">\(\Lambda\)</span> contains eigenvalues of
 <span class="math notranslate nohighlight">\(\hat A\)</span> and corresponding eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span> are columns of the matrix <span class="math notranslate nohighlight">\(UW\)</span>.</p>
 <p>Thus, the systematic (i.e., not random) parts of the <span class="math notranslate nohighlight">\(X_t\)</span> dynamics captured by our first-order vector autoregressions   are described by</p>
 <div class="math notranslate nohighlight">
@@ -1213,7 +1220,7 @@ W^{-1} U^T X_{t+1} = \Lambda W^{-1} U^T X_t
 \[
 \hat b_{t+1} = \Lambda \hat b_t
 \]</div>
-<p>where now our endoder is</p>
+<p>where now our encoder is</p>
 <div class="math notranslate nohighlight">
 \[ 
 \hat b_t = W^{-1} U^T X_t
@@ -1225,18 +1232,18 @@ X_t = U W \hat b_t
 \]</div>
 <p>We can use this representation to construct a predictor <span class="math notranslate nohighlight">\(\overline X_{t+1}\)</span> of <span class="math notranslate nohighlight">\(X_{t+1}\)</span> conditional on <span class="math notranslate nohighlight">\(X_1\)</span>  via:</p>
 <div class="math notranslate nohighlight" id="equation-eq-dssebookrepr">
-<span class="eqno">(17.17)<a class="headerlink" href="#equation-eq-dssebookrepr" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(17.18)<a class="headerlink" href="#equation-eq-dssebookrepr" title="Permalink to this equation">¶</a></span>\[
 \overline X_{t+1} = U W \Lambda^t W^{-1} U^T X_1 
 \]</div>
 <p>In effect,
 <span id="id3">[<a class="reference internal" href="zreferences.html#id13" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span> defined an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix <span class="math notranslate nohighlight">\(\Phi_s\)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-eq-phisfull">
-<span class="eqno">(17.18)<a class="headerlink" href="#equation-eq-phisfull" title="Permalink to this equation">¶</a></span>\[ 
+<span class="eqno">(17.19)<a class="headerlink" href="#equation-eq-phisfull" title="Permalink to this equation">¶</a></span>\[ 
 \Phi_s = UW 
 \]</div>
-<p>and represented equation <a class="reference internal" href="#equation-eq-dssebookrepr">(17.17)</a> as</p>
+<p>and represented equation <a class="reference internal" href="#equation-eq-dssebookrepr">(17.18)</a> as</p>
 <div class="math notranslate nohighlight" id="equation-eq-schmidrep">
-<span class="eqno">(17.19)<a class="headerlink" href="#equation-eq-schmidrep" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(17.20)<a class="headerlink" href="#equation-eq-schmidrep" title="Permalink to this equation">¶</a></span>\[
 \overline X_{t+1} = \Phi_s \Lambda^t \Phi_s^+ X_1 
 \]</div>
 <p>Components of the  basis vector <span class="math notranslate nohighlight">\( \hat b_t = W^{-1} U^T X_t \equiv \Phi_s^+\)</span> are often  called DMD <strong>modes</strong>, or sometimes also
@@ -1260,22 +1267,22 @@ X = \tilde U \tilde \Sigma \tilde V^T,
 \]</div>
 <p>Paralleling a step in Representation 1, define a  transition matrix for a rotated <span class="math notranslate nohighlight">\(p \times 1\)</span> state <span class="math notranslate nohighlight">\(\tilde b_t\)</span> by</p>
 <div class="math notranslate nohighlight" id="equation-eq-atildered">
-<span class="eqno">(17.20)<a class="headerlink" href="#equation-eq-atildered" title="Permalink to this equation">¶</a></span>\[ 
+<span class="eqno">(17.21)<a class="headerlink" href="#equation-eq-atildered" title="Permalink to this equation">¶</a></span>\[ 
 \tilde A =\tilde  U^T \hat A \tilde U 
 \]</div>
 <p>Because we are now working with a reduced SVD, so that <span class="math notranslate nohighlight">\(\tilde U \tilde U^T \neq I\)</span>, we can’t  recover <span class="math notranslate nohighlight">\(\hat A\)</span> from <span class="math notranslate nohighlight">\( \hat A \neq \tilde U \tilde A \tilde U^T\)</span>.</p>
 <p>Nevertheless, hoping for the best, we trudge on and construct an eigendecomposition of what  is now a
 <span class="math notranslate nohighlight">\(p \times p\)</span> matrix <span class="math notranslate nohighlight">\(\tilde A\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-tildeaeigenred">
-<span class="eqno">(17.21)<a class="headerlink" href="#equation-eq-tildeaeigenred" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(17.22)<a class="headerlink" href="#equation-eq-tildeaeigenred" title="Permalink to this equation">¶</a></span>\[
  \tilde A =  W  \Lambda  W^{-1}
 \]</div>
 <p>Mimicking our procedure in Representation 2, we cross our fingers and compute the <span class="math notranslate nohighlight">\(m \times p\)</span> matrix</p>
 <div class="math notranslate nohighlight" id="equation-eq-phisred">
-<span class="eqno">(17.22)<a class="headerlink" href="#equation-eq-phisred" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(17.23)<a class="headerlink" href="#equation-eq-phisred" title="Permalink to this equation">¶</a></span>\[
 \tilde \Phi_s = \tilde U W
 \]</div>
-<p>that  corresponds to <a class="reference internal" href="#equation-eq-phisfull">(17.18)</a> for a full SVD.</p>
+<p>that  corresponds to <a class="reference internal" href="#equation-eq-phisfull">(17.19)</a> for a full SVD.</p>
 <p>At this point, it is interesting to compute <span class="math notranslate nohighlight">\(\hat A \tilde  \Phi_s\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1301,11 +1308,11 @@ and adopt the understanding that they are computed with a reduced SVD.</p>
 <p>Thus, we now use the notation
 that the  <span class="math notranslate nohighlight">\(m \times p\)</span> matrix is defined as</p>
 <div class="math notranslate nohighlight" id="equation-eq-phiformula">
-<span class="eqno">(17.23)<a class="headerlink" href="#equation-eq-phiformula" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(17.24)<a class="headerlink" href="#equation-eq-phiformula" title="Permalink to this equation">¶</a></span>\[
   \Phi = X'   V  \Sigma^{-1} W
 \]</div>
 <p><strong>Proposition</strong> The <span class="math notranslate nohighlight">\(p\)</span> columns of <span class="math notranslate nohighlight">\(\Phi\)</span> are eigenvectors of <span class="math notranslate nohighlight">\(\check A\)</span>.</p>
-<p><strong>Proof:</strong> From formula <a class="reference internal" href="#equation-eq-phiformula">(17.23)</a> we have</p>
+<p><strong>Proof:</strong> From formula <a class="reference internal" href="#equation-eq-phiformula">(17.24)</a> we have</p>
 <div class="math notranslate nohighlight">
 \[  
 \begin{aligned}
@@ -1317,11 +1324,11 @@ that the  <span class="math notranslate nohighlight">\(m \times p\)</span> matri
 \]</div>
 <p>Thus, we  have deduced  that</p>
 <div class="math notranslate nohighlight" id="equation-eq-aphilambda">
-<span class="eqno">(17.24)<a class="headerlink" href="#equation-eq-aphilambda" title="Permalink to this equation">¶</a></span>\[  
+<span class="eqno">(17.25)<a class="headerlink" href="#equation-eq-aphilambda" title="Permalink to this equation">¶</a></span>\[  
 \hat A \Phi = \Phi \Lambda
 \]</div>
-<p>Let <span class="math notranslate nohighlight">\(\phi_i\)</span> be the the <span class="math notranslate nohighlight">\(i\)</span>the column of <span class="math notranslate nohighlight">\(\Phi\)</span> and <span class="math notranslate nohighlight">\(\lambda_i\)</span> be the corresponding <span class="math notranslate nohighlight">\(i\)</span> eigenvalue of <span class="math notranslate nohighlight">\(\tilde A\)</span> from decomposition <a class="reference internal" href="#equation-eq-tildeaeigenred">(17.21)</a>.</p>
-<p>Writing out the <span class="math notranslate nohighlight">\(m \times 1\)</span> vectors on both sides of  equation <a class="reference internal" href="#equation-eq-aphilambda">(17.24)</a> and equating them gives</p>
+<p>Let <span class="math notranslate nohighlight">\(\phi_i\)</span> be the the <span class="math notranslate nohighlight">\(i\)</span>the column of <span class="math notranslate nohighlight">\(\Phi\)</span> and <span class="math notranslate nohighlight">\(\lambda_i\)</span> be the corresponding <span class="math notranslate nohighlight">\(i\)</span> eigenvalue of <span class="math notranslate nohighlight">\(\tilde A\)</span> from decomposition <a class="reference internal" href="#equation-eq-tildeaeigenred">(17.22)</a>.</p>
+<p>Writing out the <span class="math notranslate nohighlight">\(m \times 1\)</span> vectors on both sides of  equation <a class="reference internal" href="#equation-eq-aphilambda">(17.25)</a> and equating them gives</p>
 <div class="math notranslate nohighlight">
 \[
 \hat A \phi_i = \lambda_i \phi_i .
@@ -1329,36 +1336,75 @@ that the  <span class="math notranslate nohighlight">\(m \times p\)</span> matri
 <p>Thus, <span class="math notranslate nohighlight">\(\phi_i\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(\hat A\)</span> that corresponds to eigenvalue  <span class="math notranslate nohighlight">\(\lambda_i\)</span> of <span class="math notranslate nohighlight">\(\tilde A\)</span>.</p>
 <p>This concludes the proof.</p>
 <p>Also see <span id="id6">[<a class="reference internal" href="zreferences.html#id36" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering. Cambridge University Press, New York, 2019.">BK19</a>]</span> (p. 238)</p>
-<p>From  eigendecomposition <a class="reference internal" href="#equation-eq-aphilambda">(17.24)</a> we can represent <span class="math notranslate nohighlight">\(\hat A\)</span> as</p>
+<p>From  eigendecomposition <a class="reference internal" href="#equation-eq-aphilambda">(17.25)</a> we can represent <span class="math notranslate nohighlight">\(\hat A\)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-eq-aform12">
-<span class="eqno">(17.25)<a class="headerlink" href="#equation-eq-aform12" title="Permalink to this equation">¶</a></span>\[ 
+<span class="eqno">(17.26)<a class="headerlink" href="#equation-eq-aform12" title="Permalink to this equation">¶</a></span>\[ 
 \hat A = \Phi \Lambda \Phi^+ .
 \]</div>
-<p>From formula <a class="reference internal" href="#equation-eq-aform12">(17.25)</a> we can deduce the reduced dimension dynamics</p>
+<p>From formula <a class="reference internal" href="#equation-eq-aform12">(17.26)</a> we can deduce the reduced dimension dynamics</p>
 <div class="math notranslate nohighlight">
 \[ 
 \check b_{t+1} = \Lambda \check b_t 
 \]</div>
 <p>where</p>
+<div class="math notranslate nohighlight" id="equation-eq-decoder102">
+<span class="eqno">(17.27)<a class="headerlink" href="#equation-eq-decoder102" title="Permalink to this equation">¶</a></span>\[
+\check b_t  = \Phi^+ X_t  
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\check b_t\)</span> is a <span class="math notranslate nohighlight">\(p \times 1\)</span> vector of regression coefficients, being component of <span class="math notranslate nohighlight">\(\check b\)</span>
+corresponding to column <span class="math notranslate nohighlight">\(t\)</span> of the <span class="math notranslate nohighlight">\(p \times n\)</span>  matrix of regression coefficients</p>
+<div class="math notranslate nohighlight" id="equation-eq-decoder103">
+<span class="eqno">(17.28)<a class="headerlink" href="#equation-eq-decoder103" title="Permalink to this equation">¶</a></span>\[
+\check b = \Phi^{\dagger} X .
+\]</div>
+<p>Furthermore, <span class="math notranslate nohighlight">\(\check X_t\)</span> is the <span class="math notranslate nohighlight">\(m\times 1\)</span> vector of decoded or projected values of <span class="math notranslate nohighlight">\(X_t\)</span> corresponding
+to column <span class="math notranslate nohighlight">\(t\)</span> of the <span class="math notranslate nohighlight">\(m \times n\)</span>  matrix <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>Since <span class="math notranslate nohighlight">\(\Phi\)</span> has <span class="math notranslate nohighlight">\(p\)</span> linearly independent columns, the generalized inverse of <span class="math notranslate nohighlight">\(\Phi\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[
-\begin{aligned}
-\check b_t &amp; = \Phi^+ X_t \cr 
-X_t &amp; = \Phi \check b_t 
-\end{aligned}
+\Phi^{\dagger} = (\Phi^T \Phi)^{-1} \Phi^T
 \]</div>
-<p>But there is a better way to compute the <span class="math notranslate nohighlight">\(p \times 1\)</span> vector <span class="math notranslate nohighlight">\(\check b_t\)</span></p>
+<p>and so</p>
+<div class="math notranslate nohighlight" id="equation-eq-checkbform">
+<span class="eqno">(17.29)<a class="headerlink" href="#equation-eq-checkbform" title="Permalink to this equation">¶</a></span>\[ 
+\check b = (\Phi^T \Phi)^{-1} \Phi^T X
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\check b\)</span>  can be recognized as a matrix of least squares regression coefficients of the matrix
+<span class="math notranslate nohighlight">\(X\)</span> on the matrix <span class="math notranslate nohighlight">\(\Phi\)</span> and <span class="math notranslate nohighlight">\(\Phi \check b\)</span> is the least squares projection of <span class="math notranslate nohighlight">\(X\)</span> on <span class="math notranslate nohighlight">\(\Phi\)</span>.</p>
+<p>In more detail, by virtue of least-squares projection theory discussed here <a class="reference external" href="https://python-advanced.quantecon.org/orth_proj.html">https://python-advanced.quantecon.org/orth_proj.html</a>,
+we can represent <span class="math notranslate nohighlight">\(X\)</span> as the sum of the projection <span class="math notranslate nohighlight">\(\check X\)</span> of <span class="math notranslate nohighlight">\(X\)</span> on <span class="math notranslate nohighlight">\(\Phi\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\check X_t  = \Phi \check b_t
+\]</div>
+<p>The least squares projection <span class="math notranslate nohighlight">\(\check X\)</span> is related to <span class="math notranslate nohighlight">\(X\)</span> by</p>
+<div class="math notranslate nohighlight">
+\[
+X = \Phi \check b + \epsilon
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon\)</span> is an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of least squares errors satisfying the least squares
+orthogonality conditions <span class="math notranslate nohighlight">\(\epsilon^T \Phi =0 \)</span> or</p>
+<div class="math notranslate nohighlight" id="equation-eq-orthls">
+<span class="eqno">(17.30)<a class="headerlink" href="#equation-eq-orthls" title="Permalink to this equation">¶</a></span>\[ 
+(X - \Phi \check b)^T \Phi = 0_{m \times p}
+\]</div>
+<p>Rearranging  the orthogonality conditions <a class="reference internal" href="#equation-eq-orthls">(17.30)</a> gives <span class="math notranslate nohighlight">\(X^T \Phi = \check b \Phi^T \Phi\)</span>
+which implies formula <a class="reference internal" href="#equation-eq-checkbform">(17.29)</a>.</p>
+<section id="alternative-algorithm">
+<h3><span class="section-number">17.13.1. </span>Alternative algorithm<a class="headerlink" href="#alternative-algorithm" title="Permalink to this headline">¶</a></h3>
+<p>There is a better way to compute the <span class="math notranslate nohighlight">\(p \times 1\)</span> vector <span class="math notranslate nohighlight">\(\check b_t\)</span> than provided by formula
+<a class="reference internal" href="#equation-eq-decoder102">(17.27)</a>.</p>
 <p>In particular, the following argument from <span id="id7">[<a class="reference internal" href="zreferences.html#id36" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering. Cambridge University Press, New York, 2019.">BK19</a>]</span> (page 240) provides a computationally efficient way
 to compute <span class="math notranslate nohighlight">\(\check b_t\)</span>.</p>
 <p>For convenience, we’ll do this first for time <span class="math notranslate nohighlight">\(t=1\)</span>.</p>
 <p>For <span class="math notranslate nohighlight">\(t=1\)</span>, we have</p>
 <div class="math notranslate nohighlight" id="equation-eq-x1proj">
-<span class="eqno">(17.26)<a class="headerlink" href="#equation-eq-x1proj" title="Permalink to this equation">¶</a></span>\[ 
+<span class="eqno">(17.31)<a class="headerlink" href="#equation-eq-x1proj" title="Permalink to this equation">¶</a></span>\[ 
    X_1 = \Phi \check b_1
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\check b_1\)</span> is an <span class="math notranslate nohighlight">\(r \times 1\)</span> vector.</p>
 <p>Recall from representation 1 above that  <span class="math notranslate nohighlight">\(X_1 =  U \tilde b_1\)</span>, where <span class="math notranslate nohighlight">\(\tilde b_1\)</span> is the time <span class="math notranslate nohighlight">\(1\)</span>  basis vector for representation 1.</p>
-<p>It  then follows that</p>
+<p>It  then follows from equation <a class="reference internal" href="#equation-eq-phiformula">(17.24)</a> that</p>
 <div class="math notranslate nohighlight">
 \[ 
   U \tilde b_1 = X' V \Sigma^{-1} W \check b_1
@@ -1368,49 +1414,52 @@ to compute <span class="math notranslate nohighlight">\(\check b_t\)</span>.</p>
 \[ 
   \tilde b_1 = U^T X' V \Sigma^{-1} W \check b_1
 \]</div>
-<p>Since <span class="math notranslate nohighlight">\( \tilde A = U^T X' V \Sigma^{-1}\)</span>, it follows  that</p>
+<p>Recall that  from equation <a class="reference internal" href="#equation-eq-ahatsvdformula">(17.12)</a>,  <span class="math notranslate nohighlight">\( \tilde A = U^T X' V \Sigma^{-1}\)</span>.</p>
+<p>It then follows  that</p>
 <div class="math notranslate nohighlight">
 \[ 
   \tilde  b_1 = \tilde A W \check b_1
 \]</div>
-<p>and therefore, by the  eigendecomposition  <a class="reference internal" href="#equation-eq-tildeaeigen">(17.15)</a> of <span class="math notranslate nohighlight">\(\tilde A\)</span>, we have</p>
+<p>and therefore, by the  eigendecomposition  <a class="reference internal" href="#equation-eq-tildeaeigen">(17.16)</a> of <span class="math notranslate nohighlight">\(\tilde A\)</span>, we have</p>
 <div class="math notranslate nohighlight">
 \[ 
   \tilde b_1 = W \Lambda \check b_1
 \]</div>
-<p>Consesquently,</p>
+<p>Consequently,</p>
 <div class="math notranslate nohighlight">
 \[ 
   \check b_1 = ( W \Lambda)^{-1} \tilde b_1
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-beqnsmall">
-<span class="eqno">(17.27)<a class="headerlink" href="#equation-eq-beqnsmall" title="Permalink to this equation">¶</a></span>\[ 
-  \check b_1 = ( W \Lambda)^{-1} U^T X_1
+<span class="eqno">(17.32)<a class="headerlink" href="#equation-eq-beqnsmall" title="Permalink to this equation">¶</a></span>\[ 
+  \check b_1 = ( W \Lambda)^{-1} U^T X_1 ,
 \]</div>
-<p>which is  computationally more efficient than the following instance of our earlier equation for computing the initial vector <span class="math notranslate nohighlight">\(\check b_1\)</span>:</p>
+<p>which is  computationally more efficient than the following instance of  equation <a class="reference internal" href="#equation-eq-decoder102">(17.27)</a> for computing the initial vector <span class="math notranslate nohighlight">\(\check b_1\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-bphieqn">
-<span class="eqno">(17.28)<a class="headerlink" href="#equation-eq-bphieqn" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(17.33)<a class="headerlink" href="#equation-eq-bphieqn" title="Permalink to this equation">¶</a></span>\[
   \check b_1= \Phi^{+} X_1
 \]</div>
-<p>Components of the  basis vector <span class="math notranslate nohighlight">\(\check b_t  = \Phi^+ X_t \equiv (W \Lambda)^{-1} U^T X_t\)</span>  are often called <strong>exact</strong> DMD nodes.</p>
-<p>Conditional on <span class="math notranslate nohighlight">\(X_t\)</span>, we can construct forecasts <span class="math notranslate nohighlight">\(\overline X_{t+j} \)</span> of <span class="math notranslate nohighlight">\(X_{t+j}, j = 1, 2, \ldots, \)</span>  from
+<p>The literature on DMD sometimes labels  components of the  basis vector <span class="math notranslate nohighlight">\(\check b_t  = \Phi^+ X_t \equiv (W \Lambda)^{-1} U^T X_t\)</span>  as  <strong>exact</strong> DMD nodes.</p>
+<p>Conditional on <span class="math notranslate nohighlight">\(X_t\)</span>, we can compute our decoded <span class="math notranslate nohighlight">\(\check X_{t+j},   j = 1, 2, \ldots \)</span>  from
 either</p>
 <div class="math notranslate nohighlight" id="equation-eq-checkxevoln">
-<span class="eqno">(17.29)<a class="headerlink" href="#equation-eq-checkxevoln" title="Permalink to this equation">¶</a></span>\[
-\overline X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
+<span class="eqno">(17.34)<a class="headerlink" href="#equation-eq-checkxevoln" title="Permalink to this equation">¶</a></span>\[
+\check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-checkxevoln2">
-<span class="eqno">(17.30)<a class="headerlink" href="#equation-eq-checkxevoln2" title="Permalink to this equation">¶</a></span>\[ 
-  \overline X_{t+j} = \Phi \Lambda^j (W \Lambda)^{-1}  U^T X_t
+<span class="eqno">(17.35)<a class="headerlink" href="#equation-eq-checkxevoln2" title="Permalink to this equation">¶</a></span>\[ 
+  \check X_{t+j} = \Phi \Lambda^j (W \Lambda)^{-1}  U^T X_t .
 \]</div>
+<p>We can then use <span class="math notranslate nohighlight">\(\check X_{t+j}\)</span> to forcast <span class="math notranslate nohighlight">\(X_{t+j}\)</span>.</p>
+</section>
 </section>
 <section id="using-fewer-modes">
 <h2><span class="section-number">17.14. </span>Using Fewer Modes<a class="headerlink" href="#using-fewer-modes" title="Permalink to this headline">¶</a></h2>
 <p>Some of the preceding formulas assume that we have retained all <span class="math notranslate nohighlight">\(p\)</span> modes associated with the positive
 singular values of <span class="math notranslate nohighlight">\(X\)</span>.</p>
-<p>We can easily adapt all of the formulas to describe a situation in which we instead retain only
+<p>We can  adjust our  formulas to describe a situation in which we instead retain only
 the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singular values.</p>
 <p>In that case, we simply replace <span class="math notranslate nohighlight">\(\Sigma\)</span> with the appropriate <span class="math notranslate nohighlight">\(r \times r\)</span> matrix of singular values,
 <span class="math notranslate nohighlight">\(U\)</span> with the <span class="math notranslate nohighlight">\(m \times r\)</span> matrix of whose columns correspond to the <span class="math notranslate nohighlight">\(r\)</span> largest singular values,
