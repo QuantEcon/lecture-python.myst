@@ -1047,10 +1047,10 @@ $$
 \tilde A =\tilde  U^T \hat A \tilde U 
 $$ (eq:Atildered)
 
-Because we are now working with a reduced SVD, so that $\tilde U \tilde U^T \neq I$, we can't  recover $\hat A$ from $ \hat A \neq \tilde U \tilde A \tilde U^T$. 
+Because we are now working with a reduced SVD, so that $\tilde U \tilde U^T \neq I$, since $\hat A \neq \tilde U \tilde A \tilde U^T$, we can't simply  recover $\hat A$ from  $\tilde A$ and $\tilde U$. 
 
 
-Nevertheless, hoping for the best, we trudge on and construct an eigendecomposition of what  is now a 
+Nevertheless, hoping for the best, we persist and construct an eigendecomposition of what  is now a 
 $p \times p$ matrix $\tilde A$:
 
 $$
@@ -1081,7 +1081,7 @@ That
 $ \hat A \tilde \Phi_s \neq \tilde \Phi_s \Lambda $ means, that unlike the  corresponding situation in Representation 2, columns of $\tilde \Phi_s = \tilde U W$
 are **not** eigenvectors of $\hat A$ corresponding to eigenvalues  $\Lambda$.
 
-But in the quest for eigenvectors of $\hat A$ that we can compute with a reduced SVD,  let's define 
+But in a quest for eigenvectors of $\hat A$ that we *can* compute with a reduced SVD,  let's define 
 
 $$
 \Phi \equiv \hat A \tilde \Phi_s = X' \tilde V \tilde \Sigma^{-1} W
@@ -1090,12 +1090,12 @@ $$
 It turns out that columns of $\Phi$ **are** eigenvectors of $\hat A$,
  a consequence of a  result established by Tu et al. {cite}`tu_Rowley`.
 
-To present their result, for convenience we'll drop the tilde $\tilde \cdot$ for $U, V,$ and $\Sigma$
-and adopt the understanding that they are computed with a reduced SVD.  
+To present their result, for convenience we'll drop the tilde $\tilde \cdot$ above $U, V,$ and $\Sigma$
+and adopt the understanding that each of them is  computed with a reduced SVD.  
 
 
 Thus, we now use the notation
-that the  $m \times p$ matrix is defined as
+that the  $m \times p$ matrix $\Phi$  is defined as
 
 $$
   \Phi = X'   V  \Sigma^{-1} W
@@ -1135,10 +1135,13 @@ Thus, $\phi_i$ is an eigenvector of $\hat A$ that corresponds to eigenvalue  $\l
 
 This concludes the proof. 
 
-
-
-
 Also see {cite}`DDSE_book` (p. 238)
+
+
+### Decoder of  $X$ as linear projection
+
+
+
 
 
 
@@ -1162,16 +1165,6 @@ $$
 $$ (eq:decoder102)
 
 
-Here $\check b_t$ is a $p \times 1$ vector of regression coefficients, being component of $\check b$
-corresponding to column $t$ of the $p \times n$  matrix of regression coefficients
-
-$$
-\check b = \Phi^{\dagger} X .
-$$ (eq:decoder103)
-
-Furthermore, $\check X_t$ is the $m\times 1$ vector of decoded or projected values of $X_t$ corresponding
-to column $t$ of the $m \times n$  matrix $X$.
-
 Since $\Phi$ has $p$ linearly independent columns, the generalized inverse of $\Phi$ is
 
 $$
@@ -1184,19 +1177,22 @@ $$
 \check b = (\Phi^T \Phi)^{-1} \Phi^T X
 $$ (eq:checkbform)
 
-Here $\check b$  can be recognized as a matrix of least squares regression coefficients of the matrix
-$X$ on the matrix $\Phi$ and $\Phi \check b$ is the least squares projection of $X$ on $\Phi$.
+$\check b$  is recognizable as the  matrix of least squares regression coefficients of the matrix
+$X$ on the matrix $\Phi$ and 
+
+$$
+\check X = \Phi \check b
+$$
+
+is the least squares projection of $X$ on $\Phi$.
 
  
 
-In more detail, by virtue of least-squares projection theory discussed here <https://python-advanced.quantecon.org/orth_proj.html>,
-we can represent $X$ as the sum of the projection $\check X$ of $X$ on $\Phi$ 
+By virtue of least-squares projection theory discussed here <https://python-advanced.quantecon.org/orth_proj.html>, 
+we can represent $X$ as the sum of the projection $\check X$ of $X$ on $\Phi$  plus a matrix of errors.
 
-$$
-\check X_t  = \Phi \check b_t
-$$
 
-The least squares projection $\check X$ is related to $X$ by
+To verify this, note that the least squares projection $\check X$ is related to $X$ by
 
 
 $$
@@ -1289,7 +1285,7 @@ $$
 $$ (eq:bphieqn)
 
 
-The literature on DMD sometimes labels  components of the  basis vector $\check b_t  = \Phi^+ X_t \equiv (W \Lambda)^{-1} U^T X_t$  as  **exact** DMD nodes.  
+Users of  DMD sometimes call  components of the  basis vector $\check b_t  = \Phi^+ X_t \equiv (W \Lambda)^{-1} U^T X_t$  the  **exact** DMD modes.  
 
 Conditional on $X_t$, we can compute our decoded $\check X_{t+j},   j = 1, 2, \ldots $  from 
 either 
