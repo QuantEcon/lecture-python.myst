@@ -1145,8 +1145,7 @@ class Samuelson():
             if isinstance(root, complex):
                 # Need to fill operator for positive as string is split apart
                 operator = ['+', '']
-                label = rf'$\lambda_{i+1} = {sam.roots[i].real:.2f} \
-                    {operator[i]} {sam.roots[i].imag:.2f}i$'
+                label = rf'$\lambda_{i+1} = {sam.roots[i].real:.2f} {operator[i]} {sam.roots[i].imag:.2f}i$'
             else:
                 label = rf'$\lambda_{i+1} = {sam.roots[i].real:.2f}$'
             ax.scatter(0, 0, 0, label=label) # dummy to add to legend
