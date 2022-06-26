@@ -30,8 +30,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!pip install quantecon
-!conda install -y -c conda-forge interpolation
+!pip install quantecon interpolation
 ```
 
 ```{code-cell} ipython
