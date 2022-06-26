@@ -33,7 +33,7 @@ In addition to what's in Anaconda, this lecture uses following libraries:
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 ```
 
 ## Overview
