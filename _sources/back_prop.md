@@ -20,6 +20,13 @@ kernelspec:
 !conda install -y -c plotly plotly plotly-orca retrying
 ```
 
+```{note}
+If you are running this on Google Colab the above cell will 
+present an error. This is because Google Colab doesn't use Anaconda to manage
+the Python packages. However this lecture will still execute as Google Colab
+has `plotly` installed.
+```
+
 ## Overview
 
 Substantial parts of **machine learning** and **artificial intelligence** are about 

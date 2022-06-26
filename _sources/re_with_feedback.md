@@ -33,7 +33,7 @@ In addition to what's in Anaconda, this lecture deploys the following libraries:
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 ```
 
 ```{code-cell} ipython
