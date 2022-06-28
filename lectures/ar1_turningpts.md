@@ -31,7 +31,7 @@ We consider two sorts of statistics:
 
 - prospective values $y_{t+j}$ of a random process $\{y_t\}$ that is governed by the AR(1) process
 
-- sample path properties that are defined as non-linear functions of future values $\{y_{t+j}\}_{j\geq 1}$ at time $t$.
+- sample path properties that are defined as non-linear functions of future values $\{y_{t+j}\}_{j \geq 1}$ at time $t$.
 
 **Sample path properties** are things like "time to next turning point" or "time to next recession"
 
@@ -60,8 +60,7 @@ logger = logging.getLogger('pymc')
 logger.setLevel(logging.CRITICAL)
 ```
 
-## A Univariate First-Order  Autoregressive   Process
-
+## A Univariate First-Order Autoregressive Process
 
 Consider the univariate AR(1) model: 
 
@@ -72,7 +71,7 @@ $$ (ar1-tp-eq1)
 where the scalars $\rho$ and $\sigma$ satisfy $|\rho| < 1$ and $\sigma > 0$; 
 $\{\epsilon_{t+1}\}$ is a sequence of i.i.d. normal random variables with mean $0$ and variance $1$. 
 
-The  initial condition $y_{0}$ is a known number. 
+The initial condition $y_{0}$ is a known number. 
 
 Equation {eq}`ar1-tp-eq1` implies that for $t \geq 0$, the conditional density of $y_{t+1}$ is
 
@@ -80,34 +79,29 @@ $$
 f(y_{t+1} | y_{t}; \rho, \sigma) \sim {\mathcal N}(\rho y_{t}, \sigma^2) \
 $$ (ar1-tp-eq2)
 
-
 Further, equation {eq}`ar1-tp-eq1` also implies that for $t \geq 0$, the conditional density of $y_{t+j}$ for $j \geq 1$ is
-
 
 $$
 f(y_{t+j} | y_{t}; \rho, \sigma) \sim {\mathcal N}\left(\rho^j y_{t}, \sigma^2 \frac{1 - \rho^{2j}}{1 - \rho^2} \right) 
 $$ (ar1-tp-eq3)
-
 
 The predictive distribution {eq}`ar1-tp-eq3` that assumes that the parameters $\rho, \sigma$ are known, which we express
 by conditioning on them.
 
 We also want to compute a  predictive distribution that does not condition on $\rho,\sigma$ but instead takes account of our uncertainty about them.
 
-We form this predictive distribution by integrating {eq}`ar1-tp-eq3` with respect to a joint posterior distribution $\pi_t(\rho,\sigma | y^t )$ 
+We form this predictive distribution by integrating {eq}`ar1-tp-eq3` with respect to a joint posterior distribution $\pi_t(\rho,\sigma | y^t)$ 
 that conditions on an observed history $y^t = \{y_s\}_{s=0}^t$:
 
 $$ 
 f(y_{t+j} | y^t)  = \int f(y_{t+j} | y_{t}; \rho, \sigma) \pi_t(\rho,\sigma | y^t ) d \rho d \sigma
 $$ (ar1-tp-eq4)
 
-
-
 Predictive distribution {eq}`ar1-tp-eq3` assumes that parameters $(\rho,\sigma)$ are known.
 
 Predictive distribution {eq}`ar1-tp-eq4` assumes that parameters $(\rho,\sigma)$ are uncertain, but have known probability distribution $\pi_t(\rho,\sigma | y^t )$.
 
-We also  want  to compute some  predictive distributions of "sample path statistics" that might  include, for example
+We also want to compute some  predictive distributions of "sample path statistics" that might  include, for example
 
 - the time until the next "recession",
 - the minimum value of $Y$ over the next 8 periods,
@@ -121,8 +115,6 @@ To accomplish that for situations in which we are uncertain about parameter valu
 - for each draw $n=0,1,...,N$, simulate a "future path" of length $T_1$ with parameters $\left(\rho_n,\sigma_n\right)$ and compute our three "sample path statistics";
 - finally, plot the desired statistics from the $N$ samples as an empirical distribution.
 
-    
-
 ## Implementation
 
 First, we'll simulate a  sample path from which to launch our forecasts.  
@@ -132,8 +124,6 @@ we'll plot $.9$ and $.95$ coverage intervals using conditional distribution
 {eq}`ar1-tp-eq3` described above. 
 
 We'll also plot a bunch of samples of sequences of future values and watch where they fall relative to the coverage interval.  
-
-
 
 ```{code-cell} ipython3
 def AR1_simulate(rho, sigma, y0, T):
@@ -204,13 +194,13 @@ Wecker {cite}`wecker1979predicting` proposed using simulation techniques to char
 
 He called these functions "path properties" to contrast them with properties of single data points.
 
-He studied   two special  prospective path properties of a given series $\{y_t\}$. 
+He studied two special  prospective path properties of a given series $\{y_t\}$. 
 
-The first  was **time until the next turning point**
+The first was **time until the next turning point**
 
-   * he defined a **"turning point"** to be the date of the  second of two successive declines in  $y$. 
+* he defined a **"turning point"** to be the date of the  second of two successive declines in  $y$. 
 
-To examine this statistic,  let $Z$ be an indicator process
+To examine this statistic, let $Z$ be an indicator process
 
 $$
 Z_t(Y(\omega)) := \left\{ 
@@ -226,8 +216,8 @@ $$
 W_t(\omega):= \inf \{ k\geq 1 \mid Z_{t+k}(\omega) = 1\}
 $$
 
-Wecker  {cite}`wecker1979predicting`  also studied   **the minimum value of $Y$ over the next 8 quarters**
-which can be defined   as the random variable 
+Wecker  {cite}`wecker1979predicting` also studied **the minimum value of $Y$ over the next 8 quarters**
+which can be defined as the random variable 
 
 $$ 
 M_t(\omega) := \min \{ Y_{t+1}(\omega); Y_{t+2}(\omega); \dots; Y_{t+8}(\omega)\}
@@ -258,13 +248,11 @@ $$
 
 This is designed to express the event
 
- - ``after one or two decrease(s), $Y$ will grow for two consecutive quarters'' 
-
+- ``after one or two decrease(s), $Y$ will grow for two consecutive quarters'' 
 
 Following {cite}`wecker1979predicting`, we can use simulations to calculate  probabilities of $P_t$ and $N_t$ for each period $t$. 
 
 ## A Wecker-Like Algorithm
-
 
 The procedure consists of the following steps: 
 
@@ -278,9 +266,7 @@ $$
 
 *  for each path $\omega_i$, compute the associated value of $W_t(\omega_i), W_{t+1}(\omega_i), \dots$
 
-*  consider the sets $
-\{W_t(\omega_i)\}^{T}_{i=1}, \ \{W_{t+1}(\omega_i)\}^{T}_{i=1}, \ \dots, \ \{W_{t+N}(\omega_i)\}^{T}_{i=1}
-$ as samples from the predictive distributions $f(W_{t+1} \mid \mathcal y_t, \dots)$, $f(W_{t+2} \mid y_t, y_{t-1}, \dots)$, $\dots$, $f(W_{t+N} \mid y_t, y_{t-1}, \dots)$.
+*  consider the sets $\{W_t(\omega_i)\}^{T}_{i=1}, \ \{W_{t+1}(\omega_i)\}^{T}_{i=1}, \ \dots, \ \{W_{t+N}(\omega_i)\}^{T}_{i=1}$ as samples from the predictive distributions $f(W_{t+1} \mid \mathcal y_t, \dots)$, $f(W_{t+2} \mid y_t, y_{t-1}, \dots)$, $\dots$, $f(W_{t+N} \mid y_t, y_{t-1}, \dots)$.
 
 
 ## Using Simulations to Approximate a Posterior Distribution
@@ -333,7 +319,6 @@ post_samples = draw_from_posterior(initial_path)
 The graphs on the left portray posterior marginal distributions.
 
 ## Calculating Sample Path Statistics
-
 
 Our next step is to prepare Python codeto compute our sample path statistics.
 
@@ -531,4 +516,3 @@ plot_extended_Wecker(post_samples, initial_path, 1000, ax)
 plt.legend()
 plt.show()
 ```
-
