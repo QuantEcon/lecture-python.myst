@@ -202,13 +202,13 @@ The first was **time until the next turning point**
 
 To examine this statistic, let $Z$ be an indicator process
 
-$$
+<!-- $$
 Z_t(Y(\omega)) := \left\{ 
 \begin{array} {c}
 \ 1 & \text{if } Y_t(\omega)< Y_{t-1}(\omega)< Y_{t-2}(\omega) \geq Y_{t-3}(\omega) \\
 0 & \text{otherwise}
 \end{array} \right.
-$$
+$$ -->
 
 Then the random variable **time until the next turning point**  is defined as the following **stopping time** with respect to $Z$:
 
@@ -226,25 +226,25 @@ $$
 It is interesting to study yet another possible concept of a **turning point**.
 
 Thus, let
-
+<!-- 
 $$
 T_t(Y(\omega)) := \left\{ 
 \begin{array}{c}
 \ 1 & \text{if } Y_{t-2}(\omega)> Y_{t-1}(\omega) > Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) < Y_{t+1}(\omega) < Y_{t+2}(\omega) \\
-\  -1 & \text{if } Y_{t-2}(\omega)< Y_{t-1}(\omega) < Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) > Y_{t+1}(\omega) > Y_{t+2}(\omega) \\
+\ -1 & \text{if } Y_{t-2}(\omega)< Y_{t-1}(\omega) < Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) > Y_{t+1}(\omega) > Y_{t+2}(\omega) \\
 0 & \text{otherwise}
 \end{array} \right.
-$$
+$$ -->
 
 Define a **positive turning point today or tomorrow** statistic as 
 
-$$
+<!-- $$
 P_t(\omega) := \left\{ 
 \begin{array}{c}
 \ 1 & \text{if } T_t(\omega)=1 \ \text{or} \ T_{t+1}(\omega)=1 \\
 0 & \text{otherwise}
 \end{array} \right.
-$$
+$$ -->
 
 This is designed to express the event
 
@@ -264,9 +264,9 @@ $$
 Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omega_i)\right\}_{i=1}^I
 $$
 
-*  for each path $\omega_i$, compute the associated value of $W_t(\omega_i), W_{t+1}(\omega_i), \dots$
+* for each path $\omega_i$, compute the associated value of $W_t(\omega_i), W_{t+1}(\omega_i), \dots$
 
-*  consider the sets $\{W_t(\omega_i)\}^{T}_{i=1}, \ \{W_{t+1}(\omega_i)\}^{T}_{i=1}, \ \dots, \ \{W_{t+N}(\omega_i)\}^{T}_{i=1}$ as samples from the predictive distributions $f(W_{t+1} \mid \mathcal y_t, \dots)$, $f(W_{t+2} \mid y_t, y_{t-1}, \dots)$, $\dots$, $f(W_{t+N} \mid y_t, y_{t-1}, \dots)$.
+* consider the sets $\{W_t(\omega_i)\}^{T}_{i=1}, \ \{W_{t+1}(\omega_i)\}^{T}_{i=1}, \ \dots, \ \{W_{t+N}(\omega_i)\}^{T}_{i=1}$ as samples from the predictive distributions $f(W_{t+1} \mid \mathcal y_t, \dots)$, $f(W_{t+2} \mid y_t, y_{t-1}, \dots)$, $\dots$, $f(W_{t+N} \mid y_t, y_{t-1}, \dots)$.
 
 
 ## Using Simulations to Approximate a Posterior Distribution
@@ -274,7 +274,6 @@ $$
 The next code cells use `pymc` to compute the time $t$ posterior distribution of $\rho, \sigma$.
 
 Note that in defining the likelihood function, we choose to condition on the initial value $y_0$.
-
 
 ```{code-cell} ipython3
 def draw_from_posterior(sample):
