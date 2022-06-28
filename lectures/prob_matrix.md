@@ -1358,7 +1358,7 @@ plt.show()
 The population conditional distribution is
 
 $$
-\begin{aligned} 
+\begin{aligned} \\
 [X|Y &= y ]\sim \mathbb{N}\bigg[\mu_X+\rho\sigma_X\frac{y-\mu_Y}{\sigma_Y},\sigma_X^2(1-\rho^2)\bigg] \\
 [Y|X &= x ]\sim \mathbb{N}\bigg[\mu_Y+\rho\sigma_Y\frac{x-\mu_X}{\sigma_X},\sigma_Y^2(1-\rho^2)\bigg] 
 \end{aligned} 
