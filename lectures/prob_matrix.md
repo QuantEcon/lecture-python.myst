@@ -353,8 +353,6 @@ $$
 \end{aligned}
 $$
 
-
-
 **Digression:** If two random variables $X,Y$ are continuous and have joint density $f(x,y)$, then marginal distributions can be computed by 
 
 $$
@@ -493,7 +491,7 @@ Thus, suppose that
 It turns out that if we use draw uniform random numbers $U$ and then compute  $X$ from 
 
 $$
-X=F^{-1}(U)$,
+X=F^{-1}(U),
 $$
 
 then $X$ ia a random variable  with CDF $F_X(x)=F(x)=\textrm{Prob}\{X\le x\}$.
