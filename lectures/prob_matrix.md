@@ -1002,7 +1002,7 @@ Below we draw some samples  confirm that the "sampling" distribution agrees well
 
 +++
 
-#### Sample results
+**Sample results:**
 
 ```{code-cell} ipython3
 # specify parameters
