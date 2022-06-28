@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-## Posterior Distributions for  AR(1) Parameters
+# Posterior Distributions for  AR(1) Parameters
 
 We'll begin with some Python imports.
 
@@ -172,7 +172,7 @@ Now we shall use  Bayes' law to construct a posterior distribution, conditioning
 
 First we'll use **pymc4**.
 
-### `PyMC` Implementation
+## `PyMC` Implementation
 
 For a  normal distribution in `pymc`, 
 $var = 1/\tau = \sigma^{2}$.
@@ -284,7 +284,7 @@ We'll return to this issue after we use `numpyro` to compute posteriors under ou
 
 We'll now repeat the calculations using  `numpyro`. 
 
-### `Numpyro` Implementation
+## `Numpyro` Implementation
 
 ```{code-cell} ipython3
 
