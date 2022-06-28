@@ -13,6 +13,12 @@ kernelspec:
 
 # Forecasting  an AR(1) process
 
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install arviz pymc
+```
+
 This lecture describes methods for forecasting statistics that are functions of future values of a univariate autogressive process.  
 
 The methods are designed to take into account two possible sources of uncertainty about these statistics:
