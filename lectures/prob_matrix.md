@@ -19,17 +19,17 @@ After providing somewhat informal definitions of the underlying objects, we'll u
 
 Among concepts that we'll be studying include
 
- - a joint probability distribution 
- - marginal distributions associated with a given joint distribution
- - conditional probability distributions
- - statistical independence of two random variables
- - joint distributions associated with a prescribed set of marginal distributions
-     - couplings
-     - copulas
- - the probability distribution of a sum of two independent random variables 
-     - convolution of  marginal distributions
- - parameters that define a probability distribution
- - sufficient statistics as data summaries
+- a joint probability distribution 
+- marginal distributions associated with a given joint distribution
+- conditional probability distributions
+- statistical independence of two random variables
+- joint distributions associated with a prescribed set of marginal distributions
+    - couplings
+    - copulas
+- the probability distribution of a sum of two independent random variables 
+    - convolution of  marginal distributions
+- parameters that define a probability distribution
+- sufficient statistics as data summaries
   
 We'll use a matrix to represent a bivariate probability distribution and a vector to represent a univariate probability distribution
 
@@ -57,12 +57,7 @@ We'll briefly define what we mean by a **probability space**, a **probability me
 
 For most of this lecture, we sweep these objects into the background, but they are there underlying the other objects that we'll mainly focus on.
 
-
-
-
 Let $\Omega$ be a set of possible underlying outcomes and let $\omega \in \Omega$ be a particular underlying outcomes.
-
-
 
 Let $\mathcal{G} \subset \Omega$ be a subset of $\Omega$. 
 
@@ -72,7 +67,7 @@ The pair $\Omega,\mathcal{F}$  forms our **probability space** on which we want 
 
 A **probability measure** $\mu$ maps a set of possible underlying outcomes  $\mathcal{G} \in \mathcal{F}$  into a scalar number between $0$ and $1$
 
- - this is the "probability" that $X$ belongs to $A$, denoted by $ \textrm{Prob}\{X\in A\}$.
+- this is the "probability" that $X$ belongs to $A$, denoted by $ \textrm{Prob}\{X\in A\}$.
 
 A **random variable** $X(\omega)$ is a function of the underlying outcome $\omega \in \Omega$.
 
@@ -89,8 +84,6 @@ where ${\mathcal G}$ is the subset of $\Omega$ for which $X(\omega) \in A$.
 We call this the induced probability distribution of random variable $X$.
 
 
-
-
 ## Digression: What Does Probability Mean? 
 
 Before diving in, we'll say a few words about what probability theory means and how it connects to statistics.
@@ -103,7 +96,6 @@ These are purely mathematical objects.
 
 To appreciate how statisticians connect probabilities to data, the key is to understand the following concepts:
 
-
 * A single draw from a probability distribution
 * Repeated independently  and identically distributed (i.i.d.)  draws of "samples" or "realizations" from the same probability distribution
 * A **statistic** defined as a  function of a sequence of samples
@@ -111,7 +103,7 @@ To appreciate how statisticians connect probabilities to data, the key is to und
 * The idea that a  population probability  distribution is  what we anticipate **relative frequencies** will be in a long sequence of i.i.d. draws. Here the following mathematical machinery makes precise what is meant by **anticipated relative frequencies** 
      - **Law of Large Numbers (LLN)**
      -  **Central Limit Theorem (CLT)** 
-+++
+
 
 **Scalar example**
 
@@ -136,40 +128,37 @@ $$
 \end{aligned}
 $$
 
-
-
 Consider the **empirical distribution**:
 
-\begin{align}
+$$
+\begin{aligned}
 i & = 0,\dots,I-1,\\
 N_i & = \text{number of times} \ X = i,\\
 N & = \sum^{I-1}_{i=0} N_i \quad \text{total number of draws},\\
 \tilde {f_i} &  = \frac{N_i}{N} \sim \ \text{frequency of draws for which}\  X=i
-\end{align} 
+\end{aligned} 
+$$
 
 
 Key ideas that  justify connecting probability theory with statistics are laws of large numbers and central limit theorems
 
 **LLN:** 
 
-  - A Law of Large Numbers (LLN) states that $\tilde {f_i} \to f_i \text{ as } N \to \infty$
+- A Law of Large Numbers (LLN) states that $\tilde {f_i} \to f_i \text{ as } N \to \infty$
 
 **CLT:** 
 
-   - A Central Limit Theorem (CLT) describes a  **rate** at which $\tilde {f_i} \to f_i$
+- A Central Limit Theorem (CLT) describes a  **rate** at which $\tilde {f_i} \to f_i$
 
 
 **Remarks** 
 
- - For "frequentist" statisticians, **anticipated relative frequency**  is **all** that a probability distribution means. 
+- For "frequentist" statisticians, **anticipated relative frequency**  is **all** that a probability distribution means. 
 
- - But for a Bayesian it means something more or different.
-
+- But for a Bayesian it means something more or different.
 
 
 ## Representing  Probability Distributions
-
- 
 
 A  probability distribution $\textrm{Prob} (X \in A)$ can  be described by its **cumulative distribution function (CDF)**
 
@@ -194,9 +183,9 @@ When a probability density exists, a probability distribution can be characteriz
 
 For a **discrete-valued** random variable  
 
- * the number  of possible values of $X$ is finite or countably infinite 
- * we replace a  **density** with a **probability mass function**, a non-negative sequence that sums to one 
- * we replace integration with summation in the formula like {eq}`eq:CDFfromdensity` that relates a CDF to a probability mass function 
+* the number  of possible values of $X$ is finite or countably infinite 
+* we replace a  **density** with a **probability mass function**, a non-negative sequence that sums to one 
+* we replace integration with summation in the formula like {eq}`eq:CDFfromdensity` that relates a CDF to a probability mass function 
 
 
 In this lecture, we mostly discuss discrete random variables.  
@@ -204,9 +193,7 @@ In this lecture, we mostly discuss discrete random variables.
 Doing this enables us to confine our tool set basically to linear algebra.
 
 Later we'll briefly discuss how to approximate a continuous random variable with a discrete random variable.
- 
 
-+++
 
 ## Univariate Probability Distributions
 
@@ -259,11 +246,12 @@ where $\theta $ is a vector of parameters that is of much smaller dimension than
 
 
 **Remarks:**
- - The concept of  **parameter** is intimately related to the notion of  **sufficient statistic**.
- -  Sufficient statistic are  nonlinear function of a data set.
- -  Sufficient statistics are designed to  summarize all  **information** about the parameters that is contained in the big data set. 
- -  They are important tools that AI uses to reduce the size of a **big data** set
- -  R. A. Fisher provided a sharp definition of **information** -- see <https://en.wikipedia.org/wiki/Fisher_information>
+
+- The concept of  **parameter** is intimately related to the notion of  **sufficient statistic**.
+-  Sufficient statistic are  nonlinear function of a data set.
+-  Sufficient statistics are designed to  summarize all  **information** about the parameters that is contained in the big data set. 
+-  They are important tools that AI uses to reduce the size of a **big data** set
+-  R. A. Fisher provided a sharp definition of **information** -- see <https://en.wikipedia.org/wiki/Fisher_information>
 
 
  
@@ -283,8 +271,6 @@ $$
 f_i( \theta)\ge0, \sum_{i=0}^{\infty}f_i(\theta)=1
 $$
 
-+++
-
 ### Continuous random variable
 
 Let $X$ be a continous random variable that takes values $X \in \tilde{X}\equiv[X_U,X_L]$ whose distributions have parameters $\theta$.
@@ -299,15 +285,12 @@ $$
 \textrm{Prob}\{X\in \tilde{X}\} =1 
 $$
 
-+++
-
 ## Bivariate Probability Distributions
 
 We'll now discuss a bivariate **joint distribution**.
 
 To begin, we restrict ourselves to two discrete random variables.
 
- 
 Let $X,Y$ be two discrete random variables that take values:
 
 $$
@@ -335,7 +318,6 @@ where
 $$
 \sum_{i}\sum_{j}f_{ij}=1
 $$
-+++
 
 ## Marginal Probability Distributions
 
@@ -349,8 +331,6 @@ $$
 \textrm{Prob}\{Y=j\}= \sum_{i=0}^{I-1}f_{ij} = \nu_i, i=0,\ldots,J-1 
 $$
 
-
-
 For example, let the joint distribution over $(X,Y)$ be 
 
 $$
@@ -362,12 +342,11 @@ F = \left[
 \right]
 $$ (eq:example101discrete)
 
-
 Then marginal distributions are:
 
-
 $$ 
-\begin{aligned} \textrm{Prob} \{X=0\}&=.25+.1=.35\\
+\begin{aligned} 
+\textrm{Prob} \{X=0\}&=.25+.1=.35\\
 \textrm{Prob}\{X=1\}& =.15+.5=.65\\
 \textrm{Prob}\{Y=0\}&=.25+.15=.4\\
 \textrm{Prob}\{Y=1\}&=.1+.5=.6
@@ -376,7 +355,7 @@ $$
 
 
 
-**Digression:** If  two random variables $X,Y$ are continuous and have joint density $f(x,y)$, then  marginal distributions can be computed by 
+**Digression:** If two random variables $X,Y$ are continuous and have joint density $f(x,y)$, then marginal distributions can be computed by 
 
 $$
 \begin{aligned}
@@ -384,8 +363,6 @@ f(x)& = \int_{\mathbb{R}} f(x,y) dy\\
 f(y)& = \int_{\mathbb{R}} f(x,y) dx
 \end{aligned}
 $$
-
-+++
 
 ## Conditional Probability  Distributions
 
@@ -425,8 +402,6 @@ $$
 \textrm{Prob}\{X=0|Y=1\} =\frac{ .1}{.1+.5}=\frac{.1}{.6}
 $$
 
-+++
-
 ## Statistical Independence
 
 Random variables X and Y are statistically **independent** if 
@@ -438,27 +413,23 @@ $$
 where 
 
 $$ 
-\begin{align}
+\begin{aligned}
 \textrm{Prob}\{X=i\} &=f_i\ge0， \sum{f_i}=1 \cr
 \textrm{Prob}\{Y=j\} & =g_j\ge0， \sum{g_j}=1
-\end{align}
+\end{aligned}
 $$
 
 Conditional distributions are 
 
 $$
-\begin{align}
+\begin{aligned}
 \textrm{Prob}\{X=i|Y=j\} & =\frac{f_ig_i}{\sum_{i}f_ig_j}=\frac{f_ig_i}{g_i}=f_i \\
 \textrm{Prob}\{Y=j|X=i\} & =\frac{f_ig_i}{\sum_{j}f_ig_j}=\frac{f_ig_i}{f_i}=g_i
-\end{align}
+\end{aligned}
 $$
 
-+++
 
 ## Means and Variances
-
-+++
-
 
 The  mean and variance of a discrete random variable $X$  are
 
@@ -478,10 +449,6 @@ $$
 \sigma_{X}^{2}\equiv\mathbb{D}\left[X\right] & =\mathrm{E}\left[\left(X-\mu_{X}\right)^{2}\right]=\int_{-\infty}^{\infty}\left(x-\mu_{X}\right)^{2}f_{X}(x)dx
 \end{aligned}
 $$
-
-
-
-
 
 
 ## Classic Trick for Generating Random Numbers
@@ -613,19 +580,23 @@ plt.show()
 
 Let $X$ distributed geometrically, that is
 
-\begin{align} 
+$$
+\begin{aligned} 
 \textrm{Prob}(X=i) & =(1-\lambda)\lambda^i,\quad\lambda\in(0,1), \quad  i=0,1,\dots \\
  & \sum_{i=0}^{\infty}\textrm{Prob}(X=i)=1\longleftrightarrow(1- \lambda)\sum_{i=0}^{\infty}\lambda^i=\frac{1-\lambda}{1-\lambda}=1
-\end{align}
+\end{aligned}
+$$
 
 Its CDF is given by
 
-\begin{align}
+$$
+\begin{aligned}
 \textrm{Prob}(X\le i)& =(1-\lambda)\sum_{j=0}^{i}\lambda^i\\
 & =(1-\lambda)[\frac{1-\lambda^{i+1}}{1-\lambda}]\\
 & =1-\lambda^{i+1}\\
 & =F(X)=F_i \quad 
-\end{align}
+\end{aligned}
+$$
 
 Again, let $\tilde{U}$ follow a uniform distribution and we want to find $X$ such that $F(X)=\tilde{U}$.
 
@@ -688,8 +659,6 @@ plt.hist(x_g, bins=150, density=True, alpha=0.6)
 plt.show()
 ```
 
-
-
 ## Some  Discrete Probability Distributions
 
 
@@ -703,11 +672,17 @@ We'll use our code to
 
 ## Geometric distribution  
 
-$$ \textrm{Prob}(X=k)=(1-p)^{k-1}p,k=1,2, \ldots $$
+$$
+\textrm{Prob}(X=k)=(1-p)^{k-1}p,k=1,2, \ldots 
+$$
+
 $\implies$
 
-$$\begin{align}
-\mathbb{E}(X) & =\frac{1}{p}\\\mathbb{D}(X) & =\frac{1-p}{p^2} \end{align}$$
+$$
+\begin{aligned}
+\mathbb{E}(X) & =\frac{1}{p}\\\mathbb{D}(X) & =\frac{1-p}{p^2} 
+\end{aligned}
+$$
 
 We draw observations from the distribution and compare the sample mean and variance with the theoretical results.
 
@@ -797,7 +772,8 @@ Its distribution is
 $$ 
 \begin{aligned}
 X  & \sim NB(r,p) \\
-\textrm{Prob}(X=k;r,p) & = \begin{pmatrix}k+r-1 \\ r-1 \end{pmatrix}p^r(1-p)^{k} \end{aligned}
+\textrm{Prob}(X=k;r,p) & = \begin{pmatrix}k+r-1 \\ r-1 \end{pmatrix}p^r(1-p)^{k} 
+\end{aligned}
 $$
 
 Here, we choose from among $k+r-1$ possible outcomes  because the last draw is by definition a success.
@@ -928,8 +904,6 @@ $$
 f(x) = 0.0005
 $$
 
-+++
-
 Let's start by generating a random sample and computing sample moments.
 
 ```{code-cell} ipython3
@@ -969,18 +943,9 @@ print("mean: ", mean)
 print("variance: ", var)
 ```
 
-
-
-
-
 ## Matrix Representation of Some Bivariate Distributions
 
-+++
-
 Let's use matrices to represent a joint distribution, conditional distribution, marginal distribution, and the mean and variance of a  bivariate random variable.
-
-+++
-
 
 The table below illustrates a  probability distribution  for a bivariate random variable. 
 
@@ -996,11 +961,7 @@ Marginal distributions are
 $$ \textrm{Prob}(X=i)=\sum_j{f_{ij}}=u_i  $$
 $$ \textrm{Prob}(Y=j)=\sum_i{f_{ij}}=v_j $$
 
-
-
 Below we draw some samples  confirm that the "sampling" distribution agrees well  with the "population" distribution.
-
-+++
 
 **Sample results:**
 
@@ -1128,9 +1089,6 @@ x=x_2 & \vdots & \frac{0.1}{0.5}=0.2 & \frac{0.4}{0.5}=0.8 \\
 $$
 
 These population objects closely resemble  sample counterparts  computed above.
-
-+++
-
 
 Let's wrap some of the functions we have used in  a Python class for a general discrete bivariate joint distribution.
 
@@ -1287,9 +1245,6 @@ d_new.marg_dist()
 d_new.cond_dist()
 ```
 
-
-+++
-
 ## A Continuous Bivariate Random Vector 
 
 
@@ -1301,9 +1256,7 @@ $$
 
 
 $$
-\begin{equation} 
 \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}}\exp\left[-\frac{1}{2(1-\rho^2)}\left(\frac{(x-\mu_1)^2}{\sigma_1^2}-\frac{2\rho(x-\mu_1)(y-\mu_2)}{\sigma_1\sigma_2}+\frac{(y-\mu_2)^2}{\sigma_2^2}\right)\right] 
-\end{equation}
 $$
 
 We start with a  bivariate normal distribution pinned down by
@@ -1494,7 +1447,8 @@ Define a new random variable $Z=X+Y$.
 Evidently, $Z$ takes values from $\bar{Z}$ defined as follows:
 
 $$
-\begin{aligned} \bar{X} & =\{0,1,\ldots,I-1\};\qquad f_i= \textrm{Prob} \{X=i\}\\
+\begin{aligned} 
+\bar{X} & =\{0,1,\ldots,I-1\};\qquad f_i= \textrm{Prob} \{X=i\}\\
 \bar{Y} & =\{0,1,\ldots,J-1\};\qquad g_j= \textrm{Prob}\{Y=j\}\\
 \bar{Z}& =\{0,1,\ldots,I+J-2\};\qquad h_k=  \textrm{Prob} \{X+Y=k\}
 \end{aligned}
@@ -1523,11 +1477,7 @@ $$
 f_{Z}(z)=\int_{-\infty}^{\infty} f_{X}(x) f_{Y}(z-x) dx \equiv f_{X}*g_{Y}
 $$
 
-where $ f_{X}*g_{Y}$ denotes the **convolution** of the $f_X$ and $g_Y$ functions.
-
-
-+++
-
+where $ f_{X}*g_{Y} $ denotes the **convolution** of the $f_X$ and $g_Y$ functions.
 
 ## Transition Probability Matrix
 
@@ -1538,6 +1488,7 @@ Let $X,Y$ be discrete random variables with joint distribution
 $$
 \textrm{Prob}\{X=i,Y=j\} = \rho_{ij}
 $$
+
 where $i = 0,\dots,I-1; j = 0,\dots,J-1$ and 
 
 $$
@@ -1551,10 +1502,7 @@ $$
 = \frac{\textrm{Prob}\{Y=j, X=i\}}{\textrm{Prob}\{ X=i\}}
 $$
 
-+++
-
 We can define a transition probability matrix
-
 
 $$
 p_{ij}=\textrm{Prob}\{Y=j|X=i\}= \frac{\rho_{ij}}{ \sum_{j}\rho_{ij}}
@@ -1578,10 +1526,7 @@ The second row is the probability of $Y=j, j=0,1$ conditional on $X=1$.
 Note that 
 - $\sum_{j}\rho_{ij}= \frac{ \sum_{j}\rho_{ij}}{ \sum_{j}\rho_{ij}}=1$, so each row of $\rho$ is a probability distribution (not so for each column.
 
-+++
-
 ## Coupling
-
 
 Start with a joint distribution
 
@@ -1614,8 +1559,6 @@ We'll find that from two marginal distributions, can we usually construct more t
 
 Each of these joint distributions is called a **coupling** of the two martingal distributions.
 
-+++
-
 Let's start with marginal distributions
 
 $$
@@ -1641,9 +1584,7 @@ $$
 \end{aligned}
 $$
 
-+++
-
-We  construct  two couplings.
+We construct  two couplings.
 
 The first coupling if our two marginal distributions is the joint distribution
 
@@ -1667,8 +1608,6 @@ $$
 \mu_{1}= r(1-q)+qr& =r
 \end{aligned}
 $$
-
-+++
 
 A second coupling of our two marginal distributions is the joint distribution
 
@@ -1704,15 +1643,13 @@ Thus, multiple  joint distributions $[f_{ij}]$ can have  the same marginals.
 **Remark:**
 - Couplings  are important in optimal transport problems and in Markov processes.
 
-+++
-
 ## Copula Functions
 
 Suppose that $X_1, X_2, \dots, X_n$ are $N$ random variables  and that 
 
-  * their marginal distributions are $F_1(x_1), F_2(x_2),\dots, F_N(x_N)$,  and
-  
-  * their joint distribution is $H(x_1,x_2,\dots,x_N)$
+* their marginal distributions are $F_1(x_1), F_2(x_2),\dots, F_N(x_N)$,  and
+
+* their joint distribution is $H(x_1,x_2,\dots,x_N)$
   
 Then there exists a **copula function** $C(\cdot)$  that verifies
 
@@ -1733,8 +1670,6 @@ Thus, for given marginal distributions, we can use  a copula function to determi
 
 
 Copula functions are often used to characterize **dependence** of  random variables.
-
-+++
 
 **Discrete marginal distribution**
 
@@ -1962,8 +1897,6 @@ We have verified that both joint distributions, $c_1$ and $c_2$, have identical 
 
 So they are both couplings of $X$ and $Y$.
 
-+++
-
 ## Time Series 
 
 Suppose that there are two time periods.
@@ -1976,10 +1909,10 @@ Let $X(0)$ be a random variable to be realized at $t=0$, $X(1)$  be a random var
 Suppose that
 
 $$
-\begin{align}
+\begin{aligned}
 \textrm{\textrm{Prob}}\{X(0)=i,X(1)=j\} &=f_{ij}≥0，i=0,……,I-1\\
 \sum_{i}\sum_{j}f_{ij}&=1
-\end{align}
+\end{aligned}
 $$
 
 $f_{ij} $ is a joint distribution over $[X(0), X(1)]$.
