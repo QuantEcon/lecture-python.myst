@@ -67,45 +67,45 @@ Consider the univariate AR(1) model:
 
 $$ 
 y_{t+1} = \rho y_t + \sigma \epsilon_{t+1}, \quad t \geq 0 
-$$ (eq1) 
+$$ (ar1-tp-eq1) 
 
 where the scalars $\rho$ and $\sigma$ satisfy $|\rho| < 1$ and $\sigma > 0$; 
 $\{\epsilon_{t+1}\}$ is a sequence of i.i.d. normal random variables with mean $0$ and variance $1$. 
 
 The  initial condition $y_{0}$ is a known number. 
 
-Equation {eq}`eq1` implies that for $t \geq 0$, the conditional density of $y_{t+1}$ is
+Equation {eq}`ar1-tp-eq1` implies that for $t \geq 0$, the conditional density of $y_{t+1}$ is
 
 $$
 f(y_{t+1} | y_{t}; \rho, \sigma) \sim {\mathcal N}(\rho y_{t}, \sigma^2) \
-$$ (eq2)
+$$ (ar1-tp-eq2)
 
 
-Further, equation {eq}`eq1` also implies that for $t \geq 0$, the conditional density of $y_{t+j}$ for $j \geq 1$ is
+Further, equation {eq}`ar1-tp-eq1` also implies that for $t \geq 0$, the conditional density of $y_{t+j}$ for $j \geq 1$ is
 
 
 $$
 f(y_{t+j} | y_{t}; \rho, \sigma) \sim {\mathcal N}\left(\rho^j y_{t}, \sigma^2 \frac{1 - \rho^{2j}}{1 - \rho^2} \right) 
-$$ (eq3)
+$$ (ar1-tp-eq3)
 
 
-The predictive distribution {eq}`eq3` that assumes that the parameters $\rho, \sigma$ are known, which we express
+The predictive distribution {eq}`ar1-tp-eq3` that assumes that the parameters $\rho, \sigma$ are known, which we express
 by conditioning on them.
 
 We also want to compute a  predictive distribution that does not condition on $\rho,\sigma$ but instead takes account of our uncertainty about them.
 
-We form this predictive distribution by integrating {eq}`eq3` with respect to a joint posterior distribution $\pi_t(\rho,\sigma | y^t )$ 
+We form this predictive distribution by integrating {eq}`ar1-tp-eq3` with respect to a joint posterior distribution $\pi_t(\rho,\sigma | y^t )$ 
 that conditions on an observed history $y^t = \{y_s\}_{s=0}^t$:
 
 $$ 
 f(y_{t+j} | y^t)  = \int f(y_{t+j} | y_{t}; \rho, \sigma) \pi_t(\rho,\sigma | y^t ) d \rho d \sigma
-$$ (eq4)
+$$ (ar1-tp-eq4)
 
 
 
-Predictive distribution {eq}`eq3` assumes that parameters $(\rho,\sigma)$ are known.
+Predictive distribution {eq}`ar1-tp-eq3` assumes that parameters $(\rho,\sigma)$ are known.
 
-Predictive distribution {eq}`eq4` assumes that parameters $(\rho,\sigma)$ are uncertain, but have known probability distribution $\pi_t(\rho,\sigma | y^t )$.
+Predictive distribution {eq}`ar1-tp-eq4` assumes that parameters $(\rho,\sigma)$ are uncertain, but have known probability distribution $\pi_t(\rho,\sigma | y^t )$.
 
 We also  want  to compute some  predictive distributions of "sample path statistics" that might  include, for example
 
@@ -129,7 +129,7 @@ First, we'll simulate a  sample path from which to launch our forecasts.
 
 In addition to plotting the sample path, under the assumption that the true parameter values are known,
 we'll plot $.9$ and $.95$ coverage intervals using conditional distribution
-{eq}`eq3` described above. 
+{eq}`ar1-tp-eq3` described above. 
 
 We'll also plot a bunch of samples of sequences of future values and watch where they fall relative to the coverage interval.  
 
@@ -461,9 +461,9 @@ plt.show()
 ## Extended Wecker Method
 
 Now we apply we apply our  "extended" Wecker method based on  predictive densities of $y$ defined by
-{eq}`eq4` that acknowledge posterior uncertainty in the parameters $\rho, \sigma$.
+{eq}`ar1-tp-eq4` that acknowledge posterior uncertainty in the parameters $\rho, \sigma$.
 
-To approximate  the intergration on the right side of {eq}`eq4`, we  repeately draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model {eq}`eq1`.
+To approximate  the intergration on the right side of {eq}`ar1-tp-eq4`, we  repeately draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model {eq}`ar1-tp-eq1`.
 
 ```{code-cell} ipython3
 def plot_extended_Wecker(post_samples, initial_path, N, ax):

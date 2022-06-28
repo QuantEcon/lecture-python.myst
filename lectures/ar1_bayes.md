@@ -13,8 +13,6 @@ kernelspec:
 
 ## Posterior Distributions for  AR(1) Parameters
 
-
-
 We'll begin with some Python imports.
 
 
