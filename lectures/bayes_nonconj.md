@@ -888,7 +888,7 @@ SVI_num_steps = 5000
 true_theta = 0.8
 ```
 
-#### Beta Prior and Posteriors
+### Beta Prior and Posteriors:
 
 Let's compare outcomes when we use a Beta prior.
 
@@ -944,7 +944,7 @@ Here the MCMC approximation looks good.
 
 But the VI approximation doesn't look so good.
 
-  * even though we use the  beta distribution as our guide, the VI approximated posterior distributions do not closely resemble the posteriors that we had just computed analytically. 
+* even though we use the  beta distribution as our guide, the VI approximated posterior distributions do not closely resemble the posteriors that we had just computed analytically. 
 
 (Here, our initial parameter for Beta guide is (0.5, 0.5).)
 
@@ -958,8 +958,6 @@ will be  more accurate, as we shall see next.
 ```{code-cell} ipython3
 BayesianInferencePlot(true_theta, num_list, BETA_numpyro).SVI_plot(guide_dist='beta', n_steps=100000)
 ```
-
-
 
 
 ## Non-conjugate Prior Distributions
