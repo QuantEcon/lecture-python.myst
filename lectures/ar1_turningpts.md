@@ -210,6 +210,16 @@ Z_t(Y(\omega)) := \left\{
 \end{array} \right.
 $$ -->
 
+
+
+$$
+Z_t(Y(\omega)) := \left. 
+\begin{cases} 
+\ 1 & \text{if } Y_t(\omega)< Y_{t-1}(\omega)< Y_{t-2}(\omega) \geq Y_{t-3}(\omega) \\
+0 & \text{otherwise}
+\end{cases} 
+$$
+
 Then the random variable **time until the next turning point**  is defined as the following **stopping time** with respect to $Z$:
 
 $$
@@ -236,6 +246,18 @@ T_t(Y(\omega)) := \left\{
 \end{array} \right.
 $$ -->
 
+
+$$
+T_t(Y(\omega)) := \left.
+\begin{cases}
+\ 1 & \text{if } Y_{t-2}(\omega)> Y_{t-1}(\omega) > Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) < Y_{t+1}(\omega) < Y_{t+2}(\omega) \\
+\ -1 & \text{if } Y_{t-2}(\omega)< Y_{t-1}(\omega) < Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) > Y_{t+1}(\omega) > Y_{t+2}(\omega) \\
+0 & \text{otherwise}
+\end{cases}
+$$
+
+
+
 Define a **positive turning point today or tomorrow** statistic as 
 
 <!-- $$
@@ -245,6 +267,15 @@ P_t(\omega) := \left\{
 0 & \text{otherwise}
 \end{array} \right.
 $$ -->
+
+
+$$
+P_t(\omega) := \left. 
+\begin{cases}
+\ 1 & \text{if } T_t(\omega)=1 \ \text{or} \ T_{t+1}(\omega)=1 \\
+0 & \text{otherwise}
+\end{cases}
+$$
 
 This is designed to express the event
 

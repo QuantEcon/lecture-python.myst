@@ -88,7 +88,7 @@ We call this the induced probability distribution of random variable $X$.
 
 Before diving in, we'll say a few words about what probability theory means and how it connects to statistics.
 
-These are topics that are also touched on in these quantecon lectures :XXXXX TOM ADD
+These are topics that are also touched on in the quantecon lectures  <https://python.quantecon.org/prob_meaning.html> and <https://python.quantecon.org/navy_captain.html>.
 
 For much of this lecture we'll be discussing  fixed "population" probabilities. 
 
@@ -1671,9 +1671,7 @@ Copula functions are often used to characterize **dependence** of  random variab
 
 **Discrete marginal distribution**
 
-TOM -- REWRITE OR MAYBE DROP PARTS OF 
-
-If no copula function is given, there could be more than one copulings for two given mariginal distributions.
+As mentioned above,  for two given marginal distributions there can be more than one coupling.
 
 For example, consider two  random variables $X, Y$ with distributions
 
