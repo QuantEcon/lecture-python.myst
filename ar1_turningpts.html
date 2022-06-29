@@ -1,0 +1,1958 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>50. Forecasting an AR(1) process &#8212; Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/ar1_turningpts.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="51. Job Search VII: Search with Learning" href="odu.html" />
+    <link rel="prev" title="49. Posterior Distributions for AR(1) Parameters" href="ar1_bayes.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Forecasting  an AR(1) process"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Forecasting  an AR(1) process" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/ar1_turningpts.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=ar1_turningpts>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-univariate-first-order-autoregressive-process">
+   50.1. A Univariate First-Order Autoregressive Process
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implementation">
+   50.2. Implementation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#predictive-distributions-of-path-properties">
+   50.3. Predictive Distributions of Path Properties
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-wecker-like-algorithm">
+   50.4. A Wecker-Like Algorithm
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-simulations-to-approximate-a-posterior-distribution">
+   50.5. Using Simulations to Approximate a Posterior Distribution
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#calculating-sample-path-statistics">
+   50.6. Calculating Sample Path Statistics
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#original-wecker-method">
+   50.7. Original Wecker Method
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extended-wecker-method">
+   50.8. Extended Wecker Method
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#comparison">
+   50.9. Comparison
+  </a>
+ </li>
+</ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="qe-page__header-subheading">Forecasting  an AR(1) process</p>
+
+                    </div>
+
+                    <p class="qe-page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="forecasting-an-ar-1-process">
+<h1><span class="section-number">50. </span>Forecasting  an AR(1) process<a class="headerlink" href="#forecasting-an-ar-1-process" title="Permalink to this headline">¶</a></h1>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install arviz pymc
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: arviz in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.12.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pymc
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading pymc-4.0.1-py3-none-any.whl (555 kB)
+?25l
+     |▋                               | 10 kB 30.3 MB/s eta 0:00:01
+     |█▏                              | 20 kB 8.7 MB/s eta 0:00:01
+     |█▊                              | 30 kB 7.3 MB/s eta 0:00:01
+     |██▍                             | 40 kB 3.4 MB/s eta 0:00:01
+     |███                             | 51 kB 3.4 MB/s eta 0:00:01
+     |███▌                            | 61 kB 4.1 MB/s eta 0:00:01
+     |████▏                           | 71 kB 4.3 MB/s eta 0:00:01
+     |████▊                           | 81 kB 4.3 MB/s eta 0:00:01
+     |█████▎                          | 92 kB 4.8 MB/s eta 0:00:01
+     |██████                          | 102 kB 3.9 MB/s eta 0:00:01
+     |██████▌                         | 112 kB 3.9 MB/s eta 0:00:01
+     |███████                         | 122 kB 3.9 MB/s eta 0:00:01
+     |███████▋                        | 133 kB 3.9 MB/s eta 0:00:01
+     |████████▎                       | 143 kB 3.9 MB/s eta 0:00:01
+     |████████▉                       | 153 kB 3.9 MB/s eta 0:00:01
+     |█████████▍                      | 163 kB 3.9 MB/s eta 0:00:01
+     |██████████                      | 174 kB 3.9 MB/s eta 0:00:01
+     |██████████▋                     | 184 kB 3.9 MB/s eta 0:00:01
+     |███████████▏                    | 194 kB 3.9 MB/s eta 0:00:01
+     |███████████▉                    | 204 kB 3.9 MB/s eta 0:00:01
+     |████████████▍                   | 215 kB 3.9 MB/s eta 0:00:01
+     |█████████████                   | 225 kB 3.9 MB/s eta 0:00:01
+     |█████████████▋                  | 235 kB 3.9 MB/s eta 0:00:01
+     |██████████████▏                 | 245 kB 3.9 MB/s eta 0:00:01
+     |██████████████▊                 | 256 kB 3.9 MB/s eta 0:00:01
+     |███████████████▎                | 266 kB 3.9 MB/s eta 0:00:01
+     |████████████████                | 276 kB 3.9 MB/s eta 0:00:01
+     |████████████████▌               | 286 kB 3.9 MB/s eta 0:00:01
+     |█████████████████               | 296 kB 3.9 MB/s eta 0:00:01
+     |█████████████████▊              | 307 kB 3.9 MB/s eta 0:00:01
+     |██████████████████▎             | 317 kB 3.9 MB/s eta 0:00:01
+     |██████████████████▉             | 327 kB 3.9 MB/s eta 0:00:01
+     |███████████████████▌            | 337 kB 3.9 MB/s eta 0:00:01
+     |████████████████████            | 348 kB 3.9 MB/s eta 0:00:01
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |████████████████████▋           | 358 kB 3.9 MB/s eta 0:00:01
+     |█████████████████████▎          | 368 kB 3.9 MB/s eta 0:00:01
+     |█████████████████████▉          | 378 kB 3.9 MB/s eta 0:00:01
+     |██████████████████████▍         | 389 kB 3.9 MB/s eta 0:00:01
+     |███████████████████████         | 399 kB 3.9 MB/s eta 0:00:01
+     |███████████████████████▋        | 409 kB 3.9 MB/s eta 0:00:01
+     |████████████████████████▏       | 419 kB 3.9 MB/s eta 0:00:01
+     |████████████████████████▊       | 430 kB 3.9 MB/s eta 0:00:01
+     |█████████████████████████▍      | 440 kB 3.9 MB/s eta 0:00:01
+     |██████████████████████████      | 450 kB 3.9 MB/s eta 0:00:01
+     |██████████████████████████▌     | 460 kB 3.9 MB/s eta 0:00:01
+     |███████████████████████████▏    | 471 kB 3.9 MB/s eta 0:00:01
+     |███████████████████████████▊    | 481 kB 3.9 MB/s eta 0:00:01
+     |████████████████████████████▎   | 491 kB 3.9 MB/s eta 0:00:01
+     |████████████████████████████▉   | 501 kB 3.9 MB/s eta 0:00:01
+     |█████████████████████████████▌  | 512 kB 3.9 MB/s eta 0:00:01
+     |██████████████████████████████  | 522 kB 3.9 MB/s eta 0:00:01
+     |██████████████████████████████▋ | 532 kB 3.9 MB/s eta 0:00:01
+     |███████████████████████████████▎| 542 kB 3.9 MB/s eta 0:00:01
+     |███████████████████████████████▉| 552 kB 3.9 MB/s eta 0:00:01
+     |████████████████████████████████| 555 kB 3.9 MB/s 
+?25hRequirement already satisfied: packaging in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (21.3)
+Requirement already satisfied: netcdf4 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (1.6.0)
+Requirement already satisfied: typing-extensions&gt;=3.7.4.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (4.1.1)
+Requirement already satisfied: pandas&gt;=0.23 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (1.4.2)
+Requirement already satisfied: setuptools&gt;=38.4 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (61.2.0)
+Requirement already satisfied: xarray&gt;=0.16.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (0.20.1)
+Requirement already satisfied: scipy&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (1.7.3)
+Requirement already satisfied: numpy&gt;=1.12 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (1.21.5)
+Requirement already satisfied: matplotlib&gt;=3.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (3.5.1)
+Requirement already satisfied: xarray-einstats&gt;=0.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (0.3.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting aeppl==0.0.31
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading aeppl-0.0.31.tar.gz (60 kB)
+?25l
+     |█████▍                          | 10 kB 46.3 MB/s eta 0:00:01
+     |██████████▉                     | 20 kB 57.5 MB/s eta 0:00:01
+     |████████████████▏               | 30 kB 70.6 MB/s eta 0:00:01
+     |█████████████████████▋          | 40 kB 79.3 MB/s eta 0:00:01
+     |███████████████████████████     | 51 kB 85.3 MB/s eta 0:00:01
+     |████████████████████████████████| 60 kB 23.0 MB/s 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: cachetools&gt;=4.2.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pymc) (4.2.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting aesara==2.7.3
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading aesara-2.7.3.tar.gz (1.3 MB)
+?25l
+     |▎                               | 10 kB 33.9 MB/s eta 0:00:01
+     |▌                               | 20 kB 42.1 MB/s eta 0:00:01
+     |▊                               | 30 kB 52.2 MB/s eta 0:00:01
+     |█                               | 40 kB 56.9 MB/s eta 0:00:01
+     |█▎                              | 51 kB 61.9 MB/s eta 0:00:01
+     |█▌                              | 61 kB 67.6 MB/s eta 0:00:01
+     |█▊                              | 71 kB 71.2 MB/s eta 0:00:01
+     |██                              | 81 kB 73.7 MB/s eta 0:00:01
+     |██▎                             | 92 kB 76.7 MB/s eta 0:00:01
+     |██▌                             | 102 kB 79.5 MB/s eta 0:00:01
+     |██▊                             | 112 kB 79.5 MB/s eta 0:00:01
+     |███                             | 122 kB 79.5 MB/s eta 0:00:01
+     |███▎                            | 133 kB 79.5 MB/s eta 0:00:01
+     |███▌                            | 143 kB 79.5 MB/s eta 0:00:01
+     |███▊                            | 153 kB 79.5 MB/s eta 0:00:01
+     |████                            | 163 kB 79.5 MB/s eta 0:00:01
+     |████▎                           | 174 kB 79.5 MB/s eta 0:00:01
+     |████▌                           | 184 kB 79.5 MB/s eta 0:00:01
+     |████▊                           | 194 kB 79.5 MB/s eta 0:00:01
+     |█████                           | 204 kB 79.5 MB/s eta 0:00:01
+     |█████▎                          | 215 kB 79.5 MB/s eta 0:00:01
+     |█████▌                          | 225 kB 79.5 MB/s eta 0:00:01
+     |█████▊                          | 235 kB 79.5 MB/s eta 0:00:01
+     |██████                          | 245 kB 79.5 MB/s eta 0:00:01
+     |██████▎                         | 256 kB 79.5 MB/s eta 0:00:01
+     |██████▌                         | 266 kB 79.5 MB/s eta 0:00:01
+     |██████▊                         | 276 kB 79.5 MB/s eta 0:00:01
+     |███████                         | 286 kB 79.5 MB/s eta 0:00:01
+     |███████▎                        | 296 kB 79.5 MB/s eta 0:00:01
+     |███████▌                        | 307 kB 79.5 MB/s eta 0:00:01
+     |███████▊                        | 317 kB 79.5 MB/s eta 0:00:01
+     |████████                        | 327 kB 79.5 MB/s eta 0:00:01
+     |████████▎                       | 337 kB 79.5 MB/s eta 0:00:01
+     |████████▌                       | 348 kB 79.5 MB/s eta 0:00:01
+     |████████▊                       | 358 kB 79.5 MB/s eta 0:00:01
+     |█████████                       | 368 kB 79.5 MB/s eta 0:00:01
+     |█████████▎                      | 378 kB 79.5 MB/s eta 0:00:01
+     |█████████▌                      | 389 kB 79.5 MB/s eta 0:00:01
+     |█████████▊                      | 399 kB 79.5 MB/s eta 0:00:01
+     |██████████                      | 409 kB 79.5 MB/s eta 0:00:01
+     |██████████▎                     | 419 kB 79.5 MB/s eta 0:00:01
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |██████████▌                     | 430 kB 79.5 MB/s eta 0:00:01
+     |██████████▊                     | 440 kB 79.5 MB/s eta 0:00:01
+     |███████████                     | 450 kB 79.5 MB/s eta 0:00:01
+     |███████████▎                    | 460 kB 79.5 MB/s eta 0:00:01
+     |███████████▌                    | 471 kB 79.5 MB/s eta 0:00:01
+     |███████████▊                    | 481 kB 79.5 MB/s eta 0:00:01
+     |████████████                    | 491 kB 79.5 MB/s eta 0:00:01
+     |████████████▎                   | 501 kB 79.5 MB/s eta 0:00:01
+     |████████████▌                   | 512 kB 79.5 MB/s eta 0:00:01
+     |████████████▊                   | 522 kB 79.5 MB/s eta 0:00:01
+     |█████████████                   | 532 kB 79.5 MB/s eta 0:00:01
+     |█████████████▎                  | 542 kB 79.5 MB/s eta 0:00:01
+     |█████████████▌                  | 552 kB 79.5 MB/s eta 0:00:01
+     |█████████████▊                  | 563 kB 79.5 MB/s eta 0:00:01
+     |██████████████                  | 573 kB 79.5 MB/s eta 0:00:01
+     |██████████████▎                 | 583 kB 79.5 MB/s eta 0:00:01
+     |██████████████▌                 | 593 kB 79.5 MB/s eta 0:00:01
+     |██████████████▊                 | 604 kB 79.5 MB/s eta 0:00:01
+     |███████████████                 | 614 kB 79.5 MB/s eta 0:00:01
+     |███████████████▎                | 624 kB 79.5 MB/s eta 0:00:01
+     |███████████████▌                | 634 kB 79.5 MB/s eta 0:00:01
+     |███████████████▊                | 645 kB 79.5 MB/s eta 0:00:01
+     |████████████████                | 655 kB 79.5 MB/s eta 0:00:01
+     |████████████████▎               | 665 kB 79.5 MB/s eta 0:00:01
+     |████████████████▌               | 675 kB 79.5 MB/s eta 0:00:01
+     |████████████████▊               | 686 kB 79.5 MB/s eta 0:00:01
+     |█████████████████               | 696 kB 79.5 MB/s eta 0:00:01
+     |█████████████████▎              | 706 kB 79.5 MB/s eta 0:00:01
+     |█████████████████▌              | 716 kB 79.5 MB/s eta 0:00:01
+     |█████████████████▊              | 727 kB 79.5 MB/s eta 0:00:01
+     |██████████████████              | 737 kB 79.5 MB/s eta 0:00:01
+     |██████████████████▎             | 747 kB 79.5 MB/s eta 0:00:01
+     |██████████████████▌             | 757 kB 79.5 MB/s eta 0:00:01
+     |██████████████████▊             | 768 kB 79.5 MB/s eta 0:00:01
+     |███████████████████             | 778 kB 79.5 MB/s eta 0:00:01
+     |███████████████████▎            | 788 kB 79.5 MB/s eta 0:00:01
+     |███████████████████▌            | 798 kB 79.5 MB/s eta 0:00:01
+     |███████████████████▊            | 808 kB 79.5 MB/s eta 0:00:01
+     |████████████████████            | 819 kB 79.5 MB/s eta 0:00:01
+     |████████████████████▎           | 829 kB 79.5 MB/s eta 0:00:01
+     |████████████████████▌           | 839 kB 79.5 MB/s eta 0:00:01
+     |████████████████████▊           | 849 kB 79.5 MB/s eta 0:00:01
+     |█████████████████████           | 860 kB 79.5 MB/s eta 0:00:01
+     |█████████████████████▎          | 870 kB 79.5 MB/s eta 0:00:01
+     |█████████████████████▌          | 880 kB 79.5 MB/s eta 0:00:01
+     |█████████████████████▊          | 890 kB 79.5 MB/s eta 0:00:01
+     |██████████████████████          | 901 kB 79.5 MB/s eta 0:00:01
+     |██████████████████████▎         | 911 kB 79.5 MB/s eta 0:00:01
+     |██████████████████████▌         | 921 kB 79.5 MB/s eta 0:00:01
+     |██████████████████████▊         | 931 kB 79.5 MB/s eta 0:00:01
+     |███████████████████████         | 942 kB 79.5 MB/s eta 0:00:01
+     |███████████████████████▎        | 952 kB 79.5 MB/s eta 0:00:01
+     |███████████████████████▌        | 962 kB 79.5 MB/s eta 0:00:01
+     |███████████████████████▊        | 972 kB 79.5 MB/s eta 0:00:01
+     |████████████████████████        | 983 kB 79.5 MB/s eta 0:00:01
+     |████████████████████████▎       | 993 kB 79.5 MB/s eta 0:00:01
+     |████████████████████████▌       | 1.0 MB 79.5 MB/s eta 0:00:01
+     |████████████████████████▊       | 1.0 MB 79.5 MB/s eta 0:00:01
+     |█████████████████████████       | 1.0 MB 79.5 MB/s eta 0:00:01
+     |█████████████████████████▎      | 1.0 MB 79.5 MB/s eta 0:00:01
+     |█████████████████████████▌      | 1.0 MB 79.5 MB/s eta 0:00:01
+     |█████████████████████████▊      | 1.1 MB 79.5 MB/s eta 0:00:01
+     |██████████████████████████      | 1.1 MB 79.5 MB/s eta 0:00:01
+     |██████████████████████████▎     | 1.1 MB 79.5 MB/s eta 0:00:01
+     |██████████████████████████▌     | 1.1 MB 79.5 MB/s eta 0:00:01
+     |██████████████████████████▊     | 1.1 MB 79.5 MB/s eta 0:00:01
+     |███████████████████████████     | 1.1 MB 79.5 MB/s eta 0:00:01
+     |███████████████████████████▎    | 1.1 MB 79.5 MB/s eta 0:00:01
+     |███████████████████████████▌    | 1.1 MB 79.5 MB/s eta 0:00:01
+     |███████████████████████████▊    | 1.1 MB 79.5 MB/s eta 0:00:01
+     |████████████████████████████    | 1.1 MB 79.5 MB/s eta 0:00:01
+     |████████████████████████████▎   | 1.2 MB 79.5 MB/s eta 0:00:01
+     |████████████████████████████▌   | 1.2 MB 79.5 MB/s eta 0:00:01
+     |████████████████████████████▊   | 1.2 MB 79.5 MB/s eta 0:00:01
+     |█████████████████████████████   | 1.2 MB 79.5 MB/s eta 0:00:01
+     |█████████████████████████████▎  | 1.2 MB 79.5 MB/s eta 0:00:01
+     |█████████████████████████████▌  | 1.2 MB 79.5 MB/s eta 0:00:01
+     |█████████████████████████████▊  | 1.2 MB 79.5 MB/s eta 0:00:01
+     |██████████████████████████████  | 1.2 MB 79.5 MB/s eta 0:00:01
+     |██████████████████████████████▎ | 1.2 MB 79.5 MB/s eta 0:00:01
+     |██████████████████████████████▌ | 1.2 MB 79.5 MB/s eta 0:00:01
+     |██████████████████████████████▊ | 1.3 MB 79.5 MB/s eta 0:00:01
+     |███████████████████████████████ | 1.3 MB 79.5 MB/s eta 0:00:01
+     |███████████████████████████████▎| 1.3 MB 79.5 MB/s eta 0:00:01
+     |███████████████████████████████▌| 1.3 MB 79.5 MB/s eta 0:00:01
+     |███████████████████████████████▊| 1.3 MB 79.5 MB/s eta 0:00:01
+     |████████████████████████████████| 1.3 MB 79.5 MB/s 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: cloudpickle in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pymc) (2.0.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting fastprogress&gt;=0.2.0
+  Downloading fastprogress-1.0.2-py3-none-any.whl (12 kB)
+Requirement already satisfied: filelock in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from aesara==2.7.3-&gt;pymc) (3.6.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting etuples
+  Downloading etuples-0.3.5.tar.gz (30 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting logical-unification
+  Downloading logical-unification-0.4.5.tar.gz (31 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting miniKanren
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading miniKanren-1.0.3.tar.gz (41 kB)
+?25l
+     |████████                        | 10 kB 33.6 MB/s eta 0:00:01
+     |███████████████▉                | 20 kB 42.3 MB/s eta 0:00:01
+     |███████████████████████▉        | 30 kB 53.4 MB/s eta 0:00:01
+     |███████████████████████████████▊| 40 kB 61.4 MB/s eta 0:00:01
+     |████████████████████████████████| 41 kB 996 kB/s 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hCollecting cons
+  Downloading cons-0.4.5.tar.gz (26 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyparsing&gt;=2.2.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (3.0.4)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (1.3.2)
+Requirement already satisfied: cycler&gt;=0.10 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (0.11.0)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (2.8.2)
+Requirement already satisfied: pillow&gt;=6.2.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (9.0.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (4.25.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytz&gt;=2020.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pandas&gt;=0.23-&gt;arviz) (2021.3)
+Requirement already satisfied: six&gt;=1.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.0-&gt;arviz) (1.16.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: toolz in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from logical-unification-&gt;aesara==2.7.3-&gt;pymc) (0.11.2)
+Requirement already satisfied: multipledispatch in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from logical-unification-&gt;aesara==2.7.3-&gt;pymc) (0.6.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: cftime in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from netcdf4-&gt;arviz) (1.6.0)
+Building wheels for collected packages: aeppl, aesara, cons, logical-unification, etuples, miniKanren
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for aeppl (setup.py) ... ?25l-
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
+?25h  Created wheel for aeppl: filename=aeppl-0.0.31-py3-none-any.whl size=49384 sha256=da4072c7554f660a03be73a6e9c87d64606e4945d34e50e30b55de28a0d0accf
+  Stored in directory: /home/runner/.cache/pip/wheels/63/85/27/4fcfdab186dbbd3db02d198cc69ea3837a5066bde5b79dc07f
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for aesara (setup.py) ... ?25l-
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
+?25h  Created wheel for aesara: filename=aesara-2.7.3-py3-none-any.whl size=1374382 sha256=c752ace57839317a7dacfdcc646e909a76e40dd194e72e1f43448f80131ad446
+  Stored in directory: /home/runner/.cache/pip/wheels/54/bd/d8/c8540dd630c6f80f0c86785adb73fb9be5b7e628358fdb61c2
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for cons (setup.py) ... ?25l-
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
+?25h  Created wheel for cons: filename=cons-0.4.5-py3-none-any.whl size=9118 sha256=ebfcab52c0458569db7926d8e8c4b5479c8fa20f23c5e5c5e831f2cbece60dab
+  Stored in directory: /home/runner/.cache/pip/wheels/df/1c/d4/98d11d61a5a6c5de77e96de4aa2568cba4b8a4379854728e20
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for logical-unification (setup.py) ... ?25l-
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
+?25h  Created wheel for logical-unification: filename=logical_unification-0.4.5-py3-none-any.whl size=13772 sha256=f9ee6f1b83321e5596eba3d95159fd106210f7b4119e96c4c9a03d3a8ca2d9c0
+  Stored in directory: /home/runner/.cache/pip/wheels/f9/ec/f8/17a976d5963719c370a62cab7de82bd2719c660ccd91495898
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for etuples (setup.py) ... ?25l-
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
+?25h  Created wheel for etuples: filename=etuples-0.3.5-py3-none-any.whl size=12414 sha256=6fcdd962f207b72f2d00444410d579765f8f9fad61a05fae6a9fabdfddc9a23a
+  Stored in directory: /home/runner/.cache/pip/wheels/51/b7/82/04ddc7de0fa19bc23e3ce6eb5de387407a307f341bcd90f259
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for miniKanren (setup.py) ... ?25l-
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
+?25h  Created wheel for miniKanren: filename=miniKanren-1.0.3-py3-none-any.whl size=23928 sha256=71dfe35d9d89dfa635c13e3655d918ea8d073c81f526a82edb96ed22fc3d840c
+  Stored in directory: /home/runner/.cache/pip/wheels/d3/a4/be/da3156a6e79d4ce54e83d66e27510361fce41bec9bd174b288
+Successfully built aeppl aesara cons logical-unification etuples miniKanren
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: logical-unification, cons, etuples, miniKanren, aesara, fastprogress, aeppl, pymc
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed aeppl-0.0.31 aesara-2.7.3 cons-0.4.5 etuples-0.3.5 fastprogress-1.0.2 logical-unification-0.4.5 miniKanren-1.0.3 pymc-4.0.1
+</pre></div>
+</div>
+</div>
+</div>
+<p>This lecture describes methods for forecasting statistics that are functions of future values of a univariate autogressive process.</p>
+<p>The methods are designed to take into account two possible sources of uncertainty about these statistics:</p>
+<ul class="simple">
+<li><p>random shocks that impinge of the transition law</p></li>
+<li><p>uncertainty about the parameter values of the AR(1) process</p></li>
+</ul>
+<p>We consider two sorts of statistics:</p>
+<ul class="simple">
+<li><p>prospective values <span class="math notranslate nohighlight">\(y_{t+j}\)</span> of a random process <span class="math notranslate nohighlight">\(\{y_t\}\)</span> that is governed by the AR(1) process</p></li>
+<li><p>sample path properties that are defined as non-linear functions of future values <span class="math notranslate nohighlight">\(\{y_{t+j}\}_{j \geq 1}\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p></li>
+</ul>
+<p><strong>Sample path properties</strong> are things like “time to next turning point” or “time to next recession”</p>
+<p>To investigate sample path properties we’ll use a simulation procedure recommended by Wecker <span id="id1">[<a class="reference internal" href="zreferences.html#id5" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span>.</p>
+<p>To acknowledge uncertainty about parameters, we’ll deploy <code class="docutils literal notranslate"><span class="pre">pymc</span></code> to construct a Bayesian joint posterior distribution for unknown parameters.</p>
+<p>Let’s start with some imports.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+<span class="kn">import</span> <span class="nn">pymc</span> <span class="k">as</span> <span class="nn">pmc</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()</span>
+
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">()</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;pymc&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="a-univariate-first-order-autoregressive-process">
+<h2><span class="section-number">50.1. </span>A Univariate First-Order Autoregressive Process<a class="headerlink" href="#a-univariate-first-order-autoregressive-process" title="Permalink to this headline">¶</a></h2>
+<p>Consider the univariate AR(1) model:</p>
+<div class="math notranslate nohighlight" id="equation-ar1-tp-eq1">
+<span class="eqno">(50.1)<a class="headerlink" href="#equation-ar1-tp-eq1" title="Permalink to this equation">¶</a></span>\[ 
+y_{t+1} = \rho y_t + \sigma \epsilon_{t+1}, \quad t \geq 0 
+\]</div>
+<p>where the scalars <span class="math notranslate nohighlight">\(\rho\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> satisfy <span class="math notranslate nohighlight">\(|\rho| &lt; 1\)</span> and <span class="math notranslate nohighlight">\(\sigma &gt; 0\)</span>;
+<span class="math notranslate nohighlight">\(\{\epsilon_{t+1}\}\)</span> is a sequence of i.i.d. normal random variables with mean <span class="math notranslate nohighlight">\(0\)</span> and variance <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>The initial condition <span class="math notranslate nohighlight">\(y_{0}\)</span> is a known number.</p>
+<p>Equation <a class="reference internal" href="#equation-ar1-tp-eq1">(50.1)</a> implies that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>, the conditional density of <span class="math notranslate nohighlight">\(y_{t+1}\)</span> is</p>
+<div class="math notranslate nohighlight" id="equation-ar1-tp-eq2">
+<span class="eqno">(50.2)<a class="headerlink" href="#equation-ar1-tp-eq2" title="Permalink to this equation">¶</a></span>\[
+f(y_{t+1} | y_{t}; \rho, \sigma) \sim {\mathcal N}(\rho y_{t}, \sigma^2) \
+\]</div>
+<p>Further, equation <a class="reference internal" href="#equation-ar1-tp-eq1">(50.1)</a> also implies that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>, the conditional density of <span class="math notranslate nohighlight">\(y_{t+j}\)</span> for <span class="math notranslate nohighlight">\(j \geq 1\)</span> is</p>
+<div class="math notranslate nohighlight" id="equation-ar1-tp-eq3">
+<span class="eqno">(50.3)<a class="headerlink" href="#equation-ar1-tp-eq3" title="Permalink to this equation">¶</a></span>\[
+f(y_{t+j} | y_{t}; \rho, \sigma) \sim {\mathcal N}\left(\rho^j y_{t}, \sigma^2 \frac{1 - \rho^{2j}}{1 - \rho^2} \right) 
+\]</div>
+<p>The predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq3">(50.3)</a> that assumes that the parameters <span class="math notranslate nohighlight">\(\rho, \sigma\)</span> are known, which we express
+by conditioning on them.</p>
+<p>We also want to compute a  predictive distribution that does not condition on <span class="math notranslate nohighlight">\(\rho,\sigma\)</span> but instead takes account of our uncertainty about them.</p>
+<p>We form this predictive distribution by integrating <a class="reference internal" href="#equation-ar1-tp-eq3">(50.3)</a> with respect to a joint posterior distribution <span class="math notranslate nohighlight">\(\pi_t(\rho,\sigma | y^t)\)</span>
+that conditions on an observed history <span class="math notranslate nohighlight">\(y^t = \{y_s\}_{s=0}^t\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-ar1-tp-eq4">
+<span class="eqno">(50.4)<a class="headerlink" href="#equation-ar1-tp-eq4" title="Permalink to this equation">¶</a></span>\[ 
+f(y_{t+j} | y^t)  = \int f(y_{t+j} | y_{t}; \rho, \sigma) \pi_t(\rho,\sigma | y^t ) d \rho d \sigma
+\]</div>
+<p>Predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq3">(50.3)</a> assumes that parameters <span class="math notranslate nohighlight">\((\rho,\sigma)\)</span> are known.</p>
+<p>Predictive distribution <a class="reference internal" href="#equation-ar1-tp-eq4">(50.4)</a> assumes that parameters <span class="math notranslate nohighlight">\((\rho,\sigma)\)</span> are uncertain, but have known probability distribution <span class="math notranslate nohighlight">\(\pi_t(\rho,\sigma | y^t )\)</span>.</p>
+<p>We also want to compute some  predictive distributions of “sample path statistics” that might  include, for example</p>
+<ul class="simple">
+<li><p>the time until the next “recession”,</p></li>
+<li><p>the minimum value of <span class="math notranslate nohighlight">\(Y\)</span> over the next 8 periods,</p></li>
+<li><p>“severe recession”, and</p></li>
+<li><p>the time until the next turning point (positive or negative)</p></li>
+</ul>
+<p>To accomplish that for situations in which we are uncertain about parameter values, we shall extend the approach Wecker <span id="id2">[<a class="reference internal" href="zreferences.html#id5" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span> in the following way.</p>
+<ul class="simple">
+<li><p>first simulate an initial path of length <span class="math notranslate nohighlight">\(T_0\)</span>;</p></li>
+<li><p>for a given prior, draw a sample of size <span class="math notranslate nohighlight">\(N\)</span> from the posterior joint distribution of parameters <span class="math notranslate nohighlight">\(\left(\rho,\sigma\right)\)</span> after observing the initial path;</p></li>
+<li><p>for each draw <span class="math notranslate nohighlight">\(n=0,1,...,N\)</span>, simulate a “future path” of length <span class="math notranslate nohighlight">\(T_1\)</span> with parameters <span class="math notranslate nohighlight">\(\left(\rho_n,\sigma_n\right)\)</span> and compute our three “sample path statistics”;</p></li>
+<li><p>finally, plot the desired statistics from the <span class="math notranslate nohighlight">\(N\)</span> samples as an empirical distribution.</p></li>
+</ul>
+</section>
+<section id="implementation">
+<h2><span class="section-number">50.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>First, we’ll simulate a  sample path from which to launch our forecasts.</p>
+<p>In addition to plotting the sample path, under the assumption that the true parameter values are known,
+we’ll plot <span class="math notranslate nohighlight">\(.9\)</span> and <span class="math notranslate nohighlight">\(.95\)</span> coverage intervals using conditional distribution
+<a class="reference internal" href="#equation-ar1-tp-eq3">(50.3)</a> described above.</p>
+<p>We’ll also plot a bunch of samples of sequences of future values and watch where they fall relative to the coverage interval.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">AR1_simulate</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+
+    <span class="c1"># Allocate space and draw epsilons</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">sigma</span><span class="p">,</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="c1"># Initial condition and step forward</span>
+    <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+        <span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">rho</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">eps</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+        
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">def</span> <span class="nf">plot_initial_path</span><span class="p">(</span><span class="n">initial_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot the initial path and the preceding predictive densities</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># compute .9 confidence interval]</span>
+    <span class="n">y0</span> <span class="o">=</span> <span class="n">initial_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rho</span><span class="o">**</span><span class="n">j</span><span class="o">*</span><span class="n">y0</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T1</span><span class="p">)])</span>
+    <span class="nb">vars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">rho</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">j</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">rho</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T1</span><span class="p">)])</span>
+    <span class="n">y_bounds1_c95</span><span class="p">,</span> <span class="n">y_bounds2_c95</span> <span class="o">=</span> <span class="n">center</span> <span class="o">+</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">vars</span><span class="p">),</span> <span class="n">center</span> <span class="o">-</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">vars</span><span class="p">)</span>
+    <span class="n">y_bounds1_c90</span><span class="p">,</span> <span class="n">y_bounds2_c90</span> <span class="o">=</span> <span class="n">center</span> <span class="o">+</span> <span class="mf">1.65</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">vars</span><span class="p">),</span> <span class="n">center</span> <span class="o">-</span> <span class="mf">1.65</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">vars</span><span class="p">)</span>
+
+    <span class="c1"># plot</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Initial Path and Predictive Densities&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">T0</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">initial_path</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="o">-</span><span class="n">T0</span><span class="p">,</span> <span class="n">T1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># simulate future paths</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">y_future</span> <span class="o">=</span> <span class="n">AR1_simulate</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">T1</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T1</span><span class="p">),</span> <span class="n">y_future</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+    
+    <span class="c1"># plot 90% CI</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T1</span><span class="p">),</span> <span class="n">y_bounds1_c95</span><span class="p">,</span> <span class="n">y_bounds2_c95</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;95% CI&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T1</span><span class="p">),</span> <span class="n">y_bounds1_c90</span><span class="p">,</span> <span class="n">y_bounds2_c90</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.35</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;90% CI&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T1</span><span class="p">),</span> <span class="n">center</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;expected mean&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="n">sigma</span> <span class="o">=</span>  <span class="mi">1</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="mf">0.9</span>
+<span class="n">T0</span><span class="p">,</span> <span class="n">T1</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span>
+<span class="n">y0</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># simulate</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">145</span><span class="p">)</span>
+<span class="n">initial_path</span> <span class="o">=</span> <span class="n">AR1_simulate</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">T0</span><span class="p">)</span>
+
+<span class="c1"># plot</span>
+<span class="n">plot_initial_path</span><span class="p">(</span><span class="n">initial_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ar1_turningpts_5_0.png" src="_images/ar1_turningpts_5_0.png" />
+</div>
+</div>
+<p>As functions of forecast horizon, the coverage intervals have shapes like those described in
+<a class="reference external" href="https://python.quantecon.org/perm_income_cons.html">https://python.quantecon.org/perm_income_cons.html</a></p>
+</section>
+<section id="predictive-distributions-of-path-properties">
+<h2><span class="section-number">50.3. </span>Predictive Distributions of Path Properties<a class="headerlink" href="#predictive-distributions-of-path-properties" title="Permalink to this headline">¶</a></h2>
+<p>Wecker <span id="id3">[<a class="reference internal" href="zreferences.html#id5" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span> proposed using simulation techniques to characterize  predictive distribution of some statistics that are  non-linear functions of <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>He called these functions “path properties” to contrast them with properties of single data points.</p>
+<p>He studied two special  prospective path properties of a given series <span class="math notranslate nohighlight">\(\{y_t\}\)</span>.</p>
+<p>The first was <strong>time until the next turning point</strong></p>
+<ul class="simple">
+<li><p>he defined a <strong>“turning point”</strong> to be the date of the  second of two successive declines in  <span class="math notranslate nohighlight">\(y\)</span>.</p></li>
+</ul>
+<p>To examine this statistic, let <span class="math notranslate nohighlight">\(Z\)</span> be an indicator process</p>
+<!-- $$
+Z_t(Y(\omega)) := \left\{ 
+\begin{array} {c}
+\ 1 & \text{if } Y_t(\omega)< Y_{t-1}(\omega)< Y_{t-2}(\omega) \geq Y_{t-3}(\omega) \\
+0 & \text{otherwise}
+\end{array} \right.
+$$ -->
+<div class="math notranslate nohighlight">
+\[\begin{split}
+Z_t(Y(\omega)) := \left. 
+\begin{cases} 
+\ 1 &amp; \text{if } Y_t(\omega)&lt; Y_{t-1}(\omega)&lt; Y_{t-2}(\omega) \geq Y_{t-3}(\omega) \\
+0 &amp; \text{otherwise}
+\end{cases} 
+\end{split}\]</div>
+<p>Then the random variable <strong>time until the next turning point</strong>  is defined as the following <strong>stopping time</strong> with respect to <span class="math notranslate nohighlight">\(Z\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+W_t(\omega):= \inf \{ k\geq 1 \mid Z_{t+k}(\omega) = 1\}
+\]</div>
+<p>Wecker  <span id="id4">[<a class="reference internal" href="zreferences.html#id5" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span> also studied <strong>the minimum value of <span class="math notranslate nohighlight">\(Y\)</span> over the next 8 quarters</strong>
+which can be defined as the random variable</p>
+<div class="math notranslate nohighlight">
+\[ 
+M_t(\omega) := \min \{ Y_{t+1}(\omega); Y_{t+2}(\omega); \dots; Y_{t+8}(\omega)\}
+\]</div>
+<p>It is interesting to study yet another possible concept of a <strong>turning point</strong>.</p>
+<p>Thus, let</p>
+<!-- 
+$$
+T_t(Y(\omega)) := \left\{ 
+\begin{array}{c}
+\ 1 & \text{if } Y_{t-2}(\omega)> Y_{t-1}(\omega) > Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) < Y_{t+1}(\omega) < Y_{t+2}(\omega) \\
+\ -1 & \text{if } Y_{t-2}(\omega)< Y_{t-1}(\omega) < Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) > Y_{t+1}(\omega) > Y_{t+2}(\omega) \\
+0 & \text{otherwise}
+\end{array} \right.
+$$ -->
+<div class="math notranslate nohighlight">
+\[\begin{split}
+T_t(Y(\omega)) := \left.
+\begin{cases}
+\ 1 &amp; \text{if } Y_{t-2}(\omega)&gt; Y_{t-1}(\omega) &gt; Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) &lt; Y_{t+1}(\omega) &lt; Y_{t+2}(\omega) \\
+\ -1 &amp; \text{if } Y_{t-2}(\omega)&lt; Y_{t-1}(\omega) &lt; Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) &gt; Y_{t+1}(\omega) &gt; Y_{t+2}(\omega) \\
+0 &amp; \text{otherwise}
+\end{cases}
+\end{split}\]</div>
+<p>Define a <strong>positive turning point today or tomorrow</strong> statistic as</p>
+<!-- $$
+P_t(\omega) := \left\{ 
+\begin{array}{c}
+\ 1 & \text{if } T_t(\omega)=1 \ \text{or} \ T_{t+1}(\omega)=1 \\
+0 & \text{otherwise}
+\end{array} \right.
+$$ -->
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P_t(\omega) := \left. 
+\begin{cases}
+\ 1 &amp; \text{if } T_t(\omega)=1 \ \text{or} \ T_{t+1}(\omega)=1 \\
+0 &amp; \text{otherwise}
+\end{cases}
+\end{split}\]</div>
+<p>This is designed to express the event</p>
+<ul class="simple">
+<li><p>``after one or two decrease(s), <span class="math notranslate nohighlight">\(Y\)</span> will grow for two consecutive quarters’’</p></li>
+</ul>
+<p>Following <span id="id5">[<a class="reference internal" href="zreferences.html#id5" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span>, we can use simulations to calculate  probabilities of <span class="math notranslate nohighlight">\(P_t\)</span> and <span class="math notranslate nohighlight">\(N_t\)</span> for each period <span class="math notranslate nohighlight">\(t\)</span>.</p>
+</section>
+<section id="a-wecker-like-algorithm">
+<h2><span class="section-number">50.4. </span>A Wecker-Like Algorithm<a class="headerlink" href="#a-wecker-like-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>The procedure consists of the following steps:</p>
+<ul class="simple">
+<li><p>index a sample path by <span class="math notranslate nohighlight">\(\omega_i\)</span></p></li>
+<li><p>for a given date <span class="math notranslate nohighlight">\(t\)</span>, simulate <span class="math notranslate nohighlight">\(I\)</span> sample paths of length <span class="math notranslate nohighlight">\(N\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omega_i)\right\}_{i=1}^I
+\]</div>
+<ul class="simple">
+<li><p>for each path <span class="math notranslate nohighlight">\(\omega_i\)</span>, compute the associated value of <span class="math notranslate nohighlight">\(W_t(\omega_i), W_{t+1}(\omega_i), \dots\)</span></p></li>
+<li><p>consider the sets <span class="math notranslate nohighlight">\(\{W_t(\omega_i)\}^{T}_{i=1}, \ \{W_{t+1}(\omega_i)\}^{T}_{i=1}, \ \dots, \ \{W_{t+N}(\omega_i)\}^{T}_{i=1}\)</span> as samples from the predictive distributions <span class="math notranslate nohighlight">\(f(W_{t+1} \mid \mathcal y_t, \dots)\)</span>, <span class="math notranslate nohighlight">\(f(W_{t+2} \mid y_t, y_{t-1}, \dots)\)</span>, <span class="math notranslate nohighlight">\(\dots\)</span>, <span class="math notranslate nohighlight">\(f(W_{t+N} \mid y_t, y_{t-1}, \dots)\)</span>.</p></li>
+</ul>
+</section>
+<section id="using-simulations-to-approximate-a-posterior-distribution">
+<h2><span class="section-number">50.5. </span>Using Simulations to Approximate a Posterior Distribution<a class="headerlink" href="#using-simulations-to-approximate-a-posterior-distribution" title="Permalink to this headline">¶</a></h2>
+<p>The next code cells use <code class="docutils literal notranslate"><span class="pre">pymc</span></code> to compute the time <span class="math notranslate nohighlight">\(t\)</span> posterior distribution of <span class="math notranslate nohighlight">\(\rho, \sigma\)</span>.</p>
+<p>Note that in defining the likelihood function, we choose to condition on the initial value <span class="math notranslate nohighlight">\(y_0\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_from_posterior</span><span class="p">(</span><span class="n">sample</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Draw a sample of size N from the posterior distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">AR1_model</span> <span class="o">=</span> <span class="n">pmc</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span>
+
+    <span class="k">with</span> <span class="n">AR1_model</span><span class="p">:</span>
+        
+        <span class="c1">#start with priors</span>
+        <span class="n">rho</span> <span class="o">=</span> <span class="n">pmc</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="s1">&#39;rho&#39;</span><span class="p">,</span><span class="n">lower</span><span class="o">=-</span><span class="mf">1.</span><span class="p">,</span><span class="n">upper</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span> <span class="c1">#assume stable rho</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">pmc</span><span class="o">.</span><span class="n">HalfNormal</span><span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+
+        <span class="c1"># Expected value of y at the next period (rho * y)</span>
+        <span class="n">yhat</span> <span class="o">=</span> <span class="n">rho</span><span class="o">*</span><span class="n">sample</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Likelihood of the actual realization.</span>
+        <span class="n">y_like</span> <span class="o">=</span> <span class="n">pmc</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;y_obs&#39;</span><span class="p">,</span> <span class="n">mu</span> <span class="o">=</span> <span class="n">yhat</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">sample</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+    <span class="k">with</span> <span class="n">AR1_model</span><span class="p">:</span>
+        <span class="n">trace</span> <span class="o">=</span> <span class="n">pmc</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+
+    <span class="c1"># check condition</span>
+    <span class="k">with</span> <span class="n">AR1_model</span><span class="p">:</span>
+        <span class="n">az</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+    
+    <span class="n">rhos</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">rho</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">sigmas</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">posterior</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="n">post_sample</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;rho&#39;</span><span class="p">:</span> <span class="n">rhos</span><span class="p">,</span>
+        <span class="s1">&#39;sigma&#39;</span><span class="p">:</span> <span class="n">sigmas</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="n">post_sample</span>
+
+<span class="n">post_samples</span> <span class="o">=</span> <span class="n">draw_from_posterior</span><span class="p">(</span><span class="n">initial_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html">
+<div>
+  <progress value='15000' class='' max='15000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+  100.00% [15000/15000 00:10<00:00 Sampling chain 0, 1 divergences]
+</div>
+</div><div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html">
+<div>
+  <progress value='15000' class='' max='15000' style='width:300px; height:20px; vertical-align: middle;'></progress>
+  100.00% [15000/15000 00:09<00:00 Sampling chain 1, 0 divergences]
+</div>
+</div><img alt="_images/ar1_turningpts_7_4.png" src="_images/ar1_turningpts_7_4.png" />
+</div>
+</div>
+<p>The graphs on the left portray posterior marginal distributions.</p>
+</section>
+<section id="calculating-sample-path-statistics">
+<h2><span class="section-number">50.6. </span>Calculating Sample Path Statistics<a class="headerlink" href="#calculating-sample-path-statistics" title="Permalink to this headline">¶</a></h2>
+<p>Our next step is to prepare Python codeto compute our sample path statistics.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define statistics</span>
+<span class="k">def</span> <span class="nf">next_recession</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">omega</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="ow">and</span> <span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">500</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">z</span><span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">minimum_value</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">omega</span><span class="p">[:</span><span class="mi">8</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">severe_recession</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">sr</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">.02</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sr</span><span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">T1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">next_turning_point</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suppose that omega is of length 6</span>
+<span class="sd">    </span>
+<span class="sd">        y_{t-2}, y_{t-1}, y_{t}, y_{t+1}, y_{t+2}, y_{t+3}</span>
+<span class="sd">    </span>
+<span class="sd">    that is sufficient for determining the value of P/N    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">4</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">])</span> <span class="ow">and</span> 
+            <span class="p">(</span><span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">])):</span>
+            <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="p">((</span><span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">])</span> <span class="ow">and</span> 
+            <span class="p">(</span><span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">omega</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">])):</span>
+            <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    
+    <span class="n">up_turn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">T</span><span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="p">(</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">T</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span> <span class="k">else</span> <span class="n">T1</span>
+    <span class="n">down_turn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">T</span><span class="o">==-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">T</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span> <span class="k">else</span> <span class="n">T1</span>
+
+    <span class="k">return</span> <span class="n">up_turn</span><span class="p">,</span> <span class="n">down_turn</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="original-wecker-method">
+<h2><span class="section-number">50.7. </span>Original Wecker Method<a class="headerlink" href="#original-wecker-method" title="Permalink to this headline">¶</a></h2>
+<p>Now we  apply Wecker’s original  method by simulating future paths and compute predictive distributions, conditioning
+on the true  parameters associated with the data-generating model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_Wecker</span><span class="p">(</span><span class="n">initial_path</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot the predictive distributions from &quot;pure&quot; Wecker&#39;s method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># store outcomes</span>
+    <span class="n">next_reces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">severe_rec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">min_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">next_up_turn</span><span class="p">,</span> <span class="n">next_down_turn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    
+    <span class="c1"># compute .9 confidence interval]</span>
+    <span class="n">y0</span> <span class="o">=</span> <span class="n">initial_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rho</span><span class="o">**</span><span class="n">j</span><span class="o">*</span><span class="n">y0</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T1</span><span class="p">)])</span>
+    <span class="nb">vars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">rho</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">j</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">rho</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T1</span><span class="p">)])</span>
+    <span class="n">y_bounds1_c95</span><span class="p">,</span> <span class="n">y_bounds2_c95</span> <span class="o">=</span> <span class="n">center</span> <span class="o">+</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">vars</span><span class="p">),</span> <span class="n">center</span> <span class="o">-</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">vars</span><span class="p">)</span>
+    <span class="n">y_bounds1_c90</span><span class="p">,</span> <span class="n">y_bounds2_c90</span> <span class="o">=</span> <span class="n">center</span> <span class="o">+</span> <span class="mf">1.65</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">vars</span><span class="p">),</span> <span class="n">center</span> <span class="o">-</span> <span class="mf">1.65</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">vars</span><span class="p">)</span>
+
+    <span class="c1"># plot</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Initial path and predictive densities&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">T0</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">initial_path</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="o">-</span><span class="n">T0</span><span class="p">,</span> <span class="n">T1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># plot 90% CI</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T1</span><span class="p">),</span> <span class="n">y_bounds1_c95</span><span class="p">,</span> <span class="n">y_bounds2_c95</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.3</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T1</span><span class="p">),</span> <span class="n">y_bounds1_c90</span><span class="p">,</span> <span class="n">y_bounds2_c90</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.35</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T1</span><span class="p">),</span> <span class="n">center</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.7</span><span class="p">)</span>
+
+    <span class="c1"># simulate future paths</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">sim_path</span> <span class="o">=</span> <span class="n">AR1_simulate</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">initial_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">T1</span><span class="p">)</span>
+        <span class="n">next_reces</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_recession</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">initial_path</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">sim_path</span><span class="p">]))</span>
+        <span class="n">severe_rec</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">severe_recession</span><span class="p">(</span><span class="n">sim_path</span><span class="p">)</span>
+        <span class="n">min_vals</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">minimum_value</span><span class="p">(</span><span class="n">sim_path</span><span class="p">)</span>
+        <span class="n">next_up_turn</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">next_down_turn</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_turning_point</span><span class="p">(</span><span class="n">sim_path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">n</span><span class="o">%</span><span class="p">(</span><span class="n">N</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T1</span><span class="p">),</span> <span class="n">sim_path</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            
+    <span class="c1"># return next_up_turn, next_down_turn</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">next_reces</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True parameters&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Predictive distribution of time until the next recession&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">severe_rec</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">binwidth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True parameters&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Predictive distribution of stopping time of growth$&lt;-2\%$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">min_vals</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True parameters&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Predictive distribution of minimum value in the next 8 periods&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">next_up_turn</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True parameters&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Predictive distribution of time until the next positive turn&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">next_down_turn</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True parameters&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Predictive distribution of time until the next negative turn&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+<span class="n">plot_Wecker</span><span class="p">(</span><span class="n">initial_path</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ar1_turningpts_11_0.png" src="_images/ar1_turningpts_11_0.png" />
+</div>
+</div>
+</section>
+<section id="extended-wecker-method">
+<h2><span class="section-number">50.8. </span>Extended Wecker Method<a class="headerlink" href="#extended-wecker-method" title="Permalink to this headline">¶</a></h2>
+<p>Now we apply we apply our  “extended” Wecker method based on  predictive densities of <span class="math notranslate nohighlight">\(y\)</span> defined by
+<a class="reference internal" href="#equation-ar1-tp-eq4">(50.4)</a> that acknowledge posterior uncertainty in the parameters <span class="math notranslate nohighlight">\(\rho, \sigma\)</span>.</p>
+<p>To approximate  the intergration on the right side of <a class="reference internal" href="#equation-ar1-tp-eq4">(50.4)</a>, we  repeately draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model <a class="reference internal" href="#equation-ar1-tp-eq1">(50.1)</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_extended_Wecker</span><span class="p">(</span><span class="n">post_samples</span><span class="p">,</span> <span class="n">initial_path</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot the extended Wecker&#39;s predictive distribution</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># select a sample</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">post_samples</span><span class="p">[</span><span class="s1">&#39;rho&#39;</span><span class="p">])),</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">rho_sample</span> <span class="o">=</span> <span class="n">post_samples</span><span class="p">[</span><span class="s1">&#39;rho&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+    <span class="n">sigma_sample</span> <span class="o">=</span> <span class="n">post_samples</span><span class="p">[</span><span class="s1">&#39;sigma&#39;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+
+    <span class="c1"># store outcomes</span>
+    <span class="n">next_reces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">severe_rec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">min_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">next_up_turn</span><span class="p">,</span> <span class="n">next_down_turn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+
+    <span class="c1"># plot</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Initial path and future paths simulated from posterior draws&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">T0</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">initial_path</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="o">-</span><span class="n">T0</span><span class="p">,</span> <span class="n">T1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># simulate future paths</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">sim_path</span> <span class="o">=</span> <span class="n">AR1_simulate</span><span class="p">(</span><span class="n">rho_sample</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">sigma_sample</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">initial_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">T1</span><span class="p">)</span>
+        <span class="n">next_reces</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_recession</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">initial_path</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">sim_path</span><span class="p">]))</span>
+        <span class="n">severe_rec</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">severe_recession</span><span class="p">(</span><span class="n">sim_path</span><span class="p">)</span>
+        <span class="n">min_vals</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">minimum_value</span><span class="p">(</span><span class="n">sim_path</span><span class="p">)</span>
+        <span class="n">next_up_turn</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">next_down_turn</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_turning_point</span><span class="p">(</span><span class="n">sim_path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">n</span><span class="o">%</span><span class="p">(</span><span class="n">N</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T1</span><span class="p">),</span> <span class="n">sim_path</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        
+    <span class="c1"># return next_up_turn, next_down_turn</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">next_reces</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Sampling from posterior&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Predictive distribution of time until the next recession&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">severe_rec</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">binwidth</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Sampling from posterior&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Predictive distribution of stopping time of growth$&lt;-2\%$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">min_vals</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Sampling from posterior&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Predictive distribution of minimum value in the next 8 periods&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">next_up_turn</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Sampling from posterior&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Predictive distribution of time until the next positive turn&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">next_down_turn</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Sampling from posterior&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Predictive distribution of time until the next negative turn&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+<span class="n">plot_extended_Wecker</span><span class="p">(</span><span class="n">post_samples</span><span class="p">,</span> <span class="n">initial_path</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ar1_turningpts_13_0.png" src="_images/ar1_turningpts_13_0.png" />
+</div>
+</div>
+</section>
+<section id="comparison">
+<h2><span class="section-number">50.9. </span>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h2>
+<p>Finally, we plot both the original Wecker method and the extended method with parameter values drawn from the posterior together to compare the differnces that emerge from pretending to know parameter values when they are actually uncertain.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+<span class="n">plot_Wecker</span><span class="p">(</span><span class="n">initial_path</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="n">plot_extended_Wecker</span><span class="p">(</span><span class="n">post_samples</span><span class="p">,</span> <span class="n">initial_path</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ar1_turningpts_15_0.png" src="_images/ar1_turningpts_15_0.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   2. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   3. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   4. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   6. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   7. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Elementary Statistics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_matrix.html">
+   8. Elementary Probability with Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   10. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   11. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   12. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   13. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   14. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   15. Fault Tree Uncertainties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   16. Introduction to Artificial Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rand_resp.html">
+   17. Randomized Response Surveys
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="util_rand_resp.html">
+   18. Expected Utilities of Random Responses
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lp_intro.html">
+   19. Linear Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   20. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   21. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   22. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   23. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   24. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   25. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   26. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   27. Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   28. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   29. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   30. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   31. Shortest Paths
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   32. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   33. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   34. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   35. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   36. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   37. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Consumption, Savings and Capital
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   38. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   39. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   40. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   41. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   42. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   43. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   44. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   45. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   46. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   47. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   48. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   49. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   50. Forecasting  an AR(1) process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   51. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   52. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   53. Computing Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   54. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   55. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   56. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   57. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   58. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   59. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   60. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   61. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   62. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   63. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   64. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   65. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   66. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   67. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   68. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   69. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   70. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   71. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   72. Competitive Equilibria with Arrow Securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   73. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   74. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   75. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   76. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   77. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   78. Multiple Good Allocation Mechanisms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   79. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   80. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   81. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/ar1_turningpts.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/ar1_turningpts.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/ar1_turningpts.ipynb">BinderHub</option>
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/ar1_turningpts.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/ar1_turningpts.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/ar1_turningpts.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "ar1_turningpts";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/ar1_turningpts.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-54984338-10', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </body>
+</html>

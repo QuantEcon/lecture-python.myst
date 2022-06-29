@@ -160,7 +160,7 @@ For the undiscounted optimal linear regulator problem, form the Lagrangian
 $$
 {\cal L} = - \sum^\infty_{t=0} \biggl\{ x^\prime_t R x_t + u_t^\prime Q u_t +
                                  2 \mu^\prime_{t+1} [A x_t + B u_t - x_{t+1}]\biggr\}
-$$ (eq1)
+$$ (lag-lqdp-eq1)
 
 where $2 \mu_{t+1}$ is a vector of Lagrange multipliers on the time $t$ transition law $x_{t+1} = A x_t + B u_t$.
 
@@ -172,16 +172,16 @@ $$
 \begin{aligned}
 2 Q u_t &+ 2B^\prime \mu_{t+1} = 0 \ ,\ t \geq 0 \cr \mu_t &= R x_t + A^\prime \mu_{t+1}\ ,\ t\geq 1.\cr
 \end{aligned}
-$$ (eq2)
+$$ (lag-lqdp-eq2)
 
-Define $\mu_0$ to be  a vector of shadow prices of $x_0$ and apply an envelope condition to {eq}`eq1`
+Define $\mu_0$ to be  a vector of shadow prices of $x_0$ and apply an envelope condition to {eq}`lag-lqdp-eq1`
  to deduce that
 
 $$
 \mu_0 = R x_0 + A' \mu_1,
 $$
 
-which is a time $t=0 $ counterpart to the second equation of system {eq}`eq2`.
+which is a time $t=0 $ counterpart to the second equation of system {eq}`lag-lqdp-eq2`.
 
 An important fact is  that  
 
@@ -199,11 +199,11 @@ corresponds to the **state** vector $x_t$.
 
 It is useful to proceed with the following steps:
 
-* solve the first equation of {eq}`eq2`  for $u_t$ in terms of $\mu_{t+1}$.
+* solve the first equation of {eq}`lag-lqdp-eq2`  for $u_t$ in terms of $\mu_{t+1}$.
 
 * substitute the result into the law of motion $x_{t+1} = A x_t + B u_t$.
 
-* arrange the resulting equation and the second equation of {eq}`eq2`  into the form
+* arrange the resulting equation and the second equation of {eq}`lag-lqdp-eq2`  into the form
 
 $$
 L\ \begin{pmatrix}x_{t+1}\cr \mu_{t+1}\cr\end{pmatrix}\ = \ N\ \begin{pmatrix}x_t\cr \mu_t\cr\end{pmatrix}\
@@ -271,7 +271,7 @@ The rank of $J$ is $2n$.
 
 $$
 MJM^\prime = J.
-$$ (eq3)
+$$ (lag-lqdp-eq3)
 
 Salient properties of symplectic matrices that are readily verified include:
 
@@ -280,14 +280,14 @@ Salient properties of symplectic matrices that are readily verified include:
 
 It can be verified directly that $M$ in equation {eq}`Mdefn` is symplectic.
 
-It follows from equation {eq}`eq3` and from the fact $J^{-1} = J^\prime = -J$ that for any symplectic
+It follows from equation {eq}`lag-lqdp-eq3` and from the fact $J^{-1} = J^\prime = -J$ that for any symplectic
 matrix $M$,
 
 $$
 M^\prime = J^{-1} M^{-1} J.
-$$ (eq4)
+$$ (lag-lqdp-eq4)
 
-Equation {eq}`eq4` states that $M^\prime$ is related to the inverse of $M$
+Equation {eq}`lag-lqdp-eq4` states that $M^\prime$ is related to the inverse of $M$
 by a **similarity transformation**.
 
 For square matrices, recall that  
@@ -298,7 +298,7 @@ For square matrices, recall that
 
 * a matrix and its transpose share eigenvalues
 
-It then follows from equation {eq}`eq4`  that
+It then follows from equation {eq}`lag-lqdp-eq4`  that
 the eigenvalues of $M$ occur in reciprocal pairs: if $\lambda$ is an
 eigenvalue of $M$, so is $\lambda^{-1}$.
 
@@ -809,7 +809,7 @@ $$
 
 which is a time $t=0 $ counterpart to the second equation of system {eq}`eq662`. 
 
-Proceeding as we did above with  the undiscounted system  {eq}`eq2`, we can rearrange the first-order conditions into the
+Proceeding as we did above with  the undiscounted system  {eq}`lag-lqdp-eq2`, we can rearrange the first-order conditions into the
 system
 
 $$
@@ -821,7 +821,7 @@ $$
 \left[\begin{matrix} x_t \cr \mu_t \end{matrix}\right]
 $$ (eq663)
 
-which in the special case that $\beta = 1$ agrees with equation {eq}`eq2`, as expected.
+which in the special case that $\beta = 1$ agrees with equation {eq}`lag-lqdp-eq2`, as expected.
 
 +++
 

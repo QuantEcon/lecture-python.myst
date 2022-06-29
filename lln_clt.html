@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>7. LLN and CLT &#8212; Quantitative Economics with Python</title>
+    <title>10. LLN and CLT &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -102,8 +102,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="8. Two Meanings of Probability" href="prob_meaning.html" />
-    <link rel="prev" title="6. Circulant Matrices" href="eig_circulant.html" />
+    <link rel="next" title="11. Two Meanings of Probability" href="prob_meaning.html" />
+    <link rel="prev" title="9. Univariate Time Series with Matrix Algebra" href="time_series_with_matrices.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -153,76 +153,76 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   7.1. Overview
+   10.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#relationships">
-   7.2. Relationships
+   10.2. Relationships
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#lln">
-   7.3. LLN
+   10.3. LLN
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-classical-lln">
-     7.3.1. The Classical LLN
+     10.3.1. The Classical LLN
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#proof">
-     7.3.2. Proof
+     10.3.2. Proof
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#illustration">
-     7.3.3. Illustration
+     10.3.3. Illustration
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#clt">
-   7.4. CLT
+   10.4. CLT
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#statement-of-the-theorem">
-     7.4.1. Statement of the Theorem
+     10.4.1. Statement of the Theorem
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#intuition">
-     7.4.2. Intuition
+     10.4.2. Intuition
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#simulation-1">
-     7.4.3. Simulation 1
+     10.4.3. Simulation 1
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#simulation-2">
-     7.4.4. Simulation 2
+     10.4.4. Simulation 2
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-multivariate-case">
-     7.4.5. The Multivariate Case
+     10.4.5. The Multivariate Case
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   7.5. Exercises
+   10.5. Exercises
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
-   7.6. Solutions
+   10.6. Solutions
   </a>
  </li>
 </ul>
@@ -275,7 +275,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="lln-and-clt">
-<h1><a class="toc-backref" href="#id3"><span class="section-number">7. </span><span class="target" id="index-0"></span>LLN and <span class="target" id="index-1"></span>CLT</a><a class="headerlink" href="#lln-and-clt" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id3"><span class="section-number">10. </span><span class="target" id="index-0"></span>LLN and <span class="target" id="index-1"></span>CLT</a><a class="headerlink" href="#lln-and-clt" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="index-2"></span><div class="contents topic" id="contents">
 <span id="index-3"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -292,7 +292,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">7.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">10.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture illustrates two of the most important theorems of probability and statistics: The
 law of large numbers (LLN) and the central limit theorem (CLT).</p>
 <p>These beautiful theorems lie behind many of the most fundamental results in econometrics and quantitative economic modeling.</p>
@@ -323,17 +323,17 @@ law of large numbers (LLN) and the central limit theorem (CLT).</p>
 </div>
 </section>
 <section id="relationships">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">7.2. </span>Relationships</a><a class="headerlink" href="#relationships" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">10.2. </span>Relationships</a><a class="headerlink" href="#relationships" title="Permalink to this headline">¶</a></h2>
 <p>The CLT refines the LLN.</p>
 <p>The LLN gives conditions under which sample moments converge to population moments as sample size increases.</p>
 <p>The CLT provides information about the rate at which sample moments converge to population moments as sample size increases.</p>
 </section>
 <section id="lln">
-<span id="lln-mr"></span><h2><a class="toc-backref" href="#id6"><span class="section-number">7.3. </span>LLN</a><a class="headerlink" href="#lln" title="Permalink to this headline">¶</a></h2>
+<span id="lln-mr"></span><h2><a class="toc-backref" href="#id6"><span class="section-number">10.3. </span>LLN</a><a class="headerlink" href="#lln" title="Permalink to this headline">¶</a></h2>
 <p id="index-4">We begin with the law of large numbers, which tells us when sample averages
 will converge to their population means.</p>
 <section id="the-classical-lln">
-<span id="lln-ksl"></span><h3><span class="section-number">7.3.1. </span>The Classical LLN<a class="headerlink" href="#the-classical-lln" title="Permalink to this headline">¶</a></h3>
+<span id="lln-ksl"></span><h3><span class="section-number">10.3.1. </span>The Classical LLN<a class="headerlink" href="#the-classical-lln" title="Permalink to this headline">¶</a></h3>
 <p>The classical law of large numbers concerns independent and
 identically distributed (IID) random variables.</p>
 <p>Here is the strongest version of the classical LLN, known as <em>Kolmogorov’s strong law</em>.</p>
@@ -351,32 +351,32 @@ distributed scalar random variables, with common distribution <span class="math 
 \]</div>
 <p>Kolmogorov’s strong law states that, if <span class="math notranslate nohighlight">\(\mathbb E |X|\)</span> is finite, then</p>
 <div class="math notranslate nohighlight" id="equation-lln-as">
-<span class="eqno">(7.1)<a class="headerlink" href="#equation-lln-as" title="Permalink to this equation">¶</a></span>\[\mathbb P \left\{ \bar X_n \to \mu \text{ as } n \to \infty \right\} = 1\]</div>
+<span class="eqno">(10.1)<a class="headerlink" href="#equation-lln-as" title="Permalink to this equation">¶</a></span>\[\mathbb P \left\{ \bar X_n \to \mu \text{ as } n \to \infty \right\} = 1\]</div>
 <p>What does this last expression mean?</p>
 <p>Let’s think about it from a simulation perspective, imagining for a moment that
 our computer can generate perfect random samples (which of course <a class="reference external" href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">it can’t</a>).</p>
 <p>Let’s also imagine that we can generate infinite sequences so that the
 statement <span class="math notranslate nohighlight">\(\bar X_n \to \mu\)</span> can be evaluated.</p>
-<p>In this setting, <a class="reference internal" href="#equation-lln-as">(7.1)</a> should be interpreted as meaning that the
+<p>In this setting, <a class="reference internal" href="#equation-lln-as">(10.1)</a> should be interpreted as meaning that the
 probability of the computer producing a sequence where <span class="math notranslate nohighlight">\(\bar X_n \to \mu\)</span> fails to occur
 is zero.</p>
 </section>
 <section id="proof">
-<h3><span class="section-number">7.3.2. </span>Proof<a class="headerlink" href="#proof" title="Permalink to this headline">¶</a></h3>
-<p id="index-5">The proof of Kolmogorov’s strong law is nontrivial – see, for example, theorem 8.3.5 of <span id="id1">[<a class="reference internal" href="zreferences.html#id154" title="R M Dudley. Real Analysis and Probability. Cambridge Studies in Advanced Mathematics. Cambridge University Press, 2002.">Dud02</a>]</span>.</p>
+<h3><span class="section-number">10.3.2. </span>Proof<a class="headerlink" href="#proof" title="Permalink to this headline">¶</a></h3>
+<p id="index-5">The proof of Kolmogorov’s strong law is nontrivial – see, for example, theorem 8.3.5 of <span id="id1">[<a class="reference internal" href="zreferences.html#id157" title="R M Dudley. Real Analysis and Probability. Cambridge Studies in Advanced Mathematics. Cambridge University Press, 2002.">Dud02</a>]</span>.</p>
 <p>On the other hand, we can prove a weaker version of the LLN very easily and
 still get most of the intuition.</p>
 <p>The version we prove is as follows: If <span class="math notranslate nohighlight">\(X_1, \ldots, X_n\)</span> is IID with <span class="math notranslate nohighlight">\(\mathbb E X_i^2 &lt; \infty\)</span>,
 then, for any <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span>, we have</p>
 <div class="math notranslate nohighlight" id="equation-lln-ip">
-<span class="eqno">(7.2)<a class="headerlink" href="#equation-lln-ip" title="Permalink to this equation">¶</a></span>\[\mathbb P \left\{ | \bar X_n - \mu | \geq \epsilon \right\} \to 0
+<span class="eqno">(10.2)<a class="headerlink" href="#equation-lln-ip" title="Permalink to this equation">¶</a></span>\[\mathbb P \left\{ | \bar X_n - \mu | \geq \epsilon \right\} \to 0
 \quad \text{as} \quad
 n \to \infty\]</div>
 <p>(This version is weaker because we claim only <a class="reference external" href="https://en.wikipedia.org/wiki/Convergence_of_random_variables#Convergence_in_probability">convergence in probability</a> rather than <a class="reference external" href="https://en.wikipedia.org/wiki/Convergence_of_random_variables#Almost_sure_convergence">almost sure convergence</a>, and assume a finite second moment)</p>
 <p>To see that this is so, fix <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span>, and let <span class="math notranslate nohighlight">\(\sigma^2\)</span> be the variance of each <span class="math notranslate nohighlight">\(X_i\)</span>.</p>
 <p>Recall the <a class="reference external" href="https://en.wikipedia.org/wiki/Chebyshev%27s_inequality">Chebyshev inequality</a>, which tells us that</p>
 <div class="math notranslate nohighlight" id="equation-lln-cheb">
-<span class="eqno">(7.3)<a class="headerlink" href="#equation-lln-cheb" title="Permalink to this equation">¶</a></span>\[\mathbb P \left\{ | \bar X_n - \mu | \geq \epsilon \right\}
+<span class="eqno">(10.3)<a class="headerlink" href="#equation-lln-cheb" title="Permalink to this equation">¶</a></span>\[\mathbb P \left\{ | \bar X_n - \mu | \geq \epsilon \right\}
 \leq \frac{\mathbb E [ (\bar X_n - \mu)^2]}{\epsilon^2}\]</div>
 <p>Now observe that</p>
 <div class="math notranslate nohighlight">
@@ -398,11 +398,11 @@ n \to \infty\]</div>
 independence.</p>
 <p>Independence means that if <span class="math notranslate nohighlight">\(i \not= j\)</span>, then the covariance term <span class="math notranslate nohighlight">\(\mathbb E (X_i - \mu)(X_j - \mu)\)</span> drops out.</p>
 <p>As a result, <span class="math notranslate nohighlight">\(n^2 - n\)</span> terms vanish, leading us to a final expression that goes to zero in <span class="math notranslate nohighlight">\(n\)</span>.</p>
-<p>Combining our last result with <a class="reference internal" href="#equation-lln-cheb">(7.3)</a>, we come to the estimate</p>
+<p>Combining our last result with <a class="reference internal" href="#equation-lln-cheb">(10.3)</a>, we come to the estimate</p>
 <div class="math notranslate nohighlight" id="equation-lln-cheb2">
-<span class="eqno">(7.4)<a class="headerlink" href="#equation-lln-cheb2" title="Permalink to this equation">¶</a></span>\[\mathbb P \left\{ | \bar X_n - \mu | \geq \epsilon \right\}
+<span class="eqno">(10.4)<a class="headerlink" href="#equation-lln-cheb2" title="Permalink to this equation">¶</a></span>\[\mathbb P \left\{ | \bar X_n - \mu | \geq \epsilon \right\}
 \leq \frac{\sigma^2}{n \epsilon^2}\]</div>
-<p>The claim in <a class="reference internal" href="#equation-lln-ip">(7.2)</a> is now clear.</p>
+<p>The claim in <a class="reference internal" href="#equation-lln-ip">(10.2)</a> is now clear.</p>
 <p>Of course, if the sequence <span class="math notranslate nohighlight">\(X_1, \ldots, X_n\)</span> is correlated, then the cross-product terms
 <span class="math notranslate nohighlight">\(\mathbb E (X_i - \mu)(X_j - \mu)\)</span> are not necessarily zero.</p>
 <p>While this doesn’t mean that the same line of argument is impossible, it does mean
@@ -415,7 +415,7 @@ large.</p>
 <p>This idea is very important in time series analysis, and we’ll come across it again soon enough.</p>
 </section>
 <section id="illustration">
-<h3><span class="section-number">7.3.3. </span>Illustration<a class="headerlink" href="#illustration" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">10.3.3. </span>Illustration<a class="headerlink" href="#illustration" title="Permalink to this headline">¶</a></h3>
 <p id="index-6">Let’s now illustrate the classical IID law of large numbers using simulation.</p>
 <p>In particular, we aim to generate some sequences of IID random variables and plot the evolution
 of <span class="math notranslate nohighlight">\(\bar X_n\)</span> as <span class="math notranslate nohighlight">\(n\)</span> increases.</p>
@@ -481,27 +481,27 @@ of <span class="math notranslate nohighlight">\(\bar X_n\)</span> as <span class
 </section>
 </section>
 <section id="clt">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">7.4. </span>CLT</a><a class="headerlink" href="#clt" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">10.4. </span>CLT</a><a class="headerlink" href="#clt" title="Permalink to this headline">¶</a></h2>
 <p id="index-7">Next, we turn to the central limit theorem, which tells us about the distribution of the deviation between sample averages and population means.</p>
 <section id="statement-of-the-theorem">
-<h3><span class="section-number">7.4.1. </span>Statement of the Theorem<a class="headerlink" href="#statement-of-the-theorem" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">10.4.1. </span>Statement of the Theorem<a class="headerlink" href="#statement-of-the-theorem" title="Permalink to this headline">¶</a></h3>
 <p>The central limit theorem is one of the most remarkable results in all of mathematics.</p>
 <p>In the classical IID setting, it tells us the following:</p>
 <p id="statement-clt">If the sequence <span class="math notranslate nohighlight">\(X_1, \ldots, X_n\)</span> is IID, with common mean
 <span class="math notranslate nohighlight">\(\mu\)</span> and common variance <span class="math notranslate nohighlight">\(\sigma^2 \in (0, \infty)\)</span>, then</p>
 <div class="math notranslate nohighlight" id="equation-lln-clt">
-<span class="eqno">(7.5)<a class="headerlink" href="#equation-lln-clt" title="Permalink to this equation">¶</a></span>\[\sqrt{n} ( \bar X_n - \mu ) \stackrel { d } {\to} N(0, \sigma^2)
+<span class="eqno">(10.5)<a class="headerlink" href="#equation-lln-clt" title="Permalink to this equation">¶</a></span>\[\sqrt{n} ( \bar X_n - \mu ) \stackrel { d } {\to} N(0, \sigma^2)
 \quad \text{as} \quad
 n \to \infty\]</div>
 <p>Here <span class="math notranslate nohighlight">\(\stackrel { d } {\to} N(0, \sigma^2)\)</span> indicates <a class="reference external" href="https://en.wikipedia.org/wiki/Convergence_of_random_variables#Convergence_in_distribution">convergence in distribution</a> to a centered (i.e, zero mean) normal with standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
 </section>
 <section id="intuition">
-<h3><span class="section-number">7.4.2. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">10.4.2. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this headline">¶</a></h3>
 <p id="index-8">The striking implication of the CLT is that for <strong>any</strong> distribution with
 finite second moment, the simple operation of adding independent
 copies <strong>always</strong> leads to a Gaussian curve.</p>
 <p>A relatively simple proof of the central limit theorem can be obtained by
-working with characteristic functions (see, e.g., theorem 9.5.6 of <span id="id2">[<a class="reference internal" href="zreferences.html#id154" title="R M Dudley. Real Analysis and Probability. Cambridge Studies in Advanced Mathematics. Cambridge University Press, 2002.">Dud02</a>]</span>).</p>
+working with characteristic functions (see, e.g., theorem 9.5.6 of <span id="id2">[<a class="reference internal" href="zreferences.html#id157" title="R M Dudley. Real Analysis and Probability. Cambridge Studies in Advanced Mathematics. Cambridge University Press, 2002.">Dud02</a>]</span>).</p>
 <p>The proof is elegant but almost anticlimactic, and it provides surprisingly little intuition.</p>
 <p>In fact, all of the proofs of the CLT that we know are similar in this respect.</p>
 <p>Why does adding independent copies produce a bell-shaped distribution?</p>
@@ -550,7 +550,7 @@ fail” are just as likely as the outcomes “fail then fail” and “succeed t
 <p>We are witnessing the <a class="reference external" href="https://en.wikipedia.org/wiki/De_Moivre%E2%80%93Laplace_theorem">binomial approximation of the normal distribution</a>.</p>
 </section>
 <section id="simulation-1">
-<h3><span class="section-number">7.4.3. </span>Simulation 1<a class="headerlink" href="#simulation-1" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">10.4.3. </span>Simulation 1<a class="headerlink" href="#simulation-1" title="Permalink to this headline">¶</a></h3>
 <p>Since the CLT seems almost magical, running simulations that verify its implications is one good way to build intuition.</p>
 <p>To this end, we now perform the following simulation</p>
 <ol class="simple">
@@ -599,7 +599,7 @@ fail” are just as likely as the outcomes “fail then fail” and “succeed t
 <p>You can also experiment with other specifications of <span class="math notranslate nohighlight">\(F\)</span>.</p>
 </section>
 <section id="simulation-2">
-<h3><span class="section-number">7.4.4. </span>Simulation 2<a class="headerlink" href="#simulation-2" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">10.4.4. </span>Simulation 2<a class="headerlink" href="#simulation-2" title="Permalink to this headline">¶</a></h3>
 <p>Our next simulation is somewhat like the first, except that we aim to track the distribution of <span class="math notranslate nohighlight">\(Y_n := \sqrt{n} ( \bar X_n - \mu )\)</span> as <span class="math notranslate nohighlight">\(n\)</span> increases.</p>
 <p>In the simulation, we’ll be working with random variables having <span class="math notranslate nohighlight">\(\mu = 0\)</span>.</p>
 <p>Thus, when <span class="math notranslate nohighlight">\(n=1\)</span>, we have <span class="math notranslate nohighlight">\(Y_1 = X_1\)</span>, so the first distribution is just
@@ -678,7 +678,7 @@ specified as the convex combination of three different beta densities.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_15000/392210314.py:36: MatplotlibDeprecationWarning: Calling gca() with keyword arguments was deprecated in Matplotlib 3.4. Starting two minor releases later, gca() will take no keyword arguments. The gca() function should only be used to get the current axes, or if no axes exist, create new axes with default keyword arguments. To create a new axes with non-default arguments, use plt.axes() or plt.subplot().
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13877/392210314.py:36: MatplotlibDeprecationWarning: Calling gca() with keyword arguments was deprecated in Matplotlib 3.4. Starting two minor releases later, gca() will take no keyword arguments. The gca() function should only be used to get the current axes, or if no axes exist, create new axes with default keyword arguments. To create a new axes with non-default arguments, use plt.axes() or plt.subplot().
   ax = fig.gca(projection=&#39;3d&#39;)
 </pre></div>
 </div>
@@ -693,7 +693,7 @@ window that you can rotate with your mouse, giving different views on the
 density sequence.</p>
 </section>
 <section id="the-multivariate-case">
-<span id="multivariate-clt"></span><h3><span class="section-number">7.4.5. </span>The Multivariate Case<a class="headerlink" href="#the-multivariate-case" title="Permalink to this headline">¶</a></h3>
+<span id="multivariate-clt"></span><h3><span class="section-number">10.4.5. </span>The Multivariate Case<a class="headerlink" href="#the-multivariate-case" title="Permalink to this headline">¶</a></h3>
 <span class="target" id="index-9"></span><p id="index-10">The law of large numbers and central limit theorem work just as nicely in multidimensional settings.</p>
 <p>To state the results, let’s recall some elementary facts about random vectors.</p>
 <p>A random vector <span class="math notranslate nohighlight">\(\mathbf X\)</span> is just a sequence of <span class="math notranslate nohighlight">\(k\)</span> random variables <span class="math notranslate nohighlight">\((X_1, \ldots, X_k)\)</span>.</p>
@@ -766,26 +766,26 @@ be the variance-covariance matrix of <span class="math notranslate nohighlight">
 \]</div>
 <p>In this setting, the LLN tells us that</p>
 <div class="math notranslate nohighlight" id="equation-lln-asmv">
-<span class="eqno">(7.6)<a class="headerlink" href="#equation-lln-asmv" title="Permalink to this equation">¶</a></span>\[\mathbb P \left\{ \bar{\mathbf X}_n \to \boldsymbol \mu \text{ as } n \to \infty \right\} = 1\]</div>
+<span class="eqno">(10.6)<a class="headerlink" href="#equation-lln-asmv" title="Permalink to this equation">¶</a></span>\[\mathbb P \left\{ \bar{\mathbf X}_n \to \boldsymbol \mu \text{ as } n \to \infty \right\} = 1\]</div>
 <p>Here <span class="math notranslate nohighlight">\(\bar{\mathbf X}_n \to \boldsymbol \mu\)</span> means that <span class="math notranslate nohighlight">\(\| \bar{\mathbf X}_n - \boldsymbol \mu \| \to 0\)</span>, where <span class="math notranslate nohighlight">\(\| \cdot \|\)</span> is the standard Euclidean norm.</p>
 <p>The CLT tells us that, provided <span class="math notranslate nohighlight">\(\Sigma\)</span> is finite,</p>
 <div class="math notranslate nohighlight" id="equation-lln-cltmv">
-<span class="eqno">(7.7)<a class="headerlink" href="#equation-lln-cltmv" title="Permalink to this equation">¶</a></span>\[\sqrt{n} ( \bar{\mathbf X}_n - \boldsymbol \mu ) \stackrel { d } {\to} N(\mathbf 0, \Sigma)
+<span class="eqno">(10.7)<a class="headerlink" href="#equation-lln-cltmv" title="Permalink to this equation">¶</a></span>\[\sqrt{n} ( \bar{\mathbf X}_n - \boldsymbol \mu ) \stackrel { d } {\to} N(\mathbf 0, \Sigma)
 \quad \text{as} \quad
 n \to \infty\]</div>
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">7.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">10.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="exercise admonition" id="lln_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 7.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 10.1 </span></p>
 <section id="exercise-content">
 <p>One very useful consequence of the central limit theorem is as follows.</p>
 <p>Assume the conditions of the CLT as <a class="reference internal" href="#statement-clt"><span class="std std-ref">stated above</span></a>.</p>
 <p>If <span class="math notranslate nohighlight">\(g \colon \mathbb R \to \mathbb R\)</span> is differentiable at <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(g'(\mu) \not= 0\)</span>, then</p>
 <div class="math notranslate nohighlight" id="equation-lln-dm">
-<span class="eqno">(7.8)<a class="headerlink" href="#equation-lln-dm" title="Permalink to this equation">¶</a></span>\[\sqrt{n} \{ g(\bar X_n) - g(\mu) \}
+<span class="eqno">(10.8)<a class="headerlink" href="#equation-lln-dm" title="Permalink to this equation">¶</a></span>\[\sqrt{n} \{ g(\bar X_n) - g(\mu) \}
 \stackrel { d } {\to} N(0, g'(\mu)^2 \sigma^2)
 \quad \text{as} \quad
 n \to \infty\]</div>
@@ -800,7 +800,7 @@ n \to \infty\]</div>
 </div>
 <div class="exercise admonition" id="lln_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 7.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 10.2 </span></p>
 <section id="exercise-content">
 <p>Here’s a result that’s often used in developing statistical tests, and is connected to the multivariate central limit theorem.</p>
 <p>If you study econometric theory, you will see this result used again and again.</p>
@@ -811,7 +811,7 @@ n \to \infty\]</div>
 <li><p>The convergence</p></li>
 </ol>
 <div class="math notranslate nohighlight" id="equation-lln-cltmv2">
-<span class="eqno">(7.9)<a class="headerlink" href="#equation-lln-cltmv2" title="Permalink to this equation">¶</a></span>\[\sqrt{n} ( \bar{\mathbf X}_n - \boldsymbol \mu ) \stackrel { d } {\to} N(\mathbf 0, \Sigma)\]</div>
+<span class="eqno">(10.9)<a class="headerlink" href="#equation-lln-cltmv2" title="Permalink to this equation">¶</a></span>\[\sqrt{n} ( \bar{\mathbf X}_n - \boldsymbol \mu ) \stackrel { d } {\to} N(\mathbf 0, \Sigma)\]</div>
 <p>is valid.</p>
 <p>In a statistical setting, one often wants the right-hand side to be <strong>standard</strong> normal so that confidence intervals are easily computed.</p>
 <p>This normalization can be achieved on the basis of three observations.</p>
@@ -852,13 +852,13 @@ exists a symmetric positive definite matrix <span class="math notranslate nohigh
 \]</div>
 <p>Given the distribution of <span class="math notranslate nohighlight">\(\mathbf Z\)</span>, we conclude that</p>
 <div class="math notranslate nohighlight" id="equation-lln-ctc">
-<span class="eqno">(7.10)<a class="headerlink" href="#equation-lln-ctc" title="Permalink to this equation">¶</a></span>\[n \| \mathbf Q ( \bar{\mathbf X}_n - \boldsymbol \mu ) \|^2
+<span class="eqno">(10.10)<a class="headerlink" href="#equation-lln-ctc" title="Permalink to this equation">¶</a></span>\[n \| \mathbf Q ( \bar{\mathbf X}_n - \boldsymbol \mu ) \|^2
 \stackrel{d}{\to}
 \chi^2(k)\]</div>
 <p>where <span class="math notranslate nohighlight">\(\chi^2(k)\)</span> is the chi-squared distribution with <span class="math notranslate nohighlight">\(k\)</span> degrees
 of freedom.</p>
 <p>(Recall that <span class="math notranslate nohighlight">\(k\)</span> is the dimension of <span class="math notranslate nohighlight">\(\mathbf X_i\)</span>, the underlying random vectors.)</p>
-<p>Your second exercise is to illustrate the convergence in <a class="reference internal" href="#equation-lln-ctc">(7.10)</a> with a simulation.</p>
+<p>Your second exercise is to illustrate the convergence in <a class="reference internal" href="#equation-lln-ctc">(10.10)</a> with a simulation.</p>
 <p>In doing so, let</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -885,10 +885,10 @@ of freedom.</p>
 </div>
 </section>
 <section id="solutions">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">7.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">10.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <div class="solution dropdown admonition" id="lln_clt-solution-2">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#lln_ex1"> Exercise 7.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#lln_ex1"> Exercise 10.1</a></p>
 <section id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution</p>
 <div class="cell docutils container">
@@ -939,7 +939,7 @@ of freedom.</p>
 </div>
 <div class="solution dropdown admonition" id="lln_clt-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#lln_ex2"> Exercise 7.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#lln_ex2"> Exercise 10.2</a></p>
 <section id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>First we want to verify the claim that</p>
 <div class="math notranslate nohighlight">
@@ -1118,6 +1118,11 @@ which is what we aimed to show.</p>
    6. Circulant Matrices
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   7. Singular Value Decomposition (SVD)
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1125,59 +1130,59 @@ which is what we aimed to show.</p>
  </span>
 </p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
- <li class="toctree-l1 current active active">
-  <a class="current reference internal" href="#">
-   7. LLN and CLT
-  </a>
- </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="prob_meaning.html">
-   8. Two Meanings of Probability
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="multi_hyper.html">
-   9. Multivariate Hypergeometric Distribution
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="multivariate_normal.html">
-   10. Multivariate Normal Distribution
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="heavy_tails.html">
-   11. Heavy-Tailed Distributions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="hoist_failure.html">
-   12. Fault Tree Uncertainties
+  <a class="reference internal" href="prob_matrix.html">
+   8. Elementary Probability with Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   13. Univariate Time Series with Matrix Algebra
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   10. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   11. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   12. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   13. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   14. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   15. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   14. Introduction to Artificial Neural Networks
+   16. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   15. Randomized Response Surveys
+   17. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   16. Expected Utilities of Random Responses
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="svd_intro.html">
-   17. Singular Value Decomposition (SVD)
+   18. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1189,17 +1194,17 @@ which is what we aimed to show.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   18. Linear Programming
+   19. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   19. Optimal Transport
+   20. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   20. Von Neumann Growth Model (and a Generalization)
+   21. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1211,52 +1216,52 @@ which is what we aimed to show.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   21. Dynamics in One Dimension
+   22. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   22. AR1 Processes
+   23. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   23. Finite Markov Chains
+   24. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   24. Inventory Dynamics
+   25. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   25. Linear State Space Models
+   26. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   26. Samuelson Multiplier-Accelerator
+   27. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   27. Kesten Processes and Firm Dynamics
+   28. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   28. Wealth Distribution Dynamics
+   29. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   29. A First Look at the Kalman Filter
+   30. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   30. Shortest Paths
+   31. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1268,32 +1273,32 @@ which is what we aimed to show.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   31. Job Search I: The McCall Search Model
+   32. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   32. Job Search II: Search and Separation
+   33. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   33. Job Search III: Fitted Value Function Iteration
+   34. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   34. Job Search IV: Correlated Wage Offers
+   35. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   35. Job Search V: Modeling Career Choice
+   36. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   36. Job Search VI: On-the-Job Search
+   37. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -1305,52 +1310,74 @@ which is what we aimed to show.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   37. Cass-Koopmans Model
+   38. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   38. Cass-Koopmans Competitive Equilibrium
+   39. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   39. Cake Eating I: Introduction to Optimal Saving
+   40. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   40. Cake Eating II: Numerical Methods
+   41. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   41. Optimal Growth I: The Stochastic Optimal Growth Model
+   42. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   42. Optimal Growth II: Accelerating the Code with Numba
+   43. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   43. Optimal Growth III: Time Iteration
+   44. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   44. Optimal Growth IV: The Endogenous Grid Method
+   45. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   45. The Income Fluctuation Problem I: Basic Model
+   46. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   46. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   47. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   48. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   49. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   50. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1362,37 +1389,37 @@ which is what we aimed to show.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   47. Job Search VII: Search with Learning
+   51. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   48. Likelihood Ratio Processes
+   52. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   49. Computing Mean of a Likelihood Ratio Process
+   53. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   50. A Problem that Stumped Milton Friedman
+   54. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   51. Exchangeability and Bayesian Updating
+   55. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   52. Likelihood Ratio Processes and Bayesian Learning
+   56. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   53. Bayesian versus Frequentist Decision Rules
+   57. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1404,32 +1431,32 @@ which is what we aimed to show.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   54. LQ Control: Foundations
+   58. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   55. Lagrangian for LQ Control
+   59. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   56. Eliminating Cross Products
+   60. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   57. The Permanent Income Model
+   61. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   58. Permanent Income II: LQ Techniques
+   62. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   59. Production Smoothing via Inventories
+   63. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1441,37 +1468,37 @@ which is what we aimed to show.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   60. Schelling’s Segregation Model
+   64. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   61. A Lake Model of Employment and Unemployment
+   65. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   62. Rational Expectations Equilibrium
+   66. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   63. Stability in Linear Rational Expectations Models
+   67. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   64. Markov Perfect Equilibrium
+   68. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   65. Uncertainty Traps
+   69. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   66. The Aiyagari Model
+   70. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1483,17 +1510,17 @@ which is what we aimed to show.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   67. Asset Pricing: Finite State Models
+   71. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   68. Competitive Equilibria with Arrow Securities
+   72. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   69. Heterogeneous Beliefs and Bubbles
+   73. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1505,17 +1532,17 @@ which is what we aimed to show.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   70. Pandas for Panel Data
+   74. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   71. Linear Regression in Python
+   75. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   72. Maximum Likelihood Estimation
+   76. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1527,12 +1554,12 @@ which is what we aimed to show.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   73. First-Price and Second-Price Auctions
+   77. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   74. Multiple Good Allocation Mechanisms
+   78. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1544,17 +1571,17 @@ which is what we aimed to show.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   75. Troubleshooting
+   79. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   76. References
+   80. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   77. Execution Statistics
+   81. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1592,7 +1619,7 @@ which is what we aimed to show.</p>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/lln_clt.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/lln_clt.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1605,7 +1632,7 @@ which is what we aimed to show.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

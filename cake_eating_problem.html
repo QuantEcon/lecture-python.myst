@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>39. Cake Eating I: Introduction to Optimal Saving &#8212; Quantitative Economics with Python</title>
+    <title>40. Cake Eating I: Introduction to Optimal Saving &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -102,8 +102,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="40. Cake Eating II: Numerical Methods" href="cake_eating_numerical.html" />
-    <link rel="prev" title="38. Cass-Koopmans Competitive Equilibrium" href="cass_koopmans_2.html" />
+    <link rel="next" title="41. Cake Eating II: Numerical Methods" href="cake_eating_numerical.html" />
+    <link rel="prev" title="39. Cass-Koopmans Competitive Equilibrium" href="cass_koopmans_2.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -153,78 +153,78 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   39.1. Overview
+   40.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-model">
-   39.2. The Model
+   40.2. The Model
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#trade-off">
-     39.2.1. Trade-Off
+     40.2.1. Trade-Off
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#intuition">
-     39.2.2. Intuition
+     40.2.2. Intuition
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-value-function">
-   39.3. The Value Function
+   40.3. The Value Function
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-bellman-equation">
-     39.3.1. The Bellman Equation
+     40.3.1. The Bellman Equation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#an-analytical-solution">
-     39.3.2. An Analytical Solution
+     40.3.2. An Analytical Solution
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-optimal-policy">
-   39.4. The Optimal Policy
+   40.4. The Optimal Policy
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-euler-equation">
-   39.5. The Euler Equation
+   40.5. The Euler Equation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#statement-and-implications">
-     39.5.1. Statement and Implications
+     40.5.1. Statement and Implications
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#derivation-i-a-perturbation-approach">
-     39.5.2. Derivation I: A Perturbation Approach
+     40.5.2. Derivation I: A Perturbation Approach
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#derivation-ii-using-the-bellman-equation">
-     39.5.3. Derivation II: Using the Bellman Equation
+     40.5.3. Derivation II: Using the Bellman Equation
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   39.6. Exercises
+   40.6. Exercises
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#solutions">
-   39.7. Solutions
+   40.7. Solutions
   </a>
  </li>
 </ul>
@@ -273,7 +273,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="cake-eating-i-introduction-to-optimal-saving">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">39. </span>Cake Eating I: Introduction to Optimal Saving</a><a class="headerlink" href="#cake-eating-i-introduction-to-optimal-saving" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id2"><span class="section-number">40. </span>Cake Eating I: Introduction to Optimal Saving</a><a class="headerlink" href="#cake-eating-i-introduction-to-optimal-saving" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -291,7 +291,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">39.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">40.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture we introduce a simple “cake eating” problem.</p>
 <p>The intertemporal problem is: how much to enjoy today and how much to leave
 for the future?</p>
@@ -320,7 +320,7 @@ progressively more challenging—and useful—problems.</p>
 </div>
 </section>
 <section id="the-model">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">39.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">40.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
 <p>We consider an infinite time horizon <span class="math notranslate nohighlight">\(t=0, 1, 2, 3..\)</span></p>
 <p>At <span class="math notranslate nohighlight">\(t=0\)</span> the agent is given a complete cake with size <span class="math notranslate nohighlight">\(\bar x\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(x_t\)</span> denote the size of the cake at the beginning of each period,
@@ -335,7 +335,7 @@ x_{t+1} = x_t - c_t
 <p>Consuming quantity <span class="math notranslate nohighlight">\(c\)</span> of the cake gives current utility <span class="math notranslate nohighlight">\(u(c)\)</span>.</p>
 <p>We adopt the CRRA utility function</p>
 <div class="math notranslate nohighlight" id="equation-crra-utility">
-<span class="eqno">(39.1)<a class="headerlink" href="#equation-crra-utility" title="Permalink to this equation">¶</a></span>\[u(c) = \frac{c^{1-\gamma}}{1-\gamma} \qquad (\gamma \gt 0, \, \gamma \neq 1)\]</div>
+<span class="eqno">(40.1)<a class="headerlink" href="#equation-crra-utility" title="Permalink to this equation">¶</a></span>\[u(c) = \frac{c^{1-\gamma}}{1-\gamma} \qquad (\gamma \gt 0, \, \gamma \neq 1)\]</div>
 <p>In Python this is</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -350,14 +350,14 @@ x_{t+1} = x_t - c_t
 <p>In particular, consumption of <span class="math notranslate nohighlight">\(c\)</span> units <span class="math notranslate nohighlight">\(t\)</span> periods hence has present value <span class="math notranslate nohighlight">\(\beta^t u(c)\)</span></p>
 <p>The agent’s problem can be written as</p>
 <div class="math notranslate nohighlight" id="equation-cake-objective">
-<span class="eqno">(39.2)<a class="headerlink" href="#equation-cake-objective" title="Permalink to this equation">¶</a></span>\[\max_{\{c_t\}} \sum_{t=0}^\infty \beta^t u(c_t)\]</div>
+<span class="eqno">(40.2)<a class="headerlink" href="#equation-cake-objective" title="Permalink to this equation">¶</a></span>\[\max_{\{c_t\}} \sum_{t=0}^\infty \beta^t u(c_t)\]</div>
 <p>subject to</p>
 <div class="math notranslate nohighlight" id="equation-cake-feasible">
-<span class="eqno">(39.3)<a class="headerlink" href="#equation-cake-feasible" title="Permalink to this equation">¶</a></span>\[x_{t+1} = x_t - c_t
+<span class="eqno">(40.3)<a class="headerlink" href="#equation-cake-feasible" title="Permalink to this equation">¶</a></span>\[x_{t+1} = x_t - c_t
 \quad \text{and} \quad
 0\leq c_t\leq x_t\]</div>
 <p>for all <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>A consumption path <span class="math notranslate nohighlight">\(\{c_t\}\)</span> satisfying <a class="reference internal" href="#equation-cake-feasible">(39.3)</a> where
+<p>A consumption path <span class="math notranslate nohighlight">\(\{c_t\}\)</span> satisfying <a class="reference internal" href="#equation-cake-feasible">(40.3)</a> where
 <span class="math notranslate nohighlight">\(x_0 = \bar x\)</span> is called <strong>feasible</strong>.</p>
 <p>In this problem, the following terminology is standard:</p>
 <ul class="simple">
@@ -366,7 +366,7 @@ x_{t+1} = x_t - c_t
 <li><p><span class="math notranslate nohighlight">\(\beta\)</span> and <span class="math notranslate nohighlight">\(\gamma\)</span> are <strong>parameters</strong></p></li>
 </ul>
 <section id="trade-off">
-<h3><span class="section-number">39.2.1. </span>Trade-Off<a class="headerlink" href="#trade-off" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">40.2.1. </span>Trade-Off<a class="headerlink" href="#trade-off" title="Permalink to this headline">¶</a></h3>
 <p>The key trade-off in the cake-eating problem is this:</p>
 <ul class="simple">
 <li><p>Delaying consumption is costly because of the discount factor.</p></li>
@@ -377,7 +377,7 @@ x_{t+1} = x_t - c_t
 <p>This is because concavity implies diminishing marginal utility—a progressively smaller gain in utility for each additional spoonful of cake consumed within one period.</p>
 </section>
 <section id="intuition">
-<h3><span class="section-number">39.2.2. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">40.2.2. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this headline">¶</a></h3>
 <p>The reasoning given above suggests that the discount factor <span class="math notranslate nohighlight">\(\beta\)</span> and the curvature parameter <span class="math notranslate nohighlight">\(\gamma\)</span> will play a key role in determining the rate of consumption.</p>
 <p>Here’s an educated guess as to what impact these parameters will have.</p>
 <p>First, higher <span class="math notranslate nohighlight">\(\beta\)</span> implies less discounting, and hence the agent is more patient, which should reduce the rate of consumption.</p>
@@ -390,17 +390,17 @@ parameters</em>.</p>
 </section>
 </section>
 <section id="the-value-function">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">39.3. </span>The Value Function</a><a class="headerlink" href="#the-value-function" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">40.3. </span>The Value Function</a><a class="headerlink" href="#the-value-function" title="Permalink to this headline">¶</a></h2>
 <p>The first step of our dynamic programming treatment is to obtain the Bellman
 equation.</p>
 <p>The next step is to use it to calculate the solution.</p>
 <section id="the-bellman-equation">
-<h3><span class="section-number">39.3.1. </span>The Bellman Equation<a class="headerlink" href="#the-bellman-equation" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">40.3.1. </span>The Bellman Equation<a class="headerlink" href="#the-bellman-equation" title="Permalink to this headline">¶</a></h3>
 <p>To this end, we let <span class="math notranslate nohighlight">\(v(x)\)</span> be maximum lifetime utility attainable from
 the current time when <span class="math notranslate nohighlight">\(x\)</span> units of cake are left.</p>
 <p>That is,</p>
 <div class="math notranslate nohighlight" id="equation-value-fun">
-<span class="eqno">(39.4)<a class="headerlink" href="#equation-value-fun" title="Permalink to this equation">¶</a></span>\[v(x) = \max \sum_{t=0}^{\infty} \beta^t u(c_t)\]</div>
+<span class="eqno">(40.4)<a class="headerlink" href="#equation-value-fun" title="Permalink to this equation">¶</a></span>\[v(x) = \max \sum_{t=0}^{\infty} \beta^t u(c_t)\]</div>
 <p>where the maximization is over all paths <span class="math notranslate nohighlight">\(\{ c_t \}\)</span> that are feasible
 from <span class="math notranslate nohighlight">\(x_0 = x\)</span>.</p>
 <p>At this point, we do not have an expression for <span class="math notranslate nohighlight">\(v\)</span>, but we can still
@@ -409,27 +409,27 @@ make inferences about it.</p>
 value function will satisfy a version of the <em>Bellman equation</em>.</p>
 <p>In the present case, this equation states that <span class="math notranslate nohighlight">\(v\)</span> satisfies</p>
 <div class="math notranslate nohighlight" id="equation-bellman-cep">
-<span class="eqno">(39.5)<a class="headerlink" href="#equation-bellman-cep" title="Permalink to this equation">¶</a></span>\[v(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
+<span class="eqno">(40.5)<a class="headerlink" href="#equation-bellman-cep" title="Permalink to this equation">¶</a></span>\[v(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
 \quad \text{for any given } x \geq 0.\]</div>
 <p>The intuition here is essentially the same it was for the McCall model.</p>
 <p>Choosing <span class="math notranslate nohighlight">\(c\)</span> optimally means trading off current vs future rewards.</p>
 <p>Current rewards from choice <span class="math notranslate nohighlight">\(c\)</span> are just <span class="math notranslate nohighlight">\(u(c)\)</span>.</p>
 <p>Future rewards given current cake size <span class="math notranslate nohighlight">\(x\)</span>, measured from next period and
 assuming optimal behavior, are <span class="math notranslate nohighlight">\(v(x-c)\)</span>.</p>
-<p>These are the two terms on the right hand side of <a class="reference internal" href="#equation-bellman-cep">(39.5)</a>, after
+<p>These are the two terms on the right hand side of <a class="reference internal" href="#equation-bellman-cep">(40.5)</a>, after
 suitable discounting.</p>
 <p>If <span class="math notranslate nohighlight">\(c\)</span> is chosen optimally using this trade off strategy, then we obtain maximal lifetime rewards from our current state <span class="math notranslate nohighlight">\(x\)</span>.</p>
-<p>Hence, <span class="math notranslate nohighlight">\(v(x)\)</span> equals the right hand side of <a class="reference internal" href="#equation-bellman-cep">(39.5)</a>, as claimed.</p>
+<p>Hence, <span class="math notranslate nohighlight">\(v(x)\)</span> equals the right hand side of <a class="reference internal" href="#equation-bellman-cep">(40.5)</a>, as claimed.</p>
 </section>
 <section id="an-analytical-solution">
-<h3><span class="section-number">39.3.2. </span>An Analytical Solution<a class="headerlink" href="#an-analytical-solution" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">40.3.2. </span>An Analytical Solution<a class="headerlink" href="#an-analytical-solution" title="Permalink to this headline">¶</a></h3>
 <p>It has been shown that, with <span class="math notranslate nohighlight">\(u\)</span> as the CRRA utility function in
-<a class="reference internal" href="#equation-crra-utility">(39.1)</a>, the function</p>
+<a class="reference internal" href="#equation-crra-utility">(40.1)</a>, the function</p>
 <div class="math notranslate nohighlight" id="equation-crra-vstar">
-<span class="eqno">(39.6)<a class="headerlink" href="#equation-crra-vstar" title="Permalink to this equation">¶</a></span>\[v^*(x_t) = \left( 1-\beta^{1/\gamma} \right)^{-\gamma}u(x_t)\]</div>
+<span class="eqno">(40.6)<a class="headerlink" href="#equation-crra-vstar" title="Permalink to this equation">¶</a></span>\[v^*(x_t) = \left( 1-\beta^{1/\gamma} \right)^{-\gamma}u(x_t)\]</div>
 <p>solves the Bellman equation and hence is equal to the value function.</p>
 <p>You are asked to confirm that this is true in the exercises below.</p>
-<p>The solution <a class="reference internal" href="#equation-crra-vstar">(39.6)</a> depends heavily on the CRRA utility function.</p>
+<p>The solution <a class="reference internal" href="#equation-crra-vstar">(40.6)</a> depends heavily on the CRRA utility function.</p>
 <p>In fact, if we move away from CRRA utility, usually there is no analytical
 solution at all.</p>
 <p>In other words, beyond CRRA utility, we know that the value function still
@@ -470,11 +470,11 @@ explicitly, as a function of the state variable and the parameters.</p>
 </section>
 </section>
 <section id="the-optimal-policy">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">39.4. </span>The Optimal Policy</a><a class="headerlink" href="#the-optimal-policy" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">40.4. </span>The Optimal Policy</a><a class="headerlink" href="#the-optimal-policy" title="Permalink to this headline">¶</a></h2>
 <p>Now that we have the value function, it is straightforward to calculate the
 optimal action at each state.</p>
 <p>We should choose consumption to maximize the
-right hand side of the Bellman equation <a class="reference internal" href="#equation-bellman-cep">(39.5)</a>.</p>
+right hand side of the Bellman equation <a class="reference internal" href="#equation-bellman-cep">(40.5)</a>.</p>
 <div class="math notranslate nohighlight">
 \[
 c^* = \arg \max_{c} \{u(c) + \beta v(x - c)\}
@@ -487,13 +487,13 @@ which case we call it the <strong>optimal policy</strong>.</p>
 \sigma^*(x) := \arg \max_{c} \{u(c) + \beta v(x - c)\}
 \quad \text{for all } x
 \]</div>
-<p>If we plug the analytical expression <a class="reference internal" href="#equation-crra-vstar">(39.6)</a> for the value function
+<p>If we plug the analytical expression <a class="reference internal" href="#equation-crra-vstar">(40.6)</a> for the value function
 into the right hand side and compute the optimum, we find that</p>
 <div class="math notranslate nohighlight" id="equation-crra-opt-pol">
-<span class="eqno">(39.7)<a class="headerlink" href="#equation-crra-opt-pol" title="Permalink to this equation">¶</a></span>\[\sigma^*(x) = \left( 1-\beta^{1/\gamma} \right) x\]</div>
+<span class="eqno">(40.7)<a class="headerlink" href="#equation-crra-opt-pol" title="Permalink to this equation">¶</a></span>\[\sigma^*(x) = \left( 1-\beta^{1/\gamma} \right) x\]</div>
 <p>Now let’s recall our intuition on the impact of parameters.</p>
 <p>We guessed that the consumption rate would be decreasing in both parameters.</p>
-<p>This is in fact the case, as can be seen from <a class="reference internal" href="#equation-crra-opt-pol">(39.7)</a>.</p>
+<p>This is in fact the case, as can be seen from <a class="reference internal" href="#equation-crra-opt-pol">(40.7)</a>.</p>
 <p>Here’s some plots that illustrate.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -526,7 +526,7 @@ plot is</p>
 </div>
 </section>
 <section id="the-euler-equation">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">39.5. </span>The Euler Equation</a><a class="headerlink" href="#the-euler-equation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">40.5. </span>The Euler Equation</a><a class="headerlink" href="#the-euler-equation" title="Permalink to this headline">¶</a></h2>
 <p>In the discussion above we have provided a complete solution to the cake
 eating problem in the case of CRRA utility.</p>
 <p>There is in fact another way to solve for the optimal policy, based on the
@@ -536,10 +536,10 @@ Euler equation.</p>
 <p>This is because, for more difficult problems, this equation
 provides key insights that are hard to obtain by other methods.</p>
 <section id="statement-and-implications">
-<h3><span class="section-number">39.5.1. </span>Statement and Implications<a class="headerlink" href="#statement-and-implications" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">40.5.1. </span>Statement and Implications<a class="headerlink" href="#statement-and-implications" title="Permalink to this headline">¶</a></h3>
 <p>The Euler equation for the present problem can be stated as</p>
 <div class="math notranslate nohighlight" id="equation-euler-cep">
-<span class="eqno">(39.8)<a class="headerlink" href="#equation-euler-cep" title="Permalink to this equation">¶</a></span>\[u^{\prime} (c^*_{t})=\beta u^{\prime}(c^*_{t+1})\]</div>
+<span class="eqno">(40.8)<a class="headerlink" href="#equation-euler-cep" title="Permalink to this equation">¶</a></span>\[u^{\prime} (c^*_{t})=\beta u^{\prime}(c^*_{t+1})\]</div>
 <p>This is necessary condition for the optimal path.</p>
 <p>It says that, along the optimal path, marginal rewards are equalized across time, after appropriate discounting.</p>
 <p>This makes sense: optimality is obtained by smoothing consumption up to the
@@ -552,24 +552,24 @@ quantity of cake.</p>
 <p>A feasible consumption policy <span class="math notranslate nohighlight">\(\sigma\)</span> is said to <strong>satisfy the Euler equation</strong> if, for
 all <span class="math notranslate nohighlight">\(x &gt; 0\)</span>,</p>
 <div class="math notranslate nohighlight" id="equation-euler-pol">
-<span class="eqno">(39.9)<a class="headerlink" href="#equation-euler-pol" title="Permalink to this equation">¶</a></span>\[u^{\prime}( \sigma(x) )
+<span class="eqno">(40.9)<a class="headerlink" href="#equation-euler-pol" title="Permalink to this equation">¶</a></span>\[u^{\prime}( \sigma(x) )
 = \beta u^{\prime} (\sigma(x - \sigma(x)))\]</div>
-<p>Evidently <a class="reference internal" href="#equation-euler-pol">(39.9)</a> is just the policy equivalent of <a class="reference internal" href="#equation-euler-cep">(39.8)</a>.</p>
+<p>Evidently <a class="reference internal" href="#equation-euler-pol">(40.9)</a> is just the policy equivalent of <a class="reference internal" href="#equation-euler-cep">(40.8)</a>.</p>
 <p>It turns out that a feasible policy is optimal if and
 only if it satisfies the Euler equation.</p>
 <p>In the exercises, you are asked to verify that the optimal policy
-<a class="reference internal" href="#equation-crra-opt-pol">(39.7)</a> does indeed satisfy this functional equation.</p>
+<a class="reference internal" href="#equation-crra-opt-pol">(40.7)</a> does indeed satisfy this functional equation.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>A <strong>functional equation</strong> is an equation where the unknown object is a function.</p>
 </div>
 <p>For a proof of sufficiency of the Euler equation in a very general setting,
-see proposition 2.2 of <span id="id1">[<a class="reference internal" href="zreferences.html#id249" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span>.</p>
+see proposition 2.2 of <span id="id1">[<a class="reference internal" href="zreferences.html#id252" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span>.</p>
 <p>The following arguments focus on necessity, explaining why an optimal path or
 policy should satisfy the Euler equation.</p>
 </section>
 <section id="derivation-i-a-perturbation-approach">
-<h3><span class="section-number">39.5.2. </span>Derivation I: A Perturbation Approach<a class="headerlink" href="#derivation-i-a-perturbation-approach" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">40.5.2. </span>Derivation I: A Perturbation Approach<a class="headerlink" href="#derivation-i-a-perturbation-approach" title="Permalink to this headline">¶</a></h3>
 <p>Let’s write <span class="math notranslate nohighlight">\(c\)</span> as a shorthand for consumption path <span class="math notranslate nohighlight">\(\{c_t\}_{t=0}^\infty\)</span>.</p>
 <p>The overall cake-eating maximization problem can be written as</p>
 <div class="math notranslate nohighlight">
@@ -624,17 +624,17 @@ becomes</p>
 <p>This is just the Euler equation.</p>
 </section>
 <section id="derivation-ii-using-the-bellman-equation">
-<h3><span class="section-number">39.5.3. </span>Derivation II: Using the Bellman Equation<a class="headerlink" href="#derivation-ii-using-the-bellman-equation" title="Permalink to this headline">¶</a></h3>
-<p>Another way to derive the Euler equation is to use the Bellman equation <a class="reference internal" href="#equation-bellman-cep">(39.5)</a>.</p>
+<h3><span class="section-number">40.5.3. </span>Derivation II: Using the Bellman Equation<a class="headerlink" href="#derivation-ii-using-the-bellman-equation" title="Permalink to this headline">¶</a></h3>
+<p>Another way to derive the Euler equation is to use the Bellman equation <a class="reference internal" href="#equation-bellman-cep">(40.5)</a>.</p>
 <p>Taking the derivative on the right hand side of the Bellman equation with
 respect to <span class="math notranslate nohighlight">\(c\)</span> and setting it to zero, we get</p>
 <div class="math notranslate nohighlight" id="equation-bellman-foc">
-<span class="eqno">(39.10)<a class="headerlink" href="#equation-bellman-foc" title="Permalink to this equation">¶</a></span>\[u^{\prime}(c)=\beta v^{\prime}(x - c)\]</div>
+<span class="eqno">(40.10)<a class="headerlink" href="#equation-bellman-foc" title="Permalink to this equation">¶</a></span>\[u^{\prime}(c)=\beta v^{\prime}(x - c)\]</div>
 <p>To obtain <span class="math notranslate nohighlight">\(v^{\prime}(x - c)\)</span>, we set
 <span class="math notranslate nohighlight">\(g(c,x) = u(c) + \beta v(x - c)\)</span>, so that, at the optimal choice of
 consumption,</p>
 <div class="math notranslate nohighlight" id="equation-bellman-equality">
-<span class="eqno">(39.11)<a class="headerlink" href="#equation-bellman-equality" title="Permalink to this equation">¶</a></span>\[v(x) = g(c,x)\]</div>
+<span class="eqno">(40.11)<a class="headerlink" href="#equation-bellman-equality" title="Permalink to this equation">¶</a></span>\[v(x) = g(c,x)\]</div>
 <p>Differentiating both sides while acknowledging that the maximizing consumption will depend
 on <span class="math notranslate nohighlight">\(x\)</span>, we get</p>
 <div class="math notranslate nohighlight">
@@ -646,42 +646,42 @@ v' (x) =
 <p>When <span class="math notranslate nohighlight">\(g(c,x)\)</span> is maximized at <span class="math notranslate nohighlight">\(c\)</span>, we have <span class="math notranslate nohighlight">\(\frac{\partial }{\partial c} g(c,x) = 0\)</span>.</p>
 <p>Hence the derivative simplifies to</p>
 <div class="math notranslate nohighlight" id="equation-bellman-envelope">
-<span class="eqno">(39.12)<a class="headerlink" href="#equation-bellman-envelope" title="Permalink to this equation">¶</a></span>\[v' (x) =
+<span class="eqno">(40.12)<a class="headerlink" href="#equation-bellman-envelope" title="Permalink to this equation">¶</a></span>\[v' (x) =
 \frac{\partial g(c,x)}{\partial x}
 = \frac{\partial }{\partial x} \beta v(x - c)
 = \beta v^{\prime}(x - c)\]</div>
 <p>(This argument is an example of the <a class="reference external" href="https://en.wikipedia.org/wiki/Envelope_theorem">Envelope Theorem</a>.)</p>
-<p>But now an application of <a class="reference internal" href="#equation-bellman-foc">(39.10)</a> gives</p>
+<p>But now an application of <a class="reference internal" href="#equation-bellman-foc">(40.10)</a> gives</p>
 <div class="math notranslate nohighlight" id="equation-bellman-v-prime">
-<span class="eqno">(39.13)<a class="headerlink" href="#equation-bellman-v-prime" title="Permalink to this equation">¶</a></span>\[u^{\prime}(c) = v^{\prime}(x)\]</div>
+<span class="eqno">(40.13)<a class="headerlink" href="#equation-bellman-v-prime" title="Permalink to this equation">¶</a></span>\[u^{\prime}(c) = v^{\prime}(x)\]</div>
 <p>Thus, the derivative of the value function is equal to marginal utility.</p>
-<p>Combining this fact with <a class="reference internal" href="#equation-bellman-envelope">(39.12)</a> recovers the Euler equation.</p>
+<p>Combining this fact with <a class="reference internal" href="#equation-bellman-envelope">(40.12)</a> recovers the Euler equation.</p>
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">39.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">40.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="exercise admonition" id="cep_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 39.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 40.1 </span></p>
 <section id="exercise-content">
 <p>How does one obtain the expressions for the value function and optimal policy
-given in <a class="reference internal" href="#equation-crra-vstar">(39.6)</a> and <a class="reference internal" href="#equation-crra-opt-pol">(39.7)</a> respectively?</p>
+given in <a class="reference internal" href="#equation-crra-vstar">(40.6)</a> and <a class="reference internal" href="#equation-crra-opt-pol">(40.7)</a> respectively?</p>
 <p>The first step is to make a guess of the functional form for the consumption
 policy.</p>
 <p>So suppose that we do not know the solutions and start with a guess that the
 optimal policy is linear.</p>
 <p>In other words, we conjecture that there exists a positive <span class="math notranslate nohighlight">\(\theta\)</span> such that setting <span class="math notranslate nohighlight">\(c_t^*=\theta x_t\)</span> for all <span class="math notranslate nohighlight">\(t\)</span> produces an optimal path.</p>
-<p>Starting from this conjecture, try to obtain the solutions <a class="reference internal" href="#equation-crra-vstar">(39.6)</a> and <a class="reference internal" href="#equation-crra-opt-pol">(39.7)</a>.</p>
+<p>Starting from this conjecture, try to obtain the solutions <a class="reference internal" href="#equation-crra-vstar">(40.6)</a> and <a class="reference internal" href="#equation-crra-opt-pol">(40.7)</a>.</p>
 <p>In doing so, you will need to use the definition of the value function and the
 Bellman equation.</p>
 </section>
 </div>
 </section>
 <section id="solutions">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">39.7. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">40.7. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <div class="solution dropdown admonition" id="cake_eating_problem-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#cep_ex1"> Exercise 39.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#cep_ex1"> Exercise 40.1</a></p>
 <section id="solution-content">
 <p>We start with the conjecture <span class="math notranslate nohighlight">\(c_t^*=\theta x_t\)</span>, which leads to a path
 for the state variable (cake size) given by</p>
@@ -846,6 +846,11 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
    6. Circulant Matrices
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   7. Singular Value Decomposition (SVD)
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -854,58 +859,58 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="lln_clt.html">
-   7. LLN and CLT
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="prob_meaning.html">
-   8. Two Meanings of Probability
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="multi_hyper.html">
-   9. Multivariate Hypergeometric Distribution
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="multivariate_normal.html">
-   10. Multivariate Normal Distribution
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="heavy_tails.html">
-   11. Heavy-Tailed Distributions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="hoist_failure.html">
-   12. Fault Tree Uncertainties
+  <a class="reference internal" href="prob_matrix.html">
+   8. Elementary Probability with Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   13. Univariate Time Series with Matrix Algebra
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   10. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   11. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   12. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   13. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   14. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   15. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   14. Introduction to Artificial Neural Networks
+   16. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   15. Randomized Response Surveys
+   17. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   16. Expected Utilities of Random Responses
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="svd_intro.html">
-   17. Singular Value Decomposition (SVD)
+   18. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -917,17 +922,17 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   18. Linear Programming
+   19. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   19. Optimal Transport
+   20. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   20. Von Neumann Growth Model (and a Generalization)
+   21. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -939,52 +944,52 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   21. Dynamics in One Dimension
+   22. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   22. AR1 Processes
+   23. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   23. Finite Markov Chains
+   24. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   24. Inventory Dynamics
+   25. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   25. Linear State Space Models
+   26. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   26. Samuelson Multiplier-Accelerator
+   27. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   27. Kesten Processes and Firm Dynamics
+   28. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   28. Wealth Distribution Dynamics
+   29. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   29. A First Look at the Kalman Filter
+   30. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   30. Shortest Paths
+   31. Shortest Paths
   </a>
  </li>
 </ul>
@@ -996,32 +1001,32 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   31. Job Search I: The McCall Search Model
+   32. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   32. Job Search II: Search and Separation
+   33. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   33. Job Search III: Fitted Value Function Iteration
+   34. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   34. Job Search IV: Correlated Wage Offers
+   35. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   35. Job Search V: Modeling Career Choice
+   36. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   36. Job Search VI: On-the-Job Search
+   37. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -1033,52 +1038,74 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   37. Cass-Koopmans Model
+   38. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   38. Cass-Koopmans Competitive Equilibrium
+   39. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   39. Cake Eating I: Introduction to Optimal Saving
+   40. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   40. Cake Eating II: Numerical Methods
+   41. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   41. Optimal Growth I: The Stochastic Optimal Growth Model
+   42. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   42. Optimal Growth II: Accelerating the Code with Numba
+   43. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   43. Optimal Growth III: Time Iteration
+   44. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   44. Optimal Growth IV: The Endogenous Grid Method
+   45. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   45. The Income Fluctuation Problem I: Basic Model
+   46. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   46. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   47. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   48. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   49. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   50. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1090,37 +1117,37 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   47. Job Search VII: Search with Learning
+   51. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   48. Likelihood Ratio Processes
+   52. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   49. Computing Mean of a Likelihood Ratio Process
+   53. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   50. A Problem that Stumped Milton Friedman
+   54. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   51. Exchangeability and Bayesian Updating
+   55. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   52. Likelihood Ratio Processes and Bayesian Learning
+   56. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   53. Bayesian versus Frequentist Decision Rules
+   57. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1132,32 +1159,32 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   54. LQ Control: Foundations
+   58. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   55. Lagrangian for LQ Control
+   59. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   56. Eliminating Cross Products
+   60. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   57. The Permanent Income Model
+   61. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   58. Permanent Income II: LQ Techniques
+   62. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   59. Production Smoothing via Inventories
+   63. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1169,37 +1196,37 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   60. Schelling’s Segregation Model
+   64. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   61. A Lake Model of Employment and Unemployment
+   65. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   62. Rational Expectations Equilibrium
+   66. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   63. Stability in Linear Rational Expectations Models
+   67. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   64. Markov Perfect Equilibrium
+   68. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   65. Uncertainty Traps
+   69. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   66. The Aiyagari Model
+   70. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1211,17 +1238,17 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   67. Asset Pricing: Finite State Models
+   71. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   68. Competitive Equilibria with Arrow Securities
+   72. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   69. Heterogeneous Beliefs and Bubbles
+   73. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1233,17 +1260,17 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   70. Pandas for Panel Data
+   74. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   71. Linear Regression in Python
+   75. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   72. Maximum Likelihood Estimation
+   76. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1255,12 +1282,12 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   73. First-Price and Second-Price Auctions
+   77. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   74. Multiple Good Allocation Mechanisms
+   78. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1272,17 +1299,17 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   75. Troubleshooting
+   79. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   76. References
+   80. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   77. Execution Statistics
+   81. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1320,7 +1347,7 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/cake_eating_problem.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/cake_eating_problem.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1333,7 +1360,7 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

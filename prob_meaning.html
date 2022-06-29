@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>8. Two Meanings of Probability &#8212; Quantitative Economics with Python</title>
+    <title>11. Two Meanings of Probability &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -102,8 +102,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="9. Multivariate Hypergeometric Distribution" href="multi_hyper.html" />
-    <link rel="prev" title="7. LLN and CLT" href="lln_clt.html" />
+    <link rel="next" title="12. Multivariate Hypergeometric Distribution" href="multi_hyper.html" />
+    <link rel="prev" title="10. LLN and CLT" href="lln_clt.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -153,17 +153,17 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   8.1. Overview
+   11.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#frequentist-interpretation">
-   8.2. Frequentist Interpretation
+   11.2. Frequentist Interpretation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#bayesian-interpretation">
-   8.3. Bayesian Interpretation
+   11.3. Bayesian Interpretation
   </a>
  </li>
 </ul>
@@ -212,9 +212,9 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="two-meanings-of-probability">
-<h1><span class="section-number">8. </span>Two Meanings of Probability<a class="headerlink" href="#two-meanings-of-probability" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">11. </span>Two Meanings of Probability<a class="headerlink" href="#two-meanings-of-probability" title="Permalink to this headline">¶</a></h1>
 <section id="overview">
-<h2><span class="section-number">8.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture  illustrates two distinct interpretations of a  <strong>probability distribution</strong></p>
 <ul class="simple">
 <li><p>A frequentist interpretation as <strong>relative frequencies</strong> anticipated to occur in a large i.i.d. sample</p></li>
@@ -270,7 +270,7 @@ Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/l
 <p>Empowered with these Python tools, we’ll now  explore the two meanings described above.</p>
 </section>
 <section id="frequentist-interpretation">
-<h2><span class="section-number">8.2. </span>Frequentist Interpretation<a class="headerlink" href="#frequentist-interpretation" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.2. </span>Frequentist Interpretation<a class="headerlink" href="#frequentist-interpretation" title="Permalink to this headline">¶</a></h2>
 <p>Consider the following classic example.</p>
 <p>The random variable  <span class="math notranslate nohighlight">\(X \)</span> takes on possible values <span class="math notranslate nohighlight">\(k = 0, 1, 2, \ldots, n\)</span>  with probabilties</p>
 <div class="math notranslate nohighlight">
@@ -309,7 +309,7 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 <p>As usual, a law of large numbers justifies this answer.</p>
 <div class="exercise admonition" id="pm_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 8.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 11.1 </span></p>
 <section id="exercise-content">
 <ol class="simple">
 <li><p>Please write a Python class to compute <span class="math notranslate nohighlight">\(f_k^I\)</span></p></li>
@@ -321,7 +321,7 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 </div>
 <div class="solution admonition" id="prob_meaning-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex1"> Exercise 8.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex1"> Exercise 11.1</a></p>
 <section id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -401,24 +401,24 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 +----+------------------------+-------------+
 | 1  | 1.6271660538000033e-09 |     0.0     |
 | 2  | 3.606884752589999e-08  |     0.0     |
-| 3  |  5.04963865362601e-07  |     0.0     |
-| 4  | 5.007558331512455e-06  |    2e-06    |
-| 5  | 3.7389768875293014e-05 |    5e-05    |
-| 6  | 0.00021810698510587546 |   0.000204  |
-| 7  |  0.001017832597160754  |   0.001025  |
-| 8  |  0.003859281930901185  |   0.003809  |
-| 9  |  0.012006654896137007  |   0.012018  |
-| 10 |  0.030817080900085007  |   0.031172  |
-| 11 |   0.065369565545635    |   0.065436  |
-| 12 |  0.11439673970486108   |   0.114785  |
-| 13 |   0.1642619852172365   |   0.163897  |
-| 14 |  0.19163898275344246   |   0.191228  |
-| 15 |  0.17886305056987967   |   0.179124  |
-| 16 |   0.1304209743738704   |   0.129795  |
-| 17 |  0.07160367220526209   |   0.072015  |
-| 18 |  0.027845872524268643  |   0.027902  |
-| 19 |  0.006839337111223871  |   0.006746  |
-| 20 | 0.0007979226629761189  |   0.000792  |
+| 3  |  5.04963865362601e-07  |    2e-06    |
+| 4  | 5.007558331512455e-06  |    6e-06    |
+| 5  | 3.7389768875293014e-05 |   3.4e-05   |
+| 6  | 0.00021810698510587546 |   0.000239  |
+| 7  |  0.001017832597160754  |   0.000994  |
+| 8  |  0.003859281930901185  |   0.003914  |
+| 9  |  0.012006654896137007  |   0.011959  |
+| 10 |  0.030817080900085007  |   0.03129   |
+| 11 |   0.065369565545635    |   0.065301  |
+| 12 |  0.11439673970486108   |   0.114621  |
+| 13 |   0.1642619852172365   |   0.164322  |
+| 14 |  0.19163898275344246   |   0.19123   |
+| 15 |  0.17886305056987967   |   0.178835  |
+| 16 |   0.1304209743738704   |   0.130374  |
+| 17 |  0.07160367220526209   |   0.071501  |
+| 18 |  0.027845872524268643  |   0.027769  |
+| 19 |  0.006839337111223871  |   0.006859  |
+| 20 | 0.0007979226629761189  |   0.00075   |
 +----+------------------------+-------------+
 </pre></div>
 </div>
@@ -567,7 +567,7 @@ E[\rho_{k,i}] = \textrm{Prob}(X =  k | \theta) = \left(\frac{n!}{k! (n-k)!} \rig
 <p>as <span class="math notranslate nohighlight">\(I\)</span> goes to infinity.</p>
 </section>
 <section id="bayesian-interpretation">
-<h2><span class="section-number">8.3. </span>Bayesian Interpretation<a class="headerlink" href="#bayesian-interpretation" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.3. </span>Bayesian Interpretation<a class="headerlink" href="#bayesian-interpretation" title="Permalink to this headline">¶</a></h2>
 <p>We again use a binomial distribution.</p>
 <p>But now we don’t regard  <span class="math notranslate nohighlight">\(\theta\)</span> as being a fixed number.</p>
 <p>Instead, we think of it as a <strong>random variable</strong>.</p>
@@ -587,7 +587,7 @@ P(\theta) = \frac{\theta^{\alpha-1}(1-\theta)^{\beta -1}}{B(\alpha, \beta)}
 a <strong>beta distribution</strong> with parameters <span class="math notranslate nohighlight">\(\alpha, \beta\)</span>.</p>
 <div class="exercise admonition" id="pm_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 8.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 11.2 </span></p>
 <section id="exercise-content">
 <p><strong>a)</strong>  Please write down the <strong>likelihood function</strong> for a sample of length <span class="math notranslate nohighlight">\(n\)</span> from a binomial distribution with parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p><strong>b)</strong> Please write down the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of the coin.</p>
@@ -602,7 +602,7 @@ a <strong>beta distribution</strong> with parameters <span class="math notransla
 </div>
 <div class="solution admonition" id="prob_meaning-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex2"> Exercise 8.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex2"> Exercise 11.2</a></p>
 <section id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p><strong>a)</strong> Please write down the <strong>likelihood function</strong> and the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of our coin.</p>
 <p>Suppose the outcome is <strong>Y</strong>.</p>
@@ -783,37 +783,37 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
   <tbody>
     <tr>
       <th>upper</th>
-      <td>0.001543</td>
-      <td>0.000868</td>
-      <td>0.062413</td>
+      <td>0.228520</td>
+      <td>0.430741</td>
+      <td>0.235534</td>
       <td>0.16528</td>
       <td>0.127776</td>
-      <td>0.185116</td>
+      <td>0.261922</td>
       <td>0.196953</td>
-      <td>0.179717</td>
-      <td>0.220799</td>
-      <td>0.191826</td>
-      <td>0.211374</td>
-      <td>0.232729</td>
-      <td>0.302014</td>
-      <td>0.346171</td>
+      <td>0.264015</td>
+      <td>0.292234</td>
+      <td>0.281482</td>
+      <td>0.312809</td>
+      <td>0.318762</td>
+      <td>0.362493</td>
+      <td>0.374755</td>
     </tr>
     <tr>
       <th>lower</th>
-      <td>0.771480</td>
-      <td>0.569259</td>
-      <td>0.764466</td>
+      <td>0.998457</td>
+      <td>0.999132</td>
+      <td>0.937587</td>
       <td>0.83472</td>
       <td>0.739366</td>
-      <td>0.652678</td>
+      <td>0.738078</td>
       <td>0.533165</td>
-      <td>0.447604</td>
-      <td>0.434206</td>
-      <td>0.364736</td>
-      <td>0.357910</td>
-      <td>0.317153</td>
-      <td>0.371385</td>
-      <td>0.396380</td>
+      <td>0.549653</td>
+      <td>0.516104</td>
+      <td>0.469087</td>
+      <td>0.471834</td>
+      <td>0.409843</td>
+      <td>0.434377</td>
+      <td>0.425672</td>
     </tr>
   </tbody>
 </table>
@@ -943,7 +943,7 @@ F(a)=p_1,F(b)=p_2
 </ul>
 <p>The random variables <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> are governed by Binomial Distribution with <span class="math notranslate nohighlight">\(\theta=0.4\)</span>.</p>
 <p>Call this the true data generating process.</p>
-<p>According to the Law of Large Numbers, for a large number of observations, observed frequencies of <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> will be described by the true data generating process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See <a class="reference internal" href="#pm_ex1"><span class="std std-numref">Exercise 8.1</span></a>).</p>
+<p>According to the Law of Large Numbers, for a large number of observations, observed frequencies of <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> will be described by the true data generating process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See <a class="reference internal" href="#pm_ex1"><span class="std std-numref">Exercise 11.1</span></a>).</p>
 <p>Consequently, the  mean of the posterior distribution converges to <span class="math notranslate nohighlight">\(0.4\)</span> and the variance withers to zero.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1060,6 +1060,11 @@ F(a)=p_1,F(b)=p_2
    6. Circulant Matrices
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   7. Singular Value Decomposition (SVD)
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1068,58 +1073,58 @@ F(a)=p_1,F(b)=p_2
 </p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="lln_clt.html">
-   7. LLN and CLT
-  </a>
- </li>
- <li class="toctree-l1 current active active">
-  <a class="current reference internal" href="#">
-   8. Two Meanings of Probability
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="multi_hyper.html">
-   9. Multivariate Hypergeometric Distribution
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="multivariate_normal.html">
-   10. Multivariate Normal Distribution
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="heavy_tails.html">
-   11. Heavy-Tailed Distributions
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="hoist_failure.html">
-   12. Fault Tree Uncertainties
+  <a class="reference internal" href="prob_matrix.html">
+   8. Elementary Probability with Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   13. Univariate Time Series with Matrix Algebra
+   9. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   10. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   11. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   12. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   13. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   14. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   15. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   14. Introduction to Artificial Neural Networks
+   16. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   15. Randomized Response Surveys
+   17. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   16. Expected Utilities of Random Responses
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="svd_intro.html">
-   17. Singular Value Decomposition (SVD)
+   18. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1131,17 +1136,17 @@ F(a)=p_1,F(b)=p_2
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   18. Linear Programming
+   19. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   19. Optimal Transport
+   20. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   20. Von Neumann Growth Model (and a Generalization)
+   21. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1153,52 +1158,52 @@ F(a)=p_1,F(b)=p_2
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   21. Dynamics in One Dimension
+   22. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   22. AR1 Processes
+   23. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   23. Finite Markov Chains
+   24. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   24. Inventory Dynamics
+   25. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   25. Linear State Space Models
+   26. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   26. Samuelson Multiplier-Accelerator
+   27. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   27. Kesten Processes and Firm Dynamics
+   28. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   28. Wealth Distribution Dynamics
+   29. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   29. A First Look at the Kalman Filter
+   30. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   30. Shortest Paths
+   31. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1210,32 +1215,32 @@ F(a)=p_1,F(b)=p_2
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   31. Job Search I: The McCall Search Model
+   32. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   32. Job Search II: Search and Separation
+   33. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   33. Job Search III: Fitted Value Function Iteration
+   34. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   34. Job Search IV: Correlated Wage Offers
+   35. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   35. Job Search V: Modeling Career Choice
+   36. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   36. Job Search VI: On-the-Job Search
+   37. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -1247,52 +1252,74 @@ F(a)=p_1,F(b)=p_2
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   37. Cass-Koopmans Model
+   38. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   38. Cass-Koopmans Competitive Equilibrium
+   39. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   39. Cake Eating I: Introduction to Optimal Saving
+   40. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   40. Cake Eating II: Numerical Methods
+   41. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   41. Optimal Growth I: The Stochastic Optimal Growth Model
+   42. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   42. Optimal Growth II: Accelerating the Code with Numba
+   43. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   43. Optimal Growth III: Time Iteration
+   44. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   44. Optimal Growth IV: The Endogenous Grid Method
+   45. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   45. The Income Fluctuation Problem I: Basic Model
+   46. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   46. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   47. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   48. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   49. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   50. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1304,37 +1331,37 @@ F(a)=p_1,F(b)=p_2
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   47. Job Search VII: Search with Learning
+   51. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   48. Likelihood Ratio Processes
+   52. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   49. Computing Mean of a Likelihood Ratio Process
+   53. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   50. A Problem that Stumped Milton Friedman
+   54. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   51. Exchangeability and Bayesian Updating
+   55. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   52. Likelihood Ratio Processes and Bayesian Learning
+   56. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   53. Bayesian versus Frequentist Decision Rules
+   57. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1346,32 +1373,32 @@ F(a)=p_1,F(b)=p_2
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   54. LQ Control: Foundations
+   58. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   55. Lagrangian for LQ Control
+   59. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   56. Eliminating Cross Products
+   60. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   57. The Permanent Income Model
+   61. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   58. Permanent Income II: LQ Techniques
+   62. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   59. Production Smoothing via Inventories
+   63. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1383,37 +1410,37 @@ F(a)=p_1,F(b)=p_2
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   60. Schelling’s Segregation Model
+   64. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   61. A Lake Model of Employment and Unemployment
+   65. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   62. Rational Expectations Equilibrium
+   66. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   63. Stability in Linear Rational Expectations Models
+   67. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   64. Markov Perfect Equilibrium
+   68. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   65. Uncertainty Traps
+   69. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   66. The Aiyagari Model
+   70. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1425,17 +1452,17 @@ F(a)=p_1,F(b)=p_2
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   67. Asset Pricing: Finite State Models
+   71. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   68. Competitive Equilibria with Arrow Securities
+   72. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   69. Heterogeneous Beliefs and Bubbles
+   73. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1447,17 +1474,17 @@ F(a)=p_1,F(b)=p_2
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   70. Pandas for Panel Data
+   74. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   71. Linear Regression in Python
+   75. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   72. Maximum Likelihood Estimation
+   76. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1469,12 +1496,12 @@ F(a)=p_1,F(b)=p_2
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   73. First-Price and Second-Price Auctions
+   77. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   74. Multiple Good Allocation Mechanisms
+   78. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1486,17 +1513,17 @@ F(a)=p_1,F(b)=p_2
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   75. Troubleshooting
+   79. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   76. References
+   80. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   77. Execution Statistics
+   81. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1534,7 +1561,7 @@ F(a)=p_1,F(b)=p_2
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/prob_meaning.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/prob_meaning.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1547,7 +1574,7 @@ F(a)=p_1,F(b)=p_2
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>
