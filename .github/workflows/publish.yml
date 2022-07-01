@@ -46,15 +46,15 @@ jobs:
           name: build-cache
           path: _build
       # Build Assets (Download Notebooks and PDF via LaTeX)
-      # - name: Build PDF from LaTeX
-      #   shell: bash -l {0}
-      #   run: |
-      #     jb build lectures --builder pdflatex --path-output ./ -n --keep-going
-      # - name: Copy LaTeX PDF for GH-PAGES
-      #   shell: bash -l {0}
-      #   run: |
-      #     mkdir -p _build/html/_pdf
-      #     cp -u _build/latex/*.pdf _build/html/_pdf
+      - name: Build PDF from LaTeX
+        shell: bash -l {0}
+        run: |
+          jb build lectures --builder pdflatex --path-output ./ -n --keep-going
+      - name: Copy LaTeX PDF for GH-PAGES
+        shell: bash -l {0}
+        run: |
+          mkdir -p _build/html/_pdf
+          cp -u _build/latex/*.pdf _build/html/_pdf
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
         run: |
