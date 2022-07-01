@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>4. QR Decomposition &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -254,9 +253,9 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="qr-decomposition">
+  <div class="tex2jax_ignore mathjax_ignore section" id="qr-decomposition">
 <h1><span class="section-number">4. </span>QR Decomposition<a class="headerlink" href="#qr-decomposition" title="Permalink to this headline">¶</a></h1>
-<section id="overview">
+<div class="section" id="overview">
 <h2><span class="section-number">4.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture describes the QR decomposition and how it relates to</p>
 <ul class="simple">
@@ -265,8 +264,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p>Eigenvalues and eigenvectors</p></li>
 </ul>
 <p>We’ll write some Python code to help consolidate our understandings.</p>
-</section>
-<section id="matrix-factorization">
+</div>
+<div class="section" id="matrix-factorization">
 <h2><span class="section-number">4.2. </span>Matrix Factorization<a class="headerlink" href="#matrix-factorization" title="Permalink to this headline">¶</a></h2>
 <p>The QR decomposition (also called the QR factorization) of a matrix is a decomposition of a matrix into the product of  an orthogonal matrix and a triangular matrix.</p>
 <p>A QR decomposition of a real  matrix <span class="math notranslate nohighlight">\(A\)</span>
@@ -282,14 +281,14 @@ A=QR
 </ul>
 <p>We’ll use a <strong>Gram-Schmidt process</strong> to compute a  QR decomposition</p>
 <p>Because doing so is so educational, we’ll  write our own Python code to do the job</p>
-</section>
-<section id="gram-schmidt-process">
+</div>
+<div class="section" id="gram-schmidt-process">
 <h2><span class="section-number">4.3. </span>Gram-Schmidt process<a class="headerlink" href="#gram-schmidt-process" title="Permalink to this headline">¶</a></h2>
 <p>We’ll start with a <strong>square</strong> matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
 <p>If a square matrix <span class="math notranslate nohighlight">\(A\)</span> is nonsingular, then a <span class="math notranslate nohighlight">\(QR\)</span> factorization is unique.</p>
 <p>We’ll deal with a rectangular matrix <span class="math notranslate nohighlight">\(A\)</span> later.</p>
 <p>Actually, our algorithm will work with a rectangular <span class="math notranslate nohighlight">\(A\)</span> that is not square.</p>
-<section id="gram-schmidt-process-for-square-a">
+<div class="section" id="gram-schmidt-process-for-square-a">
 <h3><span class="section-number">4.3.1. </span>Gram-Schmidt process for square <span class="math notranslate nohighlight">\(A\)</span><a class="headerlink" href="#gram-schmidt-process-for-square-a" title="Permalink to this headline">¶</a></h3>
 <p>Here we apply a Gram-Schmidt  process to the  <strong>columns</strong>  of matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
 <p>In particular, let</p>
@@ -352,8 +351,8 @@ Q = \left[ \begin{array}{c|c|c|c} a_1 &amp; a_2 &amp; \cdots &amp; a_n \end{arra
 R = \left[ \begin{matrix} a_1·e_1 &amp; a_2·e_1 &amp; \cdots &amp; a_n·e_1\\ 0 &amp; a_2·e_2 &amp; \cdots &amp; a_n·e_2 
 \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ 0 &amp; 0 &amp; \cdots &amp; a_n·e_n \end{matrix} \right]
 \end{split}\]</div>
-</section>
-<section id="a-not-square">
+</div>
+<div class="section" id="a-not-square">
 <h3><span class="section-number">4.3.2. </span><span class="math notranslate nohighlight">\(A\)</span> not square<a class="headerlink" href="#a-not-square" title="Permalink to this headline">¶</a></h3>
 <p>Now suppose that <span class="math notranslate nohighlight">\(A\)</span> is an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix where <span class="math notranslate nohighlight">\(m &gt; n\)</span>.</p>
 <p>Then a <span class="math notranslate nohighlight">\(QR\)</span> decomposition is</p>
@@ -375,9 +374,9 @@ a_{n+1} &amp; = (a_{n+1}\cdot e_1) e_1 + (a_{n+1}\cdot e_2) e_2 + \cdots + (a_{n
 \vdots &amp; \quad \vdots \cr
 a_m &amp; = (a_m\cdot e_1) e_1 + (a_m\cdot e_2) e_2 + \cdots + (a_m \cdot e_n) e_n  \cr
 \end{align*}\]</div>
-</section>
-</section>
-<section id="some-code">
+</div>
+</div>
+<div class="section" id="some-code">
 <h2><span class="section-number">4.4. </span>Some Code<a class="headerlink" href="#some-code" title="Permalink to this headline">¶</a></h2>
 <p>Now let’s write some homemade Python code to implement a QR decomposition by deploying the  Gram-Schmidt process described above.</p>
 <div class="cell docutils container">
@@ -449,8 +448,8 @@ a_m &amp; = (a_m\cdot e_1) e_1 + (a_m\cdot e_2) e_2 + \cdots + (a_m \cdot e_n) e
 </div>
 </div>
 </div>
-</section>
-<section id="example">
+</div>
+<div class="section" id="example">
 <h2><span class="section-number">4.5. </span>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <p>Now let’s do an example.</p>
 <div class="cell docutils container">
@@ -603,8 +602,8 @@ scipy produces.</p>
 </div>
 </div>
 </div>
-</section>
-<section id="using-qr-decomposition-to-compute-eigenvalues">
+</div>
+<div class="section" id="using-qr-decomposition-to-compute-eigenvalues">
 <h2><span class="section-number">4.6. </span>Using QR Decomposition to Compute Eigenvalues<a class="headerlink" href="#using-qr-decomposition-to-compute-eigenvalues" title="Permalink to this headline">¶</a></h2>
 <p>Now for a useful  fact about the QR algorithm.</p>
 <p>The following iterations on the QR decomposition can be used to compute <strong>eigenvalues</strong>
@@ -663,7 +662,7 @@ of a <strong>square</strong> matrix <span class="math notranslate nohighlight">\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-0.5962688744126409, -0.19314703435595926, 1.214749180637623]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.2506233894875368, 0.2697516318546723, 1.773935122716448]
 </pre></div>
 </div>
 </div>
@@ -676,13 +675,15 @@ of a <strong>square</strong> matrix <span class="math notranslate nohighlight">\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-0.5962688744126413, -0.1931470343559518, 1.2147491806376243]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(0.26018751067110574-0.18325547855926091j),
+ (0.26018751067110574+0.18325547855926091j),
+ (1.7739351227164482+0j)]
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="qr-and-pca">
+</div>
+<div class="section" id="qr-and-pca">
 <h2><span class="section-number">4.7. </span><span class="math notranslate nohighlight">\(QR\)</span> and PCA<a class="headerlink" href="#qr-and-pca" title="Permalink to this headline">¶</a></h2>
 <p>There are interesting connections between the <span class="math notranslate nohighlight">\(QR\)</span> decomposition and principal components analysis (PCA).</p>
 <p>Here are  some.</p>
@@ -782,10 +783,10 @@ covariance matrix.  We want <span class="math notranslate nohighlight">\(n &gt; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([  66.3615756 ,  184.36401199,  478.39571192,  952.82458319,
-        6812.53168516]),
- array([  66.3615756 ,  184.36401199,  478.39571192,  952.82458319,
-        6812.53168516]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([  52.80714845,  371.92649608,  933.58181741, 1275.29904638,
+        8257.42399159]),
+ array([  52.80714845,  371.92649608,  933.58181741, 1275.29904638,
+        8257.42399159]))
 </pre></div>
 </div>
 </div>
@@ -801,7 +802,7 @@ covariance matrix.  We want <span class="math notranslate nohighlight">\(n &gt; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7.049916206369744e-15
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.774758283725532e-15
 </pre></div>
 </div>
 </div>
@@ -821,13 +822,13 @@ covariance matrix.  We want <span class="math notranslate nohighlight">\(n &gt; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7.503331289626658e-12
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.1823431123048067e-11
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1415,7 +1416,7 @@ covariance matrix.  We want <span class="math notranslate nohighlight">\(n &gt; 
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/qr_decomp.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/qr_decomp.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1428,7 +1429,7 @@ covariance matrix.  We want <span class="math notranslate nohighlight">\(n &gt; 
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

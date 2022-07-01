@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>60. Eliminating Cross Products &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -223,9 +222,9 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="eliminating-cross-products">
+  <div class="tex2jax_ignore mathjax_ignore section" id="eliminating-cross-products">
 <h1><span class="section-number">60. </span>Eliminating Cross Products<a class="headerlink" href="#eliminating-cross-products" title="Permalink to this headline">¶</a></h1>
-<section id="overview">
+<div class="section" id="overview">
 <h2><span class="section-number">60.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture describes formulas for eliminating</p>
 <ul class="simple">
@@ -238,8 +237,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p>solve the transformed problem using standard formulas for problems with no cross-products between states and controls  presented in this lecture <a class="reference internal" href="lqcontrol.html"><span class="doc">Linear Control: Foundations</span></a></p></li>
 <li><p>transform the optimal decision rule for the altered problem into the optimal decision rule for the original problem with cross-products between states and controls</p></li>
 </ul>
-</section>
-<section id="undiscounted-dynamic-programming-problem">
+</div>
+<div class="section" id="undiscounted-dynamic-programming-problem">
 <h2><span class="section-number">60.2. </span>Undiscounted Dynamic Programming Problem<a class="headerlink" href="#undiscounted-dynamic-programming-problem" title="Permalink to this headline">¶</a></h2>
 <p>Here is a nonstochastic undiscounted LQ dynamic programming with cross products between
 states and controls in the objective function.</p>
@@ -279,8 +278,8 @@ P &amp; = R^* + {A^*}' P A - ({A^*}' P B) (Q + B' P B)^{-1} B' P A^*, \\
 F^* &amp; = (Q + B' P B)^{-1} B' P A^*, \\
 F &amp; = F^* + Q^{-1} H.
 \end{align*}\]</div>
-</section>
-<section id="kalman-filter">
+</div>
+<div class="section" id="kalman-filter">
 <h2><span class="section-number">60.3. </span>Kalman Filter<a class="headerlink" href="#kalman-filter" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>duality</strong> that prevails  between a linear-quadratic optimal control and a Kalman filtering problem means that there is an analogous transformation that allows us to transform a Kalman filtering problem
 with non-zero covariance matrix  between between shocks to states and shocks to measurements to an equivalent Kalman filtering problem with zero covariance between shocks to states and measurments.</p>
@@ -308,7 +307,7 @@ K(\Sigma_t) &amp; = (A \Sigma_t D' + BF')(D \Sigma_t D' + FF')^{-1}, \\
 A^* &amp; = A - BF' (FF')^{-1} D, \\
 B^* {B^*}' &amp; = BB' - BF' (FF')^{-1} FB'.
 \end{align*}\]</div>
-<section id="algorithm">
+<div class="section" id="algorithm">
 <h3><span class="section-number">60.3.1. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
 <p>A consequence of  formulas {eq}`eq:Kalman102} is that we can use the following algorithm to solve Kalman filtering problems that involve  non zero covariances between state and signal noises.</p>
 <p>First, compute <span class="math notranslate nohighlight">\(\Sigma, K^*\)</span> using the ordinary Kalman filtering  formula with <span class="math notranslate nohighlight">\(BF' = 0\)</span>, i.e.,
@@ -325,9 +324,9 @@ K^* &amp; = (A^* \Sigma D')(D \Sigma D' + FF')^{-1} \\
 K = K^* + BF' (FF')^{-1},
 \]</div>
 <p>The state reconstruction covariance matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> for the original problem equals the state reconstrution covariance matrix for the transformed problem.</p>
-</section>
-</section>
-<section id="duality-table">
+</div>
+</div>
+<div class="section" id="duality-table">
 <h2><span class="section-number">60.4. </span>Duality table<a class="headerlink" href="#duality-table" title="Permalink to this headline">¶</a></h2>
 <p>Here is a handy table to remember how the Kalman filter and dynamic program are related.</p>
 <table class="colwidths-auto table">
@@ -360,8 +359,8 @@ K = K^* + BF' (FF')^{-1},
 </tr>
 </tbody>
 </table>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -949,7 +948,7 @@ K = K^* + BF' (FF')^{-1},
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/cross_product_trick.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/cross_product_trick.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -962,7 +961,7 @@ K = K^* + BF' (FF')^{-1},
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>44. Optimal Growth III: Time Iteration &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -249,7 +248,7 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><section class="tex2jax_ignore mathjax_ignore" id="optimal-growth-iii-time-iteration">
+</div><div class="tex2jax_ignore mathjax_ignore section" id="optimal-growth-iii-time-iteration">
 <h1><a class="toc-backref" href="#id3"><span class="section-number">44. </span><span class="target" id="index-0"></span>Optimal Growth III: Time Iteration</a><a class="headerlink" href="#optimal-growth-iii-time-iteration" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
@@ -275,34 +274,34 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
+Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
+Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
 Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
 Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
 Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
-Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
-Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
-Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
 Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
+Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.6.15)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
 Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (2.2.1)
-Requirement already satisfied: tempita&gt;=0.5.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.5.2)
 Requirement already satisfied: scipy&gt;=1.4.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.7.3)
-Requirement already satisfied: numpy&gt;=1.18.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.21.5)
+Requirement already satisfied: tempita&gt;=0.5.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.5.2)
 Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.55.1)
-Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (61.2.0)
+Requirement already satisfied: numpy&gt;=1.18.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.21.5)
 Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.38.0)
+Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (61.2.0)
 </pre></div>
 </div>
 </div>
 </div>
-<section id="overview">
+<div class="section" id="overview">
 <h2><a class="toc-backref" href="#id4"><span class="section-number">44.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we’ll continue our <a class="reference internal" href="optgrowth.html"><span class="doc">earlier</span></a> study of the stochastic optimal growth model.</p>
 <p>In that lecture, we solved the associated dynamic programming
@@ -335,8 +334,8 @@ iteration can be further adjusted to obtain even more efficiency.</p>
 </div>
 </div>
 </div>
-</section>
-<section id="the-euler-equation">
+</div>
+<div class="section" id="the-euler-equation">
 <h2><a class="toc-backref" href="#id5"><span class="section-number">44.2. </span>The Euler Equation</a><a class="headerlink" href="#the-euler-equation" title="Permalink to this headline">¶</a></h2>
 <p>Our first step is to derive the Euler equation, which is a generalization of
 the Euler equation we obtained in the <a class="reference internal" href="cake_eating_problem.html"><span class="doc">lecture on cake eating</span></a>.</p>
@@ -393,7 +392,7 @@ with <a class="reference internal" href="#equation-cpi-fpb30">(44.1)</a>, which 
 = \beta \int (u'\circ \sigma)(f(y - \sigma(y)) z) f'(y - \sigma(y)) z \phi(dz)\]</div>
 <p>over interior consumption policies <span class="math notranslate nohighlight">\(\sigma\)</span>, one solution of which is the optimal policy <span class="math notranslate nohighlight">\(\sigma^*\)</span>.</p>
 <p>Our aim is to solve the functional equation <a class="reference internal" href="#equation-cpi-euler-func">(44.5)</a> and hence obtain <span class="math notranslate nohighlight">\(\sigma^*\)</span>.</p>
-<section id="the-coleman-reffett-operator">
+<div class="section" id="the-coleman-reffett-operator">
 <h3><span class="section-number">44.2.1. </span>The Coleman-Reffett Operator<a class="headerlink" href="#the-coleman-reffett-operator" title="Permalink to this headline">¶</a></h3>
 <p>Recall the Bellman operator</p>
 <div class="math notranslate nohighlight" id="equation-fcbell20-coleman">
@@ -430,8 +429,8 @@ u'(c)
 = \beta \int (u' \circ \sigma^*) (f(y - c) z ) f'(y - c) z \phi(dz)
 \]</div>
 <p>In view of the Euler equation, this is exactly <span class="math notranslate nohighlight">\(\sigma^*(y)\)</span>.</p>
-</section>
-<section id="is-the-coleman-reffett-operator-well-defined">
+</div>
+<div class="section" id="is-the-coleman-reffett-operator-well-defined">
 <h3><span class="section-number">44.2.2. </span>Is the Coleman-Reffett Operator Well Defined?<a class="headerlink" href="#is-the-coleman-reffett-operator-well-defined" title="Permalink to this headline">¶</a></h3>
 <p>In particular, is there always a unique <span class="math notranslate nohighlight">\(c \in (0, y)\)</span> that solves
 <a class="reference internal" href="#equation-cpi-coledef">(44.7)</a>?</p>
@@ -449,8 +448,8 @@ u'(c)
 <p>Sketching these curves and using the information above will convince you that they cross exactly once as <span class="math notranslate nohighlight">\(c\)</span> ranges over <span class="math notranslate nohighlight">\((0, y)\)</span>.</p>
 <p>With a bit more analysis, one can show in addition that <span class="math notranslate nohighlight">\(K \sigma \in \mathscr P\)</span>
 whenever <span class="math notranslate nohighlight">\(\sigma \in \mathscr P\)</span>.</p>
-</section>
-<section id="comparison-with-vfi-theory">
+</div>
+<div class="section" id="comparison-with-vfi-theory">
 <h3><span class="section-number">44.2.3. </span>Comparison with VFI (Theory)<a class="headerlink" href="#comparison-with-vfi-theory" title="Permalink to this headline">¶</a></h3>
 <p>It is possible to prove that there is a tight relationship between iterates of
 <span class="math notranslate nohighlight">\(K\)</span> and iterates of the Bellman operator.</p>
@@ -462,9 +461,9 @@ in theory.</p>
 <p>However, it turns out that the operator <span class="math notranslate nohighlight">\(K\)</span> is more stable numerically
 and hence more efficient in the applications we consider.</p>
 <p>Examples are given below.</p>
-</section>
-</section>
-<section id="implementation">
+</div>
+</div>
+<div class="section" id="implementation">
 <h2><a class="toc-backref" href="#id6"><span class="section-number">44.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>As in our <a class="reference internal" href="optgrowth_fast.html"><span class="doc">previous study</span></a>, we continue to assume that</p>
 <ul class="simple">
@@ -614,7 +613,7 @@ state <span class="math notranslate nohighlight">\(y\)</span> and <span class="m
 </div>
 </div>
 </div>
-<section id="testing">
+<div class="section" id="testing">
 <h3><span class="section-number">44.3.1. </span>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
 <p>Let’s generate an instance and plot some iterates of <span class="math notranslate nohighlight">\(K\)</span>, starting from <span class="math notranslate nohighlight">\(σ(y) = y\)</span>.</p>
 <div class="cell docutils container">
@@ -741,7 +740,7 @@ using time iteration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>67 ms ± 0 ns per loop (mean ± std. dev. of 1 run, 3 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>74.5 ms ± 0 ns per loop (mean ± std. dev. of 1 run, 3 loops each)
 </pre></div>
 </div>
 </div>
@@ -749,14 +748,14 @@ using time iteration.</p>
 <p>Convergence is very fast, even compared to our <a class="reference internal" href="optgrowth_fast.html"><span class="doc">JIT-compiled value function iteration</span></a>.</p>
 <p>Overall, we find that time iteration provides a very high degree of efficiency
 and accuracy, at least for this model.</p>
-</section>
-</section>
-<section id="exercises">
+</div>
+</div>
+<div class="section" id="exercises">
 <h2><a class="toc-backref" href="#id7"><span class="section-number">44.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="exercise admonition" id="cpi_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 44.1 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <p>Solve the model with CRRA utility</p>
 <div class="math notranslate nohighlight">
 \[
@@ -764,15 +763,15 @@ u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
 \]</div>
 <p>Set <code class="docutils literal notranslate"><span class="pre">γ</span> <span class="pre">=</span> <span class="pre">1.5</span></code>.</p>
 <p>Compute and plot the optimal policy.</p>
-</section>
 </div>
-</section>
-<section id="solutions">
+</div>
+</div>
+<div class="section" id="solutions">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">44.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <div class="solution dropdown admonition" id="coleman_policy_iter-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#cpi_ex1"> Exercise 44.1</a></p>
-<section id="s">
+<div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>We use the class <code class="docutils literal notranslate"><span class="pre">OptimalGrowthModel_CRRA</span></code> from our <a class="reference internal" href="optgrowth_fast.html"><span class="doc">VFI lecture</span></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -862,16 +861,16 @@ u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
 </pre></div>
 </div>
 <img alt="_images/coleman_policy_iter_29_1.png" src="_images/coleman_policy_iter_29_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.71 s, sys: 66 µs, total: 1.71 s
-Wall time: 1.71 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.66 s, sys: 7.99 ms, total: 1.67 s
+Wall time: 1.67 s
 </pre></div>
 </div>
 </div>
 </div>
-</section>
 </div>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1459,7 +1458,7 @@ Wall time: 1.71 s
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/coleman_policy_iter.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/coleman_policy_iter.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1472,7 +1471,7 @@ Wall time: 1.71 s
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

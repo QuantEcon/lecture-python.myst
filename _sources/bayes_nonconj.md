@@ -1041,6 +1041,12 @@ print(f'=======INFO=======\nParameters: {example_CLASS.param}\nPrior Dist: {exam
 BayesianInferencePlot(true_theta, num_list, example_CLASS).MCMC_plot(num_samples=MCMC_num_samples)
 ```
 
+To get more accuracy we will now increase the number of steps for Variational Inference (VI)
+
+```{code-cell} ipython3
+SVI_num_steps = 50000
+```
+
 #### VI with a  Truncated Normal Guide
 
 ```{code-cell} ipython3

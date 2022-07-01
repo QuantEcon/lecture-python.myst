@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>15. Fault Tree Uncertainties &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -241,9 +240,9 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="fault-tree-uncertainties">
+  <div class="tex2jax_ignore mathjax_ignore section" id="fault-tree-uncertainties">
 <h1><span class="section-number">15. </span>Fault Tree Uncertainties<a class="headerlink" href="#fault-tree-uncertainties" title="Permalink to this headline">¶</a></h1>
-<section id="overview">
+<div class="section" id="overview">
 <h2><span class="section-number">15.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture puts elementary tools to work to approximate probability distributions of the annual failure rates of a system consisting of
 a number of critical parts.</p>
@@ -298,8 +297,8 @@ uncertainty about the reliability of a safety system.</p>
 </div>
 </div>
 <!-- #region -->
-</section>
-<section id="log-normal-distribution">
+</div>
+<div class="section" id="log-normal-distribution">
 <h2><span class="section-number">15.2. </span>Log normal distribution<a class="headerlink" href="#log-normal-distribution" title="Permalink to this headline">¶</a></h2>
 <p>If a random variable <span class="math notranslate nohighlight">\(x\)</span> follows a normal distribution with mean <span class="math notranslate nohighlight">\(\mu\)</span> and variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>,
 then the natural logarithm of <span class="math notranslate nohighlight">\(x\)</span>, say <span class="math notranslate nohighlight">\(y = \log(x)\)</span>, follows a <strong>log normal distribution</strong> with parameters <span class="math notranslate nohighlight">\(\mu, \sigma^2\)</span>.</p>
@@ -337,8 +336,8 @@ with parameters <span class="math notranslate nohighlight">\((\mu_1 + \mu_2, \si
 <p><strong>Note:</strong> While the product of two log normal distributions is log normal, the <strong>sum</strong> of two log normal distributions is <strong>not</strong> log normal.</p>
 <p>This observation sets the stage for challenge that confronts us in this lecture, namely, to approximate probability distributions of <strong>sums</strong> of independent log normal random variables.</p>
 <p>To compute the probability distribution of the sum of two log normal distributions, we can use the following convolution property of a probability distribution that is a sum of independent random variables.</p>
-</section>
-<section id="the-convolution-property">
+</div>
+<div class="section" id="the-convolution-property">
 <h2><span class="section-number">15.3. </span>The Convolution Property<a class="headerlink" href="#the-convolution-property" title="Permalink to this headline">¶</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(x\)</span> be a random variable with probability density <span class="math notranslate nohighlight">\(f(x)\)</span>, where <span class="math notranslate nohighlight">\(x \in {\bf R}\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(y\)</span> be a random variable with probability density <span class="math notranslate nohighlight">\(g(y)\)</span>, where <span class="math notranslate nohighlight">\(y \in {\bf R}\)</span>.</p>
@@ -401,8 +400,8 @@ hf =  [0.   0.45 0.15 0.3  0.1 ] ,np.sum(hf) =  1.0000000000000002
 <p>A little later we’ll explain some advantages that come from using <code class="docutils literal notranslate"><span class="pre">scipy.signal.ftconvolve</span></code> rather than <code class="docutils literal notranslate"><span class="pre">numpy.convolve</span></code>.numpy program convolve.</p>
 <p>They provide the same answers but <code class="docutils literal notranslate"><span class="pre">scipy.signal.ftconvolve</span></code> is much faster.</p>
 <p>That’s why we rely on it later in this lecture.</p>
-</section>
-<section id="approximating-distributions">
+</div>
+<div class="section" id="approximating-distributions">
 <h2><span class="section-number">15.4. </span>Approximating Distributions<a class="headerlink" href="#approximating-distributions" title="Permalink to this headline">¶</a></h2>
 <p>We’ll construct an example to verify that  discretized distributions can do a good job of approximating  samples drawn from underlying
 continuous distributions.</p>
@@ -464,7 +463,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2.4469193226422038e+02, 243.27615311152007, 5.0, 1.0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2.4469193226422038e+02, 245.2873284802815, 5.0, 1.0)
 </pre></div>
 </div>
 </div>
@@ -521,7 +520,7 @@ to compute a convolution of two sequences (discrete distributions).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13530/2130497458.py:10: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_10308/2130497458.py:10: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
 Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
   plt.plot(x[:np.int(NT)],p1[:np.int(NT)],label = &#39;&#39;)
 </pre></div>
@@ -545,8 +544,8 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 </div>
-</section>
-<section id="convolving-probability-mass-functions">
+</div>
+<div class="section" id="convolving-probability-mass-functions">
 <h2><span class="section-number">15.5. </span>Convolving Probability Mass Functions<a class="headerlink" href="#convolving-probability-mass-functions" title="Permalink to this headline">¶</a></h2>
 <p>Now let’s use the convolution theorem to compute the probability distribution of a sum of the two log normal random variables we have parameterized above.</p>
 <p>We’ll also compute the probability of a sum of three log normal distributions constructed above.</p>
@@ -613,7 +612,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time with np.convolve =  82.87135131599996 ; time with fftconvolve =  0.1668426690000615
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time with np.convolve =  76.67124836300002 ; time with fftconvolve =  0.14683705999999574
 </pre></div>
 </div>
 </div>
@@ -637,7 +636,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13530/2364144025.py:5: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_10308/2364144025.py:5: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
 Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
   plt.plot(x[:np.int(NT)],c1f[:np.int(NT)]/m,label = &#39;&#39;)
 </pre></div>
@@ -661,7 +660,7 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13530/3883904051.py:4: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_10308/3883904051.py:4: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
 Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
   plt.plot(x[:np.int(NT)],c2f[:np.int(NT)]/m,label = &#39;&#39;)
 </pre></div>
@@ -700,8 +699,8 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 <!-- #region -->
-</section>
-<section id="failure-tree-analysis">
+</div>
+<div class="section" id="failure-tree-analysis">
 <h2><span class="section-number">15.6. </span>Failure Tree Analysis<a class="headerlink" href="#failure-tree-analysis" title="Permalink to this headline">¶</a></h2>
 <p>We shall soon apply the convolution theorem to compute the probability of a <strong>top event</strong> in a failure tree analysis.</p>
 <p>Before applying the convolution theorem, we first describe the model that connects constituent events to the <strong>top</strong> end whose
@@ -725,8 +724,8 @@ the event that <span class="math notranslate nohighlight">\(A\)</span> <strong>O
 <div class="math notranslate nohighlight">
 \[ P(A \cup B) \approx P(A) + P(B)  \]</div>
 <p>This approximation is widely used in evaluating system failures.</p>
-</section>
-<section id="application">
+</div>
+<div class="section" id="application">
 <h2><span class="section-number">15.7. </span>Application<a class="headerlink" href="#application" title="Permalink to this headline">¶</a></h2>
 <p>A system has been designed with the feature a system  failure occurs when <strong>any</strong> of  <span class="math notranslate nohighlight">\(n\)</span> critical  components  fails.</p>
 <p>The failure probability <span class="math notranslate nohighlight">\(P(A_i)\)</span>  of each event <span class="math notranslate nohighlight">\(A_i\)</span>  is small.</p>
@@ -741,8 +740,8 @@ of a system failure:</p>
 P(F) \approx \sum_{i=1}^n P (A_i) 
 \]</div>
 <p>Probabilities for each event are recorded as failure rates per year.</p>
-</section>
-<section id="failure-rates-unknown">
+</div>
+<div class="section" id="failure-rates-unknown">
 <h2><span class="section-number">15.8. </span>Failure Rates Unknown<a class="headerlink" href="#failure-rates-unknown" title="Permalink to this headline">¶</a></h2>
 <p>Now we come to the problem that really interests us, following  <span id="id5">[<a class="reference internal" href="zreferences.html#id19" title="Ashraf Ben El-Shanawany, Keith H Ardron, and Simon P Walker. Lognormal approximations of fault tree uncertainty distributions. Risk Analysis, 38(8):1576–1584, 2018.">ESAW18</a>]</span> and Greenfield and Sargent
 <span id="id6">[<a class="reference internal" href="zreferences.html#id18" title="Moses A Greenfield and Thomas J Sargent. A probabilistic analysis of a catastrophic transuranic waste hoise accident at the wipp. Environmental Evaluation Group, Albuquerque, New Mexico, June 1993. URL: http://www.tomsargent.com/research/EEG-53.pdf.">GS93</a>]</span>  in the spirit of Apostolakis  <span id="id7">[<a class="reference internal" href="zreferences.html#id17" title="George Apostolakis. The concept of probability in safety assessments of technological systems. Science, 250(4986):1359–1364, 1990.">Apo90</a>]</span>.</p>
@@ -771,8 +770,8 @@ of the systems failure probability <span class="math notranslate nohighlight">\(
 <p>The analyst calculates the probability mass function for the <strong>top event</strong> <span class="math notranslate nohighlight">\(F\)</span>, i.e., a <strong>system failure</strong>,  by repeatedly applying the convolution theorem to compute the probability distribution of a sum of independent log normal random variables, as described in equation
 <a class="reference internal" href="#equation-eq-probtop">(15.3)</a>.</p>
 <!-- #endregion -->
-</section>
-<section id="waste-hoist-failure-rate">
+</div>
+<div class="section" id="waste-hoist-failure-rate">
 <h2><span class="section-number">15.9. </span>Waste Hoist Failure Rate<a class="headerlink" href="#waste-hoist-failure-rate" title="Permalink to this headline">¶</a></h2>
 <p>We’ll take close to a real world example by assuming that <span class="math notranslate nohighlight">\(n = 14\)</span>.</p>
 <p>The example estimates the annual failure rate of a critical  hoist at a nuclear waste facility.</p>
@@ -864,7 +863,7 @@ and we’ll also present a counterpart to their Table 11 on page 28.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time for 13 convolutions =  8.460562641000024
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time for 13 convolutions =  6.963825579000002
 </pre></div>
 </div>
 </div>
@@ -912,10 +911,10 @@ and we’ll also present a counterpart to their Table 11 on page 28.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13530/3082528578.py:2: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_10308/3082528578.py:2: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
 Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
   Nx=np.int(1400)
-/tmp/ipykernel_13530/3082528578.py:4: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+/tmp/ipykernel_10308/3082528578.py:4: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
 Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
   plt.plot(x[0:np.int(Nx/m)],d13[0:np.int(Nx/m)])  # show Yad this -- I multiplied by m -- step size
 </pre></div>
@@ -940,8 +939,8 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 <p>The above table agrees closely with column 2 of  Table 11 on p. 28 of  of <span id="id11">[<a class="reference internal" href="zreferences.html#id18" title="Moses A Greenfield and Thomas J Sargent. A probabilistic analysis of a catastrophic transuranic waste hoise accident at the wipp. Environmental Evaluation Group, Albuquerque, New Mexico, June 1993. URL: http://www.tomsargent.com/research/EEG-53.pdf.">GS93</a>]</span>.</p>
 <p>Discrepancies are probably due to slight differences in the number of digits retained in inputting <span class="math notranslate nohighlight">\(\mu_i, \sigma_i, i = 1, \ldots, 14\)</span>
 and in the number of points deployed in the discretizations.</p>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1529,7 +1528,7 @@ and in the number of points deployed in the discretizations.</p>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/hoist_failure.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/hoist_failure.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1542,7 +1541,7 @@ and in the number of points deployed in the discretizations.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

@@ -213,7 +213,7 @@ $$ -->
 
 
 $$
-Z_t(Y(\omega)) := \left. 
+Z_t(Y(\omega)) :=  
 \begin{cases} 
 \ 1 & \text{if } Y_t(\omega)< Y_{t-1}(\omega)< Y_{t-2}(\omega) \geq Y_{t-3}(\omega) \\
 0 & \text{otherwise}
@@ -248,7 +248,7 @@ $$ -->
 
 
 $$
-T_t(Y(\omega)) := \left.
+T_t(Y(\omega)) := 
 \begin{cases}
 \ 1 & \text{if } Y_{t-2}(\omega)> Y_{t-1}(\omega) > Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) < Y_{t+1}(\omega) < Y_{t+2}(\omega) \\
 \ -1 & \text{if } Y_{t-2}(\omega)< Y_{t-1}(\omega) < Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) > Y_{t+1}(\omega) > Y_{t+2}(\omega) \\
@@ -270,7 +270,7 @@ $$ -->
 
 
 $$
-P_t(\omega) := \left. 
+P_t(\omega) := 
 \begin{cases}
 \ 1 & \text{if } T_t(\omega)=1 \ \text{or} \ T_{t+1}(\omega)=1 \\
 0 & \text{otherwise}

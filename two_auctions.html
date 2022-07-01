@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>77. First-Price and Second-Price Auctions &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -272,7 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="first-price-and-second-price-auctions">
+  <div class="tex2jax_ignore mathjax_ignore section" id="first-price-and-second-price-auctions">
 <h1><span class="section-number">77. </span>First-Price and Second-Price Auctions<a class="headerlink" href="#first-price-and-second-price-auctions" title="Permalink to this headline">¶</a></h1>
 <p>This lecture is designed to set the stage for a subsequent lecture about <a class="reference external" href="https://python.quantecon.org/house_auction.html">Multiple Good Allocation Mechanisms</a></p>
 <p>In that lecture, a planner or auctioneer simultaneously allocates several goods to set of people.</p>
@@ -294,7 +293,7 @@ const thebe_selector_output = ".output, .cell_output"
 <iframe allowfullscreen="true" src="https://www.youtube.com/embed/eYTGQCGpmXI" style="border: 0; height: 345px; width: 560px">
 </iframe></div><p>Anders Munk-Nielsen put his code <a class="reference external" href="https://github.com/GamEconCph/Lectures-2021/tree/main/Bayesian%20Games">on GitHub</a>.</p>
 <p>Much of our  Python code below is based on his.</p>
-<section id="first-price-sealed-bid-auction-fpsb">
+<div class="section" id="first-price-sealed-bid-auction-fpsb">
 <h2><span class="section-number">77.1. </span>First-Price Sealed-Bid Auction (FPSB)<a class="headerlink" href="#first-price-sealed-bid-auction-fpsb" title="Permalink to this headline">¶</a></h2>
 <p><strong>Protocols:</strong></p>
 <ul class="simple">
@@ -327,7 +326,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>This is   a <strong>Bayesian game</strong>, a Nash equilibrium of which is called a <strong>Bayesian Nash equilibrium</strong>.</p>
 <p>To complete the specification of the situation, we’ll  assume that  prospective buyers’ valuations are independently and identically distributed according to a probability distribution that is known by all bidders.</p>
 <p>Bidder optimally chooses to bid less than <span class="math notranslate nohighlight">\(v_i\)</span>.</p>
-<section id="characterization-of-fpsb-auction">
+<div class="section" id="characterization-of-fpsb-auction">
 <h3><span class="section-number">77.1.1. </span>Characterization of FPSB Auction<a class="headerlink" href="#characterization-of-fpsb-auction" title="Permalink to this headline">¶</a></h3>
 <p>A FPSB auction has a unique symmetric Bayesian Nash Equilibrium.</p>
 <p>The optimal  bid of buyer <span class="math notranslate nohighlight">\(i\)</span> is</p>
@@ -341,33 +340,33 @@ const thebe_selector_output = ".output, .cell_output"
 y_{i} = \max_{j \neq i} v_{j} 
 \]</div>
 <p>A proof for this assertion is available  at the <a class="reference external" href="https://en.wikipedia.org/wiki/Vickrey_auction">Wikepedia page</a> about Vickrey auctions</p>
-</section>
-</section>
-<section id="second-price-sealed-bid-auction-spsb">
+</div>
+</div>
+<div class="section" id="second-price-sealed-bid-auction-spsb">
 <h2><span class="section-number">77.2. </span>Second-Price Sealed-Bid Auction (SPSB)<a class="headerlink" href="#second-price-sealed-bid-auction-spsb" title="Permalink to this headline">¶</a></h2>
 <p><strong>Protocols:</strong> In a  second-price sealed-bid (SPSB) auction,  the winner pays the second-highest bid.</p>
-</section>
-<section id="characterization-of-spsb-auction">
+</div>
+<div class="section" id="characterization-of-spsb-auction">
 <h2><span class="section-number">77.3. </span>Characterization of SPSB Auction<a class="headerlink" href="#characterization-of-spsb-auction" title="Permalink to this headline">¶</a></h2>
 <p>In a  SPSB auction  bidders optimally choose to bid their  values.</p>
 <p>Formally, a dominant strategy profile in a SPSB auction with a single, indivisible item has each bidder  bidding its  value.</p>
 <p>A proof is provided at <a class="reference external" href="https://en.wikipedia.org/wiki/Vickrey_auction">the Wikepedia
 page</a> about Vickrey auctions</p>
-</section>
-<section id="uniform-distribution-of-private-values">
+</div>
+<div class="section" id="uniform-distribution-of-private-values">
 <h2><span class="section-number">77.4. </span>Uniform Distribution of Private Values<a class="headerlink" href="#uniform-distribution-of-private-values" title="Permalink to this headline">¶</a></h2>
 <p>We assume valuation <span class="math notranslate nohighlight">\(v_{i}\)</span>  of bidder <span class="math notranslate nohighlight">\(i\)</span> is distributed <span class="math notranslate nohighlight">\(v_{i} \stackrel{\text{i.i.d.}}{\sim} U(0,1)\)</span>.</p>
 <p>Under this assumption, we can analytically compute probability  distributions of  prices bid in both  FPSB and SPSB.</p>
 <p>We’ll  simulate outcomes and, by using  a law of large numbers, verify that the simulated outcomes agree with analytical ones.</p>
 <p>We can use our  simulation to illustrate   a  <strong>Revenue Equivalence Theorem</strong> that asserts that on average first-price and second-price sealed bid auctions  provide a seller the same revenue.</p>
 <p>To read about the revenue equivalence theorem, see <a class="reference external" href="https://en.wikipedia.org/wiki/Revenue_equivalence">this Wikepedia page</a></p>
-</section>
-<section id="setup">
+</div>
+<div class="section" id="setup">
 <h2><span class="section-number">77.5. </span>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
 <p>There are <span class="math notranslate nohighlight">\(n\)</span> bidders.</p>
 <p>Each bidder knows that there are <span class="math notranslate nohighlight">\(n-1\)</span> other bidders.</p>
-</section>
-<section id="first-price-sealed-bid-auction">
+</div>
+<div class="section" id="first-price-sealed-bid-auction">
 <h2><span class="section-number">77.6. </span>First price sealed bid auction<a class="headerlink" href="#first-price-sealed-bid-auction" title="Permalink to this headline">¶</a></h2>
 <p>An optimal bid  for bidder <span class="math notranslate nohighlight">\(i\)</span> in a <strong>FPSB</strong>  is described by equations <a class="reference internal" href="#equation-eq-optbid1">(77.1)</a> and <a class="reference internal" href="#equation-eq-optbid2">(77.2)</a>.</p>
 <p>When bids are i.i.d. draws from a uniform distribution, the CDF of <span class="math notranslate nohighlight">\(y_{i}\)</span> is</p>
@@ -390,12 +389,12 @@ page</a> about Vickrey auctions</p>
 &amp;= \frac{n-1}{n}v_{i}
 \end{aligned}
 \end{split}\]</div>
-</section>
-<section id="second-price-sealed-bid-auction">
+</div>
+<div class="section" id="second-price-sealed-bid-auction">
 <h2><span class="section-number">77.7. </span>Second Price Sealed Bid Auction<a class="headerlink" href="#second-price-sealed-bid-auction" title="Permalink to this headline">¶</a></h2>
 <p>In a  <strong>SPSB</strong>, it is optimal for bidder <span class="math notranslate nohighlight">\(i\)</span> to bid <span class="math notranslate nohighlight">\(v_i\)</span>.</p>
-</section>
-<section id="python-code">
+</div>
+<div class="section" id="python-code">
 <h2><span class="section-number">77.8. </span>Python Code<a class="headerlink" href="#python-code" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -485,8 +484,8 @@ page</a> about Vickrey auctions</p>
 <img alt="_images/two_auctions_16_0.png" src="_images/two_auctions_16_0.png" />
 </div>
 </div>
-</section>
-<section id="revenue-equivalence-theorem">
+</div>
+<div class="section" id="revenue-equivalence-theorem">
 <h2><span class="section-number">77.9. </span>Revenue Equivalence Theorem<a class="headerlink" href="#revenue-equivalence-theorem" title="Permalink to this headline">¶</a></h2>
 <p>We now compare  FPSB and a SPSB auctions from the point of view of the  revenues that a seller can expect to acquire.</p>
 <p><strong>Expected Revenue FPSB:</strong></p>
@@ -582,8 +581,8 @@ The average payment of SPSB: 0.6667. Std.: 0.1782. Median: 0.6862
 b(v_{i})\mathbf{P}(y_{i} &lt; v_{i}) + 0 * \mathbf{P}(y_{i} \ge v_{i}) = \mathbf{E}_{y_{i}}[y_{i} | y_{i} &lt; v_{i}]\mathbf{P}(y_{i} &lt; v_{i}) + 0 * \mathbf{P}(y_{i} \ge v_{i})
 \]</div>
 <p>It follows that an optimal bidding strategy in a FPSB auction is <span class="math notranslate nohighlight">\(b(v_{i}) = \mathbf{E}_{y_{i}}[y_{i} | y_{i} &lt; v_{i}]\)</span>.</p>
-</section>
-<section id="calculation-of-bid-price-in-fpsb">
+</div>
+<div class="section" id="calculation-of-bid-price-in-fpsb">
 <h2><span class="section-number">77.10. </span>Calculation of  Bid Price in FPSB<a class="headerlink" href="#calculation-of-bid-price-in-fpsb" title="Permalink to this headline">¶</a></h2>
 <p>In equations <a class="reference internal" href="#equation-eq-optbid1">(77.1)</a> and <a class="reference internal" href="#equation-eq-optbid1">(77.1)</a>, we displayed formulas for
 optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.</p>
@@ -656,8 +655,8 @@ optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.</p>
 <img alt="_images/two_auctions_27_0.png" src="_images/two_auctions_27_0.png" />
 </div>
 </div>
-</section>
-<section id="chi-2-distribution">
+</div>
+<div class="section" id="chi-2-distribution">
 <h2><span class="section-number">77.11. </span><span class="math notranslate nohighlight">\(\chi^2\)</span> Distribution<a class="headerlink" href="#chi-2-distribution" title="Permalink to this headline">¶</a></h2>
 <p>Let’s try an example in which the distribution of private values is a <span class="math notranslate nohighlight">\(\chi^2\)</span> distribution.</p>
 <p>We’ll start by taking a look at a <span class="math notranslate nohighlight">\(\chi^2\)</span> distribution with the help of the following Python code:</p>
@@ -693,7 +692,7 @@ optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_16509/1297414400.py:25: RuntimeWarning: Mean of empty slice.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_10633/1297414400.py:25: RuntimeWarning: Mean of empty slice.
   return array_conditional[-order,:].mean()
 /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
   ret = ret.dtype.type(ret / rcount)
@@ -780,8 +779,8 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <img alt="_images/two_auctions_37_1.png" src="_images/two_auctions_37_1.png" />
 </div>
 </div>
-</section>
-<section id="code-summary">
+</div>
+<div class="section" id="code-summary">
 <h2><span class="section-number">77.12. </span>5 Code Summary<a class="headerlink" href="#code-summary" title="Permalink to this headline">¶</a></h2>
 <p>We assemble the functions that we have used into a Python  class</p>
 <div class="cell docutils container">
@@ -914,7 +913,7 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_16509/2108492276.py:37: RuntimeWarning: Mean of empty slice.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_10633/2108492276.py:37: RuntimeWarning: Mean of empty slice.
   return array_conditional[-order,:].mean()
 /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
   ret = ret.dtype.type(ret / rcount)
@@ -937,8 +936,8 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <img alt="_images/two_auctions_44_1.png" src="_images/two_auctions_44_1.png" />
 </div>
 </div>
-</section>
-<section id="references">
+</div>
+<div class="section" id="references">
 <h2><span class="section-number">77.13. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>Wikipedia for FPSB: <a class="reference external" href="https://en.wikipedia.org/wiki/First-price_sealed-bid_auction">https://en.wikipedia.org/wiki/First-price_sealed-bid_auction</a></p></li>
@@ -948,8 +947,8 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <li><p>Auction Theory- Revenue Equivalence Theorem: <a class="reference external" href="https://michaellevet.wordpress.com/2015/07/06/auction-theory-revenue-equivalence-theorem/">https://michaellevet.wordpress.com/2015/07/06/auction-theory-revenue-equivalence-theorem/</a></p></li>
 <li><p>Order Statistics: <a class="reference external" href="https://online.stat.psu.edu/stat415/book/export/html/834">https://online.stat.psu.edu/stat415/book/export/html/834</a></p></li>
 </ol>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1537,7 +1536,7 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/two_auctions.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/two_auctions.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1550,7 +1549,7 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

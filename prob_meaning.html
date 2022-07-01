@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>11. Two Meanings of Probability &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -211,9 +210,9 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="two-meanings-of-probability">
+  <div class="tex2jax_ignore mathjax_ignore section" id="two-meanings-of-probability">
 <h1><span class="section-number">11. </span>Two Meanings of Probability<a class="headerlink" href="#two-meanings-of-probability" title="Permalink to this headline">¶</a></h1>
-<section id="overview">
+<div class="section" id="overview">
 <h2><span class="section-number">11.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture  illustrates two distinct interpretations of a  <strong>probability distribution</strong></p>
 <ul class="simple">
@@ -268,8 +267,8 @@ Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/l
 </div>
 </div>
 <p>Empowered with these Python tools, we’ll now  explore the two meanings described above.</p>
-</section>
-<section id="frequentist-interpretation">
+</div>
+<div class="section" id="frequentist-interpretation">
 <h2><span class="section-number">11.2. </span>Frequentist Interpretation<a class="headerlink" href="#frequentist-interpretation" title="Permalink to this headline">¶</a></h2>
 <p>Consider the following classic example.</p>
 <p>The random variable  <span class="math notranslate nohighlight">\(X \)</span> takes on possible values <span class="math notranslate nohighlight">\(k = 0, 1, 2, \ldots, n\)</span>  with probabilties</p>
@@ -310,19 +309,19 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 <div class="exercise admonition" id="pm_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 11.1 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <ol class="simple">
 <li><p>Please write a Python class to compute <span class="math notranslate nohighlight">\(f_k^I\)</span></p></li>
 <li><p>Please use your code to compute <span class="math notranslate nohighlight">\(f_k^I, k = 0, \ldots , n\)</span> and compare them to
 <span class="math notranslate nohighlight">\(\textrm{Prob}(X =  k | \theta)\)</span> for various values of <span class="math notranslate nohighlight">\(\theta, n\)</span> and <span class="math notranslate nohighlight">\(I\)</span></p></li>
 <li><p>With  the Law of Large numbers in mind, use your code to say something</p></li>
 </ol>
-</section>
+</div>
 </div>
 <div class="solution admonition" id="prob_meaning-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex1"> Exercise 11.1</a></p>
-<section id="s">
+<div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">frequentist</span><span class="p">:</span>
@@ -401,31 +400,31 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 +----+------------------------+-------------+
 | 1  | 1.6271660538000033e-09 |     0.0     |
 | 2  | 3.606884752589999e-08  |     0.0     |
-| 3  |  5.04963865362601e-07  |    2e-06    |
-| 4  | 5.007558331512455e-06  |    6e-06    |
-| 5  | 3.7389768875293014e-05 |   3.4e-05   |
-| 6  | 0.00021810698510587546 |   0.000239  |
-| 7  |  0.001017832597160754  |   0.000994  |
-| 8  |  0.003859281930901185  |   0.003914  |
-| 9  |  0.012006654896137007  |   0.011959  |
-| 10 |  0.030817080900085007  |   0.03129   |
-| 11 |   0.065369565545635    |   0.065301  |
-| 12 |  0.11439673970486108   |   0.114621  |
-| 13 |   0.1642619852172365   |   0.164322  |
-| 14 |  0.19163898275344246   |   0.19123   |
-| 15 |  0.17886305056987967   |   0.178835  |
-| 16 |   0.1304209743738704   |   0.130374  |
-| 17 |  0.07160367220526209   |   0.071501  |
-| 18 |  0.027845872524268643  |   0.027769  |
-| 19 |  0.006839337111223871  |   0.006859  |
-| 20 | 0.0007979226629761189  |   0.00075   |
+| 3  |  5.04963865362601e-07  |     0.0     |
+| 4  | 5.007558331512455e-06  |    5e-06    |
+| 5  | 3.7389768875293014e-05 |   2.6e-05   |
+| 6  | 0.00021810698510587546 |   0.000237  |
+| 7  |  0.001017832597160754  |   0.000954  |
+| 8  |  0.003859281930901185  |   0.003878  |
+| 9  |  0.012006654896137007  |   0.01196   |
+| 10 |  0.030817080900085007  |   0.030876  |
+| 11 |   0.065369565545635    |   0.06533   |
+| 12 |  0.11439673970486108   |   0.114134  |
+| 13 |   0.1642619852172365   |   0.163941  |
+| 14 |  0.19163898275344246   |   0.191738  |
+| 15 |  0.17886305056987967   |   0.178859  |
+| 16 |   0.1304209743738704   |   0.13098   |
+| 17 |  0.07160367220526209   |   0.071463  |
+| 18 |  0.027845872524268643  |   0.027998  |
+| 19 |  0.006839337111223871  |   0.006835  |
+| 20 | 0.0007979226629761189  |   0.000786  |
 +----+------------------------+-------------+
 </pre></div>
 </div>
 </div>
 </div>
 <p>From the table above, can you see the law of large numbers at work?</p>
-</section>
+</div>
 </div>
 <p>Let’s do some more calculations.</p>
 <p><strong>Comparison with different <span class="math notranslate nohighlight">\(\theta\)</span></strong></p>
@@ -565,8 +564,8 @@ n \cdot \textrm{Prob}(X =  k | \theta) \cdot (1-\textrm{Prob}(X =  k | \theta)).
 E[\rho_{k,i}] = \textrm{Prob}(X =  k | \theta) = \left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
 \]</div>
 <p>as <span class="math notranslate nohighlight">\(I\)</span> goes to infinity.</p>
-</section>
-<section id="bayesian-interpretation">
+</div>
+<div class="section" id="bayesian-interpretation">
 <h2><span class="section-number">11.3. </span>Bayesian Interpretation<a class="headerlink" href="#bayesian-interpretation" title="Permalink to this headline">¶</a></h2>
 <p>We again use a binomial distribution.</p>
 <p>But now we don’t regard  <span class="math notranslate nohighlight">\(\theta\)</span> as being a fixed number.</p>
@@ -588,7 +587,7 @@ a <strong>beta distribution</strong> with parameters <span class="math notransla
 <div class="exercise admonition" id="pm_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 11.2 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <p><strong>a)</strong>  Please write down the <strong>likelihood function</strong> for a sample of length <span class="math notranslate nohighlight">\(n\)</span> from a binomial distribution with parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p><strong>b)</strong> Please write down the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of the coin.</p>
 <p><strong>c)</strong> Please pretend  that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span> and that someone who doesn’t know this has a beta prior distribution with parameters  with <span class="math notranslate nohighlight">\(\beta = \alpha = .5\)</span>.</p>
@@ -598,12 +597,12 @@ a <strong>beta distribution</strong> with parameters <span class="math notransla
 <p><strong>g)</strong> Please tell what question a Bayesian coverage interval answers.</p>
 <p><strong>h)</strong> Please compute the Posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> for various values of sample size <span class="math notranslate nohighlight">\(n\)</span>.</p>
 <p><strong>i)</strong> Please use your Python class to study what happens to the posterior distribution as <span class="math notranslate nohighlight">\(n \rightarrow + \infty\)</span>, again assuming that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span>, though it is unknown to the person doing the updating via Bayes’ Law.</p>
-</section>
+</div>
 </div>
 <div class="solution admonition" id="prob_meaning-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex2"> Exercise 11.2</a></p>
-<section id="s">
+<div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p><strong>a)</strong> Please write down the <strong>likelihood function</strong> and the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of our coin.</p>
 <p>Suppose the outcome is <strong>Y</strong>.</p>
 <p>The likelihood function is:</p>
@@ -784,36 +783,36 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
     <tr>
       <th>upper</th>
       <td>0.228520</td>
-      <td>0.430741</td>
-      <td>0.235534</td>
-      <td>0.16528</td>
+      <td>0.097308</td>
+      <td>0.062413</td>
+      <td>0.046007</td>
       <td>0.127776</td>
-      <td>0.261922</td>
-      <td>0.196953</td>
-      <td>0.264015</td>
-      <td>0.292234</td>
-      <td>0.281482</td>
-      <td>0.312809</td>
-      <td>0.318762</td>
-      <td>0.362493</td>
-      <td>0.374755</td>
+      <td>0.185116</td>
+      <td>0.237639</td>
+      <td>0.235206</td>
+      <td>0.220799</td>
+      <td>0.242486</td>
+      <td>0.275391</td>
+      <td>0.373839</td>
+      <td>0.378201</td>
+      <td>0.384633</td>
     </tr>
     <tr>
       <th>lower</th>
       <td>0.998457</td>
-      <td>0.999132</td>
-      <td>0.937587</td>
-      <td>0.83472</td>
+      <td>0.902692</td>
+      <td>0.764466</td>
+      <td>0.650707</td>
       <td>0.739366</td>
-      <td>0.738078</td>
-      <td>0.533165</td>
-      <td>0.549653</td>
-      <td>0.516104</td>
-      <td>0.469087</td>
-      <td>0.471834</td>
-      <td>0.409843</td>
-      <td>0.434377</td>
-      <td>0.425672</td>
+      <td>0.652678</td>
+      <td>0.582446</td>
+      <td>0.516350</td>
+      <td>0.434206</td>
+      <td>0.424937</td>
+      <td>0.430940</td>
+      <td>0.467296</td>
+      <td>0.450533</td>
+      <td>0.435751</td>
     </tr>
   </tbody>
 </table>
@@ -913,7 +912,7 @@ F(a)=p_1,F(b)=p_2
 <img alt="_images/prob_meaning_27_0.png" src="_images/prob_meaning_27_0.png" />
 </div>
 </div>
-</section>
+</div>
 </div>
 <p>How shall we interpret the patterns above?</p>
 <p>The answer is encoded in the  Bayesian updating formulas.</p>
@@ -972,8 +971,8 @@ F(a)=p_1,F(b)=p_2
 <p>Thus, the Bayesian statististian  comes to believe that <span class="math notranslate nohighlight">\(\theta\)</span> is near <span class="math notranslate nohighlight">\(.4\)</span>.</p>
 <p>As shown in the figure above, as the number of observations grows, the Bayesian coverage intervals (BCIs) become narrower and narrower   around  <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
 <p>However, if you take a closer look, you will find that the centers of  the BCIs are not exactly <span class="math notranslate nohighlight">\(0.4\)</span>, due to the persistent influence of the prior distribution and the randomness of the simulation path.</p>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1561,7 +1560,7 @@ F(a)=p_1,F(b)=p_2
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/prob_meaning.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/prob_meaning.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1574,7 +1573,7 @@ F(a)=p_1,F(b)=p_2
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

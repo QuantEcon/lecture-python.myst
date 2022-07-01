@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>70. The Aiyagari Model &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -241,7 +240,7 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><section class="tex2jax_ignore mathjax_ignore" id="the-aiyagari-model">
+</div><div class="tex2jax_ignore mathjax_ignore section" id="the-aiyagari-model">
 <h1><a class="toc-backref" href="#id8"><span class="section-number">70. </span>The Aiyagari Model</a><a class="headerlink" href="#the-aiyagari-model" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
@@ -267,23 +266,23 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
-Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
-Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
 Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
+Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
+Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
+Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
 Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
 Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.6.15)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
 Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 </div>
 </div>
-<section id="overview">
+<div class="section" id="overview">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">70.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we describe the structure of a class of models that build on work by Truman Bewley <span id="id1">[<a class="reference internal" href="zreferences.html#id173" title="Truman Bewley. The permanent income hypothesis: a theoretical formulation. Journal of Economic Theory, 16(2):252–292, 1977.">Bew77</a>]</span>.</p>
 <p>We begin by discussing an example of a Bewley model due to Rao Aiyagari <span id="id2">[<a class="reference internal" href="zreferences.html#id137" title="S Rao Aiyagari. Uninsured Idiosyncratic Risk and Aggregate Saving. The Quarterly Journal of Economics, 109(3):659–684, 1994.">Aiy94</a>]</span>.</p>
@@ -314,16 +313,16 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/qua
 </div>
 </div>
 </div>
-<section id="references">
+<div class="section" id="references">
 <h3><span class="section-number">70.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
 <p>The primary reference for this lecture is <span id="id6">[<a class="reference internal" href="zreferences.html#id137" title="S Rao Aiyagari. Uninsured Idiosyncratic Risk and Aggregate Saving. The Quarterly Journal of Economics, 109(3):659–684, 1994.">Aiy94</a>]</span>.</p>
 <p>A textbook treatment is available in chapter 18 of <span id="id7">[<a class="reference internal" href="zreferences.html#id182" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>.</p>
 <p>A continuous time version of the model by SeHyoun Ahn and Benjamin Moll can be found <a class="reference external" href="http://nbviewer.jupyter.org/github/QuantEcon/QuantEcon.notebooks/blob/master/aiyagari_continuous_time.ipynb">here</a>.</p>
-</section>
-</section>
-<section id="the-economy">
+</div>
+</div>
+<div class="section" id="the-economy">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">70.2. </span>The Economy</a><a class="headerlink" href="#the-economy" title="Permalink to this headline">¶</a></h2>
-<section id="households">
+<div class="section" id="households">
 <h3><span class="section-number">70.2.1. </span>Households<a class="headerlink" href="#households" title="Permalink to this headline">¶</a></h3>
 <p>Infinitely lived households / consumers face idiosyncratic income shocks.</p>
 <p>A unit interval of  <em>ex-ante</em> identical households face a common borrowing constraint.</p>
@@ -353,9 +352,9 @@ a_t \geq -B
 <p>The exogenous process <span class="math notranslate nohighlight">\(\{z_t\}\)</span> follows a finite state Markov chain with given stochastic matrix <span class="math notranslate nohighlight">\(P\)</span>.</p>
 <p>The wage and interest rate are fixed over time.</p>
 <p>In this simple version of the model, households supply labor  inelastically because they do not value leisure.</p>
-</section>
-</section>
-<section id="firms">
+</div>
+</div>
+<div class="section" id="firms">
 <h2><a class="toc-backref" href="#id11"><span class="section-number">70.3. </span>Firms</a><a class="headerlink" href="#firms" title="Permalink to this headline">¶</a></h2>
 <p>Firms produce output by hiring capital and labor.</p>
 <p>Firms act competitively and face constant returns to scale.</p>
@@ -385,7 +384,7 @@ max_{K, N} \left\{ A K_t^{\alpha} N^{1 - \alpha} - (r + \delta) K - w N \right\}
 the equilibrium wage rate as a function of <span class="math notranslate nohighlight">\(r\)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-aiy-wgr">
 <span class="eqno">(70.2)<a class="headerlink" href="#equation-aiy-wgr" title="Permalink to this equation">¶</a></span>\[w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)}\]</div>
-<section id="equilibrium">
+<div class="section" id="equilibrium">
 <h3><span class="section-number">70.3.1. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this headline">¶</a></h3>
 <p>We construct  a <em>stationary rational expectations equilibrium</em> (SREE).</p>
 <p>In such an equilibrium</p>
@@ -408,9 +407,9 @@ the equilibrium wage rate as a function of <span class="math notranslate nohighl
 <li><p>compute aggregate capital as the mean of steady state capital given this savings policy</p></li>
 </ol>
 <p>If this final quantity agrees with <span class="math notranslate nohighlight">\(K\)</span> then we have a SREE.</p>
-</section>
-</section>
-<section id="code">
+</div>
+</div>
+<div class="section" id="code">
 <h2><a class="toc-backref" href="#id12"><span class="section-number">70.4. </span>Code</a><a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
 <p>Let’s look at how we might compute such an equilibrium in practice.</p>
 <p>To solve the household’s dynamic programming problem we’ll use the <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/markov/ddp.py">DiscreteDP</a> class from <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>.</p>
@@ -669,8 +668,8 @@ when the parameters change.</p>
 <img alt="_images/aiyagari_9_0.png" src="_images/aiyagari_9_0.png" />
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1258,7 +1257,7 @@ when the parameters change.</p>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/aiyagari.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/aiyagari.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1271,7 +1270,7 @@ when the parameters change.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

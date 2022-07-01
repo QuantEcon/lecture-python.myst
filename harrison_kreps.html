@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>73. Heterogeneous Beliefs and Bubbles &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -293,7 +292,7 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><section class="tex2jax_ignore mathjax_ignore" id="heterogeneous-beliefs-and-bubbles">
+</div><div class="tex2jax_ignore mathjax_ignore section" id="heterogeneous-beliefs-and-bubbles">
 <h1><a class="toc-backref" href="#id5"><span class="section-number">73. </span>Heterogeneous Beliefs and Bubbles</a><a class="headerlink" href="#heterogeneous-beliefs-and-bubbles" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
@@ -320,23 +319,23 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
 Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
 Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
+Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
 Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
 Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
-Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
+Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
+Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
-Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.6.15)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
 Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
 Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 </div>
 </div>
-<section id="overview">
+<div class="section" id="overview">
 <h2><a class="toc-backref" href="#id6"><span class="section-number">73.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture describes a version of a model of Harrison and Kreps <span id="id1">[<a class="reference internal" href="zreferences.html#id126" title="J. Michael Harrison and David M. Kreps. Speculative investor behavior in a stock market with heterogeneous expectations. The Quarterly Journal of Economics, 92(2):323-336, 1978.">HK78</a>]</span>.</p>
 <p>The model determines the price of a dividend-yielding asset that is traded by two types of self-interested investors.</p>
@@ -357,24 +356,24 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/qua
 </div>
 </div>
 </div>
-<section id="references">
+<div class="section" id="references">
 <h3><span class="section-number">73.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
 <p>Prior to reading the following, you might like to review our lectures on</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="finite_markov.html"><span class="doc">Markov chains</span></a></p></li>
 <li><p><a class="reference internal" href="markov_asset.html"><span class="doc">Asset pricing with finite state space</span></a></p></li>
 </ul>
-</section>
-<section id="bubbles">
+</div>
+<div class="section" id="bubbles">
 <h3><span class="section-number">73.1.2. </span>Bubbles<a class="headerlink" href="#bubbles" title="Permalink to this headline">¶</a></h3>
 <p>Economists differ in how they define a <em>bubble</em>.</p>
 <p>The Harrison-Kreps model illustrates the following notion of a bubble that attracts many economists:</p>
 <blockquote>
 <div><p><em>A component of an asset price can be interpreted as a bubble when all investors agree that the current price of the asset exceeds what they believe the asset’s underlying dividend stream justifies</em>.</p>
 </div></blockquote>
-</section>
-</section>
-<section id="structure-of-the-model">
+</div>
+</div>
+<div class="section" id="structure-of-the-model">
 <h2><a class="toc-backref" href="#id7"><span class="section-number">73.2. </span>Structure of the Model</a><a class="headerlink" href="#structure-of-the-model" title="Permalink to this headline">¶</a></h2>
 <p>The model simplifies things  by ignoring alterations in the distribution of wealth
 among investors who have hard-wired different beliefs about the fundamentals that determine
@@ -450,7 +449,7 @@ P_b =
 <p>The stationary distribution of <span class="math notranslate nohighlight">\(P_a\)</span> is approximately <span class="math notranslate nohighlight">\(\pi_a = \begin{bmatrix} .57 &amp; .43 \end{bmatrix}\)</span>.</p>
 <p>The stationary distribution of <span class="math notranslate nohighlight">\(P_b\)</span> is approximately <span class="math notranslate nohighlight">\(\pi_b = \begin{bmatrix} .43 &amp; .57 \end{bmatrix}\)</span>.</p>
 <p>Thus, a type <span class="math notranslate nohighlight">\(a\)</span> investor is more pessimistic on average.</p>
-<section id="ownership-rights">
+<div class="section" id="ownership-rights">
 <h3><span class="section-number">73.2.1. </span>Ownership Rights<a class="headerlink" href="#ownership-rights" title="Permalink to this headline">¶</a></h3>
 <p>An owner of the asset at the end of time <span class="math notranslate nohighlight">\(t\)</span> is entitled to the dividend at time <span class="math notranslate nohighlight">\(t+1\)</span> and also has the right to sell the asset at time <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
 <p>Both types of investors are risk-neutral and both have the same fixed discount factor <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span>.</p>
@@ -462,8 +461,8 @@ P_b =
 </ol>
 <p>Case 1 is the case studied in Harrison and Kreps.</p>
 <p>In case 2, both types of investors always hold at least some of the asset.</p>
-</section>
-<section id="short-sales-prohibited">
+</div>
+<div class="section" id="short-sales-prohibited">
 <h3><span class="section-number">73.2.2. </span>Short Sales Prohibited<a class="headerlink" href="#short-sales-prohibited" title="Permalink to this headline">¶</a></h3>
 <p>No short sales are allowed.</p>
 <p>This matters because it limits how  pessimists can express their opinions.</p>
@@ -471,8 +470,8 @@ P_b =
 <li><p>They <strong>can</strong> express themselves by selling their shares.</p></li>
 <li><p>They <strong>cannot</strong> express themsevles  more loudly by artificially “manufacturing shares” – that is, they cannot borrow shares from more optimistic investors and then immediately sell them.</p></li>
 </ul>
-</section>
-<section id="optimism-and-pessimism">
+</div>
+<div class="section" id="optimism-and-pessimism">
 <h3><span class="section-number">73.2.3. </span>Optimism and Pessimism<a class="headerlink" href="#optimism-and-pessimism" title="Permalink to this headline">¶</a></h3>
 <p>The above specifications of the perceived transition matrices <span class="math notranslate nohighlight">\(P_a\)</span> and <span class="math notranslate nohighlight">\(P_b\)</span>, taken directly from Harrison and Kreps, build in stochastically alternating temporary optimism and pessimism.</p>
 <p>Remember that state <span class="math notranslate nohighlight">\(1\)</span> is the high dividend state.</p>
@@ -481,15 +480,15 @@ P_b =
 <li><p>In state <span class="math notranslate nohighlight">\(1\)</span>, a type <span class="math notranslate nohighlight">\(b\)</span> agent is more optimistic about next period’s dividend than a type <span class="math notranslate nohighlight">\(a\)</span> agaub is.</p></li>
 </ul>
 <p>However, the stationary distributions <span class="math notranslate nohighlight">\(\pi_a = \begin{bmatrix} .57 &amp; .43 \end{bmatrix}\)</span> and <span class="math notranslate nohighlight">\(\pi_b = \begin{bmatrix} .43 &amp; .57 \end{bmatrix}\)</span> tell us that a type <span class="math notranslate nohighlight">\(b\)</span> person is more optimistic about the dividend process in the long run than is a type <span class="math notranslate nohighlight">\(a\)</span> person.</p>
-</section>
-<section id="information">
+</div>
+<div class="section" id="information">
 <h3><span class="section-number">73.2.4. </span>Information<a class="headerlink" href="#information" title="Permalink to this headline">¶</a></h3>
 <p>Investors know a price function mapping the state <span class="math notranslate nohighlight">\(s_t\)</span> at <span class="math notranslate nohighlight">\(t\)</span> into the equilibrium price <span class="math notranslate nohighlight">\(p(s_t)\)</span> that prevails in that state.</p>
 <p>This price function is endogenous and to be determined below.</p>
 <p>When investors choose whether to purchase or sell the asset at <span class="math notranslate nohighlight">\(t\)</span>, they also know <span class="math notranslate nohighlight">\(s_t\)</span>.</p>
-</section>
-</section>
-<section id="solving-the-model">
+</div>
+</div>
+<div class="section" id="solving-the-model">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">73.3. </span>Solving the Model</a><a class="headerlink" href="#solving-the-model" title="Permalink to this headline">¶</a></h2>
 <p>Now let’s turn to solving the model.</p>
 <p>We’ll  determine equilibrium prices under a particular specification of beliefs and constraints on trading selected from one of the specifications described above.</p>
@@ -500,7 +499,7 @@ assumptions about beliefs:</p>
 <li><p>There are two types of agents differentiated only by their beliefs. Each type of agent has sufficient resources to purchase all of the asset (Harrison and Kreps’s setting).</p></li>
 <li><p>There are two types of agents with different beliefs, but because of limited wealth and/or limited leverage, both types of investors hold the asset each period.</p></li>
 </ol>
-<section id="summary-table">
+<div class="section" id="summary-table">
 <h3><span class="section-number">73.3.1. </span>Summary Table<a class="headerlink" href="#summary-table" title="Permalink to this headline">¶</a></h3>
 <p>The following table gives a summary of the findings obtained in the remainder of the lecture
 (in an exercise you will be asked to recreate  the  table and also reinterpret parts of it).</p>
@@ -552,8 +551,8 @@ assumptions about beliefs:</p>
 <p>The row corresponding to <span class="math notranslate nohighlight">\(p_o\)</span> applies when both types of investor have enough resources to purchse the entire stock of the asset and strict short sales constraints prevail so that  temporarily optimistic investors always price the asset.</p>
 <p>The row corresponding to <span class="math notranslate nohighlight">\(p_p\)</span> would apply if neither type of investor has enough resources to purchase the entire stock of the asset and both types must hold the asset.</p>
 <p>The row corresponding to <span class="math notranslate nohighlight">\(p_p\)</span> would also  apply if both types have enough resources to buy the entire stock of the asset but  short sales are also  possible so that   temporarily pessimistic   investors price the asset.</p>
-</section>
-<section id="single-belief-prices">
+</div>
+<div class="section" id="single-belief-prices">
 <h3><span class="section-number">73.3.2. </span>Single Belief Prices<a class="headerlink" href="#single-belief-prices" title="Permalink to this headline">¶</a></h3>
 <p>We’ll start by pricing the asset under homogeneous beliefs.</p>
 <p>(This is the case treated in <a class="reference internal" href="markov_asset.html"><span class="doc">the lecture</span></a> on asset pricing with finite Markov states)</p>
@@ -587,7 +586,7 @@ p_h(s) = \beta \left( P_h(s,0) (0 + p_h(0)) + P_h(s,1) ( 1 + p_h(1)) \right), \q
 </div>
 </div>
 </div>
-<section id="single-belief-prices-as-benchmarks">
+<div class="section" id="single-belief-prices-as-benchmarks">
 <h4><span class="section-number">73.3.2.1. </span>Single Belief Prices as Benchmarks<a class="headerlink" href="#single-belief-prices-as-benchmarks" title="Permalink to this headline">¶</a></h4>
 <p>These equilibrium prices under homogeneous beliefs are important benchmarks for the subsequent analysis.</p>
 <ul class="simple">
@@ -595,9 +594,9 @@ p_h(s) = \beta \left( P_h(s,0) (0 + p_h(0)) + P_h(s,1) ( 1 + p_h(1)) \right), \q
 <li><p>Here “fundamental value” means the expected discounted present value of future dividends.</p></li>
 </ul>
 <p>We will compare these fundamental values of the asset with equilibrium values when traders have different beliefs.</p>
-</section>
-</section>
-<section id="pricing-under-heterogeneous-beliefs">
+</div>
+</div>
+<div class="section" id="pricing-under-heterogeneous-beliefs">
 <h3><span class="section-number">73.3.3. </span>Pricing under Heterogeneous Beliefs<a class="headerlink" href="#pricing-under-heterogeneous-beliefs" title="Permalink to this headline">¶</a></h3>
 <p>There are several cases to consider.</p>
 <p>The first is when both types of agents have sufficient wealth to purchase all of the asset themselves.</p>
@@ -714,8 +713,8 @@ worth.</p>
 </div>
 </div>
 </div>
-</section>
-<section id="insufficient-funds">
+</div>
+<div class="section" id="insufficient-funds">
 <h3><span class="section-number">73.3.4. </span>Insufficient Funds<a class="headerlink" href="#insufficient-funds" title="Permalink to this headline">¶</a></h3>
 <p>Outcomes differ when the more optimistic type of investor has insufficient wealth — or insufficient ability to borrow enough — to hold the entire stock of the asset.</p>
 <p>In this case, the asset price must adjust to attract pessimistic investors.</p>
@@ -763,8 +762,8 @@ worth.</p>
 </div>
 </div>
 </div>
-</section>
-<section id="further-interpretation">
+</div>
+<div class="section" id="further-interpretation">
 <h3><span class="section-number">73.3.5. </span>Further Interpretation<a class="headerlink" href="#further-interpretation" title="Permalink to this headline">¶</a></h3>
 <p><span id="id4">[<a class="reference internal" href="zreferences.html#id125" title="Jose A. Scheinkman. Speculation, Trading, and Bubbles. Columbia University Press, New York, 2014.">Sch14</a>]</span> interprets the Harrison-Kreps model as a model of a bubble — a situation in which an asset price exceeds what every investor thinks is merited by his or her beliefs about the value of the asset’s underlying dividend stream.</p>
 <p>Scheinkman stresses these features of the Harrison-Kreps model:</p>
@@ -780,14 +779,14 @@ worth.</p>
 </ul>
 <p>Scheinkman extracts insights about the effects of financial regulations on bubbles.</p>
 <p>He emphasizes how limiting short sales and limiting leverage have opposite effects.</p>
-</section>
-</section>
-<section id="exercises">
+</div>
+</div>
+<div class="section" id="exercises">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">73.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="exercise admonition" id="hk_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 73.1 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <p>This exercise invites you to recreate the summary table using the functions we have built above.</p>
 <div class="content-table"></div><table class="colwidths-auto table">
 <thead>
@@ -848,15 +847,15 @@ P_p =
     \end{bmatrix}
 \end{split}\]</div>
 <p>We’ll use these transition matrices when we present our solution of exercise 1 below.</p>
-</section>
 </div>
-</section>
-<section id="solutions">
+</div>
+</div>
+<div class="section" id="solutions">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">73.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <div class="solution dropdown admonition" id="harrison_kreps-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#hk_ex1"> Exercise 73.1</a></p>
-<section id="s">
+<div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>First, we will obtain equilibrium price vectors with homogeneous beliefs, including when all
 investors are optimistic or pessimistic.</p>
 <div class="cell docutils container">
@@ -947,7 +946,7 @@ State 1: [2.08]
 </div>
 <p>Notice that the equilibrium price with heterogeneous beliefs is equal to the price under single beliefs
 with <strong>permanently optimistic</strong> investors - this is due to the marginal investor in the heterogeneous beliefs equilibrium always being the type who is  temporarily optimistic.</p>
-</section>
+</div>
 </div>
 <hr class="footnotes docutils" />
 <dl class="footnote brackets">
@@ -955,8 +954,8 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
 <dd><p>By assuming that both types of agents always have “deep enough pockets” to purchase all of the asset, the model takes wealth dynamics off the table. The Harrison-Kreps model generates high trading volume when the state changes either from 0 to 1 or from 1 to 0.</p>
 </dd>
 </dl>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1544,7 +1543,7 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/harrison_kreps.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/harrison_kreps.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1557,7 +1556,7 @@ with <strong>permanently optimistic</strong> investors - this is due to the marg
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

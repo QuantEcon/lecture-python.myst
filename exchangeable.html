@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>55. Exchangeability and Bayesian Updating &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -275,7 +274,7 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><section class="tex2jax_ignore mathjax_ignore" id="exchangeability-and-bayesian-updating">
+</div><div class="tex2jax_ignore mathjax_ignore section" id="exchangeability-and-bayesian-updating">
 <h1><a class="toc-backref" href="#id5"><span class="section-number">55. </span>Exchangeability and Bayesian Updating</a><a class="headerlink" href="#exchangeability-and-bayesian-updating" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
@@ -295,7 +294,7 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<section id="overview">
+<div class="section" id="overview">
 <h2><a class="toc-backref" href="#id6"><span class="section-number">55.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture studies  learning
 via Bayes’ Law.</p>
@@ -340,8 +339,8 @@ an assumption of conditional independence makes learning possible.</p>
 </div>
 </div>
 </div>
-</section>
-<section id="independently-and-identically-distributed">
+</div>
+<div class="section" id="independently-and-identically-distributed">
 <h2><a class="toc-backref" href="#id7"><span class="section-number">55.2. </span>Independently and Identically Distributed</a><a class="headerlink" href="#independently-and-identically-distributed" title="Permalink to this headline">¶</a></h2>
 <p>We begin by looking at the notion of an  <strong>independently and identically  distributed sequence</strong> of random variables.</p>
 <p>An independently and identically distributed sequence is often abbreviated as IID.</p>
@@ -362,7 +361,7 @@ let <span class="math notranslate nohighlight">\(p(W_t)\)</span> be the <strong>
 p(W_0, W_1, \ldots) =  p(W_0) p(W_1) \cdots
 \]</div>
 <p>so that the joint density is the product of a sequence of identical marginal densities.</p>
-<section id="iid-means-past-observations-dont-tell-us-anything-about-future-observations">
+<div class="section" id="iid-means-past-observations-dont-tell-us-anything-about-future-observations">
 <h3><span class="section-number">55.2.1. </span>IID Means Past Observations Don’t Tell Us Anything About Future Observations<a class="headerlink" href="#iid-means-past-observations-dont-tell-us-anything-about-future-observations" title="Permalink to this headline">¶</a></h3>
 <p>If a sequence is random variables is IID, past information provides no information about future realizations.</p>
 <p>Therefore, there is <strong>nothing to learn</strong> from the past  about the future.</p>
@@ -396,9 +395,9 @@ p(W_t | W_{t-1}, \ldots, W_0)   =  p(W_t)
 <p>In the general case, there is something to learn from observations of past random variables.</p>
 <p>We turn next to an instance of this general case.</p>
 <p>Please watch for what can be  learned from the past and when.</p>
-</section>
-</section>
-<section id="a-setting-in-which-past-observations-are-informative">
+</div>
+</div>
+<div class="section" id="a-setting-in-which-past-observations-are-informative">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">55.3. </span>A Setting in Which Past Observations Are Informative</a><a class="headerlink" href="#a-setting-in-which-past-observations-are-informative" title="Permalink to this headline">¶</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(\{W_t\}_{t=0}^\infty\)</span> be a sequence of nonnegative
 scalar random variables with a joint probability distribution
@@ -434,8 +433,8 @@ or <span class="math notranslate nohighlight">\(1\)</span>.</p>
 </ul>
 <p>To proceed, we want to know the decision maker’s belief about the joint distribution of the partial history.</p>
 <p>We’ll discuss that next and in the process describe the concept of <strong>exchangeability</strong>.</p>
-</section>
-<section id="relationship-between-iid-and-exchangeable">
+</div>
+<div class="section" id="relationship-between-iid-and-exchangeable">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">55.4. </span>Relationship Between IID and Exchangeable</a><a class="headerlink" href="#relationship-between-iid-and-exchangeable" title="Permalink to this headline">¶</a></h2>
 <p>Conditional on nature selecting <span class="math notranslate nohighlight">\(F\)</span>, the joint density of the
 sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is</p>
@@ -479,8 +478,8 @@ h(W_1 | W_0) \equiv \frac{h(W_0, W_1)}{(\tilde \pi f(W_0) + (1-\tilde \pi) g(W_0
 <p>This means that  random variable  <span class="math notranslate nohighlight">\(W_0\)</span> contains information about random variable  <span class="math notranslate nohighlight">\(W_1\)</span>.</p>
 <p>So there is something to learn.</p>
 <p>But what and how?</p>
-</section>
-<section id="exchangeability">
+</div>
+<div class="section" id="exchangeability">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">55.5. </span>Exchangeability</a><a class="headerlink" href="#exchangeability" title="Permalink to this headline">¶</a></h2>
 <p>While the sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is not IID, it can be verified that it is
 <strong>exchangeable</strong>, which means that the  ``re-ordered’’ joint distributions <span class="math notranslate nohighlight">\(h(W_0, W_1)\)</span> and <span class="math notranslate nohighlight">\(h(W_1, W_0)\)</span>
@@ -501,8 +500,8 @@ as a <strong>prior probability</strong> that nature selected probability distrib
 sequences of IID Bernoulli random variables with parameter <span class="math notranslate nohighlight">\(\theta \in (0,1)\)</span> and mixing probability density <span class="math notranslate nohighlight">\(\pi(\theta)\)</span>
 that a Bayesian statistician would interpret as a prior over the unknown
 Bernoulli parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
-</section>
-<section id="bayes-law">
+</div>
+<div class="section" id="bayes-law">
 <h2><a class="toc-backref" href="#id11"><span class="section-number">55.6. </span>Bayes’ Law</a><a class="headerlink" href="#bayes-law" title="Permalink to this headline">¶</a></h2>
 <p>We noted above that in our example model there is something to learn about about the future from past data drawn
 from our particular instance of a process that is exchangeable but not IID.</p>
@@ -554,8 +553,8 @@ tells us that</p>
 \[
 \mathbb{P}\{W = w\} = \sum_{a \in \{f, g\}} \mathbb{P}\{W = w \,|\, q = a \} \mathbb{P}\{q = a \}
 \]</div>
-</section>
-<section id="more-details-about-bayesian-updating">
+</div>
+<div class="section" id="more-details-about-bayesian-updating">
 <h2><a class="toc-backref" href="#id12"><span class="section-number">55.7. </span>More Details about Bayesian Updating</a><a class="headerlink" href="#more-details-about-bayesian-updating" title="Permalink to this headline">¶</a></h2>
 <p>Let’s stare at and rearrange Bayes’ Law as represented in equation <a class="reference internal" href="#equation-eq-bayes102">(55.2)</a> with the aim of understanding
 how the <strong>posterior</strong> probability <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span> is influenced by the <strong>prior</strong> probability <span class="math notranslate nohighlight">\(\pi_t\)</span> and the <strong>likelihood ratio</strong></p>
@@ -724,10 +723,10 @@ is a Beta distribution with parameters <span class="math notranslate nohighlight
 </div>
 </div>
 <p>Notice how the likelihood ratio, the middle graph, and the arrows compare with the previous instance of our example.</p>
-</section>
-<section id="appendix">
+</div>
+<div class="section" id="appendix">
 <h2><a class="toc-backref" href="#id13"><span class="section-number">55.8. </span>Appendix</a><a class="headerlink" href="#appendix" title="Permalink to this headline">¶</a></h2>
-<section id="sample-paths-of-pi-t">
+<div class="section" id="sample-paths-of-pi-t">
 <h3><span class="section-number">55.8.1. </span>Sample Paths of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#sample-paths-of-pi-t" title="Permalink to this headline">¶</a></h3>
 <p>Now we’ll have some fun by plotting multiple realizations of sample paths of <span class="math notranslate nohighlight">\(\pi_t\)</span> under two possible
 assumptions about nature’s choice of distribution, namely</p>
@@ -838,8 +837,8 @@ periods when the sequence is truly IID draws from <span class="math notranslate 
 </div>
 </div>
 <p>In the above graph we observe that now  most paths <span class="math notranslate nohighlight">\(\pi_t \rightarrow 0\)</span>.</p>
-</section>
-<section id="rates-of-convergence">
+</div>
+<div class="section" id="rates-of-convergence">
 <h3><span class="section-number">55.8.2. </span>Rates of convergence<a class="headerlink" href="#rates-of-convergence" title="Permalink to this headline">¶</a></h3>
 <p>We study rates of  convergence of <span class="math notranslate nohighlight">\(\pi_t\)</span> to <span class="math notranslate nohighlight">\(1\)</span> when nature generates the data as IID draws from <span class="math notranslate nohighlight">\(F\)</span>
 and of convergence of <span class="math notranslate nohighlight">\(\pi_t\)</span> to <span class="math notranslate nohighlight">\(0\)</span> when nature generates  IID draws from <span class="math notranslate nohighlight">\(G\)</span>.</p>
@@ -861,8 +860,8 @@ and compute <span class="math notranslate nohighlight">\(\sum_{i=1}^{N}\pi_{i,t}
 </div>
 </div>
 <p>From the above graph, rates of convergence appear not to depend on whether <span class="math notranslate nohighlight">\(F\)</span> or <span class="math notranslate nohighlight">\(G\)</span> generates the data.</p>
-</section>
-<section id="graph-of-ensemble-dynamics-of-pi-t">
+</div>
+<div class="section" id="graph-of-ensemble-dynamics-of-pi-t">
 <h3><span class="section-number">55.8.3. </span>Graph of Ensemble Dynamics of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#graph-of-ensemble-dynamics-of-pi-t" title="Permalink to this headline">¶</a></h3>
 <p>More insights about the dynamics of <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span> can be gleaned by computing
 conditional expectations of <span class="math notranslate nohighlight">\(\frac{\pi_{t+1}}{\pi_{t}}\)</span> as functions of <span class="math notranslate nohighlight">\(\pi_t\)</span> via integration with respect
@@ -948,9 +947,9 @@ different nor identical, in particular one in which  <span class="math notransla
 <img alt="_images/exchangeable_25_0.png" src="_images/exchangeable_25_0.png" />
 </div>
 </div>
-</section>
-</section>
-<section id="sequels">
+</div>
+</div>
+<div class="section" id="sequels">
 <h2><a class="toc-backref" href="#id14"><span class="section-number">55.9. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this headline">¶</a></h2>
 <p>We’ll apply and dig deeper into some of the ideas presented in this lecture:</p>
 <ul class="simple">
@@ -960,8 +959,8 @@ and their role in frequentist and Bayesian statistical theories</p></li>
 him to use was  inferior to a sequential rule that Abraham
 Wald had not yet designed.</p></li>
 </ul>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1549,7 +1548,7 @@ Wald had not yet designed.</p></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/exchangeable.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/exchangeable.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1562,7 +1561,7 @@ Wald had not yet designed.</p></li>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

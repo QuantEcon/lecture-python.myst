@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>53. Computing Mean of a Likelihood Ratio Process &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -231,7 +230,7 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="computing-mean-of-a-likelihood-ratio-process">
+  <div class="tex2jax_ignore mathjax_ignore section" id="computing-mean-of-a-likelihood-ratio-process">
 <h1><a class="toc-backref" href="#id1"><span class="section-number">53. </span>Computing Mean of a Likelihood Ratio Process</a><a class="headerlink" href="#computing-mean-of-a-likelihood-ratio-process" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
@@ -249,7 +248,7 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<section id="overview">
+<div class="section" id="overview">
 <h2><a class="toc-backref" href="#id2"><span class="section-number">53.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In  <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a> we described a peculiar property of a likelihood ratio process, namely, that it’s mean equals one for all <span class="math notranslate nohighlight">\(t \geq 0\)</span> despite it’s converging to zero almost surely.</p>
 <p>While it is easy to verify that peculiar properly analytically (i.e., in population), it is challenging to use a computer simulation to verify it via an application of a law of large numbers that entails studying sample averages of repeated simulations.</p>
@@ -268,8 +267,8 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-</section>
-<section id="mathematical-expectation-of-likelihood-ratio">
+</div>
+<div class="section" id="mathematical-expectation-of-likelihood-ratio">
 <h2><a class="toc-backref" href="#id3"><span class="section-number">53.2. </span>Mathematical Expectation of Likelihood Ratio</a><a class="headerlink" href="#mathematical-expectation-of-likelihood-ratio" title="Permalink to this headline">¶</a></h2>
 <p>In <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a>, we studied a likelihood ratio <span class="math notranslate nohighlight">\(\ell \left(\omega_t\right)\)</span></p>
 <div class="math notranslate nohighlight">
@@ -353,8 +352,8 @@ provides a more computationally efficient way to approximate the mean of the cum
 <p>A Monte Carlo approximation of <span class="math notranslate nohighlight">\(\hat{E} \left[L\left(\omega^t\right)\right] = \hat{E} \left[\prod_{i=1}^t \ell \left(\omega_i\right)\right]\)</span>  would repeatedly draw <span class="math notranslate nohighlight">\(\omega\)</span> from <span class="math notranslate nohighlight">\(g\)</span>, calculate the likelihood ratio <span class="math notranslate nohighlight">\( \ell(\omega) = \frac{f(\omega)}{g(\omega)}\)</span> for each draw, then average these over all draws.</p>
 <p>Because <span class="math notranslate nohighlight">\(g(\omega) \rightarrow 0\)</span> as <span class="math notranslate nohighlight">\(\omega \rightarrow 0\)</span>, such a simulation procedure  undersamples a part of the sample space <span class="math notranslate nohighlight">\([0,1]\)</span> that it is important to visit often in order to do a good job of approximating the mathematical expectation of the likelihood ratio <span class="math notranslate nohighlight">\(\ell(\omega)\)</span>.</p>
 <p>We illustrate this numerically below.</p>
-</section>
-<section id="importance-sampling">
+</div>
+<div class="section" id="importance-sampling">
 <h2><a class="toc-backref" href="#id4"><span class="section-number">53.3. </span>Importance sampling</a><a class="headerlink" href="#importance-sampling" title="Permalink to this headline">¶</a></h2>
 <p>We circumvent the issue by using a <em>change of distribution</em> called <strong>importance sampling</strong>.</p>
 <p>Instead of drawing from <span class="math notranslate nohighlight">\(g\)</span> to generate data during the simulation, we use  an alternative
@@ -382,8 +381,8 @@ of the likelihood ratio.</p>
 \[
 E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\omega = \int_\Omega \ell(\omega) \frac{g(\omega)}{h(\omega)} h(\omega) d\omega = E^h\left[\ell\left(\omega\right) \frac{g(\omega)}{h(\omega)}\right]
 \]</div>
-</section>
-<section id="selecting-a-sampling-distribution">
+</div>
+<div class="section" id="selecting-a-sampling-distribution">
 <h2><a class="toc-backref" href="#id5"><span class="section-number">53.4. </span>Selecting a Sampling Distribution</a><a class="headerlink" href="#selecting-a-sampling-distribution" title="Permalink to this headline">¶</a></h2>
 <p>Since we must use an <span class="math notranslate nohighlight">\(h\)</span> that has larger mass in parts of the distribution to which  <span class="math notranslate nohighlight">\(g\)</span> puts low mass, we use <span class="math notranslate nohighlight">\(h=Beta(0.5, 0.5)\)</span> as our importance distribution.</p>
 <p>The  plots compare <span class="math notranslate nohighlight">\(g\)</span> and <span class="math notranslate nohighlight">\(h\)</span>.</p>
@@ -412,8 +411,8 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 <img alt="_images/imp_sample_10_0.png" src="_images/imp_sample_10_0.png" />
 </div>
 </div>
-</section>
-<section id="approximating-a-cumulative-likelihood-ratio">
+</div>
+<div class="section" id="approximating-a-cumulative-likelihood-ratio">
 <h2><a class="toc-backref" href="#id6"><span class="section-number">53.5. </span>Approximating a cumulative likelihood ratio</a><a class="headerlink" href="#approximating-a-cumulative-likelihood-ratio" title="Permalink to this headline">¶</a></h2>
 <p>We now study how to use importance sampling to approximate
 <span class="math notranslate nohighlight">\({E} \left[L(\omega^t)\right] = \left[\prod_{i=1}^T \ell \left(\omega_i\right)\right]\)</span>.</p>
@@ -461,7 +460,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.027715978929846
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9919869523016378
 </pre></div>
 </div>
 </div>
@@ -474,7 +473,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0007688209013692
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9954815139162496
 </pre></div>
 </div>
 </div>
@@ -490,7 +489,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5379752290547435
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5530026699795917
 </pre></div>
 </div>
 </div>
@@ -502,13 +501,13 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.99226243250985
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0256759011298702
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="distribution-of-sample-mean">
+</div>
+<div class="section" id="distribution-of-sample-mean">
 <h2><a class="toc-backref" href="#id7"><span class="section-number">53.6. </span>Distribution of  Sample Mean</a><a class="headerlink" href="#distribution-of-sample-mean" title="Permalink to this headline">¶</a></h2>
 <p>We next study the bias and efficiency of the Monte Carlo and importance sampling approaches.</p>
 <p>The code  below produces distributions of estimates using both Monte Carlo and importance sampling methods.</p>
@@ -547,7 +546,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.999674059728279, 0.015322493779969717)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.9980671522824978, 0.014401241173080098)
 </pre></div>
 </div>
 </div>
@@ -560,7 +559,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.000106918487594, 2.2306217424250346e-05)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1.0001691311443772, 2.4342690417118352e-05)
 </pre></div>
 </div>
 </div>
@@ -604,8 +603,8 @@ still produces an estimate close to its theoretical value of unity.</p>
 <p>The simulation exercises above show that the importance sampling estimates are unbiased under all <span class="math notranslate nohighlight">\(T\)</span>
 while the standard Monte Carlo estimates are biased downwards.</p>
 <p>Evidently, the bias increases with increases in <span class="math notranslate nohighlight">\(T\)</span>.</p>
-</section>
-<section id="more-thoughts-about-choice-of-sampling-distribution">
+</div>
+<div class="section" id="more-thoughts-about-choice-of-sampling-distribution">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">53.7. </span>More Thoughts about Choice of Sampling Distribution</a><a class="headerlink" href="#more-thoughts-about-choice-of-sampling-distribution" title="Permalink to this headline">¶</a></h2>
 <p>Above, we arbitraily chose <span class="math notranslate nohighlight">\(h = Beta(0.5,0.5)\)</span> as the importance distribution.</p>
 <p>Is there an optimal importance distribution?</p>
@@ -754,8 +753,8 @@ with a mean estimate far away from <span class="math notranslate nohighlight">\(
 <p>Notice that evan at <span class="math notranslate nohighlight">\(T = 1\)</span>, the mean estimate with importance sampling is more biased than just sampling with  <span class="math notranslate nohighlight">\(g\)</span> itself.</p>
 <p>Thus, our simulations suggest that we would be better off simply using Monte Carlo
 approximations under <span class="math notranslate nohighlight">\(g\)</span> than using <span class="math notranslate nohighlight">\(h_3\)</span> as an importance sampling distribution for our problem.</p>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1343,7 +1342,7 @@ approximations under <span class="math notranslate nohighlight">\(g\)</span> tha
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/imp_sample.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/imp_sample.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1356,7 +1355,7 @@ approximations under <span class="math notranslate nohighlight">\(g\)</span> tha
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

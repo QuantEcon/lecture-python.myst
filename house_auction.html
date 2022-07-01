@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>78. Multiple Good Allocation Mechanisms &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -302,7 +301,7 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="multiple-good-allocation-mechanisms">
+  <div class="tex2jax_ignore mathjax_ignore section" id="multiple-good-allocation-mechanisms">
 <h1><span class="section-number">78. </span>Multiple Good Allocation Mechanisms<a class="headerlink" href="#multiple-good-allocation-mechanisms" title="Permalink to this headline">¶</a></h1>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
@@ -317,7 +316,7 @@ Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/l
 </div>
 </div>
 </div>
-<section id="overview">
+<div class="section" id="overview">
 <h2><span class="section-number">78.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture describes two mechanisms for allocating <span class="math notranslate nohighlight">\(n\)</span> private goods (“houses”)  to <span class="math notranslate nohighlight">\(m\)</span> people (“buyers”).</p>
 <p>We assume that  <span class="math notranslate nohighlight">\(m &gt; n\)</span> so that there are more potential buyers than there are houses.</p>
@@ -335,8 +334,8 @@ Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/l
 </ul>
 <p><strong>Note:</strong> In 1994, the multiple rounds, ascending bid auction was actually used by Stanford University to sell leases to 9 lots on the Stanford campus to eligible faculty members.</p>
 <p>We begin with  overviews of the two mechanisms.</p>
-</section>
-<section id="ascending-bids-auction-for-multiple-goods">
+</div>
+<div class="section" id="ascending-bids-auction-for-multiple-goods">
 <h2><span class="section-number">78.2. </span>Ascending Bids Auction for Multiple Goods<a class="headerlink" href="#ascending-bids-auction-for-multiple-goods" title="Permalink to this headline">¶</a></h2>
 <p>An auction is administered by an <strong>auctioneer</strong></p>
 <p>The auctioneer has an <span class="math notranslate nohighlight">\(n \times 1\)</span> vector <span class="math notranslate nohighlight">\(r\)</span> of reservation prices on the <span class="math notranslate nohighlight">\(n\)</span> houses.</p>
@@ -354,25 +353,25 @@ Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/l
 <li><p>house <span class="math notranslate nohighlight">\(i\)</span>  is retained by the auctioneer if not prospective buyer offers more that <span class="math notranslate nohighlight">\(r_i\)</span> for the house</p></li>
 </ul>
 <p>In this auction,  person <span class="math notranslate nohighlight">\(j\)</span> never tells anyone else his/her private values <span class="math notranslate nohighlight">\(v_{ij}\)</span></p>
-</section>
-<section id="a-benevolent-planner">
+</div>
+<div class="section" id="a-benevolent-planner">
 <h2><span class="section-number">78.3. </span>A Benevolent Planner<a class="headerlink" href="#a-benevolent-planner" title="Permalink to this headline">¶</a></h2>
 <p>This mechanism is designed so that all prospective buyers voluntarily choose to reveal their private values to a <strong>social planner</strong> who uses them to construct a socially optimal allocation.</p>
 <p>Among all feasible allocations,  a <strong>socially optimal allocation</strong> maximizes the sum of  private values across all prospective buyers.</p>
 <p>The planner tells everyone in advance how he/she will allocate houses based on the matrix of values that prospective buyers report.</p>
 <p>The mechanism provide every prospective buyer an incentive to reveal his vector of private values to the planner.</p>
 <p>After the planner receives everyone’s vector of private values, the planner deploys a <strong>sequential</strong> algorithm to determine an <strong>allocation</strong> of houses and a set of <strong>fees</strong> that he charges awardees  for the negative <strong>externality</strong> that their presence impose on other prospective buyers.</p>
-</section>
-<section id="equivalence-of-allocations">
+</div>
+<div class="section" id="equivalence-of-allocations">
 <h2><span class="section-number">78.4. </span>Equivalence of Allocations<a class="headerlink" href="#equivalence-of-allocations" title="Permalink to this headline">¶</a></h2>
 <p>Remarkably, these two mechanisms can produce virtually identical allocations.</p>
 <p>We construct Python code for both mechanism.</p>
 <p>We also work out some examples by hand or almost by hand.</p>
 <p>Next, let’s dive down into the details.</p>
-</section>
-<section id="ascending-bid-auction">
+</div>
+<div class="section" id="ascending-bid-auction">
 <h2><span class="section-number">78.5. </span>Ascending Bid Auction<a class="headerlink" href="#ascending-bid-auction" title="Permalink to this headline">¶</a></h2>
-<section id="basic-setting">
+<div class="section" id="basic-setting">
 <h3><span class="section-number">78.5.1. </span>Basic Setting<a class="headerlink" href="#basic-setting" title="Permalink to this headline">¶</a></h3>
 <p>We start with  a more detailed description of the setting.</p>
 <ul class="simple">
@@ -400,9 +399,9 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </ul>
 <p>We describe  rules for the auction it terms of  <strong>pseudo  code</strong>.</p>
 <p>The pseudo code will provide a road map for writing Python code to implement the auction.</p>
-</section>
-</section>
-<section id="pseudocode">
+</div>
+</div>
+<div class="section" id="pseudocode">
 <h2><span class="section-number">78.6. </span>Pseudocode<a class="headerlink" href="#pseudocode" title="Permalink to this headline">¶</a></h2>
 <p>Here is a quick sketch of a possible simple structure for our Python code</p>
 <p><strong>Inputs:</strong></p>
@@ -483,8 +482,8 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 </div>
-</section>
-<section id="an-example">
+</div>
+<div class="section" id="an-example">
 <h2><span class="section-number">78.7. </span>An Example<a class="headerlink" href="#an-example" title="Permalink to this headline">¶</a></h2>
 <p>Before building a Python class, let’s step by step solve things almost “by hand”  to grasp  how the auction proceeds.</p>
 <p>A step-by-step procedure also helps reduce bugs, especially when the value matrix is peculiar (e.g. the differences between values are negligible, a column containing identical values or multiple buyers have the same valuation etc.).</p>
@@ -620,7 +619,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 </div>
-<section id="round-1">
+<div class="section" id="round-1">
 <h3><span class="section-number">78.7.1. </span>round 1<a class="headerlink" href="#round-1" title="Permalink to this headline">¶</a></h3>
 <p><strong>submit bid</strong></p>
 <div class="cell docutils container">
@@ -815,8 +814,8 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 </div>
-</section>
-<section id="round-2">
+</div>
+<div class="section" id="round-2">
 <h3><span class="section-number">78.7.2. </span>round 2<a class="headerlink" href="#round-2" title="Permalink to this headline">¶</a></h3>
 <p>From the second round on, the auction proceeds differently from the first round.</p>
 <p>Now only active losers (those who have positive surplus values) have  an incentive to submit bids to displace temporary winners from the previous round.</p>
@@ -940,8 +939,8 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 </div>
-</section>
-<section id="round-3">
+</div>
+<div class="section" id="round-3">
 <h3><span class="section-number">78.7.3. </span>round 3<a class="headerlink" href="#round-3" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1006,8 +1005,8 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 </div>
-</section>
-<section id="round-4">
+</div>
+<div class="section" id="round-4">
 <h3><span class="section-number">78.7.4. </span>round 4<a class="headerlink" href="#round-4" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1073,8 +1072,8 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 </div>
-</section>
-<section id="round-5">
+</div>
+<div class="section" id="round-5">
 <h3><span class="section-number">78.7.5. </span>round 5<a class="headerlink" href="#round-5" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1168,9 +1167,9 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="a-python-class">
+</div>
+</div>
+<div class="section" id="a-python-class">
 <h2><span class="section-number">78.8. </span>A Python Class<a class="headerlink" href="#a-python-class" title="Permalink to this headline">¶</a></h2>
 <p>Above we simulated an ascending bid auction step by step.</p>
 <p>When defining  functions, we repeatedly computed some intermediate objects because our Python function loses track of variables once the  function is executed.</p>
@@ -1574,18 +1573,16 @@ The bid prices for houses are
 The winners are
 [2, 1, 0]
 The losers are
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[3]
+[3]
 
 
 Auction ends
 
 
 The final result is as follows
-
-
-The allocation plan is
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The allocation plan is
 +--------------+-----+-----+-----+
 | House Number |  0  |  1  |  2  |
 +--------------+-----+-----+-----+
@@ -1640,8 +1637,8 @@ The total revenue is 10.00
 </div>
 </div>
 </div>
-</section>
-<section id="robustness-checks">
+</div>
+<div class="section" id="robustness-checks">
 <h2><span class="section-number">78.9. </span>Robustness Checks<a class="headerlink" href="#robustness-checks" title="Permalink to this headline">¶</a></h2>
 <p>Let’s do some stress testing of our code by applying it to  auctions characterized by different matrices of private values.</p>
 <p><strong>1. number of houses = number of buyers</strong></p>
@@ -1886,9 +1883,9 @@ The total revenue is 12.00
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The Ascending Bid Auction for Houses
-
-
-Basic Information: 5 houses, 3 buyers
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Basic Information: 5 houses, 3 buyers
 The valuation matrix is as follows
 +--------------+---+----+---+
 | Buyer Number | 0 | 1  | 2 |
@@ -1906,9 +1903,9 @@ The reservation prices for houses are
 |    Price     | 2 | 1 | 0 | 1 | 1 |
 +--------------+---+---+---+---+---+
 The minimum increment of bid price is 1.00
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Auction starts successfully
+
+
+Auction starts successfully
 
 
 Round 1
@@ -1947,9 +1944,9 @@ The winners are
 [1, 0]
 The losers are
 [2]
-
-
-Round 3
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Round 3
 The bid information is
 +--------------+-----+-----+
 | House Number |  1  |  2  |
@@ -1988,15 +1985,15 @@ The losers are
 
 
 Round 5
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The bid information is
+The bid information is
 +--------------+-----+-----+
 | House Number |  1  |  2  |
 +--------------+-----+-----+
 |    Buyer     | [2] | [0] |
 +--------------+-----+-----+
-The bid prices for houses are
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The bid prices for houses are
 +--------------+---+---+---+---+---+
 | House Number | 0 | 1 | 2 | 3 | 4 |
 +--------------+---+---+---+---+---+
@@ -2028,9 +2025,7 @@ The losers are
 
 
 Round 7
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The bid information is
+The bid information is
 +--------------+-----+-----+
 | House Number |  1  |  2  |
 +--------------+-----+-----+
@@ -2152,7 +2147,9 @@ The bid prices for houses are
 |    Price     | 10 | 2 | 1 | 1 | 1 |
 +--------------+----+---+---+---+---+
 The winners are
-[1, 0]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1, 0]
 The losers are
 [2]
 
@@ -2208,10 +2205,10 @@ The bid prices for houses are
 +--------------+----+---+---+---+---+
 |    Price     | 10 | 2 | 4 | 1 | 1 |
 +--------------+----+---+---+---+---+
+The winners are
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The winners are
-[1, 2]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1, 2]
 The losers are
 [0]
 
@@ -2255,15 +2252,15 @@ The losers are
 
 
 Round 7
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The bid information is
+The bid information is
 +--------------+-----+-----+
 | House Number |  1  |  2  |
 +--------------+-----+-----+
 |    Buyer     | [1] | [0] |
 +--------------+-----+-----+
-The bid prices for houses are
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The bid prices for houses are
 +--------------+----+---+---+---+---+
 | House Number | 0  | 1 | 2 | 3 | 4 |
 +--------------+----+---+---+---+---+
@@ -2295,9 +2292,7 @@ The losers are
 
 
 Round 9
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The bid information is
+The bid information is
 +--------------+-----+-----+-----+
 | House Number |  1  |  2  |  3  |
 +--------------+-----+-----+-----+
@@ -2385,8 +2380,8 @@ The auction can not start because of high reservation prices
 </div>
 </div>
 </div>
-</section>
-<section id="a-groves-clarke-mechanism">
+</div>
+<div class="section" id="a-groves-clarke-mechanism">
 <h2><span class="section-number">78.10. </span>A Groves-Clarke Mechanism<a class="headerlink" href="#a-groves-clarke-mechanism" title="Permalink to this headline">¶</a></h2>
 <p>We now decribe an alternative way for society to allocate <span class="math notranslate nohighlight">\(n\)</span>  houses to <span class="math notranslate nohighlight">\(m\)</span> possible buyers in a way that maximizes
 total value across all potential buyers.</p>
@@ -2416,8 +2411,8 @@ total value across all potential buyers.</p>
 <li><p>The planner returns  to the original step and repeat it.</p></li>
 <li><p>The planner iterates until all <span class="math notranslate nohighlight">\(n\)</span>  houses  are allocated and the charges for  all <span class="math notranslate nohighlight">\(n\)</span> houses are set.</p></li>
 </ul>
-</section>
-<section id="an-example-solved-by-hand">
+</div>
+<div class="section" id="an-example-solved-by-hand">
 <h2><span class="section-number">78.11. </span>An Example Solved by Hand<a class="headerlink" href="#an-example-solved-by-hand" title="Permalink to this headline">¶</a></h2>
 <p>Let’s see how our Groves-Clarke algorithm would work for the following simple  matrix <span class="math notranslate nohighlight">\(V\)</span> matrix of private values</p>
 <div class="math notranslate nohighlight">
@@ -2674,8 +2669,8 @@ V =\begin{bmatrix} 10 &amp; 9 &amp; 8 &amp; 7 &amp; 6 \cr
 </div>
 </div>
 </div>
-</section>
-<section id="another-python-class">
+</div>
+<div class="section" id="another-python-class">
 <h2><span class="section-number">78.12. </span>Another Python Class<a class="headerlink" href="#another-python-class" title="Permalink to this headline">¶</a></h2>
 <p>It is efficient to assemble our calculations in a single Python Class.</p>
 <div class="cell docutils container">
@@ -2783,9 +2778,9 @@ House 2 is sold to buyer 3 at price 6
 
 
 House 3 is sold to buyer 4 at price 6
-
-
-Prices of house:
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Prices of house:
  [9. 7. 6. 6.]
 
 
@@ -2805,7 +2800,7 @@ The surplus matrix:
 </div>
 </div>
 </div>
-<section id="elaborations">
+<div class="section" id="elaborations">
 <h3><span class="section-number">78.12.1. </span>Elaborations<a class="headerlink" href="#elaborations" title="Permalink to this headline">¶</a></h3>
 <p>Here we use some additional notation designed to conform with standard notation in parts of the VCG literature.</p>
 <p>We want to verify that our pseudo code is indeed a <strong>pivot mechanism</strong>, also called a <strong>VCG</strong> (Vickrey-Clarke-Groves) mechanism.</p>
@@ -2837,8 +2832,8 @@ X(v)  = \operatorname{argmax}_{x \in X} \sum_{j=1}^m v_j(x)
 </ul>
 <p>The generalized second-price auction described in our pseudo code above does indeed satisfy (1).
 We want to compute <span class="math notranslate nohighlight">\(\check t_j\)</span> for <span class="math notranslate nohighlight">\(j = 1, \ldots, m\)</span> and compare with <span class="math notranslate nohighlight">\(p_j\)</span> from the second price auction.</p>
-</section>
-<section id="social-cost">
+</div>
+<div class="section" id="social-cost">
 <h3><span class="section-number">78.12.2. </span>Social Cost<a class="headerlink" href="#social-cost" title="Permalink to this headline">¶</a></h3>
 <p>Using the GC_Mechanism class, we can  calculate the social cost of each buyer.</p>
 <p>Let’s see a simpler example with private value matrix</p>
@@ -2961,9 +2956,9 @@ The surplus matrix:
 
 
 House 1 is sold to buyer 2 at price 6
-
-
-House 2 is sold to buyer 3 at price 4
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>House 2 is sold to buyer 3 at price 4
 
 
 Prices of house:
@@ -2974,9 +2969,9 @@ The status matrix:
  [[1. 0. 0. 0. 0.]
  [0. 0. 1. 0. 0.]
  [0. 0. 0. 1. 0.]]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The surplus matrix:
+
+
+The surplus matrix:
  [[ 2. -0.  0.  0.  0.]
  [ 0. -0.  1.  0.  0.]
  [ 0. -0.  0.  1.  0.]]
@@ -3029,9 +3024,9 @@ The social cost of buyer 2: 5.0
 </div>
 </div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -3619,7 +3614,7 @@ The social cost of buyer 2: 5.0
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/house_auction.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/house_auction.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -3632,7 +3627,7 @@ The social cost of buyer 2: 5.0
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

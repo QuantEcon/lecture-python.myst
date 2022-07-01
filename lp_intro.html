@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>19. Linear Programming &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -287,9 +286,9 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="linear-programming">
+  <div class="tex2jax_ignore mathjax_ignore section" id="linear-programming">
 <h1><span class="section-number">19. </span>Linear Programming<a class="headerlink" href="#linear-programming" title="Permalink to this headline">¶</a></h1>
-<section id="overview">
+<div class="section" id="overview">
 <h2><span class="section-number">19.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p><strong>Linear programming</strong> problems either maximize or minimize
 a linear objective function subject to a set of  linear equality and/or inequality constraints.</p>
@@ -315,8 +314,8 @@ a linear objective function subject to a set of  linear equality and/or inequali
 </div>
 </div>
 </div>
-</section>
-<section id="objective-function-and-constraints">
+</div>
+<div class="section" id="objective-function-and-constraints">
 <h2><span class="section-number">19.2. </span>Objective Function and Constraints<a class="headerlink" href="#objective-function-and-constraints" title="Permalink to this headline">¶</a></h2>
 <p>We want to minimize a <strong>cost function</strong> <span class="math notranslate nohighlight">\(c'x = \sum_{i=1}^n c_i x_i\)</span> over  feasible values of <span class="math notranslate nohighlight">\(x = (x_1,x_2,\dots,x_n)'\)</span>.</p>
 <p>Here</p>
@@ -352,8 +351,8 @@ a linear objective function subject to a set of  linear equality and/or inequali
 <p>The corresponding value of cost function <span class="math notranslate nohighlight">\(c'x\)</span> is called the  <strong>optimal value</strong>.</p>
 <p>If the feasible set is empty, we say that solving  the  linear programming problem is <strong>infeasible</strong>.</p>
 <p>If, for any <span class="math notranslate nohighlight">\(K \in \mathbb R\)</span>, there exists a feasible solution <span class="math notranslate nohighlight">\(x\)</span> such that <span class="math notranslate nohighlight">\(c'x &lt; K\)</span>, we say that the problem is <strong>unbounded</strong> or equivalently that the optimal value is <span class="math notranslate nohighlight">\(-\infty\)</span>.</p>
-</section>
-<section id="example-1-production-problem">
+</div>
+<div class="section" id="example-1-production-problem">
 <h2><span class="section-number">19.3. </span>Example 1: Production Problem<a class="headerlink" href="#example-1-production-problem" title="Permalink to this headline">¶</a></h2>
 <p>This example was created by <span id="id2">[<a class="reference internal" href="zreferences.html#id40" title="J. N. Bertsimas, D. &amp; Tsitsiklis. Introduction to linear optimization. Athena Scientific, 1997.">Ber97</a>]</span></p>
 <p>Suppose that a factory can produce two goods called Product <span class="math notranslate nohighlight">\(1\)</span> and Product <span class="math notranslate nohighlight">\(2\)</span>.</p>
@@ -444,8 +443,8 @@ to maximize its revenue.</p>
 <p>The firm’s objective is to find the  parallel orange lines to the upper boundary of the feasible set.</p>
 <p>The intersection of the feasible set and the highest orange line delineates the optimal set.</p>
 <p>In this example, the optimal set is the point <span class="math notranslate nohighlight">\((2.5, 5)\)</span>.</p>
-</section>
-<section id="example-2-investment-problem">
+</div>
+<div class="section" id="example-2-investment-problem">
 <h2><span class="section-number">19.4. </span>Example 2: Investment Problem<a class="headerlink" href="#example-2-investment-problem" title="Permalink to this headline">¶</a></h2>
 <p>We now consider a problem posed and solved by  <span id="id3">[<a class="reference internal" href="zreferences.html#id41" title="Y. Hu, Y. &amp; Guo. Operations research. Tsinghua University Press, 5th edition, 2018.">Hu18</a>]</span>.</p>
 <p>A mutual fund has <span class="math notranslate nohighlight">\( \$ 100,000\)</span> to be invested over a three year horizon.</p>
@@ -535,8 +534,8 @@ leaving it with  a bank account balance equal to <span class="math notranslate n
  &amp; x_j \ \text{unrestricted}, \quad j = 2,3,4\\
 \end{aligned}
 \end{split}\]</div>
-</section>
-<section id="standard-form">
+</div>
+<div class="section" id="standard-form">
 <h2><span class="section-number">19.5. </span>Standard Form<a class="headerlink" href="#standard-form" title="Permalink to this headline">¶</a></h2>
 <p>For purposes of</p>
 <ul class="simple">
@@ -580,7 +579,7 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 \end{split}\]</div>
 <p>Here, <span class="math notranslate nohighlight">\(Ax = b\)</span> means that  the <span class="math notranslate nohighlight">\(i\)</span>-th entry of <span class="math notranslate nohighlight">\(Ax\)</span>  equals the <span class="math notranslate nohighlight">\(i\)</span>-th entry of <span class="math notranslate nohighlight">\(b\)</span> for every <span class="math notranslate nohighlight">\(i\)</span>.</p>
 <p>Similarly, <span class="math notranslate nohighlight">\(x &gt;= 0\)</span> means that  <span class="math notranslate nohighlight">\(x_j\)</span> is greater than <span class="math notranslate nohighlight">\(0\)</span> for every <span class="math notranslate nohighlight">\(j\)</span>.</p>
-<section id="useful-transformations">
+<div class="section" id="useful-transformations">
 <h3><span class="section-number">19.5.1. </span>Useful Transformations<a class="headerlink" href="#useful-transformations" title="Permalink to this headline">¶</a></h3>
 <p>It is useful to know how to transform a problem that initially is not stated in the standard form into one that is.</p>
 <p>By deploying the following steps, any linear programming problem can be transformed into an  equivalent  standard form linear programming problem.</p>
@@ -590,8 +589,8 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 <li><p><strong>Inequality constraints:</strong> Given an inequality constraint <span class="math notranslate nohighlight">\(\sum_{j=1}^n a_{ij}x_j \le 0\)</span>, we can introduce a new variable <span class="math notranslate nohighlight">\(s_i\)</span>, called a <strong>slack variable</strong> that satisfies <span class="math notranslate nohighlight">\(s_i \ge 0\)</span> and replace the original constraint by <span class="math notranslate nohighlight">\(\sum_{j=1}^n a_{ij}x_j + s_i = 0\)</span>.</p></li>
 </ol>
 <p>Let’s apply the above steps to the two examples described above.</p>
-</section>
-<section id="id4">
+</div>
+<div class="section" id="id4">
 <h3><span class="section-number">19.5.2. </span>Example 1: Production Problem<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>The original problem is:</p>
 <div class="math notranslate nohighlight">
@@ -613,8 +612,8 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 &amp; x_1, x_2, s_1, s_2 \ge 0 \\
 \end{aligned}
 \end{split}\]</div>
-</section>
-<section id="id5">
+</div>
+<div class="section" id="id5">
 <h3><span class="section-number">19.5.3. </span>Example 2: Investment Problem<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>The original problem is:</p>
 <div class="math notranslate nohighlight">
@@ -649,9 +648,9 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
  &amp; s_j \ge 0, \quad j = 1,2,3,4\\
 \end{aligned}
 \end{split}\]</div>
-</section>
-</section>
-<section id="computations">
+</div>
+</div>
+<div class="section" id="computations">
 <h2><span class="section-number">19.6. </span>Computations<a class="headerlink" href="#computations" title="Permalink to this headline">¶</a></h2>
 <p>The package <em>scipy.optimize</em> provides a function <em><strong>linprog</strong></em> to solve linear programming problems with a form below:</p>
 <div class="math notranslate nohighlight">
@@ -668,7 +667,7 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 <p>By default <span class="math notranslate nohighlight">\(l = 0\)</span> and <span class="math notranslate nohighlight">\(u = \text{None}\)</span> unless explicitly specified with the argument ‘bounds’.</p>
 </div>
 <p>Let’s apply this great Python tool to solve our two example problems.</p>
-<section id="id6">
+<div class="section" id="id6">
 <h3><span class="section-number">19.6.1. </span>Example 1: Production Problem<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>The problem is:</p>
 <div class="math notranslate nohighlight">
@@ -721,8 +720,8 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 <p class="admonition-title">Note</p>
 <p>This problem is to maximize the objective, so that we need to put a minus sign in front of parameter vector c.</p>
 </div>
-</section>
-<section id="id7">
+</div>
+<div class="section" id="id7">
 <h3><span class="section-number">19.6.2. </span>Example 2: Investment Problem<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>The problem is:</p>
 <div class="math notranslate nohighlight">
@@ -791,9 +790,9 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 <li><p>At the beginning of the third year, the mutual fund should borrow <span class="math notranslate nohighlight">\( \$20,000\)</span> from the bank and invest in the annuity.</p></li>
 <li><p>At the end of the third year, the mutual fund will get payouts from the annuity and corporate bond and repay its loan from the bank. At the end  it will own <span class="math notranslate nohighlight">\( \$ \)</span>141018.24, so that it’s total net  rate of return over the three periods is 41.02%.</p></li>
 </ol>
-</section>
-</section>
-<section id="duality">
+</div>
+</div>
+<div class="section" id="duality">
 <h2><span class="section-number">19.7. </span>Duality<a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
 <p>Associated with a  linear programming of form <a class="reference internal" href="#equation-linprog">(19.1)</a> with <span class="math notranslate nohighlight">\(m\)</span> constraints and <span class="math notranslate nohighlight">\(n\)</span> decision variables,
 there is an <strong>dual</strong> linear programming problem that takes the form (please see <span id="id8">[<a class="reference internal" href="zreferences.html#id40" title="J. N. Bertsimas, D. &amp; Tsitsiklis. Introduction to linear optimization. Athena Scientific, 1997.">Ber97</a>]</span>)</p>
@@ -891,8 +890,8 @@ a_m' \\
 &amp; p \ge 0\\
 \end{aligned}
 \end{split}\]</div>
-</section>
-<section id="duality-theorems">
+</div>
+<div class="section" id="duality-theorems">
 <h2><span class="section-number">19.8. </span>Duality Theorems<a class="headerlink" href="#duality-theorems" title="Permalink to this headline">¶</a></h2>
 <p>Primal and dual problems are linked by powerful <strong>duality theorems</strong> that have  <strong>weak</strong> and <strong>strong</strong> forms.</p>
 <p>The duality theorems provide the foundations of enlightening economic interpretations of linear programming problems.</p>
@@ -908,7 +907,7 @@ b'p = c'x
 \]</div>
 <p>According to strong duality, we can find the optimal value for the primal problem by solving the dual problem.</p>
 <p>But the dual problem tells us even more as we shall see next.</p>
-<section id="complementary-slackness">
+<div class="section" id="complementary-slackness">
 <h3><span class="section-number">19.8.1. </span>Complementary Slackness<a class="headerlink" href="#complementary-slackness" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p\)</span> be feasible solutions to the primal problem <a class="reference internal" href="#equation-linprog">(19.1)</a> and its dual problem, respectively.</p>
 <p>Then <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p\)</span> are also  optimal solutions of the primal and dual problems if and only if:</p>
@@ -920,8 +919,8 @@ x_j (A_j' p - c_j) = 0, \quad \forall j.
 <p>This means that <span class="math notranslate nohighlight">\(p_i = 0\)</span> if <span class="math notranslate nohighlight">\(a_i' x - b_i \neq 0\)</span> and <span class="math notranslate nohighlight">\(x_j = 0\)</span> if <span class="math notranslate nohighlight">\(A_j' p - c_j \neq 0\)</span>.</p>
 <p>These are the celebrated <strong>complementary slackness</strong> conditions.</p>
 <p>Let’s interpret them.</p>
-</section>
-<section id="interpretations">
+</div>
+<div class="section" id="interpretations">
 <h3><span class="section-number">19.8.2. </span>Interpretations<a class="headerlink" href="#interpretations" title="Permalink to this headline">¶</a></h3>
 <p>Let’s take a version of problem <a class="reference internal" href="#equation-linprog2">(19.3)</a> as a production problem and consider its associated dual problem.</p>
 <p>A factory produce <span class="math notranslate nohighlight">\(n\)</span> products with <span class="math notranslate nohighlight">\(m\)</span> types of resources.</p>
@@ -960,8 +959,8 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <p>If there exists <span class="math notranslate nohighlight">\(j\)</span> such that <span class="math notranslate nohighlight">\(A_j' p - c_j &gt; 0\)</span>, then <span class="math notranslate nohighlight">\(x_j = 0\)</span> by complementary slackness. <span class="math notranslate nohighlight">\(A_j' p - c_j &gt; 0\)</span> means that  the value of all resources used when producing one unit of product <span class="math notranslate nohighlight">\(j\)</span> is greater than its cost.</p>
 <p>This means that  producing another product that  can more efficiently utilize these resources is a better choice than producing product <span class="math notranslate nohighlight">\(j\)</span></p>
 <p>Since producing product <span class="math notranslate nohighlight">\(j\)</span> is not optimal, <span class="math notranslate nohighlight">\(x_j\)</span> should equal <span class="math notranslate nohighlight">\(0\)</span>.</p>
-</section>
-<section id="id9">
+</div>
+<div class="section" id="id9">
 <h3><span class="section-number">19.8.3. </span>Example 1: Production Problem<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <p>This problem is one specific instance of the problem <a class="reference internal" href="#equation-linprog2">(19.3)</a>, whose economic meaning is interpreted above.</p>
 <p>Its dual problem is:</p>
@@ -1001,8 +1000,8 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <p>The optimal value for the dual problem equals  27.5.</p>
 <p>This equals the optimal value of  the primal problem, an illustration of  strong duality.</p>
 <p>Shadow prices for materials and labor are 0.625 and 0.4375, respectively.</p>
-</section>
-<section id="id10">
+</div>
+<div class="section" id="id10">
 <h3><span class="section-number">19.8.4. </span>Example 2: Investment Problem<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <p>The dual problem is:</p>
 <div class="math notranslate nohighlight">
@@ -1093,9 +1092,9 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <li><p><span class="math notranslate nohighlight">\(p_6 = -0.16\)</span>, which means one dollar of the loan amount at the beginning of the third year is worth <span class="math notranslate nohighlight">\(\$ 0.16\)</span>. Since <span class="math notranslate nohighlight">\(|p_6|\)</span> is higher than the interest rate 6%, the mutual fund should borrow as much as possible at the beginning of the third year. Recall that  the optimal solution to the primal problem is  <span class="math notranslate nohighlight">\(x_4 = -20,000\)</span> which means the mutual fund borrows money from the bank as much as it can.</p></li>
 <li><p><span class="math notranslate nohighlight">\(p_7 = 0.0015\)</span>, which means one dollar of the amount of the corporate bond that the mutual fund can buy is worth <span class="math notranslate nohighlight">\(\$ 0.0015\)</span>.</p></li>
 </ol>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1683,7 +1682,7 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/lp_intro.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/lp_intro.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1696,7 +1695,7 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

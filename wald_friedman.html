@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>54. A Problem that Stumped Milton Friedman &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -279,7 +278,7 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><section class="tex2jax_ignore mathjax_ignore" id="a-problem-that-stumped-milton-friedman">
+</div><div class="tex2jax_ignore mathjax_ignore section" id="a-problem-that-stumped-milton-friedman">
 <h1><a class="toc-backref" href="#id9"><span class="section-number">54. </span><span class="target" id="index-0"></span>A Problem that Stumped Milton Friedman</a><a class="headerlink" href="#a-problem-that-stumped-milton-friedman" title="Permalink to this headline">¶</a></h1>
 <p>(and that Abraham Wald solved by inventing sequential analysis)</p>
 <div class="contents topic" id="contents">
@@ -308,26 +307,26 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
-Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
 Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
 Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
+Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
+Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
+Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
 Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
 Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.6.15)
 Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
 Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (2.2.1)
+Requirement already satisfied: tempita&gt;=0.5.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.5.2)
 Requirement already satisfied: numpy&gt;=1.18.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.21.5)
 Requirement already satisfied: scipy&gt;=1.4.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.7.3)
-Requirement already satisfied: tempita&gt;=0.5.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.5.2)
 Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.55.1)
 Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.38.0)
 Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (61.2.0)
@@ -335,7 +334,7 @@ Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quanteco
 </div>
 </div>
 </div>
-<section id="overview">
+<div class="section" id="overview">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">54.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture describes a statistical decision problem encountered  by Milton
 Friedman and W. Allen Wallis during World War II when they were analysts at
@@ -373,8 +372,8 @@ an approach to statistical decision problems intimately related to dynamic progr
 </div>
 <p>This lecture uses ideas studied in <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a>, <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this lecture</span></a>.
 and <a class="reference internal" href="exchangeable.html"><span class="doc">this lecture</span></a>.</p>
-</section>
-<section id="origin-of-the-problem">
+</div>
+<div class="section" id="origin-of-the-problem">
 <h2><a class="toc-backref" href="#id11"><span class="section-number">54.2. </span>Origin of the Problem</a><a class="headerlink" href="#origin-of-the-problem" title="Permalink to this headline">¶</a></h2>
 <p>On pages 137-139 of his 1998 book <em>Two Lucky People</em> with Rose Friedman <span id="id2">[<a class="reference internal" href="zreferences.html#id103" title="Milton Friedman and Rose D Friedman. Two Lucky People. University of Chicago Press, 1998.">FF98</a>]</span>,
 Milton Friedman described a problem presented to him and Allen Wallis
@@ -414,8 +413,8 @@ because it is obviously superior beyond what was hoped for
 they were not able to solve it,  described the problem to  Abraham Wald.</p>
 <p>That started Wald on the path that led him  to <em>Sequential Analysis</em> <span id="id3">[<a class="reference internal" href="zreferences.html#id108" title="Abraham Wald. Sequential Analysis. John Wiley and Sons, New York, 1947.">Wal47</a>]</span>.</p>
 <p>We’ll formulate the problem using dynamic programming.</p>
-</section>
-<section id="a-dynamic-programming-approach">
+</div>
+<div class="section" id="a-dynamic-programming-approach">
 <h2><a class="toc-backref" href="#id12"><span class="section-number">54.3. </span>A Dynamic Programming Approach</a><a class="headerlink" href="#a-dynamic-programming-approach" title="Permalink to this headline">¶</a></h2>
 <p>The following presentation of the problem closely follows Dmitri
 Berskekas’s treatment in <strong>Dynamic Programming and Stochastic Control</strong> <span id="id4">[<a class="reference internal" href="zreferences.html#id107" title="Dmitri Bertsekas. Dynamic Programming and Stochastic Control. Academic Press, New York, 1975.">Ber75</a>]</span>.</p>
@@ -502,7 +501,7 @@ f(z; a, b) = \frac{\Gamma(a+b) z^{a-1} (1-z)^{b-1}}{\Gamma(a) \Gamma(b)}
 <img alt="_images/wald_friedman_5_0.png" src="_images/wald_friedman_5_0.png" />
 </div>
 </div>
-<section id="losses-and-costs">
+<div class="section" id="losses-and-costs">
 <h3><span class="section-number">54.3.1. </span>Losses and Costs<a class="headerlink" href="#losses-and-costs" title="Permalink to this headline">¶</a></h3>
 <p>After observing <span class="math notranslate nohighlight">\(z_k, z_{k-1}, \ldots, z_0\)</span>, the decision-maker
 chooses among three distinct actions:</p>
@@ -522,8 +521,8 @@ kinds of losses:</p>
 <li><p>A cost <span class="math notranslate nohighlight">\(c\)</span> if he postpones deciding and chooses instead to draw
 another <span class="math notranslate nohighlight">\(z\)</span></p></li>
 </ul>
-</section>
-<section id="digression-on-type-i-and-type-ii-errors">
+</div>
+<div class="section" id="digression-on-type-i-and-type-ii-errors">
 <h3><span class="section-number">54.3.2. </span>Digression on Type I and Type II Errors<a class="headerlink" href="#digression-on-type-i-and-type-ii-errors" title="Permalink to this headline">¶</a></h3>
 <p>If we regard  <span class="math notranslate nohighlight">\(f=f_0\)</span> as a null hypothesis and <span class="math notranslate nohighlight">\(f=f_1\)</span> as an alternative hypothesis,
 then <span class="math notranslate nohighlight">\(L_1\)</span> and <span class="math notranslate nohighlight">\(L_0\)</span> are losses associated with two types of statistical errors</p>
@@ -538,8 +537,8 @@ error.</p></li>
 <li><p>We can think of <span class="math notranslate nohighlight">\(L_0\)</span> as the loss associated with a type II
 error.</p></li>
 </ul>
-</section>
-<section id="intuition">
+</div>
+<div class="section" id="intuition">
 <h3><span class="section-number">54.3.3. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this headline">¶</a></h3>
 <p>Before proceeding,  let’s try to guess what an optimal decision rule might look like.</p>
 <p>Suppose at some given point in time that <span class="math notranslate nohighlight">\(\pi\)</span> is close to 1.</p>
@@ -547,15 +546,15 @@ error.</p></li>
 <p>If, on the other hand, <span class="math notranslate nohighlight">\(\pi\)</span> is close to 0, then <span class="math notranslate nohighlight">\(f = f_1\)</span> is strongly favored.</p>
 <p>Finally, if <span class="math notranslate nohighlight">\(\pi\)</span> is in the middle of the interval <span class="math notranslate nohighlight">\([0, 1]\)</span>, then we are confronted with more uncertainty.</p>
 <p>This reasoning suggests a decision rule such as the one shown in the figure</p>
-<figure class="align-default">
+<div class="figure align-default">
 <img alt="_images/wald_dec_rule.png" src="_images/wald_dec_rule.png" />
-</figure>
+</div>
 <p>As we’ll see, this is indeed the correct form of the decision rule.</p>
 <p>Our problem is to determine threshold values <span class="math notranslate nohighlight">\(\alpha, \beta\)</span> that somehow depend on the parameters described  above.</p>
 <p>You might like to pause at this point and try to predict the impact of a
 parameter such as <span class="math notranslate nohighlight">\(c\)</span> or <span class="math notranslate nohighlight">\(L_0\)</span> on <span class="math notranslate nohighlight">\(\alpha\)</span> or <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
-</section>
-<section id="a-bellman-equation">
+</div>
+<div class="section" id="a-bellman-equation">
 <h3><span class="section-number">54.3.4. </span>A Bellman Equation<a class="headerlink" href="#a-bellman-equation" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(J(\pi)\)</span> be the total loss for a decision-maker with current belief <span class="math notranslate nohighlight">\(\pi\)</span> who chooses optimally.</p>
 <p>With some thought, you will agree that <span class="math notranslate nohighlight">\(J\)</span> should satisfy the Bellman equation</p>
@@ -638,9 +637,9 @@ to find a fixed point.</p>
 Q h(\pi) =
 c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
 \]</div>
-</section>
-</section>
-<section id="implementation">
+</div>
+</div>
+<div class="section" id="implementation">
 <h2><a class="toc-backref" href="#id13"><span class="section-number">54.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>First, we will construct a <code class="docutils literal notranslate"><span class="pre">jitclass</span></code> to store the parameters of the model</p>
 <div class="cell docutils container">
@@ -788,8 +787,8 @@ c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', 
 </div>
 </div>
 </div>
-</section>
-<section id="analysis">
+</div>
+<div class="section" id="analysis">
 <h2><a class="toc-backref" href="#id14"><span class="section-number">54.5. </span>Analysis</a><a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
 <p>Let’s inspect outcomes.</p>
 <p>We will be using the default parameterization with distributions like so</p>
@@ -811,7 +810,7 @@ c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', 
 <img alt="_images/wald_friedman_14_0.png" src="_images/wald_friedman_14_0.png" />
 </div>
 </div>
-<section id="value-function">
+<div class="section" id="value-function">
 <h3><span class="section-number">54.5.1. </span>Value Function<a class="headerlink" href="#value-function" title="Permalink to this headline">¶</a></h3>
 <p>To solve the model, we will call our <code class="docutils literal notranslate"><span class="pre">solve_model</span></code> function</p>
 <div class="cell docutils container">
@@ -893,8 +892,8 @@ and <span class="math notranslate nohighlight">\(- L_0\)</span>.</p>
 probability assigned to <span class="math notranslate nohighlight">\(f_0\)</span> is in the indecisive region <span class="math notranslate nohighlight">\(\pi \in (\beta, \alpha)\)</span>.</p>
 <p>The decision-maker continues to sample until the probability that he attaches to
 model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <span class="math notranslate nohighlight">\(\beta\)</span> or above <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
-</section>
-<section id="simulations">
+</div>
+<div class="section" id="simulations">
 <h3><span class="section-number">54.5.2. </span>Simulations<a class="headerlink" href="#simulations" title="Permalink to this headline">¶</a></h3>
 <p>The next figure shows the outcomes of 500 simulations of the decision process.</p>
 <p>On the left is a histogram of <strong>stopping times</strong>, i.e.,  the number of draws of <span class="math notranslate nohighlight">\(z_k\)</span> required to make a decision.</p>
@@ -1000,8 +999,8 @@ model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <spa
 <img alt="_images/wald_friedman_20_0.png" src="_images/wald_friedman_20_0.png" />
 </div>
 </div>
-</section>
-<section id="comparative-statics">
+</div>
+<div class="section" id="comparative-statics">
 <h3><span class="section-number">54.5.3. </span>Comparative Statics<a class="headerlink" href="#comparative-statics" title="Permalink to this headline">¶</a></h3>
 <p>Now let’s consider the following exercise.</p>
 <p>We double the cost of drawing an additional observation.</p>
@@ -1024,8 +1023,8 @@ model <span class="math notranslate nohighlight">\(f_0\)</span> falls below <spa
 <p>Increased cost per draw has induced the decision-maker to take fewer draws before deciding.</p>
 <p>Because he decides with fewer draws, the percentage of time he is correct drops.</p>
 <p>This leads to him having a higher expected loss when he puts equal weight on both models.</p>
-</section>
-<section id="a-notebook-implementation">
+</div>
+<div class="section" id="a-notebook-implementation">
 <h3><span class="section-number">54.5.4. </span>A Notebook Implementation<a class="headerlink" href="#a-notebook-implementation" title="Permalink to this headline">¶</a></h3>
 <p>To facilitate comparative statics, we provide
 a <a class="reference external" href="https://nbviewer.jupyter.org/github/QuantEcon/lecture-python-advanced.notebooks/blob/master/wald_friedman.ipynb">Jupyter notebook</a> that
@@ -1040,9 +1039,9 @@ of points and linear functions <span class="math notranslate nohighlight">\(m\)<
 <li><p>various simulations from <span class="math notranslate nohighlight">\(f_0\)</span> and associated distributions of waiting times to making a decision.</p></li>
 <li><p>associated histograms of correct and incorrect decisions.</p></li>
 </ul>
-</section>
-</section>
-<section id="comparison-with-neyman-pearson-formulation">
+</div>
+</div>
+<div class="section" id="comparison-with-neyman-pearson-formulation">
 <h2><a class="toc-backref" href="#id15"><span class="section-number">54.6. </span>Comparison with Neyman-Pearson Formulation</a><a class="headerlink" href="#comparison-with-neyman-pearson-formulation" title="Permalink to this headline">¶</a></h2>
 <p>For several reasons, it is useful to describe the theory underlying the test
 that Navy Captain G. S. Schuyler had been told to use and that led him
@@ -1193,8 +1192,8 @@ made. The number n of observations required by such a test procedure is
 a random variable, since the value of n depends on the outcome of the
 observations.</p>
 </div></blockquote>
-</section>
-<section id="sequels">
+</div>
+<div class="section" id="sequels">
 <h2><a class="toc-backref" href="#id16"><span class="section-number">54.7. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this headline">¶</a></h2>
 <p>We’ll dig deeper into some of the ideas used here in the following lectures:</p>
 <ul class="simple">
@@ -1212,8 +1211,8 @@ that the Navy had ordered him to use can be expected to be better or worse than 
 <span id="id8">[<a class="reference internal" href="zreferences.html#id106" title="David M. Kreps. Notes on the Theory of Choice. Westview Press, Boulder, Colorado, 1988.">Kre88</a>]</span> chapter 11, for  discussions of exchangeability.</p>
 </dd>
 </dl>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1801,7 +1800,7 @@ that the Navy had ordered him to use can be expected to be better or worse than 
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/wald_friedman.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/wald_friedman.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1814,7 +1813,7 @@ that the Navy had ordered him to use can be expected to be better or worse than 
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

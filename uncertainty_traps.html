@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>69. Uncertainty Traps &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -252,7 +251,7 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><section class="tex2jax_ignore mathjax_ignore" id="id1">
+</div><div class="tex2jax_ignore mathjax_ignore section" id="id1">
 <h1><a class="toc-backref" href="#id5"><span class="section-number">69. </span>Uncertainty Traps</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
@@ -269,7 +268,7 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<section id="overview">
+<div class="section" id="overview">
 <h2><a class="toc-backref" href="#id6"><span class="section-number">69.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we study a simplified version of an uncertainty traps model of Fajgelbaum, Schaal and Taschereau-Dumouchel <span id="id2">[<a class="reference internal" href="zreferences.html#id133" title="Pablo Fajgelbaum, Edouard Schaal, and Mathieu Taschereau-Dumouchel. Uncertainty traps. Technical Report, National Bureau of Economic Research, 2015.">FSTD15</a>]</span>.</p>
 <p>The model features self-reinforcing uncertainty that has big impacts on economic activity.</p>
@@ -302,12 +301,12 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-</section>
-<section id="the-model">
+</div>
+<div class="section" id="the-model">
 <h2><a class="toc-backref" href="#id7"><span class="section-number">69.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
 <p>The original model described in <span id="id3">[<a class="reference internal" href="zreferences.html#id133" title="Pablo Fajgelbaum, Edouard Schaal, and Mathieu Taschereau-Dumouchel. Uncertainty traps. Technical Report, National Bureau of Economic Research, 2015.">FSTD15</a>]</span> has many interesting moving parts.</p>
 <p>Here we examine a simplified version that nonetheless captures many of the key ideas.</p>
-<section id="fundamentals">
+<div class="section" id="fundamentals">
 <h3><span class="section-number">69.2.1. </span>Fundamentals<a class="headerlink" href="#fundamentals" title="Permalink to this headline">¶</a></h3>
 <p>The evolution of the fundamental process <span class="math notranslate nohighlight">\(\{\theta_t\}\)</span> is given by</p>
 <div class="math notranslate nohighlight">
@@ -320,8 +319,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p><span class="math notranslate nohighlight">\(\{w_t\}\)</span> is IID and standard normal</p></li>
 </ul>
 <p>The random variable <span class="math notranslate nohighlight">\(\theta_t\)</span> is not observable at any time.</p>
-</section>
-<section id="output">
+</div>
+<div class="section" id="output">
 <h3><span class="section-number">69.2.2. </span>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
 <p>There is a total <span class="math notranslate nohighlight">\(\bar M\)</span> of risk-averse entrepreneurs.</p>
 <p>Output of the <span class="math notranslate nohighlight">\(m\)</span>-th entrepreneur, conditional on being active in the market at
@@ -334,8 +333,8 @@ time <span class="math notranslate nohighlight">\(t\)</span>, is equal to</p>
 <p>The inverse of the shock variance, <span class="math notranslate nohighlight">\(\gamma_x\)</span>, is called the shock’s <strong>precision</strong>.</p>
 <p>The higher is the precision, the more informative <span class="math notranslate nohighlight">\(x_m\)</span> is about the fundamental.</p>
 <p>Output shocks are independent across time and firms.</p>
-</section>
-<section id="information-and-beliefs">
+</div>
+<div class="section" id="information-and-beliefs">
 <h3><span class="section-number">69.2.3. </span>Information and Beliefs<a class="headerlink" href="#information-and-beliefs" title="Permalink to this headline">¶</a></h3>
 <p>All entrepreneurs start with identical beliefs about <span class="math notranslate nohighlight">\(\theta_0\)</span>.</p>
 <p>Signals are publicly observable and hence all agents have identical beliefs always.</p>
@@ -362,9 +361,9 @@ distribution <span class="math notranslate nohighlight">\(N(\mu, \gamma^{-1})\)<
 <p>The next figure plots the law of motion for the precision in <a class="reference internal" href="#equation-update-prec">(69.3)</a>
 as a 45 degree diagram, with one curve for each <span class="math notranslate nohighlight">\(M \in \{0, \ldots, 6\}\)</span>.</p>
 <p>The other parameter values are <span class="math notranslate nohighlight">\(\rho = 0.99, \gamma_x = 0.5, \sigma_\theta =0.5\)</span></p>
-<figure class="align-default">
+<div class="figure align-default">
 <img alt="_images/uncertainty_traps_45.png" src="_images/uncertainty_traps_45.png" />
-</figure>
+</div>
 <p>Points where the curves hit the 45 degree lines are  long-run steady
 states for precision for different values of <span class="math notranslate nohighlight">\(M\)</span>.</p>
 <p>Thus, if one of these values for <span class="math notranslate nohighlight">\(M\)</span> remains fixed, a corresponding steady state is the equilibrium level of precision</p>
@@ -374,8 +373,8 @@ fundamental, and hence more precision in steady state</p></li>
 <li><p>low values of <span class="math notranslate nohighlight">\(M\)</span> correspond to less information and more uncertainty in steady state</p></li>
 </ul>
 <p>In practice, as we’ll see, the number of active firms fluctuates stochastically.</p>
-</section>
-<section id="participation">
+</div>
+<div class="section" id="participation">
 <h3><span class="section-number">69.2.4. </span>Participation<a class="headerlink" href="#participation" title="Permalink to this headline">¶</a></h3>
 <p>Omitting time subscripts once more, entrepreneurs enter the market in the current period if</p>
 <div class="math notranslate nohighlight" id="equation-pref1">
@@ -412,9 +411,9 @@ fundamental, and hence more precision in steady state</p></li>
             \frac{a^2 \left( \frac{1}{\gamma} + \frac{1}{\gamma_x} \right)}{2}
                 \right)
     \right) - c  &gt; 0\]</div>
-</section>
-</section>
-<section id="implementation">
+</div>
+</div>
+<div class="section" id="implementation">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">69.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>We want to simulate this economy.</p>
 <p>As a first step, let’s put together a class that bundles</p>
@@ -493,13 +492,13 @@ two belief parameters <span class="math notranslate nohighlight">\(\mu\)</span> 
 </div>
 </div>
 <p>In the results below we use this code to simulate time series for the major variables.</p>
-</section>
-<section id="results">
+</div>
+<div class="section" id="results">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">69.4. </span>Results</a><a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
 <p>Let’s look first at the dynamics of <span class="math notranslate nohighlight">\(\mu\)</span>, which the agents use to track <span class="math notranslate nohighlight">\(\theta\)</span></p>
-<figure class="align-default">
+<div class="figure align-default">
 <img alt="_images/uncertainty_traps_mu.png" src="_images/uncertainty_traps_mu.png" />
-</figure>
+</div>
 <p>We see that <span class="math notranslate nohighlight">\(\mu\)</span> tracks <span class="math notranslate nohighlight">\(\theta\)</span> well when there are sufficient firms in the market.</p>
 <p>However, there are times when <span class="math notranslate nohighlight">\(\mu\)</span> tracks <span class="math notranslate nohighlight">\(\theta\)</span> poorly due to
 insufficient information.</p>
@@ -511,18 +510,18 @@ insufficient information.</p>
 </ul>
 <p>To get a clearer idea of the dynamics, let’s look at all the main time series
 at once, for a given set of shocks</p>
-<figure class="align-default">
+<div class="figure align-default">
 <img alt="_images/uncertainty_traps_sim.png" src="_images/uncertainty_traps_sim.png" />
-</figure>
+</div>
 <p>Notice how the traps only take hold after a sequence of bad draws for the fundamental.</p>
 <p>Thus, the model gives us a <em>propagation mechanism</em> that maps bad random draws into long downturns in economic activity.</p>
-</section>
-<section id="exercises">
+</div>
+<div class="section" id="exercises">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">69.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="exercise admonition" id="uncertainty_traps_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 69.1 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <p>Fill in the details behind <a class="reference internal" href="#equation-update-mean">(69.2)</a> and <a class="reference internal" href="#equation-update-prec">(69.3)</a> based on
 the following standard result (see, e.g., p. 24 of <span id="id4">[<a class="reference internal" href="zreferences.html#id134" title="G Alastair Young and Richard L Smith. Essentials of statistical inference. Cambridge University Press, 2005.">YS05</a>]</span>).</p>
 <p><strong>Fact</strong> Let <span class="math notranslate nohighlight">\(\mathbf x = (x_1, \ldots, x_M)\)</span> be a vector of IID draws
@@ -541,25 +540,25 @@ distribution of <span class="math notranslate nohighlight">\(\theta\)</span> giv
 \quad \text{and} \quad
 \gamma_0 = \gamma + M \gamma_x
 \]</div>
-</section>
+</div>
 </div>
 <div class="exercise admonition" id="uncertainty_traps_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 69.2 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <p>Modulo randomness, replicate the simulation figures shown above.</p>
 <ul class="simple">
 <li><p>Use the parameter values listed as defaults in the <strong>init</strong> method of the UncertaintyTrapEcon class.</p></li>
 </ul>
-</section>
 </div>
-</section>
-<section id="solutions">
+</div>
+</div>
+<div class="section" id="solutions">
 <h2><a class="toc-backref" href="#id11"><span class="section-number">69.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <div class="solution dropdown admonition" id="uncertainty_traps-solution-2">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#uncertainty_traps_ex1"> Exercise 69.1</a></p>
-<section id="solution-content">
+<div class="section" id="solution-content">
 <p>This exercise asked you to validate the laws of motion for
 <span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\mu\)</span> given in the lecture, based on the stated
 result about Bayesian updating in a scalar Gaussian setting. The stated
@@ -580,12 +579,12 @@ N(\mu_0, 1/\gamma_0)
 then evaluate the distribution of <span class="math notranslate nohighlight">\(\rho \theta + \sigma_\theta w\)</span>
 where <span class="math notranslate nohighlight">\(w\)</span> is independent and standard normal, we get the
 expressions for <span class="math notranslate nohighlight">\(\mu'\)</span> and <span class="math notranslate nohighlight">\(\gamma'\)</span> given in the lecture.</p>
-</section>
+</div>
 </div>
 <div class="solution dropdown admonition" id="uncertainty_traps-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#uncertainty_traps_ex2"> Exercise 69.2</a></p>
-<section id="s">
+<div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>First, let’s replicate the plot that illustrates the law of motion for
 precision, which is</p>
 <div class="math notranslate nohighlight">
@@ -717,10 +716,10 @@ series.</p>
 <p>(It would also be interesting to experiment with non-Gaussian
 distributions for the shocks, but this is a big exercise since it takes
 us outside the world of the standard Kalman filter)</p>
-</section>
 </div>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1308,7 +1307,7 @@ us outside the world of the standard Kalman filter)</p>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/uncertainty_traps.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/uncertainty_traps.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1321,7 +1320,7 @@ us outside the world of the standard Kalman filter)</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

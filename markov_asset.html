@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>71. Asset Pricing: Finite State Models &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -329,7 +328,7 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><section class="tex2jax_ignore mathjax_ignore" id="asset-pricing-finite-state-models">
+</div><div class="tex2jax_ignore mathjax_ignore section" id="asset-pricing-finite-state-models">
 <h1><a class="toc-backref" href="#id6"><span class="section-number">71. </span><span class="target" id="index-0"></span>Asset Pricing: Finite State Models</a><a class="headerlink" href="#asset-pricing-finite-state-models" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-1"></span><p class="topic-title">Contents</p>
@@ -361,25 +360,25 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
-Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
 Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
 Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
+Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
+Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
 Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
-Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
 Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.6.15)
+Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
 Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
 Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 </div>
 </div>
-<section id="overview">
+<div class="section" id="overview">
 <h2><a class="toc-backref" href="#id7"><span class="section-number">71.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p id="index-2">An asset is a claim on one or more future payoffs.</p>
 <p>The spot price of an asset depends primarily on</p>
@@ -410,8 +409,8 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/qua
 </div>
 </div>
 </div>
-</section>
-<section id="pricing-models">
+</div>
+<div class="section" id="pricing-models">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">71.2. </span><span class="target" id="index-3"></span>Pricing Models</a><a class="headerlink" href="#pricing-models" title="Permalink to this headline">¶</a></h2>
 <p id="index-4">Let <span class="math notranslate nohighlight">\(\{d_t\}_{t \geq 0}\)</span> be a stream of dividends</p>
 <ul class="simple">
@@ -420,7 +419,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/qua
 </ul>
 <p>Let’s look at some equations that we expect to hold for prices of assets under ex-dividend contracts
 (we will consider cum-dividend pricing in the exercises).</p>
-<section id="risk-neutral-pricing">
+<div class="section" id="risk-neutral-pricing">
 <h3><span class="section-number">71.2.1. </span>Risk-Neutral Pricing<a class="headerlink" href="#risk-neutral-pricing" title="Permalink to this headline">¶</a></h3>
 <p id="index-5">Our first scenario is risk-neutral pricing.</p>
 <p>Let <span class="math notranslate nohighlight">\(\beta = 1/(1+\rho)\)</span> be an intertemporal discount <strong>factor</strong>, where
@@ -431,8 +430,8 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/qua
 <p>This is a simple “cost equals expected benefit” relationship.</p>
 <p>Here <span class="math notranslate nohighlight">\({\mathbb E}_t [y]\)</span> denotes the best forecast of <span class="math notranslate nohighlight">\(y\)</span>, conditioned on information available at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>More precisely, <span class="math notranslate nohighlight">\({\mathbb E}_t [y]\)</span> is the mathematical expectation of <span class="math notranslate nohighlight">\(y\)</span> conditional on information available at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
-</section>
-<section id="pricing-with-random-discount-factor">
+</div>
+<div class="section" id="pricing-with-random-discount-factor">
 <h3><span class="section-number">71.2.2. </span>Pricing with Random Discount Factor<a class="headerlink" href="#pricing-with-random-discount-factor" title="Permalink to this headline">¶</a></h3>
 <p id="index-6">What happens if for some reason traders discount payouts differently depending on the state of the world?</p>
 <p>Michael Harrison and David Kreps <span id="id1">[<a class="reference internal" href="zreferences.html#id123" title="J. Michael Harrison and David M. Kreps. Martingales and arbitrage in multiperiod securities markets. Journal of Economic Theory, 20(3):381-408, June 1979.">HK79</a>]</span> and Lars Peter Hansen
@@ -446,8 +445,8 @@ settings the price of an ex-dividend asset obeys</p>
 <p>The stochastic discount factor can be specified to capture the idea that assets that tend to have good payoffs in bad states of the world are valued more highly than other assets whose payoffs don’t behave that way.</p>
 <p>This is because such assets pay well when funds are more urgently wanted.</p>
 <p>We give examples of how the stochastic discount factor has been modeled below.</p>
-</section>
-<section id="asset-pricing-and-covariances">
+</div>
+<div class="section" id="asset-pricing-and-covariances">
 <h3><span class="section-number">71.2.3. </span>Asset Pricing and Covariances<a class="headerlink" href="#asset-pricing-and-covariances" title="Permalink to this headline">¶</a></h3>
 <p>Recall that, from the definition of a conditional covariance <span class="math notranslate nohighlight">\({\rm cov}_t (x_{t+1}, y_{t+1})\)</span>, we have</p>
 <div class="math notranslate nohighlight" id="equation-lteeqs101">
@@ -464,8 +463,8 @@ settings the price of an ex-dividend asset obeys</p>
 </ul>
 <p>Equation <a class="reference internal" href="#equation-lteeqs102">(71.4)</a> asserts that the covariance of the stochastic discount factor with the one period payout <span class="math notranslate nohighlight">\(d_{t+1} + p_{t+1}\)</span> is an important determinant of the price <span class="math notranslate nohighlight">\(p_t\)</span>.</p>
 <p>We give examples of some models of stochastic discount factors that have been proposed later in this lecture and also in a <a class="reference external" href="https://python-advanced.quantecon.org/lucas_model.html">later lecture</a>.</p>
-</section>
-<section id="the-price-dividend-ratio">
+</div>
+<div class="section" id="the-price-dividend-ratio">
 <h3><span class="section-number">71.2.4. </span>The Price-Dividend Ratio<a class="headerlink" href="#the-price-dividend-ratio" title="Permalink to this headline">¶</a></h3>
 <p>Aside from prices, another quantity of interest is the <strong>price-dividend ratio</strong> <span class="math notranslate nohighlight">\(v_t := p_t / d_t\)</span>.</p>
 <p>Let’s write down an expression that this ratio should satisfy.</p>
@@ -473,9 +472,9 @@ settings the price of an ex-dividend asset obeys</p>
 <div class="math notranslate nohighlight" id="equation-pdex">
 <span class="eqno">(71.5)<a class="headerlink" href="#equation-pdex" title="Permalink to this equation">¶</a></span>\[v_t = {\mathbb E}_t \left[ m_{t+1} \frac{d_{t+1}}{d_t} (1 + v_{t+1}) \right]\]</div>
 <p>Below we’ll discuss the implication of this equation.</p>
-</section>
-</section>
-<section id="prices-in-the-risk-neutral-case">
+</div>
+</div>
+<div class="section" id="prices-in-the-risk-neutral-case">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">71.3. </span>Prices in the Risk-Neutral Case</a><a class="headerlink" href="#prices-in-the-risk-neutral-case" title="Permalink to this headline">¶</a></h2>
 <p>What can we say about price dynamics on the basis of the models described above?</p>
 <p>The answer to this question depends on</p>
@@ -485,7 +484,7 @@ settings the price of an ex-dividend asset obeys</p>
 </ol>
 <p>For now we’ll study  the risk-neutral case in which  the stochastic discount factor is constant.</p>
 <p>We’ll  focus on how an asset  price depends on a dividend process.</p>
-<section id="example-1-constant-dividends">
+<div class="section" id="example-1-constant-dividends">
 <h3><span class="section-number">71.3.1. </span>Example 1: Constant Dividends<a class="headerlink" href="#example-1-constant-dividends" title="Permalink to this headline">¶</a></h3>
 <p>The simplest case is risk-neutral price of a constant, non-random dividend stream <span class="math notranslate nohighlight">\(d_t = d &gt; 0\)</span>.</p>
 <p>Removing the expectation from <a class="reference internal" href="#equation-rnapex">(71.1)</a> and iterating forward gives</p>
@@ -507,8 +506,8 @@ settings the price of an ex-dividend asset obeys</p>
 <p>This is the equilibrium price in the constant dividend case.</p>
 <p>Indeed, simple algebra shows that setting <span class="math notranslate nohighlight">\(p_t = \bar p\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>
 satisfies the difference equation <span class="math notranslate nohighlight">\(p_t = \beta (d + p_{t+1})\)</span>.</p>
-</section>
-<section id="example-2-dividends-with-deterministic-growth-paths">
+</div>
+<div class="section" id="example-2-dividends-with-deterministic-growth-paths">
 <h3><span class="section-number">71.3.2. </span>Example 2: Dividends with Deterministic Growth Paths<a class="headerlink" href="#example-2-dividends-with-deterministic-growth-paths" title="Permalink to this headline">¶</a></h3>
 <p>Consider a growing, non-random dividend process <span class="math notranslate nohighlight">\(d_{t+1} = g d_t\)</span>
 where <span class="math notranslate nohighlight">\(0 &lt; g \beta &lt; 1\)</span>.</p>
@@ -533,8 +532,8 @@ p_t = \frac{\beta g}{1 - \beta g } d_t
 p_t = \frac{1 + \kappa}{ \rho - \kappa} d_t
 \]</div>
 <p>This is called the <em>Gordon formula</em>.</p>
-</section>
-<section id="example-3-markov-growth-risk-neutral-pricing">
+</div>
+<div class="section" id="example-3-markov-growth-risk-neutral-pricing">
 <span id="mass-mg"></span><h3><span class="section-number">71.3.3. </span>Example 3: Markov Growth, Risk-Neutral Pricing<a class="headerlink" href="#example-3-markov-growth-risk-neutral-pricing" title="Permalink to this headline">¶</a></h3>
 <p>Next, we consider a dividend process</p>
 <div class="math notranslate nohighlight" id="equation-mass-fmce">
@@ -595,7 +594,7 @@ factor <span class="math notranslate nohighlight">\(g_t = g(X_t)\)</span>.</p></
 <img alt="_images/markov_asset_5_0.png" src="_images/markov_asset_5_0.png" />
 </div>
 </div>
-<section id="pricing-formula">
+<div class="section" id="pricing-formula">
 <h4><span class="section-number">71.3.3.1. </span>Pricing Formula<a class="headerlink" href="#pricing-formula" title="Permalink to this headline">¶</a></h4>
 <p>To obtain asset prices in this setting, let’s adapt our analysis from the case of deterministic growth.</p>
 <p>In that case, we found that <span class="math notranslate nohighlight">\(v\)</span> is constant.</p>
@@ -632,9 +631,9 @@ K(x, y) := g(y) P(x, y)\]</div>
 <p>The solution is then</p>
 <div class="math notranslate nohighlight" id="equation-rned">
 <span class="eqno">(71.10)<a class="headerlink" href="#equation-rned" title="Permalink to this equation">¶</a></span>\[v = (I - \beta K)^{-1} \beta K{\mathbb 1}\]</div>
-</section>
-</section>
-<section id="code">
+</div>
+</div>
+<div class="section" id="code">
 <h3><span class="section-number">71.3.4. </span>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h3>
 <p>Let’s calculate and plot the price-dividend ratio at some parameters.</p>
 <p>As before, we’ll generate <span class="math notranslate nohighlight">\(\{X_t\}\)</span>  as a <a class="reference internal" href="finite_markov.html#fm_ex3"><span class="std std-ref">discretized AR1 process</span></a> and set <span class="math notranslate nohighlight">\(g_t = \exp(X_t)\)</span>.</p>
@@ -671,9 +670,9 @@ K(x, y) := g(y) P(x, y)\]</div>
 current states suggest high future states.</p>
 <p>Moreover, dividend growth is increasing in the state.</p>
 <p>The anticipation of high future dividend growth leads to a high price-dividend ratio.</p>
-</section>
-</section>
-<section id="risk-aversion-and-asset-prices">
+</div>
+</div>
+<div class="section" id="risk-aversion-and-asset-prices">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">71.4. </span>Risk Aversion and Asset Prices</a><a class="headerlink" href="#risk-aversion-and-asset-prices" title="Permalink to this headline">¶</a></h2>
 <p>Now let’s turn to the case where agents are risk averse.</p>
 <p>We’ll price several distinct assets, including</p>
@@ -682,7 +681,7 @@ current states suggest high future states.</p>
 <li><p>A consol (a type of bond issued by the UK government in the 19th century)</p></li>
 <li><p>Call options on a consol</p></li>
 </ul>
-<section id="pricing-a-lucas-tree">
+<div class="section" id="pricing-a-lucas-tree">
 <h3><span class="section-number">71.4.1. </span>Pricing a Lucas Tree<a class="headerlink" href="#pricing-a-lucas-tree" title="Permalink to this headline">¶</a></h3>
 <p id="index-7">Let’s start with a version of the celebrated asset pricing model of Robert E. Lucas, Jr. <span id="id3">[<a class="reference internal" href="zreferences.html#id183" title="Robert E Lucas, Jr. Asset prices in an exchange economy. Econometrica: Journal of the Econometric Society, 46(6):1429–1445, 1978.">Luc78</a>]</span>.</p>
 <p>Lucas considered an abstract pure exchange economy with these features:</p>
@@ -853,7 +852,7 @@ with a positively correlated Markov process and <span class="math notranslate no
 <p>This is because, with a positively correlated state process, higher states indicate higher future consumption growth.</p>
 <p>With the stochastic discount factor <a class="reference internal" href="#equation-lucsdf2">(71.13)</a>, higher growth decreases the
 discount factor, lowering the weight placed on future dividends.</p>
-<section id="special-cases">
+<div class="section" id="special-cases">
 <h4><span class="section-number">71.4.1.1. </span>Special Cases<a class="headerlink" href="#special-cases" title="Permalink to this headline">¶</a></h4>
 <p>In the special case <span class="math notranslate nohighlight">\(\gamma =1\)</span>, we have <span class="math notranslate nohighlight">\(J = P\)</span>.</p>
 <p>Recalling that <span class="math notranslate nohighlight">\(P^i {\mathbb 1} = {\mathbb 1}\)</span> for all <span class="math notranslate nohighlight">\(i\)</span> and applying <a class="reference internal" href="linear_algebra.html#la-neumann"><span class="std std-ref">Neumann’s geometric series lemma</span></a>, we are led to</p>
@@ -867,9 +866,9 @@ v = \beta(I-\beta P)^{-1} {\mathbb 1}
 <p>Alternatively, if <span class="math notranslate nohighlight">\(\gamma = 0\)</span>, then <span class="math notranslate nohighlight">\(J = K\)</span> and we recover the
 risk-neutral solution <a class="reference internal" href="#equation-rned">(71.10)</a>.</p>
 <p>This is as expected, since <span class="math notranslate nohighlight">\(\gamma = 0\)</span> implies <span class="math notranslate nohighlight">\(u(c) = c\)</span> (and hence agents are risk-neutral).</p>
-</section>
-</section>
-<section id="a-risk-free-consol">
+</div>
+</div>
+<div class="section" id="a-risk-free-consol">
 <h3><span class="section-number">71.4.2. </span>A Risk-Free Consol<a class="headerlink" href="#a-risk-free-consol" title="Permalink to this headline">¶</a></h3>
 <p>Consider the same pure exchange representative agent economy.</p>
 <p>A risk-free consol promises to pay a constant amount  <span class="math notranslate nohighlight">\(\zeta&gt; 0\)</span> each period.</p>
@@ -937,12 +936,12 @@ yields the solution</p>
 </div>
 </div>
 </div>
-</section>
-<section id="pricing-an-option-to-purchase-the-consol">
+</div>
+<div class="section" id="pricing-an-option-to-purchase-the-consol">
 <h3><span class="section-number">71.4.3. </span>Pricing an Option to Purchase the Consol<a class="headerlink" href="#pricing-an-option-to-purchase-the-consol" title="Permalink to this headline">¶</a></h3>
 <p>Let’s now price options of various maturities.</p>
 <p>We’ll study an option that  gives the owner the  right to purchase a consol at a price <span class="math notranslate nohighlight">\(p_S\)</span>.</p>
-<section id="an-infinite-horizon-call-option">
+<div class="section" id="an-infinite-horizon-call-option">
 <h4><span class="section-number">71.4.3.1. </span>An Infinite Horizon Call Option<a class="headerlink" href="#an-infinite-horizon-call-option" title="Permalink to this headline">¶</a></h4>
 <p>We want to price an <em>infinite horizon</em>  option to purchase a consol at a price <span class="math notranslate nohighlight">\(p_S\)</span>.</p>
 <p>The option entitles the owner at the beginning of a period either</p>
@@ -1064,12 +1063,12 @@ T w
 <p>This is despite the facts that the Markov chain is irreducible and that low states —
 where the consol prices are high — will be visited recurrently.</p>
 <p>The reason for low valuations in high Markov growth states is that <span class="math notranslate nohighlight">\(\beta=0.9\)</span>, so  future payoffs are  discounted substantially.</p>
-</section>
-</section>
-<section id="risk-free-rates">
+</div>
+</div>
+<div class="section" id="risk-free-rates">
 <h3><span class="section-number">71.4.4. </span>Risk-Free Rates<a class="headerlink" href="#risk-free-rates" title="Permalink to this headline">¶</a></h3>
 <p>Let’s look at risk-free interest rates over different periods.</p>
-<section id="the-one-period-risk-free-interest-rate">
+<div class="section" id="the-one-period-risk-free-interest-rate">
 <h4><span class="section-number">71.4.4.1. </span>The One-period Risk-free Interest Rate<a class="headerlink" href="#the-one-period-risk-free-interest-rate" title="Permalink to this headline">¶</a></h4>
 <p>As before, the stochastic discount factor is <span class="math notranslate nohighlight">\(m_{t+1} = \beta g_{t+1}^{-\gamma}\)</span>.</p>
 <p>It follows that the reciprocal <span class="math notranslate nohighlight">\(R_t^{-1}\)</span> of the gross risk-free interest rate <span class="math notranslate nohighlight">\(R_t\)</span> in state <span class="math notranslate nohighlight">\(x\)</span> is</p>
@@ -1083,20 +1082,20 @@ where the consol prices are high — will be visited recurrently.</p>
 m_1 = \beta M {\mathbb 1}
 \]</div>
 <p>where the <span class="math notranslate nohighlight">\(i\)</span>-th  element of <span class="math notranslate nohighlight">\(m_1\)</span> is the reciprocal of the one-period gross risk-free interest rate in state <span class="math notranslate nohighlight">\(x_i\)</span>.</p>
-</section>
-<section id="other-terms">
+</div>
+<div class="section" id="other-terms">
 <h4><span class="section-number">71.4.4.2. </span>Other Terms<a class="headerlink" href="#other-terms" title="Permalink to this headline">¶</a></h4>
 <p>Let <span class="math notranslate nohighlight">\(m_j\)</span> be an <span class="math notranslate nohighlight">\(n \times 1\)</span> vector whose <span class="math notranslate nohighlight">\(i\)</span> th component is the reciprocal of the <span class="math notranslate nohighlight">\(j\)</span> -period gross risk-free interest rate in state <span class="math notranslate nohighlight">\(x_i\)</span>.</p>
 <p>Then <span class="math notranslate nohighlight">\(m_1 = \beta M\)</span>, and <span class="math notranslate nohighlight">\(m_{j+1} = M m_j\)</span> for <span class="math notranslate nohighlight">\(j \geq 1\)</span>.</p>
-</section>
-</section>
-</section>
-<section id="exercises">
+</div>
+</div>
+</div>
+<div class="section" id="exercises">
 <h2><a class="toc-backref" href="#id11"><span class="section-number">71.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="exercise admonition" id="ma_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 71.1 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <p>In the lecture, we considered <strong>ex-dividend assets</strong>.</p>
 <p>A <strong>cum-dividend</strong> asset is a claim to the stream <span class="math notranslate nohighlight">\(d_t, d_{t+1}, \ldots\)</span>.</p>
 <p>Following <a class="reference internal" href="#equation-rnapex">(71.1)</a>, find the risk-neutral asset pricing equation for
@@ -1105,12 +1104,12 @@ one unit of a cum-dividend asset.</p>
 price of a cum-dividend asset?</p>
 <p>With a growing, non-random dividend process <span class="math notranslate nohighlight">\(d_t = g d_t\)</span> where <span class="math notranslate nohighlight">\(0 &lt; g \beta &lt; 1\)</span>,
 what is the equilibrium price of a cum-dividend asset?</p>
-</section>
+</div>
 </div>
 <div class="exercise admonition" id="ma_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 71.2 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <p>Consider the following primitives</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1132,12 +1131,12 @@ what is the equilibrium price of a cum-dividend asset?</p>
 <li><p>the price of the risk-free consol when <span class="math notranslate nohighlight">\(\zeta = 1\)</span></p></li>
 <li><p>the call option on the consol when <span class="math notranslate nohighlight">\(\zeta = 1\)</span> and <span class="math notranslate nohighlight">\(p_S = 150.0\)</span></p></li>
 </ul>
-</section>
+</div>
 </div>
 <div class="exercise admonition" id="ma_ex3">
 
 <p class="admonition-title"><span class="caption-number">Exercise 71.3 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <p>Let’s consider finite horizon call options, which are more common than
 infinite horizon ones.</p>
 <p>Finite horizon options obey functional equations closely related to <a class="reference internal" href="#equation-feoption0">(71.18)</a>.</p>
@@ -1166,15 +1165,15 @@ w_k = \max \{ \beta M w_{k-1}, \; p - p_S {\mathbb 1} \}
 <p>Write a function that computes <span class="math notranslate nohighlight">\(w_k\)</span> for any given <span class="math notranslate nohighlight">\(k\)</span>.</p>
 <p>Compute the value of the option with <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">5</span></code> and <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">25</span></code> using parameter values as in <a class="reference internal" href="#ma_ex1"><span class="std std-numref">Exercise 71.1</span></a>.</p>
 <p>Is one higher than the other?  Can you give intuition?</p>
-</section>
 </div>
-</section>
-<section id="solutions">
+</div>
+</div>
+<div class="section" id="solutions">
 <h2><a class="toc-backref" href="#id12"><span class="section-number">71.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <div class="solution dropdown admonition" id="markov_asset-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#ma_ex1"> Exercise 71.1</a></p>
-<section id="solution-content">
+<div class="section" id="solution-content">
 <p>For a cum-dividend asset, the basic risk-neutral asset pricing equation is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1190,12 +1189,12 @@ p_t = \frac{1}{1-\beta} d_t
 \[
 p_t = \frac{1}{1 - \beta g} d_t
 \]</div>
-</section>
+</div>
 </div>
 <div class="solution dropdown admonition" id="markov_asset-solution-4">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#ma_ex2"> Exercise 71.2</a></p>
-<section id="s">
+<div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>First, let’s enter the parameters:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1276,12 +1275,12 @@ functions</p>
 <img alt="_images/markov_asset_29_0.png" src="_images/markov_asset_29_0.png" />
 </div>
 </div>
-</section>
+</div>
 </div>
 <div class="solution dropdown admonition" id="markov_asset-solution-5">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#ma_ex3"> Exercise 71.3</a></p>
-<section id="s">
+<div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here’s a suitable function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1328,10 +1327,10 @@ functions</p>
 <p>Not surprisingly,  options with larger <span class="math notranslate nohighlight">\(k\)</span> are worth more.</p>
 <p>This is because an owner has a longer  horizon over which
 the option can be exercised.</p>
-</section>
 </div>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1919,7 +1918,7 @@ the option can be exercised.</p>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/markov_asset.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/markov_asset.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1932,7 +1931,7 @@ the option can be exercised.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

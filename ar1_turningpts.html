@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>50. Forecasting an AR(1) process &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -241,7 +240,7 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="forecasting-an-ar-1-process">
+  <div class="tex2jax_ignore mathjax_ignore section" id="forecasting-an-ar-1-process">
 <h1><span class="section-number">50. </span>Forecasting  an AR(1) process<a class="headerlink" href="#forecasting-an-ar-1-process" title="Permalink to this headline">¶</a></h1>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
@@ -251,272 +250,34 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: arviz in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.12.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pymc
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading pymc-4.0.1-py3-none-any.whl (555 kB)
-?25l
-     |▋                               | 10 kB 30.3 MB/s eta 0:00:01
-     |█▏                              | 20 kB 8.7 MB/s eta 0:00:01
-     |█▊                              | 30 kB 7.3 MB/s eta 0:00:01
-     |██▍                             | 40 kB 3.4 MB/s eta 0:00:01
-     |███                             | 51 kB 3.4 MB/s eta 0:00:01
-     |███▌                            | 61 kB 4.1 MB/s eta 0:00:01
-     |████▏                           | 71 kB 4.3 MB/s eta 0:00:01
-     |████▊                           | 81 kB 4.3 MB/s eta 0:00:01
-     |█████▎                          | 92 kB 4.8 MB/s eta 0:00:01
-     |██████                          | 102 kB 3.9 MB/s eta 0:00:01
-     |██████▌                         | 112 kB 3.9 MB/s eta 0:00:01
-     |███████                         | 122 kB 3.9 MB/s eta 0:00:01
-     |███████▋                        | 133 kB 3.9 MB/s eta 0:00:01
-     |████████▎                       | 143 kB 3.9 MB/s eta 0:00:01
-     |████████▉                       | 153 kB 3.9 MB/s eta 0:00:01
-     |█████████▍                      | 163 kB 3.9 MB/s eta 0:00:01
-     |██████████                      | 174 kB 3.9 MB/s eta 0:00:01
-     |██████████▋                     | 184 kB 3.9 MB/s eta 0:00:01
-     |███████████▏                    | 194 kB 3.9 MB/s eta 0:00:01
-     |███████████▉                    | 204 kB 3.9 MB/s eta 0:00:01
-     |████████████▍                   | 215 kB 3.9 MB/s eta 0:00:01
-     |█████████████                   | 225 kB 3.9 MB/s eta 0:00:01
-     |█████████████▋                  | 235 kB 3.9 MB/s eta 0:00:01
-     |██████████████▏                 | 245 kB 3.9 MB/s eta 0:00:01
-     |██████████████▊                 | 256 kB 3.9 MB/s eta 0:00:01
-     |███████████████▎                | 266 kB 3.9 MB/s eta 0:00:01
-     |████████████████                | 276 kB 3.9 MB/s eta 0:00:01
-     |████████████████▌               | 286 kB 3.9 MB/s eta 0:00:01
-     |█████████████████               | 296 kB 3.9 MB/s eta 0:00:01
-     |█████████████████▊              | 307 kB 3.9 MB/s eta 0:00:01
-     |██████████████████▎             | 317 kB 3.9 MB/s eta 0:00:01
-     |██████████████████▉             | 327 kB 3.9 MB/s eta 0:00:01
-     |███████████████████▌            | 337 kB 3.9 MB/s eta 0:00:01
-     |████████████████████            | 348 kB 3.9 MB/s eta 0:00:01
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |████████████████████▋           | 358 kB 3.9 MB/s eta 0:00:01
-     |█████████████████████▎          | 368 kB 3.9 MB/s eta 0:00:01
-     |█████████████████████▉          | 378 kB 3.9 MB/s eta 0:00:01
-     |██████████████████████▍         | 389 kB 3.9 MB/s eta 0:00:01
-     |███████████████████████         | 399 kB 3.9 MB/s eta 0:00:01
-     |███████████████████████▋        | 409 kB 3.9 MB/s eta 0:00:01
-     |████████████████████████▏       | 419 kB 3.9 MB/s eta 0:00:01
-     |████████████████████████▊       | 430 kB 3.9 MB/s eta 0:00:01
-     |█████████████████████████▍      | 440 kB 3.9 MB/s eta 0:00:01
-     |██████████████████████████      | 450 kB 3.9 MB/s eta 0:00:01
-     |██████████████████████████▌     | 460 kB 3.9 MB/s eta 0:00:01
-     |███████████████████████████▏    | 471 kB 3.9 MB/s eta 0:00:01
-     |███████████████████████████▊    | 481 kB 3.9 MB/s eta 0:00:01
-     |████████████████████████████▎   | 491 kB 3.9 MB/s eta 0:00:01
-     |████████████████████████████▉   | 501 kB 3.9 MB/s eta 0:00:01
-     |█████████████████████████████▌  | 512 kB 3.9 MB/s eta 0:00:01
-     |██████████████████████████████  | 522 kB 3.9 MB/s eta 0:00:01
-     |██████████████████████████████▋ | 532 kB 3.9 MB/s eta 0:00:01
-     |███████████████████████████████▎| 542 kB 3.9 MB/s eta 0:00:01
-     |███████████████████████████████▉| 552 kB 3.9 MB/s eta 0:00:01
-     |████████████████████████████████| 555 kB 3.9 MB/s 
-?25hRequirement already satisfied: packaging in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (21.3)
-Requirement already satisfied: netcdf4 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (1.6.0)
+Requirement already satisfied: pymc in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (4.0.1)
 Requirement already satisfied: typing-extensions&gt;=3.7.4.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (4.1.1)
-Requirement already satisfied: pandas&gt;=0.23 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (1.4.2)
-Requirement already satisfied: setuptools&gt;=38.4 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (61.2.0)
-Requirement already satisfied: xarray&gt;=0.16.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (0.20.1)
 Requirement already satisfied: scipy&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (1.7.3)
-Requirement already satisfied: numpy&gt;=1.12 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (1.21.5)
 Requirement already satisfied: matplotlib&gt;=3.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (3.5.1)
+Requirement already satisfied: numpy&gt;=1.12 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (1.21.5)
+Requirement already satisfied: packaging in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (21.3)
+Requirement already satisfied: xarray&gt;=0.16.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (0.20.1)
+Requirement already satisfied: pandas&gt;=0.23 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (1.4.2)
+Requirement already satisfied: netcdf4 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (1.6.0)
 Requirement already satisfied: xarray-einstats&gt;=0.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (0.3.0)
+Requirement already satisfied: setuptools&gt;=38.4 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from arviz) (61.2.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting aeppl==0.0.31
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading aeppl-0.0.31.tar.gz (60 kB)
-?25l
-     |█████▍                          | 10 kB 46.3 MB/s eta 0:00:01
-     |██████████▉                     | 20 kB 57.5 MB/s eta 0:00:01
-     |████████████████▏               | 30 kB 70.6 MB/s eta 0:00:01
-     |█████████████████████▋          | 40 kB 79.3 MB/s eta 0:00:01
-     |███████████████████████████     | 51 kB 85.3 MB/s eta 0:00:01
-     |████████████████████████████████| 60 kB 23.0 MB/s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: cachetools&gt;=4.2.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pymc) (4.2.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting aesara==2.7.3
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading aesara-2.7.3.tar.gz (1.3 MB)
-?25l
-     |▎                               | 10 kB 33.9 MB/s eta 0:00:01
-     |▌                               | 20 kB 42.1 MB/s eta 0:00:01
-     |▊                               | 30 kB 52.2 MB/s eta 0:00:01
-     |█                               | 40 kB 56.9 MB/s eta 0:00:01
-     |█▎                              | 51 kB 61.9 MB/s eta 0:00:01
-     |█▌                              | 61 kB 67.6 MB/s eta 0:00:01
-     |█▊                              | 71 kB 71.2 MB/s eta 0:00:01
-     |██                              | 81 kB 73.7 MB/s eta 0:00:01
-     |██▎                             | 92 kB 76.7 MB/s eta 0:00:01
-     |██▌                             | 102 kB 79.5 MB/s eta 0:00:01
-     |██▊                             | 112 kB 79.5 MB/s eta 0:00:01
-     |███                             | 122 kB 79.5 MB/s eta 0:00:01
-     |███▎                            | 133 kB 79.5 MB/s eta 0:00:01
-     |███▌                            | 143 kB 79.5 MB/s eta 0:00:01
-     |███▊                            | 153 kB 79.5 MB/s eta 0:00:01
-     |████                            | 163 kB 79.5 MB/s eta 0:00:01
-     |████▎                           | 174 kB 79.5 MB/s eta 0:00:01
-     |████▌                           | 184 kB 79.5 MB/s eta 0:00:01
-     |████▊                           | 194 kB 79.5 MB/s eta 0:00:01
-     |█████                           | 204 kB 79.5 MB/s eta 0:00:01
-     |█████▎                          | 215 kB 79.5 MB/s eta 0:00:01
-     |█████▌                          | 225 kB 79.5 MB/s eta 0:00:01
-     |█████▊                          | 235 kB 79.5 MB/s eta 0:00:01
-     |██████                          | 245 kB 79.5 MB/s eta 0:00:01
-     |██████▎                         | 256 kB 79.5 MB/s eta 0:00:01
-     |██████▌                         | 266 kB 79.5 MB/s eta 0:00:01
-     |██████▊                         | 276 kB 79.5 MB/s eta 0:00:01
-     |███████                         | 286 kB 79.5 MB/s eta 0:00:01
-     |███████▎                        | 296 kB 79.5 MB/s eta 0:00:01
-     |███████▌                        | 307 kB 79.5 MB/s eta 0:00:01
-     |███████▊                        | 317 kB 79.5 MB/s eta 0:00:01
-     |████████                        | 327 kB 79.5 MB/s eta 0:00:01
-     |████████▎                       | 337 kB 79.5 MB/s eta 0:00:01
-     |████████▌                       | 348 kB 79.5 MB/s eta 0:00:01
-     |████████▊                       | 358 kB 79.5 MB/s eta 0:00:01
-     |█████████                       | 368 kB 79.5 MB/s eta 0:00:01
-     |█████████▎                      | 378 kB 79.5 MB/s eta 0:00:01
-     |█████████▌                      | 389 kB 79.5 MB/s eta 0:00:01
-     |█████████▊                      | 399 kB 79.5 MB/s eta 0:00:01
-     |██████████                      | 409 kB 79.5 MB/s eta 0:00:01
-     |██████████▎                     | 419 kB 79.5 MB/s eta 0:00:01
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     |██████████▌                     | 430 kB 79.5 MB/s eta 0:00:01
-     |██████████▊                     | 440 kB 79.5 MB/s eta 0:00:01
-     |███████████                     | 450 kB 79.5 MB/s eta 0:00:01
-     |███████████▎                    | 460 kB 79.5 MB/s eta 0:00:01
-     |███████████▌                    | 471 kB 79.5 MB/s eta 0:00:01
-     |███████████▊                    | 481 kB 79.5 MB/s eta 0:00:01
-     |████████████                    | 491 kB 79.5 MB/s eta 0:00:01
-     |████████████▎                   | 501 kB 79.5 MB/s eta 0:00:01
-     |████████████▌                   | 512 kB 79.5 MB/s eta 0:00:01
-     |████████████▊                   | 522 kB 79.5 MB/s eta 0:00:01
-     |█████████████                   | 532 kB 79.5 MB/s eta 0:00:01
-     |█████████████▎                  | 542 kB 79.5 MB/s eta 0:00:01
-     |█████████████▌                  | 552 kB 79.5 MB/s eta 0:00:01
-     |█████████████▊                  | 563 kB 79.5 MB/s eta 0:00:01
-     |██████████████                  | 573 kB 79.5 MB/s eta 0:00:01
-     |██████████████▎                 | 583 kB 79.5 MB/s eta 0:00:01
-     |██████████████▌                 | 593 kB 79.5 MB/s eta 0:00:01
-     |██████████████▊                 | 604 kB 79.5 MB/s eta 0:00:01
-     |███████████████                 | 614 kB 79.5 MB/s eta 0:00:01
-     |███████████████▎                | 624 kB 79.5 MB/s eta 0:00:01
-     |███████████████▌                | 634 kB 79.5 MB/s eta 0:00:01
-     |███████████████▊                | 645 kB 79.5 MB/s eta 0:00:01
-     |████████████████                | 655 kB 79.5 MB/s eta 0:00:01
-     |████████████████▎               | 665 kB 79.5 MB/s eta 0:00:01
-     |████████████████▌               | 675 kB 79.5 MB/s eta 0:00:01
-     |████████████████▊               | 686 kB 79.5 MB/s eta 0:00:01
-     |█████████████████               | 696 kB 79.5 MB/s eta 0:00:01
-     |█████████████████▎              | 706 kB 79.5 MB/s eta 0:00:01
-     |█████████████████▌              | 716 kB 79.5 MB/s eta 0:00:01
-     |█████████████████▊              | 727 kB 79.5 MB/s eta 0:00:01
-     |██████████████████              | 737 kB 79.5 MB/s eta 0:00:01
-     |██████████████████▎             | 747 kB 79.5 MB/s eta 0:00:01
-     |██████████████████▌             | 757 kB 79.5 MB/s eta 0:00:01
-     |██████████████████▊             | 768 kB 79.5 MB/s eta 0:00:01
-     |███████████████████             | 778 kB 79.5 MB/s eta 0:00:01
-     |███████████████████▎            | 788 kB 79.5 MB/s eta 0:00:01
-     |███████████████████▌            | 798 kB 79.5 MB/s eta 0:00:01
-     |███████████████████▊            | 808 kB 79.5 MB/s eta 0:00:01
-     |████████████████████            | 819 kB 79.5 MB/s eta 0:00:01
-     |████████████████████▎           | 829 kB 79.5 MB/s eta 0:00:01
-     |████████████████████▌           | 839 kB 79.5 MB/s eta 0:00:01
-     |████████████████████▊           | 849 kB 79.5 MB/s eta 0:00:01
-     |█████████████████████           | 860 kB 79.5 MB/s eta 0:00:01
-     |█████████████████████▎          | 870 kB 79.5 MB/s eta 0:00:01
-     |█████████████████████▌          | 880 kB 79.5 MB/s eta 0:00:01
-     |█████████████████████▊          | 890 kB 79.5 MB/s eta 0:00:01
-     |██████████████████████          | 901 kB 79.5 MB/s eta 0:00:01
-     |██████████████████████▎         | 911 kB 79.5 MB/s eta 0:00:01
-     |██████████████████████▌         | 921 kB 79.5 MB/s eta 0:00:01
-     |██████████████████████▊         | 931 kB 79.5 MB/s eta 0:00:01
-     |███████████████████████         | 942 kB 79.5 MB/s eta 0:00:01
-     |███████████████████████▎        | 952 kB 79.5 MB/s eta 0:00:01
-     |███████████████████████▌        | 962 kB 79.5 MB/s eta 0:00:01
-     |███████████████████████▊        | 972 kB 79.5 MB/s eta 0:00:01
-     |████████████████████████        | 983 kB 79.5 MB/s eta 0:00:01
-     |████████████████████████▎       | 993 kB 79.5 MB/s eta 0:00:01
-     |████████████████████████▌       | 1.0 MB 79.5 MB/s eta 0:00:01
-     |████████████████████████▊       | 1.0 MB 79.5 MB/s eta 0:00:01
-     |█████████████████████████       | 1.0 MB 79.5 MB/s eta 0:00:01
-     |█████████████████████████▎      | 1.0 MB 79.5 MB/s eta 0:00:01
-     |█████████████████████████▌      | 1.0 MB 79.5 MB/s eta 0:00:01
-     |█████████████████████████▊      | 1.1 MB 79.5 MB/s eta 0:00:01
-     |██████████████████████████      | 1.1 MB 79.5 MB/s eta 0:00:01
-     |██████████████████████████▎     | 1.1 MB 79.5 MB/s eta 0:00:01
-     |██████████████████████████▌     | 1.1 MB 79.5 MB/s eta 0:00:01
-     |██████████████████████████▊     | 1.1 MB 79.5 MB/s eta 0:00:01
-     |███████████████████████████     | 1.1 MB 79.5 MB/s eta 0:00:01
-     |███████████████████████████▎    | 1.1 MB 79.5 MB/s eta 0:00:01
-     |███████████████████████████▌    | 1.1 MB 79.5 MB/s eta 0:00:01
-     |███████████████████████████▊    | 1.1 MB 79.5 MB/s eta 0:00:01
-     |████████████████████████████    | 1.1 MB 79.5 MB/s eta 0:00:01
-     |████████████████████████████▎   | 1.2 MB 79.5 MB/s eta 0:00:01
-     |████████████████████████████▌   | 1.2 MB 79.5 MB/s eta 0:00:01
-     |████████████████████████████▊   | 1.2 MB 79.5 MB/s eta 0:00:01
-     |█████████████████████████████   | 1.2 MB 79.5 MB/s eta 0:00:01
-     |█████████████████████████████▎  | 1.2 MB 79.5 MB/s eta 0:00:01
-     |█████████████████████████████▌  | 1.2 MB 79.5 MB/s eta 0:00:01
-     |█████████████████████████████▊  | 1.2 MB 79.5 MB/s eta 0:00:01
-     |██████████████████████████████  | 1.2 MB 79.5 MB/s eta 0:00:01
-     |██████████████████████████████▎ | 1.2 MB 79.5 MB/s eta 0:00:01
-     |██████████████████████████████▌ | 1.2 MB 79.5 MB/s eta 0:00:01
-     |██████████████████████████████▊ | 1.3 MB 79.5 MB/s eta 0:00:01
-     |███████████████████████████████ | 1.3 MB 79.5 MB/s eta 0:00:01
-     |███████████████████████████████▎| 1.3 MB 79.5 MB/s eta 0:00:01
-     |███████████████████████████████▌| 1.3 MB 79.5 MB/s eta 0:00:01
-     |███████████████████████████████▊| 1.3 MB 79.5 MB/s eta 0:00:01
-     |████████████████████████████████| 1.3 MB 79.5 MB/s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: cloudpickle in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pymc) (2.0.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting fastprogress&gt;=0.2.0
-  Downloading fastprogress-1.0.2-py3-none-any.whl (12 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: cloudpickle in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pymc) (2.0.0)
+Requirement already satisfied: aesara==2.7.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pymc) (2.7.3)
+Requirement already satisfied: cachetools&gt;=4.2.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pymc) (4.2.2)
+Requirement already satisfied: fastprogress&gt;=0.2.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pymc) (1.0.2)
+Requirement already satisfied: aeppl==0.0.31 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from pymc) (0.0.31)
 Requirement already satisfied: filelock in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from aesara==2.7.3-&gt;pymc) (3.6.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting etuples
-  Downloading etuples-0.3.5.tar.gz (30 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting logical-unification
-  Downloading logical-unification-0.4.5.tar.gz (31 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting miniKanren
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading miniKanren-1.0.3.tar.gz (41 kB)
-?25l
-     |████████                        | 10 kB 33.6 MB/s eta 0:00:01
-     |███████████████▉                | 20 kB 42.3 MB/s eta 0:00:01
-     |███████████████████████▉        | 30 kB 53.4 MB/s eta 0:00:01
-     |███████████████████████████████▊| 40 kB 61.4 MB/s eta 0:00:01
-     |████████████████████████████████| 41 kB 996 kB/s 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hCollecting cons
-  Downloading cons-0.4.5.tar.gz (26 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyparsing&gt;=2.2.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (3.0.4)
-Requirement already satisfied: kiwisolver&gt;=1.0.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (1.3.2)
-Requirement already satisfied: cycler&gt;=0.10 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (0.11.0)
+Requirement already satisfied: logical-unification in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from aesara==2.7.3-&gt;pymc) (0.4.5)
+Requirement already satisfied: etuples in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from aesara==2.7.3-&gt;pymc) (0.3.5)
+Requirement already satisfied: miniKanren in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from aesara==2.7.3-&gt;pymc) (1.0.3)
+Requirement already satisfied: cons in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from aesara==2.7.3-&gt;pymc) (0.4.5)
 Requirement already satisfied: python-dateutil&gt;=2.7 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (2.8.2)
+Requirement already satisfied: cycler&gt;=0.10 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (0.11.0)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (1.3.2)
 Requirement already satisfied: pillow&gt;=6.2.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (9.0.1)
+Requirement already satisfied: pyparsing&gt;=2.2.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (3.0.4)
 Requirement already satisfied: fonttools&gt;=4.22.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from matplotlib&gt;=3.0-&gt;arviz) (4.25.0)
 </pre></div>
 </div>
@@ -524,145 +285,11 @@ Requirement already satisfied: fonttools&gt;=4.22.0 in /usr/share/miniconda3/env
 Requirement already satisfied: six&gt;=1.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.0-&gt;arviz) (1.16.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: toolz in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from logical-unification-&gt;aesara==2.7.3-&gt;pymc) (0.11.2)
-Requirement already satisfied: multipledispatch in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from logical-unification-&gt;aesara==2.7.3-&gt;pymc) (0.6.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: multipledispatch in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from logical-unification-&gt;aesara==2.7.3-&gt;pymc) (0.6.0)
+Requirement already satisfied: toolz in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from logical-unification-&gt;aesara==2.7.3-&gt;pymc) (0.11.2)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: cftime in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from netcdf4-&gt;arviz) (1.6.0)
-Building wheels for collected packages: aeppl, aesara, cons, logical-unification, etuples, miniKanren
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for aeppl (setup.py) ... ?25l-
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> -
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for aeppl: filename=aeppl-0.0.31-py3-none-any.whl size=49384 sha256=da4072c7554f660a03be73a6e9c87d64606e4945d34e50e30b55de28a0d0accf
-  Stored in directory: /home/runner/.cache/pip/wheels/63/85/27/4fcfdab186dbbd3db02d198cc69ea3837a5066bde5b79dc07f
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for aesara (setup.py) ... ?25l-
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> -
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> -
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for aesara: filename=aesara-2.7.3-py3-none-any.whl size=1374382 sha256=c752ace57839317a7dacfdcc646e909a76e40dd194e72e1f43448f80131ad446
-  Stored in directory: /home/runner/.cache/pip/wheels/54/bd/d8/c8540dd630c6f80f0c86785adb73fb9be5b7e628358fdb61c2
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for cons (setup.py) ... ?25l-
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for cons: filename=cons-0.4.5-py3-none-any.whl size=9118 sha256=ebfcab52c0458569db7926d8e8c4b5479c8fa20f23c5e5c5e831f2cbece60dab
-  Stored in directory: /home/runner/.cache/pip/wheels/df/1c/d4/98d11d61a5a6c5de77e96de4aa2568cba4b8a4379854728e20
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for logical-unification (setup.py) ... ?25l-
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for logical-unification: filename=logical_unification-0.4.5-py3-none-any.whl size=13772 sha256=f9ee6f1b83321e5596eba3d95159fd106210f7b4119e96c4c9a03d3a8ca2d9c0
-  Stored in directory: /home/runner/.cache/pip/wheels/f9/ec/f8/17a976d5963719c370a62cab7de82bd2719c660ccd91495898
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for etuples (setup.py) ... ?25l-
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> -
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for etuples: filename=etuples-0.3.5-py3-none-any.whl size=12414 sha256=6fcdd962f207b72f2d00444410d579765f8f9fad61a05fae6a9fabdfddc9a23a
-  Stored in directory: /home/runner/.cache/pip/wheels/51/b7/82/04ddc7de0fa19bc23e3ce6eb5de387407a307f341bcd90f259
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for miniKanren (setup.py) ... ?25l-
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> -
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for miniKanren: filename=miniKanren-1.0.3-py3-none-any.whl size=23928 sha256=71dfe35d9d89dfa635c13e3655d918ea8d073c81f526a82edb96ed22fc3d840c
-  Stored in directory: /home/runner/.cache/pip/wheels/d3/a4/be/da3156a6e79d4ce54e83d66e27510361fce41bec9bd174b288
-Successfully built aeppl aesara cons logical-unification etuples miniKanren
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: logical-unification, cons, etuples, miniKanren, aesara, fastprogress, aeppl, pymc
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed aeppl-0.0.31 aesara-2.7.3 cons-0.4.5 etuples-0.3.5 fastprogress-1.0.2 logical-unification-0.4.5 miniKanren-1.0.3 pymc-4.0.1
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: cftime in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from netcdf4-&gt;arviz) (1.6.1)
 </pre></div>
 </div>
 </div>
@@ -704,7 +331,7 @@ Successfully built aeppl aesara cons logical-unification etuples miniKanren
 </div>
 </div>
 </div>
-<section id="a-univariate-first-order-autoregressive-process">
+<div class="section" id="a-univariate-first-order-autoregressive-process">
 <h2><span class="section-number">50.1. </span>A Univariate First-Order Autoregressive Process<a class="headerlink" href="#a-univariate-first-order-autoregressive-process" title="Permalink to this headline">¶</a></h2>
 <p>Consider the univariate AR(1) model:</p>
 <div class="math notranslate nohighlight" id="equation-ar1-tp-eq1">
@@ -749,8 +376,8 @@ f(y_{t+j} | y^t)  = \int f(y_{t+j} | y_{t}; \rho, \sigma) \pi_t(\rho,\sigma | y^
 <li><p>for each draw <span class="math notranslate nohighlight">\(n=0,1,...,N\)</span>, simulate a “future path” of length <span class="math notranslate nohighlight">\(T_1\)</span> with parameters <span class="math notranslate nohighlight">\(\left(\rho_n,\sigma_n\right)\)</span> and compute our three “sample path statistics”;</p></li>
 <li><p>finally, plot the desired statistics from the <span class="math notranslate nohighlight">\(N\)</span> samples as an empirical distribution.</p></li>
 </ul>
-</section>
-<section id="implementation">
+</div>
+<div class="section" id="implementation">
 <h2><span class="section-number">50.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>First, we’ll simulate a  sample path from which to launch our forecasts.</p>
 <p>In addition to plotting the sample path, under the assumption that the true parameter values are known,
@@ -824,8 +451,8 @@ we’ll plot <span class="math notranslate nohighlight">\(.9\)</span> and <span 
 </div>
 <p>As functions of forecast horizon, the coverage intervals have shapes like those described in
 <a class="reference external" href="https://python.quantecon.org/perm_income_cons.html">https://python.quantecon.org/perm_income_cons.html</a></p>
-</section>
-<section id="predictive-distributions-of-path-properties">
+</div>
+<div class="section" id="predictive-distributions-of-path-properties">
 <h2><span class="section-number">50.3. </span>Predictive Distributions of Path Properties<a class="headerlink" href="#predictive-distributions-of-path-properties" title="Permalink to this headline">¶</a></h2>
 <p>Wecker <span id="id3">[<a class="reference internal" href="zreferences.html#id5" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span> proposed using simulation techniques to characterize  predictive distribution of some statistics that are  non-linear functions of <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <p>He called these functions “path properties” to contrast them with properties of single data points.</p>
@@ -844,7 +471,7 @@ Z_t(Y(\omega)) := \left\{
 $$ -->
 <div class="math notranslate nohighlight">
 \[\begin{split}
-Z_t(Y(\omega)) := \left. 
+Z_t(Y(\omega)) :=  
 \begin{cases} 
 \ 1 &amp; \text{if } Y_t(\omega)&lt; Y_{t-1}(\omega)&lt; Y_{t-2}(\omega) \geq Y_{t-3}(\omega) \\
 0 &amp; \text{otherwise}
@@ -874,7 +501,7 @@ T_t(Y(\omega)) := \left\{
 $$ -->
 <div class="math notranslate nohighlight">
 \[\begin{split}
-T_t(Y(\omega)) := \left.
+T_t(Y(\omega)) := 
 \begin{cases}
 \ 1 &amp; \text{if } Y_{t-2}(\omega)&gt; Y_{t-1}(\omega) &gt; Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) &lt; Y_{t+1}(\omega) &lt; Y_{t+2}(\omega) \\
 \ -1 &amp; \text{if } Y_{t-2}(\omega)&lt; Y_{t-1}(\omega) &lt; Y_{t}(\omega) \ \text{and } \ Y_{t}(\omega) &gt; Y_{t+1}(\omega) &gt; Y_{t+2}(\omega) \\
@@ -891,7 +518,7 @@ P_t(\omega) := \left\{
 $$ -->
 <div class="math notranslate nohighlight">
 \[\begin{split}
-P_t(\omega) := \left. 
+P_t(\omega) := 
 \begin{cases}
 \ 1 &amp; \text{if } T_t(\omega)=1 \ \text{or} \ T_{t+1}(\omega)=1 \\
 0 &amp; \text{otherwise}
@@ -902,8 +529,8 @@ P_t(\omega) := \left.
 <li><p>``after one or two decrease(s), <span class="math notranslate nohighlight">\(Y\)</span> will grow for two consecutive quarters’’</p></li>
 </ul>
 <p>Following <span id="id5">[<a class="reference internal" href="zreferences.html#id5" title="William E Wecker. Predicting the turning points of a time series. Journal of business, pages 35–50, 1979.">Wec79</a>]</span>, we can use simulations to calculate  probabilities of <span class="math notranslate nohighlight">\(P_t\)</span> and <span class="math notranslate nohighlight">\(N_t\)</span> for each period <span class="math notranslate nohighlight">\(t\)</span>.</p>
-</section>
-<section id="a-wecker-like-algorithm">
+</div>
+<div class="section" id="a-wecker-like-algorithm">
 <h2><span class="section-number">50.4. </span>A Wecker-Like Algorithm<a class="headerlink" href="#a-wecker-like-algorithm" title="Permalink to this headline">¶</a></h2>
 <p>The procedure consists of the following steps:</p>
 <ul class="simple">
@@ -918,8 +545,8 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 <li><p>for each path <span class="math notranslate nohighlight">\(\omega_i\)</span>, compute the associated value of <span class="math notranslate nohighlight">\(W_t(\omega_i), W_{t+1}(\omega_i), \dots\)</span></p></li>
 <li><p>consider the sets <span class="math notranslate nohighlight">\(\{W_t(\omega_i)\}^{T}_{i=1}, \ \{W_{t+1}(\omega_i)\}^{T}_{i=1}, \ \dots, \ \{W_{t+N}(\omega_i)\}^{T}_{i=1}\)</span> as samples from the predictive distributions <span class="math notranslate nohighlight">\(f(W_{t+1} \mid \mathcal y_t, \dots)\)</span>, <span class="math notranslate nohighlight">\(f(W_{t+2} \mid y_t, y_{t-1}, \dots)\)</span>, <span class="math notranslate nohighlight">\(\dots\)</span>, <span class="math notranslate nohighlight">\(f(W_{t+N} \mid y_t, y_{t-1}, \dots)\)</span>.</p></li>
 </ul>
-</section>
-<section id="using-simulations-to-approximate-a-posterior-distribution">
+</div>
+<div class="section" id="using-simulations-to-approximate-a-posterior-distribution">
 <h2><span class="section-number">50.5. </span>Using Simulations to Approximate a Posterior Distribution<a class="headerlink" href="#using-simulations-to-approximate-a-posterior-distribution" title="Permalink to this headline">¶</a></h2>
 <p>The next code cells use <code class="docutils literal notranslate"><span class="pre">pymc</span></code> to compute the time <span class="math notranslate nohighlight">\(t\)</span> posterior distribution of <span class="math notranslate nohighlight">\(\rho, \sigma\)</span>.</p>
 <p>Note that in defining the likelihood function, we choose to condition on the initial value <span class="math notranslate nohighlight">\(y_0\)</span>.</p>
@@ -982,7 +609,7 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </div><div class="output text_html">
 <div>
   <progress value='15000' class='' max='15000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-  100.00% [15000/15000 00:10<00:00 Sampling chain 0, 1 divergences]
+  100.00% [15000/15000 00:08<00:00 Sampling chain 0, 0 divergences]
 </div>
 </div><div class="output text_html">
 <style>
@@ -1000,14 +627,14 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </div><div class="output text_html">
 <div>
   <progress value='15000' class='' max='15000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-  100.00% [15000/15000 00:09<00:00 Sampling chain 1, 0 divergences]
+  100.00% [15000/15000 00:08<00:00 Sampling chain 1, 0 divergences]
 </div>
 </div><img alt="_images/ar1_turningpts_7_4.png" src="_images/ar1_turningpts_7_4.png" />
 </div>
 </div>
 <p>The graphs on the left portray posterior marginal distributions.</p>
-</section>
-<section id="calculating-sample-path-statistics">
+</div>
+<div class="section" id="calculating-sample-path-statistics">
 <h2><span class="section-number">50.6. </span>Calculating Sample Path Statistics<a class="headerlink" href="#calculating-sample-path-statistics" title="Permalink to this headline">¶</a></h2>
 <p>Our next step is to prepare Python codeto compute our sample path statistics.</p>
 <div class="cell docutils container">
@@ -1068,8 +695,8 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </div>
 </div>
 </div>
-</section>
-<section id="original-wecker-method">
+</div>
+<div class="section" id="original-wecker-method">
 <h2><span class="section-number">50.7. </span>Original Wecker Method<a class="headerlink" href="#original-wecker-method" title="Permalink to this headline">¶</a></h2>
 <p>Now we  apply Wecker’s original  method by simulating future paths and compute predictive distributions, conditioning
 on the true  parameters associated with the data-generating model.</p>
@@ -1140,8 +767,8 @@ on the true  parameters associated with the data-generating model.</p>
 <img alt="_images/ar1_turningpts_11_0.png" src="_images/ar1_turningpts_11_0.png" />
 </div>
 </div>
-</section>
-<section id="extended-wecker-method">
+</div>
+<div class="section" id="extended-wecker-method">
 <h2><span class="section-number">50.8. </span>Extended Wecker Method<a class="headerlink" href="#extended-wecker-method" title="Permalink to this headline">¶</a></h2>
 <p>Now we apply we apply our  “extended” Wecker method based on  predictive densities of <span class="math notranslate nohighlight">\(y\)</span> defined by
 <a class="reference internal" href="#equation-ar1-tp-eq4">(50.4)</a> that acknowledge posterior uncertainty in the parameters <span class="math notranslate nohighlight">\(\rho, \sigma\)</span>.</p>
@@ -1206,8 +833,8 @@ on the true  parameters associated with the data-generating model.</p>
 <img alt="_images/ar1_turningpts_13_0.png" src="_images/ar1_turningpts_13_0.png" />
 </div>
 </div>
-</section>
-<section id="comparison">
+</div>
+<div class="section" id="comparison">
 <h2><span class="section-number">50.9. </span>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h2>
 <p>Finally, we plot both the original Wecker method and the extended method with parameter values drawn from the posterior together to compare the differnces that emerge from pretending to know parameter values when they are actually uncertain.</p>
 <div class="cell docutils container">
@@ -1225,8 +852,8 @@ on the true  parameters associated with the data-generating model.</p>
 <img alt="_images/ar1_turningpts_15_0.png" src="_images/ar1_turningpts_15_0.png" />
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1814,7 +1441,7 @@ on the true  parameters associated with the data-generating model.</p>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/ar1_turningpts.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/ar1_turningpts.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1827,7 +1454,7 @@ on the true  parameters associated with the data-generating model.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

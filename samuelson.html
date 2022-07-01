@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>27. Samuelson Multiplier-Accelerator &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -346,7 +345,7 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><section class="tex2jax_ignore mathjax_ignore" id="samuelson-multiplier-accelerator">
+</div><div class="tex2jax_ignore mathjax_ignore section" id="samuelson-multiplier-accelerator">
 <h1><a class="toc-backref" href="#id7"><span class="section-number">27. </span>Samuelson Multiplier-Accelerator</a><a class="headerlink" href="#samuelson-multiplier-accelerator" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
@@ -375,25 +374,25 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
-Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
 Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
-Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
+Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
 Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
+Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
+Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
+Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
+Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
-Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.6.15)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
 Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 </div>
 </div>
-<section id="overview">
+<div class="section" id="overview">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">27.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture creates non-stochastic and stochastic versions of Paul Samuelson’s celebrated multiplier accelerator model <span id="id1">[<a class="reference internal" href="zreferences.html#id84" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Sam39</a>]</span>.</p>
 <p>In doing so, we extend the example of the Solow model class in <a class="reference external" href="https://python-programming.quantecon.org/python_oop.html">our second OOP lecture</a>.</p>
@@ -427,7 +426,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/qua
 </div>
 </div>
 </div>
-<section id="samuelsons-model">
+<div class="section" id="samuelsons-model">
 <h3><span class="section-number">27.1.1. </span>Samuelson’s Model<a class="headerlink" href="#samuelsons-model" title="Permalink to this headline">¶</a></h3>
 <p>Samuelson used a <em>second-order linear difference equation</em> to
 represent a model of national output based on three components:</p>
@@ -463,9 +462,9 @@ identity representing random fluctuations in aggregate demand.</p>
 gives rise to recurrent irregular business cycles.</p>
 <p>(To read about stochastic linear difference equations see chapter XI of
 <span id="id3">[<a class="reference internal" href="zreferences.html#id206" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sar87</a>]</span>.)</p>
-</section>
-</section>
-<section id="details">
+</div>
+</div>
+<div class="section" id="details">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">27.2. </span>Details</a><a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
 <p>Let’s assume that</p>
 <ul class="simple">
@@ -536,7 +535,7 @@ a constant value as <span class="math notranslate nohighlight">\(t\)</span> beco
 no random shocks hit aggregate demand — has only transient fluctuations.</p>
 <p>We can convert the model to one that has persistent irregular
 fluctuations by adding a random shock to aggregate demand.</p>
-<section id="stochastic-version-of-the-model">
+<div class="section" id="stochastic-version-of-the-model">
 <h3><span class="section-number">27.2.1. </span>Stochastic Version of the Model<a class="headerlink" href="#stochastic-version-of-the-model" title="Permalink to this headline">¶</a></h3>
 <p>We create a <strong>random</strong> or <strong>stochastic</strong> version of the model by adding
 a random process of <strong>shocks</strong> or <strong>disturbances</strong>
@@ -545,8 +544,8 @@ leading to the <strong>second-order scalar linear stochastic difference
 equation</strong>:</p>
 <div class="math notranslate nohighlight" id="equation-second-stochastic">
 <span class="eqno">(27.5)<a class="headerlink" href="#equation-second-stochastic" title="Permalink to this equation">¶</a></span>\[Y_t = G_t + a (1-b) Y_{t-1} - a b Y_{t-2} + \sigma \epsilon_{t}\]</div>
-</section>
-<section id="mathematical-analysis-of-the-model">
+</div>
+<div class="section" id="mathematical-analysis-of-the-model">
 <h3><span class="section-number">27.2.2. </span>Mathematical Analysis of the Model<a class="headerlink" href="#mathematical-analysis-of-the-model" title="Permalink to this headline">¶</a></h3>
 <p>To get started, let’s set <span class="math notranslate nohighlight">\(G_t \equiv 0\)</span>, <span class="math notranslate nohighlight">\(\sigma = 0\)</span>, and
 <span class="math notranslate nohighlight">\(\gamma = 0\)</span>.</p>
@@ -646,8 +645,8 @@ polynomial are both strictly less than one:</p>
 absolute values strictly less than one, the absolute value of the larger
 one governs the rate of convergence to the steady state of the non
 stochastic version of the model.</p>
-</section>
-<section id="things-this-lecture-does">
+</div>
+<div class="section" id="things-this-lecture-does">
 <h3><span class="section-number">27.2.3. </span>Things This Lecture Does<a class="headerlink" href="#things-this-lecture-does" title="Permalink to this headline">¶</a></h3>
 <p>We write a function to generate simulations of a <span class="math notranslate nohighlight">\(\{Y_t\}\)</span> sequence as a function of time.</p>
 <p>The function requires that we put in initial conditions for <span class="math notranslate nohighlight">\(Y_{-1}, Y_{-2}\)</span>.</p>
@@ -676,9 +675,9 @@ A = \begin{bmatrix} 1 &amp; 0 &amp; 0 \cr
                       \gamma + G &amp; \rho_1 &amp; \rho_2 \cr
                       0 &amp; 1 &amp; 0 \end{bmatrix}
 \]</div>
-</section>
-</section>
-<section id="implementation">
+</div>
+</div>
+<div class="section" id="implementation">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">27.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>We’ll start by drawing an informative graph from page 189 of <span id="id5">[<a class="reference internal" href="zreferences.html#id206" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sar87</a>]</span></p>
 <div class="cell tag_output_scroll docutils container">
@@ -776,7 +775,7 @@ convergence to the steady state without damped cycles.</p></li>
 </ul>
 <p>Later we’ll present the graph with a red mark showing the particular
 point implied by the setting of <span class="math notranslate nohighlight">\((a,b)\)</span>.</p>
-<section id="function-to-describe-implications-of-characteristic-polynomial">
+<div class="section" id="function-to-describe-implications-of-characteristic-polynomial">
 <h3><span class="section-number">27.3.1. </span>Function to Describe Implications of Characteristic Polynomial<a class="headerlink" href="#function-to-describe-implications-of-characteristic-polynomial" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -815,8 +814,8 @@ point implied by the setting of <span class="math notranslate nohighlight">\((a,
 </div>
 </div>
 </div>
-</section>
-<section id="function-for-plotting-paths">
+</div>
+<div class="section" id="function-for-plotting-paths">
 <h3><span class="section-number">27.3.2. </span>Function for Plotting Paths<a class="headerlink" href="#function-for-plotting-paths" title="Permalink to this headline">¶</a></h3>
 <p>A useful function for our work below is</p>
 <div class="cell docutils container">
@@ -835,8 +834,8 @@ point implied by the setting of <span class="math notranslate nohighlight">\((a,
 </div>
 </div>
 </div>
-</section>
-<section id="manual-or-by-hand-root-calculations">
+</div>
+<div class="section" id="manual-or-by-hand-root-calculations">
 <h3><span class="section-number">27.3.3. </span>Manual or “by hand” Root Calculations<a class="headerlink" href="#manual-or-by-hand-root-calculations" title="Permalink to this headline">¶</a></h3>
 <p>The following function calculates roots of the characteristic polynomial
 using high school algebra.</p>
@@ -910,8 +909,8 @@ Absolute values of roots are less than one
 <img alt="_images/samuelson_14_1.png" src="_images/samuelson_14_1.png" />
 </div>
 </div>
-</section>
-<section id="reverse-engineering-parameters-to-generate-damped-cycles">
+</div>
+<div class="section" id="reverse-engineering-parameters-to-generate-damped-cycles">
 <h3><span class="section-number">27.3.4. </span>Reverse-Engineering Parameters to Generate Damped Cycles<a class="headerlink" href="#reverse-engineering-parameters-to-generate-damped-cycles" title="Permalink to this headline">¶</a></h3>
 <p>The next cell writes code that takes as inputs the modulus <span class="math notranslate nohighlight">\(r\)</span> and
 phase <span class="math notranslate nohighlight">\(\phi\)</span> of a conjugate pair of complex numbers in polar form</p>
@@ -988,8 +987,8 @@ pairs that would generate those roots</p></li>
 </div>
 </div>
 </div>
-</section>
-<section id="root-finding-using-numpy">
+</div>
+<div class="section" id="root-finding-using-numpy">
 <h3><span class="section-number">27.3.5. </span>Root Finding Using Numpy<a class="headerlink" href="#root-finding-using-numpy" title="Permalink to this headline">¶</a></h3>
 <p>Here we’ll use numpy to compute the roots of the characteristic
 polynomial</p>
@@ -1078,8 +1077,8 @@ Roots are less than one
 <img alt="_images/samuelson_20_1.png" src="_images/samuelson_20_1.png" />
 </div>
 </div>
-</section>
-<section id="reverse-engineered-complex-roots-example">
+</div>
+<div class="section" id="reverse-engineered-complex-roots-example">
 <h3><span class="section-number">27.3.6. </span>Reverse-Engineered Complex Roots: Example<a class="headerlink" href="#reverse-engineered-complex-roots-example" title="Permalink to this headline">¶</a></h3>
 <p>The next cell studies the implications of reverse-engineered complex
 roots.</p>
@@ -1117,8 +1116,8 @@ Roots are not less than one
 <img alt="_images/samuelson_22_1.png" src="_images/samuelson_22_1.png" />
 </div>
 </div>
-</section>
-<section id="digression-using-sympy-to-find-roots">
+</div>
+<div class="section" id="digression-using-sympy-to-find-roots">
 <h3><span class="section-number">27.3.7. </span>Digression: Using Sympy to Find Roots<a class="headerlink" href="#digression-using-sympy-to-find-roots" title="Permalink to this headline">¶</a></h3>
 <p>We can also use sympy to compute analytic formulas for the roots</p>
 <div class="cell docutils container">
@@ -1154,9 +1153,9 @@ Roots are not less than one
 \[\displaystyle \left[ \frac{α}{2} + \frac{β}{2} - \frac{\sqrt{α^{2} + 2 α β + β^{2} - 4 β}}{2}, \  \frac{α}{2} + \frac{β}{2} + \frac{\sqrt{α^{2} + 2 α β + β^{2} - 4 β}}{2}\right]\]</div>
 </div>
 </div>
-</section>
-</section>
-<section id="stochastic-shocks">
+</div>
+</div>
+<div class="section" id="stochastic-shocks">
 <h2><a class="toc-backref" href="#id11"><span class="section-number">27.4. </span>Stochastic Shocks</a><a class="headerlink" href="#stochastic-shocks" title="Permalink to this headline">¶</a></h2>
 <p>Now we’ll construct some code to simulate the stochastic version of the
 model that emerges when we add a random shock process to aggregate
@@ -1255,8 +1254,8 @@ Roots are less than one
 <img alt="_images/samuelson_29_1.png" src="_images/samuelson_29_1.png" />
 </div>
 </div>
-</section>
-<section id="government-spending">
+</div>
+<div class="section" id="government-spending">
 <h2><a class="toc-backref" href="#id12"><span class="section-number">27.5. </span>Government Spending</a><a class="headerlink" href="#government-spending" title="Permalink to this headline">¶</a></h2>
 <p>This function computes a response to either a permanent or one-off increase
 in government expenditures</p>
@@ -1381,8 +1380,8 @@ Roots are less than one
 <img alt="_images/samuelson_35_1.png" src="_images/samuelson_35_1.png" />
 </div>
 </div>
-</section>
-<section id="wrapping-everything-into-a-class">
+</div>
+<div class="section" id="wrapping-everything-into-a-class">
 <h2><a class="toc-backref" href="#id13"><span class="section-number">27.6. </span>Wrapping Everything Into a Class</a><a class="headerlink" href="#wrapping-everything-into-a-class" title="Permalink to this headline">¶</a></h2>
 <p>Up to now, we have written functions to do the work.</p>
 <p>Now we’ll roll up our sleeves and write a Python class called <code class="docutils literal notranslate"><span class="pre">Samuelson</span></code>
@@ -1583,7 +1582,7 @@ for the Samuelson model</p>
 </div>
 </div>
 </div>
-<section id="illustration-of-samuelson-class">
+<div class="section" id="illustration-of-samuelson-class">
 <h3><span class="section-number">27.6.1. </span>Illustration of Samuelson Class<a class="headerlink" href="#illustration-of-samuelson-class" title="Permalink to this headline">¶</a></h3>
 <p>Now we’ll put our Samuelson class to work on an example</p>
 <div class="cell docutils container">
@@ -1618,8 +1617,8 @@ Permanent government spending shock at t = 20
 <img alt="_images/samuelson_40_0.png" src="_images/samuelson_40_0.png" />
 </div>
 </div>
-</section>
-<section id="using-the-graph">
+</div>
+<div class="section" id="using-the-graph">
 <h3><span class="section-number">27.6.2. </span>Using the Graph<a class="headerlink" href="#using-the-graph" title="Permalink to this headline">¶</a></h3>
 <p>We’ll use our graph to show where the roots lie and how their location
 is consistent with the behavior of the path just graphed.</p>
@@ -1635,9 +1634,9 @@ is consistent with the behavior of the path just graphed.</p>
 <img alt="_images/samuelson_42_0.png" src="_images/samuelson_42_0.png" />
 </div>
 </div>
-</section>
-</section>
-<section id="using-the-linearstatespace-class">
+</div>
+</div>
+<div class="section" id="using-the-linearstatespace-class">
 <h2><a class="toc-backref" href="#id14"><span class="section-number">27.7. </span>Using the LinearStateSpace Class</a><a class="headerlink" href="#using-the-linearstatespace-class" title="Permalink to this headline">¶</a></h2>
 <p>It turns out that we can use the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>
 <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class to do
@@ -1692,7 +1691,7 @@ much of the work that we have done from scratch above.</p>
 <img alt="_images/samuelson_44_0.png" src="_images/samuelson_44_0.png" />
 </div>
 </div>
-<section id="other-methods-in-the-linearstatespace-class">
+<div class="section" id="other-methods-in-the-linearstatespace-class">
 <h3><span class="section-number">27.7.1. </span>Other Methods in the <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> Class<a class="headerlink" href="#other-methods-in-the-linearstatespace-class" title="Permalink to this headline">¶</a></h3>
 <p>Let’s plot <strong>impulse response functions</strong> for the instance of the
 Samuelson model using a method in the <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> class</p>
@@ -1727,8 +1726,8 @@ calculating the eigenvalues of <span class="math notranslate nohighlight">\(A\)<
 </div>
 </div>
 </div>
-</section>
-<section id="inheriting-methods-from-linearstatespace">
+</div>
+<div class="section" id="inheriting-methods-from-linearstatespace">
 <h3><span class="section-number">27.7.2. </span>Inheriting Methods from <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code><a class="headerlink" href="#inheriting-methods-from-linearstatespace" title="Permalink to this headline">¶</a></h3>
 <p>We could also create a subclass of <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> (inheriting all its
 methods and attributes) to add more functions to use</p>
@@ -1840,8 +1839,8 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 </div>
-</section>
-<section id="illustrations">
+</div>
+<div class="section" id="illustrations">
 <h3><span class="section-number">27.7.3. </span>Illustrations<a class="headerlink" href="#illustrations" title="Permalink to this headline">¶</a></h3>
 <p>Let’s show how we can use the <code class="docutils literal notranslate"><span class="pre">SamuelsonLSS</span></code></p>
 <div class="cell docutils container">
@@ -1896,9 +1895,9 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="pure-multiplier-model">
+</div>
+</div>
+<div class="section" id="pure-multiplier-model">
 <h2><a class="toc-backref" href="#id15"><span class="section-number">27.8. </span>Pure Multiplier Model</a><a class="headerlink" href="#pure-multiplier-model" title="Permalink to this headline">¶</a></h2>
 <p>Let’s shut down the accelerator by setting <span class="math notranslate nohighlight">\(b=0\)</span> to get a pure
 multiplier model</p>
@@ -1953,8 +1952,8 @@ accelerator</p></li>
 <img alt="_images/samuelson_62_1.png" src="_images/samuelson_62_1.png" />
 </div>
 </div>
-</section>
-<section id="summary">
+</div>
+<div class="section" id="summary">
 <h2><a class="toc-backref" href="#id16"><span class="section-number">27.9. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we wrote functions and classes to represent non-stochastic and
 stochastic versions of the Samuelson (1939) multiplier-accelerator model, described
@@ -1963,8 +1962,8 @@ in <span id="id6">[<a class="reference internal" href="zreferences.html#id84" ti
 could either be stationary, explosive, or oscillating.</p>
 <p>We also were able to represent the model using the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>
 <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class.</p>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -2552,7 +2551,7 @@ could either be stationary, explosive, or oscillating.</p>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/samuelson.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/samuelson.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -2565,7 +2564,7 @@ could either be stationary, explosive, or oscillating.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

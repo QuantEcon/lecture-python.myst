@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>67. Stability in Linear Rational Expectations Models &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -284,7 +283,7 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><section class="tex2jax_ignore mathjax_ignore" id="stability-in-linear-rational-expectations-models">
+</div><div class="tex2jax_ignore mathjax_ignore section" id="stability-in-linear-rational-expectations-models">
 <h1><a class="toc-backref" href="#id8"><span class="section-number">67. </span>Stability in Linear Rational Expectations Models</a><a class="headerlink" href="#stability-in-linear-rational-expectations-models" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
@@ -313,20 +312,20 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
-Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
 Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
-Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
 Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
+Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
+Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
+Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
 Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
 Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.6.15)
-Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 </div>
@@ -344,7 +343,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/qua
 </div>
 </div>
 </div>
-<section id="overview">
+<div class="section" id="overview">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">67.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture studies stability in the context of an elementary rational expectations model.</p>
 <p>We study a rational expectations version of Philip Cagan’s model <span id="id1">[<a class="reference internal" href="zreferences.html#id89" title="Philip Cagan. The monetary dynamics of hyperinflation. In Milton Friedman, editor, Studies in the Quantity Theory of Money, pages 25–117. University of Chicago Press, Chicago, 1956.">Cag56</a>]</span> linking
@@ -368,8 +367,8 @@ a mathematical expectation of a geometric sum of future values of another variab
 as an <strong>expectational difference equation</strong> whose solution is a rational expectations equilibrium.</p>
 <p>We’ll start this lecture with a quick review of deterministic (i.e., non-random)
 first-order and second-order linear difference equations.</p>
-</section>
-<section id="linear-difference-equations">
+</div>
+<div class="section" id="linear-difference-equations">
 <h2><a class="toc-backref" href="#id10"><span class="section-number">67.2. </span>Linear Difference Equations</a><a class="headerlink" href="#linear-difference-equations" title="Permalink to this headline">¶</a></h2>
 <p>We’ll use the <em>backward shift</em> or <em>lag</em> operator <span class="math notranslate nohighlight">\(L\)</span>.</p>
 <p>The lag operator <span class="math notranslate nohighlight">\(L\)</span>  maps a sequence <span class="math notranslate nohighlight">\(\{x_t\}_{t=0}^\infty\)</span> into the sequence <span class="math notranslate nohighlight">\(\{x_{t-1}\}_{t=0}^\infty\)</span></p>
@@ -379,7 +378,7 @@ first-order and second-order linear difference equations.</p>
 operator.</p>
 <p>We’ll often use the equality  <span class="math notranslate nohighlight">\(L^{-1} x_t \equiv x_{t+1}\)</span> below.</p>
 <p>The algebra of lag and forward shift operators can simplify representing and solving linear difference equations.</p>
-<section id="first-order">
+<div class="section" id="first-order">
 <h3><span class="section-number">67.2.1. </span>First Order<a class="headerlink" href="#first-order" title="Permalink to this headline">¶</a></h3>
 <p>We want to solve a linear first-order scalar difference equation.</p>
 <p>Let <span class="math notranslate nohighlight">\(|\lambda | &lt; 1\)</span> and let
@@ -427,8 +426,8 @@ lead</strong> in <span class="math notranslate nohighlight">\(u\)</span> converg
 diverge, in which case a solution of this form does not exist.</p>
 <p>The distributed lead in <span class="math notranslate nohighlight">\(u\)</span> in <a class="reference internal" href="#equation-equn-5">(67.5)</a> need not
 converge when <span class="math notranslate nohighlight">\(|\lambda| &lt; 1\)</span>.</p>
-</section>
-<section id="second-order">
+</div>
+<div class="section" id="second-order">
 <h3><span class="section-number">67.2.2. </span>Second Order<a class="headerlink" href="#second-order" title="Permalink to this headline">¶</a></h3>
 <p>Now consider the second order difference equation</p>
 <div class="math notranslate nohighlight" id="equation-equn-6">
@@ -454,9 +453,9 @@ unstable root (in this case <span class="math notranslate nohighlight">\(\lambda
 <li><p><span class="math notranslate nohighlight">\(\lambda_1 y_t\)</span> is called the <strong>feedback part</strong></p></li>
 <li><p><span class="math notranslate nohighlight">\(-{\frac{\lambda_2^{-1}}{1 - \lambda_2^{-1}L^{-1}}} u_{t+1}\)</span> is called the <strong>feedforward part</strong></p></li>
 </ul>
-</section>
-</section>
-<section id="illustration-cagans-model">
+</div>
+</div>
+<div class="section" id="illustration-cagans-model">
 <h2><a class="toc-backref" href="#id11"><span class="section-number">67.3. </span>Illustration: Cagan’s Model</a><a class="headerlink" href="#illustration-cagans-model" title="Permalink to this headline">¶</a></h2>
 <p>Now let’s use linear difference equations to represent and solve Sargent’s  <span id="id5">[<a class="reference internal" href="zreferences.html#id90" title="Thomas J Sargent. The Demand for Money During Hyperinflations under Rational Expectations: I. International Economic Review, 18(1):59-82, February 1977.">Sar77</a>]</span> rational expectations version of
 Cagan’s model <span id="id6">[<a class="reference internal" href="zreferences.html#id89" title="Philip Cagan. The monetary dynamics of hyperinflation. In Milton Friedman, editor, Studies in the Quantity Theory of Money, pages 25–117. University of Chicago Press, Chicago, 1956.">Cag56</a>]</span> that connects the price level to the public’s anticipations of future money supplies.</p>
@@ -537,8 +536,8 @@ diverges as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\
 equation <a class="reference internal" href="#equation-equation-1">(67.8)</a> can be constructed by adding to the right hand of <a class="reference internal" href="#equation-equation-4">(67.12)</a> a
 sequence <span class="math notranslate nohighlight">\(c \lambda^{-t}\)</span> where <span class="math notranslate nohighlight">\(c\)</span> is an arbitrary positive
 constant.</p>
-</section>
-<section id="some-python-code">
+</div>
+<div class="section" id="some-python-code">
 <h2><a class="toc-backref" href="#id12"><span class="section-number">67.4. </span>Some Python Code</a><a class="headerlink" href="#some-python-code" title="Permalink to this headline">¶</a></h2>
 <p>We’ll construct examples that illustrate <a class="reference internal" href="#equation-equation-3">(67.11)</a>.</p>
 <p>Our first example takes as the law of motion for the log money supply
@@ -672,8 +671,8 @@ average of current and future values of <span class="math notranslate nohighligh
 <li><p>it happens that in this example future <span class="math notranslate nohighlight">\(m\)</span>’s are always less
 than the current <span class="math notranslate nohighlight">\(m\)</span></p></li>
 </ul>
-</section>
-<section id="alternative-code">
+</div>
+<div class="section" id="alternative-code">
 <h2><a class="toc-backref" href="#id13"><span class="section-number">67.5. </span>Alternative Code</a><a class="headerlink" href="#alternative-code" title="Permalink to this headline">¶</a></h2>
 <p>We could also have run the simulation using the quantecon
 <strong>LinearStateSpace</strong> code.</p>
@@ -714,7 +713,7 @@ than the current <span class="math notranslate nohighlight">\(m\)</span></p></li
 <img alt="_images/re_with_feedback_15_0.png" src="_images/re_with_feedback_15_0.png" />
 </div>
 </div>
-<section id="special-case">
+<div class="section" id="special-case">
 <h3><span class="section-number">67.5.1. </span>Special Case<a class="headerlink" href="#special-case" title="Permalink to this headline">¶</a></h3>
 <p>To simplify our presentation in ways that will let focus on an important
 idea, in the above second-order difference equation <a class="reference internal" href="#equation-equation-6">(67.14)</a> that governs
@@ -741,9 +740,9 @@ p_t = F m_t .
 \]</div>
 <p>Please keep these formulas in mind as we investigate an alternative
 route to and interpretation of our formula for <span class="math notranslate nohighlight">\(F\)</span>.</p>
-</section>
-</section>
-<section id="another-perspective">
+</div>
+</div>
+<div class="section" id="another-perspective">
 <h2><a class="toc-backref" href="#id14"><span class="section-number">67.6. </span>Another Perspective</a><a class="headerlink" href="#another-perspective" title="Permalink to this headline">¶</a></h2>
 <p>Above, we imposed stability or non-explosiveness on the solution of the key difference equation <a class="reference internal" href="#equation-equation-1">(67.8)</a>
 in Cagan’s model by solving the  unstable root of the characteristic polynomial forward.</p>
@@ -845,7 +844,7 @@ restriction that is equivalent to</p>
 <span class="eqno">(67.21)<a class="headerlink" href="#equation-equation-13" title="Permalink to this equation">¶</a></span>\[p_0 = - (Q^{22})^{-1} Q^{21} m_0.\]</div>
 <p>This is the unique <strong>stabilizing value</strong> of <span class="math notranslate nohighlight">\(p_0\)</span> expressed as a function of
 <span class="math notranslate nohighlight">\(m_0\)</span>.</p>
-<section id="refining-the-formula">
+<div class="section" id="refining-the-formula">
 <h3><span class="section-number">67.6.1. </span>Refining the Formula<a class="headerlink" href="#refining-the-formula" title="Permalink to this headline">¶</a></h3>
 <p>We can get an even more convenient formula for <span class="math notranslate nohighlight">\(p_0\)</span> that is cast
 in terms of components of <span class="math notranslate nohighlight">\(Q\)</span> instead of components of
@@ -898,8 +897,8 @@ p_t = Q_{21} Q_{11}^{-1}  m_t ,
 \[\begin{split}
 Q_1 = \begin{bmatrix} Q_{11} \\ Q_{21}  \end{bmatrix}.
 \end{split}\]</div>
-</section>
-<section id="remarks-about-feedback">
+</div>
+<div class="section" id="remarks-about-feedback">
 <h3><span class="section-number">67.6.2. </span>Remarks about Feedback<a class="headerlink" href="#remarks-about-feedback" title="Permalink to this headline">¶</a></h3>
 <p>We have expressed <a class="reference internal" href="#equation-equation-8">(67.16)</a> in what superficially appears to be a form in
 which <span class="math notranslate nohighlight">\(y_{t+1}\)</span> feeds back on <span class="math notranslate nohighlight">\(y_t\)</span>, even though what we
@@ -918,9 +917,9 @@ modulus and that makes <span class="math notranslate nohighlight">\(H\)</span> a
 <p>We’ll keep these observations in mind as we turn now to a case in which
 the log money supply actually does feed back on the log of the price
 level.</p>
-</section>
-</section>
-<section id="log-money-supply-feeds-back-on-log-price-level">
+</div>
+</div>
+<div class="section" id="log-money-supply-feeds-back-on-log-price-level">
 <h2><a class="toc-backref" href="#id15"><span class="section-number">67.7. </span>Log money Supply Feeds Back on Log Price Level</a><a class="headerlink" href="#log-money-supply-feeds-back-on-log-price-level" title="Permalink to this headline">¶</a></h2>
 <p>An arrangement of eigenvalues that split around unity, with one being
 below unity and another being greater than unity, sometimes prevails when there is  <em>feedback</em> from the log price level to the log
@@ -1144,8 +1143,8 @@ exist.</p>
 </div>
 </div>
 </div>
-</section>
-<section id="big-p-little-p-interpretation">
+</div>
+<div class="section" id="big-p-little-p-interpretation">
 <h2><a class="toc-backref" href="#id16"><span class="section-number">67.8. </span>Big <span class="math notranslate nohighlight">\(P\)</span>, Little <span class="math notranslate nohighlight">\(p\)</span> Interpretation</a><a class="headerlink" href="#big-p-little-p-interpretation" title="Permalink to this headline">¶</a></h2>
 <p>It is helpful to view our solutions of difference equations having  feedback from the price level or inflation to money or the rate of money
 creation in terms of the Big <span class="math notranslate nohighlight">\(K\)</span>, little <span class="math notranslate nohighlight">\(k\)</span> idea discussed in <a class="reference internal" href="rational_expectations.html"><span class="doc">Rational Expectations Models</span></a>.</p>
@@ -1260,8 +1259,8 @@ with <span class="math notranslate nohighlight">\(F^*\)</span> and check for the
 \[\displaystyle \left( 0.95012437887911, \  0.950124378879109\right)\]</div>
 </div>
 </div>
-</section>
-<section id="fun-with-sympy">
+</div>
+<div class="section" id="fun-with-sympy">
 <h2><a class="toc-backref" href="#id17"><span class="section-number">67.9. </span>Fun with SymPy</a><a class="headerlink" href="#fun-with-sympy" title="Permalink to this headline">¶</a></h2>
 <p>This section is a  gift for readers who have made it this far.</p>
 <p>It puts SymPy to work on our model.</p>
@@ -1431,8 +1430,8 @@ is the eigenvector associated with <span class="math notranslate nohighlight">\(
 \[\displaystyle - \frac{1 - λ}{λ ρ - 1}\]</div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -2020,7 +2019,7 @@ is the eigenvector associated with <span class="math notranslate nohighlight">\(
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/re_with_feedback.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/re_with_feedback.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -2033,7 +2032,7 @@ is the eigenvector associated with <span class="math notranslate nohighlight">\(
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>10. LLN and CLT &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -274,7 +273,7 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><section class="tex2jax_ignore mathjax_ignore" id="lln-and-clt">
+</div><div class="tex2jax_ignore mathjax_ignore section" id="lln-and-clt">
 <h1><a class="toc-backref" href="#id3"><span class="section-number">10. </span><span class="target" id="index-0"></span>LLN and <span class="target" id="index-1"></span>CLT</a><a class="headerlink" href="#lln-and-clt" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="index-2"></span><div class="contents topic" id="contents">
 <span id="index-3"></span><p class="topic-title">Contents</p>
@@ -291,7 +290,7 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<section id="overview">
+<div class="section" id="overview">
 <h2><a class="toc-backref" href="#id4"><span class="section-number">10.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture illustrates two of the most important theorems of probability and statistics: The
 law of large numbers (LLN) and the central limit theorem (CLT).</p>
@@ -321,18 +320,18 @@ law of large numbers (LLN) and the central limit theorem (CLT).</p>
 </div>
 </div>
 </div>
-</section>
-<section id="relationships">
+</div>
+<div class="section" id="relationships">
 <h2><a class="toc-backref" href="#id5"><span class="section-number">10.2. </span>Relationships</a><a class="headerlink" href="#relationships" title="Permalink to this headline">¶</a></h2>
 <p>The CLT refines the LLN.</p>
 <p>The LLN gives conditions under which sample moments converge to population moments as sample size increases.</p>
 <p>The CLT provides information about the rate at which sample moments converge to population moments as sample size increases.</p>
-</section>
-<section id="lln">
+</div>
+<div class="section" id="lln">
 <span id="lln-mr"></span><h2><a class="toc-backref" href="#id6"><span class="section-number">10.3. </span>LLN</a><a class="headerlink" href="#lln" title="Permalink to this headline">¶</a></h2>
 <p id="index-4">We begin with the law of large numbers, which tells us when sample averages
 will converge to their population means.</p>
-<section id="the-classical-lln">
+<div class="section" id="the-classical-lln">
 <span id="lln-ksl"></span><h3><span class="section-number">10.3.1. </span>The Classical LLN<a class="headerlink" href="#the-classical-lln" title="Permalink to this headline">¶</a></h3>
 <p>The classical law of large numbers concerns independent and
 identically distributed (IID) random variables.</p>
@@ -360,8 +359,8 @@ statement <span class="math notranslate nohighlight">\(\bar X_n \to \mu\)</span>
 <p>In this setting, <a class="reference internal" href="#equation-lln-as">(10.1)</a> should be interpreted as meaning that the
 probability of the computer producing a sequence where <span class="math notranslate nohighlight">\(\bar X_n \to \mu\)</span> fails to occur
 is zero.</p>
-</section>
-<section id="proof">
+</div>
+<div class="section" id="proof">
 <h3><span class="section-number">10.3.2. </span>Proof<a class="headerlink" href="#proof" title="Permalink to this headline">¶</a></h3>
 <p id="index-5">The proof of Kolmogorov’s strong law is nontrivial – see, for example, theorem 8.3.5 of <span id="id1">[<a class="reference internal" href="zreferences.html#id157" title="R M Dudley. Real Analysis and Probability. Cambridge Studies in Advanced Mathematics. Cambridge University Press, 2002.">Dud02</a>]</span>.</p>
 <p>On the other hand, we can prove a weaker version of the LLN very easily and
@@ -413,8 +412,8 @@ approached zero when the difference between <span class="math notranslate nohigh
 large.</p>
 <p>In other words, the LLN can still work if the sequence <span class="math notranslate nohighlight">\(X_1, \ldots, X_n\)</span> has a kind of “asymptotic independence”, in the sense that correlation falls to zero as variables become further apart in the sequence.</p>
 <p>This idea is very important in time series analysis, and we’ll come across it again soon enough.</p>
-</section>
-<section id="illustration">
+</div>
+<div class="section" id="illustration">
 <h3><span class="section-number">10.3.3. </span>Illustration<a class="headerlink" href="#illustration" title="Permalink to this headline">¶</a></h3>
 <p id="index-6">Let’s now illustrate the classical IID law of large numbers using simulation.</p>
 <p>In particular, we aim to generate some sequences of IID random variables and plot the evolution
@@ -478,12 +477,12 @@ of <span class="math notranslate nohighlight">\(\bar X_n\)</span> as <span class
 </div>
 </div>
 <p>The three distributions are chosen at random from a selection stored in the dictionary <code class="docutils literal notranslate"><span class="pre">distributions</span></code>.</p>
-</section>
-</section>
-<section id="clt">
+</div>
+</div>
+<div class="section" id="clt">
 <h2><a class="toc-backref" href="#id7"><span class="section-number">10.4. </span>CLT</a><a class="headerlink" href="#clt" title="Permalink to this headline">¶</a></h2>
 <p id="index-7">Next, we turn to the central limit theorem, which tells us about the distribution of the deviation between sample averages and population means.</p>
-<section id="statement-of-the-theorem">
+<div class="section" id="statement-of-the-theorem">
 <h3><span class="section-number">10.4.1. </span>Statement of the Theorem<a class="headerlink" href="#statement-of-the-theorem" title="Permalink to this headline">¶</a></h3>
 <p>The central limit theorem is one of the most remarkable results in all of mathematics.</p>
 <p>In the classical IID setting, it tells us the following:</p>
@@ -494,8 +493,8 @@ of <span class="math notranslate nohighlight">\(\bar X_n\)</span> as <span class
 \quad \text{as} \quad
 n \to \infty\]</div>
 <p>Here <span class="math notranslate nohighlight">\(\stackrel { d } {\to} N(0, \sigma^2)\)</span> indicates <a class="reference external" href="https://en.wikipedia.org/wiki/Convergence_of_random_variables#Convergence_in_distribution">convergence in distribution</a> to a centered (i.e, zero mean) normal with standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
-</section>
-<section id="intuition">
+</div>
+<div class="section" id="intuition">
 <h3><span class="section-number">10.4.2. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this headline">¶</a></h3>
 <p id="index-8">The striking implication of the CLT is that for <strong>any</strong> distribution with
 finite second moment, the simple operation of adding independent
@@ -548,8 +547,8 @@ fail” are just as likely as the outcomes “fail then fail” and “succeed t
 <p>The intuition is the same — there are simply more ways to get these middle outcomes.</p>
 <p>If we continue, the bell-shaped curve becomes even more pronounced.</p>
 <p>We are witnessing the <a class="reference external" href="https://en.wikipedia.org/wiki/De_Moivre%E2%80%93Laplace_theorem">binomial approximation of the normal distribution</a>.</p>
-</section>
-<section id="simulation-1">
+</div>
+<div class="section" id="simulation-1">
 <h3><span class="section-number">10.4.3. </span>Simulation 1<a class="headerlink" href="#simulation-1" title="Permalink to this headline">¶</a></h3>
 <p>Since the CLT seems almost magical, running simulations that verify its implications is one good way to build intuition.</p>
 <p>To this end, we now perform the following simulation</p>
@@ -597,8 +596,8 @@ fail” are just as likely as the outcomes “fail then fail” and “succeed t
 <p>Notice the absence of for loops — every operation is vectorized, meaning that the major calculations are all shifted to highly optimized C code.</p>
 <p>The fit to the normal density is already tight and can be further improved by increasing <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
 <p>You can also experiment with other specifications of <span class="math notranslate nohighlight">\(F\)</span>.</p>
-</section>
-<section id="simulation-2">
+</div>
+<div class="section" id="simulation-2">
 <h3><span class="section-number">10.4.4. </span>Simulation 2<a class="headerlink" href="#simulation-2" title="Permalink to this headline">¶</a></h3>
 <p>Our next simulation is somewhat like the first, except that we aim to track the distribution of <span class="math notranslate nohighlight">\(Y_n := \sqrt{n} ( \bar X_n - \mu )\)</span> as <span class="math notranslate nohighlight">\(n\)</span> increases.</p>
 <p>In the simulation, we’ll be working with random variables having <span class="math notranslate nohighlight">\(\mu = 0\)</span>.</p>
@@ -678,7 +677,7 @@ specified as the convex combination of three different beta densities.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13877/392210314.py:36: MatplotlibDeprecationWarning: Calling gca() with keyword arguments was deprecated in Matplotlib 3.4. Starting two minor releases later, gca() will take no keyword arguments. The gca() function should only be used to get the current axes, or if no axes exist, create new axes with default keyword arguments. To create a new axes with non-default arguments, use plt.axes() or plt.subplot().
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_10438/392210314.py:36: MatplotlibDeprecationWarning: Calling gca() with keyword arguments was deprecated in Matplotlib 3.4. Starting two minor releases later, gca() will take no keyword arguments. The gca() function should only be used to get the current axes, or if no axes exist, create new axes with default keyword arguments. To create a new axes with non-default arguments, use plt.axes() or plt.subplot().
   ax = fig.gca(projection=&#39;3d&#39;)
 </pre></div>
 </div>
@@ -691,8 +690,8 @@ increases.</p>
 <p>If you run the file from the ordinary IPython shell, the figure should pop up in a
 window that you can rotate with your mouse, giving different views on the
 density sequence.</p>
-</section>
-<section id="the-multivariate-case">
+</div>
+<div class="section" id="the-multivariate-case">
 <span id="multivariate-clt"></span><h3><span class="section-number">10.4.5. </span>The Multivariate Case<a class="headerlink" href="#the-multivariate-case" title="Permalink to this headline">¶</a></h3>
 <span class="target" id="index-9"></span><p id="index-10">The law of large numbers and central limit theorem work just as nicely in multidimensional settings.</p>
 <p>To state the results, let’s recall some elementary facts about random vectors.</p>
@@ -773,14 +772,14 @@ be the variance-covariance matrix of <span class="math notranslate nohighlight">
 <span class="eqno">(10.7)<a class="headerlink" href="#equation-lln-cltmv" title="Permalink to this equation">¶</a></span>\[\sqrt{n} ( \bar{\mathbf X}_n - \boldsymbol \mu ) \stackrel { d } {\to} N(\mathbf 0, \Sigma)
 \quad \text{as} \quad
 n \to \infty\]</div>
-</section>
-</section>
-<section id="exercises">
+</div>
+</div>
+<div class="section" id="exercises">
 <h2><a class="toc-backref" href="#id8"><span class="section-number">10.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="exercise admonition" id="lln_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 10.1 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <p>One very useful consequence of the central limit theorem is as follows.</p>
 <p>Assume the conditions of the CLT as <a class="reference internal" href="#statement-clt"><span class="std std-ref">stated above</span></a>.</p>
 <p>If <span class="math notranslate nohighlight">\(g \colon \mathbb R \to \mathbb R\)</span> is differentiable at <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(g'(\mu) \not= 0\)</span>, then</p>
@@ -796,12 +795,12 @@ n \to \infty\]</div>
 <p>Derive the asymptotic distribution of <span class="math notranslate nohighlight">\(\sqrt{n} \{ g(\bar X_n) - g(\mu) \}\)</span> and illustrate convergence in the same spirit as the program discussed <a class="reference internal" href="#sim-one"><span class="std std-ref">above</span></a>.</p>
 <p>What happens when you replace <span class="math notranslate nohighlight">\([0, \pi / 2]\)</span> with <span class="math notranslate nohighlight">\([0, \pi]\)</span>?</p>
 <p>What is the source of the problem?</p>
-</section>
+</div>
 </div>
 <div class="exercise admonition" id="lln_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 10.2 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <p>Here’s a result that’s often used in developing statistical tests, and is connected to the multivariate central limit theorem.</p>
 <p>If you study econometric theory, you will see this result used again and again.</p>
 <p>Assume the setting of the multivariate CLT <a class="reference internal" href="#multivariate-clt"><span class="std std-ref">discussed above</span></a>, so that</p>
@@ -881,15 +880,15 @@ of freedom.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">scipy.linalg.sqrtm(A)</span></code> computes the square root of <code class="docutils literal notranslate"><span class="pre">A</span></code>.  You still need to invert it.</p></li>
 <li><p>You should be able to work out <span class="math notranslate nohighlight">\(\Sigma\)</span> from the preceding information.</p></li>
 </ol>
-</section>
 </div>
-</section>
-<section id="solutions">
+</div>
+</div>
+<div class="section" id="solutions">
 <h2><a class="toc-backref" href="#id9"><span class="section-number">10.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <div class="solution dropdown admonition" id="lln_clt-solution-2">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#lln_ex1"> Exercise 10.1</a></p>
-<section id="s">
+<div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -935,12 +934,12 @@ of freedom.</p>
 <p>In this case, the mean <span class="math notranslate nohighlight">\(\mu\)</span> of this distribution is
 <span class="math notranslate nohighlight">\(\pi/2\)</span>, and since <span class="math notranslate nohighlight">\(g' = \cos\)</span>, we have <span class="math notranslate nohighlight">\(g'(\mu) = 0\)</span>.</p>
 <p>Hence the conditions of the delta theorem are not satisfied.</p>
-</section>
+</div>
 </div>
 <div class="solution dropdown admonition" id="lln_clt-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#lln_ex2"> Exercise 10.2</a></p>
-<section id="s">
+<div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>First we want to verify the claim that</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1028,10 +1027,10 @@ which is what we aimed to show.</p>
 <img alt="_images/lln_clt_13_0.png" src="_images/lln_clt_13_0.png" />
 </div>
 </div>
-</section>
 </div>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1619,7 +1618,7 @@ which is what we aimed to show.</p>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/lln_clt.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/lln_clt.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1632,7 +1631,7 @@ which is what we aimed to show.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

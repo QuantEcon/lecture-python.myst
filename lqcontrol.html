@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>58. LQ Control: Foundations &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -339,7 +338,7 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><section class="tex2jax_ignore mathjax_ignore" id="lq-control-foundations">
+</div><div class="tex2jax_ignore mathjax_ignore section" id="lq-control-foundations">
 <h1><a class="toc-backref" href="#id10"><span class="section-number">58. </span>LQ Control: Foundations</a><a class="headerlink" href="#lq-control-foundations" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
@@ -367,25 +366,25 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
-Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
-Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
 Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
-Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
+Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
-Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
+Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
+Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
 Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.6.15)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
+Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 </div>
 </div>
-<section id="overview">
+<div class="section" id="overview">
 <h2><a class="toc-backref" href="#id11"><span class="section-number">58.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>Linear quadratic (LQ) control refers to a class of dynamic optimization problems that have found applications in almost every scientific field.</p>
 <p>This lecture provides an introduction to LQ control and its economic applications.</p>
@@ -422,12 +421,12 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/qua
 </div>
 </div>
 </div>
-</section>
-<section id="introduction">
+</div>
+<div class="section" id="introduction">
 <h2><a class="toc-backref" href="#id12"><span class="section-number">58.2. </span>Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>The “linear” part of LQ is a linear law of motion for the state, while the “quadratic” part refers to preferences.</p>
 <p>Let’s begin with the former, move on to the latter, and then put them together into an optimization problem.</p>
-<section id="the-law-of-motion">
+<div class="section" id="the-law-of-motion">
 <h3><span class="section-number">58.2.1. </span>The Law of Motion<a class="headerlink" href="#the-law-of-motion" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(x_t\)</span> be a vector describing the state of some economic system.</p>
 <p>Suppose that <span class="math notranslate nohighlight">\(x_t\)</span> follows a linear law of motion given by</p>
@@ -445,7 +444,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/qua
 <li><p><span class="math notranslate nohighlight">\(u_t\)</span> is <span class="math notranslate nohighlight">\(k \times 1\)</span>, <span class="math notranslate nohighlight">\(B\)</span> is <span class="math notranslate nohighlight">\(n \times k\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(w_t\)</span> is <span class="math notranslate nohighlight">\(j \times 1\)</span>, <span class="math notranslate nohighlight">\(C\)</span> is <span class="math notranslate nohighlight">\(n \times j\)</span></p></li>
 </ul>
-<section id="example-1">
+<div class="section" id="example-1">
 <h4><span class="section-number">58.2.1.1. </span>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h4>
 <p>Consider a household budget constraint given by</p>
 <div class="math notranslate nohighlight">
@@ -462,8 +461,8 @@ the system as</p>
 a_{t+1} = (1 + r) a_t - c_t + \sigma w_{t+1}
 \]</div>
 <p>This is clearly a special case of <a class="reference internal" href="#equation-lq-lom">(58.1)</a>, with assets being the state and consumption being the control.</p>
-</section>
-<section id="example-2">
+</div>
+<div class="section" id="example-2">
 <span id="lq-hhp"></span><h4><span class="section-number">58.2.1.2. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h4>
 <p>One unrealistic feature of the previous model is that non-financial income has a zero mean and is often negative.</p>
 <p>This can easily be overcome by adding a sufficiently large mean.</p>
@@ -552,9 +551,9 @@ C :=
 \end{array}
 \right)\end{split}\]</div>
 <p>In effect, we’ve bought ourselves linearity by adding another state.</p>
-</section>
-</section>
-<section id="preferences">
+</div>
+</div>
+<div class="section" id="preferences">
 <h3><span class="section-number">58.2.2. </span>Preferences<a class="headerlink" href="#preferences" title="Permalink to this headline">¶</a></h3>
 <p>In the LQ model, the aim is to minimize flow of losses, where time-<span class="math notranslate nohighlight">\(t\)</span> loss is given by the quadratic expression</p>
 <div class="math notranslate nohighlight" id="equation-lq-pref-flow">
@@ -568,7 +567,7 @@ C :=
 <p class="admonition-title">Note</p>
 <p>In fact, for many economic problems, the definiteness conditions on <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> can be relaxed.  It is sufficient that certain submatrices of <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> be nonnegative definite. See <span id="id4">[<a class="reference internal" href="zreferences.html#id166" title="L P Hansen and T J Sargent. Robustness. Princeton University Press, 2008.">HS08</a>]</span> for details.</p>
 </div>
-<section id="id5">
+<div class="section" id="id5">
 <h4><span class="section-number">58.2.2.1. </span>Example 1<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
 <p>A very simple example that satisfies these assumptions is to take <span class="math notranslate nohighlight">\(R\)</span>
 and <span class="math notranslate nohighlight">\(Q\)</span> to be identity matrices so that current loss is</p>
@@ -586,8 +585,8 @@ as</p>
 <li><p>deviation of a firm’s capital stock from some desired quantity</p></li>
 </ul>
 <p>The aim is to put the state close to the target, while using  controls parsimoniously.</p>
-</section>
-<section id="id6">
+</div>
+<div class="section" id="id6">
 <h4><span class="section-number">58.2.2.2. </span>Example 2<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
 <p>In the household problem <a class="reference internal" href="#lq-hhp"><span class="std std-ref">studied above</span></a>, setting <span class="math notranslate nohighlight">\(R=0\)</span>
 and <span class="math notranslate nohighlight">\(Q=1\)</span> yields preferences</p>
@@ -596,13 +595,13 @@ and <span class="math notranslate nohighlight">\(Q=1\)</span> yields preferences
 x_t' R x_t + u_t' Q u_t = u_t^2 = (c_t - \bar c)^2
 \]</div>
 <p>Under this specification, the household’s current loss is the squared deviation of consumption from the ideal level <span class="math notranslate nohighlight">\(\bar c\)</span>.</p>
-</section>
-</section>
-</section>
-<section id="optimality-finite-horizon">
+</div>
+</div>
+</div>
+<div class="section" id="optimality-finite-horizon">
 <h2><a class="toc-backref" href="#id13"><span class="section-number">58.3. </span>Optimality – Finite Horizon</a><a class="headerlink" href="#optimality-finite-horizon" title="Permalink to this headline">¶</a></h2>
 <p id="index-1">Let’s now be precise about the optimization problem we wish to consider, and look at how to solve it.</p>
-<section id="the-objective">
+<div class="section" id="the-objective">
 <h3><span class="section-number">58.3.1. </span>The Objective<a class="headerlink" href="#the-objective" title="Permalink to this headline">¶</a></h3>
 <p>We will begin with the finite horizon case, with terminal time <span class="math notranslate nohighlight">\(T \in \mathbb N\)</span>.</p>
 <p>In this case, the aim is to choose a sequence of controls <span class="math notranslate nohighlight">\(\{u_0, \ldots, u_{T-1}\}\)</span> to minimize the objective</p>
@@ -620,8 +619,8 @@ x_t' R x_t + u_t' Q u_t = u_t^2 = (c_t - \bar c)^2
 <li><p>We allow <span class="math notranslate nohighlight">\(\beta = 1\)</span>, and hence include the undiscounted case.</p></li>
 <li><p><span class="math notranslate nohighlight">\(x_0\)</span> may itself be random, in which case we require it to be independent of the shock sequence <span class="math notranslate nohighlight">\(w_1, \ldots, w_T\)</span>.</p></li>
 </ul>
-</section>
-<section id="information">
+</div>
+<div class="section" id="information">
 <span id="lq-cp"></span><h3><span class="section-number">58.3.2. </span>Information<a class="headerlink" href="#information" title="Permalink to this headline">¶</a></h3>
 <p>There’s one constraint we’ve neglected to mention so far, which is that the
 decision-maker who solves this LQ problem knows only the present and the past,
@@ -643,8 +642,8 @@ so, for the purposes of intuition, you can read that last phrase as “for some 
 <p>Hence in what follows we restrict attention to control policies (i.e., functions) of the form <span class="math notranslate nohighlight">\(u_t = g_t(x_t)\)</span>.</p>
 <p>Actually, the preceding discussion applies to all standard dynamic programming problems.</p>
 <p>What’s special about the LQ case is that – as we shall soon see —  the optimal <span class="math notranslate nohighlight">\(u_t\)</span> turns out to be a linear function of <span class="math notranslate nohighlight">\(x_t\)</span>.</p>
-</section>
-<section id="solution">
+</div>
+<div class="section" id="solution">
 <h3><span class="section-number">58.3.3. </span>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h3>
 <p>To solve the finite horizon LQ problem we can use a dynamic programming
 strategy based on backward induction that is conceptually similar to the approach adopted in <a class="reference internal" href="short_path.html"><span class="doc">this lecture</span></a>.</p>
@@ -762,9 +761,9 @@ F_t := (Q + \beta B' P_{t+1} B)^{-1} \beta B' P_{t+1} A\]</div>
 \quad \text{with} \quad
 x_{t+1} = (A - BF_t) x_t + C w_{t+1}\]</div>
 <p>for <span class="math notranslate nohighlight">\(t = 0, \ldots, T-1\)</span> attains the minimum of <a class="reference internal" href="#equation-lq-object">(58.6)</a> subject to our constraints.</p>
-</section>
-</section>
-<section id="implementation">
+</div>
+</div>
+<div class="section" id="implementation">
 <h2><a class="toc-backref" href="#id14"><span class="section-number">58.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>We will use code from <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lqcontrol.py">lqcontrol.py</a>
 in <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>
@@ -796,7 +795,7 @@ are wrapped in a class  called <code class="docutils literal notranslate"><span 
 </ul>
 </li>
 </ul>
-<section id="an-application">
+<div class="section" id="an-application">
 <span id="lq-mfpa"></span><h3><span class="section-number">58.4.1. </span>An Application<a class="headerlink" href="#an-application" title="Permalink to this headline">¶</a></h3>
 <p>Early Keynesian models assumed that households have a constant marginal
 propensity to consume from current income.</p>
@@ -977,12 +976,12 @@ relatively more weight on later consumption values.</p>
 <p>We now have a slowly rising consumption stream and a hump-shaped build-up
 of assets in the middle periods to fund rising consumption.</p>
 <p>However, the essential features are the same: consumption is smooth relative to income, and assets are strongly positively correlated with cumulative unanticipated income.</p>
-</section>
-</section>
-<section id="extensions-and-comments">
+</div>
+</div>
+<div class="section" id="extensions-and-comments">
 <h2><a class="toc-backref" href="#id15"><span class="section-number">58.5. </span>Extensions and Comments</a><a class="headerlink" href="#extensions-and-comments" title="Permalink to this headline">¶</a></h2>
 <p>Let’s now consider a number of standard extensions to the LQ problem treated above.</p>
-<section id="time-varying-parameters">
+<div class="section" id="time-varying-parameters">
 <h3><span class="section-number">58.5.1. </span>Time-Varying Parameters<a class="headerlink" href="#time-varying-parameters" title="Permalink to this headline">¶</a></h3>
 <p>In some settings, it can be desirable to allow <span class="math notranslate nohighlight">\(A, B, C, R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> to depend on <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>For the sake of simplicity, we’ve chosen not to treat this extension in our implementation given below.</p>
@@ -990,8 +989,8 @@ of assets in the middle periods to fund rising consumption.</p>
 <p>In fact, we can tackle many models with time-varying parameters by suitable choice of state variables.</p>
 <p>One illustration is given <a class="reference internal" href="#lq-nsi"><span class="std std-ref">below</span></a>.</p>
 <p>For further examples and a more systematic treatment, see <span id="id9">[<a class="reference internal" href="zreferences.html#id165" title="L P Hansen and T J Sargent. Recursive Models of Dynamic Linear Economies. The Gorman Lectures in Economics. Princeton University Press, 2013.">HS13</a>]</span>, section 2.4.</p>
-</section>
-<section id="adding-a-cross-product-term">
+</div>
+<div class="section" id="adding-a-cross-product-term">
 <span id="lq-cpt"></span><h3><span class="section-number">58.5.2. </span>Adding a Cross-Product Term<a class="headerlink" href="#adding-a-cross-product-term" title="Permalink to this headline">¶</a></h3>
 <p>In some LQ problems, preferences include a cross-product term <span class="math notranslate nohighlight">\(u_t' N x_t\)</span>, so that the objective function becomes</p>
 <div class="math notranslate nohighlight" id="equation-lq-object-cp">
@@ -1014,8 +1013,8 @@ P_T = R_f\]</div>
 F_t := (Q + \beta B' P_{t+1} B)^{-1} (\beta B' P_{t+1} A + N)\]</div>
 <p>The sequence <span class="math notranslate nohighlight">\(\{d_t\}\)</span> is unchanged from <a class="reference internal" href="#equation-lq-dd">(58.13)</a>.</p>
 <p>We leave interested readers to confirm these results (the calculations are long but not overly difficult).</p>
-</section>
-<section id="infinite-horizon">
+</div>
+<div class="section" id="infinite-horizon">
 <span id="lq-ih"></span><h3><span class="section-number">58.5.3. </span>Infinite Horizon<a class="headerlink" href="#infinite-horizon" title="Permalink to this headline">¶</a></h3>
 <p id="index-2">Finally, we consider the infinite horizon case, with <a class="reference internal" href="#lq-cpt"><span class="std std-ref">cross-product term</span></a>, unchanged dynamics and
 objective function given by</p>
@@ -1051,18 +1050,18 @@ F = (Q + \beta B' P B)^{-1} (\beta B' P A + N)\]</div>
 := \mathop{\mathrm{trace}}(C' P C) \frac{\beta}{1 - \beta}\]</div>
 <p>The state evolves according to the time-homogeneous process <span class="math notranslate nohighlight">\(x_{t+1} = (A - BF) x_t + C w_{t+1}\)</span>.</p>
 <p>An example infinite horizon problem is treated <a class="reference internal" href="#lqc-mwac"><span class="std std-ref">below</span></a>.</p>
-</section>
-<section id="certainty-equivalence">
+</div>
+<div class="section" id="certainty-equivalence">
 <span id="lq-cert-eq"></span><h3><span class="section-number">58.5.4. </span>Certainty Equivalence<a class="headerlink" href="#certainty-equivalence" title="Permalink to this headline">¶</a></h3>
 <p>Linear quadratic control problems of the class discussed above have the property of <em>certainty equivalence</em>.</p>
 <p>By this, we mean that the optimal policy <span class="math notranslate nohighlight">\(F\)</span> is not affected by the parameters in <span class="math notranslate nohighlight">\(C\)</span>, which specify the shock process.</p>
 <p>This can be confirmed by inspecting <a class="reference internal" href="#equation-lq-oc-ih">(58.22)</a> or <a class="reference internal" href="#equation-lq-oc-cp">(58.19)</a>.</p>
 <p>It follows that we can ignore uncertainty when solving for optimal behavior, and plug it back in when examining optimal state dynamics.</p>
-</section>
-</section>
-<section id="further-applications">
+</div>
+</div>
+<div class="section" id="further-applications">
 <h2><a class="toc-backref" href="#id16"><span class="section-number">58.6. </span>Further Applications</a><a class="headerlink" href="#further-applications" title="Permalink to this headline">¶</a></h2>
-<section id="application-1-age-dependent-income-process">
+<div class="section" id="application-1-age-dependent-income-process">
 <span id="lq-nsi"></span><h3><span class="section-number">58.6.1. </span>Application 1: Age-Dependent Income Process<a class="headerlink" href="#application-1-age-dependent-income-process" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference internal" href="#lq-mfpa"><span class="std std-ref">Previously</span></a> we studied a permanent income model that generated consumption smoothing.</p>
 <p>One unrealistic feature of that model is the assumption that the mean of the random income process does not depend on the consumer’s age.</p>
@@ -1156,14 +1155,14 @@ q &amp; 0 &amp; 0 &amp; 0 \\
 \right)\end{split}\]</div>
 <p>The next figure shows a simulation of consumption and assets computed using
 the <code class="docutils literal notranslate"><span class="pre">compute_sequence</span></code> method of <code class="docutils literal notranslate"><span class="pre">lqcontrol.py</span></code> with initial assets set to zero.</p>
-<figure class="align-default" id="solution-lqc-ex1-fig">
+<div class="figure align-default" id="solution-lqc-ex1-fig">
 <img alt="_images/solution_lqc_ex1.png" src="_images/solution_lqc_ex1.png" />
-</figure>
+</div>
 <p>Once again, smooth consumption is a dominant feature of the sample  paths.</p>
 <p>The asset path exhibits dynamics consistent with standard life cycle theory.</p>
 <p><a class="reference internal" href="#lqc_ex1"><span class="std std-numref">Exercise 58.1</span></a> gives the full set of parameters used here and asks you to replicate the figure.</p>
-</section>
-<section id="application-2-a-permanent-income-model-with-retirement">
+</div>
+<div class="section" id="application-2-a-permanent-income-model-with-retirement">
 <span id="lq-nsi2"></span><h3><span class="section-number">58.6.2. </span>Application 2: A Permanent Income Model with Retirement<a class="headerlink" href="#application-2-a-permanent-income-model-with-retirement" title="Permalink to this headline">¶</a></h3>
 <p>In the <a class="reference internal" href="#lq-nsi"><span class="std std-ref">previous application</span></a>, we generated income dynamics with an inverted U shape using polynomials and placed them in an LQ framework.</p>
 <p>It is arguably the case that this income process still contains unrealistic features.</p>
@@ -1204,17 +1203,17 @@ every stage.</p>
 </ol>
 <p>This process gives the entire life-time sequence of value functions and optimal policies.</p>
 <p>The next figure shows one simulation based on this procedure.</p>
-<figure class="align-default" id="solution-lqc-ex2-fig">
+<div class="figure align-default" id="solution-lqc-ex2-fig">
 <img alt="_images/solution_lqc_ex2.png" src="_images/solution_lqc_ex2.png" />
-</figure>
+</div>
 <p>The full set of parameters used in the simulation is discussed in <a class="reference internal" href="#lqc_ex2"><span class="std std-numref">Exercise 58.2</span></a>, where you are asked to replicate the figure.</p>
 <p>Once again, the dominant feature observable in the simulation is consumption
 smoothing.</p>
 <p>The asset path fits well with standard life cycle theory, with dissaving early
 in life followed by later saving.</p>
 <p>Assets peak at retirement and subsequently decline.</p>
-</section>
-<section id="application-3-monopoly-with-adjustment-costs">
+</div>
+<div class="section" id="application-3-monopoly-with-adjustment-costs">
 <span id="lqc-mwac"></span><h3><span class="section-number">58.6.3. </span>Application 3: Monopoly with Adjustment Costs<a class="headerlink" href="#application-3-monopoly-with-adjustment-costs" title="Permalink to this headline">¶</a></h3>
 <p>Consider a monopolist facing stochastic inverse demand function</p>
 <div class="math notranslate nohighlight">
@@ -1260,15 +1259,15 @@ monopolist will choose output to maximize current profit in each period.</p>
 <p>This intuition turns out to be correct.</p>
 <p>The following figures show simulations produced by solving the corresponding LQ problem.</p>
 <p>The only difference in parameters across the figures is the size of <span class="math notranslate nohighlight">\(\gamma\)</span></p>
-<figure class="align-default">
+<div class="figure align-default">
 <img alt="_images/solution_lqc_ex3_g1.png" src="_images/solution_lqc_ex3_g1.png" />
-</figure>
-<figure class="align-default">
+</div>
+<div class="figure align-default">
 <img alt="_images/solution_lqc_ex3_g10.png" src="_images/solution_lqc_ex3_g10.png" />
-</figure>
-<figure class="align-default">
+</div>
+<div class="figure align-default">
 <img alt="_images/solution_lqc_ex3_g50.png" src="_images/solution_lqc_ex3_g50.png" />
-</figure>
+</div>
 <p>To produce these figures we converted the monopolist problem into an LQ problem.</p>
 <p>The key to this conversion is to choose the right state — which can be a bit of an art.</p>
 <p>Here we take <span class="math notranslate nohighlight">\(x_t = (\bar q_t \;\, q_t \;\, 1)'\)</span>, while the control is chosen as <span class="math notranslate nohighlight">\(u_t = q_{t+1} - q_t\)</span>.</p>
@@ -1296,22 +1295,22 @@ verify, <span class="math notranslate nohighlight">\(\hat \pi_t\)</span> reduces
 <p>Furthermore, the matrices <span class="math notranslate nohighlight">\(A, B\)</span> and <span class="math notranslate nohighlight">\(C\)</span> from <a class="reference internal" href="#equation-lq-lom">(58.1)</a>
 can be found by writing down the dynamics of each element of the state.</p>
 <p><a class="reference internal" href="#lqc_ex3"><span class="std std-numref">Exercise 58.3</span></a> asks you to complete this process, and reproduce the preceding figures.</p>
-</section>
-</section>
-<section id="exercises">
+</div>
+</div>
+<div class="section" id="exercises">
 <h2><a class="toc-backref" href="#id17"><span class="section-number">58.7. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="exercise admonition" id="lqc_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 58.1 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <p>Replicate the figure with polynomial income <a class="reference internal" href="#solution-lqc-ex1-fig"><span class="std std-ref">shown above</span></a>.</p>
 <p>The parameters are <span class="math notranslate nohighlight">\(r = 0.05, \beta = 1 / (1 + r), \bar c = 1.5,  \mu = 2, \sigma = 0.15, T = 50\)</span> and <span class="math notranslate nohighlight">\(q = 10^4\)</span>.</p>
-</section>
+</div>
 </div>
 <div class="exercise admonition" id="lqc_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 58.2 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <p>Replicate the figure on work and retirement <a class="reference internal" href="#solution-lqc-ex2-fig"><span class="std std-ref">shown above</span></a>.</p>
 <p>The parameters are <span class="math notranslate nohighlight">\(r = 0.05, \beta = 1 / (1 + r), \bar c = 4,  \mu = 4, \sigma = 0.35, K = 40, T = 60, s = 1\)</span> and <span class="math notranslate nohighlight">\(q = 10^4\)</span>.</p>
 <p>To understand the overall procedure, carefully read the section containing that figure.</p>
@@ -1329,25 +1328,25 @@ be replaced by the final value function that emerges from iterating <code class=
 back to the start of retirement.</p>
 <p>With some careful footwork, the simulation can be generated by patching
 together the simulations from these two separate models.</p>
-</section>
+</div>
 </div>
 <div class="exercise admonition" id="lqc_ex3">
 
 <p class="admonition-title"><span class="caption-number">Exercise 58.3 </span></p>
-<section id="exercise-content">
+<div class="section" id="exercise-content">
 <p>Reproduce the figures from the monopolist application <a class="reference internal" href="#lqc-mwac"><span class="std std-ref">given above</span></a>.</p>
 <p>For parameters, use <span class="math notranslate nohighlight">\(a_0 = 5, a_1 = 0.5, \sigma = 0.15, \rho = 0.9,
 \beta = 0.95\)</span> and <span class="math notranslate nohighlight">\(c = 2\)</span>, while <span class="math notranslate nohighlight">\(\gamma\)</span> varies between 1 and 50
 (see figures).</p>
-</section>
 </div>
-</section>
-<section id="solutions">
+</div>
+</div>
+<div class="section" id="solutions">
 <h2><a class="toc-backref" href="#id18"><span class="section-number">58.8. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <div class="solution dropdown admonition" id="lqcontrol-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#lqc_ex1"> Exercise 58.1</a></p>
-<section id="s">
+<div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here’s one solution.</p>
 <p>We use some fancy plot commands to get a certain style — feel free to
 use simpler ones.</p>
@@ -1437,12 +1436,12 @@ y_t = m_1 t + m_2 t^2 + \sigma w_{t+1}
 <img alt="_images/lqcontrol_9_0.png" src="_images/lqcontrol_9_0.png" />
 </div>
 </div>
-</section>
+</div>
 </div>
 <div class="solution dropdown admonition" id="lqcontrol-solution-4">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#lqc_ex2"> Exercise 58.2</a></p>
-<section id="s">
+<div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>This is a permanent income / life-cycle model with polynomial growth in
 income over working life followed by a fixed retirement income.</p>
 <p>The model is solved by combining two LQ programming problems as described in
@@ -1553,12 +1552,12 @@ the lecture.</p>
 <img alt="_images/lqcontrol_11_0.png" src="_images/lqcontrol_11_0.png" />
 </div>
 </div>
-</section>
+</div>
 </div>
 <div class="solution dropdown admonition" id="lqcontrol-solution-5">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#lqc_ex3"> Exercise 58.3</a></p>
-<section id="s">
+<div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>The first task is to find the matrices <span class="math notranslate nohighlight">\(A, B, C, Q, R\)</span> that define
 the LQ problem.</p>
 <p>Recall that <span class="math notranslate nohighlight">\(x_t = (\bar q_t \;\, q_t \;\, 1)'\)</span>, while
@@ -1650,10 +1649,10 @@ function, which we repeat here for convenience:</p>
 <img alt="_images/lqcontrol_13_0.png" src="_images/lqcontrol_13_0.png" />
 </div>
 </div>
-</section>
 </div>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -2241,7 +2240,7 @@ function, which we repeat here for convenience:</p>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/lqcontrol.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/lqcontrol.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -2254,7 +2253,7 @@ function, which we repeat here for convenience:</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>
