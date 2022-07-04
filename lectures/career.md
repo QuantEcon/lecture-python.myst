@@ -275,7 +275,7 @@ def operator_factory(cw, parallel_flag=True):
 ```
 
 Lastly, `solve_model` will  take an instance of `CareerWorkerProblem` and
-iterate using the Bellman operator to find the fixed point of the value function.
+iterate using the Bellman operator to find the fixed point of the Bellman equation.
 
 ```{code-cell} python3
 def solve_model(cw,
