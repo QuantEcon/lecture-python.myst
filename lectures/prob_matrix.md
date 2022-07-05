@@ -1535,7 +1535,7 @@ $$
 \begin{aligned}
 f_{ij} & =\textrm{Prob}\{X=i,Y=j\}\\
 i& =0, \cdots，I-1\\
-j& =0, \cdots e ，J-1\\
+j& =0, \cdots，J-1\\
 & \text{stacked to an }I×J\text{ matrix}\\
 & e.g. \quad I=1, J=1
 \end{aligned}
