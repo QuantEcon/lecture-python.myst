@@ -48,9 +48,6 @@ from mpl_toolkits.mplot3d import Axes3D
 from IPython.display import set_matplotlib_formats
 set_matplotlib_formats('retina')
 %matplotlib inline
-
-# Display up to decimal places
-pd.set_option('precision', 3)
 ```
 
 
