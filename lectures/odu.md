@@ -251,7 +251,7 @@ fact, it should be decreasing in $\pi$ because
 - larger $\pi$ means more weight on $f$ and less on
   $g$
 
-Thus, s larger $\pi$ depresses the worker’s assessment of
+Thus,  larger $\pi$ depresses the worker’s assessment of
 her future prospects, so relatively low current offers become more
 attractive.
 

@@ -354,10 +354,10 @@ $$
 \end{aligned}
 $$
 
-Our aim is to compute the value function $J$, and from it the associated cutoffs $\alpha$
+Our aim is to compute the cost function $J$, and from it the associated cutoffs $\alpha$
 and $\beta$.
 
-To make our computations manageable, using {eq}`optdec`, we can write the continuation value $h(\pi)$ as
+To make our computations manageable, using {eq}`optdec`, we can write the continuation cost $h(\pi)$ as
 
 ```{math}
 :label: optdec2
@@ -380,7 +380,7 @@ c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', 
 
 is a **functional equation** in an unknown function  $h$.
 
-Using the functional equation, {eq}`funceq`, for the continuation value, we can back out
+Using the functional equation, {eq}`funceq`, for the continuation cost, we can back out
 optimal choices using the right side of {eq}`optdec`.
 
 This functional equation can be solved by taking an initial guess and iterating
@@ -510,7 +510,7 @@ To solve the key functional equation, we will iterate using `Q` to find the fixe
 @jit(nopython=True)
 def solve_model(wf, tol=1e-4, max_iter=1000):
     """
-    Compute the continuation value function
+    Compute the continuation cost function
 
     * wf is an instance of WaldFriedman
     """
@@ -559,14 +559,14 @@ h_star = solve_model(wf)    # Solve the model
 ```
 
 We will also set up a function to compute the cutoffs $\alpha$ and $\beta$
-and plot these on our value function plot
+and plot these on our cost function plot
 
 ```{code-cell} ipython3
 @jit(nopython=True)
 def find_cutoff_rule(wf, h):
 
     """
-    This function takes a continuation value function and returns the
+    This function takes a continuation cost function and returns the
     corresponding cutoffs of where you transition between continuing and
     choosing a specific model
     """
@@ -597,12 +597,12 @@ cost_L1 = wf.π_grid * wf.L1
 
 fig, ax = plt.subplots(figsize=(10, 6))
 
-ax.plot(wf.π_grid, h_star, label='continuation value')
+ax.plot(wf.π_grid, h_star, label='sample again')
 ax.plot(wf.π_grid, cost_L1, label='choose f1')
 ax.plot(wf.π_grid, cost_L0, label='choose f0')
 ax.plot(wf.π_grid,
         np.amin(np.column_stack([h_star, cost_L0, cost_L1]),axis=1),
-        lw=15, alpha=0.1, color='b', label='minimum cost')
+        lw=15, alpha=0.1, color='b', label='$J(\pi)$')
 
 ax.annotate(r"$\beta$", xy=(β + 0.01, 0.5), fontsize=14)
 ax.annotate(r"$\alpha$", xy=(α + 0.01, 0.5), fontsize=14)
@@ -611,19 +611,19 @@ plt.vlines(β, 0, β * wf.L0, linestyle="--")
 plt.vlines(α, 0, (1 - α) * wf.L1, linestyle="--")
 
 ax.set(xlim=(0, 1), ylim=(0, 0.5 * max(wf.L0, wf.L1)), ylabel="cost",
-       xlabel="$\pi$", title="Value function")
+       xlabel="$\pi$", title="Cost function $J(\pi)$")
 
 plt.legend(borderpad=1.1)
 plt.show()
 ```
 
-The value function equals $\pi L_1$ for $\pi \leq \beta$, and $(1-\pi )L_0$ for $\pi
+The cost function $J$ equals $\pi L_1$ for $\pi \leq \beta$, and $(1-\pi )L_0$ for $\pi
 \geq \alpha$.
 
-The slopes of the two linear pieces of the value function are determined by $L_1$
+The slopes of the two linear pieces of the cost   function $J(\pi)$ are determined by $L_1$
 and $- L_0$.
 
-The value function is smooth in the interior region, where the posterior
+The cost function $J$ is smooth in the interior region, where the posterior
 probability assigned to $f_0$ is in the indecisive region $\pi \in (\beta, \alpha)$.
 
 The decision-maker continues to sample until the probability that he attaches to
