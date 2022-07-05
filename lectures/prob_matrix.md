@@ -48,6 +48,9 @@ from mpl_toolkits.mplot3d import Axes3D
 from IPython.display import set_matplotlib_formats
 set_matplotlib_formats('retina')
 %matplotlib inline
+
+# Display up to decimal places
+pd.set_option('precision', 3)
 ```
 
 
@@ -224,7 +227,7 @@ for which  $f_{i} \in [0,1]$ for each $i$ and $\sum_{i=0}^{I-1}f_i=1$.
 This vector defines a **probability mass function**.
 
 The distribution {eq}`eq:discretedist`
-has **parameters**  $\{f_{i}\}_{i=0,1,...,I-2}$ since $f_{I-1} = 1-\sum_{i=0}^{I-2}f_{i}$.
+has **parameters**  $\{f_{i}\}_{i=0,1, \cdots ,I-2}$ since $f_{I-1} = 1-\sum_{i=0}^{I-2}f_{i}$.
 
 
 These parameters pin down the shape of the distribution.
@@ -660,7 +663,7 @@ plt.show()
 ## Some Discrete Probability Distributions
 
 
-Let's write some Python code to compute   means and variances of soem  univariate random variables.
+Let's write some Python code to compute   means and variances of some  univariate random variables.
 
 We'll use our code to 
 
@@ -715,7 +718,7 @@ $$
 \textrm{Prob}\{X=d\}=\log _{10}(d+1)-\log _{10}(d)=\log _{10}\left(1+\frac{1}{d}\right)
 $$
 
-where $d\in\{1,2,...,9\}$ can be thought of as a **first digit** in a sequence of digits.
+where $d\in\{1,2,\cdots,9\}$ can be thought of as a **first digit** in a sequence of digits.
 
 This is a well defined discrete distribution since we can verify that probabilities are nonnegative and sum to $1$.
 
@@ -1531,8 +1534,8 @@ Start with a joint distribution
 $$
 \begin{aligned}
 f_{ij} & =\textrm{Prob}\{X=i,Y=j\}\\
-i& =0,……，I-1\\
-j& =0,……，J-1\\
+i& =0, \cdots，I-1\\
+j& =0, \cdots e ，J-1\\
 & \text{stacked to an }I×J\text{ matrix}\\
 & e.g. \quad I=1, J=1
 \end{aligned}
@@ -1561,8 +1564,8 @@ Let's start with marginal distributions
 
 $$
 \begin{aligned}
-\textrm{\textrm{Prob}}\{X=i\} &=  \sum_{j}f_{ij}=\mu_{i}, i=0,……,I-1\\
-\textrm{\textrm{Prob}}\{Y=j\}&=  \sum_{j}f_{ij}=\nu_{j}, j=0,……,J-1
+\text{Prob} \{X=i\} &=  \sum_{j}f_{ij}=\mu_{i}, i=0, \cdots, I-1\\
+\text{Prob} \{Y=j\}&=  \sum_{j}f_{ij}=\nu_{j}, j=0, \cdots, J-1
 \end{aligned}
 $$
 
@@ -1574,11 +1577,11 @@ Consider the following bivariate example.
 
 $$
 \begin{aligned}
-{\textrm{Prob}}\{X=0\}= & 1-q  =\mu_{0}\\
-{\textrm{Prob}}\{X=1\}=& q  =\mu_{1}\\
-{\textrm{Prob}}\{Y=0\}=& 1-r  =\nu_{0}\\
-{\textrm{Prob}}\{Y=1\}= & r  =\nu_{1}\\
-\textrm{where }0≤q<r≤1
+\text{Prob} \{X=0\}= & 1-q  =\mu_{0}\\
+\text{Prob} \{X=1\}=& q  =\mu_{1}\\
+\text{Prob} \{Y=0\}=& 1-r  =\nu_{0}\\
+\text{Prob} \{Y=1\}= & r  =\nu_{1}\\
+\text{where } 0 \leq q < r \leq 1
 \end{aligned}
 $$
 
@@ -1677,10 +1680,10 @@ For example, consider two  random variables $X, Y$ with distributions
 
 $$
 \begin{aligned}
-\textrm{\textrm{Prob}}(X = 0)& = 0.6,\\
-\textrm{\textrm{Prob}}(X = 1) &= 0.4,\\
-\textrm{\textrm{Prob}}(Y = 0)& = 0.3,\\
-\textrm{\textrm{Prob}}(Y = 1) &= 0.7,
+\text{Prob}(X = 0)& = 0.6,\\
+\text{Prob}(X = 1) &= 0.4,\\
+\text{Prob}(Y = 0)& = 0.3,\\
+\text{Prob}(Y = 1) &= 0.7,
 \end{aligned}
 $$
 
@@ -1729,7 +1732,7 @@ ymtb.add_row([1, r_hat])
 print(ymtb)
 ```
 
-Let's now take our two margingal  distributions, one for $X$, the other for  $Y$, and construct  two distinct couplings.
+Let's now take our two marginal  distributions, one for $X$, the other for  $Y$, and construct  two distinct couplings.
 
 For the first joint distribution:
 
@@ -1906,7 +1909,7 @@ Suppose that
 
 $$
 \begin{aligned}
-\textrm{\textrm{Prob}}\{X(0)=i,X(1)=j\} &=f_{ij}≥0，i=0,……,I-1\\
+\text{Prob} \{X(0)=i,X(1)=j\} &=f_{ij}≥0，i=0,\cdots,I-1\\
 \sum_{i}\sum_{j}f_{ij}&=1
 \end{aligned}
 $$
@@ -1915,7 +1918,7 @@ $f_{ij} $ is a joint distribution over $[X(0), X(1)]$.
 
 A conditional distribution is
 
-$$\textrm{\textrm{Prob}}\{X(1)=j|X(0)=i\}= \frac{f_{ij}}{ \sum_{j}f_{ij}}$$
+$$\text{Prob} \{X(1)=j|X(0)=i\}= \frac{f_{ij}}{ \sum_{j}f_{ij}}$$
 
 **Remark:** 
-- This is a key formula for  a theory of optimally predict a time series.
+- This is a key formula for  a theory of optimally predicting a time series.
