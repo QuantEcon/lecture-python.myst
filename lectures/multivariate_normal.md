@@ -1805,6 +1805,41 @@ $$
   \end{aligned}
 $$
 
+If we shift the first equation forward one period and then substitute the expression for $\tilde \Sigma_t$  on the right side of the fifth equation
+into it we obtain
+
+$$
+\Sigma_{t+1}= C C' + A \Sigma_t A' - A \Sigma_t G' (G \Sigma_t G' +R)^{-1} G \Sigma_t A' . 
+$$
+
+This is a matrix Riccati difference equation that is closely related to another matrix Riccati difference equation that appears in  a quantecon lecture on the basics of linear quadratic control theory.
+
+That equation has the form  
+
+  
+
+```{math}
+
+P_{t-1} =R + A' P_t A  - A' P_t B 
+(B' P_t B + Q)^{-1}  B' P_t A  .
+ 
+```
+
+Stare at the two preceding equations for a moment or two, the first being a matrix difference equation for a conditional covariance matrix, the
+second being a matrix difference equation in the matrix appearing in a quadratic form for an intertemporal cost of value function.
+
+Although the  two equations are not identical, they display striking family resemblences.
+
+* the first equation tells dynamics that work **forward**  in time
+* the second equation tells dynamics that work  **backward** in time
+* while many of the terms are similar, one equation seems to apply matrix transformations to some matrices that play similar roles in the other equation 
+
+The family resemblences of these two equations reflects a transcendent **duality** between control theory and filtering theory.
+
+### An example
+
+
+
 We can use the Python class *MultivariateNormal* to construct examples.
 
 Here is an example for a single period problem at time $0$
