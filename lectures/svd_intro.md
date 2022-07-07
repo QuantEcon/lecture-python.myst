@@ -1168,7 +1168,7 @@ $$ (eq:decoder102)
 Since $\Phi$ has $p$ linearly independent columns, the generalized inverse of $\Phi$ is
 
 $$
-\Phi^{\dagger} = (\Phi^T \Phi)^{-1} \Phi^T
+\Phi^{+} = (\Phi^T \Phi)^{-1} \Phi^T
 $$
 
 and so
@@ -1177,12 +1177,12 @@ $$
 \check b = (\Phi^T \Phi)^{-1} \Phi^T X
 $$ (eq:checkbform)
 
-$\check b$  is recognizable as the  matrix of least squares regression coefficients of the matrix
+The matrix $\check b$  is recognizable as the  matrix of least squares regression coefficients of the matrix
 $X$ on the matrix $\Phi$ and 
 
 $$
 \check X = \Phi \check b
-$$
+$$ (eq:Xcheck_)
 
 is the least squares projection of $X$ on $\Phi$.
 
@@ -1195,6 +1195,12 @@ we can represent $X$ as the sum of the projection $\check X$ of $X$ on $\Phi$  p
 To verify this, note that the least squares projection $\check X$ is related to $X$ by
 
 
+$$ 
+X = \check X + \epsilon 
+$$
+
+or
+
 $$
 X = \Phi \check b + \epsilon
 $$
@@ -1206,7 +1212,7 @@ $$
 (X - \Phi \check b)^T \Phi = 0_{m \times p}
 $$ (eq:orthls)
 
-Rearranging  the orthogonality conditions {eq}`eq:orthls` gives $X^T \Phi = \check b \Phi^T \Phi$
+Rearranging  the orthogonality conditions {eq}`eq:orthls` gives $X^T \Phi = \check b \Phi^T \Phi$,
 which implies formula {eq}`eq:checkbform`. 
 
 
