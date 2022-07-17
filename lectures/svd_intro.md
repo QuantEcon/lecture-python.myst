@@ -931,13 +931,13 @@ $$
 \tilde A = U^T \hat A U 
 $$ (eq:Atilde0)
 
-We can evidently recover $\hat A$ from
+We can  recover $\hat A$ from
 
 $$
 \hat A = U \tilde A U^T 
 $$
 
-Dynamics of the rotated $m \times 1$ state $\tilde b_t$ are governed by
+Dynamics of the  $m \times 1$ basis vector $\tilde b_t$ are governed by
 
 $$
 \tilde b_{t+1} = \tilde A \tilde b_t 
@@ -951,7 +951,7 @@ $$
 \overline X_{t+1} = U \tilde A^t U^T X_1
 $$
 
-where we use $\overline X_t$ to denote a forecast.
+where we use $\overline X_{t+1}, t \geq 1 $ to denote a forecast.
 
 +++
 
@@ -960,7 +960,7 @@ where we use $\overline X_t$ to denote a forecast.
 
 This representation is related to  one originally proposed by  {cite}`schmid2010`.
 
-It can be regarded as an intermediate step to  a related and perhaps more useful  representation 3.
+It can be regarded as an intermediate step to  a related   representation 3 to be presented later
 
 
 As with Representation 1, we continue to
@@ -969,12 +969,15 @@ As with Representation 1, we continue to
 
 
 
-As we observed and illustrated  earlier in this lecture, for a full SVD
-$U U^T$ and $U^T U$ are both identity matrices; but under a reduced SVD of $X$, $U^T U$ is not an identity matrix.  
+As we observed and illustrated  earlier in this lecture
 
-As we shall see, a full SVD is  too confining for what we ultimately want to do, namely,  situations in which  $U^T U$ is **not** an identity matrix because we  use a reduced SVD of $X$.
+  * (a) for a full SVD $U U^T = I_{m \times m} $ and $U^T U = I_{p \times p}$ are both identity matrices
+ 
+  * (b)  for  a reduced SVD of $X$, $U^T U $ is not an identity matrix.  
 
-But for now, let's proceed under the assumption that both of the  preceding two  requirements are satisfied.
+As we shall see later, a full SVD is  too confining for what we ultimately want to do, namely,  situations in which  $U^T U$ is **not** an identity matrix because we  use a reduced SVD of $X$.
+
+But for now, let's proceed under the assumption that we are using a full SVD so that  both of the  preceding two  requirements (a) and (b) are satisfied.
 
  
 
@@ -994,11 +997,10 @@ $$
 \hat A = U \tilde A U^T = U W \Lambda W^{-1} U^T 
 $$ (eq:eqeigAhat)
 
-Evidently, according to equation {eq}`eq:eqeigAhat`, the diagonal matrix $\Lambda$ contains eigenvalues of 
+According to equation {eq}`eq:eqeigAhat`, the diagonal matrix $\Lambda$ contains eigenvalues of 
 $\hat A$ and corresponding eigenvectors of $\hat A$ are columns of the matrix $UW$. 
 
-
-Thus, the systematic (i.e., not random) parts of the $X_t$ dynamics captured by our first-order vector autoregressions   are described by
+It follows that the systematic (i.e., not random) parts of the $X_t$ dynamics captured by our first-order vector autoregressions   are described by
 
 $$
 X_{t+1} = U W \Lambda W^{-1} U^T  X_t 
@@ -1016,13 +1018,13 @@ $$
 \hat b_{t+1} = \Lambda \hat b_t
 $$
 
-where now our encoder is
+where our **encoder**  is now
 
 $$ 
 \hat b_t = W^{-1} U^T X_t
 $$
 
-and our decoder is
+and our **decoder** is
 
 $$
 X_t = U W \hat b_t
@@ -1042,19 +1044,45 @@ $$
 \Phi_s = UW 
 $$ (eq:Phisfull)
 
-and represented equation {eq}`eq:DSSEbookrepr` as
+and a generalized inverse
+
+$$
+\Phi_s^+ = W^{-1}U^T 
+$$ (eq:Phisfullinv)
+
+{cite}`schmid2010` then  represented equation {eq}`eq:DSSEbookrepr` as
 
 $$
 \overline X_{t+1} = \Phi_s \Lambda^t \Phi_s^+ X_1 
 $$ (eq:schmidrep)
 
-Components of the  basis vector $ \hat b_t = W^{-1} U^T X_t \equiv \Phi_s^+$ are often  called DMD **modes**, or sometimes also
-DMD **projected nodes**.    
+Components of the  basis vector $ \hat b_t = W^{-1} U^T X_t \equiv \Phi_s^+ X_t$ are often  called DMD **modes**, or sometimes also
+DMD **projected modes**.    
+
+To understand why they are called **projected modes**, notice that
+
+$$ 
+\Phi_s^+ = ( \Phi_s^T \Phi_s)^{-1} \Phi_s^T
+$$
+
+so that the $m \times p$ matrix 
+
+$$
+\hat b =  \Phi_s^+ X
+$$ 
+
+is a matrix of regression coefficients of the $m \times n$ matrix $X$ on the $m \times p$ matrix $\Phi_s$.
+
+We'll say more about this interpretation in a related context when we discuss representation 3.
 
 
 
 
-We turn next  to an alternative  representation suggested by  Tu et al. {cite}`tu_Rowley`, one that is more appropriate to use when, as in practice is typically the case, we use a reduced SVD.
+
+
+We turn next  to an alternative  representation suggested by  Tu et al. {cite}`tu_Rowley`.
+
+It is more appropriate to use this alternative representation  when, as in practice is typically the case, we use a reduced SVD.
 
 
 
@@ -1071,13 +1099,13 @@ $$
 X = \tilde U \tilde \Sigma \tilde V^T, 
 $$
 
-where now $U$ is $m \times p$ and $\Sigma$ is $ p \times p$ and $V^T$ is $p \times n$. 
+where now $\tilde U$ is $m \times p$, $\tilde \Sigma$ is $ p \times p$ and $\tilde V^T$ is $p \times n$. 
 
 Our minimum-norm least-squares estimator  approximator of  $A$ now has representation 
 
 $$
 \hat A = X' \tilde V \tilde \Sigma^{-1} \tilde U^T
-$$
+$$ (eq:Ahatwithtildes)
 
 
 Paralleling a step in Representation 1, define a  transition matrix for a rotated $p \times 1$ state $\tilde b_t$ by
@@ -1086,71 +1114,73 @@ $$
 \tilde A =\tilde  U^T \hat A \tilde U 
 $$ (eq:Atildered)
 
-Because we are now working with a reduced SVD, so that $\tilde U \tilde U^T \neq I$, since $\hat A \neq \tilde U \tilde A \tilde U^T$, we can't simply  recover $\hat A$ from  $\tilde A$ and $\tilde U$. 
+Because we are now working with a reduced SVD,  $\tilde U \tilde U^T \neq I$.
+
+Since 
+
+$$
+\hat A \neq \tilde U \tilde A \tilde U^T,
+$$
+
+we can't simply  recover $\hat A$ from  $\tilde A$ and $\tilde U$. 
 
 
-Nevertheless, hoping for the best, we persist and construct an eigendecomposition of what  is now a 
+Nevertheless, we  hope for the best and construct an eigendecomposition of the 
 $p \times p$ matrix $\tilde A$:
 
 $$
- \tilde A =  W  \Lambda  W^{-1}
+ \tilde A =  \tilde  W  \Lambda \tilde  W^{-1} .
 $$ (eq:tildeAeigenred)
 
 
 Mimicking our procedure in Representation 2, we cross our fingers and compute the $m \times p$ matrix
 
 $$
-\tilde \Phi_s = \tilde U W
+\tilde \Phi_s = \tilde U \tilde W
 $$ (eq:Phisred)
 
 that  corresponds to {eq}`eq:Phisfull` for a full SVD.  
 
-At this point, it is interesting to compute $\hat A \tilde  \Phi_s$:
+At this point, where $\hat A$ is given by formula {eq}`eq:Ahatwithtildes` it is interesting to compute $\hat A \tilde  \Phi_s$:
 
 $$
 \begin{aligned}
-\hat A \tilde \Phi_s & = (X' \tilde V \tilde \Sigma^{-1} \tilde U^T) (\tilde U W) \\
-  & = X' \tilde V \tilde \Sigma^{-1} W \\
-  & \neq (\tilde U W) \Lambda \\
+\hat A \tilde \Phi_s & = (X' \tilde V \tilde \Sigma^{-1} \tilde U^T) (\tilde U \tilde W) \\
+  & = X' \tilde V \tilde \Sigma^{-1} \tilde  W \\
+  & \neq (\tilde U \tilde  W) \Lambda \\
   & = \tilde \Phi_s \Lambda
   \end{aligned}
 $$
  
 That 
-$ \hat A \tilde \Phi_s \neq \tilde \Phi_s \Lambda $ means, that unlike the  corresponding situation in Representation 2, columns of $\tilde \Phi_s = \tilde U W$
-are **not** eigenvectors of $\hat A$ corresponding to eigenvalues  $\Lambda$.
+$ \hat A \tilde \Phi_s \neq \tilde \Phi_s \Lambda $ means, that unlike the  corresponding situation in Representation 2, columns of $\tilde \Phi_s = \tilde U \tilde  W$
+are **not** eigenvectors of $\hat A$ corresponding to eigenvalues  on the diagonal of matix $\Lambda$.
 
-But in a quest for eigenvectors of $\hat A$ that we *can* compute with a reduced SVD,  let's define 
-
-$$
-\Phi \equiv \hat A \tilde \Phi_s = X' \tilde V \tilde \Sigma^{-1} W
-$$
-
-It turns out that columns of $\Phi$ **are** eigenvectors of $\hat A$,
- a consequence of a  result established by Tu et al. {cite}`tu_Rowley`.
-
-To present their result, for convenience we'll drop the tilde $\tilde \cdot$ above $U, V,$ and $\Sigma$
-and adopt the understanding that each of them is  computed with a reduced SVD.  
-
-
-Thus, we now use the notation
-that the  $m \times p$ matrix $\Phi$  is defined as
+But in a quest for eigenvectors of $\hat A$ that we **can** compute with a reduced SVD,  let's define  the $m \times p$ matrix
+$\Phi$ as
 
 $$
-  \Phi = X'   V  \Sigma^{-1} W
+\Phi \equiv \hat A \tilde \Phi_s = X' \tilde V \tilde \Sigma^{-1}  \tilde  W
 $$ (eq:Phiformula)
+
+It turns out that columns of $\Phi$ **are** eigenvectors of $\hat A$.
+
+This is 
+ a consequence of a  result established by Tu et al. {cite}`tu_Rowley`, which we now present.
+
+
 
 
   
-**Proposition** The $p$ columns of $\Phi$ are eigenvectors of $\check A$.
+**Proposition** The $p$ columns of $\Phi$ are eigenvectors of $\hat A$.
 
 **Proof:** From formula {eq}`eq:Phiformula` we have
 
 $$  
 \begin{aligned}
-  \hat A \Phi & =  (X' V \Sigma^{-1} U^T) (X' V \Sigma^{-1} W) \cr
-  & = X' V \Sigma^{-1} \tilde A W \cr
-  & = X' V \Sigma^{-1} W \Lambda \cr
+  \hat A \Phi & =  (X' \tilde  V \tilde  \Sigma^{-1} \tilde  U^T) (X' \tilde  V \Sigma^{-1} \tilde  W) \cr
+  & = X' \tilde V \tilde  \Sigma^{-1} \tilde A \tilde  W \cr
+  & = X' \tilde  V \tilde  \Sigma^{-1}\tilde  W \Lambda \cr
   & = \Phi \Lambda 
   \end{aligned}
 $$ 
@@ -1161,7 +1191,7 @@ $$
 \hat A \Phi = \Phi \Lambda
 $$ (eq:APhiLambda)
 
-Let $\phi_i$ be the the $i$the column of $\Phi$ and $\lambda_i$ be the corresponding $i$ eigenvalue of $\tilde A$ from decomposition {eq}`eq:tildeAeigenred`. 
+Let $\phi_i$ be the $i$th  column of $\Phi$ and $\lambda_i$ be the corresponding $i$ eigenvalue of $\tilde A$ from decomposition {eq}`eq:tildeAeigenred`. 
 
 Writing out the $m \times 1$ vectors on both sides of  equation {eq}`eq:APhiLambda` and equating them gives
 
@@ -1170,14 +1200,14 @@ $$
 \hat A \phi_i = \lambda_i \phi_i .
 $$
 
-Thus, $\phi_i$ is an eigenvector of $\hat A$ that corresponds to eigenvalue  $\lambda_i$ of $\tilde A$.
+Evidently, $\phi_i$ is an eigenvector of $\hat A$ that corresponds to eigenvalue  $\lambda_i$ of both  $\tilde A$ and $\hat A$.
 
 This concludes the proof. 
 
 Also see {cite}`DDSE_book` (p. 238)
 
 
-### Decoder of  $X$ as linear projection
+### Decoder of  $X$ as a linear projection
 
 
 
@@ -1204,7 +1234,7 @@ $$
 $$ (eq:decoder102)
 
 
-Since $\Phi$ has $p$ linearly independent columns, the generalized inverse of $\Phi$ is
+Since the $m \times p$ matrix $\Phi$ has $p$ linearly independent columns, the generalized inverse of $\Phi$ is
 
 $$
 \Phi^{+} = (\Phi^T \Phi)^{-1} \Phi^T
@@ -1216,14 +1246,14 @@ $$
 \check b = (\Phi^T \Phi)^{-1} \Phi^T X
 $$ (eq:checkbform)
 
-The matrix $\check b$  is recognizable as the  matrix of least squares regression coefficients of the matrix
-$X$ on the matrix $\Phi$ and 
+The $p \times n$  matrix $\check b$  is recognizable as the  matrix of least squares regression coefficients of the $m \times n$  matrix
+$X$ on the $m \times p$ matrix $\Phi$ and 
 
 $$
 \check X = \Phi \check b
 $$ (eq:Xcheck_)
 
-is the least squares projection of $X$ on $\Phi$.
+is an $m \times n$ matrix of least squares projections of $X$ on $\Phi$.
 
  
 
@@ -1262,7 +1292,7 @@ which implies formula {eq}`eq:checkbform`.
 
 
 
-There is a better way to compute the $p \times 1$ vector $\check b_t$ than provided by formula
+There is a useful  way to approximate  the $p \times 1$ vector $\check b_t$ instead of using  formula
 {eq}`eq:decoder102`.
 
 In particular, the following argument from {cite}`DDSE_book` (page 240) provides a computationally efficient way
@@ -1278,9 +1308,9 @@ $$
    X_1 = \Phi \check b_1
 $$ (eq:X1proj)
 
-where $\check b_1$ is an $r \times 1$ vector. 
+where $\check b_1$ is a $p \times 1$ vector. 
 
-Recall from representation 1 above that  $X_1 =  U \tilde b_1$, where $\tilde b_1$ is the time $1$  basis vector for representation 1.
+Recall from representation 1 above that  $X_1 =  U \tilde b_1$, where $\tilde b_1$ is a time $1$  basis vector for representation 1.
 
 It  then follows from equation {eq}`eq:Phiformula` that 
  
@@ -1323,7 +1353,7 @@ $$ (eq:beqnsmall)
 
 
 
-which is  computationally more efficient than the following instance of  equation {eq}`eq:decoder102` for computing the initial vector $\check b_1$:
+which is  computationally more efficient than the following instance of  equation {eq}`eq:decoder102` for approximating the initial vector $\check b_1$:
 
 $$
   \check b_1= \Phi^{+} X_1
@@ -1358,9 +1388,9 @@ singular values of $X$.
 We can  adjust our  formulas to describe a situation in which we instead retain only
 the $r < p$ largest singular values.  
 
-In that case, we simply replace $\Sigma$ with the appropriate $p\times p$ matrix of singular values,
-$U$ with the $m \times p$ matrix of whose columns correspond to the $r$ largest singular values,
-and $V$ with the $n \times p$ matrix whose columns correspond to the $r$ largest  singular values.
+In that case, we simply replace $\tilde \Sigma$ with the appropriate $r\times r$ matrix of singular values,
+$\tilde U$ with the $m \times r$ matrix  whose columns correspond to the $r$ largest singular values,
+and $\tilde V$ with the $n \times r$ matrix whose columns correspond to the $r$ largest  singular values.
 
 Counterparts of all of the salient formulas above then apply.
 
