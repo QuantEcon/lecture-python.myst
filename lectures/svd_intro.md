@@ -1099,7 +1099,7 @@ $$
 X = \tilde U \tilde \Sigma \tilde V^T, 
 $$
 
-where now $\tilde U$ is $m \times p$, $\tilde \Sigma$ is $ p \times p$ and $\tilde V^T$ is $p \times n$. 
+where now $\tilde U$ is $m \times p$, $\tilde \Sigma$ is $ p \times p$, and $\tilde V^T$ is $p \times n$. 
 
 Our minimum-norm least-squares estimator  approximator of  $A$ now has representation 
 
@@ -1114,18 +1114,44 @@ $$
 \tilde A =\tilde  U^T \hat A \tilde U 
 $$ (eq:Atildered)
 
-Because we are now working with a reduced SVD,  $\tilde U \tilde U^T \neq I$.
 
-Since 
+**Interpretation as projection coefficients**
+
+
+{cite}`DDSE_book` remark that $\tilde A$  can be interpreted in terms of a projection of $\hat A$ onto the $p$ modes in $\tilde U$. 
+
+To verify this, first note that, because  $ \tilde U^T \tilde U = I$, it follows that 
+
+$$
+\tilde A = \tilde U^T \hat A \tilde U = \tilde U^T X' \tilde V \tilde \Sigma^{-1} \tilde U^T \tilde U 
+= \tilde U^T X' \tilde V \tilde \Sigma^{-1}
+$$ (eq:tildeAverify)
+
+ 
+
+Next, we'll just  compute the regression coefficients in a projection of $\hat A$ on $\tilde U$ using the
+standard least-square formula
+
+$$
+(\tilde U^T \tilde U)^{-1} \tilde U^T \hat A = (\tilde U^T \tilde U)^{-1} \tilde U^T X' \tilde V \tilde \Sigma^{1} = 
+\tilde U^T X' \tilde V \tilde \Sigma^{-1} = \tilde A .
+$$
+
+
+
+
+Note that because we are now working with a reduced SVD,  $\tilde U \tilde U^T \neq I$.
+
+Consequently, 
 
 $$
 \hat A \neq \tilde U \tilde A \tilde U^T,
 $$
 
-we can't simply  recover $\hat A$ from  $\tilde A$ and $\tilde U$. 
+and we can't simply  recover $\hat A$ from  $\tilde A$ and $\tilde U$. 
 
 
-Nevertheless, we  hope for the best and construct an eigendecomposition of the 
+Nevertheless, we  hope for the best and proceed to construct an eigendecomposition of the 
 $p \times p$ matrix $\tilde A$:
 
 $$
@@ -1133,7 +1159,7 @@ $$
 $$ (eq:tildeAeigenred)
 
 
-Mimicking our procedure in Representation 2, we cross our fingers and compute the $m \times p$ matrix
+Mimicking our procedure in Representation 2, we cross our fingers and compute an $m \times p$ matrix
 
 $$
 \tilde \Phi_s = \tilde U \tilde W
@@ -1200,7 +1226,7 @@ $$
 \hat A \phi_i = \lambda_i \phi_i .
 $$
 
-Evidently, $\phi_i$ is an eigenvector of $\hat A$ that corresponds to eigenvalue  $\lambda_i$ of both  $\tilde A$ and $\hat A$.
+This equation confirms that  $\phi_i$ is an eigenvector of $\hat A$ that corresponds to eigenvalue  $\lambda_i$ of both  $\tilde A$ and $\hat A$.
 
 This concludes the proof. 
 
@@ -1246,8 +1272,8 @@ $$
 \check b = (\Phi^T \Phi)^{-1} \Phi^T X
 $$ (eq:checkbform)
 
-The $p \times n$  matrix $\check b$  is recognizable as the  matrix of least squares regression coefficients of the $m \times n$  matrix
-$X$ on the $m \times p$ matrix $\Phi$ and 
+The $p \times n$  matrix $\check b$  is recognizable as a  matrix of least squares regression coefficients of the $m \times n$  matrix
+$X$ on the $m \times p$ matrix $\Phi$ and consequently
 
 $$
 \check X = \Phi \check b
@@ -1272,7 +1298,7 @@ or
 
 $$
 X = \Phi \check b + \epsilon
-$$
+$$ (eq:Xbcheck)
 
 where $\epsilon$ is an $m \times n$ matrix of least squares errors satisfying the least squares
 orthogonality conditions $\epsilon^T \Phi =0 $ or
@@ -1288,79 +1314,92 @@ which implies formula {eq}`eq:checkbform`.
 
 
 
-### Alternative algorithm
+### A useful approximation
 
 
 
 There is a useful  way to approximate  the $p \times 1$ vector $\check b_t$ instead of using  formula
 {eq}`eq:decoder102`.
 
-In particular, the following argument from {cite}`DDSE_book` (page 240) provides a computationally efficient way
-to compute $\check b_t$.  
+In particular, the following argument adapted from {cite}`DDSE_book` (page 240) provides a computationally efficient way
+to approximate $\check b_t$.  
 
 For convenience, we'll do this first for time $t=1$.
 
 
 
-For $t=1$, we have  
+For $t=1$, from equation {eq}`eq:Xbcheck` we have  
 
 $$ 
-   X_1 = \Phi \check b_1
+   \check X_1 = \Phi \check b_1
 $$ (eq:X1proj)
 
 where $\check b_1$ is a $p \times 1$ vector. 
 
-Recall from representation 1 above that  $X_1 =  U \tilde b_1$, where $\tilde b_1$ is a time $1$  basis vector for representation 1.
+Recall from representation 1 above that  $X_1 =  U \tilde b_1$, where $\tilde b_1$ is a time $1$  basis vector for representation 1 and $U$ is from a full SVD of $X$.  
 
-It  then follows from equation {eq}`eq:Phiformula` that 
+It  then follows from equation {eq}`eq:Xbcheck` that 
+
  
 $$ 
-  U \tilde b_1 = X' V \Sigma^{-1} W \check b_1
+  U \tilde b_1 = X' \tilde V \tilde \Sigma^{-1} \tilde  W \check b_1 + \epsilon_1
 $$
 
-and consequently
+where $\epsilon_1$ is a least-squares error vector from equation {eq}`eq:Xbcheck`. 
+
+It follows that 
+
+$$
+\tilde b_1 = U^T X' V \tilde \Sigma^{-1} \tilde W \check b_1 + U^T \epsilon_1
+$$
+
+
+Replacing the error term $U^T \epsilon_1$ by zero, and replacing $U$ from a full SVD of $X$ with
+$\tilde U$ from a reduced SVD,  we obtain  an approximation $\hat b_1$ to $\tilde b_1$:
+
+
 
 $$ 
-  \tilde b_1 = U^T X' V \Sigma^{-1} W \check b_1
+  \hat b_1 = \tilde U^T X' \tilde V \tilde \Sigma^{-1} \tilde  W \check b_1
 $$
 
-Recall that  from equation {eq}`eq:AhatSVDformula`,  $ \tilde A = U^T X' V \Sigma^{-1}$.
+Recall that  from equation {eq}`eq:tildeAverify`,  $ \tilde A = \tilde U^T X' \tilde V \tilde \Sigma^{-1}$.
 
 It then follows  that
   
 $$ 
-  \tilde  b_1 = \tilde A W \check b_1
+  \hat  b_1 = \tilde   A \tilde W \check b_1
 $$
 
-and therefore, by the  eigendecomposition  {eq}`eq:tildeAeigen` of $\tilde A$, we have
+and therefore, by the  eigendecomposition  {eq}`eq:tildeAeigenred` of $\tilde A$, we have
 
 $$ 
-  \tilde b_1 = W \Lambda \check b_1
+  \hat b_1 = \tilde W \Lambda \check b_1
 $$ 
 
 Consequently, 
   
 $$ 
-  \check b_1 = ( W \Lambda)^{-1} \tilde b_1
+  \hat b_1 = ( \tilde W \Lambda)^{-1} \tilde b_1
 $$ 
 
 or 
 
 
 $$ 
-  \check b_1 = ( W \Lambda)^{-1} U^T X_1 ,
+   \hat b_1 = ( \tilde W \Lambda)^{-1} \tilde U^T X_1 ,
 $$ (eq:beqnsmall)
 
 
 
-which is  computationally more efficient than the following instance of  equation {eq}`eq:decoder102` for approximating the initial vector $\check b_1$:
+which is  computationally efficient approximation to  the following instance of  equation {eq}`eq:decoder102` for  the initial vector $\check b_1$:
 
 $$
   \check b_1= \Phi^{+} X_1
 $$ (eq:bphieqn)
 
 
-Users of  DMD sometimes call  components of the  basis vector $\check b_t  = \Phi^+ X_t \equiv (W \Lambda)^{-1} U^T X_t$  the  **exact** DMD modes.  
+(To highlight that {eq}`eq:beqnsmall` is an approximation, users of  DMD sometimes call  components of the  basis vector $\check b_t  = \Phi^+ X_t $  the  **exact** DMD modes.)  
 
 Conditional on $X_t$, we can compute our decoded $\check X_{t+j},   j = 1, 2, \ldots $  from 
 either 
@@ -1370,13 +1409,13 @@ $$
 $$ (eq:checkXevoln)
 
 
-or  
+or  use the approximation
 
 $$ 
-  \check X_{t+j} = \Phi \Lambda^j (W \Lambda)^{-1}  U^T X_t .
+  \hat X_{t+j} = \Phi \Lambda^j (W \Lambda)^{-1}  \tilde U^T X_t .
 $$ (eq:checkXevoln2)
 
-We can then use $\check X_{t+j}$ to forcast $X_{t+j}$.
+We can then use $\check X_{t+j}$ or $\hat X_{t+j}$ to forecast $X_{t+j}$.
 
 
 
