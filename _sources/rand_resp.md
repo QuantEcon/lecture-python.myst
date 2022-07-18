@@ -139,13 +139,13 @@ From the expressions above we can find that:
 - When $p$ is $1$ or $0$, the randomized estimate degenerates to an estimator without randomized sampling.
 
 
-We shall analyze only discuss the situation in which $p \in (\frac{1}{2},1)$
+We shall only discuss  situations in which $p \in (\frac{1}{2},1)$
 
-(the situation in which $p \in (0,\frac{1}{2})$ is symmetric).
+(a situation in which $p \in (0,\frac{1}{2})$ is symmetric).
 
 From expressions {eq}`eq:five` and {eq}`eq:seven` we can deduce that: 
 
-- The MSE of $\hat{\pi}$  decreases as $p$ increasing.
+- The MSE of $\hat{\pi}$  decreases as $p$ increases.
 
 
 ## Comparing Two Survey Designs 
@@ -154,7 +154,7 @@ Let's compare the preceding randomized-response method with a stylized non-rando
 
 In our non-randomized response method, we suppose that:
 
-- Members of Group A tells the truth with probability of $T_a$ while the members of Group B tells the truth with probability of $T_b$
+- Members of Group A tells the truth with probability  $T_a$ while the members of Group B tells the truth with probability $T_b$
 - $Y_i$ is $1$ or $0$ according to whether the sample's $i\text{th}$ member's report is in Group A or not.
 
 Then we can estimate $\pi$ as:
@@ -190,9 +190,9 @@ $$
 \text{MSE Ratio}=\frac{\text{Mean Square Error Randomized}}{\text{Mean Square Error Regular}}
 $$
 
-We can compute  MSE Ratios for different surveys and survey designs associated with different parameter values.
+We can compute  MSE Ratios for different survey designs associated with different parameter values.
 
-The following Python code computes the objects we want to stare at in order to make comparisons
+The following Python code computes  objects we want to stare at in order to make comparisons
 under  different values of $\pi_A$ and $n$:
 
 ```{code-cell} ipython3
@@ -256,7 +256,7 @@ Let's put the code to work for parameter values
 
 We can generate MSE Ratios theoretically using the above formulas.
 
-We can also perform a  Monte Carlo simulation  of the MSE Ratio.
+We can also perform   Monte Carlo simulations  of a MSE Ratio.
 
 ```{code-cell} ipython3
 cp1 = Comparison(0.6, 1000)
@@ -269,7 +269,7 @@ df1_mc = cp1.MCsimulation()
 df1_mc
 ```
 
-The theoretical calculations  do a good job of predicting the Monte Carlo results.
+The theoretical calculations  do a good job of predicting  Monte Carlo results.
 
 We see that in many situations, especially when the bias is not small, the MSE of the randomized-sampling  methods is smaller than that of the non-randomized sampling method. 
 
@@ -319,5 +319,5 @@ Evidently, as $n$ increases, the randomized response method does  better perform
 
 {doc}`This QuantEcon lecture <util_rand_resp>`  describes some alternative randomized response surveys.
 
-That lecture presents the utilitarian analysis of those alternatives conducted by Lars Ljungqvist
+That lecture presents a utilitarian analysis of those alternatives conducted by Lars Ljungqvist
 {cite}`ljungqvist1993unified`.

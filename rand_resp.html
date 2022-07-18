@@ -317,11 +317,11 @@ Var(\hat{\pi})=\frac{\frac{1}{4}-(\pi-\frac{1}{2})^2}{n}+\frac{\frac{1}{16(p-\fr
 <li><p>When <span class="math notranslate nohighlight">\(p\)</span> is <span class="math notranslate nohighlight">\(\frac{1}{2}\)</span>, expression <a class="reference internal" href="#equation-eq-one">(17.1)</a> degenerates to a constant.</p></li>
 <li><p>When <span class="math notranslate nohighlight">\(p\)</span> is <span class="math notranslate nohighlight">\(1\)</span> or <span class="math notranslate nohighlight">\(0\)</span>, the randomized estimate degenerates to an estimator without randomized sampling.</p></li>
 </ul>
-<p>We shall analyze only discuss the situation in which <span class="math notranslate nohighlight">\(p \in (\frac{1}{2},1)\)</span></p>
-<p>(the situation in which <span class="math notranslate nohighlight">\(p \in (0,\frac{1}{2})\)</span> is symmetric).</p>
+<p>We shall only discuss  situations in which <span class="math notranslate nohighlight">\(p \in (\frac{1}{2},1)\)</span></p>
+<p>(a situation in which <span class="math notranslate nohighlight">\(p \in (0,\frac{1}{2})\)</span> is symmetric).</p>
 <p>From expressions <a class="reference internal" href="#equation-eq-five">(17.5)</a> and <a class="reference internal" href="#equation-eq-seven">(17.7)</a> we can deduce that:</p>
 <ul class="simple">
-<li><p>The MSE of <span class="math notranslate nohighlight">\(\hat{\pi}\)</span>  decreases as <span class="math notranslate nohighlight">\(p\)</span> increasing.</p></li>
+<li><p>The MSE of <span class="math notranslate nohighlight">\(\hat{\pi}\)</span>  decreases as <span class="math notranslate nohighlight">\(p\)</span> increases.</p></li>
 </ul>
 </div>
 <div class="section" id="comparing-two-survey-designs">
@@ -329,7 +329,7 @@ Var(\hat{\pi})=\frac{\frac{1}{4}-(\pi-\frac{1}{2})^2}{n}+\frac{\frac{1}{16(p-\fr
 <p>Let’s compare the preceding randomized-response method with a stylized non-randomized response method.</p>
 <p>In our non-randomized response method, we suppose that:</p>
 <ul class="simple">
-<li><p>Members of Group A tells the truth with probability of <span class="math notranslate nohighlight">\(T_a\)</span> while the members of Group B tells the truth with probability of <span class="math notranslate nohighlight">\(T_b\)</span></p></li>
+<li><p>Members of Group A tells the truth with probability  <span class="math notranslate nohighlight">\(T_a\)</span> while the members of Group B tells the truth with probability <span class="math notranslate nohighlight">\(T_b\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(Y_i\)</span> is <span class="math notranslate nohighlight">\(1\)</span> or <span class="math notranslate nohighlight">\(0\)</span> according to whether the sample’s <span class="math notranslate nohighlight">\(i\text{th}\)</span> member’s report is in Group A or not.</p></li>
 </ul>
 <p>Then we can estimate <span class="math notranslate nohighlight">\(\pi\)</span> as:</p>
@@ -362,8 +362,8 @@ Var(\hat{\pi})&amp;=\frac{ \left[ \pi T_a + (1-\pi)(1-T_b)\right]  \left[1- \pi 
 \[
 \text{MSE Ratio}=\frac{\text{Mean Square Error Randomized}}{\text{Mean Square Error Regular}}
 \]</div>
-<p>We can compute  MSE Ratios for different surveys and survey designs associated with different parameter values.</p>
-<p>The following Python code computes the objects we want to stare at in order to make comparisons
+<p>We can compute  MSE Ratios for different survey designs associated with different parameter values.</p>
+<p>The following Python code computes  objects we want to stare at in order to make comparisons
 under  different values of <span class="math notranslate nohighlight">\(\pi_A\)</span> and <span class="math notranslate nohighlight">\(n\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -428,7 +428,7 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
 <li><p><span class="math notranslate nohighlight">\(n=1000\)</span></p></li>
 </ul>
 <p>We can generate MSE Ratios theoretically using the above formulas.</p>
-<p>We can also perform a  Monte Carlo simulation  of the MSE Ratio.</p>
+<p>We can also perform   Monte Carlo simulations  of a MSE Ratio.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cp1</span> <span class="o">=</span> <span class="n">Comparison</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
@@ -736,7 +736,7 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
 </table>
 </div></div></div>
 </div>
-<p>The theoretical calculations  do a good job of predicting the Monte Carlo results.</p>
+<p>The theoretical calculations  do a good job of predicting  Monte Carlo results.</p>
 <p>We see that in many situations, especially when the bias is not small, the MSE of the randomized-sampling  methods is smaller than that of the non-randomized sampling method.</p>
 <p>These differences become larger as  <span class="math notranslate nohighlight">\(p\)</span> increases.</p>
 <p>By adjusting  parameters <span class="math notranslate nohighlight">\(\pi_A\)</span> and <span class="math notranslate nohighlight">\(n\)</span>, we can study outcomes in different situations.</p>
@@ -1371,7 +1371,7 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
 <div class="section" id="concluding-remarks">
 <h2><span class="section-number">17.4. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="util_rand_resp.html"><span class="doc">This QuantEcon lecture</span></a>  describes some alternative randomized response surveys.</p>
-<p>That lecture presents the utilitarian analysis of those alternatives conducted by Lars Ljungqvist
+<p>That lecture presents a utilitarian analysis of those alternatives conducted by Lars Ljungqvist
 <span id="id5">[<a class="reference internal" href="zreferences.html#id8" title="Lars Ljungqvist. A unified approach to measures of privacy in randomized response models: a utilitarian perspective. Journal of the American Statistical Association, 88(421):97–103, 1993.">Lju93</a>]</span>.</p>
 </div>
 </div>
