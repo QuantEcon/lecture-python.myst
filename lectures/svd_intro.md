@@ -82,10 +82,12 @@ $$
 
 where 
 
-\begin{align*}
+$$
+\begin{aligned}
 UU^T &  = I  &  \quad U^T U = I \cr    
 VV^T & = I & \quad V^T V = I
-\end{align*}
+\end{aligned}
+$$
  
 where 
  
@@ -123,10 +125,12 @@ You can read about reduced and full SVD here
 
 For a full SVD, 
 
-\begin{align*}
+$$
+\begin{aligned}
 UU^T &  = I  &  \quad U^T U = I \cr    
 VV^T & = I & \quad V^T V = I
-\end{align*}
+\end{aligned}
+$$
 
 But these properties don't hold for a  **reduced** SVD.
 
@@ -134,18 +138,21 @@ Which properties hold depend on whether we are in a **tall-skinny** case or a **
 
  * In a **tall-skinny** case in which $m > > n$, for a **reduced** SVD
 
-
-\begin{align*}
+$$
+\begin{aligned}
 UU^T &  \neq I  &  \quad U^T U = I \cr    
 VV^T & = I & \quad V^T V = I
-\end{align*}
+\end{aligned}
+$$
 
  * In a **short-fat** case in which $m < < n$, for a **reduced** SVD
 
-\begin{align*}
+$$
+\begin{aligned}
 UU^T &  = I  &  \quad U^T U = I \cr    
 VV^T & = I & \quad V^T V \neq I
-\end{align*}
+\end{aligned}
+$$
 
 When we study Dynamic Mode Decomposition below, we shall want to remember this caveat because sometimes we'll be using reduced SVD's to compute key objects.
 
@@ -262,10 +269,12 @@ $$
 
 where
 
-\begin{align*}
+$$
+\begin{aligned}
  S & = U\Sigma U^T \cr
 Q & = U V^T 
-\end{align*}
+\end{aligned}
+$$
 
 and $S$ is evidently a symmetric matrix and $Q$ is an orthogonal matrix.
 
@@ -439,11 +448,11 @@ $$
 Compute:
 
 $$
-\begin{align}
+\begin{aligned}
 XX^T&=U\Sigma V^TV\Sigma^T U^T\cr
 &\equiv U\Sigma\Sigma^TU^T\cr
 &\equiv U\Lambda U^T
-\end{align}
+\end{aligned}
 $$  (eq:XXcompare)
 
 Compare representation {eq}`eq:XXcompare` with equation {eq}`eq:XXo` above.
@@ -453,10 +462,12 @@ eigenvectors of $XX^T$ and $\Sigma \Sigma^T$ is the matrix $\Lambda$ of eigenval
 
 Second, let's compute
 
-\begin{align*}
+$$
+\begin{aligned}
 X^TX &=V\Sigma^T U^TU\Sigma V^T\\
 &=V\Sigma^T{\Sigma}V^T
-\end{align*} 
+\end{aligned}
+$$ 
 
 
 
