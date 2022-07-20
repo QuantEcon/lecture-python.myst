@@ -100,7 +100,7 @@ $$
 In addition, let
 
 $$
-\barnX_n := \frac{1}{n} \sum_{i=1}^n X_i
+\bar X_n := \frac{1}{n} \sum_{i=1}^n X_i
 $$
 
 Kolmogorov's strong law states that, if $\mathbb E |X|$ is finite, then
