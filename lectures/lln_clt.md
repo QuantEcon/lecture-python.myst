@@ -100,7 +100,7 @@ $$
 In addition, let
 
 $$
-\bar X_n := \frac{1}{n} \sum_{i=1}^n X_i
+\barnX_n := \frac{1}{n} \sum_{i=1}^n X_i
 $$
 
 Kolmogorov's strong law states that, if $\mathbb E |X|$ is finite, then
@@ -263,7 +263,7 @@ for ax in axes:
 
     # Plot
     ax.plot(list(range(n)), data, 'o', color='grey', alpha=0.5)
-    axlabel = '$\\bar X_n$ for $X_i \sim$' + name
+    axlabel = '$\\bar{X}_n$ for $X_i \sim$' + name
     ax.plot(list(range(n)), sample_mean, 'g-', lw=3, alpha=0.6, label=axlabel)
     m = distribution.mean()
     ax.plot(list(range(n)), [m] * n, 'k--', lw=1.5, label='$\mu$')
