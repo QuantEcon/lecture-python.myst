@@ -162,12 +162,17 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#adding-a-random-term">
-   9.3. Adding a random term
+   9.3. Adding a Random Term
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#computing-population-moments">
+   9.4. Computing Population Moments
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-forward-looking-model">
-   9.4. A forward looking model
+   9.5. A Forward Looking Model
   </a>
  </li>
 </ul>
@@ -228,8 +233,9 @@ const thebe_selector_output = ".output, .cell_output"
 <ul>
 <li><p><a class="reference internal" href="#overview" id="id3">Overview</a></p></li>
 <li><p><a class="reference internal" href="#samuelsons-model" id="id4">Samuelson’s model</a></p></li>
-<li><p><a class="reference internal" href="#adding-a-random-term" id="id5">Adding a random term</a></p></li>
-<li><p><a class="reference internal" href="#a-forward-looking-model" id="id6">A forward looking model</a></p></li>
+<li><p><a class="reference internal" href="#adding-a-random-term" id="id5">Adding a Random Term</a></p></li>
+<li><p><a class="reference internal" href="#computing-population-moments" id="id6">Computing Population Moments</a></p></li>
+<li><p><a class="reference internal" href="#a-forward-looking-model" id="id7">A Forward Looking Model</a></p></li>
 </ul>
 </li>
 </ul>
@@ -492,7 +498,7 @@ constant:</p>
 </div>
 </div>
 <div class="section" id="adding-a-random-term">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">9.3. </span>Adding a random term</a><a class="headerlink" href="#adding-a-random-term" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">9.3. </span>Adding a Random Term</a><a class="headerlink" href="#adding-a-random-term" title="Permalink to this headline">¶</a></h2>
 <p>To generate some excitement, we’ll follow in the spirit of the great economists
 Eugen Slutsky and Ragnar Frisch and replace our original second-order difference
 equation with the following <strong>second-order stochastic linear difference
@@ -602,8 +608,194 @@ steady state.</p>
 </div>
 </div>
 </div>
+<div class="section" id="computing-population-moments">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">9.4. </span>Computing Population Moments</a><a class="headerlink" href="#computing-population-moments" title="Permalink to this headline">¶</a></h2>
+<p>We can apply standard formulas for multivariate normal distributions to compute the mean vector and covariance matrix
+for our time series model</p>
+<div class="math notranslate nohighlight">
+\[
+y = A^{-1} (b + u) .
+\]</div>
+<p>You can read about multivariate normal distributions in this lecture <a class="reference internal" href="multivariate_normal.html"><span class="doc">Multivariate Normal Distribution</span></a>.</p>
+<p>Let’s write our  model as</p>
+<div class="math notranslate nohighlight">
+\[ 
+y = \tilde A (b + u)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tilde A = A^{-1}\)</span>.</p>
+<p>Because  linear combinations of normal random variables are normal, we know that</p>
+<div class="math notranslate nohighlight">
+\[
+y \sim {\mathcal N}(\mu_y, \Sigma_y)
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[ 
+\mu_y = \tilde A b
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+\Sigma_y = \tilde A (\sigma_u^2 I_{T \times T} ) \tilde A^T
+\]</div>
+<p>Let’s write a Python  class that computes the mean vector <span class="math notranslate nohighlight">\(\mu_y\)</span> and covariance matrix <span class="math notranslate nohighlight">\(\Sigma_y\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">population_moments</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute population moments mu_y, Sigma_y.</span>
+<span class="sd">    ---------</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    alpha0, alpha1, alpha2, T, y_1, y0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha0</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">,</span> <span class="n">alpha2</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">y_1</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">sigma_u</span><span class="p">):</span>
+
+        <span class="c1"># compute A</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">alpha1</span>
+
+            <span class="k">if</span> <span class="n">i</span><span class="o">-</span><span class="mi">2</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">alpha2</span>
+
+        <span class="c1"># compute b</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">alpha0</span><span class="p">)</span>
+        <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha0</span> <span class="o">+</span> <span class="n">alpha1</span> <span class="o">*</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">alpha2</span> <span class="o">*</span> <span class="n">y_1</span>
+        <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha0</span> <span class="o">+</span> <span class="n">alpha2</span> <span class="o">*</span> <span class="n">y0</span>
+
+        <span class="c1"># compute A inverse</span>
+        <span class="n">A_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">A_inv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">A_inv</span><span class="p">,</span> <span class="n">sigma_u</span><span class="p">,</span> <span class="n">T</span>
+    
+    <span class="k">def</span> <span class="nf">sample_y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Give a sample of size n of y.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">A_inv</span><span class="p">,</span> <span class="n">sigma_u</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A_inv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">us</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma_u</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="n">n</span><span class="p">,</span> <span class="n">T</span><span class="p">])</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">A_inv</span> <span class="o">@</span> <span class="p">(</span><span class="n">b</span> <span class="o">+</span> <span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">us</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">ys</span>
+
+    <span class="k">def</span> <span class="nf">get_moments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the population moments of y.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">A_inv</span><span class="p">,</span> <span class="n">sigma_u</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A_inv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+
+        <span class="c1"># compute mu_y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mu_y</span> <span class="o">=</span> <span class="n">A_inv</span> <span class="o">@</span> <span class="n">b</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Sigma_y</span> <span class="o">=</span> <span class="n">sigma_u</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">A_inv</span> <span class="o">@</span> <span class="n">A_inv</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sigma_y</span>
+
+
+<span class="n">my_process</span> <span class="o">=</span> <span class="n">population_moments</span><span class="p">(</span>
+    <span class="n">alpha0</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">alpha1</span><span class="o">=</span><span class="mf">1.53</span><span class="p">,</span> <span class="n">alpha2</span><span class="o">=-</span><span class="mf">.9</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">y_1</span><span class="o">=</span><span class="mf">28.</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mf">24.</span><span class="p">,</span> <span class="n">sigma_u</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+<span class="n">mu_y</span><span class="p">,</span> <span class="n">Sigma_y</span> <span class="o">=</span> <span class="n">my_process</span><span class="o">.</span><span class="n">get_moments</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is enlightening  to study the <span class="math notranslate nohighlight">\(\mu_y, \Sigma_y\)</span>’s implied by  various parameter values.</p>
+<p>Among other things, we can use the class to exhibit how  <strong>statistical stationarity</strong> of <span class="math notranslate nohighlight">\(y\)</span> prevails only for very special initial conditions.</p>
+<p>Let’s begin by generating <span class="math notranslate nohighlight">\(N\)</span> time realizations of <span class="math notranslate nohighlight">\(y\)</span> plotting them together with  population  mean <span class="math notranslate nohighlight">\(\mu_y\)</span> .</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot mean</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">())</span>  <span class="c1"># Choose a random color from viridis</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="n">my_process</span><span class="o">.</span><span class="n">sample_y</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ys</span><span class="p">[</span><span class="n">i</span><span class="p">,:],</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mu_y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/time_series_with_matrices_31_0.png" src="_images/time_series_with_matrices_31_0.png" />
+</div>
+</div>
+<p>Visually, notice how the  variance across realizations of <span class="math notranslate nohighlight">\(y_t\)</span> decreases as <span class="math notranslate nohighlight">\(t\)</span> increases.</p>
+<p>Let’s plot the population variance of <span class="math notranslate nohighlight">\(y_t\)</span> against <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot variance</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Sigma_y</span><span class="o">.</span><span class="n">diagonal</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/time_series_with_matrices_33_0.png" src="_images/time_series_with_matrices_33_0.png" />
+</div>
+</div>
+<p>Notice how the population variance increases and asymptotes</p>
+<p>Let’s print out the covariance matrix <span class="math notranslate nohighlight">\(\Sigma_y\)</span> for a  time series <span class="math notranslate nohighlight">\(y\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_process</span> <span class="o">=</span> <span class="n">population_moments</span><span class="p">(</span><span class="n">alpha0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha1</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">alpha2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">y_1</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">sigma_u</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+<span class="n">mu_y</span><span class="p">,</span> <span class="n">Sigma_y</span> <span class="o">=</span> <span class="n">my_process</span><span class="o">.</span><span class="n">get_moments</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mu_y = &quot;</span><span class="p">,</span><span class="n">mu_y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sigma_y = &quot;</span><span class="p">,</span> <span class="n">Sigma_y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mu_y =  [0. 0. 0. 0. 0. 0.]
+Sigma_y =  [[1.         0.8        0.64       0.512      0.4096     0.32768   ]
+ [0.8        1.64       1.312      1.0496     0.83968    0.671744  ]
+ [0.64       1.312      2.0496     1.63968    1.311744   1.0493952 ]
+ [0.512      1.0496     1.63968    2.311744   1.8493952  1.47951616]
+ [0.4096     0.83968    1.311744   1.8493952  2.47951616 1.98361293]
+ [0.32768    0.671744   1.0493952  1.47951616 1.98361293 2.58689034]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that  the covariance between <span class="math notranslate nohighlight">\(y_t\)</span> and <span class="math notranslate nohighlight">\(y_{t-1}\)</span> – the elements on the superdiagonal – are <strong>not</strong> identical.</p>
+<p>This is is an indication that the time series respresented by our <span class="math notranslate nohighlight">\(y\)</span> vector is not <strong>stationary</strong>.</p>
+<p>To make it stationary, we’d have to alter our system so that our <strong>initial conditions</strong> <span class="math notranslate nohighlight">\((y_1, y_0)\)</span> are not fixed numbers but instead a jointly normally distributed random vector with a particular mean and  covariance matrix.</p>
+<p>We describe how to do that in another lecture in this lecture <a class="reference internal" href="linear_models.html"><span class="doc">Linear State Space Models</span></a>.</p>
+<p>But just to set the stage for that analysis, let’s increase <span class="math notranslate nohighlight">\(T\)</span> to 100 and print out the bottom right corner of <span class="math notranslate nohighlight">\(\Sigma_y\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_process</span> <span class="o">=</span> <span class="n">population_moments</span><span class="p">(</span><span class="n">alpha0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha1</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">alpha2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">y_1</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">sigma_u</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+<span class="n">mu_y</span><span class="p">,</span> <span class="n">Sigma_y</span> <span class="o">=</span> <span class="n">my_process</span><span class="o">.</span><span class="n">get_moments</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bottom right corner of Sigma_y = </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">Sigma_y</span><span class="p">[</span><span class="mi">95</span><span class="p">:,</span><span class="mi">95</span><span class="p">:])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>bottom right corner of Sigma_y = 
+ [[2.77777778 2.22222222 1.77777778 1.42222222 1.13777778]
+ [2.22222222 2.77777778 2.22222222 1.77777778 1.42222222]
+ [1.77777778 2.22222222 2.77777778 2.22222222 1.77777778]
+ [1.42222222 1.77777778 2.22222222 2.77777778 2.22222222]
+ [1.13777778 1.42222222 1.77777778 2.22222222 2.77777778]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Please notice how the sub diagonal and super diagonal elements seem to have converged.</p>
+<p>This is an indication that our process is asymptotically stationary.</p>
+<p>You can read  about stationarity of more general linear time series models in this lecture <a class="reference internal" href="linear_models.html"><span class="doc">Linear State Space Models</span></a>.</p>
+<p>There is a lot to be learned about the process by staring at the off diagonal elements of <span class="math notranslate nohighlight">\(\Sigma_y\)</span> corresponding to different time periods <span class="math notranslate nohighlight">\(t\)</span>, but we resist the temptation to do so here.</p>
+</div>
 <div class="section" id="a-forward-looking-model">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">9.4. </span>A forward looking model</a><a class="headerlink" href="#a-forward-looking-model" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">9.5. </span>A Forward Looking Model</a><a class="headerlink" href="#a-forward-looking-model" title="Permalink to this headline">¶</a></h2>
 <p>Samuelson’s model is <strong>backwards looking</strong> in the sense that we give it <strong>initial conditions</strong> and let it
 run.</p>
 <p>Let’s now turn to model  that is <strong>forward looking</strong>.</p>
@@ -721,7 +913,7 @@ y_{T}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_34_0.png" src="_images/time_series_with_matrices_34_0.png" />
+<img alt="_images/time_series_with_matrices_46_0.png" src="_images/time_series_with_matrices_46_0.png" />
 </div>
 </div>
 <p>Can you explain why the trend of the price is downward over time?</p>
@@ -742,7 +934,7 @@ steady state.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_36_0.png" src="_images/time_series_with_matrices_36_0.png" />
+<img alt="_images/time_series_with_matrices_48_0.png" src="_images/time_series_with_matrices_48_0.png" />
 </div>
 </div>
 </div>

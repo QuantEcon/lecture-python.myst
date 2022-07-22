@@ -249,7 +249,7 @@ plt.ylabel('y')
 plt.show()
 ```
 
-## Adding a random term
+## Adding a Random Term
 
 To generate some excitement, we'll follow in the spirit of the great economists
 Eugen Slutsky and Ragnar Frisch and replace our original second-order difference
@@ -349,7 +349,183 @@ plt.ylabel('y')
 plt.show()
 ```
 
-## A forward looking model
+
+## Computing Population Moments
+
+
+We can apply standard formulas for multivariate normal distributions to compute the mean vector and covariance matrix
+for our time series model
+
+$$
+y = A^{-1} (b + u) .
+$$
+
+You can read about multivariate normal distributions in this lecture {doc}`Multivariate Normal Distribution <multivariate_normal>`.
+
+Let's write our  model as 
+
+$$ 
+y = \tilde A (b + u)
+$$
+
+where $\tilde A = A^{-1}$.
+
+Because  linear combinations of normal random variables are normal, we know that
+
+$$
+y \sim {\mathcal N}(\mu_y, \Sigma_y)
+$$
+
+where
+
+$$ 
+\mu_y = \tilde A b
+$$
+
+and 
+
+$$
+\Sigma_y = \tilde A (\sigma_u^2 I_{T \times T} ) \tilde A^T
+$$
+
+Let's write a Python  class that computes the mean vector $\mu_y$ and covariance matrix $\Sigma_y$.
+
+
+
+```{code-cell} ipython3
+class population_moments:
+    """
+    Compute population moments mu_y, Sigma_y.
+    ---------
+    Parameters:
+    alpha0, alpha1, alpha2, T, y_1, y0
+    """
+    def __init__(self, alpha0, alpha1, alpha2, T, y_1, y0, sigma_u):
+
+        # compute A
+        A = np.identity(T)
+
+        for i in range(T):
+            if i-1 >= 0:
+                A[i, i-1] = -alpha1
+
+            if i-2 >= 0:
+                A[i, i-2] = -alpha2
+
+        # compute b
+        b = np.full(T, alpha0)
+        b[0] = alpha0 + alpha1 * y0 + alpha2 * y_1
+        b[1] = alpha0 + alpha2 * y0
+
+        # compute A inverse
+        A_inv = np.linalg.inv(A)
+
+        self.A, self.b, self.A_inv, self.sigma_u, self.T = A, b, A_inv, sigma_u, T
+    
+    def sample_y(self, n):
+        """
+        Give a sample of size n of y.
+        """
+        A_inv, sigma_u, b, T = self.A_inv, self.sigma_u, self.b, self.T
+        us = np.random.normal(0, sigma_u, size=[n, T])
+        ys = np.vstack([A_inv @ (b + u) for u in us])
+
+        return ys
+
+    def get_moments(self):
+        """
+        Compute the population moments of y.
+        """
+        A_inv, sigma_u, b = self.A_inv, self.sigma_u, self.b
+
+        # compute mu_y
+        self.mu_y = A_inv @ b
+        self.Sigma_y = sigma_u**2 * (A_inv @ A_inv.T)
+
+        return self.mu_y, self.Sigma_y
+
+
+my_process = population_moments(
+    alpha0=10.0, alpha1=1.53, alpha2=-.9, T=80, y_1=28., y0=24., sigma_u=1)
+    
+mu_y, Sigma_y = my_process.get_moments()
+```
+
+It is enlightening  to study the $\mu_y, \Sigma_y$'s implied by  various parameter values.
+
+Among other things, we can use the class to exhibit how  **statistical stationarity** of $y$ prevails only for very special initial conditions. 
+
+Let's begin by generating $N$ time realizations of $y$ plotting them together with  population  mean $\mu_y$ .
+
+```{code-cell} ipython3
+# plot mean
+N = 100
+
+for i in range(N):
+    col = cm.viridis(np.random.rand())  # Choose a random color from viridis
+    ys = my_process.sample_y(N)
+    plt.plot(ys[i,:], lw=0.5, color=col)
+    plt.plot(mu_y, color='red')
+
+plt.xlabel('t')
+plt.ylabel('y')
+
+plt.show()
+```
+
+Visually, notice how the  variance across realizations of $y_t$ decreases as $t$ increases.
+
+Let's plot the population variance of $y_t$ against $t$.
+
+```{code-cell} ipython3
+# plot variance
+plt.plot(Sigma_y.diagonal())
+plt.show()
+```
+
+Notice how the population variance increases and asymptotes
+
++++
+
+Let's print out the covariance matrix $\Sigma_y$ for a  time series $y$
+
+```{code-cell} ipython3
+my_process = population_moments(alpha0=0, alpha1=.8, alpha2=0, T=6, y_1=0., y0=0., sigma_u=1)
+    
+mu_y, Sigma_y = my_process.get_moments()
+print("mu_y = ",mu_y)
+print("Sigma_y = ", Sigma_y)
+```
+
+Notice that  the covariance between $y_t$ and $y_{t-1}$ -- the elements on the superdiagonal -- are **not** identical.
+
+This is is an indication that the time series respresented by our $y$ vector is not **stationary**.  
+
+To make it stationary, we'd have to alter our system so that our **initial conditions** $(y_1, y_0)$ are not fixed numbers but instead a jointly normally distributed random vector with a particular mean and  covariance matrix.
+
+We describe how to do that in another lecture in this lecture {doc}`Linear State Space Models <linear_models>`.
+
+But just to set the stage for that analysis, let's increase $T$ to 100 and print out the bottom right corner of $\Sigma_y$.
+
+```{code-cell} ipython3
+my_process = population_moments(alpha0=0, alpha1=.8, alpha2=0, T=100, y_1=0., y0=0., sigma_u=1)
+    
+mu_y, Sigma_y = my_process.get_moments()
+print("bottom right corner of Sigma_y = \n", Sigma_y[95:,95:])
+```
+
+Please notice how the sub diagonal and super diagonal elements seem to have converged.
+
+This is an indication that our process is asymptotically stationary.
+
+You can read  about stationarity of more general linear time series models in this lecture {doc}`Linear State Space Models <linear_models>`.
+
+There is a lot to be learned about the process by staring at the off diagonal elements of $\Sigma_y$ corresponding to different time periods $t$, but we resist the temptation to do so here.
+
++++
+
+
+## A Forward Looking Model
 
 Samuelson’s model is **backwards looking** in the sense that we give it **initial conditions** and let it
 run.

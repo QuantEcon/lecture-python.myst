@@ -901,6 +901,8 @@ where $ r <  p $.
 
 Next, we describe alternative representations of our first-order linear dynamic system.
 
+**Guide to three representations:** In practice, we'll be interested in Representation 3.  We present the first 2 in order to set the stage for some intermediate steps that might help us understand what is under the hood of Representation 3.  In applications, we'll use only a small  subset of the DMD to approximate dynamics.  To to that, we'll want to be using the  reduced  SVD's affiliated with representation 3, not the full SVD's affiliated with Representations 1 and 2. 
+
 +++
 
 ## Representation 1
@@ -1135,7 +1137,7 @@ To verify this, first note that, because  $ \tilde U^T \tilde U = I$, it follows
 
 $$
 \tilde A = \tilde U^T \hat A \tilde U = \tilde U^T X' \tilde V \tilde \Sigma^{-1} \tilde U^T \tilde U 
-= \tilde U^T X' \tilde V \tilde \Sigma^{-1}
+= \tilde U^T X' \tilde V \tilde \Sigma^{-1} \tilde U^T
 $$ (eq:tildeAverify)
 
  
@@ -1144,8 +1146,8 @@ Next, we'll just  compute the regression coefficients in a projection of $\hat A
 standard least-square formula
 
 $$
-(\tilde U^T \tilde U)^{-1} \tilde U^T \hat A = (\tilde U^T \tilde U)^{-1} \tilde U^T X' \tilde V \tilde \Sigma^{1} = 
-\tilde U^T X' \tilde V \tilde \Sigma^{-1} = \tilde A .
+(\tilde U^T \tilde U)^{-1} \tilde U^T \hat A = (\tilde U^T \tilde U)^{-1} \tilde U^T X' \tilde V \tilde \Sigma^{-1} \tilde U^T = 
+\tilde U^T X' \tilde V \tilde \Sigma^{-1} \tilde U^T  = \tilde A .
 $$
 
 
@@ -1430,7 +1432,9 @@ We can then use $\check X_{t+j}$ or $\hat X_{t+j}$ to forecast $X_{t+j}$.
 
 
 
-## Using Fewer Modes
+### Using Fewer Modes
+
+In applications, we'll actually want to just a few modes, often three or less.  
 
 Some of the preceding formulas assume that we have retained all $p$ modes associated with the positive
 singular values of $X$.  
