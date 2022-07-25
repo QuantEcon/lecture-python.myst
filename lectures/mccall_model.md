@@ -79,7 +79,7 @@ An unemployed agent receives in each period a job offer at wage $w_t$.
 
 In this lecture, we adopt the following simple environment:
 
-* $\{w_t\}$ is IID, with $q(w)$ being the probability of observing wage $w$ in finite set $\mathbb{W}$.
+* The offer sequence $\{w_t\}_{t \geq 0}$ is IID, with $q(w)$ being the probability of observing wage $w$ in finite set $\mathbb{W}$.
 * The agent observes $w_t$ at the start of $t$.
 * The agent knows that $\{w_t\}$ is IID with common distribution $q$ and can use this when computing expectations.
 

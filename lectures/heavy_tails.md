@@ -223,7 +223,7 @@ frequently.
 (A more careful definition is given below)
 
 Importantly, there are many examples of heavy-tailed distributions
-observed in economic and financial settings include
+observed in economic and financial settings.
 
 For example, the income and the wealth distributions are heavy-tailed (see, e.g., {cite}`pareto1896cours`, {cite}`benhabib2018skewed`).
 
