@@ -77,26 +77,13 @@ from quantecon.distributions import BetaBinomial
 
 An unemployed agent receives in each period a job offer at wage $w_t$.
 
-The wage offer is a nonnegative function of some underlying state:
-
-$$
-w_t = w(s_t) \quad \text{where } \; s_t \in \mathbb{S}
-$$
-
-Here you should think of state process $\{s_t\}$ as some underlying, unspecified
-random factor that impacts on wages.
-
-(Introducing an exogenous stochastic state process is a standard way for
-economists to inject randomness into their models.)
-
 In this lecture, we adopt the following simple environment:
 
-* $\{s_t\}$ is IID, with $q(s)$ being the probability of observing state $s$ in $\mathbb{S}$ at each point in time, and
-* the agent observes $s_t$ at the start of $t$ and hence knows
-  $w_t = w(s_t)$,
-* the set $\mathbb S$ is finite.
+* $\{w_t\}$ is IID, with $q(w)$ being the probability of observing wage $w$ in finite set $\mathbb{W}$.
+* The agent observes $w_t$ at the start of $t$.
+* The agent knows that $\{w_t\}$ is IID with common distribution $q$ and can use this when computing expectations.
 
-(In later lectures, we will relax all of these assumptions.)
+(In later lectures, we will relax these assumptions.)
 
 At time $t$, our agent has two choices:
 
@@ -119,8 +106,6 @@ The variable  $y_t$ is income, equal to
 * his/her wage $w_t$ when employed
 * unemployment compensation $c$ when unemployed
 
-The agent is assumed to know that $\{s_t\}$ is IID with common
-distribution $q$ and can use this when computing expectations.
 
 ### A Trade-Off
 
@@ -143,25 +128,25 @@ We'll go through these steps in turn.
 In order to optimally trade-off current and future rewards, we need to think about two things:
 
 1. the current payoffs we get from different choices
-1. the different states that those choices will lead to in next period (in this case, either employment or unemployment)
+1. the different states that those choices will lead to in next period 
 
 To weigh these two aspects of the decision problem, we need to assign *values*
 to states.
 
-To this end, let $v^*(s)$ be the total lifetime *value* accruing to an
-unemployed worker who enters the current period unemployed when the state is
-$s \in \mathbb{S}$.
+To this end, let $v^*(w)$ be the total lifetime *value* accruing to an
+unemployed worker who enters the current period unemployed when the wage is
+$w \in \mathbb{W}$.
 
-In particular, the agent has wage offer $w(s)$ in hand.
+In particular, the agent has wage offer $w$ in hand.
 
-More precisely, $v^*(s)$ denotes the value of the objective function
+More precisely, $v^*(w)$ denotes the value of the objective function
 {eq}`objective` when an agent in this situation makes *optimal* decisions now
 and at all future points in time.
 
-Of course $v^*(s)$ is not trivial to calculate because we don't yet know
+Of course $v^*(w)$ is not trivial to calculate because we don't yet know
 what decisions are optimal and what aren't!
 
-But think of $v^*$ as a function that assigns to each possible state
+But think of $v^*$ as a function that assigns to each possible wage
 $s$ the maximal lifetime value that can be obtained with that offer in
 hand.
 
@@ -171,14 +156,14 @@ recursion
 ```{math}
 :label: odu_pv
 
-v^*(s)
+v^*(w)
 = \max \left\{
-        \frac{w(s)}{1 - \beta}, \, c + \beta
-        \sum_{s' \in \mathbb{S}} v^*(s') q (s')
+        \frac{w}{1 - \beta}, \, c + \beta
+        \sum_{w' \in \mathbb{W}} v^*(w') q (w')
     \right\}
 ```
 
-for every possible $s$  in $\mathbb S$.
+for every possible $w$  in $\mathbb{W}$.
 
 This important equation is a version of the **Bellman equation**, which is
 ubiquitous in economic dynamics and other fields involving planning over time.
@@ -188,40 +173,40 @@ The intuition behind it is as follows:
 * the first term inside the max operation is the lifetime payoff from accepting current offer, since
 
 $$
-\frac{w(s)}{1 - \beta} = w(s) + \beta w(s) + \beta^2 w(s) + \cdots
+    \frac{w}{1 - \beta} = w + \beta w + \beta^2 w + \cdots
 $$
 
 * the second term inside the max operation is the **continuation value**, which is the lifetime payoff from rejecting the current offer and then behaving optimally in all subsequent periods
 
-If we optimize and pick the best of these two options, we obtain maximal lifetime value from today, given current state $s$.
+If we optimize and pick the best of these two options, we obtain maximal lifetime value from today, given current offer $w$.
 
-But this is precisely $v^*(s)$, which is the l.h.s. of {eq}`odu_pv`.
+But this is precisely $v^*(w)$, which is the left-hand side of {eq}`odu_pv`.
+
 
 ### The Optimal Policy
 
-Suppose for now that we are able to solve {eq}`odu_pv` for the unknown
-function $v^*$.
+Suppose for now that we are able to solve {eq}`odu_pv` for the unknown function $v^*$.
 
 Once we have this function in hand we can behave optimally (i.e., make the
 right choice between accept and reject).
 
-All we have to do is select the maximal choice on the r.h.s. of {eq}`odu_pv`.
+All we have to do is select the maximal choice on the right-hand side of {eq}`odu_pv`.
 
 The optimal action is best thought of as a **policy**, which is, in general, a map from
 states to actions.
 
-Given *any* $s$, we can read off the corresponding best choice (accept or
-reject) by picking the max on the r.h.s. of {eq}`odu_pv`.
+Given *any* $w$, we can read off the corresponding best choice (accept or
+reject) by picking the max on the right-hand side of {eq}`odu_pv`.
 
 Thus, we have a map from $\mathbb R$ to $\{0, 1\}$, with 1 meaning accept and 0 meaning reject.
 
 We can write the policy as follows
 
 $$
-\sigma(s) := \mathbf{1}
+\sigma(w) := \mathbf{1}
     \left\{
-        \frac{w(s)}{1 - \beta} \geq c + \beta \sum_{s' \in \mathbb S}
-        v^*(s') q (s')
+        \frac{w}{1 - \beta} \geq c + \beta \sum_{w' \in \mathbb W}
+        v^*(w') q (w')
     \right\}
 $$
 
@@ -230,7 +215,7 @@ Here $\mathbf{1}\{ P \} = 1$ if statement $P$ is true and equals 0 otherwise.
 We can also write this as
 
 $$
-\sigma(s) := \mathbf{1} \{ w(s) \geq \bar w \}
+    \sigma(w) := \mathbf{1} \{ w \geq \bar w \}
 $$
 
 where
@@ -238,21 +223,28 @@ where
 ```{math}
 :label: reswage
 
-\bar w := (1 - \beta) \left\{ c + \beta \sum_{s'} v^*(s') q (s') \right\}
+    \bar w := (1 - \beta) \left\{ c + \beta \sum_{w'} v^*(w') q (w') \right\}
 ```
 
-Here $\bar w$ (called the *reservation wage*) is a constant depending on $\beta, c$ and the wage distribution.
+Here $\bar w$ (called the *reservation wage*) is a constant depending on 
+$\beta, c$ and the wage distribution.
 
 The agent should accept if and only if the current wage offer exceeds the reservation wage.
 
 In view of {eq}`reswage`, we can compute this reservation wage if we can compute the value function.
 
+
 ## Computing the Optimal Policy: Take 1
 
 To put the above ideas into action, we need to compute the value function at
-each possible state $s \in \mathbb S$.
+each possible state $w \in \mathbb W$.
 
-Let's suppose that $\mathbb S = \{1, \ldots, n\}$.
+To simplify notation, let's set 
+
+$$  \mathbb W := \{w_1, \ldots, w_n 
+    \quad \text{and} \quad
+    v^*(i) := v^*(w_i)$
+$$
 
 The value function is then represented by the vector $v^* =
 (v^*(i))_{i=1}^n$.
@@ -270,6 +262,8 @@ v^*(i)
 \quad
 \text{for } i = 1, \ldots, n
 ```
+
+
 
 ### The Algorithm
 

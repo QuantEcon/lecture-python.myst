@@ -89,18 +89,13 @@ introducing a utility function $u$.
 
 It satisfies $u'> 0$ and $u'' < 0$.
 
+
 ### The Wage Process
 
-For now we will drop the separation of state process and wage process that we
-maintained for the {doc}`baseline model <mccall_model>`.
-
-In particular, we simply suppose that wage offers $\{ w_t \}$ are IID with common distribution $q$.
+We suppose that wage offers $\{ w_t \}$ are IID with common distribution $q$.
 
 The set of possible wage values is denoted by $\mathbb W$.
 
-(Later we will go back to having a separate state process $\{s_t\}$
-driving random outcomes, since this formulation is usually convenient in more sophisticated
-models.)
 
 ### Timing and Decisions
 
