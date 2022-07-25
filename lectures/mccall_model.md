@@ -241,7 +241,7 @@ each possible state $w \in \mathbb W$.
 
 To simplify notation, let's set 
 
-$$  \mathbb W := \{w_1, \ldots, w_n 
+$$  \mathbb W := \{w_1, \ldots, w_n  \}
     \quad \text{and} \quad
     v^*(i) := v^*(w_i)$
 $$
