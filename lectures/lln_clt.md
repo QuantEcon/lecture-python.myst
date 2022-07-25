@@ -43,8 +43,8 @@ We also demonstrate how the LLN and CLT break down when the assumptions they are
 
 In addition, we examine several useful extensions of the classical theorems, such as
 
-* The delta method, for smooth functions of random variables.
-* The multivariate case.
+* The delta method, for smooth functions of random variables, and
+* the multivariate case.
 
 Some of these extensions are presented as exercises.
 
