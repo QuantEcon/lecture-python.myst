@@ -40,6 +40,9 @@ QuantEcon lecture.
 
 (That lecture also describes some technicalities about second-order linear difference equations.)
 
+In this lecture, we'll also learn about an **autoregressive** representation and a **moving average** representation of a  non-stationary
+univariate time series $\{y_t\}_{t=0}^T$.
+
 We'll also study a "perfect foresight" model of stock prices that involves solving
 a "forward-looking" linear difference equation.
 
@@ -119,7 +122,7 @@ $$
 where
 
 $$
-y = \begin{bmatrix} y_1 \cr y_2 \cr \cdots \cr y_T \end{bmatrix}
+y = \begin{bmatrix} y_1 \cr y_2 \cr \vdots \cr y_T \end{bmatrix}
 $$
 
 Evidently $y$ can be computed from
@@ -284,13 +287,13 @@ governed by the system
 
 $$
 A y = b + u
-$$
+$$ (eq:eqar)
 
 The solution for $y$ becomes
 
 $$
 y = A^{-1} \left(b + u\right)
-$$
+$$ (eq:eqma)
 
 Let’s try it out in Python.
 
@@ -348,6 +351,7 @@ plt.ylabel('y')
 
 plt.show()
 ```
+
 
 
 ## Computing Population Moments
@@ -449,6 +453,7 @@ my_process = population_moments(
     alpha0=10.0, alpha1=1.53, alpha2=-.9, T=80, y_1=28., y0=24., sigma_u=1)
     
 mu_y, Sigma_y = my_process.get_moments()
+A_inv = my_process.A_inv
 ```
 
 It is enlightening  to study the $\mu_y, \Sigma_y$'s implied by  various parameter values.
@@ -509,7 +514,6 @@ But just to set the stage for that analysis, let's increase $T$ to 100 and print
 
 ```{code-cell} ipython3
 my_process = population_moments(alpha0=0, alpha1=.8, alpha2=0, T=100, y_1=0., y0=0., sigma_u=1)
-    
 mu_y, Sigma_y = my_process.get_moments()
 print("bottom right corner of Sigma_y = \n", Sigma_y[95:,95:])
 ```
@@ -523,6 +527,61 @@ You can read  about stationarity of more general linear time series models in th
 There is a lot to be learned about the process by staring at the off diagonal elements of $\Sigma_y$ corresponding to different time periods $t$, but we resist the temptation to do so here.
 
 +++
+
+
+## Moving Average Representation
+
+Let's print out  $A^{-1}$ and stare at  its structure 
+
+  *  is it triangular or almost triangular or $\ldots$ ?
+
+To study the structure of $A^{-1}$, we shall print just  up to $3$ decimals.
+
+Let's begin by printing out just the upper left hand corner of $A^{-1}$
+
+```{code-cell} ipython3
+with np.printoptions(precision=3, suppress=True):
+    print(A_inv[0:7,0:7])
+```
+
+
+
+
+Evidently, $A^{-1}$ is a lower triangular matrix. 
+
+
+Let's print out the lower right hand corner of $A^{-1}$ and stare at it.
+
+```{code-cell} ipython3
+with np.printoptions(precision=3, suppress=True):
+    print(A_inv[72:,72:])
+```
+
+
+Notice how  every row ends with the previous row's pre-diagonal entries.
+
+
+
+ 
+
+Since $A^{-1}$ is lower triangular,  each  row represents  $ y_t$ for a particular $t$ as the sum of 
+- a time-dependent function $A^{-1} b$ of the initial conditions incorporated in $b$, and 
+- a weighted sum of  current and past values of the IID shocks $\{u_t\}$
+
+Thus,  let $\tilde{A}=A^{-1}$. 
+
+Evidently,  for $t\geq0$,
+
+$$
+y_{t+1}=\sum_{i=1}^{t+1}\tilde{A}_{t+1,i}b_{i}+\sum_{i=1}^{t}\tilde{A}_{t+1,i}u_{i}+u_{t+1}
+$$
+
+This is  a **moving average** representation with time-varying coefficients.
+
+Just as system {eq}`eq:eqma` constitutes  a 
+**moving average** representation for $y$, system  {eq}`eq:eqar` constitutes  an **autoregressive** representation for $y$.
+
+
 
 
 ## A Forward Looking Model
