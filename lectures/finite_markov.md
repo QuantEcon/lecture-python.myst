@@ -128,7 +128,7 @@ $$
 Going the other way, if we take a stochastic matrix $P$, we can generate a Markov
 chain $\{X_t\}$ as follows:
 
-* draw $X_0$ from some specified distribution
+* draw $X_0$ from a marginal distribution $\psi$ 
 * for each $t = 0, 1, \ldots$, draw $X_{t+1}$ from $P(X_t,\cdot)$
 
 By construction, the resulting process satisfies {eq}`mpp`.
@@ -173,7 +173,7 @@ We'll cover such applications below.
 (mc_eg2)=
 ### Example 2
 
-Using  US unemployment data, Hamilton {cite}`Hamilton2005` estimated the stochastic matrix
+From  US unemployment data, Hamilton {cite}`Hamilton2005` estimated the stochastic matrix
 
 $$
 P =
@@ -224,12 +224,12 @@ In these exercises, we'll take the state space to be $S = 0,\ldots, n-1$.
 
 ### Rolling Our Own
 
-To simulate a Markov chain, we need its stochastic matrix $P$ and a probability distribution $\psi$ for the initial state to be drawn from.
+To simulate a Markov chain, we need its stochastic matrix $P$ and a marginal probability distribution $\psi$  from which to  draw a realization of $X_0$.
 
 The Markov chain is then constructed as discussed above.  To repeat:
 
-1. At time $t=0$, the $X_0$ is chosen from $\psi$.
-1. At each subsequent time $t$, the new state $X_{t+1}$ is drawn from $P(X_t, \cdot)$.
+1. At time $t=0$, draw a realization of  $X_0$  from $\psi$.
+1. At each subsequent time $t$, draw a realization of the new state $X_{t+1}$ from $P(X_t, \cdot)$.
 
 To implement this simulation procedure, we need a method for generating draws from a discrete distribution.
 
@@ -241,7 +241,7 @@ cdf = np.cumsum(ψ)       # convert into cummulative distribution
 qe.random.draw(cdf, 5)   # generate 5 independent draws from ψ
 ```
 
-We'll write our code as a function that takes the following three arguments
+We'll write our code as a function that accepts the following three arguments
 
 * A stochastic matrix `P`
 * An initial state `init`
@@ -281,7 +281,7 @@ P = [[0.4, 0.6],
 
 As we'll see later, for a long series drawn from `P`, the fraction of the sample that takes value 0 will be about 0.25.
 
-Moreover, this is true, regardless of the initial distribution from with
+Moreover, this is true, regardless of the initial distribution from which
 $X_0$ is drawn.
 
 The following code illustrates this
@@ -292,7 +292,7 @@ np.mean(X == 0)
 ```
 
 You can try changing the initial distribution to confirm that the output is
-always close to 0.25.
+always close to 0.25, at least for the `P` matrix above.
 
 ### Using QuantEcon's Routines
 
@@ -311,11 +311,11 @@ np.mean(X == 0)
 The [QuantEcon.py](http://quantecon.org/quantecon-py) routine is [JIT compiled](https://python-programming.quantecon.org/numba.html#numba-link) and much faster.
 
 ```{code-cell} ipython
-%time mc_sample_path(P, sample_size=1_000_000) # Our version
+%time mc_sample_path(P, sample_size=1_000_000) # Our homemade code version
 ```
 
 ```{code-cell} ipython
-%time mc.simulate(ts_length=1_000_000) # qe version
+%time mc.simulate(ts_length=1_000_000) # qe code version
 ```
 
 #### Adding State Values and Initial Conditions
@@ -339,7 +339,7 @@ mc.simulate(ts_length=4, init='unemployed')
 mc.simulate(ts_length=4)  # Start at randomly chosen initial state
 ```
 
-If we want to simulate with output as indices rather than state values we can use
+If we want to see indices rather than state values as outputs as  we can use
 
 ```{code-cell} python3
 mc.simulate_indices(ts_length=4)
@@ -354,11 +354,11 @@ mc.simulate_indices(ts_length=4)
 Suppose that
 
 1. $\{X_t\}$ is a Markov chain with stochastic matrix $P$
-1. the distribution of $X_t$ is known to be $\psi_t$
+1. the marginal distribution of $X_t$ is known to be $\psi_t$
 
-What then is the distribution of $X_{t+1}$, or, more generally, of $X_{t+m}$?
+What then is the marginal distribution of $X_{t+1}$, or, more generally, of $X_{t+m}$?
 
-To answer this, we let $\psi_t$ be the distribution of $X_t$ for $t = 0, 1, 2, \ldots$.
+To answer this, we let $\psi_t$ be the marginal distribution of $X_t$ for $t = 0, 1, 2, \ldots$.
 
 Our first aim is to find $\psi_{t + 1}$ given $\psi_t$ and $P$.
 
@@ -383,7 +383,7 @@ $$
 
 There are $n$ such equations, one for each $y \in S$.
 
-If we think of $\psi_{t+1}$ and $\psi_t$ as *row vectors* (as is traditional in this literature), these $n$ equations are summarized by the matrix expression
+If we think of $\psi_{t+1}$ and $\psi_t$ as *row vectors*, these $n$ equations are summarized by the matrix expression
 
 ```{math}
 :label: fin_mc_fr
@@ -391,9 +391,9 @@ If we think of $\psi_{t+1}$ and $\psi_t$ as *row vectors* (as is traditional in 
 \psi_{t+1} = \psi_t P
 ```
 
-In other words, to move the distribution forward one unit of time, we postmultiply by $P$.
+Thus, to move a marginal distribution forward one unit of time, we postmultiply by $P$.
 
-By repeating this $m$ times we move forward $m$ steps into the future.
+By postmultiplying $m$ times, we move a marginal distribution forward $m$ steps into the future.
 
 Hence, iterating on {eq}`fin_mc_fr`, the expression $\psi_{t+m} = \psi_t P^m$ is also valid --- here $P^m$ is the $m$-th power of $P$.
 
@@ -427,7 +427,7 @@ It turns out that the probability of transitioning from $x$ to $y$ in
 $m$ steps is $P^m(x,y)$, the $(x,y)$-th element of the
 $m$-th power of $P$.
 
-To see why, consider again {eq}`mdfmc2`, but now with $\psi_t$ putting all probability on state $x$
+To see why, consider again {eq}`mdfmc2`, but now with a $\psi_t$ that puts all probability on state $x$ so that the transition probabilities are
 
 * 1 in the $x$-th position and zero elsewhere
 
@@ -448,7 +448,7 @@ Recall the stochastic matrix $P$ for recession and growth {ref}`considered above
 
 Suppose that the current state is unknown --- perhaps statistics are available only  at the *end* of the current month.
 
-We estimate the probability that the economy is in state $x$ to be $\psi(x)$.
+We guess that the probability that the economy is in state $x$ is $\psi(x)$.
 
 The probability of being in recession (either mild or severe) in 6 months time is given by the inner product
 
@@ -471,15 +471,16 @@ $$
 ```
 
 The marginal distributions we have been studying can be viewed either as
-probabilities or as cross-sectional frequencies in large samples.
+probabilities or as cross-sectional frequencies that a Law of Large Numbers leads us to anticipate for  large samples.
 
 To illustrate, recall our model of employment/unemployment dynamics for a given worker {ref}`discussed above <mc_eg1>`.
 
-Consider a large population of workers, each of whose lifetime experience is described by the specified dynamics, independent of one another.
+Consider a large population of workers, each of whose lifetime experience is described by the specified dynamics, with each worker's
+outcomes being realizations of processes that are statistically independent of all other workers' processes.
 
 Let $\psi$ be the current *cross-sectional* distribution over $\{ 0, 1 \}$.
 
-The cross-sectional distribution records the fractions of workers employed and unemployed at a given moment.
+The cross-sectional distribution records fractions of workers employed and unemployed at a given moment.
 
 * For example, $\psi(0)$ is the unemployment rate.
 
@@ -488,15 +489,15 @@ What will the cross-sectional distribution be in 10 periods hence?
 The answer is $\psi P^{10}$, where $P$ is the stochastic matrix in
 {eq}`p_unempemp`.
 
-This is because each worker is updated according to $P$, so
-$\psi P^{10}$ represents probabilities for a single randomly selected
+This is because each worker's state evolves according to $P$, so
+$\psi P^{10}$ is a marginal distibution  for a single randomly selected
 worker.
 
-But when the sample is large, outcomes and probabilities are roughly equal (by the Law
+But when the sample is large, outcomes and probabilities are roughly equal (by an application of the Law
 of Large Numbers).
 
 So for a very large (tending to infinite) population,
-$\psi P^{10}$ also represents the fraction of workers in
+$\psi P^{10}$ also represents  fractions of workers in
 each state.
 
 This is exactly the cross-sectional distribution.
@@ -526,8 +527,8 @@ $$
 In view of our discussion {ref}`above <finite_mc_mstp>`, this means precisely
 that
 
-* state $x$ can be reached eventually from state $y$, and
-* state $y$ can be reached eventually from state $x$
+* state $x$ can eventually be reached  from state $y$, and
+* state $y$ can eventually  be reached from state $x$
 
 The stochastic matrix $P$ is called **irreducible** if all states
 communicate; that is, if $x$ and $y$ communicate for all
@@ -554,8 +555,8 @@ P :=
 \right)
 $$
 
-It's clear from the graph that this stochastic matrix is irreducible: we can
-reach any state from any other state eventually.
+It's clear from the graph that this stochastic matrix is irreducible: we can  eventually
+reach any state from any other state.
 
 We can also test this using [QuantEcon.py](http://quantecon.org/quantecon-py)'s MarkovChain class
 
@@ -568,7 +569,7 @@ mc = qe.MarkovChain(P, ('poor', 'middle', 'rich'))
 mc.is_irreducible
 ```
 
-Here's a more pessimistic scenario, where the poor are poor forever
+Here's a more pessimistic scenario in which  poor people remain poor forever
 
 ```{figure} /_static/lecture_specific/finite_markov/mc_irreducibility2.png
 
@@ -601,7 +602,7 @@ We'll come back to this a bit later.
 
 ### Aperiodicity
 
-Loosely speaking, a Markov chain is called periodic if it cycles in a predictable way, and aperiodic otherwise.
+Loosely speaking, a Markov chain is called **periodic** if it cycles in a predictable way, and **aperiodic** otherwise.
 
 Here's a trivial example with three states
 
@@ -620,8 +621,8 @@ mc = qe.MarkovChain(P)
 mc.period
 ```
 
-More formally, the **period** of a state $x$ is the greatest common divisor
-of the set of integers
+More formally, the **period** of a state $x$ is the largest common divisor
+of a set of integers
 
 $$
 D(x) := \{j \geq 1 : P^j(x, x) > 0\}
@@ -637,7 +638,7 @@ For example, the stochastic matrix associated with the transition probabilities 
 
 ```
 
-We can confirm that the stochastic matrix is periodic as follows
+We can confirm that the stochastic matrix is periodic with the following code
 
 ```{code-cell} python3
 P = [[0.0, 1.0, 0.0, 0.0],
@@ -658,7 +659,7 @@ mc.is_aperiodic
 ```{index} single: Markov Chains; Stationary Distributions
 ```
 
-As seen in {eq}`fin_mc_fr`, we can shift probabilities forward one unit of time via postmultiplication by $P$.
+As seen in {eq}`fin_mc_fr`, we can shift a marginal distribution forward one unit of time via postmultiplication by $P$.
 
 Some distributions are invariant under this updating process --- for example,
 
@@ -669,10 +670,10 @@ P = np.array([[0.4, 0.6],
 ψ @ P
 ```
 
-Such distributions are called **stationary**, or **invariant**.
+Such distributions are called **stationary** or **invariant**.
 
 (mc_stat_dd)=
-Formally, a distribution $\psi^*$ on $S$ is called **stationary** for $P$ if $\psi^* = \psi^* P$.
+Formally, a marginal distribution $\psi^*$ on $S$ is called **stationary** for $P$ if $\psi^* = \psi^* P$.
 
 (This is the same notion of stationarity that we learned about in the
 {doc}`lecture on AR(1) processes <ar1_processes>` applied to a different setting.)
@@ -681,7 +682,7 @@ From this equality, we immediately get $\psi^* = \psi^* P^t$ for all $t$.
 
 This tells us an important fact: If the distribution of $X_0$ is a stationary distribution, then $X_t$ will have this same distribution for all $t$.
 
-Hence stationary distributions have a natural interpretation as stochastic steady states --- we'll discuss this more in just a moment.
+Hence stationary distributions have a natural interpretation as **stochastic steady states** --- we'll discuss this more soon.
 
 Mathematically, a stationary distribution is a fixed point of $P$ when $P$ is thought of as the map $\psi \mapsto \psi P$ from (row) vectors to (row) vectors.
 
@@ -691,14 +692,17 @@ Mathematically, a stationary distribution is a fixed point of $P$ when $P$ is th
 
 For proof of this result, you can apply [Brouwer's fixed point theorem](https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem), or see [EDTC](http://johnstachurski.net/edtc.html), theorem 4.3.5.
 
-There may in fact be many stationary distributions corresponding to a given stochastic matrix $P$.
+There can be many stationary distributions corresponding to a given stochastic matrix $P$.
 
-* For example, if $P$ is the identity matrix, then all distributions are stationary.
+* For example, if $P$ is the identity matrix, then all marginal distributions are stationary.
 
-Since stationary distributions are long run equilibria, to get uniqueness we require that initial conditions are not infinitely persistent.
+To get uniqueness an invariant distribution, the transition matrix $P$ must have the property that no nontrivial subsets of
+the state space are **infinitely persistent**.
 
-Infinite persistence of initial conditions occurs if certain regions of the
-state space cannot be accessed from other regions, which is the opposite of irreducibility.
+A subset of the state space is infinitely persistent if other parts of the
+state space cannot be accessed from it.
+
+Thus, infinite persistence of a non-trivial subset is the opposite of irreducibility.
 
 This gives some intuition for the following fundamental theorem.
 
@@ -706,22 +710,22 @@ This gives some intuition for the following fundamental theorem.
 **Theorem.** If $P$ is both aperiodic and irreducible, then
 
 1. $P$ has exactly one stationary distribution $\psi^*$.
-1. For any initial distribution $\psi_0$, we have $\| \psi_0 P^t - \psi^* \| \to 0$ as $t \to \infty$.
+1. For any initial marginal distribution $\psi_0$, we have $\| \psi_0 P^t - \psi^* \| \to 0$ as $t \to \infty$.
 
 For a proof, see, for example, theorem 5.2 of {cite}`haggstrom2002finite`.
 
-(Note that part 1 of the theorem requires only irreducibility, whereas part 2
+(Note that part 1 of the theorem only requires  irreducibility, whereas part 2
 requires both irreducibility and aperiodicity)
 
-A stochastic matrix satisfying the conditions of the theorem is sometimes called **uniformly ergodic**.
+A stochastic matrix that satisfies the conditions of the theorem is sometimes called **uniformly ergodic**.
 
-One easy sufficient condition for aperiodicity and irreducibility is that every element of $P$ is strictly positive.
+A sufficient condition for aperiodicity and irreducibility is that every element of $P$ is strictly positive.
 
 * Try to convince yourself of this.
 
 ### Example
 
-Recall our model of employment/unemployment dynamics for a given worker {ref}`discussed above <mc_eg1>`.
+Recall our model of the employment/unemployment dynamics of a particular worker {ref}`discussed above <mc_eg1>`.
 
 Assuming $\alpha \in (0,1)$ and $\beta \in (0,1)$, the uniform ergodicity condition is satisfied.
 
@@ -733,7 +737,7 @@ $$
 p = \frac{\beta}{\alpha + \beta}
 $$
 
-This is, in some sense, a steady state probability of unemployment --- more on interpretation below.
+This is, in some sense, a steady state probability of unemployment --- more about the  interpretation of this below.
 
 Not surprisingly it tends to zero as $\beta \to 0$, and to one as $\alpha \to 0$.
 
@@ -742,34 +746,40 @@ Not surprisingly it tends to zero as $\beta \to 0$, and to one as $\alpha \to 0$
 ```{index} single: Markov Chains; Calculating Stationary Distributions
 ```
 
-As discussed above, a given Markov matrix $P$ can have many stationary distributions.
+As discussed above, a particular Markov matrix $P$ can have many stationary distributions.
 
 That is, there can be many row vectors $\psi$ such that $\psi = \psi P$.
 
 In fact if $P$ has two distinct stationary distributions $\psi_1,
-\psi_2$ then it has infinitely many, since in this case, as you can verify,
+\psi_2$ then it has infinitely many, since in this case, as you can verify,  for any $\lambda \in [0, 1]$
 
 $$
 \psi_3 := \lambda \psi_1 + (1 - \lambda) \psi_2
 $$
 
-is a stationary distribution for $P$ for any $\lambda \in [0, 1]$.
+is a stationary distribution for $P$.
 
-If we restrict attention to the case where only one stationary distribution exists, one option for finding it is to try to solve the linear system $\psi (I_n - P) = 0$ for $\psi$, where $I_n$ is the $n \times n$ identity.
+If we restrict attention to the case in which only one stationary distribution exists, one way to  finding it is to solve the system 
 
-But the zero vector solves this equation, so we need to proceed carefully.
+$$
+\psi (I_n - P) = 0
+$$ (eq:eqpsifixed)
 
-In essence, we need to impose the restriction that the solution must be a probability distribution.
+for $\psi$, where $I_n$ is the $n \times n$ identity.
+
+But the zero vector solves system {eq}`eq:eqpsifixed`,  so we must proceed cautiously. 
+
+We want to impose the restriction that $\psi$ is  a probability distribution.
 
 There are various ways to do this.
 
-One option is to regard this as an eigenvector problem: a vector
+One option is to regard solving system {eq}`eq:eqpsifixed`  as an eigenvector problem: a vector
 $\psi$ such that $\psi = \psi P$ is a left eigenvector associated
 with the unit eigenvalue $\lambda = 1$.
 
 A stable and sophisticated algorithm specialized for stochastic matrices is implemented in [QuantEcon.py](http://quantecon.org/quantecon-py).
 
-This is the one we recommend you to use:
+This is the one we recommend:
 
 ```{code-cell} python3
 P = [[0.4, 0.6],
@@ -784,9 +794,9 @@ mc.stationary_distributions  # Show all stationary distributions
 ```{index} single: Markov Chains; Convergence to Stationarity
 ```
 
-Part 2 of the Markov chain convergence theorem {ref}`stated above <mc_conv_thm>` tells us that the distribution of $X_t$ converges to the stationary distribution regardless of where we start off.
+Part 2 of the Markov chain convergence theorem {ref}`stated above <mc_conv_thm>` tells us that the marginal distribution of $X_t$ converges to the stationary distribution regardless of where we begin.
 
-This adds considerable weight to our interpretation of $\psi^*$ as a stochastic steady state.
+This adds considerable authority to our interpretation of $\psi^*$ as a stochastic steady state.
 
 The convergence in the theorem is illustrated in the next figure
 
@@ -826,8 +836,8 @@ plt.show()
 Here
 
 * $P$ is the stochastic matrix for recession and growth {ref}`considered above <mc_eg2>`.
-* The highest red dot is an arbitrarily chosen initial probability distribution  $\psi$, represented as a vector in $\mathbb R^3$.
-* The other red dots are the distributions $\psi P^t$ for $t = 1, 2, \ldots$.
+* The highest red dot is an arbitrarily chosen initial marginal probability distribution  $\psi$, represented as a vector in $\mathbb R^3$.
+* The other red dots are the marginal distributions $\psi P^t$ for $t = 1, 2, \ldots$.
 * The black dot is $\psi^*$.
 
 You might like to try experimenting with different initial conditions.
@@ -838,7 +848,7 @@ You might like to try experimenting with different initial conditions.
 ```{index} single: Markov Chains; Ergodicity
 ```
 
-Under irreducibility, yet another important result obtains: For all $x \in S$,
+Under irreducibility, yet another important result obtains: for all $x \in S$,
 
 ```{math}
 :label: llnfmc0
@@ -851,14 +861,14 @@ Here
 
 * $\mathbf{1}\{X_t = x\} = 1$ if $X_t = x$ and zero otherwise
 * convergence is with probability one
-* the result does not depend on the distribution (or value) of $X_0$
+* the result does not depend on the marginal distribution  of $X_0$
 
 The result tells us that the fraction of time the chain spends at state $x$ converges to $\psi^*(x)$ as time goes to infinity.
 
 (new_interp_sd)=
 This gives us another way to interpret the stationary distribution --- provided that the convergence result in {eq}`llnfmc0` is valid.
 
-The convergence in {eq}`llnfmc0` is a special case of a law of large numbers result for Markov chains --- see [EDTC](http://johnstachurski.net/edtc.html), section 4.3.4 for some additional information.
+The convergence asserted in {eq}`llnfmc0` is a special case of a law of large numbers result for Markov chains --- see [EDTC](http://johnstachurski.net/edtc.html), section 4.3.4 for some additional information.
 
 (mc_eg1-2)=
 ### Example
@@ -875,11 +885,11 @@ $$
 
 In the cross-sectional interpretation, this is the fraction of people unemployed.
 
-In view of our latest (ergodicity) result, it is also the fraction of time that a worker can expect to spend unemployed.
+In view of our latest (ergodicity) result, it is also the fraction of time that a single worker can expect to spend unemployed.
 
 Thus, in the long-run, cross-sectional averages for a population and time-series averages for a given person coincide.
 
-This is one interpretation of the notion of ergodicity.
+This is one aspect of the concept  of ergodicity.
 
 (finite_mc_expec)=
 ## Computing Expectations
@@ -887,7 +897,7 @@ This is one interpretation of the notion of ergodicity.
 ```{index} single: Markov Chains; Forecasting Future Values
 ```
 
-We are interested in computing expectations of the form
+We sometimes want to  compute mathematical  expectations of functions of $X_t$ of the form
 
 ```{math}
 :label: mc_une
@@ -906,7 +916,7 @@ and conditional expectations such as
 where
 
 * $\{X_t\}$ is a Markov chain generated by $n \times n$ stochastic matrix $P$
-* $h$ is a given function, which, in expressions involving matrix
+* $h$ is a given function, which, in terms of matrix
   algebra, we'll think of as the column vector
 
 $$
@@ -923,7 +933,7 @@ $$
 Computing the unconditional expectation {eq}`mc_une` is easy.
 
 
-We just sum over the distribution  of $X_t$ to get
+We just sum over the marginal  distribution  of $X_t$ to get
 
 $$
 \mathbb E [ h(X_t) ]
@@ -962,7 +972,7 @@ $$
 \mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \mathbb E [  h(X_{t + k}) ] 
 $$
 
-where the outer $ \mathbb E$ on the left side is an unconditional distribution taken with respect to the distribution  $\psi_t$ of $X_t$ 
+where the outer $ \mathbb E$ on the left side is an unconditional distribution taken with respect to the marginal distribution  $\psi_t$ of $X_t$ 
 (again see equation {eq}`mdfmc2`).  
 
 To verify the law of iterated expectations, use  equation {eq}`mc_cce2` to substitute $ (P^k h)(x)$ for $E [ h(X_{t + k})  \mid X_t = x]$, write
@@ -975,7 +985,7 @@ and note $\psi_t P^k h = \psi_{t+k} h = \mathbb E [  h(X_{t + k}) ] $.
 
 ### Expectations of Geometric Sums
 
-Sometimes we also want to compute expectations of a geometric sum, such as
+Sometimes we want to compute the mathematical expectation of a geometric sum, such as
 $\sum_t \beta^t h(X_t)$.
 
 In view of the preceding discussion, this is
@@ -1026,7 +1036,7 @@ $$
 \bar X_m := \frac{1}{m} \sum_{t = 1}^m \mathbf{1}\{X_t = 0\}
 $$
 
-The exercise is to illustrate this convergence by computing
+This exercise asks you to illustrate convergence by computing
 $\bar X_m$ for large $m$ and checking that
 it is close to $p$.
 
