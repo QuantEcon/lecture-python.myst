@@ -510,12 +510,11 @@ To make it stationary, we'd have to alter our system so that our **initial condi
 
 We describe how to do that in another lecture in this lecture {doc}`Linear State Space Models <linear_models>`.
 
-But just to set the stage for that analysis, let's increase $T$ to 100 and print out the bottom right corner of $\Sigma_y$.
+But just to set the stage for that analysis, let's  print out the bottom right corner of $\Sigma_y$.
 
 ```{code-cell} ipython3
-my_process = population_moments(alpha0=0, alpha1=.8, alpha2=0, T=100, y_1=0., y0=0., sigma_u=1)
 mu_y, Sigma_y = my_process.get_moments()
-print("bottom right corner of Sigma_y = \n", Sigma_y[95:,95:])
+print("bottom right corner of Sigma_y = \n", Sigma_y[72:,72:])
 ```
 
 Please notice how the sub diagonal and super diagonal elements seem to have converged.
