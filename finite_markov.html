@@ -385,19 +385,21 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
 Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
-Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
 Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
 Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
+Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
 Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
 Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (61.2.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
 Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
 Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -472,7 +474,7 @@ P_{ij} = P(x_i, x_j)
 <p>Going the other way, if we take a stochastic matrix <span class="math notranslate nohighlight">\(P\)</span>, we can generate a Markov
 chain <span class="math notranslate nohighlight">\(\{X_t\}\)</span> as follows:</p>
 <ul class="simple">
-<li><p>draw <span class="math notranslate nohighlight">\(X_0\)</span> from some specified distribution</p></li>
+<li><p>draw <span class="math notranslate nohighlight">\(X_0\)</span> from a marginal distribution <span class="math notranslate nohighlight">\(\psi\)</span></p></li>
 <li><p>for each <span class="math notranslate nohighlight">\(t = 0, 1, \ldots\)</span>, draw <span class="math notranslate nohighlight">\(X_{t+1}\)</span> from <span class="math notranslate nohighlight">\(P(X_t,\cdot)\)</span></p></li>
 </ul>
 <p>By construction, the resulting process satisfies <a class="reference internal" href="#equation-mpp">(24.2)</a>.</p>
@@ -509,7 +511,7 @@ chain <span class="math notranslate nohighlight">\(\{X_t\}\)</span> as follows:<
 </div>
 <div class="section" id="example-2">
 <span id="mc-eg2"></span><h3><span class="section-number">24.2.4. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h3>
-<p>Using  US unemployment data, Hamilton <span id="id2">[<a class="reference internal" href="zreferences.html#id164" title="James D Hamilton. What's real about the business cycle? Federal Reserve Bank of St. Louis Review, pages 435–452, 2005.">Ham05</a>]</span> estimated the stochastic matrix</p>
+<p>From  US unemployment data, Hamilton <span id="id2">[<a class="reference internal" href="zreferences.html#id164" title="James D Hamilton. What's real about the business cycle? Federal Reserve Bank of St. Louis Review, pages 435–452, 2005.">Ham05</a>]</span> estimated the stochastic matrix</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 P =
@@ -549,11 +551,11 @@ P =
 <p>In these exercises, we’ll take the state space to be <span class="math notranslate nohighlight">\(S = 0,\ldots, n-1\)</span>.</p>
 <div class="section" id="rolling-our-own">
 <h3><span class="section-number">24.3.1. </span>Rolling Our Own<a class="headerlink" href="#rolling-our-own" title="Permalink to this headline">¶</a></h3>
-<p>To simulate a Markov chain, we need its stochastic matrix <span class="math notranslate nohighlight">\(P\)</span> and a probability distribution <span class="math notranslate nohighlight">\(\psi\)</span> for the initial state to be drawn from.</p>
+<p>To simulate a Markov chain, we need its stochastic matrix <span class="math notranslate nohighlight">\(P\)</span> and a marginal probability distribution <span class="math notranslate nohighlight">\(\psi\)</span>  from which to  draw a realization of <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 <p>The Markov chain is then constructed as discussed above.  To repeat:</p>
 <ol class="simple">
-<li><p>At time <span class="math notranslate nohighlight">\(t=0\)</span>, the <span class="math notranslate nohighlight">\(X_0\)</span> is chosen from <span class="math notranslate nohighlight">\(\psi\)</span>.</p></li>
-<li><p>At each subsequent time <span class="math notranslate nohighlight">\(t\)</span>, the new state <span class="math notranslate nohighlight">\(X_{t+1}\)</span> is drawn from <span class="math notranslate nohighlight">\(P(X_t, \cdot)\)</span>.</p></li>
+<li><p>At time <span class="math notranslate nohighlight">\(t=0\)</span>, draw a realization of  <span class="math notranslate nohighlight">\(X_0\)</span>  from <span class="math notranslate nohighlight">\(\psi\)</span>.</p></li>
+<li><p>At each subsequent time <span class="math notranslate nohighlight">\(t\)</span>, draw a realization of the new state <span class="math notranslate nohighlight">\(X_{t+1}\)</span> from <span class="math notranslate nohighlight">\(P(X_t, \cdot)\)</span>.</p></li>
 </ol>
 <p>To implement this simulation procedure, we need a method for generating draws from a discrete distribution.</p>
 <p>For this task, we’ll use <code class="docutils literal notranslate"><span class="pre">random.draw</span></code> from <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon</a>, which works as follows:</p>
@@ -566,12 +568,12 @@ P =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, 0, 1])
 </pre></div>
 </div>
 </div>
 </div>
-<p>We’ll write our code as a function that takes the following three arguments</p>
+<p>We’ll write our code as a function that accepts the following three arguments</p>
 <ul class="simple">
 <li><p>A stochastic matrix <code class="docutils literal notranslate"><span class="pre">P</span></code></p></li>
 <li><p>An initial state <code class="docutils literal notranslate"><span class="pre">init</span></code></p></li>
@@ -615,7 +617,7 @@ P =
 </div>
 </div>
 <p>As we’ll see later, for a long series drawn from <code class="docutils literal notranslate"><span class="pre">P</span></code>, the fraction of the sample that takes value 0 will be about 0.25.</p>
-<p>Moreover, this is true, regardless of the initial distribution from with
+<p>Moreover, this is true, regardless of the initial distribution from which
 <span class="math notranslate nohighlight">\(X_0\)</span> is drawn.</p>
 <p>The following code illustrates this</p>
 <div class="cell docutils container">
@@ -626,13 +628,13 @@ P =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.24688
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.24947
 </pre></div>
 </div>
 </div>
 </div>
 <p>You can try changing the initial distribution to confirm that the output is
-always close to 0.25.</p>
+always close to 0.25, at least for the <code class="docutils literal notranslate"><span class="pre">P</span></code> matrix above.</p>
 </div>
 <div class="section" id="using-quantecons-routines">
 <h3><span class="section-number">24.3.2. </span>Using QuantEcon’s Routines<a class="headerlink" href="#using-quantecons-routines" title="Permalink to this headline">¶</a></h3>
@@ -649,7 +651,7 @@ always close to 0.25.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.250137
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.249079
 </pre></div>
 </div>
 </div>
@@ -657,29 +659,29 @@ always close to 0.25.</p>
 <p>The <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a> routine is <a class="reference external" href="https://python-programming.quantecon.org/numba.html#numba-link">JIT compiled</a> and much faster.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> mc_sample_path(P, sample_size=1_000_000) # Our version
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> mc_sample_path(P, sample_size=1_000_000) # Our homemade code version
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 789 ms, sys: 3.69 ms, total: 792 ms
-Wall time: 793 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 791 ms, sys: 7.86 ms, total: 799 ms
+Wall time: 799 ms
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 0, ..., 1, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, ..., 0, 1, 1])
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> mc.simulate(ts_length=1_000_000) # qe version
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> mc.simulate(ts_length=1_000_000) # qe code version
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 21.3 ms, sys: 4.11 ms, total: 25.4 ms
-Wall time: 25 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 19 ms, sys: 7.96 ms, total: 26.9 ms
+Wall time: 26.7 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, ..., 1, 1, 1])
@@ -700,7 +702,7 @@ Wall time: 25 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;employed&#39;, &#39;unemployed&#39;, &#39;unemployed&#39;, &#39;employed&#39;], dtype=&#39;&lt;U10&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;employed&#39;, &#39;employed&#39;, &#39;employed&#39;, &#39;employed&#39;], dtype=&#39;&lt;U10&#39;)
 </pre></div>
 </div>
 </div>
@@ -712,7 +714,7 @@ Wall time: 25 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;unemployed&#39;, &#39;employed&#39;, &#39;employed&#39;, &#39;unemployed&#39;], dtype=&#39;&lt;U10&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;unemployed&#39;, &#39;employed&#39;, &#39;unemployed&#39;, &#39;unemployed&#39;], dtype=&#39;&lt;U10&#39;)
 </pre></div>
 </div>
 </div>
@@ -724,12 +726,13 @@ Wall time: 25 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;employed&#39;, &#39;employed&#39;, &#39;employed&#39;, &#39;employed&#39;], dtype=&#39;&lt;U10&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;unemployed&#39;, &#39;unemployed&#39;, &#39;unemployed&#39;, &#39;unemployed&#39;],
+      dtype=&#39;&lt;U10&#39;)
 </pre></div>
 </div>
 </div>
 </div>
-<p>If we want to simulate with output as indices rather than state values we can use</p>
+<p>If we want to see indices rather than state values as outputs as  we can use</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">simulate_indices</span><span class="p">(</span><span class="n">ts_length</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
@@ -737,7 +740,7 @@ Wall time: 25 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 1, 0])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 1, 1])
 </pre></div>
 </div>
 </div>
@@ -750,10 +753,10 @@ Wall time: 25 ms
 <p id="index-7">Suppose that</p>
 <ol class="simple">
 <li><p><span class="math notranslate nohighlight">\(\{X_t\}\)</span> is a Markov chain with stochastic matrix <span class="math notranslate nohighlight">\(P\)</span></p></li>
-<li><p>the distribution of <span class="math notranslate nohighlight">\(X_t\)</span> is known to be <span class="math notranslate nohighlight">\(\psi_t\)</span></p></li>
+<li><p>the marginal distribution of <span class="math notranslate nohighlight">\(X_t\)</span> is known to be <span class="math notranslate nohighlight">\(\psi_t\)</span></p></li>
 </ol>
-<p>What then is the distribution of <span class="math notranslate nohighlight">\(X_{t+1}\)</span>, or, more generally, of <span class="math notranslate nohighlight">\(X_{t+m}\)</span>?</p>
-<p>To answer this, we let <span class="math notranslate nohighlight">\(\psi_t\)</span> be the distribution of <span class="math notranslate nohighlight">\(X_t\)</span> for <span class="math notranslate nohighlight">\(t = 0, 1, 2, \ldots\)</span>.</p>
+<p>What then is the marginal distribution of <span class="math notranslate nohighlight">\(X_{t+1}\)</span>, or, more generally, of <span class="math notranslate nohighlight">\(X_{t+m}\)</span>?</p>
+<p>To answer this, we let <span class="math notranslate nohighlight">\(\psi_t\)</span> be the marginal distribution of <span class="math notranslate nohighlight">\(X_t\)</span> for <span class="math notranslate nohighlight">\(t = 0, 1, 2, \ldots\)</span>.</p>
 <p>Our first aim is to find <span class="math notranslate nohighlight">\(\psi_{t + 1}\)</span> given <span class="math notranslate nohighlight">\(\psi_t\)</span> and <span class="math notranslate nohighlight">\(P\)</span>.</p>
 <p>To begin, pick any <span class="math notranslate nohighlight">\(y  \in S\)</span>.</p>
 <p>Using the <a class="reference external" href="https://en.wikipedia.org/wiki/Law_of_total_probability">law of total probability</a>, we can decompose the probability that <span class="math notranslate nohighlight">\(X_{t+1} = y\)</span> as follows:</p>
@@ -771,11 +774,11 @@ all  ways this can happen and sum their probabilities.</p>
 \psi_{t+1}(y) = \sum_{x \in S} P(x,y) \psi_t(x)
 \]</div>
 <p>There are <span class="math notranslate nohighlight">\(n\)</span> such equations, one for each <span class="math notranslate nohighlight">\(y \in S\)</span>.</p>
-<p>If we think of <span class="math notranslate nohighlight">\(\psi_{t+1}\)</span> and <span class="math notranslate nohighlight">\(\psi_t\)</span> as <em>row vectors</em> (as is traditional in this literature), these <span class="math notranslate nohighlight">\(n\)</span> equations are summarized by the matrix expression</p>
+<p>If we think of <span class="math notranslate nohighlight">\(\psi_{t+1}\)</span> and <span class="math notranslate nohighlight">\(\psi_t\)</span> as <em>row vectors</em>, these <span class="math notranslate nohighlight">\(n\)</span> equations are summarized by the matrix expression</p>
 <div class="math notranslate nohighlight" id="equation-fin-mc-fr">
 <span class="eqno">(24.4)<a class="headerlink" href="#equation-fin-mc-fr" title="Permalink to this equation">¶</a></span>\[\psi_{t+1} = \psi_t P\]</div>
-<p>In other words, to move the distribution forward one unit of time, we postmultiply by <span class="math notranslate nohighlight">\(P\)</span>.</p>
-<p>By repeating this <span class="math notranslate nohighlight">\(m\)</span> times we move forward <span class="math notranslate nohighlight">\(m\)</span> steps into the future.</p>
+<p>Thus, to move a marginal distribution forward one unit of time, we postmultiply by <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p>By postmultiplying <span class="math notranslate nohighlight">\(m\)</span> times, we move a marginal distribution forward <span class="math notranslate nohighlight">\(m\)</span> steps into the future.</p>
 <p>Hence, iterating on <a class="reference internal" href="#equation-fin-mc-fr">(24.4)</a>, the expression <span class="math notranslate nohighlight">\(\psi_{t+m} = \psi_t P^m\)</span> is also valid — here <span class="math notranslate nohighlight">\(P^m\)</span> is the <span class="math notranslate nohighlight">\(m\)</span>-th power of <span class="math notranslate nohighlight">\(P\)</span>.</p>
 <p>As a special case, we see that if <span class="math notranslate nohighlight">\(\psi_0\)</span> is the initial distribution from
 which <span class="math notranslate nohighlight">\(X_0\)</span> is drawn, then <span class="math notranslate nohighlight">\(\psi_0 P^m\)</span> is the distribution of
@@ -793,7 +796,7 @@ one step is <span class="math notranslate nohighlight">\(P(x,y)\)</span>.</p>
 <p>It turns out that the probability of transitioning from <span class="math notranslate nohighlight">\(x\)</span> to <span class="math notranslate nohighlight">\(y\)</span> in
 <span class="math notranslate nohighlight">\(m\)</span> steps is <span class="math notranslate nohighlight">\(P^m(x,y)\)</span>, the <span class="math notranslate nohighlight">\((x,y)\)</span>-th element of the
 <span class="math notranslate nohighlight">\(m\)</span>-th power of <span class="math notranslate nohighlight">\(P\)</span>.</p>
-<p>To see why, consider again <a class="reference internal" href="#equation-mdfmc2">(24.6)</a>, but now with <span class="math notranslate nohighlight">\(\psi_t\)</span> putting all probability on state <span class="math notranslate nohighlight">\(x\)</span></p>
+<p>To see why, consider again <a class="reference internal" href="#equation-mdfmc2">(24.6)</a>, but now with a <span class="math notranslate nohighlight">\(\psi_t\)</span> that puts all probability on state <span class="math notranslate nohighlight">\(x\)</span> so that the transition probabilities are</p>
 <ul class="simple">
 <li><p>1 in the <span class="math notranslate nohighlight">\(x\)</span>-th position and zero elsewhere</p></li>
 </ul>
@@ -808,7 +811,7 @@ one step is <span class="math notranslate nohighlight">\(P(x,y)\)</span>.</p>
 <h3><span class="section-number">24.4.2. </span>Example: Probability of Recession<a class="headerlink" href="#example-probability-of-recession" title="Permalink to this headline">¶</a></h3>
 <p id="index-8">Recall the stochastic matrix <span class="math notranslate nohighlight">\(P\)</span> for recession and growth <a class="reference internal" href="#mc-eg2"><span class="std std-ref">considered above</span></a>.</p>
 <p>Suppose that the current state is unknown — perhaps statistics are available only  at the <em>end</em> of the current month.</p>
-<p>We estimate the probability that the economy is in state <span class="math notranslate nohighlight">\(x\)</span> to be <span class="math notranslate nohighlight">\(\psi(x)\)</span>.</p>
+<p>We guess that the probability that the economy is in state <span class="math notranslate nohighlight">\(x\)</span> is <span class="math notranslate nohighlight">\(\psi(x)\)</span>.</p>
 <p>The probability of being in recession (either mild or severe) in 6 months time is given by the inner product</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -826,24 +829,25 @@ one step is <span class="math notranslate nohighlight">\(P(x,y)\)</span>.</p>
 <div class="section" id="example-2-cross-sectional-distributions">
 <span id="mc-eg1-1"></span><h3><span class="section-number">24.4.3. </span>Example 2: Cross-Sectional Distributions<a class="headerlink" href="#example-2-cross-sectional-distributions" title="Permalink to this headline">¶</a></h3>
 <p id="index-9">The marginal distributions we have been studying can be viewed either as
-probabilities or as cross-sectional frequencies in large samples.</p>
+probabilities or as cross-sectional frequencies that a Law of Large Numbers leads us to anticipate for  large samples.</p>
 <p>To illustrate, recall our model of employment/unemployment dynamics for a given worker <a class="reference internal" href="#mc-eg1"><span class="std std-ref">discussed above</span></a>.</p>
-<p>Consider a large population of workers, each of whose lifetime experience is described by the specified dynamics, independent of one another.</p>
+<p>Consider a large population of workers, each of whose lifetime experience is described by the specified dynamics, with each worker’s
+outcomes being realizations of processes that are statistically independent of all other workers’ processes.</p>
 <p>Let <span class="math notranslate nohighlight">\(\psi\)</span> be the current <em>cross-sectional</em> distribution over <span class="math notranslate nohighlight">\(\{ 0, 1 \}\)</span>.</p>
-<p>The cross-sectional distribution records the fractions of workers employed and unemployed at a given moment.</p>
+<p>The cross-sectional distribution records fractions of workers employed and unemployed at a given moment.</p>
 <ul class="simple">
 <li><p>For example, <span class="math notranslate nohighlight">\(\psi(0)\)</span> is the unemployment rate.</p></li>
 </ul>
 <p>What will the cross-sectional distribution be in 10 periods hence?</p>
 <p>The answer is <span class="math notranslate nohighlight">\(\psi P^{10}\)</span>, where <span class="math notranslate nohighlight">\(P\)</span> is the stochastic matrix in
 <a class="reference internal" href="#equation-p-unempemp">(24.3)</a>.</p>
-<p>This is because each worker is updated according to <span class="math notranslate nohighlight">\(P\)</span>, so
-<span class="math notranslate nohighlight">\(\psi P^{10}\)</span> represents probabilities for a single randomly selected
+<p>This is because each worker’s state evolves according to <span class="math notranslate nohighlight">\(P\)</span>, so
+<span class="math notranslate nohighlight">\(\psi P^{10}\)</span> is a marginal distibution  for a single randomly selected
 worker.</p>
-<p>But when the sample is large, outcomes and probabilities are roughly equal (by the Law
+<p>But when the sample is large, outcomes and probabilities are roughly equal (by an application of the Law
 of Large Numbers).</p>
 <p>So for a very large (tending to infinite) population,
-<span class="math notranslate nohighlight">\(\psi P^{10}\)</span> also represents the fraction of workers in
+<span class="math notranslate nohighlight">\(\psi P^{10}\)</span> also represents  fractions of workers in
 each state.</p>
 <p>This is exactly the cross-sectional distribution.</p>
 </div>
@@ -866,8 +870,8 @@ P^k(y, x) &gt; 0
 <p>In view of our discussion <a class="reference internal" href="#finite-mc-mstp"><span class="std std-ref">above</span></a>, this means precisely
 that</p>
 <ul class="simple">
-<li><p>state <span class="math notranslate nohighlight">\(x\)</span> can be reached eventually from state <span class="math notranslate nohighlight">\(y\)</span>, and</p></li>
-<li><p>state <span class="math notranslate nohighlight">\(y\)</span> can be reached eventually from state <span class="math notranslate nohighlight">\(x\)</span></p></li>
+<li><p>state <span class="math notranslate nohighlight">\(x\)</span> can eventually be reached  from state <span class="math notranslate nohighlight">\(y\)</span>, and</p></li>
+<li><p>state <span class="math notranslate nohighlight">\(y\)</span> can eventually  be reached from state <span class="math notranslate nohighlight">\(x\)</span></p></li>
 </ul>
 <p>The stochastic matrix <span class="math notranslate nohighlight">\(P\)</span> is called <strong>irreducible</strong> if all states
 communicate; that is, if <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> communicate for all
@@ -890,8 +894,8 @@ P :=
   \end{array}
 \right)
 \end{split}\]</div>
-<p>It’s clear from the graph that this stochastic matrix is irreducible: we can
-reach any state from any other state eventually.</p>
+<p>It’s clear from the graph that this stochastic matrix is irreducible: we can  eventually
+reach any state from any other state.</p>
 <p>We can also test this using <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>’s MarkovChain class</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -910,7 +914,7 @@ reach any state from any other state eventually.</p>
 </div>
 </div>
 </div>
-<p>Here’s a more pessimistic scenario, where the poor are poor forever</p>
+<p>Here’s a more pessimistic scenario in which  poor people remain poor forever</p>
 <div class="figure align-default">
 <img alt="_images/mc_irreducibility2.png" src="_images/mc_irreducibility2.png" />
 </div>
@@ -952,7 +956,7 @@ reach any state from any other state eventually.</p>
 </div>
 <div class="section" id="aperiodicity">
 <h3><span class="section-number">24.5.2. </span>Aperiodicity<a class="headerlink" href="#aperiodicity" title="Permalink to this headline">¶</a></h3>
-<p>Loosely speaking, a Markov chain is called periodic if it cycles in a predictable way, and aperiodic otherwise.</p>
+<p>Loosely speaking, a Markov chain is called <strong>periodic</strong> if it cycles in a predictable way, and <strong>aperiodic</strong> otherwise.</p>
 <p>Here’s a trivial example with three states</p>
 <div class="figure align-default">
 <img alt="_images/mc_aperiodicity1.png" src="_images/mc_aperiodicity1.png" />
@@ -975,8 +979,8 @@ reach any state from any other state eventually.</p>
 </div>
 </div>
 </div>
-<p>More formally, the <strong>period</strong> of a state <span class="math notranslate nohighlight">\(x\)</span> is the greatest common divisor
-of the set of integers</p>
+<p>More formally, the <strong>period</strong> of a state <span class="math notranslate nohighlight">\(x\)</span> is the largest common divisor
+of a set of integers</p>
 <div class="math notranslate nohighlight">
 \[
 D(x) := \{j \geq 1 : P^j(x, x) &gt; 0\}
@@ -987,7 +991,7 @@ D(x) := \{j \geq 1 : P^j(x, x) &gt; 0\}
 <div class="figure align-default">
 <img alt="_images/mc_aperiodicity2.png" src="_images/mc_aperiodicity2.png" />
 </div>
-<p>We can confirm that the stochastic matrix is periodic as follows</p>
+<p>We can confirm that the stochastic matrix is periodic with the following code</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
@@ -1022,7 +1026,7 @@ D(x) := \{j \geq 1 : P^j(x, x) &gt; 0\}
 </div>
 <div class="section" id="stationary-distributions">
 <h2><a class="toc-backref" href="#id14"><span class="section-number">24.6. </span><span class="target" id="index-12"></span>Stationary Distributions</a><a class="headerlink" href="#stationary-distributions" title="Permalink to this headline">¶</a></h2>
-<p id="index-13">As seen in <a class="reference internal" href="#equation-fin-mc-fr">(24.4)</a>, we can shift probabilities forward one unit of time via postmultiplication by <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p id="index-13">As seen in <a class="reference internal" href="#equation-fin-mc-fr">(24.4)</a>, we can shift a marginal distribution forward one unit of time via postmultiplication by <span class="math notranslate nohighlight">\(P\)</span>.</p>
 <p>Some distributions are invariant under this updating process — for example,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1039,41 +1043,43 @@ D(x) := \{j \geq 1 : P^j(x, x) &gt; 0\}
 </div>
 </div>
 </div>
-<p>Such distributions are called <strong>stationary</strong>, or <strong>invariant</strong>.</p>
-<p id="mc-stat-dd">Formally, a distribution <span class="math notranslate nohighlight">\(\psi^*\)</span> on <span class="math notranslate nohighlight">\(S\)</span> is called <strong>stationary</strong> for <span class="math notranslate nohighlight">\(P\)</span> if <span class="math notranslate nohighlight">\(\psi^* = \psi^* P\)</span>.</p>
+<p>Such distributions are called <strong>stationary</strong> or <strong>invariant</strong>.</p>
+<p id="mc-stat-dd">Formally, a marginal distribution <span class="math notranslate nohighlight">\(\psi^*\)</span> on <span class="math notranslate nohighlight">\(S\)</span> is called <strong>stationary</strong> for <span class="math notranslate nohighlight">\(P\)</span> if <span class="math notranslate nohighlight">\(\psi^* = \psi^* P\)</span>.</p>
 <p>(This is the same notion of stationarity that we learned about in the
 <a class="reference internal" href="ar1_processes.html"><span class="doc">lecture on AR(1) processes</span></a> applied to a different setting.)</p>
 <p>From this equality, we immediately get <span class="math notranslate nohighlight">\(\psi^* = \psi^* P^t\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>This tells us an important fact: If the distribution of <span class="math notranslate nohighlight">\(X_0\)</span> is a stationary distribution, then <span class="math notranslate nohighlight">\(X_t\)</span> will have this same distribution for all <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>Hence stationary distributions have a natural interpretation as stochastic steady states — we’ll discuss this more in just a moment.</p>
+<p>Hence stationary distributions have a natural interpretation as <strong>stochastic steady states</strong> — we’ll discuss this more soon.</p>
 <p>Mathematically, a stationary distribution is a fixed point of <span class="math notranslate nohighlight">\(P\)</span> when <span class="math notranslate nohighlight">\(P\)</span> is thought of as the map <span class="math notranslate nohighlight">\(\psi \mapsto \psi P\)</span> from (row) vectors to (row) vectors.</p>
 <p><strong>Theorem.</strong> Every stochastic matrix <span class="math notranslate nohighlight">\(P\)</span> has at least one stationary distribution.</p>
 <p>(We are assuming here that the state space <span class="math notranslate nohighlight">\(S\)</span> is finite; if not more assumptions are required)</p>
 <p>For proof of this result, you can apply <a class="reference external" href="https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem">Brouwer’s fixed point theorem</a>, or see <a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a>, theorem 4.3.5.</p>
-<p>There may in fact be many stationary distributions corresponding to a given stochastic matrix <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p>There can be many stationary distributions corresponding to a given stochastic matrix <span class="math notranslate nohighlight">\(P\)</span>.</p>
 <ul class="simple">
-<li><p>For example, if <span class="math notranslate nohighlight">\(P\)</span> is the identity matrix, then all distributions are stationary.</p></li>
+<li><p>For example, if <span class="math notranslate nohighlight">\(P\)</span> is the identity matrix, then all marginal distributions are stationary.</p></li>
 </ul>
-<p>Since stationary distributions are long run equilibria, to get uniqueness we require that initial conditions are not infinitely persistent.</p>
-<p>Infinite persistence of initial conditions occurs if certain regions of the
-state space cannot be accessed from other regions, which is the opposite of irreducibility.</p>
+<p>To get uniqueness an invariant distribution, the transition matrix <span class="math notranslate nohighlight">\(P\)</span> must have the property that no nontrivial subsets of
+the state space are <strong>infinitely persistent</strong>.</p>
+<p>A subset of the state space is infinitely persistent if other parts of the
+state space cannot be accessed from it.</p>
+<p>Thus, infinite persistence of a non-trivial subset is the opposite of irreducibility.</p>
 <p>This gives some intuition for the following fundamental theorem.</p>
 <p id="mc-conv-thm"><strong>Theorem.</strong> If <span class="math notranslate nohighlight">\(P\)</span> is both aperiodic and irreducible, then</p>
 <ol class="simple">
 <li><p><span class="math notranslate nohighlight">\(P\)</span> has exactly one stationary distribution <span class="math notranslate nohighlight">\(\psi^*\)</span>.</p></li>
-<li><p>For any initial distribution <span class="math notranslate nohighlight">\(\psi_0\)</span>, we have <span class="math notranslate nohighlight">\(\| \psi_0 P^t - \psi^* \| \to 0\)</span> as <span class="math notranslate nohighlight">\(t \to \infty\)</span>.</p></li>
+<li><p>For any initial marginal distribution <span class="math notranslate nohighlight">\(\psi_0\)</span>, we have <span class="math notranslate nohighlight">\(\| \psi_0 P^t - \psi^* \| \to 0\)</span> as <span class="math notranslate nohighlight">\(t \to \infty\)</span>.</p></li>
 </ol>
 <p>For a proof, see, for example, theorem 5.2 of <span id="id3">[<a class="reference internal" href="zreferences.html#id132" title="Olle Häggström. Finite Markov chains and algorithmic applications. Volume 52. Cambridge University Press, 2002.">Haggstrom02</a>]</span>.</p>
-<p>(Note that part 1 of the theorem requires only irreducibility, whereas part 2
+<p>(Note that part 1 of the theorem only requires  irreducibility, whereas part 2
 requires both irreducibility and aperiodicity)</p>
-<p>A stochastic matrix satisfying the conditions of the theorem is sometimes called <strong>uniformly ergodic</strong>.</p>
-<p>One easy sufficient condition for aperiodicity and irreducibility is that every element of <span class="math notranslate nohighlight">\(P\)</span> is strictly positive.</p>
+<p>A stochastic matrix that satisfies the conditions of the theorem is sometimes called <strong>uniformly ergodic</strong>.</p>
+<p>A sufficient condition for aperiodicity and irreducibility is that every element of <span class="math notranslate nohighlight">\(P\)</span> is strictly positive.</p>
 <ul class="simple">
 <li><p>Try to convince yourself of this.</p></li>
 </ul>
 <div class="section" id="example">
 <h3><span class="section-number">24.6.1. </span>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
-<p>Recall our model of employment/unemployment dynamics for a given worker <a class="reference internal" href="#mc-eg1"><span class="std std-ref">discussed above</span></a>.</p>
+<p>Recall our model of the employment/unemployment dynamics of a particular worker <a class="reference internal" href="#mc-eg1"><span class="std std-ref">discussed above</span></a>.</p>
 <p>Assuming <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span> and <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span>, the uniform ergodicity condition is satisfied.</p>
 <p>Let <span class="math notranslate nohighlight">\(\psi^* = (p, 1-p)\)</span> be the stationary distribution, so that <span class="math notranslate nohighlight">\(p\)</span> corresponds to unemployment (state 0).</p>
 <p>Using <span class="math notranslate nohighlight">\(\psi^* = \psi^* P\)</span> and a bit of algebra yields</p>
@@ -1081,29 +1087,34 @@ requires both irreducibility and aperiodicity)</p>
 \[
 p = \frac{\beta}{\alpha + \beta}
 \]</div>
-<p>This is, in some sense, a steady state probability of unemployment — more on interpretation below.</p>
+<p>This is, in some sense, a steady state probability of unemployment — more about the  interpretation of this below.</p>
 <p>Not surprisingly it tends to zero as <span class="math notranslate nohighlight">\(\beta \to 0\)</span>, and to one as <span class="math notranslate nohighlight">\(\alpha \to 0\)</span>.</p>
 </div>
 <div class="section" id="calculating-stationary-distributions">
 <h3><span class="section-number">24.6.2. </span>Calculating Stationary Distributions<a class="headerlink" href="#calculating-stationary-distributions" title="Permalink to this headline">¶</a></h3>
-<p id="index-14">As discussed above, a given Markov matrix <span class="math notranslate nohighlight">\(P\)</span> can have many stationary distributions.</p>
+<p id="index-14">As discussed above, a particular Markov matrix <span class="math notranslate nohighlight">\(P\)</span> can have many stationary distributions.</p>
 <p>That is, there can be many row vectors <span class="math notranslate nohighlight">\(\psi\)</span> such that <span class="math notranslate nohighlight">\(\psi = \psi P\)</span>.</p>
 <p>In fact if <span class="math notranslate nohighlight">\(P\)</span> has two distinct stationary distributions <span class="math notranslate nohighlight">\(\psi_1,
-\psi_2\)</span> then it has infinitely many, since in this case, as you can verify,</p>
+\psi_2\)</span> then it has infinitely many, since in this case, as you can verify,  for any <span class="math notranslate nohighlight">\(\lambda \in [0, 1]\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 \psi_3 := \lambda \psi_1 + (1 - \lambda) \psi_2
 \]</div>
-<p>is a stationary distribution for <span class="math notranslate nohighlight">\(P\)</span> for any <span class="math notranslate nohighlight">\(\lambda \in [0, 1]\)</span>.</p>
-<p>If we restrict attention to the case where only one stationary distribution exists, one option for finding it is to try to solve the linear system <span class="math notranslate nohighlight">\(\psi (I_n - P) = 0\)</span> for <span class="math notranslate nohighlight">\(\psi\)</span>, where <span class="math notranslate nohighlight">\(I_n\)</span> is the <span class="math notranslate nohighlight">\(n \times n\)</span> identity.</p>
-<p>But the zero vector solves this equation, so we need to proceed carefully.</p>
-<p>In essence, we need to impose the restriction that the solution must be a probability distribution.</p>
+<p>is a stationary distribution for <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p>If we restrict attention to the case in which only one stationary distribution exists, one way to  finding it is to solve the system</p>
+<div class="math notranslate nohighlight" id="equation-eq-eqpsifixed">
+<span class="eqno">(24.7)<a class="headerlink" href="#equation-eq-eqpsifixed" title="Permalink to this equation">¶</a></span>\[
+\psi (I_n - P) = 0
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(\psi\)</span>, where <span class="math notranslate nohighlight">\(I_n\)</span> is the <span class="math notranslate nohighlight">\(n \times n\)</span> identity.</p>
+<p>But the zero vector solves system <a class="reference internal" href="#equation-eq-eqpsifixed">(24.7)</a>,  so we must proceed cautiously.</p>
+<p>We want to impose the restriction that <span class="math notranslate nohighlight">\(\psi\)</span> is  a probability distribution.</p>
 <p>There are various ways to do this.</p>
-<p>One option is to regard this as an eigenvector problem: a vector
+<p>One option is to regard solving system <a class="reference internal" href="#equation-eq-eqpsifixed">(24.7)</a>  as an eigenvector problem: a vector
 <span class="math notranslate nohighlight">\(\psi\)</span> such that <span class="math notranslate nohighlight">\(\psi = \psi P\)</span> is a left eigenvector associated
 with the unit eigenvalue <span class="math notranslate nohighlight">\(\lambda = 1\)</span>.</p>
 <p>A stable and sophisticated algorithm specialized for stochastic matrices is implemented in <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>.</p>
-<p>This is the one we recommend you to use:</p>
+<p>This is the one we recommend:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span>
@@ -1123,8 +1134,8 @@ with the unit eigenvalue <span class="math notranslate nohighlight">\(\lambda = 
 </div>
 <div class="section" id="convergence-to-stationarity">
 <h3><span class="section-number">24.6.3. </span>Convergence to Stationarity<a class="headerlink" href="#convergence-to-stationarity" title="Permalink to this headline">¶</a></h3>
-<p id="index-15">Part 2 of the Markov chain convergence theorem <a class="reference internal" href="#mc-conv-thm"><span class="std std-ref">stated above</span></a> tells us that the distribution of <span class="math notranslate nohighlight">\(X_t\)</span> converges to the stationary distribution regardless of where we start off.</p>
-<p>This adds considerable weight to our interpretation of <span class="math notranslate nohighlight">\(\psi^*\)</span> as a stochastic steady state.</p>
+<p id="index-15">Part 2 of the Markov chain convergence theorem <a class="reference internal" href="#mc-conv-thm"><span class="std std-ref">stated above</span></a> tells us that the marginal distribution of <span class="math notranslate nohighlight">\(X_t\)</span> converges to the stationary distribution regardless of where we begin.</p>
+<p>This adds considerable authority to our interpretation of <span class="math notranslate nohighlight">\(\psi^*\)</span> as a stochastic steady state.</p>
 <p>The convergence in the theorem is illustrated in the next figure</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1168,8 +1179,8 @@ with the unit eigenvalue <span class="math notranslate nohighlight">\(\lambda = 
 <p>Here</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(P\)</span> is the stochastic matrix for recession and growth <a class="reference internal" href="#mc-eg2"><span class="std std-ref">considered above</span></a>.</p></li>
-<li><p>The highest red dot is an arbitrarily chosen initial probability distribution  <span class="math notranslate nohighlight">\(\psi\)</span>, represented as a vector in <span class="math notranslate nohighlight">\(\mathbb R^3\)</span>.</p></li>
-<li><p>The other red dots are the distributions <span class="math notranslate nohighlight">\(\psi P^t\)</span> for <span class="math notranslate nohighlight">\(t = 1, 2, \ldots\)</span>.</p></li>
+<li><p>The highest red dot is an arbitrarily chosen initial marginal probability distribution  <span class="math notranslate nohighlight">\(\psi\)</span>, represented as a vector in <span class="math notranslate nohighlight">\(\mathbb R^3\)</span>.</p></li>
+<li><p>The other red dots are the marginal distributions <span class="math notranslate nohighlight">\(\psi P^t\)</span> for <span class="math notranslate nohighlight">\(t = 1, 2, \ldots\)</span>.</p></li>
 <li><p>The black dot is <span class="math notranslate nohighlight">\(\psi^*\)</span>.</p></li>
 </ul>
 <p>You might like to try experimenting with different initial conditions.</p>
@@ -1177,19 +1188,19 @@ with the unit eigenvalue <span class="math notranslate nohighlight">\(\lambda = 
 </div>
 <div class="section" id="ergodicity">
 <span id="id4"></span><h2><a class="toc-backref" href="#id15"><span class="section-number">24.7. </span><span class="target" id="index-16"></span>Ergodicity</a><a class="headerlink" href="#ergodicity" title="Permalink to this headline">¶</a></h2>
-<p id="index-17">Under irreducibility, yet another important result obtains: For all <span class="math notranslate nohighlight">\(x \in S\)</span>,</p>
+<p id="index-17">Under irreducibility, yet another important result obtains: for all <span class="math notranslate nohighlight">\(x \in S\)</span>,</p>
 <div class="math notranslate nohighlight" id="equation-llnfmc0">
-<span class="eqno">(24.7)<a class="headerlink" href="#equation-llnfmc0" title="Permalink to this equation">¶</a></span>\[\frac{1}{m} \sum_{t = 1}^m \mathbf{1}\{X_t = x\}  \to \psi^*(x)
+<span class="eqno">(24.8)<a class="headerlink" href="#equation-llnfmc0" title="Permalink to this equation">¶</a></span>\[\frac{1}{m} \sum_{t = 1}^m \mathbf{1}\{X_t = x\}  \to \psi^*(x)
     \quad \text{as } m \to \infty\]</div>
 <p>Here</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\mathbf{1}\{X_t = x\} = 1\)</span> if <span class="math notranslate nohighlight">\(X_t = x\)</span> and zero otherwise</p></li>
 <li><p>convergence is with probability one</p></li>
-<li><p>the result does not depend on the distribution (or value) of <span class="math notranslate nohighlight">\(X_0\)</span></p></li>
+<li><p>the result does not depend on the marginal distribution  of <span class="math notranslate nohighlight">\(X_0\)</span></p></li>
 </ul>
 <p>The result tells us that the fraction of time the chain spends at state <span class="math notranslate nohighlight">\(x\)</span> converges to <span class="math notranslate nohighlight">\(\psi^*(x)\)</span> as time goes to infinity.</p>
-<p id="new-interp-sd">This gives us another way to interpret the stationary distribution — provided that the convergence result in <a class="reference internal" href="#equation-llnfmc0">(24.7)</a> is valid.</p>
-<p>The convergence in <a class="reference internal" href="#equation-llnfmc0">(24.7)</a> is a special case of a law of large numbers result for Markov chains — see <a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a>, section 4.3.4 for some additional information.</p>
+<p id="new-interp-sd">This gives us another way to interpret the stationary distribution — provided that the convergence result in <a class="reference internal" href="#equation-llnfmc0">(24.8)</a> is valid.</p>
+<p>The convergence asserted in <a class="reference internal" href="#equation-llnfmc0">(24.8)</a> is a special case of a law of large numbers result for Markov chains — see <a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a>, section 4.3.4 for some additional information.</p>
 <div class="section" id="mc-eg1-2">
 <span id="id5"></span><h3><span class="section-number">24.7.1. </span>Example<a class="headerlink" href="#mc-eg1-2" title="Permalink to this headline">¶</a></h3>
 <p>Recall our cross-sectional interpretation of the employment/unemployment model <a class="reference internal" href="#mc-eg1-1"><span class="std std-ref">discussed above</span></a>.</p>
@@ -1200,23 +1211,23 @@ with the unit eigenvalue <span class="math notranslate nohighlight">\(\lambda = 
 p = \frac{\beta}{\alpha + \beta}
 \]</div>
 <p>In the cross-sectional interpretation, this is the fraction of people unemployed.</p>
-<p>In view of our latest (ergodicity) result, it is also the fraction of time that a worker can expect to spend unemployed.</p>
+<p>In view of our latest (ergodicity) result, it is also the fraction of time that a single worker can expect to spend unemployed.</p>
 <p>Thus, in the long-run, cross-sectional averages for a population and time-series averages for a given person coincide.</p>
-<p>This is one interpretation of the notion of ergodicity.</p>
+<p>This is one aspect of the concept  of ergodicity.</p>
 </div>
 </div>
 <div class="section" id="computing-expectations">
 <span id="finite-mc-expec"></span><h2><a class="toc-backref" href="#id16"><span class="section-number">24.8. </span>Computing Expectations</a><a class="headerlink" href="#computing-expectations" title="Permalink to this headline">¶</a></h2>
-<p id="index-18">We are interested in computing expectations of the form</p>
+<p id="index-18">We sometimes want to  compute mathematical  expectations of functions of <span class="math notranslate nohighlight">\(X_t\)</span> of the form</p>
 <div class="math notranslate nohighlight" id="equation-mc-une">
-<span class="eqno">(24.8)<a class="headerlink" href="#equation-mc-une" title="Permalink to this equation">¶</a></span>\[\mathbb E [ h(X_t) ]\]</div>
+<span class="eqno">(24.9)<a class="headerlink" href="#equation-mc-une" title="Permalink to this equation">¶</a></span>\[\mathbb E [ h(X_t) ]\]</div>
 <p>and conditional expectations such as</p>
 <div class="math notranslate nohighlight" id="equation-mc-cce">
-<span class="eqno">(24.9)<a class="headerlink" href="#equation-mc-cce" title="Permalink to this equation">¶</a></span>\[\mathbb E [ h(X_{t + k})  \mid X_t = x]\]</div>
+<span class="eqno">(24.10)<a class="headerlink" href="#equation-mc-cce" title="Permalink to this equation">¶</a></span>\[\mathbb E [ h(X_{t + k})  \mid X_t = x]\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\{X_t\}\)</span> is a Markov chain generated by <span class="math notranslate nohighlight">\(n \times n\)</span> stochastic matrix <span class="math notranslate nohighlight">\(P\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(h\)</span> is a given function, which, in expressions involving matrix
+<li><p><span class="math notranslate nohighlight">\(h\)</span> is a given function, which, in terms of matrix
 algebra, we’ll think of as the column vector</p></li>
 </ul>
 <div class="math notranslate nohighlight">
@@ -1230,8 +1241,8 @@ h
 \end{array}
   \right)
 \end{split}\]</div>
-<p>Computing the unconditional expectation <a class="reference internal" href="#equation-mc-une">(24.8)</a> is easy.</p>
-<p>We just sum over the distribution  of <span class="math notranslate nohighlight">\(X_t\)</span> to get</p>
+<p>Computing the unconditional expectation <a class="reference internal" href="#equation-mc-une">(24.9)</a> is easy.</p>
+<p>We just sum over the marginal  distribution  of <span class="math notranslate nohighlight">\(X_t\)</span> to get</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbb E [ h(X_t) ]
@@ -1245,11 +1256,11 @@ write this as</p>
 \mathbb E [ h(X_t) ]
 =  \psi P^t h
 \]</div>
-<p>For the conditional expectation <a class="reference internal" href="#equation-mc-cce">(24.9)</a>, we need to sum over
+<p>For the conditional expectation <a class="reference internal" href="#equation-mc-cce">(24.10)</a>, we need to sum over
 the conditional distribution of <span class="math notranslate nohighlight">\(X_{t + k}\)</span> given <span class="math notranslate nohighlight">\(X_t = x\)</span>.</p>
 <p>We already know that this is <span class="math notranslate nohighlight">\(P^k(x, \cdot)\)</span>, so</p>
 <div class="math notranslate nohighlight" id="equation-mc-cce2">
-<span class="eqno">(24.10)<a class="headerlink" href="#equation-mc-cce2" title="Permalink to this equation">¶</a></span>\[\mathbb E [ h(X_{t + k})  \mid X_t = x]
+<span class="eqno">(24.11)<a class="headerlink" href="#equation-mc-cce2" title="Permalink to this equation">¶</a></span>\[\mathbb E [ h(X_{t + k})  \mid X_t = x]
 = (P^k h)(x)\]</div>
 <p>The vector <span class="math notranslate nohighlight">\(P^k h\)</span> stores the conditional expectation <span class="math notranslate nohighlight">\(\mathbb E [ h(X_{t + k})  \mid X_t = x]\)</span> over all <span class="math notranslate nohighlight">\(x\)</span>.</p>
 <div class="section" id="iterated-expectations">
@@ -1259,9 +1270,9 @@ the conditional distribution of <span class="math notranslate nohighlight">\(X_{
 \[
 \mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \mathbb E [  h(X_{t + k}) ] 
 \]</div>
-<p>where the outer <span class="math notranslate nohighlight">\( \mathbb E\)</span> on the left side is an unconditional distribution taken with respect to the distribution  <span class="math notranslate nohighlight">\(\psi_t\)</span> of <span class="math notranslate nohighlight">\(X_t\)</span>
+<p>where the outer <span class="math notranslate nohighlight">\( \mathbb E\)</span> on the left side is an unconditional distribution taken with respect to the marginal distribution  <span class="math notranslate nohighlight">\(\psi_t\)</span> of <span class="math notranslate nohighlight">\(X_t\)</span>
 (again see equation <a class="reference internal" href="#equation-mdfmc2">(24.6)</a>).</p>
-<p>To verify the law of iterated expectations, use  equation <a class="reference internal" href="#equation-mc-cce2">(24.10)</a> to substitute <span class="math notranslate nohighlight">\( (P^k h)(x)\)</span> for <span class="math notranslate nohighlight">\(E [ h(X_{t + k})  \mid X_t = x]\)</span>, write</p>
+<p>To verify the law of iterated expectations, use  equation <a class="reference internal" href="#equation-mc-cce2">(24.11)</a> to substitute <span class="math notranslate nohighlight">\( (P^k h)(x)\)</span> for <span class="math notranslate nohighlight">\(E [ h(X_{t + k})  \mid X_t = x]\)</span>, write</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \psi_t P^k h, 
@@ -1270,7 +1281,7 @@ the conditional distribution of <span class="math notranslate nohighlight">\(X_{
 </div>
 <div class="section" id="expectations-of-geometric-sums">
 <h3><span class="section-number">24.8.2. </span>Expectations of Geometric Sums<a class="headerlink" href="#expectations-of-geometric-sums" title="Permalink to this headline">¶</a></h3>
-<p>Sometimes we also want to compute expectations of a geometric sum, such as
+<p>Sometimes we want to compute the mathematical expectation of a geometric sum, such as
 <span class="math notranslate nohighlight">\(\sum_t \beta^t h(X_t)\)</span>.</p>
 <p>In view of the preceding discussion, this is</p>
 <div class="math notranslate nohighlight">
@@ -1317,7 +1328,7 @@ employment, then <span class="math notranslate nohighlight">\(\bar X_m \to p\)</
 \[
 \bar X_m := \frac{1}{m} \sum_{t = 1}^m \mathbf{1}\{X_t = 0\}
 \]</div>
-<p>The exercise is to illustrate this convergence by computing
+<p>This exercise asks you to illustrate convergence by computing
 <span class="math notranslate nohighlight">\(\bar X_m\)</span> for large <span class="math notranslate nohighlight">\(m\)</span> and checking that
 it is close to <span class="math notranslate nohighlight">\(p\)</span>.</p>
 <p>You will see that this statement is true regardless of the choice of initial

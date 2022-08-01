@@ -171,8 +171,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#moving-average-representation">
+   9.5. Moving Average Representation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-forward-looking-model">
-   9.5. A Forward Looking Model
+   9.6. A Forward Looking Model
   </a>
  </li>
 </ul>
@@ -235,7 +240,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p><a class="reference internal" href="#samuelsons-model" id="id4">Samuelson’s model</a></p></li>
 <li><p><a class="reference internal" href="#adding-a-random-term" id="id5">Adding a Random Term</a></p></li>
 <li><p><a class="reference internal" href="#computing-population-moments" id="id6">Computing Population Moments</a></p></li>
-<li><p><a class="reference internal" href="#a-forward-looking-model" id="id7">A Forward Looking Model</a></p></li>
+<li><p><a class="reference internal" href="#moving-average-representation" id="id7">Moving Average Representation</a></p></li>
+<li><p><a class="reference internal" href="#a-forward-looking-model" id="id8">A Forward Looking Model</a></p></li>
 </ul>
 </li>
 </ul>
@@ -251,6 +257,8 @@ Keynesian macroeconomic models in the United States.</p>
 <p>You can read about the details of that model in <a class="reference internal" href="samuelson.html"><span class="doc">this</span></a>
 QuantEcon lecture.</p>
 <p>(That lecture also describes some technicalities about second-order linear difference equations.)</p>
+<p>In this lecture, we’ll also learn about an <strong>autoregressive</strong> representation and a <strong>moving average</strong> representation of a  non-stationary
+univariate time series <span class="math notranslate nohighlight">\(\{y_t\}_{t=0}^T\)</span>.</p>
 <p>We’ll also study a “perfect foresight” model of stock prices that involves solving
 a “forward-looking” linear difference equation.</p>
 <p>We will use the following imports:</p>
@@ -320,7 +328,7 @@ A y = b
 <p>where</p>
 <div class="math notranslate nohighlight">
 \[
-y = \begin{bmatrix} y_1 \cr y_2 \cr \cdots \cr y_T \end{bmatrix}
+y = \begin{bmatrix} y_1 \cr y_2 \cr \vdots \cr y_T \end{bmatrix}
 \]</div>
 <p>Evidently <span class="math notranslate nohighlight">\(y\)</span> can be computed from</p>
 <div class="math notranslate nohighlight">
@@ -521,13 +529,13 @@ u_{T}
 \end{split}\]</div>
 <p>Where <span class="math notranslate nohighlight">\(A, b, y\)</span> are defined as above, now assume that <span class="math notranslate nohighlight">\(y\)</span> is
 governed by the system</p>
-<div class="math notranslate nohighlight">
-\[
+<div class="math notranslate nohighlight" id="equation-eq-eqar">
+<span class="eqno">(9.3)<a class="headerlink" href="#equation-eq-eqar" title="Permalink to this equation">¶</a></span>\[
 A y = b + u
 \]</div>
 <p>The solution for <span class="math notranslate nohighlight">\(y\)</span> becomes</p>
-<div class="math notranslate nohighlight">
-\[
+<div class="math notranslate nohighlight" id="equation-eq-eqma">
+<span class="eqno">(9.4)<a class="headerlink" href="#equation-eq-eqma" title="Permalink to this equation">¶</a></span>\[
 y = A^{-1} \left(b + u\right)
 \]</div>
 <p>Let’s try it out in Python.</p>
@@ -697,6 +705,7 @@ y \sim {\mathcal N}(\mu_y, \Sigma_y)
     <span class="n">alpha0</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">alpha1</span><span class="o">=</span><span class="mf">1.53</span><span class="p">,</span> <span class="n">alpha2</span><span class="o">=-</span><span class="mf">.9</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">y_1</span><span class="o">=</span><span class="mf">28.</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mf">24.</span><span class="p">,</span> <span class="n">sigma_u</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     
 <span class="n">mu_y</span><span class="p">,</span> <span class="n">Sigma_y</span> <span class="o">=</span> <span class="n">my_process</span><span class="o">.</span><span class="n">get_moments</span><span class="p">()</span>
+<span class="n">A_inv</span> <span class="o">=</span> <span class="n">my_process</span><span class="o">.</span><span class="n">A_inv</span>
 </pre></div>
 </div>
 </div>
@@ -768,23 +777,17 @@ Sigma_y =  [[1.         0.8        0.64       0.512      0.4096     0.32768   ]
 <p>This is is an indication that the time series respresented by our <span class="math notranslate nohighlight">\(y\)</span> vector is not <strong>stationary</strong>.</p>
 <p>To make it stationary, we’d have to alter our system so that our <strong>initial conditions</strong> <span class="math notranslate nohighlight">\((y_1, y_0)\)</span> are not fixed numbers but instead a jointly normally distributed random vector with a particular mean and  covariance matrix.</p>
 <p>We describe how to do that in another lecture in this lecture <a class="reference internal" href="linear_models.html"><span class="doc">Linear State Space Models</span></a>.</p>
-<p>But just to set the stage for that analysis, let’s increase <span class="math notranslate nohighlight">\(T\)</span> to 100 and print out the bottom right corner of <span class="math notranslate nohighlight">\(\Sigma_y\)</span>.</p>
+<p>But just to set the stage for that analysis, let’s  print out the bottom right corner of <span class="math notranslate nohighlight">\(\Sigma_y\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_process</span> <span class="o">=</span> <span class="n">population_moments</span><span class="p">(</span><span class="n">alpha0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha1</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">alpha2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">y_1</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">sigma_u</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    
-<span class="n">mu_y</span><span class="p">,</span> <span class="n">Sigma_y</span> <span class="o">=</span> <span class="n">my_process</span><span class="o">.</span><span class="n">get_moments</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bottom right corner of Sigma_y = </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">Sigma_y</span><span class="p">[</span><span class="mi">95</span><span class="p">:,</span><span class="mi">95</span><span class="p">:])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mu_y</span><span class="p">,</span> <span class="n">Sigma_y</span> <span class="o">=</span> <span class="n">my_process</span><span class="o">.</span><span class="n">get_moments</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bottom right corner of Sigma_y = </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">Sigma_y</span><span class="p">[</span><span class="mi">72</span><span class="p">:,</span><span class="mi">72</span><span class="p">:])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>bottom right corner of Sigma_y = 
- [[2.77777778 2.22222222 1.77777778 1.42222222 1.13777778]
- [2.22222222 2.77777778 2.22222222 1.77777778 1.42222222]
- [1.77777778 2.22222222 2.77777778 2.22222222 1.77777778]
- [1.42222222 1.77777778 2.22222222 2.77777778 2.22222222]
- [1.13777778 1.42222222 1.77777778 2.22222222 2.77777778]]
+ []
 </pre></div>
 </div>
 </div>
@@ -794,8 +797,73 @@ Sigma_y =  [[1.         0.8        0.64       0.512      0.4096     0.32768   ]
 <p>You can read  about stationarity of more general linear time series models in this lecture <a class="reference internal" href="linear_models.html"><span class="doc">Linear State Space Models</span></a>.</p>
 <p>There is a lot to be learned about the process by staring at the off diagonal elements of <span class="math notranslate nohighlight">\(\Sigma_y\)</span> corresponding to different time periods <span class="math notranslate nohighlight">\(t\)</span>, but we resist the temptation to do so here.</p>
 </div>
+<div class="section" id="moving-average-representation">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">9.5. </span>Moving Average Representation</a><a class="headerlink" href="#moving-average-representation" title="Permalink to this headline">¶</a></h2>
+<p>Let’s print out  <span class="math notranslate nohighlight">\(A^{-1}\)</span> and stare at  its structure</p>
+<ul class="simple">
+<li><p>is it triangular or almost triangular or <span class="math notranslate nohighlight">\(\ldots\)</span> ?</p></li>
+</ul>
+<p>To study the structure of <span class="math notranslate nohighlight">\(A^{-1}\)</span>, we shall print just  up to <span class="math notranslate nohighlight">\(3\)</span> decimals.</p>
+<p>Let’s begin by printing out just the upper left hand corner of <span class="math notranslate nohighlight">\(A^{-1}\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">A_inv</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">7</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">7</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.    -0.     0.    -0.    -0.     0.    -0.   ]
+ [ 1.53   1.     0.    -0.    -0.     0.    -0.   ]
+ [ 1.441  1.53   1.     0.     0.     0.     0.   ]
+ [ 0.828  1.441  1.53   1.     0.     0.     0.   ]
+ [-0.031  0.828  1.441  1.53   1.     0.    -0.   ]
+ [-0.792 -0.031  0.828  1.441  1.53   1.     0.   ]
+ [-1.184 -0.792 -0.031  0.828  1.441  1.53   1.   ]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Evidently, <span class="math notranslate nohighlight">\(A^{-1}\)</span> is a lower triangular matrix.</p>
+<p>Let’s print out the lower right hand corner of <span class="math notranslate nohighlight">\(A^{-1}\)</span> and stare at it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">A_inv</span><span class="p">[</span><span class="mi">72</span><span class="p">:,</span><span class="mi">72</span><span class="p">:])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.     0.     0.     0.     0.     0.     0.     0.   ]
+ [ 1.53   1.     0.    -0.    -0.     0.    -0.    -0.   ]
+ [ 1.441  1.53   1.     0.     0.     0.     0.     0.   ]
+ [ 0.828  1.441  1.53   1.     0.     0.     0.     0.   ]
+ [-0.031  0.828  1.441  1.53   1.     0.    -0.    -0.   ]
+ [-0.792 -0.031  0.828  1.441  1.53   1.     0.     0.   ]
+ [-1.184 -0.792 -0.031  0.828  1.441  1.53   1.     0.   ]
+ [-1.099 -1.184 -0.792 -0.031  0.828  1.441  1.53   1.   ]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice how  every row ends with the previous row’s pre-diagonal entries.</p>
+<p>Since <span class="math notranslate nohighlight">\(A^{-1}\)</span> is lower triangular,  each  row represents  <span class="math notranslate nohighlight">\( y_t\)</span> for a particular <span class="math notranslate nohighlight">\(t\)</span> as the sum of</p>
+<ul class="simple">
+<li><p>a time-dependent function <span class="math notranslate nohighlight">\(A^{-1} b\)</span> of the initial conditions incorporated in <span class="math notranslate nohighlight">\(b\)</span>, and</p></li>
+<li><p>a weighted sum of  current and past values of the IID shocks <span class="math notranslate nohighlight">\(\{u_t\}\)</span></p></li>
+</ul>
+<p>Thus,  let <span class="math notranslate nohighlight">\(\tilde{A}=A^{-1}\)</span>.</p>
+<p>Evidently,  for <span class="math notranslate nohighlight">\(t\geq0\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+y_{t+1}=\sum_{i=1}^{t+1}\tilde{A}_{t+1,i}b_{i}+\sum_{i=1}^{t}\tilde{A}_{t+1,i}u_{i}+u_{t+1}
+\]</div>
+<p>This is  a <strong>moving average</strong> representation with time-varying coefficients.</p>
+<p>Just as system <a class="reference internal" href="#equation-eq-eqma">(9.4)</a> constitutes  a
+<strong>moving average</strong> representation for <span class="math notranslate nohighlight">\(y\)</span>, system  <a class="reference internal" href="#equation-eq-eqar">(9.3)</a> constitutes  an <strong>autoregressive</strong> representation for <span class="math notranslate nohighlight">\(y\)</span>.</p>
+</div>
 <div class="section" id="a-forward-looking-model">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">9.5. </span>A Forward Looking Model</a><a class="headerlink" href="#a-forward-looking-model" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">9.6. </span>A Forward Looking Model</a><a class="headerlink" href="#a-forward-looking-model" title="Permalink to this headline">¶</a></h2>
 <p>Samuelson’s model is <strong>backwards looking</strong> in the sense that we give it <strong>initial conditions</strong> and let it
 run.</p>
 <p>Let’s now turn to model  that is <strong>forward looking</strong>.</p>
@@ -913,7 +981,7 @@ y_{T}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_46_0.png" src="_images/time_series_with_matrices_46_0.png" />
+<img alt="_images/time_series_with_matrices_50_0.png" src="_images/time_series_with_matrices_50_0.png" />
 </div>
 </div>
 <p>Can you explain why the trend of the price is downward over time?</p>
@@ -934,7 +1002,7 @@ steady state.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_48_0.png" src="_images/time_series_with_matrices_48_0.png" />
+<img alt="_images/time_series_with_matrices_52_0.png" src="_images/time_series_with_matrices_52_0.png" />
 </div>
 </div>
 </div>
