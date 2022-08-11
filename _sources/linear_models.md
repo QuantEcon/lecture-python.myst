@@ -1042,7 +1042,7 @@ $$
 
 regardless of the initial conditions $\mu_0$ and $\Sigma_0$.
 
-This is the *globally stable case* --- see [these notes](https://lectures.quantecon.org/_downloads/iteration_notes.pdf) for more a theoretical treatment.
+This is the *globally stable case* --- see [these notes](https://python.quantecon.org/_static/lecture_specific/linear_models/iteration_notes.pdf) for more a theoretical treatment.
 
 However, global stability is more than we need for stationary solutions, and often more than we want.
 

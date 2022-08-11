@@ -213,8 +213,6 @@ mccall_data_continuous = [
     ('c', float64),          # unemployment compensation
     ('α', float64),          # job separation rate
     ('β', float64),          # discount factor
-    ('σ', float64),          # scale parameter in lognormal distribution
-    ('μ', float64),          # location parameter in lognormal distribution
     ('w_grid', float64[:]),  # grid of points for fitted VFI
     ('w_draws', float64[:])  # draws of wages for Monte Carlo
 ]
@@ -239,7 +237,7 @@ class McCallModelContinuous:
     def update(self, v, d):
 
         # Simplify names
-        c, α, β, σ, μ = self.c, self.α, self.β, self.σ, self.μ
+        c, α, β = self.c, self.α, self.β
         w = self.w_grid
         u = lambda x: np.log(x)
 
