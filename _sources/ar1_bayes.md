@@ -43,13 +43,13 @@ logger.setLevel(logging.CRITICAL)
 
 ```
 
-This lecture. uses Bayesian methods offered by [pymc](https://www.pymc.io/projects/docs/en/stable/) and [numpyro](https://num.pyro.ai/en/stable/) to make statistical inferences about  two parameters of a univariate first-order autoregression.
+This lecture uses Bayesian methods offered by [pymc](https://www.pymc.io/projects/docs/en/stable/) and [numpyro](https://num.pyro.ai/en/stable/) to make statistical inferences about  two parameters of a univariate first-order autoregression.
 
 
 The model is a good laboratory for illustrating 
 consequences of alternative ways of modeling the distribution of the initial  $y_0$:
 
-- As a fixed number.
+- As a fixed number
     
 - As a random variable drawn from the stationary distribution of the $\{y_t\}$ stochastic process
 
@@ -64,8 +64,6 @@ where the scalars $\rho$ and $\sigma_x$ satisfy $|\rho| < 1$ and $\sigma_x > 0$;
 $\{\epsilon_{t+1}\}$ is a sequence of i.i.d. normal random variables with mean $0$ and variance $1$.
 
 The second component of the statistical model is
-
-and 
 
 $$
 y_0 \sim {\cal N}(\mu_0, \sigma_0^2)
@@ -172,7 +170,7 @@ Now we shall use  Bayes' law to construct a posterior distribution, conditioning
 
 First we'll use **pymc4**.
 
-## `PyMC` Implementation
+## PyMC Implementation
 
 For a  normal distribution in `pymc`, 
 $var = 1/\tau = \sigma^{2}$.
@@ -183,15 +181,15 @@ AR1_model = pmc.Model()
 
 with AR1_model:
     
-    #start with priors
-    rho = pmc.Uniform('rho',lower=-1.,upper=1.) #assume stable rho
+    # Start with priors
+    rho = pmc.Uniform('rho', lower=-1., upper=1.) # Assume stable rho
     sigma = pmc.HalfNormal('sigma', sigma = np.sqrt(10))
 
     # Expected value of y at the next period (rho * y)
-    yhat = rho*y[:-1]
+    yhat = rho * y[:-1]
 
-    # Likelihood of the actual realization.
-    y_like = pmc.Normal('y_obs', mu = yhat, sigma=sigma, observed=y[1:])
+    # Likelihood of the actual realization
+    y_like = pmc.Normal('y_obs', mu=yhat, sigma=sigma, observed=y[1:])
 ```
 
 ```{code-cell} ipython3
@@ -213,13 +211,12 @@ This is is a symptom of  the classic **Hurwicz bias** for first order autorgress
 The Hurwicz bias is worse the  smaller is the sample (see {cite}`Orcutt_Winokur_69`.)
 
 
-Be that as it may, here is more information about the posterior
+Be that as it may, here is more information about the posterior.
 
 ```{code-cell} ipython3
 with AR1_model:
     summary = az.summary(trace, round_to=4)
     
-# print
 summary
 ```
 
@@ -238,17 +235,17 @@ AR1_model_y0 = pmc.Model()
 
 with AR1_model_y0:
 
-    #start with priors
-    rho = pmc.Uniform('rho',lower=-1.,upper=1.) #assume stable rho
+    # Start with priors
+    rho = pmc.Uniform('rho', lower=-1., upper=1.) # Assume stable rho
     sigma = pmc.HalfNormal('sigma', sigma=np.sqrt(10))
     
-    #standard deviation of ergodic y
-    y_sd = sigma/np.sqrt(1-rho**2)
+    # Standard deviation of ergodic y
+    y_sd = sigma / np.sqrt(1 - rho**2)
     
-    #yhat
-    yhat = rho*y[:-1]
-    y_data = pmc.Normal('y_obs', mu = yhat, sigma=sigma, observed=y[1:])
-    y0_data = pmc.Normal('y0_obs', mu = 0., sigma=y_sd, observed=y[0])
+    # yhat
+    yhat = rho * y[:-1]
+    y_data = pmc.Normal('y_obs', mu=yhat, sigma=sigma, observed=y[1:])
+    y0_data = pmc.Normal('y0_obs', mu=0., sigma=y_sd, observed=y[0])
 ```
 
 ```{code-cell} ipython3
@@ -257,7 +254,7 @@ with AR1_model_y0:
 with AR1_model_y0:
     trace_y0 = pmc.sample(50000, tune=10000, return_inferencedata=True)
 
-# grey vertical lines are the cases of divergence
+# Grey vertical lines are the cases of divergence
 ```
 
 ```{code-cell} ipython3
@@ -269,7 +266,6 @@ with AR1_model_y0:
 with AR1_model:
     summary_y0 = az.summary(trace_y0, round_to=4)
     
-# print
 summary_y0
 ```
 
@@ -284,7 +280,7 @@ We'll return to this issue after we use `numpyro` to compute posteriors under ou
 
 We'll now repeat the calculations using  `numpyro`. 
 
-## `Numpyro` Implementation
+## Numpyro Implementation
 
 ```{code-cell} ipython3
 
@@ -293,25 +289,25 @@ def plot_posterior(sample):
     """
     Plot trace and histogram
     """
-    # to np array
+    # To np array
     rhos = sample['rho']
     sigmas = sample['sigma']
     rhos, sigmas, = np.array(rhos), np.array(sigmas)
 
-    fig, axs = plt.subplots(2,2, figsize=(17,6))
-    # plot trace
-    axs[0,0].plot(rhos)   # rho
-    axs[1,0].plot(sigmas)   # sigma
+    fig, axs = plt.subplots(2, 2, figsize=(17, 6))
+    # Plot trace
+    axs[0, 0].plot(rhos)   # rho
+    axs[1, 0].plot(sigmas) # sigma
 
-    # plot posterior
-    axs[0,1].hist(rhos, bins=50, density=True, alpha=0.7)
-    axs[0,1].set_xlim([0,1])
-    axs[1,1].hist(sigmas, bins=50, density=True, alpha=0.7)
+    # Plot posterior
+    axs[0, 1].hist(rhos, bins=50, density=True, alpha=0.7)
+    axs[0, 1].set_xlim([0, 1])
+    axs[1, 1].hist(sigmas, bins=50, density=True, alpha=0.7)
 
-    axs[0,0].set_title("rho")
-    axs[0,1].set_title("rho")
-    axs[1,0].set_title("sigma")
-    axs[1,1].set_title("sigma")
+    axs[0, 0].set_title("rho")
+    axs[0, 1].set_title("rho")
+    axs[1, 0].set_title("sigma")
+    axs[1, 1].set_title("sigma")
     plt.show()
 ```
 
@@ -322,7 +318,7 @@ def AR1_model(data):
     sigma = numpyro.sample('sigma', dist.HalfNormal(scale=np.sqrt(10)))
 
     # Expected value of y at the next period (rho * y)
-    yhat = rho*data[:-1]
+    yhat = rho * data[:-1]
     
     # Likelihood of the actual realization.
     y_data = numpyro.sample('y_obs', dist.Normal(loc=yhat, scale=sigma), obs=data[1:])
@@ -332,13 +328,13 @@ def AR1_model(data):
 ```{code-cell} ipython3
 :tag: [hide-output]
 
-# make jnp array
+# Make jnp array
 y = jnp.array(y)
 
-# set NUTS kernal
+# Set NUTS kernal
 NUTS_kernel = numpyro.infer.NUTS(AR1_model)
 
-# run MCMC
+# Run MCMC
 mcmc = numpyro.infer.MCMC(NUTS_kernel, num_samples=50000, num_warmup=10000, progress_bar=False)
 mcmc.run(rng_key=random.PRNGKey(1), data=y)
 ```
@@ -361,15 +357,15 @@ Here's the new code to achieve this.
 
 ```{code-cell} ipython3
 def AR1_model_y0(data):
-    # set prior
+    # Set prior
     rho = numpyro.sample('rho', dist.Uniform(low=-1., high=1.))
     sigma = numpyro.sample('sigma', dist.HalfNormal(scale=np.sqrt(10)))
 
-    #standard deviation of ergodic y
-    y_sd = sigma/jnp.sqrt(1-rho**2)
+    # Standard deviation of ergodic y
+    y_sd = sigma / jnp.sqrt(1 - rho**2)
 
     # Expected value of y at the next period (rho * y)
-    yhat = rho*data[:-1]
+    yhat = rho * data[:-1]
     
     # Likelihood of the actual realization.
     y_data = numpyro.sample('y_obs', dist.Normal(loc=yhat, scale=sigma), obs=data[1:])
@@ -379,15 +375,13 @@ def AR1_model_y0(data):
 ```{code-cell} ipython3
 :tag: [hide-output]
 
-# make jnp array
+# Make jnp array
 y = jnp.array(y)
 
-# set NUTS kernal
+# Set NUTS kernal
 NUTS_kernel = numpyro.infer.NUTS(AR1_model_y0)
 
-# run MCMC
-
-
+# Run MCMC
 mcmc2 = numpyro.infer.MCMC(NUTS_kernel, num_samples=50000, num_warmup=10000, progress_bar=False)
 mcmc2.run(rng_key=random.PRNGKey(1), data=y)
 ```
@@ -402,10 +396,10 @@ mcmc2.print_summary()
 
 Look what happened to the posterior!
 
-It has moved far from the true values of the parameters used to generate the data because of how Bayes Law (i.e., conditional probability)
-is telling `numpyro` to explain what it interprets as  "explosive" observations early in the sample 
+It has moved far from the true values of the parameters used to generate the data because of how Bayes' Law (i.e., conditional probability)
+is telling `numpyro` to explain what it interprets as  "explosive" observations early in the sample.
 
-Bayes Law is able to generates a  plausible  likelihood for the first observation is by driving $\rho \rightarrow 1$ and $\sigma \uparrow$ in order to raise the variance of the stationary distribution.
+Bayes' Law is able to generate a plausible likelihood for the first observation by driving $\rho \rightarrow 1$ and $\sigma \uparrow$ in order to raise the variance of the stationary distribution.
 
-Our example illustrates  the importance of what you assume about  the distribution of initial conditions.
+Our example illustrates the importance of what you assume about the distribution of initial conditions.
 

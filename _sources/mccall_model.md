@@ -165,7 +165,7 @@ Thus, the function $v^*(s)$ is the maximum value of  objective
 
 Notice that $v^*(s)$ is part of the **solution** of the problem, so it isn't obvious that it is a good idea  to start working on the problem by focusing on  $v^*(s)$.
 
-There is a chicken and egg problem: when don't know how to compute  $v^*(s)$  because we don't yet know
+There is a chicken and egg problem: we don't know how to compute  $v^*(s)$  because we don't yet know
 what decisions are optimal and what aren't!
 
 But it turns out to be a really good idea by asking what properties the optimal value function $v^*(s)$ must have in order it 
