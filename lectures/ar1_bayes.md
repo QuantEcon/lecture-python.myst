@@ -107,8 +107,9 @@ Unknown parameters are $\rho, \sigma_x$.
 
 We have  independent **prior probability distributions** for $\rho, \sigma_x$ and want to compute a posterior probability distribution after observing a sample $\{y_{t}\}_{t=0}^T$.  
 
-The notebook uses `pymc4` and `numpyro` to compute a posterior distribution of $\rho, \sigma_x$.
+The notebook uses `pymc4` and `numpyro` to compute a posterior distribution of $\rho, \sigma_x$. We will use NUTS samplers to generate samples from the posterior in a chain. Both of these libraries support NUTS samplers.
 
+NUTS is a form of Monte Carlo Markov Chain (MCMC) algorithm that bypasses random walk behaviour and allows for convergence to a target distribution more quickly. This not only has the advantage of speed, but allows for complex models to be fitted without having to employ specialised knowledge regarding the theory underlying those fitting methods.
 
 Thus, we explore consequences of making these alternative assumptions about the distribution of $y_0$:
 
@@ -190,6 +191,8 @@ with AR1_model:
     # Likelihood of the actual realization
     y_like = pmc.Normal('y_obs', mu=yhat, sigma=sigma, observed=y[1:])
 ```
+
+[pmc.sample](https://www.pymc.io/projects/docs/en/latest/api/generated/pymc.sample.html?highlight=sample#pymc.sample) by default uses the NUTS samplers to generate samples as shown in the below cell:
 
 ```{code-cell} ipython3
 :tag: [hide-output]
