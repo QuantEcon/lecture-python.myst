@@ -91,7 +91,7 @@ economists to inject randomness into their models.)
 
 In this lecture, we adopt the following simple environment:
 
-* $\{s_t\}$ is IID, with $q(s)$ being the probability of observing state $s$ in $\mathbb{S}$ at each point in time, 
+* $\{s_t\}$ is IID, with $q(s)$ being the probability of observing state $s$ in $\mathbb{S}$ at each point in time,
 * the agent observes $s_t$ at the start of $t$ and hence knows
   $w_t = w(s_t)$,
 * the set $\mathbb S$ is finite.
@@ -120,7 +120,7 @@ The variable  $y_t$ is income, equal to
 * unemployment compensation $c$ when unemployed
 
 The worker knows  that $\{s_t\}$ is IID with common
-distribution $q$ and uses knowledge when he or she computes mathematical expectations of various random variables that are functions of 
+distribution $q$ and uses knowledge when he or she computes mathematical expectations of various random variables that are functions of
 $s_t$.
 
 ### A Trade-Off
@@ -134,7 +134,7 @@ To decide optimally in the face of this trade-off, we use dynamic programming.
 
 Dynamic programming can be thought of as a two-step procedure that
 
-1. first assigns values to "states" 
+1. first assigns values to "states"
 1. then deduces optimal actions given those values
 
 We'll go through these steps in turn.
@@ -160,7 +160,7 @@ Let $v^*(s)$ be the optimal value of the problem when $s \in \mathbb{S}$  for a 
 
 
 
-Thus, the function $v^*(s)$ is the maximum value of  objective 
+Thus, the function $v^*(s)$ is the maximum value of  objective
 {eq}`objective` for a previously unemployed worker who has offer $w(s)$ in  hand and has yet to choose whether to accept it.
 
 Notice that $v^*(s)$ is part of the **solution** of the problem, so it isn't obvious that it is a good idea  to start working on the problem by focusing on  $v^*(s)$.
@@ -168,8 +168,8 @@ Notice that $v^*(s)$ is part of the **solution** of the problem, so it isn't obv
 There is a chicken and egg problem: we don't know how to compute  $v^*(s)$  because we don't yet know
 what decisions are optimal and what aren't!
 
-But it turns out to be a really good idea by asking what properties the optimal value function $v^*(s)$ must have in order it 
-to qualify as an optimal value function. 
+But it turns out to be a really good idea by asking what properties the optimal value function $v^*(s)$ must have in order it
+to qualify as an optimal value function.
 
 Think of $v^*$ as a function that assigns to each possible state
 $s$ the maximal expected discounted income stream  that can be obtained with that offer in
@@ -192,7 +192,7 @@ for every possible $s$  in $\mathbb S$.
 Notice how the function $v^*(s)$ appears on both the right and left sides of  equation {eq}`odu_pv` -- that is why it is called
 a **functional equation**, i.e., an equation that restricts a **function**.
 
-This important equation is a version of a **Bellman equation**, an equation that is 
+This important equation is a version of a **Bellman equation**, an equation that is
 ubiquitous in economic dynamics and other fields involving planning over time.
 
 The intuition behind it is as follows:
@@ -218,7 +218,7 @@ Once we have this function in hand we can figure out how  behave optimally (i.e.
 
 All we have to do is select the maximal choice on the r.h.s. of {eq}`odu_pv`.
 
-The optimal action in state $s$ can be  thought of as a part of a **policy** that  maps a 
+The optimal action in state $s$ can be  thought of as a part of a **policy** that  maps a
 state into an  action.
 
 Given *any* $s$, we can read off the corresponding best choice (accept or
@@ -351,7 +351,7 @@ Moreover, it's immediate from the definition of $T$ that this fixed
 point is $v^*$.
 
 A second implication of the  Banach contraction mapping theorem is that
-$\{ T^k v \}$ converges to the fixed point $v^*$ regardless of the initial 
+$\{ T^k v \}$ converges to the fixed point $v^*$ regardless of the initial
 $v \in \mathbb R^n$.
 
 ### Implementation
@@ -386,7 +386,7 @@ We are going to use Numba to accelerate our code.
 
 * See, in particular, the discussion of `@jitclass` in [our lecture on Numba](https://python-programming.quantecon.org/numba.html).
 
-The following helps Numba by providing some information about types 
+The following helps Numba by providing some information about types
 
 ```{code-cell} python3
 mccall_data = [
@@ -490,15 +490,15 @@ def compute_reservation_wage(mcm,
     n = len(w)
     v = w / (1 - β)          # initial guess
     v_next = np.empty_like(v)
-    i = 0
+    j = 0
     error = tol + 1
-    while i < max_iter and error > tol:
+    while j < max_iter and error > tol:
 
         for i in range(n):
             v_next[i] = np.max(mcm.state_action_values(i, v))
 
         error = np.max(np.abs(v_next - v))
-        i += 1
+        j += 1
 
         v[:] = v_next  # copy contents into v
 
