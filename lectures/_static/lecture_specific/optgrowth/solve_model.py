@@ -21,10 +21,10 @@ def solve_model(og,
             print(f"Error at iteration {i} is {error}.")
         v = v_new
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
 
-    if verbose and i < max_iter:
+    if verbose:
         print(f"\nConverged in {i} iterations.")
 
     return v_greedy, v_new
