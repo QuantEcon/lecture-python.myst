@@ -23,8 +23,7 @@ def solve_model(og,
 
     if error > tol:
         print("Failed to converge!")
-
-    if verbose:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return v_greedy, v_new

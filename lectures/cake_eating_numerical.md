@@ -301,8 +301,7 @@ def compute_value_function(ce,
 
     if error > tol:
         print("Failed to converge!")
-
-    if verbose:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return v_new
@@ -659,8 +658,7 @@ def iterate_euler_equation(ce,
 
     if error > tol:
         print("Failed to converge!")
-
-    if verbose:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return σ

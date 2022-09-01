@@ -283,8 +283,7 @@ def compute_fixed_point(js,
 
     if error > tol:
         print("Failed to converge!")
-
-    if verbose:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return f_out

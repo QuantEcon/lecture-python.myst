@@ -496,8 +496,7 @@ def solve_model_time_iter(model,        # Class with model information
 
     if error > tol:
         print("Failed to converge!")
-
-    if verbose:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return a_new, σ_new

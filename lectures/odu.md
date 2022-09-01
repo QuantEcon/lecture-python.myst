@@ -429,8 +429,7 @@ def solve_model(sp,
 
     if error > tol:
         print("Failed to converge!")
-
-    if verbose:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
 
@@ -733,8 +732,7 @@ def solve_wbar(sp,
 
     if error > tol:
         print("Failed to converge!")
-
-    if verbose:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return w_new
