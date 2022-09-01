@@ -149,10 +149,10 @@ $$
 
 
 
-The  worker's time $t$ subjective belief about the  the distribution of $W_t$  is 
+The  worker's time $t$ subjective belief about the  the distribution of $W_t$  is
 
 $$
-\pi_t f + (1 - \pi_t) g, 
+\pi_t f + (1 - \pi_t) g,
 $$
 
 where $\pi_t$ updates via
@@ -427,10 +427,9 @@ def solve_model(sp,
             print(f"Error at iteration {i} is {error}.")
         v = v_new
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
-
-    if verbose and i < max_iter:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
 
@@ -731,10 +730,9 @@ def solve_wbar(sp,
             print(f"Error at iteration {i} is {error}.")
         w = w_new
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
-
-    if verbose and i < max_iter:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return w_new
@@ -1178,4 +1176,3 @@ after having acquired less information about the wage distribution.
 ```{code-cell} python3
 job_search_example(1, 1, 3, 1.2, c=0.1)
 ```
-
