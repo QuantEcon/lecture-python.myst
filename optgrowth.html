@@ -899,10 +899,9 @@ tolerance level.</p>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error at iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">v_new</span>
 
-    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">max_iter</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to converge!&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Converged in </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_new</span>
@@ -1087,8 +1086,8 @@ utility specification.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 237 iterations.
-CPU times: user 29.5 s, sys: 12 ms, total: 29.5 s
-Wall time: 29.5 s
+CPU times: user 28.5 s, sys: 12 ms, total: 28.5 s
+Wall time: 28.5 s
 </pre></div>
 </div>
 </div>
@@ -1137,8 +1136,8 @@ Wall time: 29.5 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.49 s, sys: 2 µs, total: 2.49 s
-Wall time: 2.49 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.4 s, sys: 0 ns, total: 2.4 s
+Wall time: 2.4 s
 </pre></div>
 </div>
 </div>

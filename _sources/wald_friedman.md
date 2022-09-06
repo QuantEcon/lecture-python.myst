@@ -526,7 +526,7 @@ def solve_model(wf, tol=1e-4, max_iter=1000):
         i += 1
         h = h_new
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
 
     return h_new
@@ -902,11 +902,11 @@ Wald summarizes Neyman and Pearson's setup as follows:
 
 > Neyman and Pearson show that a region consisting of all samples
 > $(z_1, z_2, \ldots, z_n)$ which satisfy the inequality
-> 
+>
 > $$
   \frac{ f_1(z_1) \cdots f_1(z_n)}{f_0(z_1) \cdots f_0(z_n)} \geq k
   $$
-> 
+>
 > is a most powerful critical region for testing the hypothesis
 > $H_0$ against the alternative hypothesis $H_1$. The term
 > $k$ on the right side is a constant chosen so that the region

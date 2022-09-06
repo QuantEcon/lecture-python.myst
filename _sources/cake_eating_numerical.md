@@ -88,11 +88,11 @@ The basic idea is:
 
 1. Take an arbitary intial guess of $v$.
 1. Obtain an update $w$ defined by
-   
+
    $$
    w(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
    $$
-   
+
 1. Stop if $w$ is approximately equal to $v$, otherwise set
    $v=w$ and go back to step 2.
 
@@ -299,10 +299,9 @@ def compute_value_function(ce,
 
         v = v_new
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
-
-    if verbose and i < max_iter:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return v_new
@@ -657,10 +656,9 @@ def iterate_euler_equation(ce,
 
         σ = σ_new
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
-
-    if verbose and i < max_iter:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return σ

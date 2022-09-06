@@ -538,7 +538,7 @@ def solve_model(wf, tol=1e-4, max_iter=1000):
         i += 1
         h = h_new
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
 
     return h_new
@@ -621,7 +621,7 @@ conditioning on knowing for sure that nature has selected $f_{0}$,
 in the first case, or $f_{1}$, in the second case.
 
 1. under $f_{0}$,
-   
+
    $$
    V^{0}\left(\pi\right)=\begin{cases}
    0 & \text{if }\alpha\leq\pi,\\
@@ -629,9 +629,9 @@ in the first case, or $f_{1}$, in the second case.
    \bar L_{1} & \text{if }\pi<\beta.
    \end{cases}
    $$
-   
+
 1. under $f_{1}$
-   
+
    $$
    V^{1}\left(\pi\right)=\begin{cases}
    \bar L_{0} & \text{if }\alpha\leq\pi,\\
@@ -639,7 +639,7 @@ in the first case, or $f_{1}$, in the second case.
    0 & \text{if }\pi<\beta.
    \end{cases}
    $$
-   
+
 
 where
 $\pi^{\prime}=\frac{\pi f_{0}\left(z^{\prime}\right)}{\pi f_{0}\left(z^{\prime}\right)+\left(1-\pi\right)f_{1}\left(z^{\prime}\right)}$.
@@ -1118,4 +1118,3 @@ plt.title('Uncond. distribution of log likelihood ratio at frequentist  t')
 
 plt.show()
 ```
-
