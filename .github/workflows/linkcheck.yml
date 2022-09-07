@@ -1,0 +1,44 @@
+name: Link Checker [Anaconda, Linux]
+on:
+  pull_request:
+    types: [opened, reopened]
+  schedule:
+    # UTC 12:00 is early morning in Australia
+    - cron:  '0 12 * * *'
+jobs:
+  execution-tests-linux:
+    name: Execution Tests (${{ matrix.python-version }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest"]
+        python-version: ["3.9"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Anaconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          auto-activate-base: true
+          miniconda-version: 'latest'
+          python-version: 3.9
+          environment-file: environment.yml
+          activate-environment: quantecon
+      - name: Download "build" folder (cache)
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: cache.yml
+          branch: main
+          name: build-cache
+          path: _build
+      - name: Link Checker
+        shell: bash -l {0}
+        run: jb build lectures --path-output=./ --builder=custom --custom-builder=linkcheck
+      - name: Upload Link Checker Reports
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: linkcheck-reports
+          path: _build/linkcheck
