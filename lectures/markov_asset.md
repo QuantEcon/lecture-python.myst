@@ -289,12 +289,12 @@ where
 
 1. $\{X_t\}$ is a finite Markov chain with state space $S$ and
    transition probabilities
-   
+
    $$
    P(x, y) := \mathbb P \{ X_{t+1} = y \,|\, X_t = x \}
    \qquad (x, y \in S)
    $$
-   
+
 1. $g$ is a given function on $S$ taking nonnegative values
 
 You can think of
@@ -455,7 +455,7 @@ Lucas considered an abstract pure exchange economy with these features:
 * a single *tree* that each period yields *fruit* that equals the total amount of consumption available to the economy
 * a competitive market in  *shares* in the tree that entitles their owners to corresponding shares of the *dividend* stream, i.e., the *fruit* stream, yielded by the tree
 
-* a representative consumer who in a competitive equilibrium 
+* a representative consumer who in a competitive equilibrium
 
     * consumes the economy's entire endowment each period
     * owns 100 percent of the shares in the tree
@@ -627,7 +627,7 @@ for γ in γs:
     v = tree_price(ap)
     ax.plot(states, v, lw=2, alpha=0.6, label=rf"$\gamma = {γ}$")
 
-ax.set_title('Price-divdend ratio as a function of the state')
+ax.set_title('Price-dividend ratio as a function of the state')
 ax.set_ylabel("price-dividend ratio")
 ax.set_xlabel("state")
 ax.legend(loc='upper right')
@@ -964,7 +964,7 @@ Do the same for
 ```{exercise}
 :label: ma_ex3
 
-Let's consider finite horizon call options, which are more common than 
+Let's consider finite horizon call options, which are more common than
 infinite horizon ones.
 
 Finite horizon options obey functional equations closely related to {eq}`FEoption0`.
@@ -1127,7 +1127,7 @@ plt.show()
 
 Not surprisingly,  options with larger $k$ are worth more.
 
-This is because an owner has a longer  horizon over which 
+This is because an owner has a longer  horizon over which
  the option can be exercised.
 
 ```{solution-end}
