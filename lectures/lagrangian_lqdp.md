@@ -670,7 +670,8 @@ lq.stationary_values()
 
 The preceding approach to imposing stability on a system  of potentially unstable linear difference equations is not limited to  linear quadratic dynamic optimization problems. 
 
-For example, the same method is used in our [Stability in Linear Rational Expectations Models](https://python.quantecon.org/re_with_feedback.html#Another-perspective) lecture.
+For example, the same method is used in our [Stability in Linear Rational Expectations Models](https://python.quantecon.org/re_with_feedback.html#another-perspective) lecture.
+
 
 Let's try to solve the model described in that lecture by applying the `stable_solution` function defined in this lecture above.
 

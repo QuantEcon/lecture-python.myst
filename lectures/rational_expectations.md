@@ -73,7 +73,7 @@ plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 ```
 
-We'll also use the LQ class from QuantEcon.py.
+We'll also use the LQ class from `QuantEcon.py`.
 
 ```{code-cell} ipython
 from quantecon import LQ
