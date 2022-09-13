@@ -759,7 +759,7 @@ This leads to him having a higher expected loss when he puts equal weight on bot
 ### A Notebook Implementation
 
 To facilitate comparative statics, we provide
-a [Jupyter notebook](https://nbviewer.jupyter.org/github/QuantEcon/lecture-python-advanced.notebooks/blob/master/wald_friedman.ipynb) that
+a [Jupyter notebook](https://nbviewer.org/github/QuantEcon/lecture-python.notebooks/blob/master/wald_friedman.ipynb) that
 generates the same plots, but with sliders.
 
 With these sliders, you can adjust parameters and immediately observe

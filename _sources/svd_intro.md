@@ -668,7 +668,7 @@ This
 
 Dynamic mode decomposition was introduced by {cite}`schmid2010`,
 
-You can read more about Dynamic Mode Decomposition here [[KBBWP16](https://python.quantecon.org/zreferences.html#id24)] and here [[BK19](https://python.quantecon.org/zreferences.html#id25)] (section 7.2).
+You can read more about Dynamic Mode Decomposition here {cite}`DMD_book` and here [[BK19](https://python.quantecon.org/zreferences.html#id25)] (section 7.2).
 
 
 We want to fit a **first-order vector autoregression**
