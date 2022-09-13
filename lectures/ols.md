@@ -214,7 +214,7 @@ To view the OLS regression results, we can call the `.summary()`
 method.
 
 Note that an observation was mistakenly dropped from the results in the
-original paper (see the note located in maketable2.do from Acemoglu's webpage), and thus the
+original paper (see the note located in `maketable2.do` from Acemoglu's webpage), and thus the
 coefficients differ slightly.
 
 ```{code-cell} python3
