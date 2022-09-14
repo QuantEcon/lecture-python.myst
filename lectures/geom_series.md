@@ -769,7 +769,7 @@ visualization!
 # Second view
 fig = plt.figure()
 T = 3
-ax = fig.gca(projection='3d')
+ax = plt.subplot(projection='3d')
 r = np.arange(0.01, 0.99, 0.005)
 g = np.arange(0.011, 0.991, 0.005)
 

@@ -30,7 +30,7 @@ This lecture and {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` 
 and David Cass {cite}`Cass` used to analyze optimal growth.
 
 The model can be viewed as an extension of the model of Robert Solow
-described in [an earlier lecture](https://lectures.quantecon.org/py/python_oop.html)
+described in [an earlier lecture](https://python-programming.quantecon.org/python_oop.html)
 but adapted to make the saving rate be a choice.
 
 (Solow assumed a constant saving rate determined outside the model.)
