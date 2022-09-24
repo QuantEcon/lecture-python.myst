@@ -465,10 +465,12 @@ $$
 Notice that
 
 $$ 
-\eqalign{  E(\pi_t | \pi_{t-1}) & = \int \Bigl[  { \pi_{t-1} f(w) \over \pi_{t-1} f(w) + (1-\pi_{t-1})g(w)  } \Bigr]
+\begin{aligned}
+E(\pi_t | \pi_{t-1}) & = \int \Bigl[  { \pi_{t-1} f(w) \over \pi_{t-1} f(w) + (1-\pi_{t-1})g(w)  } \Bigr]
  \Bigl[ \pi_{t-1} f(w) + (1-\pi_{t-1})g(w) \Bigr]  d w \cr
 & = \pi_{t-1} \int  f(w) dw  \cr
-              & = \pi_{t-1}, \cr}
+              & = \pi_{t-1}, \cr
+\end{aligned}
 $$
               
 so that the process $\pi_t$ is a **martingale**.
