@@ -465,10 +465,12 @@ $$
 Notice that
 
 $$ 
-\eqalign{  E(\pi_t | \pi_{t-1}) & = \int \Bigl[  { \pi_{t-1} f(w) \over \pi_{t-1} f(w) + (1-\pi_{t-1})g(w)  } \Bigr]
+\begin{aligned}
+E(\pi_t | \pi_{t-1}) & = \int \Bigl[  { \pi_{t-1} f(w) \over \pi_{t-1} f(w) + (1-\pi_{t-1})g(w)  } \Bigr]
  \Bigl[ \pi_{t-1} f(w) + (1-\pi_{t-1})g(w) \Bigr]  d w \cr
 & = \pi_{t-1} \int  f(w) dw  \cr
-              & = \pi_{t-1}, \cr}
+              & = \pi_{t-1}, \cr
+\end{aligned}
 $$
               
 so that the process $\pi_t$ is a **martingale**.
@@ -547,7 +549,7 @@ $$
 Applying the above formula to $\pi_\infty$, we obtain
 
 $$
-E_{-1} \pi_\infty(\omega) = \pi_{-1} \tag{20}
+E_{-1} \pi_\infty(\omega) = \pi_{-1}
 $$
 
 where the mathematical expectation $E_{-1}$ here is taken with respect to the probability
