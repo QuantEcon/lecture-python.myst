@@ -549,7 +549,7 @@ $$
 Applying the above formula to $\pi_\infty$, we obtain
 
 $$
-E_{-1} \pi_\infty(\omega) = \pi_{-1} \tag{20}
+E_{-1} \pi_\infty(\omega) = \pi_{-1}
 $$
 
 where the mathematical expectation $E_{-1}$ here is taken with respect to the probability
