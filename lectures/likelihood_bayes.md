@@ -20,18 +20,7 @@ kernelspec:
 
 # Likelihood Ratio Processes and Bayesian Learning
 
-```{contents} Contents
-:depth: 2
-```
 
-```{code-cell} ipython
-%matplotlib inline
-import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
-import numpy as np
-from numba import vectorize, njit
-from math import gamma
-```
 
 ## Overview
 
@@ -50,8 +39,32 @@ today's realization of the likelihood ratio process.
 We'll study how, at least  in our setting, a Bayesian eventually learns the probability distribution that generates the data, an outcome that
 rests on the asymptotic behavior of likelihood ratio processes studied in {doc}`this lecture <likelihood_ratio_process>`.
 
+We'll also drill down into the psychology of our Bayesian learner and study dynamics  under his subjective beliefs.
+
 This lecture provides technical results that underly outcomes to be studied in {doc}`this lecture <odu>`
 and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`.
+
+We'll begin by loading some Python modules.
+
+```{code-cell} ipython3
+:hide-output: false
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
+import numpy as np
+from numba import vectorize, njit
+from math import gamma
+import pandas as pd
+
+import seaborn as sns
+colors = sns.color_palette()
+
+@njit
+def set_seed():
+    np.random.seed(142857)
+set_seed()
+```
 
 ## The Setting
 
@@ -370,13 +383,21 @@ a Bayesian's posteior probabilty that nature has drawn history $w^t$ as repeated
 $g$.
 
 
-INSERT NEW BEGINS
-
-### Behavior of  posterior probabilities $\{\pi_t\}$  under the subjective probability distribution
 
 
+## Behavior of  posterior probability $\{\pi_t\}$  under the subjective probability distribution
 
-#### A perspective on Bayes's law as a theory of learning
+
+We'll end this lecture by briefly studying what our Baysian learner expects to learn under the 
+subjective beliefs $\pi_t$ cranked out by Bayes' law.  
+
+This will provide us with some perspective  on our application of  Bayes's law as a theory of learning.
+
+As we shall see, at each time $t$, the Bayesian learner knows that he will be surprised.
+
+But he expects that new information will not lead him  to change his beliefs.
+
+And it won't on average under his subjective beliefs.  
 
 We'll continue with our setting in which a McCall worker  knows that successive
 draws of his wage are drawn from either $F$ or $G$, but  does not know which of these two  distributions
@@ -397,7 +418,7 @@ We assume that the workers also knows the laws of probability theory.
 A respectable view is that Bayes' law is less a theory of learning than a statement  about the consequences of information inflows for a decision maker who thinks he knows the truth (i.e., a joint probability distribution) from the beginning.
 
 
-#### Mechanical details again
+### Mechanical details again
 
 At time $0$ **before** drawing a wage offer, the worker attaches probability $\pi_{-1} \in (0,1)$ to the distribution being $F$.  
  
@@ -423,16 +444,15 @@ More generally,  after making the $t$th draw and having   observed   $w_t, w_{t-
 the probability that $w_{t+1}$ is  being drawn from  distribution  $F$ is
 
 $$ 
-\pi_t = \pi_t(w_t | \pi_{t-1}) \equiv { \pi_{t-1} f(w_t)/g(w_t) \over \pi_{t-1} f(w_t)/g(w_t) + (1-\pi_{t-1})} \tag{44}
-$$
+\pi_t = \pi_t(w_t | \pi_{t-1}) \equiv { \pi_{t-1} f(w_t)/g(w_t) \over \pi_{t-1} f(w_t)/g(w_t) + (1-\pi_{t-1})} 
+$$ (eq:like44)
 
 
 or
 
 
-<a id='equation-eq-recur1'></a>
 $$
-\pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}} \tag{56.1}
+\pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}} 
 $$
 
 
@@ -480,17 +500,19 @@ ${\textrm{Prob}} \Omega$ and then generating a single realization (or _simulatio
 The limit points of  $\{\pi_t(\omega)\}_{t=0}^\infty$ as $t \rightarrow +\infty$ are realizations of a random variable that  is swept out as we sample $\omega$ from $\Omega$ and construct repeated draws of $\{\pi_t(\omega)\}_{t=0}^\infty$.  
  
  
-By staring at law of motion (44) or (56), we can figure out some things about the probability distribution of the limit points
+By staring at law of motion {eq}`eq_recur1` or {eq}`eq:like44` , we can figure out some things about the probability distribution of the limit points
+
+
 
 $$
-\pi_\infty(\omega) = \lim_{\rightarrow + \infty} \pi_t(\omega).
+\pi_\infty(\omega) = \lim_{t \rightarrow + \infty} \pi_t(\omega).
 $$
 
 
 
 
 Evidently, since the likelihood ratio $\ell(w_t) $ differs from $1$ when $f \neq g$,
-as we have assumed, the only possible fixed points of (44) are 
+as we have assumed, the only possible fixed points of {eq}`eq:like44` are 
 
 $$ 
 \pi_\infty(\omega) =1 
@@ -555,7 +577,7 @@ converge pointwise to $0$.
 
 
 
-#### Some simulations
+### Some simulations
 
 Let's watch the martingale convergence theorem at work in some simulations of our learning model under the worker's subjective distribution.
 
@@ -615,6 +637,8 @@ T = 200
 π_path, w_path = martingale_simulate(π0=π0, T=T, N=10000)
 ```
 
+
+
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 for i in range(100):
@@ -625,16 +649,8 @@ ax.set_ylabel('$\pi_t$')
 plt.show()
 ```
 
-```{code-cell} ipython3
-fig, ax = plt.subplots()
-for t in [1, 10, T-1]:
-    ax.hist(π_path[:,t], bins=20, alpha=0.4, label=f'T={t}')
-    
-ax.set_ylabel('count')
-ax.set_xlabel('$\pi_T$')
-ax.legend(loc='upper right')
-plt.show()
-```
+Now let's plot two paths of pairs of $\{\pi_t, w_t\}$ sequences, one in which $\pi_t \rightarrow 1$,
+another in which $\pi_t \rightarrow 0$.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -650,24 +666,47 @@ ax2.set_ylabel("$w_t$")
 plt.show()
 ```
 
+
+Let's plot histograms of $\pi_t$ for various values of $t$.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+for t in [1, 10, T-1]:
+    ax.hist(π_path[:,t], bins=20, alpha=0.4, label=f'T={t}')
+    
+ax.set_ylabel('count')
+ax.set_xlabel('$\pi_T$')
+ax.legend(loc='upper right')
+plt.show()
+```
+
+
+The above graphs display how the distribution of $\pi_t$ across realizations are moving toward 
+limit points that we described above and that put all probability either on $0$ or on $1$. 
+
+
+
 Now let's use our Python code to generate a table that checks out our earlier claims about the 
 probability distribution of the pointwise limits $\pi_{\infty}(\omega)$.
 
 We'll use our simulations to generate a histogram of this distribution.
+
+In the following table, the left column in bold face reports an assumed value of $\pi_{-1}$. 
+
+The second column reports the fraction of $N = 10000$ simulations for which $\pi_{t}$  had converged to $0$  at the terminal date $T=500$ for each simulation.
+
+The third column reports the fraction of $N = 10000$ simulations for which $\pi_{t}$  had converged to $1$ as the terminal date $T=500$ for each simulation.
 
 ```{code-cell} ipython3
 # create table
 table = create_table(list(np.linspace(0,1,11)), N=10000, T=500)
 table
 ```
+The fraction of simulations for which $\pi_{t}$  had converged to $1$ is indeed always  close  to $\pi_{-1}$, as anticipated.
 
 
 
 
-
-
-
-INSERT NEW ENDS
 
 
 
@@ -675,8 +714,6 @@ INSERT NEW ENDS
 
 ## Sequels
 
-This lecture has been devoted to building some useful infrastructure.
-
-We'll build on results highlighted in this lectures to understand inferences that are the foundations of
+This lecture has been devoted to building some useful infrastructure that will help us understand inferences that are the foundations of
 results described  in {doc}`this lecture <odu>` and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`.
 
