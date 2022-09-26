@@ -35,7 +35,7 @@ involves specifying a class of distributions, indexed by unknown parameters, and
 
 The benefit relative to linear regression is that it allows more flexibility in the probabilistic relationships between variables.
 
-Here we illustrate maximum likelihood by replicating Daniel Treisman's (2016) paper, [Russia's Billionaires](http://pubs.aeaweb.org/doi/pdfplus/10.1257/aer.p20161068), which connects the number of billionaires in a country to its economic characteristics.
+Here we illustrate maximum likelihood by replicating Daniel Treisman's (2016) paper, [Russia's Billionaires](https://pubs.aeaweb.org/doi/pdfplus/10.1257/aer.p20161068), which connects the number of billionaires in a country to its economic characteristics.
 
 The paper concludes that Russia has a higher number of billionaires than
 economic factors such as market size and tax rate predict.
@@ -766,14 +766,14 @@ In this lecture, we used Maximum Likelihood Estimation to estimate the
 parameters of a Poisson model.
 
 `statsmodels` contains other built-in likelihood models such as
-[Probit](http://www.statsmodels.org/dev/generated/statsmodels.discrete.discrete_model.Probit.html)
+[Probit](https://www.statsmodels.org/dev/generated/statsmodels.discrete.discrete_model.Probit.html)
 and
-[Logit](http://www.statsmodels.org/dev/generated/statsmodels.discrete.discrete_model.Logit.html).
+[Logit](https://www.statsmodels.org/dev/generated/statsmodels.discrete.discrete_model.Logit.html).
 
 For further flexibility, `statsmodels` provides a way to specify the
 distribution manually using the `GenericLikelihoodModel` class - an
 example notebook can be found
-[here](http://www.statsmodels.org/dev/examples/notebooks/generated/generic_mle.html).
+[here](https://www.statsmodels.org/dev/examples/notebooks/generated/generic_mle.html).
 
 ## Exercises
 

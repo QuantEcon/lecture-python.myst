@@ -47,7 +47,7 @@ Along the way, we'll discuss a variety of topics, including
 
 As an example, we will replicate results from Acemoglu, Johnson and Robinson's seminal paper {cite}`Acemoglu2001`.
 
-* You can download a copy [here](http://economics.mit.edu/files/4123).
+* You can download a copy [here](https://web.archive.org/web/20220901051300/http://economics.mit.edu/files/4123).
 
 In the paper, the authors emphasize the importance of institutions in economic development.
 
@@ -86,7 +86,7 @@ In this paper,
 - economic outcomes are proxied by log GDP per capita in 1995, adjusted for exchange rates.
 - institutional differences are proxied by an index of protection against expropriation on average over 1985-95, constructed by the [Political Risk Services Group](https://www.prsgroup.com/).
 
-These variables and other data used in the paper are available for download on Daron Acemoglu's [webpage](http://economics.mit.edu/faculty/acemoglu/data/ajr2001).
+These variables and other data used in the paper are available for download on Daron Acemoglu's [webpage](https://web.archive.org/web/20220901063129/http://economics.mit.edu/faculty/acemoglu/data/ajr2001).
 
 We will use pandas' `.read_stata()` function to read in data contained in the `.dta` files to dataframes
 
@@ -552,7 +552,7 @@ significance of institutions in economic development.
 
 We have demonstrated basic OLS and 2SLS regression in `statsmodels` and `linearmodels`.
 
-If you are familiar with R, you may want to use the [formula interface](http://www.statsmodels.org/dev/example_formulas.html) to `statsmodels`, or consider using [r2py](https://rpy2.github.io/) to call R from within Python.
+If you are familiar with R, you may want to use the [formula interface](https://www.statsmodels.org/dev/example_formulas.html) to `statsmodels`, or consider using [r2py](https://rpy2.github.io/) to call R from within Python.
 
 ## Exercises
 

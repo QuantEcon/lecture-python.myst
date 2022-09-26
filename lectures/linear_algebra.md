@@ -533,7 +533,7 @@ If $A$ and $B$ are two matrices, then their product $A B$ is formed by taking as
 $i,j$-th element the inner product of the $i$-th row of $A$ and the
 $j$-th column of $B$.
 
-There are many tutorials to help you visualize this operation, such as [this one](http://www.mathsisfun.com/algebra/matrix-multiplying.html), or the discussion on the [Wikipedia page](https://en.wikipedia.org/wiki/Matrix_multiplication).
+There are many tutorials to help you visualize this operation, such as [this one](https://www.mathsisfun.com/algebra/matrix-multiplying.html), or the discussion on the [Wikipedia page](https://en.wikipedia.org/wiki/Matrix_multiplication).
 
 If $A$ is $n \times k$ and $B$ is $j \times m$, then
 to multiply $A$ and $B$ we require $k = j$, and the
@@ -1155,9 +1155,9 @@ Then
 
 ### Further Reading
 
-The documentation of the `scipy.linalg` submodule can be found [here](http://docs.scipy.org/doc/scipy/reference/linalg.html).
+The documentation of the `scipy.linalg` submodule can be found [here](https://docs.scipy.org/doc/scipy/reference/linalg.html).
 
-Chapters 2 and 3 of the [Econometric Theory](http://www.johnstachurski.net/emet.html) contains
+Chapters 2 and 3 of the [Econometric Theory](https://johnstachurski.net/emet.html) contains
 a discussion of linear algebra along the same lines as above, with solved exercises.
 
 If you don't mind a slightly abstract approach, a nice intermediate-level text on linear algebra
