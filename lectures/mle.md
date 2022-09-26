@@ -636,7 +636,7 @@ print(stats_poisson.summary())
 ```
 
 Now let's replicate results from Daniel Treisman's paper, [Russia's
-Billionaires](http://pubs.aeaweb.org/doi/pdfplus/10.1257/aer.p20161068),
+Billionaires](https://pubs.aeaweb.org/doi/pdfplus/10.1257/aer.p20161068),
 mentioned earlier in the lecture.
 
 Treisman starts by estimating equation {eq}`poissonreg`, where:
