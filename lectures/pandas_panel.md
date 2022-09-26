@@ -487,7 +487,7 @@ This lecture has provided an introduction to some of pandas' more
 advanced features, including multiindices, merging, grouping and
 plotting.
 
-Other tools that may be useful in panel data analysis include [xarray](http://xarray.pydata.org/en/stable/), a python package that
+Other tools that may be useful in panel data analysis include [xarray](https://docs.xarray.dev/en/stable/), a python package that
 extends pandas to N-dimensional data structures.
 
 ## Exercises
@@ -497,7 +497,7 @@ extends pandas to N-dimensional data structures.
 ```
 
 In these exercises, you'll work with a dataset of employment rates
-in Europe by age and sex from [Eurostat](http://ec.europa.eu/eurostat/data/database).
+in Europe by age and sex from [Eurostat](https://ec.europa.eu/eurostat/data/database).
 
 The dataset can be accessed with the following link:
 

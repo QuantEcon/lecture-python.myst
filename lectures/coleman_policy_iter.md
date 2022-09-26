@@ -129,7 +129,7 @@ $$
 
 Differentiating with respect to $y$,  and then evaluating at the optimum yields {eq}`cpi_env`.
 
-(Section 12.1 of [EDTC](http://johnstachurski.net/edtc.html) contains full proofs of these results, and closely related discussions can be found in many other texts.)
+(Section 12.1 of [EDTC](https://johnstachurski.net/edtc.html) contains full proofs of these results, and closely related discussions can be found in many other texts.)
 
 Differentiability of the value function and interiority of the optimal policy
 imply that optimal consumption satisfies the first order condition associated

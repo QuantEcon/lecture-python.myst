@@ -45,7 +45,7 @@ You will find them in many of the workhorse models of economics and finance.
 
 In this lecture, we review some of the theory of Markov chains.
 
-We will also introduce some of the high-quality routines for working with Markov chains available in [QuantEcon.py](http://quantecon.org/quantecon-py).
+We will also introduce some of the high-quality routines for working with Markov chains available in [QuantEcon.py](https://quantecon.org/quantecon-py/).
 
 Prerequisite knowledge is basic probability and linear algebra.
 
@@ -690,7 +690,7 @@ Mathematically, a stationary distribution is a fixed point of $P$ when $P$ is th
 
 (We are assuming here that the state space $S$ is finite; if not more assumptions are required)
 
-For proof of this result, you can apply [Brouwer's fixed point theorem](https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem), or see [EDTC](http://johnstachurski.net/edtc.html), theorem 4.3.5.
+For proof of this result, you can apply [Brouwer's fixed point theorem](https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem), or see [EDTC](https://johnstachurski.net/edtc.html), theorem 4.3.5.
 
 There can be many stationary distributions corresponding to a given stochastic matrix $P$.
 

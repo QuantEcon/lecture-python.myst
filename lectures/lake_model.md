@@ -631,7 +631,7 @@ The wage offer distribution will be a discretized version of the lognormal distr
 
 We take a period to be a month.
 
-We set $b$ and $d$ to match monthly [birth](http://www.cdc.gov/nchs/fastats/births.htm) and [death rates](http://www.cdc.gov/nchs/fastats/deaths.htm), respectively, in the U.S. population
+We set $b$ and $d$ to match monthly [birth](https://www.cdc.gov/nchs/fastats/births.htm) and [death rates](https://www.cdc.gov/nchs/fastats/deaths.htm), respectively, in the U.S. population
 
 * $b = 0.0124$
 * $d = 0.00822$
