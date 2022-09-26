@@ -1735,6 +1735,19 @@ $$
   \end{aligned}
 $$
 
+We can express our finding that the probability distribution of
+$x_0$ conditional on $y_0$ is ${\mathcal N}(\tilde x_0, \tilde \Sigma_0)$ by representing $x_0$
+as
+
+$$
+ x_0 = \tilde x_0 + \zeta_0 
+$$ (eq:x0rep2)
+
+where $\zeta_0$ is a Gaussian random vector that is orthogonal to $\tilde x_0$ and $y_0$ and that
+has mean vector  $0$ and conditional covariance matrix $ E [\zeta_0 \zeta_0' | y_0] = \tilde \Sigma_0$.
+
+
+
 ### Step toward dynamics
 
 Now suppose that we are in a time series setting and that we have the
@@ -1747,20 +1760,48 @@ $$
 where $A$ is an $n \times n$ matrix and $C$ is an
 $n \times m$ matrix.
 
-It follows that the probability distribution of $x_1$ conditional
-on $y_0$ is
+Using equation {eq}`eq:x0rep2`, we can also represent $x_1$ as 
 
 $$
-x_1 | y_0 \sim {\mathcal N}(A \tilde x_0 , A \tilde \Sigma_0 A' + C C' )
+x_1 = A (\tilde x_0 + \zeta_0) + C w_1 
 $$
 
-Define
+It follows that 
+
+$$ E x_1 | y_0 = A \tilde x_0
+$$
+
+
+and that the corresponding conditional covariance matrix $E (x_1 - E x_1| y_0)  (x_1 - E x_1| y_0)' \equiv \Sigma_1$ is
 
 $$
-\begin{aligned} \hat x_1 & = A \tilde x_0 \cr
-               \Sigma_1 & = A \tilde \Sigma_0 A' + C C'
-\end{aligned}
+ \Sigma_1 = A \tilde \Sigma_0 A' + C C' 
 $$
+
+or 
+
+$$
+\Sigma_1 =  A \Sigma_0 A' - A \Sigma_0 G' (G \Sigma_0 G' + R)^{-1} G \Sigma_0 A'
+$$
+
+We can write the mean of $x_1$ conditional on $y_0$ as
+
+$$
+ \hat x_1 = A \hat x_0 + A \Sigma_0 G' (G \Sigma_0 G' + R)^{-1} (y_0 - G \hat x_0) 
+$$
+
+or 
+
+$$
+ \hat x_1 = A \hat x_0 + K_0 (y_0 - G \hat x_0) 
+$$
+
+where 
+
+$$ 
+K_0 = A \Sigma_0 G' (G \Sigma_0 G' + R)^{-1}
+$$
+
 
 ### Dynamic version
 

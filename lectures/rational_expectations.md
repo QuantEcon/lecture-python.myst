@@ -44,9 +44,9 @@ This lecture introduces the concept of a *rational expectations equilibrium*.
 To illustrate it, we describe a linear quadratic version of a  model
 due to Lucas and Prescott {cite}`LucasPrescott1971`.
 
-This 1971 paper is one of a small number of research articles that ignited the *rational expectations revolution*.
+That 1971 paper is one of a small number of research articles that ignited a *rational expectations revolution*.
 
-We follow Lucas and Prescott by employing a setting that is readily "Bellmanized" (i.e., capable of being formulated in terms of dynamic programming problems).
+We follow Lucas and Prescott by employing a setting that is readily "Bellmanized" (i.e., susceptible to  being formulated as a dynamic programming problems.
 
 Because we use linear quadratic setups for demand and costs, we can deploy the LQ programming techniques described in {doc}`this lecture <lqcontrol>`.
 
@@ -79,11 +79,11 @@ We'll also use the LQ class from `QuantEcon.py`.
 from quantecon import LQ
 ```
 
-### The Big Y, Little y Trick
+### The Big Y, little y Trick
 
-This widely used method applies in contexts in which a "representative firm" or agent is a "price taker" operating within a competitive equilibrium.
+This widely used method applies in contexts in which a **representative firm** or agent is a "price taker" operating within a competitive equilibrium.
 
-The following setting justifies the concept of a representative firm.
+The following setting justifies the concept of a representative firm that stands in for a large number of other firms too.
 
 There is a uniform unit measure  of identical firms named  $\omega \in \Omega = [0,1]$.
 
@@ -93,7 +93,7 @@ The output of all firms is $Y = \int_{0}^1 y(\omega) d \, \omega $.
 
 All firms end up choosing to produce the same output, so that at the end of the day $ y(\omega) = y $ and $Y =y = \int_{0}^1 y(\omega) d \, \omega $.
 
-This setting allows us to speak of a ``representative firm'' that chooses to produce $y$.
+This setting allows us to speak of a representative firm that chooses to produce $y$.
 
 We want to impose that
 
@@ -109,7 +109,7 @@ Please watch for how this strategy is applied as the lecture unfolds.
 
 We begin by applying the  Big $Y$, little $y$ trick in a very simple static context.
 
-#### A Simple Static Example of the Big Y, Little y Trick
+#### A Simple Static Example of the Big Y, little y Trick
 
 Consider a static model in which a unit measure of  firms produce a homogeneous good that is sold in a competitive market.
 
@@ -177,6 +177,30 @@ to be solved for the competitive equilibrium market-wide output $Y$.
 
 After solving for $Y$, we can compute the competitive equilibrium price $p$ from the inverse demand curve {eq}`ree_comp3d_static`.
 
+### Related Planning Problem
+
+Define **consumer surplus** as the  area under the inverse demand curve:
+
+$$
+S_c (Y)= \int_0^Y (a_0 - a_1 s) ds = a_o Y - \frac{a_1}{2} Y^2 .
+$$
+
+Define the social cost of production as 
+
+$$ S_p (Y) = c_1 Y + \frac{c_2}{2} Y^2  $$
+
+Consider the planning problem  
+
+$$
+\max_{Y} [ S_c(Y) - S_p(Y) ]
+$$
+
+The first-order necessary condition for the planning problem is equation {eq}`staticY`.  
+
+Thus, a $Y$ that solves {eq}`staticY` is a competitive equilibrium output as well as an output that solves the planning problem.  
+
+This type of outcome provides an intellectual justification for liking a competitive equilibrium.
+
 ### Further Reading
 
 References for this lecture include
@@ -185,7 +209,7 @@ References for this lecture include
 * {cite}`Sargent1987`, chapter XIV
 * {cite}`Ljungqvist2012`, chapter 7
 
-## Defining Rational Expectations Equilibrium
+## Rational Expectations Equilibrium
 
 ```{index} single: Rational Expectations Equilibrium; Definition
 ```
@@ -391,11 +415,11 @@ Thus, a rational expectations equilibrium equates the perceived and actual laws 
 
 As we've seen, the firm's optimum problem induces a mapping $\Phi$ from a perceived law of motion $H$ for market-wide output to an actual law of motion $\Phi(H)$.
 
-The mapping $\Phi$ is the composition of two operations, taking a perceived law of motion into a decision rule via {eq}`comp4`--{eq}`ree_opbe`, and a decision rule into an actual law via {eq}`ree_comp9a`.
+The mapping $\Phi$ is the composition of two mappings, the first of which maps a perceived law of motion into a decision rule via {eq}`comp4`--{eq}`ree_opbe`, the second of which maps a decision rule into an actual law via {eq}`ree_comp9a`.
 
 The $H$ component of a rational expectations equilibrium is a fixed point of $\Phi$.
 
-## Computation of an Equilibrium
+## Computing  an Equilibrium
 
 ```{index} single: Rational Expectations Equilibrium; Computation
 ```
@@ -408,18 +432,18 @@ Readers accustomed to dynamic programming arguments might try to address this pr
 
 Unfortunately, the mapping $\Phi$ is not a contraction.
 
-In particular, there is no guarantee that direct iterations on $\Phi$ converge [^fn_im].
+Indeed, there is no guarantee that direct iterations on $\Phi$ converge [^fn_im].
 
-Furthermore, there are examples in which these iterations diverge.
+There are examples in which these iterations diverge.
 
-Fortunately, there is another method that works here.
+Fortunately,  another method  works here.
 
 The method exploits a  connection between equilibrium and Pareto optimality expressed in
 the fundamental theorems of welfare economics (see, e.g, {cite}`MCWG1995`).
 
 Lucas and Prescott {cite}`LucasPrescott1971` used this method to construct a rational expectations equilibrium.
 
-The details follow.
+Some details follow.
 
 (ree_pp)=
 ### A Planning Problem Approach
@@ -431,7 +455,7 @@ Our plan of attack is to match the Euler equations of the market problem with th
 
 As we'll see, this planning problem can be solved by LQ control ({doc}`linear regulator <lqcontrol>`).
 
-The optimal quantities from the planning problem are rational expectations equilibrium quantities.
+Optimal quantities from the planning problem are rational expectations equilibrium quantities.
 
 The rational expectations equilibrium price can be obtained as a shadow price in the planning problem.
 
@@ -514,7 +538,7 @@ $H$ that the representative firm faces within a rational expectations equilibriu
 #### Structure of the Law of Motion
 
 As you are asked to show in the exercises, the fact that the planner's
-problem is an LQ problem implies an optimal policy --- and hence aggregate law
+problem is an LQ control problem implies an optimal policy --- and hence aggregate law
 of motion --- taking the form
 
 ```{math}
