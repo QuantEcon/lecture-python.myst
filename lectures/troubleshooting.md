@@ -37,7 +37,7 @@ You have installed Anaconda, haven't you, following the instructions in [this le
 
 Assuming that you have, the most common source of problems for our readers is that their Anaconda distribution is not up to date.
 
-[Here's a useful article]( https://www.anaconda.com/blog/keeping-anaconda-date)
+[Here's a useful article](https://www.anaconda.com/blog/keeping-anaconda-date)
 on how to update Anaconda.
 
 Another option is to simply remove Anaconda and reinstall.
