@@ -651,6 +651,6 @@ chi_squ_case.plot_winner_payment_distribution()
 1. Wikipedia for FPSB: https://en.wikipedia.org/wiki/First-price_sealed-bid_auction
 2. Wikipedia for SPSB: https://en.wikipedia.org/wiki/Vickrey_auction
 3. Chandra Chekuri's lecture note for algorithmic game theory: http://chekuri.cs.illinois.edu/teaching/spring2008/Lectures/scribed/Notes20.pdf
-4. Tim Salmon. ECO 4400 Supplemental Handout: All About Auctions: http://faculty.smu.edu/tsalmon/auctions.pdf
+4. Tim Salmon. ECO 4400 Supplemental Handout: All About Auctions: https://s2.smu.edu/tsalmon/auctions.pdf
 5. Auction Theory- Revenue Equivalence Theorem: https://michaellevet.wordpress.com/2015/07/06/auction-theory-revenue-equivalence-theorem/
 6. Order Statistics: https://online.stat.psu.edu/stat415/book/export/html/834

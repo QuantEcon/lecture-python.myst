@@ -17,4 +17,4 @@ This table contains the latest execution statistics.
 ```
 
 These lectures are built on `linux` instances through `github actions` so are
-executed using the following [hardware specifications](https://docs.github.com/en/actions/reference/specifications-for-github-hosted-runners#supported-runners-and-hardware-resources)
+executed using the following [hardware specifications](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources)
