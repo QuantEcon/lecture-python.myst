@@ -856,7 +856,7 @@ $$
 X =  U \Sigma  V^T 
 $$ (eq:SVDDMD)
 
-where we remind ourselves that for a **reduced** SVD, $X$ is an $m \times n$ matrix of data, $U$ is an $m \times p$ matrix, $\Sigma$  is a $p \times p$ matrix, and $V is an $n \times p$ matrix.  
+where we remind ourselves that for a **reduced** SVD, $X$ is an $m \times n$ matrix of data, $U$ is an $m \times p$ matrix, $\Sigma$  is a $p \times p$ matrix, and $V$ is an $n \times p$ matrix.  
 
 We can    efficiently  construct the pertinent pseudo-inverse $X^+$
 by recognizing the following string of equalities.  
