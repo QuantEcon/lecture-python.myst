@@ -345,11 +345,12 @@ where
 
 F = (1-\lambda) G (I - \lambda A)^{-1}
 ```
-
-**Note:** As mentioned above, an *explosive solution* of difference
+```{note}
+As mentioned above, an *explosive solution* of difference
 equation {eq}`equation_1` can be constructed by adding to the right hand of {eq}`equation_4` a
 sequence $c \lambda^{-t}$ where $c$ is an arbitrary positive
 constant.
+```
 
 ## Some Python Code
 

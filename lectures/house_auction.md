@@ -43,9 +43,10 @@ We describe two distinct mechanisms
  
  * A special case of a Groves-Clarke {cite}`Groves_73`, {cite}`Clarke_71` mechanism with a benevolent social planner
 
+```{note}
+In 1994, the multiple rounds, ascending bid auction was actually used by Stanford University to sell leases to 9 lots on the Stanford campus to eligible faculty members.
+```
 
-**Note:** In 1994, the multiple rounds, ascending bid auction was actually used by Stanford University to sell leases to 9 lots on the Stanford campus to eligible faculty members.
- 
 We begin with  overviews of the two mechanisms.
 
 ## Ascending Bids Auction for Multiple Goods

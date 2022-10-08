@@ -622,9 +622,9 @@ If you like you can use the function `qe.rank_size` from the `quantecon` library
 Use `np.random.seed(13)` to set the seed.
 ```
 
-```{exercise}
+```{exercise-start}
 :label: ht_ex5
-
+```
 There is an ongoing argument about whether the firm size distribution should
 be modeled as a Pareto distribution or a lognormal distribution (see, e.g.,
 {cite}`fujiwara2004pareto`, {cite}`kondo2018us` or {cite}`schluter2019size`).
@@ -669,9 +669,13 @@ For the seed use `np.random.seed(1234)`.
 
 What differences do you observe?
 
-(Note: a better approach to this problem would be to model firm dynamics and
+```{note}
+A better approach to this problem would be to model firm dynamics and
 try to track individual firms given the current distribution.  We will discuss
-firm dynamics in later lectures.)
+firm dynamics in later lectures.
+```
+
+```{exercise-end}
 ```
 
 ## Solutions

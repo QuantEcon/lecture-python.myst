@@ -177,9 +177,10 @@ consumer (also known as a *household*) chooses for itself subject to a budget co
 - The representative household and the representative firm are both
   **price takers** who believe that prices are not affected by their choices
 
-**Note:** We can think of there being  unit measures of identical representative consumers and 
+```{note}
+We can think of there being  unit measures of identical representative consumers and 
 identical representative firms.
-
+```
 ## Market Structure
 
 The representative household and the representative firm are both price takers.
@@ -627,9 +628,11 @@ within a competitive equilibrium.
 By {eq}`ge1` and {eq}`ge2` this allocation is
 identical to the one that solves the consumer's problem.
 
-**Note:** Because budget sets are affected only by relative prices,
+```{note}
+Because budget sets are affected only by relative prices,
 $\{q_0^t\}$ is determined only up to multiplication by a
 positive constant.
+```
 
 **Normalization:** We are free to choose a $\{q_0^t\}$ that
 makes $\lambda=1$ so that we are measuring $q_0^t$  in
