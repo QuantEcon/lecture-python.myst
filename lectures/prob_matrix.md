@@ -624,8 +624,9 @@ Thus $x$ is the smallest integer such that the discrete geometric CDF is greater
 
 We can verify that $x$ is indeed geometrically distributed by the following `numpy` program.
 
-**Note:** The exponential distribution is the continuous analog of geometric distribution.
-
+```{note}
+The exponential distribution is the continuous analog of geometric distribution.
+```
 
 ```{code-cell} ipython3
 n, λ = 1_000_000, 0.8
