@@ -719,6 +719,7 @@ plt.show()
 
 ```{solution-start} ht_ex2
 :class: dropdown
+```
 
 Let $X$ have a Pareto tail with tail index $\alpha$ and let $F$ be its cdf.
 
@@ -742,8 +743,6 @@ $$
 We know that $\int_{\bar x}^\infty x^{r-\alpha-1} x = \infty$ whenever $r - \alpha - 1 \geq -1$.
 
 Since $r \geq \alpha$, we have $\mathbb E X^r = \infty$.
-```
-
 
 ```{solution-end}
 ```

@@ -473,7 +473,9 @@ We can draw a sample of a random variable $X$ with a known CDF as follows:
 
 Thus, knowing the **"inverse"** CDF of a distribution is enough to simulate from this distribution.
 
-**NOTE**: The "inverse" CDF needs to exist for this method to work.
+```{note}
+The "inverse" CDF needs to exist for this method to work.
+```
 
 The inverse CDF is 
 

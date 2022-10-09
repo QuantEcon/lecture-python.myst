@@ -275,9 +275,10 @@ def pdf_seq(μ,σ,I,m):
 <!-- #region -->
 Now we shall set a grid length $I$ and a grid increment size $m =1$ for our discretizations.
 
-**Note**: We set $I$ equal to a power of two because we want to be free to use a Fast Fourier Transform
+```{note}
+We set $I$ equal to a power of two because we want to be free to use a Fast Fourier Transform
 to compute a convolution of two sequences (discrete distributions).
-
+```
 
 We recommend experimenting with different values of the power $p$ of 2.
 
@@ -302,7 +303,7 @@ NT = x.size
 
 plt.figure(figsize = (8,8))
 plt.subplot(2,1,1)
-plt.plot(x[:np.int(NT)],p1[:np.int(NT)],label = '')
+plt.plot(x[:int(NT)],p1[:int(NT)],label = '')
 plt.xlim(0,2500)
 count, bins, ignored = plt.hist(s1, 1000, density=True, align='mid')
 
