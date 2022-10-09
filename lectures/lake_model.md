@@ -922,8 +922,9 @@ In this exercise, your task is to arrange the `LakeModel` class by using descrip
 ```
 
 
-```{exercise}
+```{exercise-start}
 :label: lm_ex2
+```
 
 Consider an economy with an initial stock  of workers $N_0 = 100$ at the
 steady state level of employment in the baseline parameterization
@@ -945,7 +946,11 @@ How long does the economy take to converge to its new steady state?
 
 What is the new steady state level of employment?
 
-Note: it may be easier to use the class created in exercise 1 to help with changing variables.
+```{note}
+It may be easier to use the class created in exercise 1 to help with changing variables.
+```
+
+```{exercise-end}
 ```
 
 

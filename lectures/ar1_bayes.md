@@ -275,8 +275,10 @@ Please note how the posterior for $\rho$ has shifted to the right relative to wh
 
 Think about why this happens.  
 
-**Hint:** It is connected to how Bayes Law (conditional probability) solves an **inverse problem** by putting high probability on parameter values
+```{hint}
+It is connected to how Bayes Law (conditional probability) solves an **inverse problem** by putting high probability on parameter values
 that make observations more likely.
+```
 
 We'll return to this issue after we use `numpyro` to compute posteriors under our two alternative assumptions about the distribution of $y_0$.
 

@@ -622,8 +622,9 @@ If you like you can use the function `qe.rank_size` from the `quantecon` library
 Use `np.random.seed(13)` to set the seed.
 ```
 
-```{exercise}
+```{exercise-start}
 :label: ht_ex5
+```
 
 There is an ongoing argument about whether the firm size distribution should
 be modeled as a Pareto distribution or a lognormal distribution (see, e.g.,
@@ -669,9 +670,13 @@ For the seed use `np.random.seed(1234)`.
 
 What differences do you observe?
 
-(Note: a better approach to this problem would be to model firm dynamics and
+```{note}
+A better approach to this problem would be to model firm dynamics and
 try to track individual firms given the current distribution.  We will discuss
-firm dynamics in later lectures.)
+firm dynamics in later lectures.
+```
+
+```{exercise-end}
 ```
 
 ## Solutions
@@ -715,6 +720,7 @@ plt.show()
 
 ```{solution-start} ht_ex2
 :class: dropdown
+```
 
 Let $X$ have a Pareto tail with tail index $\alpha$ and let $F$ be its cdf.
 
@@ -738,8 +744,6 @@ $$
 We know that $\int_{\bar x}^\infty x^{r-\alpha-1} x = \infty$ whenever $r - \alpha - 1 \geq -1$.
 
 Since $r \geq \alpha$, we have $\mathbb E X^r = \infty$.
-```
-
 
 ```{solution-end}
 ```

@@ -374,7 +374,10 @@ In particular, modulo randomness, reproduce the following figure (where the hori
 ```{figure} /_static/lecture_specific/career/career_solutions_ex1_py.png
 ```
 
-Hint: To generate the draws from the distributions $F$ and $G$, use `quantecon.random.draw()`.
+```{hint}
+:class: dropdown
+To generate the draws from the distributions $F$ and $G$, use `quantecon.random.draw()`.
+```
 
 ```{exercise-end}
 ```

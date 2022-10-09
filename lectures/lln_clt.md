@@ -771,10 +771,12 @@ where
 * each $U_i$ is an IID draw from the uniform distribution on $[-2, 2]$.
 * $U_i$ and $W_i$ are independent of each other.
 
-Hints:
+```{hint}
+:class: dropdown
 
 1. `scipy.linalg.sqrtm(A)` computes the square root of `A`.  You still need to invert it.
 1. You should be able to work out $\Sigma$ from the preceding information.
+```
 
 ```{exercise-end}
 ```

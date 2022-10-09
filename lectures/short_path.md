@@ -271,8 +271,10 @@ Other lines have a similar interpretation.
 
 Your task is to use the algorithm given above to find the optimal path and its cost.
 
-Note: You will be dealing with floating point numbers now, rather than
+```{note}
+You will be dealing with floating point numbers now, rather than
 integers, so consider replacing `np.equal()` with `np.allclose()`.
+```
 
 ```{code-cell} python3
 %%file graph.txt
