@@ -416,7 +416,7 @@ NT= np.size(x)
 
 plt.figure(figsize = (8,8))
 plt.subplot(2,1,1)
-plt.plot(x[:np.int(NT)],c1f[:np.int(NT)]/m,label = '')
+plt.plot(x[:int(NT)],c1f[:int(NT)]/m,label = '')
 plt.xlim(0,5000)
 
 count, bins, ignored = plt.hist(ssum2, 1000, density=True, align='mid')
@@ -429,7 +429,7 @@ plt.show()
 NT= np.size(x)
 plt.figure(figsize = (8,8))
 plt.subplot(2,1,1)
-plt.plot(x[:np.int(NT)],c2f[:np.int(NT)]/m,label = '')
+plt.plot(x[:int(NT)],c2f[:int(NT)]/m,label = '')
 plt.xlim(0,5000)
 
 count, bins, ignored = plt.hist(ssum3, 1000, density=True, align='mid')
@@ -654,9 +654,9 @@ print("time for 13 convolutions = ", tdiff13)
 
 ```{code-cell} python3
 d13 = np.cumsum(c13)
-Nx=np.int(1400)
+Nx=int(1400)
 plt.figure()
-plt.plot(x[0:np.int(Nx/m)],d13[0:np.int(Nx/m)])  # show Yad this -- I multiplied by m -- step size
+plt.plot(x[0:int(Nx/m)],d13[0:int(Nx/m)])  # show Yad this -- I multiplied by m -- step size
 plt.hlines(0.5,min(x),Nx,linestyles='dotted',colors = {'black'})
 plt.hlines(0.9,min(x),Nx,linestyles='dotted',colors = {'black'})
 plt.hlines(0.95,min(x),Nx,linestyles='dotted',colors = {'black'})
