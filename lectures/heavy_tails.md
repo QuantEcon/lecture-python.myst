@@ -625,6 +625,7 @@ Use `np.random.seed(13)` to set the seed.
 ```{exercise-start}
 :label: ht_ex5
 ```
+
 There is an ongoing argument about whether the firm size distribution should
 be modeled as a Pareto distribution or a lognormal distribution (see, e.g.,
 {cite}`fujiwara2004pareto`, {cite}`kondo2018us` or {cite}`schluter2019size`).

@@ -181,6 +181,7 @@ consumer (also known as a *household*) chooses for itself subject to a budget co
 We can think of there being  unit measures of identical representative consumers and 
 identical representative firms.
 ```
+
 ## Market Structure
 
 The representative household and the representative firm are both price takers.

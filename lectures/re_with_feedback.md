@@ -345,6 +345,7 @@ where
 
 F = (1-\lambda) G (I - \lambda A)^{-1}
 ```
+
 ```{note}
 As mentioned above, an *explosive solution* of difference
 equation {eq}`equation_1` can be constructed by adding to the right hand of {eq}`equation_4` a
