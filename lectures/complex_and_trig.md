@@ -485,6 +485,9 @@ integrate(cos(ω) * sin(ω), (ω, -π, π))
 
 ### Exercises
 
+```{exercise}
+:label: complex_ex1
+
 We invite the reader to verify analytically and with the `sympy` package the following two equalities:
 
 $$
@@ -495,3 +498,4 @@ $$
 \int_{-\pi}^{\pi} \sin (\omega)^2 \, d\omega = \frac{\pi}{2}
 $$
 
+```
