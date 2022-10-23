@@ -355,17 +355,6 @@ $$
 $$
 ```
 
-
-```{exercise}
-:label: uncertainty_traps_ex2
-
-Modulo randomness, replicate the simulation figures shown above.
-
-* Use the parameter values listed as defaults in the __init__ method of the UncertaintyTrapEcon class.
-```
-
-## Solutions
-
 ```{solution} uncertainty_traps_ex1
 :class: dropdown
 
@@ -393,6 +382,13 @@ where $w$ is independent and standard normal, we get the
 expressions for $\mu'$ and $\gamma'$ given in the lecture.
 ```
 
+```{exercise}
+:label: uncertainty_traps_ex2
+
+Modulo randomness, replicate the simulation figures shown above.
+
+* Use the parameter values listed as defaults in the __init__ method of the UncertaintyTrapEcon class.
+```
 
 ```{solution-start} uncertainty_traps_ex2
 :class: dropdown

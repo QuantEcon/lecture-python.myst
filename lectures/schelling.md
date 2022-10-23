@@ -175,8 +175,6 @@ Use 250 agents of each type.
 ```{exercise-end}
 ```
 
-## Solutions
-
 ```{solution-start} schelling_ex1
 :class: dropdown
 ```

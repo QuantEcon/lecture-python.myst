@@ -574,6 +574,45 @@ Your figure should -- modulo randomness -- look something like this
 ```{exercise-end}
 ```
 
+
+```{solution-start} kalman_ex1
+:class: dropdown
+```
+
+```{code-cell} python3
+# Parameters
+θ = 10  # Constant value of state x_t
+A, C, G, H = 1, 0, 1, 1
+ss = LinearStateSpace(A, C, G, H, mu_0=θ)
+
+# Set prior, initialize kalman filter
+x_hat_0, Σ_0 = 8, 1
+kalman = Kalman(ss, x_hat_0, Σ_0)
+
+# Draw observations of y from state space model
+N = 5
+x, y = ss.simulate(N)
+y = y.flatten()
+
+# Set up plot
+fig, ax = plt.subplots(figsize=(10,8))
+xgrid = np.linspace(θ - 5, θ + 2, 200)
+
+for i in range(N):
+    # Record the current predicted mean and variance
+    m, v = [float(z) for z in (kalman.x_hat, kalman.Sigma)]
+    # Plot, update filter
+    ax.plot(xgrid, norm.pdf(xgrid, loc=m, scale=np.sqrt(v)), label=f'$t={i}$')
+    kalman.update(y[i])
+
+ax.set_title(f'First {N} densities when $\\theta = {θ:.1f}$')
+ax.legend(loc='upper left')
+plt.show()
+```
+
+```{solution-end}
+```
+
 ```{exercise-start}
 :label: kalman_ex2
 ```
@@ -599,6 +638,45 @@ Your figure should show error erratically declining something like this
 ```{exercise-end}
 ```
 
+
+```{solution-start} kalman_ex2
+:class: dropdown
+```
+
+```{code-cell} python3
+ϵ = 0.1
+θ = 10  # Constant value of state x_t
+A, C, G, H = 1, 0, 1, 1
+ss = LinearStateSpace(A, C, G, H, mu_0=θ)
+
+x_hat_0, Σ_0 = 8, 1
+kalman = Kalman(ss, x_hat_0, Σ_0)
+
+T = 600
+z = np.empty(T)
+x, y = ss.simulate(T)
+y = y.flatten()
+
+for t in range(T):
+    # Record the current predicted mean and variance and plot their densities
+    m, v = [float(temp) for temp in (kalman.x_hat, kalman.Sigma)]
+
+    f = lambda x: norm.pdf(x, loc=m, scale=np.sqrt(v))
+    integral, error = quad(f, θ - ϵ, θ + ϵ)
+    z[t] = 1 - integral
+
+    kalman.update(y[t])
+
+fig, ax = plt.subplots(figsize=(9, 7))
+ax.set_ylim(0, 1)
+ax.set_xlim(0, T)
+ax.plot(range(T), z)
+ax.fill_between(range(T), np.zeros(T), z, color="blue", alpha=0.2)
+plt.show()
+```
+
+```{solution-end}
+```
 
 ```{exercise-start}
 :label: kalman_ex3
@@ -665,98 +743,6 @@ Observe how, after an initial learning period, the Kalman filter performs quite 
 ```{exercise-end}
 ```
 
-
-```{exercise}
-:label: kalman_ex4
-
-Try varying the coefficient $0.3$ in $Q = 0.3 I$ up and down.
-
-Observe how the diagonal values in the stationary solution $\Sigma$ (see {eq}`kalman_dare`) increase and decrease in line with this coefficient.
-
-The interpretation is that more randomness in the law of motion for $x_t$ causes more (permanent) uncertainty in prediction.
-```
-
-## Solutions
-
-```{solution-start} kalman_ex1
-:class: dropdown
-```
-
-```{code-cell} python3
-# Parameters
-θ = 10  # Constant value of state x_t
-A, C, G, H = 1, 0, 1, 1
-ss = LinearStateSpace(A, C, G, H, mu_0=θ)
-
-# Set prior, initialize kalman filter
-x_hat_0, Σ_0 = 8, 1
-kalman = Kalman(ss, x_hat_0, Σ_0)
-
-# Draw observations of y from state space model
-N = 5
-x, y = ss.simulate(N)
-y = y.flatten()
-
-# Set up plot
-fig, ax = plt.subplots(figsize=(10,8))
-xgrid = np.linspace(θ - 5, θ + 2, 200)
-
-for i in range(N):
-    # Record the current predicted mean and variance
-    m, v = [float(z) for z in (kalman.x_hat, kalman.Sigma)]
-    # Plot, update filter
-    ax.plot(xgrid, norm.pdf(xgrid, loc=m, scale=np.sqrt(v)), label=f'$t={i}$')
-    kalman.update(y[i])
-
-ax.set_title(f'First {N} densities when $\\theta = {θ:.1f}$')
-ax.legend(loc='upper left')
-plt.show()
-```
-
-```{solution-end}
-```
-
-
-```{solution-start} kalman_ex2
-:class: dropdown
-```
-
-```{code-cell} python3
-ϵ = 0.1
-θ = 10  # Constant value of state x_t
-A, C, G, H = 1, 0, 1, 1
-ss = LinearStateSpace(A, C, G, H, mu_0=θ)
-
-x_hat_0, Σ_0 = 8, 1
-kalman = Kalman(ss, x_hat_0, Σ_0)
-
-T = 600
-z = np.empty(T)
-x, y = ss.simulate(T)
-y = y.flatten()
-
-for t in range(T):
-    # Record the current predicted mean and variance and plot their densities
-    m, v = [float(temp) for temp in (kalman.x_hat, kalman.Sigma)]
-
-    f = lambda x: norm.pdf(x, loc=m, scale=np.sqrt(v))
-    integral, error = quad(f, θ - ϵ, θ + ϵ)
-    z[t] = 1 - integral
-
-    kalman.update(y[t])
-
-fig, ax = plt.subplots(figsize=(9, 7))
-ax.set_ylim(0, 1)
-ax.set_xlim(0, T)
-ax.plot(range(T), z)
-ax.fill_between(range(T), np.zeros(T), z, color="blue", alpha=0.2)
-plt.show()
-```
-
-```{solution-end}
-```
-
-
 ```{solution-start} kalman_ex3
 :class: dropdown
 ```
@@ -813,6 +799,16 @@ plt.show()
 ```
 
 ```{solution-end}
+```
+
+```{exercise}
+:label: kalman_ex4
+
+Try varying the coefficient $0.3$ in $Q = 0.3 I$ up and down.
+
+Observe how the diagonal values in the stationary solution $\Sigma$ (see {eq}`kalman_dare`) increase and decrease in line with this coefficient.
+
+The interpretation is that more randomness in the law of motion for $x_t$ causes more (permanent) uncertainty in prediction.
 ```
 
 [^f1]: See, for example, page 93 of {cite}`Bishop2006`. To get from his expressions to the ones used above, you will also need to apply the [Woodbury matrix identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity).

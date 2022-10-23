@@ -516,28 +516,6 @@ Write a program that quickly returns all values in the `MultiIndex`.
 ```{exercise-end}
 ```
 
-
-```{exercise-start}
-:label: pp_ex2
-```
-
-Filter the above dataframe to only include employment as a percentage of
-'active population'.
-
-Create a grouped boxplot using `seaborn` of employment rates in 2015
-by age group and sex.
-
-```{hint}
-:class: dropdown
-
-`GEO` includes both areas and countries.
-```
-
-```{exercise-end}
-```
-
-## Solutions
-
 ```{solution-start} pp_ex1
 :class: dropdown
 ```
@@ -568,6 +546,24 @@ for name in employ.columns.names:
 ```{solution-end}
 ```
 
+```{exercise-start}
+:label: pp_ex2
+```
+
+Filter the above dataframe to only include employment as a percentage of
+'active population'.
+
+Create a grouped boxplot using `seaborn` of employment rates in 2015
+by age group and sex.
+
+```{hint}
+:class: dropdown
+
+`GEO` includes both areas and countries.
+```
+
+```{exercise-end}
+```
 
 ```{solution-start} pp_ex2
 :class: dropdown

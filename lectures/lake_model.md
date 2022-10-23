@@ -921,59 +921,11 @@ In this exercise, your task is to arrange the `LakeModel` class by using descrip
 (If you need to refresh your understanding of how these work, consult [this lecture](https://python-programming.quantecon.org/python_advanced_features.html).)
 ```
 
-
-```{exercise-start}
-:label: lm_ex2
-```
-
-Consider an economy with an initial stock  of workers $N_0 = 100$ at the
-steady state level of employment in the baseline parameterization
-
-* $\alpha = 0.013$
-* $\lambda = 0.283$
-* $b = 0.0124$
-* $d = 0.00822$
-
-(The values for $\alpha$ and $\lambda$ follow {cite}`davis2006flow`)
-
-Suppose that in response to new legislation the hiring rate reduces to $\lambda = 0.2$.
-
-Plot the transition dynamics of the unemployment and employment stocks for 50 periods.
-
-Plot the transition dynamics for the rates.
-
-How long does the economy take to converge to its new steady state?
-
-What is the new steady state level of employment?
-
-```{note}
-It may be easier to use the class created in exercise 1 to help with changing variables.
-```
-
-```{exercise-end}
-```
-
-
-```{exercise}
-:label: lm_ex3
-
-Consider an economy with an initial stock  of workers $N_0 = 100$ at the
-steady state level of employment in the baseline parameterization.
-
-Suppose that for 20 periods the birth rate was temporarily high ($b = 0.025$) and then returned to its original level.
-
-Plot the transition dynamics of the unemployment and employment stocks for 50 periods.
-
-Plot the transition dynamics for the rates.
-
-How long does the economy take to return to its original steady state?
-```
-
-## Solutions
-
 ```{solution-start} lm_ex1
 :class: dropdown
 ```
+
+Here is one solution
 
 ```{code-cell} python3
 class LakeModelModified:
@@ -1120,6 +1072,37 @@ class LakeModelModified:
 ```{solution-end}
 ```
 
+```{exercise-start}
+:label: lm_ex2
+```
+
+Consider an economy with an initial stock  of workers $N_0 = 100$ at the
+steady state level of employment in the baseline parameterization
+
+* $\alpha = 0.013$
+* $\lambda = 0.283$
+* $b = 0.0124$
+* $d = 0.00822$
+
+(The values for $\alpha$ and $\lambda$ follow {cite}`davis2006flow`)
+
+Suppose that in response to new legislation the hiring rate reduces to $\lambda = 0.2$.
+
+Plot the transition dynamics of the unemployment and employment stocks for 50 periods.
+
+Plot the transition dynamics for the rates.
+
+How long does the economy take to converge to its new steady state?
+
+What is the new steady state level of employment?
+
+```{note}
+It may be easier to use the class created in exercise 1 to help with changing variables.
+```
+
+```{exercise-end}
+```
+
 
 ```{solution-start} lm_ex2
 :class: dropdown
@@ -1197,6 +1180,20 @@ steady state levels.
 ```
 
 
+```{exercise}
+:label: lm_ex3
+
+Consider an economy with an initial stock  of workers $N_0 = 100$ at the
+steady state level of employment in the baseline parameterization.
+
+Suppose that for 20 periods the birth rate was temporarily high ($b = 0.025$) and then returned to its original level.
+
+Plot the transition dynamics of the unemployment and employment stocks for 50 periods.
+
+Plot the transition dynamics for the rates.
+
+How long does the economy take to return to its original steady state?
+```
 
 ```{solution-start} lm_ex3
 :class: dropdown

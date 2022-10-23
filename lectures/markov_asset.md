@@ -932,6 +932,28 @@ With a growing, non-random dividend process $d_t = g d_t$ where $0 < g \beta < 1
 what is the equilibrium price of a cum-dividend asset?
 ```
 
+```{solution} ma_ex1
+:class: dropdown
+
+For a cum-dividend asset, the basic risk-neutral asset pricing equation is
+
+$$
+p_t = d_t + \beta {\mathbb E}_t [ p_{t+1} ]
+$$
+
+(mass_ex1)=
+With constant dividends, the equilibrium price is
+
+$$
+p_t = \frac{1}{1-\beta} d_t
+$$
+
+With a growing, non-random dividend process, the equilibrium price is
+
+$$
+p_t = \frac{1}{1 - \beta g} d_t
+$$
+```
 
 ```{exercise-start}
 :label: ma_ex2
@@ -960,76 +982,6 @@ Do the same for
 
 ```{exercise-end}
 ```
-
-```{exercise}
-:label: ma_ex3
-
-Let's consider finite horizon call options, which are more common than
-infinite horizon ones.
-
-Finite horizon options obey functional equations closely related to {eq}`FEoption0`.
-
-A $k$ period option expires after $k$ periods.
-
-If we view today as date zero, a $k$ period option gives the owner the right to exercise the option to purchase the risk-free consol at the strike price $p_S$ at dates $0, 1, \ldots , k-1$.
-
-The option expires at time $k$.
-
-Thus, for $k=1, 2, \ldots$, let $w(x, k)$ be the value of a $k$-period option.
-
-It obeys
-
-$$
-w(x, k)
-= \max \left\{
-    \beta \sum_{y \in S} P(x, y) g(y)^{-\gamma}
-    w (y, k-1), \;
-    p(x) - p_S
-\right\}
-$$
-
-where $w(x, 0) = 0$ for all $x$.
-
-We can express this  as a sequence of nonlinear vector equations
-
-$$
-w_k = \max \{ \beta M w_{k-1}, \; p - p_S {\mathbb 1} \}
-  \quad k =1, 2, \ldots
-  \quad \text{with } w_0 = 0
-$$
-
-Write a function that computes $w_k$ for any given $k$.
-
-Compute the value of the option with `k = 5` and `k = 25` using parameter values as in {ref}`ma_ex1`.
-
-Is one higher than the other?  Can you give intuition?
-```
-
-## Solutions
-
-```{solution} ma_ex1
-:class: dropdown
-
-For a cum-dividend asset, the basic risk-neutral asset pricing equation is
-
-$$
-p_t = d_t + \beta {\mathbb E}_t [ p_{t+1} ]
-$$
-
-(mass_ex1)=
-With constant dividends, the equilibrium price is
-
-$$
-p_t = \frac{1}{1-\beta} d_t
-$$
-
-With a growing, non-random dividend process, the equilibrium price is
-
-$$
-p_t = \frac{1}{1 - \beta g} d_t
-$$
-```
-
 
 ```{solution-start} ma_ex2
 :class: dropdown
@@ -1084,6 +1036,49 @@ plt.show()
 ```{solution-end}
 ```
 
+```{exercise}
+:label: ma_ex3
+
+Let's consider finite horizon call options, which are more common than
+infinite horizon ones.
+
+Finite horizon options obey functional equations closely related to {eq}`FEoption0`.
+
+A $k$ period option expires after $k$ periods.
+
+If we view today as date zero, a $k$ period option gives the owner the right to exercise the option to purchase the risk-free consol at the strike price $p_S$ at dates $0, 1, \ldots , k-1$.
+
+The option expires at time $k$.
+
+Thus, for $k=1, 2, \ldots$, let $w(x, k)$ be the value of a $k$-period option.
+
+It obeys
+
+$$
+w(x, k)
+= \max \left\{
+    \beta \sum_{y \in S} P(x, y) g(y)^{-\gamma}
+    w (y, k-1), \;
+    p(x) - p_S
+\right\}
+$$
+
+where $w(x, 0) = 0$ for all $x$.
+
+We can express this  as a sequence of nonlinear vector equations
+
+$$
+w_k = \max \{ \beta M w_{k-1}, \; p - p_S {\mathbb 1} \}
+  \quad k =1, 2, \ldots
+  \quad \text{with } w_0 = 0
+$$
+
+Write a function that computes $w_k$ for any given $k$.
+
+Compute the value of the option with `k = 5` and `k = 25` using parameter values as in {ref}`ma_ex1`.
+
+Is one higher than the other?  Can you give intuition?
+```
 
 ```{solution-start} ma_ex3
 :class: dropdown

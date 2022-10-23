@@ -1377,8 +1377,6 @@ $$
 what must the modulus for every eigenvalue of $A$ be less than?
 ```
 
-## Solutions
-
 ```{solution} lss_ex1
 :class: dropdown
 

@@ -383,9 +383,6 @@ node99,
 ```{exercise-end}
 ```
 
-## Solutions
-
-
 ```{solution-start} short_path_ex1
 :class: dropdown
 ```

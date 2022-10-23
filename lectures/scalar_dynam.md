@@ -435,7 +435,6 @@ ts_plot(g, xmin, xmax, x0, ts_length=20)
 
 ## Exercises
 
-### Exercise 1
 ```{exercise}
 :label: sd_ex1
 
@@ -455,8 +454,6 @@ Use $a=0.5$ and then $a=-0.5$ and study the trajectories
 
 Set $b=1$ throughout.
 ```
-
-## Solutions
 
 ```{solution-start} sd_ex1
 :class: dropdown

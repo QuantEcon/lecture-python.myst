@@ -1214,8 +1214,6 @@ If we don't care about the Lagrange multipliers, we can substitute the constrain
 ```{exercise-end}
 ```
 
-## Solutions
-
 ```{solution-start} la_ex1
 :class: dropdown
 ```

@@ -324,33 +324,11 @@ Use the default parameters and $\mu$ in `mu_vals = np.linspace(0.0, 2.0, 15)`.
 Is the impact on the reservation wage as you expected?
 ```
 
-
-```{exercise}
-:label: mfv_ex2
-
-Let us now consider how the agent responds to an increase in volatility.
-
-To try to understand this, compute the reservation wage when the wage offer
-distribution is uniform on $(m - s, m + s)$ and $s$ varies.
-
-The idea here is that we are holding the mean constant and spreading the
-support.
-
-(This is a form of *mean-preserving spread*.)
-
-Use `s_vals = np.linspace(1.0, 2.0, 15)` and `m = 2.0`.
-
-State how you expect the reservation wage to vary with $s$.
-
-Now compute it.  Is this as you expected?
-```
-
-## Solutions
-
 ```{solution-start} mfv_ex1
+:class: dropdown
 ```
 
-Here is one solution.
+Here is one solution
 
 ```{code-cell} python3
 mcm = McCallModelContinuous()
@@ -377,11 +355,31 @@ offers shifts to the right.
 ```{solution-end}
 ```
 
+```{exercise}
+:label: mfv_ex2
 
-```{solution-start} mfv_ex2
+Let us now consider how the agent responds to an increase in volatility.
+
+To try to understand this, compute the reservation wage when the wage offer
+distribution is uniform on $(m - s, m + s)$ and $s$ varies.
+
+The idea here is that we are holding the mean constant and spreading the
+support.
+
+(This is a form of *mean-preserving spread*.)
+
+Use `s_vals = np.linspace(1.0, 2.0, 15)` and `m = 2.0`.
+
+State how you expect the reservation wage to vary with $s$.
+
+Now compute it.  Is this as you expected?
 ```
 
-Here is one solution.
+```{solution-start} mfv_ex2
+:class: dropdown
+```
+
+Here is one solution
 
 ```{code-cell} python3
 mcm = McCallModelContinuous()

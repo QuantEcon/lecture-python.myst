@@ -303,18 +303,6 @@ You should see convergence, in the sense that differences between successive dis
 Try different initial conditions to verify that, in the long run, the distribution is invariant across initial conditions.
 ```
 
-
-```{exercise}
-:label: id_ex2
-
-Using simulation, calculate the probability that firms that start with
-$X_0 = 70$ need to order twice or more in the first 50 periods.
-
-You will need a large sample size to get an accurate reading.
-```
-
-## Solutions
-
 ```{solution-start} id_ex1
 :class: dropdown
 ```
@@ -387,8 +375,18 @@ $X_0 = 20$ or $X_0 = 80$.
 ```{solution-end}
 ```
 
+```{exercise}
+:label: id_ex2
+
+Using simulation, calculate the probability that firms that start with
+$X_0 = 70$ need to order twice or more in the first 50 periods.
+
+You will need a large sample size to get an accurate reading.
+```
+
 
 ```{solution-start} id_ex2
+:class: dropdown
 ```
 
 Here is one solution.
