@@ -20,7 +20,7 @@ kernelspec:
 ```{index} single: python
 ```
 
-# Gradient Methods for Fixed Points Calculation
+# Fast Fixed Point Computation Using Gradient Methods
 
 ```{contents} Contents
 :depth: 2
@@ -41,10 +41,11 @@ The objective is to practice Python coding and investigate these algorithms.
 We recall that, to find the fixed point of scalar function $g$, Newton's method iterates on 
 
 
-$$
+```{math}
+:label: newtons_method
 x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
-\qquad x_0 \text{ given },
-$$
+\qquad x_0 \text{ given}
+```
 
 We use the following imports
 
@@ -59,11 +60,10 @@ from collections import namedtuple
 
 Assuming Cobb-Douglas production technology, the law of motion for capital is
 
-$$
-
+```{math}
+:label: motion_law
 k_{t+1} = sAk_t^\alpha + (1-\delta) k_t
-
-$$
+```
 
 We store the parameters in a `namedtuple`
 
@@ -182,14 +182,14 @@ k_star
 
 ## Newton's Method
 
-
 To implement Newton's method we observe that
 
-$$
+```{math}
+:label: newton_method2
 
 g'(k) = \alpha s A k^{1-\alpha} + (1-\delta)
 
-$$
+```
 
 
 ```{code-cell} python3
@@ -243,4 +243,24 @@ def plot_trajectories(params,
 ```{code-cell} python3
 params = create_solow_params()
 plot_trajectories(params)
+```
+
+
+## Multivariate Newton’s Method
+
+In multi-dimentional setting, the [formula](newtons_method) is written as
+
+```{math}
+:label: newton_method_multi
+
+x_{k+1} = (I - J(x_k))^{-1}(Tx_k - J(x_k)) x_k
+
+```
+Here $J(x) := $ the Jacobian of $T$ evaluated at $x$.
+
+
+```{code-cell} python3
+def create_multi_solow_params(A=2.0, s=0.3, α=0.3, δ=0.4):
+    "Creates a Solow model parameterization with default values."
+    return SolowParameters(A=A, s=s, α=α, δ=δ)
 ```
