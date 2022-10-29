@@ -9,7 +9,7 @@ kernelspec:
   name: python3
 ---
 
-(fixed_points)=
+(newton_method)=
 ```{raw} html
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
@@ -20,7 +20,7 @@ kernelspec:
 ```{index} single: python
 ```
 
-# Fast Fixed Point Computation Using Gradient Methods
+# Fast Fixed Point Computation Using Newton's Method
 
 ```{contents} Contents
 :depth: 2
@@ -43,6 +43,7 @@ We recall that, to find the fixed point of scalar function $g$, Newton's method 
 
 ```{math}
 :label: newtons_method
+
 x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
 \qquad x_0 \text{ given}
 ```
@@ -51,8 +52,15 @@ We use the following imports
 
 ```{code-cell} python3
 import numpy as np
+from numpy import exp, sqrt
 import matplotlib.pyplot as plt
 from collections import namedtuple
+from numba import njit
+from scipy.optimize import root
+import jax
+import jax.numpy as jnp
+
+plt.rcParams["figure.figsize"] = (10, 5.7)
 ```
 
 
@@ -259,8 +267,298 @@ x_{k+1} = (I - J(x_k))^{-1}(Tx_k - J(x_k)) x_k
 Here $J(x) := $ the Jacobian of $T$ evaluated at $x$.
 
 
+### A Two Goods Market Equilibrium
+
+Before moving to higher dimensional settings, let's compute the market equilibrium of a two-good problem.
+
+We first consider a market for two related products, good 0 and good 1, with price vector $p = (p_0, p_1)$
+
+Supply of good $i$ at price $p$,
+
+$$ 
+q^s_i (p) = b_i \sqrt{p_i} 
+$$
+
+Demand of good $i$ at price $p$ is,
+
+$$ 
+q^d_i (p) = \exp(-a_{i0} p_0) + \exp(-a_{i1} p_1) + c_i
+$$
+
+Here $c_i$, $b_i$ and $a_{ij}$ are parameters.
+
+For example, the two goods might be computer components that are typically used together, in which case they are complements. Hence demand depends on the price of both components.
+
+$$
+e_i(p) = q^d_i(p) - q^s_i(p), \qquad i = 0, 1
+$$
+
+
+An equilibrium price vector $p^*$ satisfies $e_i(p^*) = 0$.
+
+
+We set:
+
+$$
+A = \begin{pmatrix}
+            a_{00} & a_{01} \\
+            a_{10} & a_{11}
+        \end{pmatrix},
+            \qquad 
+    b = \begin{pmatrix}
+            b_0 \\
+            b_1
+        \end{pmatrix}
+    \qquad \text{and} \qquad
+    c = \begin{pmatrix}
+            c_0 \\
+            c_1
+        \end{pmatrix}
+$$
+
+
+#### A Graphical Exploration
+
+Since our problem is only two dimensional, we can use graphical analysis to visualize and help understand the problem.
+
+Our first step is to define the excess demand function
+
+$$
+e(p) = 
+    \begin{pmatrix}
+    e_0(p) \\
+    e_1(p)
+    \end{pmatrix}
+$$
+
+The function below calculate the excess demand for given parameters
+
 ```{code-cell} python3
-def create_multi_solow_params(A=2.0, s=0.3, α=0.3, δ=0.4):
-    "Creates a Solow model parameterization with default values."
-    return SolowParameters(A=A, s=s, α=α, δ=δ)
+def e(p, A, b, c):
+    return exp(- A @ p) + c - b * sqrt(p)
+```
+
+
+Our default parameter values will be
+
+
+$$
+A = \begin{pmatrix}
+            0.5 & 0.4 \\
+            0.8 & 0.2
+        \end{pmatrix},
+            \qquad 
+    b = \begin{pmatrix}
+            0 \\
+            0
+        \end{pmatrix}
+    \qquad \text{and} \qquad
+    c = \begin{pmatrix}
+            0 \\
+            0
+        \end{pmatrix}
+$$
+
+
+```{code-cell} python3
+A = np.array([
+    [0.5, 0.4],
+    [0.8, 0.2]
+])
+b = np.ones(2)
+c = np.ones(2)
+```
+
+At a price level of $p = (p_0, p_1)$, the excess demand is 
+
+
+```{code-cell} python3
+ex_demand = e((1.0, 0.5), A, b, c)
+
+print(
+f'The excess demand for good 0 is {ex_demand[0]:.3f} \n'
+f'The excess demand for good 1 is {ex_demand[1]:.3f}')
+```
+
+
+Next we plot the two functions $e_0$ and $e_1$ on a grid of $(p_0, p_1)$ values, using contour surfaces and lines.
+
+We will use the following function to build the contour plots
+
+```{code-cell} python3
+
+def plot_excess_demand(ax, good=0, grid_size=100, grid_max=4, surface=True):
+
+    # Create a 100x100 grid
+    p_grid = np.linspace(0, grid_max, grid_size)
+    z = np.empty((100, 100))
+
+    for i, p_1 in enumerate(p_grid):
+        for j, p_2 in enumerate(p_grid):
+            z[i, j] = e((p_1, p_2), A, b, c)[good]
+
+    if surface:
+        cs1 = ax.contourf(p_grid, p_grid, z.T, alpha=0.5)
+        plt.colorbar(cs1, ax=ax, format="%.6f")
+
+    ctr1 = ax.contour(p_grid, p_grid, z.T, levels=[0.0])
+    ax.set_xlabel(r'p_0')
+    ax.set_ylabel(r'p_1')
+    ax.set_title(f'Excess Demand for Good {good}')
+    plt.clabel(ctr1, inline=1, fontsize=13)
+```
+
+Here's our plot of $e_0$:
+```{code-cell} python3
+fig, ax = plt.subplots()
+plot_excess_demand(ax, good=0)
+plt.show()
+```
+
+Here's our plot of $e_1$:
+```{code-cell} python3
+fig, ax = plt.subplots()
+plot_excess_demand(ax, good=1)
+plt.show()
+```
+
+We see the black contour line of zero, which tells us when $e_i(p)=0$.
+For a price vector $p$ such that $e_i(p)=0$ we know that good $i$ is in equilibrium (demand equals supply).
+
+
+If these two contour lines cross at some price vector $p^*$, then $p^*$ is an equilibrium price vector.
+
+
+```{code-cell} python3
+fig, ax = plt.subplots(figsize=(10, 5.7))
+for good in (0, 1):
+    plot_excess_demand(ax, good=good, surface=False)
+plt.show()
+```
+
+It seems there is an equilibrium close to $p = (1.6, 1.5)$.
+
+
+```{code-cell} python3
+init_p = np.ones(2)
+```
+
+```{code-cell} python3
+%%time
+solution = root(lambda p: e(p, A, b, c), init_p, method='hybr')
+```
+
+```{code-cell} python3
+p = solution.x
+p
+```
+
+
+```{code-cell} python3
+np.max(np.abs(e(p, A, b, c)))
+```
+
+
+
+```{code-cell} python3
+def jacobian(p, A, b, c):
+    p_0, p_1 = p
+    a_00, a_01 = A[0, :]
+    a_10, a_11 = A[1, :]
+    j_00 = -a_00 * exp(-a_00 * p_0) - (b[0]/2) * p_0**(-1/2)
+    j_01 = -a_01 * exp(-a_01 * p_1)
+    j_10 = -a_10 * exp(-a_10 * p_0)
+    j_11 = -a_11 * exp(-a_11 * p_1) - (b[1]/2) * p_1**(-1/2)
+    J = [[j_00, j_01],
+         [j_10, j_11]]
+    return np.array(J)
+```
+
+
+```{code-cell} python3
+%%time
+solution = root(lambda p: e(p, A, b, c),
+                init_p, 
+                jac=lambda p: jacobian(p, A, b, c), 
+                method='hybr')
+```
+
+
+```{code-cell} python3
+p = solution.x
+np.max(np.abs(e(p, A, b, c)))
+```
+
+```{code-cell} python3
+def newton(f, x_0, tol=1e-5):
+    f_prime = jax.grad(f)
+    def q(x):
+        return x - jnp.linalg.solve(jax.jacobian(f)(x), f(x))
+
+    error = tol + 1
+    x = x_0
+    while error > tol:
+        y = q(x)
+        error = jnp.linalg.norm(x - y)
+        x = y
+        
+    return x
+```
+
+
+```{code-cell} python3
+@jax.jit
+def e(p, A, b, c):
+    return jnp.exp(- jnp.dot(A, p)) + c - b * jnp.sqrt(p)
+```
+
+```{code-cell} python3
+%%time
+p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
+```
+
+```{code-cell} python3
+p = solution.x
+np.max(np.abs(e(p, A, b, c)))
+```
+
+
+
+```
+dim = 5000
+
+# Create a random matrix A and normalize the rows to sum to one
+A = np.random.rand(dim, dim)
+A = np.asarray(A)
+s = np.sum(A, axis=0)
+A = A / s
+
+# Set up b and c
+b = np.ones(dim)
+c = np.ones(dim)
+```
+
+
+```
+def e(p, A, b, c):
+    return exp(- A @ p) + c - b * sqrt(p)
+```
+
+
+```
+init_p = np.ones(dim)
+```
+
+
+```
+%%time
+solution = root(lambda p: e(p, A, b, c), init_p, method='hybr')
+```
+
+```
+p = solution.x
+```
+
+```
+np.max(np.abs(e(p, A, b, c)))
 ```
