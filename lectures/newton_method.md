@@ -188,7 +188,7 @@ k_star_approx
 k_star
 ```
 
-## Newton's Method
+## Newton's Method 
 
 To implement Newton's method we observe that
 
@@ -439,26 +439,49 @@ plt.show()
 It seems there is an equilibrium close to $p = (1.6, 1.5)$.
 
 
+#### Using a Multidimensional Root Finder
+
+To solve for $p^*$ more precisely, we use root, a root-finding algorithm from `scipy.optimize`.
+
+We supply $p = (1, 1)$ as our initial guess.
+
 ```{code-cell} python3
 init_p = np.ones(2)
 ```
+
+This uses the [modified Powell method](https://docs.scipy.org/doc/scipy/reference/optimize.root-hybr.html#optimize-root-hybr) to find the root
 
 ```{code-cell} python3
 %%time
 solution = root(lambda p: e(p, A, b, c), init_p, method='hybr')
 ```
 
+Here's the resulting value:
+
 ```{code-cell} python3
 p = solution.x
 p
 ```
 
+This looks close to our guess from observing the figure. We can plug it back into $e$ to test that $e(p) \approx 0$:
 
 ```{code-cell} python3
 np.max(np.abs(e(p, A, b, c)))
 ```
 
+This is indeed a very small error.
 
+In most cases, for root-finding algorithms applied to smooth functions, supplying the Jacobian of the function leads to better convergence properties.
+
+In this case we manually calculate the elements of the Jacobian
+
+$$
+J(p) = 
+    \begin{pmatrix}
+        \frac{\partial e_0}{\partial p_0}(p) & \frac{\partial e_0}{\partial p_1}(p) \\
+        \frac{\partial e_1}{\partial p_0}(p) & \frac{\partial e_1}{\partial p_1}(p)
+    \end{pmatrix}
+$$
 
 ```{code-cell} python3
 def jacobian(p, A, b, c):
@@ -474,7 +497,6 @@ def jacobian(p, A, b, c):
     return np.array(J)
 ```
 
-
 ```{code-cell} python3
 %%time
 solution = root(lambda p: e(p, A, b, c),
@@ -483,28 +505,42 @@ solution = root(lambda p: e(p, A, b, c),
                 method='hybr')
 ```
 
+Now the solution is even more accurate (although, in this low-dimensional problem, the difference is quite small):
 
 ```{code-cell} python3
 p = solution.x
 np.max(np.abs(e(p, A, b, c)))
 ```
 
-```{code-cell} python3
-def newton(f, x_0, tol=1e-5):
-    f_prime = jax.grad(f)
-    def q(x):
-        return x - jnp.linalg.solve(jax.jacobian(f)(x), f(x))
+We can also use Newton's method in this lower dimensional case. 
 
+We are going to try to compute the equilibrium price using the multivariate version of Newton's method, which means iterating on the equation:
+
+$$
+p_{n+1} = p_n - J(p_n)^{-1} e(p_n)
+$$
+
+starting from some initial guess of the price vector $p_0$. (Here $J$ is the Jacobian of $e$.)
+
+We use the `jax.jacobian()` function to auto differentiate and calculate the jacobian
+
+```{code-cell} python3
+
+def newton(f, x_0, tol=1e-5, maxIter=100):
+    iteration = jax.jit(lambda x: x - jnp.linalg.solve(jax.jacobian(f)(x), f(x)))
     error = tol + 1
     x = x_0
-    while error > tol:
-        y = q(x)
+    n = 0
+    while error > tol and n <= maxIter:
+        n+=1
+        y = iteration(x)
         error = jnp.linalg.norm(x - y)
         x = y
-        
+        print(f'iteration {n}: error = {error:.5f}')
+    if(n == maxIter+1):
+        raise Exception('Max iteration reached without convergence')
     return x
 ```
-
 
 ```{code-cell} python3
 @jax.jit
@@ -512,20 +548,33 @@ def e(p, A, b, c):
     return jnp.exp(- jnp.dot(A, p)) + c - b * jnp.sqrt(p)
 ```
 
+We find the convergence is reached within 5 steps
+
 ```{code-cell} python3
 %%time
 p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
 ```
+
+With the larger overhead for Newton's method, the performance is not better than the optimised `scipy` optimization function.
 
 ```{code-cell} python3
 p = solution.x
 np.max(np.abs(e(p, A, b, c)))
 ```
 
+However, things will change slightly when we move to higher dimensional problems.
 
 
-```
+### High-Dimensional Problems
+
+Our next step is to investigate a high-dimensional version of the market described above. This market consists of 2,500 goods.
+
+The excess demand function is essentially the same, but now the matrix $A$ is $5000 \times 5000$ and the parameter vectors $b$ and $c$ are $5000 \times 1$.
+
+
+```{code-cell} python3
 dim = 5000
+np.random.seed(123)
 
 # Create a random matrix A and normalize the rows to sum to one
 A = np.random.rand(dim, dim)
@@ -538,27 +587,147 @@ b = np.ones(dim)
 c = np.ones(dim)
 ```
 
+Here's the same demand function expressed in matrix syntax:
 
-```
+```{code-cell} python3
+@jax.jit
 def e(p, A, b, c):
-    return exp(- A @ p) + c - b * sqrt(p)
+    return jnp.exp(- jnp.dot(A, p)) + c - b * jnp.sqrt(p)
 ```
 
+Here's our initial condition
 
-```
-init_p = np.ones(dim)
+```{code-cell} python3
+init_p = jnp.ones(dim)
 ```
 
+The `root` function would cost several minutes to run in this case
 
-```
+```python
 %%time
-solution = root(lambda p: e(p, A, b, c), init_p, method='hybr')
+solution = root(lambda p: e(p, A, b, c),
+                init_p, 
+                jac=lambda p: jax.jacobian(e)(p, A, b, c), 
+                method='hybr')
 ```
 
-```
-p = solution.x
+Newton's method reaches a relatively small error within a minute
+
+```{code-cell} python3
+%%time
+p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
 ```
 
-```
+```{code-cell} python3
 np.max(np.abs(e(p, A, b, c)))
+```
+
+
+
+
+
+```{exercise-start}
+:label: newton_ex1
+```
+
+In this exercise, please try to use different initial values and check how Newton's method will respond to different starting points.
+
+Let's define a three-good problem with the following default values:
+
+$$
+A = \begin{pmatrix}
+            0.2 & 0.1 & 0.7 \\
+            0.3 & 0.2 & 0.5 \\
+            0.1 & 0.8 & 0.1 \\
+        \end{pmatrix},
+            \qquad 
+    b = \begin{pmatrix}
+            1 \\
+            1 \\
+            1
+        \end{pmatrix}
+    \qquad \text{and} \qquad
+    c = \begin{pmatrix}
+            1 \\
+            1 \\
+            1
+        \end{pmatrix}
+$$
+
+Please use the following price vectors as our initial values:
+
+$$
+p_1 = (1, 1, 1)
+$$
+
+$$
+p_2 = (1, 2, 3)
+$$
+
+$$
+p_3 = (5, 5, 5)
+$$
+
+```{exercise-end}
+```
+
+```{solution-start} newton_ex1
+:class: dropdown
+```
+
+```{code-cell} python3
+A = np.array([
+    [0.2, 0.1, 0.7],
+    [0.3, 0.2, 0.5],
+    [0.1, 0.8, 0.1]
+])
+
+b = np.array([1.0, 1.0, 1.0])
+c = np.array([1.0, 1.0, 1.0])
+```
+
+```{code-cell} python3
+initLs = [np.ones(3), np.array([1.0,2.0,3.0]), np.array([5.0,5.0,5.0])]
+```
+
+```{code-cell} python3
+%%time
+p = newton(lambda p: e(p, A, b, c), initLs[0]).block_until_ready()
+```
+
+```{code-cell} python3
+%%time
+p = newton(lambda p: e(p, A, b, c), initLs[1]).block_until_ready()
+```
+
+```{code-cell} python3
+%%time
+p = newton(lambda p: e(p, A, b, c), initLs[2]).block_until_ready()
+```
+
+```{solution-end}
+```
+
+
+
+```{exercise-start}
+:label: newton_ex2
+```
+
+```{exercise-end}
+```
+
+```{solution-start} newton_ex2
+:class: dropdown
+```
+
+```
+A = np.array()
+def multi(k, A, s, α, δ):
+    A, s, α, δ = params
+    return A * s * k**α + (1 - δ) * k
+
+```
+
+```{solution-end}
 ```
