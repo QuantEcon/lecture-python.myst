@@ -550,6 +550,38 @@ To the extent that you can, interpret the monotone relationship between the
 Gini index and $a$.
 ```
 
+```{solution-start} wd_ex1
+:class: dropdown
+```
+
+Here is one solution, which produces a good match between theory and
+simulation.
+
+```{code-cell} ipython3
+a_vals = np.linspace(1, 10, 25)  # Pareto tail index
+ginis = np.empty_like(a_vals)
+
+n = 1000                         # size of each sample
+fig, ax = plt.subplots()
+for i, a in enumerate(a_vals):
+    y = np.random.uniform(size=n)**(-1/a)
+    ginis[i] = qe.gini_coefficient(y)
+ax.plot(a_vals, ginis, label='sampled')
+ax.plot(a_vals, 1/(2*a_vals - 1), label='theoretical')
+ax.legend()
+plt.show()
+```
+
+In general, for a Pareto distribution, a higher tail index implies less weight
+in the right hand tail.
+
+This means less extreme values for wealth and hence more equality.
+
+More equality translates to a lower Gini index.
+
+```{solution-end}
+```
+
 ```{exercise-start}
 :label: wd_ex2
 ```
@@ -586,41 +618,6 @@ z_0 = wdy.z_mean
 
 ```{exercise-end}
 ```
-
-## Solutions
-
-Here is one solution, which produces a good match between theory and
-simulation.
-
-```{solution-start} wd_ex1
-:class: dropdown
-```
-
-```{code-cell} ipython3
-a_vals = np.linspace(1, 10, 25)  # Pareto tail index
-ginis = np.empty_like(a_vals)
-
-n = 1000                         # size of each sample
-fig, ax = plt.subplots()
-for i, a in enumerate(a_vals):
-    y = np.random.uniform(size=n)**(-1/a)
-    ginis[i] = qe.gini_coefficient(y)
-ax.plot(a_vals, ginis, label='sampled')
-ax.plot(a_vals, 1/(2*a_vals - 1), label='theoretical')
-ax.legend()
-plt.show()
-```
-
-In general, for a Pareto distribution, a higher tail index implies less weight
-in the right hand tail.
-
-This means less extreme values for wealth and hence more equality.
-
-More equality translates to a lower Gini index.
-
-```{solution-end}
-```
-
 
 ```{solution-start} wd_ex2
 :class: dropdown

@@ -1046,6 +1046,49 @@ $(0, 1)$.
 ```
 
 
+```{solution-start} fm_ex1
+:class: dropdown
+```
+
+We will address this exercise graphically.
+
+The plots show the time series of $\bar X_m - p$ for two initial
+conditions.
+
+As $m$ gets large, both series converge to zero.
+
+```{code-cell} python3
+α = β = 0.1
+N = 10000
+p = β / (α + β)
+
+P = ((1 - α,       α),               # Careful: P and p are distinct
+     (    β,   1 - β))
+mc = MarkovChain(P)
+
+fig, ax = plt.subplots(figsize=(9, 6))
+ax.set_ylim(-0.25, 0.25)
+ax.grid()
+ax.hlines(0, 0, N, lw=2, alpha=0.6)   # Horizonal line at zero
+
+for x0, col in ((0, 'blue'), (1, 'green')):
+    # Generate time series for worker that starts at x0
+    X = mc.simulate(N, init=x0)
+    # Compute fraction of time spent unemployed, for each n
+    X_bar = (X == 0).cumsum() / (1 + np.arange(N, dtype=float))
+    # Plot
+    ax.fill_between(range(N), np.zeros(N), X_bar - p, color=col, alpha=0.1)
+    ax.plot(X_bar - p, color=col, label=f'$X_0 = \, {x0} $')
+    # Overlay in black--make lines clearer
+    ax.plot(X_bar - p, 'k-', alpha=0.6)
+
+ax.legend(loc='upper right')
+plt.show()
+```
+
+```{solution-end}
+```
+
 ```{exercise-start}
 :label: fm_ex2
 ```
@@ -1213,6 +1256,53 @@ When you solve for the ranking, you will find that the highest ranked node is in
 ```
 
 
+```{solution-start} fm_ex2
+:class: dropdown
+```
+
+Here is one solution:
+
+```{code-cell} python3
+"""
+Return list of pages, ordered by rank
+"""
+import re
+from operator import itemgetter
+
+infile = 'web_graph_data.txt'
+alphabet = 'abcdefghijklmnopqrstuvwxyz'
+
+n = 14 # Total number of web pages (nodes)
+
+# Create a matrix Q indicating existence of links
+#  * Q[i, j] = 1 if there is a link from i to j
+#  * Q[i, j] = 0 otherwise
+Q = np.zeros((n, n), dtype=int)
+f = open(infile, 'r')
+edges = f.readlines()
+f.close()
+for edge in edges:
+    from_node, to_node = re.findall('\w', edge)
+    i, j = alphabet.index(from_node), alphabet.index(to_node)
+    Q[i, j] = 1
+# Create the corresponding Markov matrix P
+P = np.empty((n, n))
+for i in range(n):
+    P[i, :] = Q[i, :] / Q[i, :].sum()
+mc = MarkovChain(P)
+# Compute the stationary distribution r
+r = mc.stationary_distributions[0]
+ranked_pages = {alphabet[i] : r[i] for i in range(n)}
+# Print solution, sorted from highest to lowest rank
+print('Rankings\n ***')
+for name, rank in sorted(ranked_pages.items(), key=itemgetter(1), reverse=1):
+    print(f'{name}: {rank:.4}')
+```
+
+```{solution-end}
+```
+
+
 ```{exercise}
 :label: fm_ex3
 
@@ -1277,97 +1367,6 @@ $P$ as described above.
 
 * Even better, write a function that returns an instance of [QuantEcon.py's](http://quantecon.org/quantecon-py) MarkovChain class.
 ```
-
-## Solutions
-
-```{solution-start} fm_ex1
-:class: dropdown
-```
-
-We will address this exercise graphically.
-
-The plots show the time series of $\bar X_m - p$ for two initial
-conditions.
-
-As $m$ gets large, both series converge to zero.
-
-```{code-cell} python3
-α = β = 0.1
-N = 10000
-p = β / (α + β)
-
-P = ((1 - α,       α),               # Careful: P and p are distinct
-     (    β,   1 - β))
-mc = MarkovChain(P)
-
-fig, ax = plt.subplots(figsize=(9, 6))
-ax.set_ylim(-0.25, 0.25)
-ax.grid()
-ax.hlines(0, 0, N, lw=2, alpha=0.6)   # Horizonal line at zero
-
-for x0, col in ((0, 'blue'), (1, 'green')):
-    # Generate time series for worker that starts at x0
-    X = mc.simulate(N, init=x0)
-    # Compute fraction of time spent unemployed, for each n
-    X_bar = (X == 0).cumsum() / (1 + np.arange(N, dtype=float))
-    # Plot
-    ax.fill_between(range(N), np.zeros(N), X_bar - p, color=col, alpha=0.1)
-    ax.plot(X_bar - p, color=col, label=f'$X_0 = \, {x0} $')
-    # Overlay in black--make lines clearer
-    ax.plot(X_bar - p, 'k-', alpha=0.6)
-
-ax.legend(loc='upper right')
-plt.show()
-```
-
-```{solution-end}
-```
-
-
-```{solution-start} fm_ex2
-:class: dropdown
-```
-
-```{code-cell} python3
-"""
-Return list of pages, ordered by rank
-"""
-import re
-from operator import itemgetter
-
-infile = 'web_graph_data.txt'
-alphabet = 'abcdefghijklmnopqrstuvwxyz'
-
-n = 14 # Total number of web pages (nodes)
-
-# Create a matrix Q indicating existence of links
-#  * Q[i, j] = 1 if there is a link from i to j
-#  * Q[i, j] = 0 otherwise
-Q = np.zeros((n, n), dtype=int)
-f = open(infile, 'r')
-edges = f.readlines()
-f.close()
-for edge in edges:
-    from_node, to_node = re.findall('\w', edge)
-    i, j = alphabet.index(from_node), alphabet.index(to_node)
-    Q[i, j] = 1
-# Create the corresponding Markov matrix P
-P = np.empty((n, n))
-for i in range(n):
-    P[i, :] = Q[i, :] / Q[i, :].sum()
-mc = MarkovChain(P)
-# Compute the stationary distribution r
-r = mc.stationary_distributions[0]
-ranked_pages = {alphabet[i] : r[i] for i in range(n)}
-# Print solution, sorted from highest to lowest rank
-print('Rankings\n ***')
-for name, rank in sorted(ranked_pages.items(), key=itemgetter(1), reverse=1):
-    print(f'{name}: {rank:.4}')
-```
-
-```{solution-end}
-```
-
 
 ```{solution} fm_ex3
 :class: dropdown

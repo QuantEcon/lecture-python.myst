@@ -590,12 +590,80 @@ Replicate {ref}`the figure presented above <light_heavy_fig1>` that compares nor
 Use `np.random.seed(11)` to set the seed.
 ```
 
+```{solution-start} ht_ex1
+:class: dropdown
+```
+
+Here is one solution:
+
+```{code-cell} python3
+n = 120
+np.random.seed(11)
+
+fig, axes = plt.subplots(3, 1, figsize=(6, 12))
+
+for ax in axes:
+    ax.set_ylim((-120, 120))
+
+s_vals = 2, 12
+
+for ax, s in zip(axes[:2], s_vals):
+    data = np.random.randn(n) * s
+    ax.plot(list(range(n)), data, linestyle='', marker='o', alpha=0.5, ms=4)
+    ax.vlines(list(range(n)), 0, data, lw=0.2)
+    ax.set_title(f"draws from $N(0, \sigma^2)$ with $\sigma = {s}$", fontsize=11)
+
+ax = axes[2]
+distribution = cauchy()
+data = distribution.rvs(n)
+ax.plot(list(range(n)), data, linestyle='', marker='o', alpha=0.5, ms=4)
+ax.vlines(list(range(n)), 0, data, lw=0.2)
+ax.set_title(f"draws from the Cauchy distribution", fontsize=11)
+
+plt.subplots_adjust(hspace=0.25)
+
+plt.show()
+```
+
+```{solution-end}
+```
+
 
 ```{exercise}
 :label: ht_ex2
 
 Prove: If $X$ has a Pareto tail with tail index $\alpha$, then
 $\mathbb E[X^r] = \infty$ for all $r \geq \alpha$.
+```
+
+```{solution-start} ht_ex2
+:class: dropdown
+```
+
+Let $X$ have a Pareto tail with tail index $\alpha$ and let $F$ be its cdf.
+
+Fix $r \geq \alpha$.
+
+As discussed after {eq}`plrt`, we can take positive constants $b$ and $\bar x$ such that
+
+$$
+\mathbb P\{X > x\} \geq b x^{- \alpha} \text{ whenever } x \geq \bar x
+$$
+
+But then
+
+$$
+\mathbb E X^r = r \int_0^\infty x^{r-1} \mathbb P\{ X > x \} x
+\geq
+r \int_0^{\bar x} x^{r-1} \mathbb P\{ X > x \} x
++ r \int_{\bar x}^\infty  x^{r-1} b x^{-\alpha} x.
+$$
+
+We know that $\int_{\bar x}^\infty x^{r-\alpha-1} x = \infty$ whenever $r - \alpha - 1 \geq -1$.
+
+Since $r \geq \alpha$, we have $\mathbb E X^r = \infty$.
+
+```{solution-end}
 ```
 
 
@@ -611,6 +679,37 @@ For $\alpha$, try 1.15, 1.5 and 1.75.
 Use `np.random.seed(11)` to set the seed.
 ```
 
+```{solution-start} ht_ex3
+:class: dropdown
+```
+
+Here is one solution:
+
+```{code-cell} ipython3
+from scipy.stats import pareto
+
+np.random.seed(11)
+
+n = 120
+alphas = [1.15, 1.50, 1.75]
+
+fig, axes = plt.subplots(3, 1, figsize=(6, 8))
+
+for (a, ax) in zip(alphas, axes):
+    ax.set_ylim((-5, 50))
+    data = pareto.rvs(size=n, scale=1, b=a)
+    ax.plot(list(range(n)), data, linestyle='', marker='o', alpha=0.5, ms=4)
+    ax.vlines(list(range(n)), 0, data, lw=0.2)
+    ax.set_title(f"Pareto draws with $\\alpha = {a}$", fontsize=11)
+
+plt.subplots_adjust(hspace=0.4)
+
+plt.show()
+```
+
+```{solution-end}
+```
+
 
 ```{exercise}
 :label: ht_ex4
@@ -621,6 +720,51 @@ If you like you can use the function `qe.rank_size` from the `quantecon` library
 
 Use `np.random.seed(13)` to set the seed.
 ```
+
+
+```{solution-start} ht_ex4
+:class: dropdown
+```
+
+First let's generate the data for the plots:
+
+```{code-cell} ipython3
+sample_size = 1000
+np.random.seed(13)
+z = np.random.randn(sample_size)
+
+data_1 = np.abs(z)
+data_2 = np.exp(z)
+data_3 = np.exp(np.random.exponential(scale=1.0, size=sample_size))
+
+data_list = [data_1, data_2, data_3]
+```
+
+Now we plot the data:
+
+```{code-cell} ipython3
+fig, axes = plt.subplots(3, 1, figsize=(6, 8))
+axes = axes.flatten()
+labels = ['$|z|$', '$\exp(z)$', 'Pareto with tail index $1.0$']
+
+for data, label, ax in zip(data_list, labels, axes):
+
+    rank_data, size_data = qe.rank_size(data)
+
+    ax.loglog(rank_data, size_data, 'o', markersize=3.0, alpha=0.5, label=label)
+    ax.set_xlabel("log rank")
+    ax.set_ylabel("log size")
+
+    ax.legend()
+
+fig.subplots_adjust(hspace=0.4)
+
+plt.show()
+```
+
+```{solution-end}
+```
+
 
 ```{exercise-start}
 :label: ht_ex5
@@ -678,150 +822,6 @@ firm dynamics in later lectures.
 
 ```{exercise-end}
 ```
-
-## Solutions
-
-```{solution-start} ht_ex1
-:class: dropdown
-```
-
-```{code-cell} python3
-n = 120
-np.random.seed(11)
-
-fig, axes = plt.subplots(3, 1, figsize=(6, 12))
-
-for ax in axes:
-    ax.set_ylim((-120, 120))
-
-s_vals = 2, 12
-
-for ax, s in zip(axes[:2], s_vals):
-    data = np.random.randn(n) * s
-    ax.plot(list(range(n)), data, linestyle='', marker='o', alpha=0.5, ms=4)
-    ax.vlines(list(range(n)), 0, data, lw=0.2)
-    ax.set_title(f"draws from $N(0, \sigma^2)$ with $\sigma = {s}$", fontsize=11)
-
-ax = axes[2]
-distribution = cauchy()
-data = distribution.rvs(n)
-ax.plot(list(range(n)), data, linestyle='', marker='o', alpha=0.5, ms=4)
-ax.vlines(list(range(n)), 0, data, lw=0.2)
-ax.set_title(f"draws from the Cauchy distribution", fontsize=11)
-
-plt.subplots_adjust(hspace=0.25)
-
-plt.show()
-```
-
-```{solution-end}
-```
-
-
-```{solution-start} ht_ex2
-:class: dropdown
-```
-
-Let $X$ have a Pareto tail with tail index $\alpha$ and let $F$ be its cdf.
-
-Fix $r \geq \alpha$.
-
-As discussed after {eq}`plrt`, we can take positive constants $b$ and $\bar x$ such that
-
-$$
-\mathbb P\{X > x\} \geq b x^{- \alpha} \text{ whenever } x \geq \bar x
-$$
-
-But then
-
-$$
-\mathbb E X^r = r \int_0^\infty x^{r-1} \mathbb P\{ X > x \} x
-\geq
-r \int_0^{\bar x} x^{r-1} \mathbb P\{ X > x \} x
-+ r \int_{\bar x}^\infty  x^{r-1} b x^{-\alpha} x.
-$$
-
-We know that $\int_{\bar x}^\infty x^{r-\alpha-1} x = \infty$ whenever $r - \alpha - 1 \geq -1$.
-
-Since $r \geq \alpha$, we have $\mathbb E X^r = \infty$.
-
-```{solution-end}
-```
-
-```{solution-start} ht_ex3
-:class: dropdown
-```
-
-```{code-cell} ipython3
-from scipy.stats import pareto
-
-np.random.seed(11)
-
-n = 120
-alphas = [1.15, 1.50, 1.75]
-
-fig, axes = plt.subplots(3, 1, figsize=(6, 8))
-
-for (a, ax) in zip(alphas, axes):
-    ax.set_ylim((-5, 50))
-    data = pareto.rvs(size=n, scale=1, b=a)
-    ax.plot(list(range(n)), data, linestyle='', marker='o', alpha=0.5, ms=4)
-    ax.vlines(list(range(n)), 0, data, lw=0.2)
-    ax.set_title(f"Pareto draws with $\\alpha = {a}$", fontsize=11)
-
-plt.subplots_adjust(hspace=0.4)
-
-plt.show()
-```
-
-```{solution-end}
-```
-
-
-```{solution-start} ht_ex4
-:class: dropdown
-```
-
-First let's generate the data for the plots:
-
-```{code-cell} ipython3
-sample_size = 1000
-np.random.seed(13)
-z = np.random.randn(sample_size)
-
-data_1 = np.abs(z)
-data_2 = np.exp(z)
-data_3 = np.exp(np.random.exponential(scale=1.0, size=sample_size))
-
-data_list = [data_1, data_2, data_3]
-```
-
-Now we plot the data:
-
-```{code-cell} ipython3
-fig, axes = plt.subplots(3, 1, figsize=(6, 8))
-axes = axes.flatten()
-labels = ['$|z|$', '$\exp(z)$', 'Pareto with tail index $1.0$']
-
-for data, label, ax in zip(data_list, labels, axes):
-
-    rank_data, size_data = qe.rank_size(data)
-
-    ax.loglog(rank_data, size_data, 'o', markersize=3.0, alpha=0.5, label=label)
-    ax.set_xlabel("log rank")
-    ax.set_ylabel("log size")
-
-    ax.legend()
-
-fig.subplots_adjust(hspace=0.4)
-
-plt.show()
-```
-
-```{solution-end}
-```
-
-
 
 ```{solution-start} ht_ex5
 :class: dropdown
