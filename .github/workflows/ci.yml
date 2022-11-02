@@ -6,6 +6,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Install git
+        shell: bash -l {0}
+        run: |
+          apt-get -qq update
+          apt-get install -y git
       - name: Setup Anaconda
         uses: conda-incubator/setup-miniconda@v2
         with:
@@ -35,31 +40,37 @@ jobs:
       - name: Display Pip Versions
         shell: bash -l {0}
         run: pip list
-      - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: cache.yml
-          branch: main
-          name: build-cache
-          path: _build
+      # - name: Download "build" folder (cache)
+      #   uses: dawidd6/action-download-artifact@v2
+      #   with:
+      #     workflow: cache.yml
+      #     branch: main
+      #     name: build-cache
+      #     path: _build
       # Build Assets (Download Notebooks and PDF via LaTeX)
+      # - name: Build Download Notebooks (sphinx-tojupyter)
+      #   shell: bash -l {0}
+      #   run: |
+      #     jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter
+      #     mkdir -p _build/html/_notebooks
+      #     cp -u _build/jupyter/*.ipynb _build/html/_notebooks
+      # Build HTML (Website)
+      - name: Build HTML
+        shell: bash -l {0}
+        run: |
+          jb build -W --keep-going lectures --path-output ./
+      - name: Upload Execution Reports
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: execution-reports
+          path: _build/html/reports
       - name: Build PDF from LaTeX
         shell: bash -l {0}
         run: |
           jb build lectures --builder pdflatex --path-output ./ -n --keep-going
           mkdir -p _build/html/_pdf
           cp -u _build/latex/*.pdf _build/html/_pdf
-      - name: Build Download Notebooks (sphinx-tojupyter)
-        shell: bash -l {0}
-        run: |
-          jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter
-          mkdir -p _build/html/_notebooks
-          cp -u _build/jupyter/*.ipynb _build/html/_notebooks
-      # Build HTML (Website)
-      - name: Build HTML
-        shell: bash -l {0}
-        run: |
-          jb build -W --keep-going lectures --path-output ./
       - name: Save Build as Artifact
         uses: actions/upload-artifact@v1
         with:
