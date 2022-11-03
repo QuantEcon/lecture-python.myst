@@ -467,8 +467,8 @@ ax.text(0.7, 0.9, 'accept')
 plt.show()
 ```
 
-The results fit well with our intuition from section [looking
-forward](#Looking-Forward).
+<!-- The results fit well with our intuition from section [looking
+forward](#Looking-Forward). -->
 
 - The black line in the figure above corresponds to the function
   $\bar w(\pi)$ introduced there.
@@ -674,6 +674,9 @@ def Q_factory(sp, parallel_flag=True):
 In the next exercise, you are asked to compute an approximation to
 $\bar w$.
 
+<!-- Your result should coincide closely with the figure for the optimal
+policy [shown above](#Take-1:-Solution-by-VFI). -->
+
 ## Exercises
 
 ```{exercise}
@@ -681,9 +684,6 @@ $\bar w$.
 
 Use the default parameters and `Q_factory` to compute an optimal
 policy.
-
-Your result should coincide closely with the figure for the optimal
-policy [shown above](#Take-1:-Solution-by-VFI).
 
 Try experimenting with different parameters, and confirm that the change
 in the optimal policy coincides with your intuition.
