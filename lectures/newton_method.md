@@ -721,12 +721,16 @@ p = newton(lambda p: e(p, A, b, c), initLs[2]).block_until_ready()
 :class: dropdown
 ```
 
-```
-A = np.array()
-def multi(k, A, s, α, δ):
-    A, s, α, δ = params
-    return A * s * k**α + (1 - δ) * k
+```{solution-start} newton_ex2
+A = np.array([2.0, 1.0])
+s = np.array([0.3, 0.2])
+α = np.array([0.3, 0.7])
+δ = np.array([0.4, 0.5])
 
+def multi(k, A, s, α, δ):
+    return A * s * k ** α + (1 - δ) * k
+
+multi(0.25, A, s, α, δ)
 ```
 
 ```{solution-end}
