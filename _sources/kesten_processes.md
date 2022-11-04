@@ -446,6 +446,43 @@ Compare visually with the Nasdaq Composite Index returns {ref}`shown above <ndco
 While the time path differs, you should see bursts of high volatility.
 ```
 
+
+```{solution-start} kp_ex1
+:class: dropdown
+```
+
+Here is one solution:
+
+```{code-cell} ipython3
+α_0 = 1e-5
+α_1 = 0.1
+β = 0.9
+
+years = 15
+days = years * 250
+
+def garch_ts(ts_length=days):
+    σ2 = 0
+    r = np.zeros(ts_length)
+    for t in range(ts_length-1):
+        ξ = np.random.randn()
+        σ2 = α_0 + σ2 * (α_1 * ξ**2 + β)
+        r[t] = np.sqrt(σ2) * np.random.randn()
+    return r
+
+fig, ax = plt.subplots()
+
+np.random.seed(12)
+
+ax.plot(garch_ts(), alpha=0.7)
+
+ax.set(xlabel='time', ylabel='$\\sigma_t^2$')
+plt.show()
+```
+
+```{solution-end}
+```
+
 ```{exercise}
 :label: kp_ex2
 
@@ -454,6 +491,47 @@ In our discussion of firm dynamics, it was claimed that {eq}`firm_dynam` is more
 (The empirical literature was reviewed immediately above {eq}`firm_dynam`.)
 
 In what sense is this true (or false)?
+```
+
+```{solution-start} kp_ex2
+:class: dropdown
+```
+
+The empirical findings are that
+
+1. small firms grow faster than large firms  and
+1. the growth rate of small firms is more volatile than that of large firms.
+
+Also, Gibrat's law is generally found to be a reasonable approximation for
+large firms than for small firms
+
+The claim is that the dynamics in {eq}`firm_dynam` are more consistent with
+points 1-2 than Gibrat's law.
+
+To see why, we rewrite {eq}`firm_dynam` in terms of growth dynamics:
+
+```{math}
+:label: firm_dynam_2
+
+\frac{s_{t+1}}{s_t} = a_{t+1} + \frac{b_{t+1}}{s_t}
+```
+
+Taking $s_t = s$ as given, the mean and variance of firm growth are
+
+$$
+\mathbb E a
++ \frac{\mathbb E b}{s}
+\quad \text{and} \quad
+\mathbb V a
++ \frac{\mathbb V b}{s^2}
+$$
+
+Both of these decline with firm size $s$, consistent with the data.
+
+Moreover, the law of motion {eq}`firm_dynam_2` clearly approaches Gibrat's law
+{eq}`firm_dynam_gb` as $s_t$ gets large.
+
+```{solution-end}
 ```
 
 ```{exercise}
@@ -474,6 +552,36 @@ only if $\mu < 0$.
 
 Obtain the value of $\alpha$ that makes the Kesten--Goldie conditions
 hold.
+```
+
+```{solution-start} kp_ex3
+:class: dropdown
+```
+
+Since $a_t$ has a density it is nonarithmetic.
+
+Since $a_t$ has the same density as $a = \exp(\mu + \sigma Z)$ when $Z$ is standard normal, we have
+
+$$
+\mathbb E \ln a_t = \mathbb E (\mu + \sigma Z) = \mu,
+$$
+
+and since $\eta_t$ has finite moments of all orders, the stationarity
+condition holds if and only if $\mu < 0$.
+
+Given the properties of the lognormal distribution (which has finite moments
+of all orders), the only other condition in doubt is existence of a positive constant
+$\alpha$ such that $\mathbb E a_t^\alpha = 1$.
+
+This is equivalent to the statement
+
+$$
+\exp \left( \alpha \mu + \frac{\alpha^2 \sigma^2}{2} \right) = 1.
+$$
+
+Solving for $\alpha$ gives $\alpha = -2\mu / \sigma^2$.
+
+```{solution-end}
 ```
 
 
@@ -560,118 +668,6 @@ s_init = 1.0      # initial condition for each firm
 
 ```{exercise-end}
 ```
-
-## Solutions
-
-```{solution-start} kp_ex1
-:class: dropdown
-```
-
-Here is one solution:
-
-```{code-cell} ipython3
-α_0 = 1e-5
-α_1 = 0.1
-β = 0.9
-
-years = 15
-days = years * 250
-
-def garch_ts(ts_length=days):
-    σ2 = 0
-    r = np.zeros(ts_length)
-    for t in range(ts_length-1):
-        ξ = np.random.randn()
-        σ2 = α_0 + σ2 * (α_1 * ξ**2 + β)
-        r[t] = np.sqrt(σ2) * np.random.randn()
-    return r
-
-fig, ax = plt.subplots()
-
-np.random.seed(12)
-
-ax.plot(garch_ts(), alpha=0.7)
-
-ax.set(xlabel='time', ylabel='$\\sigma_t^2$')
-plt.show()
-```
-
-```{solution-end}
-```
-
-
-```{solution-start} kp_ex2
-:class: dropdown
-```
-
-The empirical findings are that
-
-1. small firms grow faster than large firms  and
-1. the growth rate of small firms is more volatile than that of large firms.
-
-Also, Gibrat's law is generally found to be a reasonable approximation for
-large firms than for small firms
-
-The claim is that the dynamics in {eq}`firm_dynam` are more consistent with
-points 1-2 than Gibrat's law.
-
-To see why, we rewrite {eq}`firm_dynam` in terms of growth dynamics:
-
-```{math}
-:label: firm_dynam_2
-
-\frac{s_{t+1}}{s_t} = a_{t+1} + \frac{b_{t+1}}{s_t}
-```
-
-Taking $s_t = s$ as given, the mean and variance of firm growth are
-
-$$
-\mathbb E a
-+ \frac{\mathbb E b}{s}
-\quad \text{and} \quad
-\mathbb V a
-+ \frac{\mathbb V b}{s^2}
-$$
-
-Both of these decline with firm size $s$, consistent with the data.
-
-Moreover, the law of motion {eq}`firm_dynam_2` clearly approaches Gibrat's law
-{eq}`firm_dynam_gb` as $s_t$ gets large.
-
-```{solution-end}
-```
-
-
-```{solution-start} kp_ex3
-:class: dropdown
-```
-
-Since $a_t$ has a density it is nonarithmetic.
-
-Since $a_t$ has the same density as $a = \exp(\mu + \sigma Z)$ when $Z$ is standard normal, we have
-
-$$
-\mathbb E \ln a_t = \mathbb E (\mu + \sigma Z) = \mu,
-$$
-
-and since $\eta_t$ has finite moments of all orders, the stationarity
-condition holds if and only if $\mu < 0$.
-
-Given the properties of the lognormal distribution (which has finite moments
-of all orders), the only other condition in doubt is existence of a positive constant
-$\alpha$ such that $\mathbb E a_t^\alpha = 1$.
-
-This is equivalent to the statement
-
-$$
-\exp \left( \alpha \mu + \frac{\alpha^2 \sigma^2}{2} \right) = 1.
-$$
-
-Solving for $\alpha$ gives $\alpha = -2\mu / \sigma^2$.
-
-```{solution-end}
-```
-
 
 ```{solution-start} kp_ex4
 :class: dropdown

@@ -531,9 +531,9 @@ F_{8}=\left[\begin{array}{ccccc}
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">construct_F</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
 
-    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">e</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">e</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="nb">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">N</span><span class="p">))</span>
 
-    <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
         <span class="n">F</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">w</span> <span class="o">**</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
 
@@ -545,16 +545,6 @@ F_{8}=\left[\begin{array}{ccccc}
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F8</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">construct_F</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17806/903011294.py:3: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  w = np.e ** (-np.complex(0, 2*np.pi/N))
-/tmp/ipykernel_17806/903011294.py:5: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  F = np.ones((N, N), dtype=np.complex)
 </pre></div>
 </div>
 </div>
@@ -616,15 +606,15 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.+0.j, -0.+0.j, -0.+0.j, -0.+0.j, -0.+0.j,  0.+0.j,  0.+0.j,
          0.+0.j],
-       [-0.-0.j,  1.-0.j, -0.+0.j, -0.+0.j, -0.+0.j, -0.+0.j,  0.+0.j,
+       [-0.-0.j,  1.+0.j, -0.+0.j, -0.+0.j, -0.+0.j, -0.+0.j,  0.+0.j,
          0.+0.j],
-       [-0.-0.j, -0.-0.j,  1.+0.j, -0.+0.j, -0.+0.j, -0.+0.j, -0.+0.j,
+       [-0.-0.j, -0.-0.j,  1.+0.j, -0.+0.j, -0.+0.j, -0.+0.j,  0.+0.j,
          0.+0.j],
        [-0.-0.j, -0.-0.j, -0.-0.j,  1.+0.j, -0.+0.j, -0.+0.j, -0.+0.j,
         -0.+0.j],
-       [-0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j,  1.-0.j, -0.+0.j, -0.+0.j,
+       [-0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j,  1.+0.j, -0.+0.j, -0.+0.j,
         -0.+0.j],
-       [ 0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j,  1.-0.j, -0.+0.j,
+       [ 0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j,  1.+0.j, -0.+0.j,
         -0.+0.j],
        [ 0.-0.j,  0.-0.j,  0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j,  1.+0.j,
         -0.+0.j],
@@ -644,17 +634,10 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diff_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diff_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
     <span class="n">diff</span> <span class="o">=</span> <span class="n">P8</span> <span class="o">@</span> <span class="n">Q8</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">w</span> <span class="o">**</span> <span class="n">j</span> <span class="o">*</span> <span class="n">Q8</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span>
     <span class="n">diff_arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">@</span> <span class="n">diff</span><span class="o">.</span><span class="n">T</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17806/646542455.py:1: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  diff_arr = np.empty(8, dtype=np.complex)
 </pre></div>
 </div>
 </div>
@@ -696,7 +679,7 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.743, 0.269, 0.414, 0.418, 0.69 , 0.84 , 0.066, 0.785])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.288, 0.499, 0.78 , 0.585, 0.872, 0.081, 0.766, 0.271])
 </pre></div>
 </div>
 </div>
@@ -730,14 +713,14 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.743, 0.269, 0.414, 0.418, 0.69 , 0.84 , 0.066, 0.785],
-       [0.785, 0.743, 0.269, 0.414, 0.418, 0.69 , 0.84 , 0.066],
-       [0.066, 0.785, 0.743, 0.269, 0.414, 0.418, 0.69 , 0.84 ],
-       [0.84 , 0.066, 0.785, 0.743, 0.269, 0.414, 0.418, 0.69 ],
-       [0.69 , 0.84 , 0.066, 0.785, 0.743, 0.269, 0.414, 0.418],
-       [0.418, 0.69 , 0.84 , 0.066, 0.785, 0.743, 0.269, 0.414],
-       [0.414, 0.418, 0.69 , 0.84 , 0.066, 0.785, 0.743, 0.269],
-       [0.269, 0.414, 0.418, 0.69 , 0.84 , 0.066, 0.785, 0.743]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.288, 0.499, 0.78 , 0.585, 0.872, 0.081, 0.766, 0.271],
+       [0.271, 0.288, 0.499, 0.78 , 0.585, 0.872, 0.081, 0.766],
+       [0.766, 0.271, 0.288, 0.499, 0.78 , 0.585, 0.872, 0.081],
+       [0.081, 0.766, 0.271, 0.288, 0.499, 0.78 , 0.585, 0.872],
+       [0.872, 0.081, 0.766, 0.271, 0.288, 0.499, 0.78 , 0.585],
+       [0.585, 0.872, 0.081, 0.766, 0.271, 0.288, 0.499, 0.78 ],
+       [0.78 , 0.585, 0.872, 0.081, 0.766, 0.271, 0.288, 0.499],
+       [0.499, 0.78 , 0.585, 0.872, 0.081, 0.766, 0.271, 0.288]])
 </pre></div>
 </div>
 </div>
@@ -749,14 +732,14 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.743, 0.269, 0.414, 0.418, 0.69 , 0.84 , 0.066, 0.785],
-       [0.785, 0.743, 0.269, 0.414, 0.418, 0.69 , 0.84 , 0.066],
-       [0.066, 0.785, 0.743, 0.269, 0.414, 0.418, 0.69 , 0.84 ],
-       [0.84 , 0.066, 0.785, 0.743, 0.269, 0.414, 0.418, 0.69 ],
-       [0.69 , 0.84 , 0.066, 0.785, 0.743, 0.269, 0.414, 0.418],
-       [0.418, 0.69 , 0.84 , 0.066, 0.785, 0.743, 0.269, 0.414],
-       [0.414, 0.418, 0.69 , 0.84 , 0.066, 0.785, 0.743, 0.269],
-       [0.269, 0.414, 0.418, 0.69 , 0.84 , 0.066, 0.785, 0.743]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.288, 0.499, 0.78 , 0.585, 0.872, 0.081, 0.766, 0.271],
+       [0.271, 0.288, 0.499, 0.78 , 0.585, 0.872, 0.081, 0.766],
+       [0.766, 0.271, 0.288, 0.499, 0.78 , 0.585, 0.872, 0.081],
+       [0.081, 0.766, 0.271, 0.288, 0.499, 0.78 , 0.585, 0.872],
+       [0.872, 0.081, 0.766, 0.271, 0.288, 0.499, 0.78 , 0.585],
+       [0.585, 0.872, 0.081, 0.766, 0.271, 0.288, 0.499, 0.78 ],
+       [0.78 , 0.585, 0.872, 0.081, 0.766, 0.271, 0.288, 0.499],
+       [0.499, 0.78 , 0.585, 0.872, 0.081, 0.766, 0.271, 0.288]])
 </pre></div>
 </div>
 </div>
@@ -777,18 +760,11 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 <p>The  <span class="math notranslate nohighlight">\(k\)</span>th column of <span class="math notranslate nohighlight">\(P_{8}\)</span> associated with eigenvalue <span class="math notranslate nohighlight">\(w^{k-1}\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(C_{8}\)</span> associated with an eigenvalue <span class="math notranslate nohighlight">\(\sum_{h=0}^{7} c_{j} w^{h k}\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">𝜆_C8</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">𝜆_C8</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
         <span class="n">𝜆_C8</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">c</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">w</span> <span class="o">**</span> <span class="p">(</span><span class="n">j</span> <span class="o">*</span> <span class="n">k</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17806/866898372.py:1: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  𝜆_C8 = np.zeros(8, dtype=np.complex)
 </pre></div>
 </div>
 </div>
@@ -800,8 +776,8 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 4.224+0.j   , -0.091+0.316j,  0.953+0.094j,  0.197+1.01j ,
-       -0.399-0.j   ,  0.197-1.01j ,  0.953-0.094j, -0.091-0.316j])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 4.143+0.j   , -0.51 -0.532j, -0.385+0.276j, -0.658-0.503j,
+        1.27 +0.j   , -0.658+0.503j, -0.385-0.276j, -0.51 +0.532j])
 </pre></div>
 </div>
 </div>
@@ -818,13 +794,13 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j]
-[ 0.+0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.+0.j -0.+0.j -0.+0.j]
-[ 0.+0.j  0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.+0.j  0.+0.j]
-[-0.+0.j  0.-0.j -0.+0.j  0.-0.j -0.-0.j  0.+0.j  0.-0.j -0.+0.j]
-[-0.+0.j  0.-0.j -0.+0.j  0.-0.j -0.+0.j  0.-0.j -0.+0.j  0.-0.j]
-[ 0.-0.j  0.-0.j  0.+0.j -0.-0.j  0.-0.j -0.+0.j -0.-0.j  0.+0.j]
-[ 0.-0.j -0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.+0.j -0.+0.j]
-[0.+0.j 0.-0.j 0.-0.j 0.-0.j 0.-0.j 0.-0.j 0.+0.j 0.+0.j]
+[ 0.+0.j  0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.+0.j]
+[-0.+0.j -0.-0.j -0.-0.j -0.+0.j  0.-0.j -0.-0.j -0.-0.j -0.+0.j]
+[-0.+0.j  0.-0.j -0.-0.j -0.+0.j  0.-0.j -0.-0.j  0.+0.j -0.-0.j]
+[-0.-0.j -0.-0.j  0.-0.j  0.+0.j -0.-0.j -0.+0.j  0.-0.j  0.+0.j]
+[ 0.+0.j -0.-0.j  0.-0.j  0.+0.j -0.-0.j  0.-0.j -0.+0.j  0.-0.j]
+[-0.+0.j -0.-0.j  0.-0.j  0.+0.j -0.-0.j  0.-0.j  0.-0.j  0.+0.j]
+[0.-0.j 0.-0.j 0.-0.j 0.-0.j 0.-0.j 0.-0.j 0.-0.j 0.+0.j]
 </pre></div>
 </div>
 </div>
@@ -846,9 +822,9 @@ X_{k}=\sum_{n=0}^{N-1}x_{n}e^{-2\pi\frac{kn}{N}i}
     <span class="s2">&quot;The discrete Fourier transform.&quot;</span>
 
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">e</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">e</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="nb">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">N</span><span class="p">))</span>
 
-    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
             <span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">w</span> <span class="o">**</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
@@ -890,16 +866,6 @@ x_{n}=\begin{cases}
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">DFT</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17806/1700622740.py:5: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  w = np.e ** (-np.complex(0, 2*np.pi/N))
-/tmp/ipykernel_17806/1700622740.py:7: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  X = np.zeros(N, dtype=np.complex)
 </pre></div>
 </div>
 </div>
@@ -972,9 +938,9 @@ x_{n} = \sum_{k=0}^{N-1} \frac{1}{N} X_{k} e^{2\pi\left(\frac{kn}{N}\right)i}, \
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse_transform</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
 
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">e</span> <span class="o">**</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">e</span> <span class="o">**</span> <span class="p">(</span><span class="nb">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">N</span><span class="p">))</span>
 
-    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
             <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+=</span> <span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">w</span> <span class="o">**</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
@@ -991,14 +957,6 @@ x_{n} = \sum_{k=0}^{N-1} \frac{1}{N} X_{k} e^{2\pi\left(\frac{kn}{N}\right)i}, \
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17806/1761241726.py:4: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  w = np.e ** (np.complex(0, 2*np.pi/N))
-/tmp/ipykernel_17806/1761241726.py:6: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  x = np.zeros(N, dtype=np.complex)
-</pre></div>
-</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.5+0.j,  0.5-0.j, -0. -0.j, -0. -0.j, -0. -0.j, -0. -0.j,
        -0. +0.j, -0. +0.j, -0. +0.j, -0. +0.j])
 </pre></div>
@@ -1030,16 +988,6 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17806/1700622740.py:5: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  w = np.e ** (-np.complex(0, 2*np.pi/N))
-/tmp/ipykernel_17806/1700622740.py:7: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  X = np.zeros(N, dtype=np.complex)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1068,16 +1016,6 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">DFT</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17806/1700622740.py:5: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  w = np.e ** (-np.complex(0, 2*np.pi/N))
-/tmp/ipykernel_17806/1700622740.py:7: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  X = np.zeros(N, dtype=np.complex)
 </pre></div>
 </div>
 </div>
@@ -1129,14 +1067,6 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17806/1700622740.py:5: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  w = np.e ** (-np.complex(0, 2*np.pi/N))
-/tmp/ipykernel_17806/1700622740.py:7: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  X = np.zeros(N, dtype=np.complex)
-</pre></div>
-</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([2. +0.j   , 2. +0.558j, 2. +1.218j, 2. +2.174j, 2. +4.087j,
        2.+12.785j, 2.-12.466j, 2. -3.751j, 2. -1.801j, 2. -0.778j,
        2. -0.j   , 2. +0.778j, 2. +1.801j, 2. +3.751j, 2.+12.466j,
@@ -1149,16 +1079,6 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F20</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">construct_F</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17806/903011294.py:3: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  w = np.e ** (-np.complex(0, 2*np.pi/N))
-/tmp/ipykernel_17806/903011294.py:5: DeprecationWarning: `np.complex` is a deprecated alias for the builtin `complex`. To silence this warning, use `complex` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.complex128` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  F = np.ones((N, N), dtype=np.complex)
 </pre></div>
 </div>
 </div>
@@ -1187,7 +1107,7 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 2.   +0.j, -0.313+0.j, -1.902-0.j,  0.908+0.j,  1.618+0.j,
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 2.   +0.j, -0.313+0.j, -1.902+0.j,  0.908+0.j,  1.618-0.j,
        -1.414-0.j, -1.176-0.j,  1.782-0.j,  0.618+0.j, -1.975+0.j,
        -0.   -0.j,  1.975+0.j, -0.618+0.j, -1.782-0.j,  1.176-0.j,
         1.414+0.j, -1.618+0.j, -0.908-0.j,  1.902-0.j,  0.313+0.j])

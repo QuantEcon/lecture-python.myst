@@ -438,8 +438,6 @@ Set `γ = 1.5`.
 Compute and plot the optimal policy.
 ```
 
-## Solutions
-
 ```{solution-start} cpi_ex1
 :class: dropdown
 ```

@@ -178,11 +178,6 @@ const thebe_selector_output = ".output, .cell_output"
    74.6. Exercises
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#solutions">
-   74.7. Solutions
-  </a>
- </li>
 </ul>
 
                             <p class="logo">
@@ -245,7 +240,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p><a class="reference internal" href="#grouping-and-summarizing-data" id="id5">Grouping and Summarizing Data</a></p></li>
 <li><p><a class="reference internal" href="#final-remarks" id="id6">Final Remarks</a></p></li>
 <li><p><a class="reference internal" href="#exercises" id="id7">Exercises</a></p></li>
-<li><p><a class="reference internal" href="#solutions" id="id8">Solutions</a></p></li>
 </ul>
 </li>
 </ul>
@@ -864,15 +858,11 @@ period.</p>
 <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> creates a cross-section of our panel data</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">realwage</span><span class="p">[</span><span class="s1">&#39;2015&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">realwage</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2015&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17461/329490644.py:1: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
-  realwage[&#39;2015&#39;].stack(level=(1, 2)).transpose().head()
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -2013,15 +2003,11 @@ dtype: float64
 to aggregate over</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;Continent&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;Continent&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17461/1343207079.py:1: FutureWarning: Using the level keyword in DataFrame and Series aggregations is deprecated and will be removed in a future version. Use groupby instead. df.median(level=1) should use df.groupby(level=1).median().
-  merged.mean(level=&#39;Continent&#39;, axis=1).head()
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -2096,7 +2082,7 @@ to aggregate over</p>
 <p>We can plot the average minimum wages in each continent as a time series</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;Continent&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;Continent&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Average real minimum wage&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;2015 USD&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
@@ -2105,18 +2091,14 @@ to aggregate over</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17461/1308448930.py:1: FutureWarning: Using the level keyword in DataFrame and Series aggregations is deprecated and will be removed in a future version. Use groupby instead. df.median(level=1) should use df.groupby(level=1).median().
-  merged.mean(level=&#39;Continent&#39;, axis=1).plot()
-</pre></div>
-</div>
-<img alt="_images/pandas_panel_58_1.png" src="_images/pandas_panel_58_1.png" />
+<img alt="_images/pandas_panel_58_0.png" src="_images/pandas_panel_58_0.png" />
 </div>
 </div>
 <p>We will drop Australia as a continent for plotting purposes</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Australia&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;Continent&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">merged</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;Continent&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">merged</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;Continent&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Average real minimum wage&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;2015 USD&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
@@ -2125,11 +2107,7 @@ to aggregate over</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17461/859697695.py:2: FutureWarning: Using the level keyword in DataFrame and Series aggregations is deprecated and will be removed in a future version. Use groupby instead. df.median(level=1) should use df.groupby(level=1).median().
-  merged.mean(level=&#39;Continent&#39;, axis=1).plot()
-</pre></div>
-</div>
-<img alt="_images/pandas_panel_60_1.png" src="_images/pandas_panel_60_1.png" />
+<img alt="_images/pandas_panel_60_0.png" src="_images/pandas_panel_60_0.png" />
 </div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">.describe()</span></code> is useful for quickly retrieving a number of common
@@ -2236,7 +2214,7 @@ a new <code class="docutils literal notranslate"><span class="pre">DataFrameGrou
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7ff651285220&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7ff3f82957c0&gt;
 </pre></div>
 </div>
 </div>
@@ -2274,7 +2252,7 @@ object</p>
 <span class="n">continents</span> <span class="o">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">continent</span> <span class="ow">in</span> <span class="n">continents</span><span class="p">:</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">grouped</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">continent</span><span class="p">)[</span><span class="s1">&#39;2015&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="n">continent</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">grouped</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">continent</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2015&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="n">continent</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Real minimum wages in 2015&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;US dollars&#39;</span><span class="p">)</span>
@@ -2284,15 +2262,7 @@ object</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17461/2687141154.py:6: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
-  sns.kdeplot(grouped.get_group(continent)[&#39;2015&#39;].unstack(), label=continent, shade=True)
-/tmp/ipykernel_17461/2687141154.py:6: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
-  sns.kdeplot(grouped.get_group(continent)[&#39;2015&#39;].unstack(), label=continent, shade=True)
-/tmp/ipykernel_17461/2687141154.py:6: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
-  sns.kdeplot(grouped.get_group(continent)[&#39;2015&#39;].unstack(), label=continent, shade=True)
-</pre></div>
-</div>
-<img alt="_images/pandas_panel_68_1.png" src="_images/pandas_panel_68_1.png" />
+<img alt="_images/pandas_panel_68_0.png" src="_images/pandas_panel_68_0.png" />
 </div>
 </div>
 </div>
@@ -2327,21 +2297,7 @@ a wide format dataframe with a <code class="docutils literal notranslate"><span 
 <p>Write a program that quickly returns all values in the <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code>.</p>
 </div>
 </div>
-<div class="exercise admonition" id="pp_ex2">
-
-<p class="admonition-title"><span class="caption-number">Exercise 74.2 </span></p>
-<div class="section" id="exercise-content">
-<p>Filter the above dataframe to only include employment as a percentage of
-‘active population’.</p>
-<p>Create a grouped boxplot using <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> of employment rates in 2015
-by age group and sex.</p>
-<p><strong>Hint:</strong> <code class="docutils literal notranslate"><span class="pre">GEO</span></code> includes both areas and countries.</p>
-</div>
-</div>
-</div>
-<div class="section" id="solutions">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">74.7. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<div class="solution dropdown admonition" id="pandas_panel-solution-2">
+<div class="solution dropdown admonition" id="pandas_panel-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#pp_ex1"> Exercise 74.1</a></p>
 <div class="section" id="s">
@@ -2524,6 +2480,20 @@ GEO Index([&#39;Austria&#39;, &#39;Belgium&#39;, &#39;Bulgaria&#39;, &#39;Croati
 </div>
 </div>
 </div>
+<div class="exercise admonition" id="pp_ex2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 74.2 </span></p>
+<div class="section" id="exercise-content">
+<p>Filter the above dataframe to only include employment as a percentage of
+‘active population’.</p>
+<p>Create a grouped boxplot using <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> of employment rates in 2015
+by age group and sex.</p>
+<div class="dropdown admonition hint">
+<p class="admonition-title">Hint</p>
+<p><code class="docutils literal notranslate"><span class="pre">GEO</span></code> includes both areas and countries.</p>
+</div>
+</div>
+</div>
 <div class="solution dropdown admonition" id="pandas_panel-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#pp_ex2"> Exercise 74.2</a></p>
@@ -2696,7 +2666,7 @@ dataframe</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">box</span> <span class="o">=</span> <span class="n">employ_f</span><span class="p">[</span><span class="s1">&#39;2015&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">box</span> <span class="o">=</span> <span class="n">employ_f</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2015&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;AGE&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;SEX&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;husl&quot;</span><span class="p">),</span> <span class="n">showfliers</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
@@ -2708,11 +2678,7 @@ dataframe</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17461/132081023.py:1: FutureWarning: Indexing a DataFrame with a datetimelike index using a single string to slice the rows, like `frame[string]`, is deprecated and will be removed in a future version. Use `frame.loc[string]` instead.
-  box = employ_f[&#39;2015&#39;].unstack().reset_index()
-</pre></div>
-</div>
-<img alt="_images/pandas_panel_85_1.png" src="_images/pandas_panel_85_1.png" />
+<img alt="_images/pandas_panel_85_0.png" src="_images/pandas_panel_85_0.png" />
 </div>
 </div>
 </div>

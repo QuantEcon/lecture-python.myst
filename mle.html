@@ -214,11 +214,6 @@ const thebe_selector_output = ".output, .cell_output"
    76.8. Exercises
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#solutions">
-   76.9. Solutions
-  </a>
- </li>
 </ul>
 
                             <p class="logo">
@@ -283,7 +278,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p><a class="reference internal" href="#maximum-likelihood-estimation-with-statsmodels" id="id9">Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a></p></li>
 <li><p><a class="reference internal" href="#summary" id="id10">Summary</a></p></li>
 <li><p><a class="reference internal" href="#exercises" id="id11">Exercises</a></p></li>
-<li><p><a class="reference internal" href="#solutions" id="id12">Solutions</a></p></li>
 </ul>
 </li>
 </ul>
@@ -936,9 +930,9 @@ and therefore the numerator in our updating equation is becoming smaller.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-3.95169231e-07],
-       [-1.00114806e-06],
-       [-7.73114574e-07]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-3.95169228e-07],
+       [-1.00114805e-06],
+       [-7.73114561e-07]])
 </pre></div>
 </div>
 </div>
@@ -1021,8 +1015,8 @@ to confirm we obtain the same coefficients and log-likelihood value.</p>
 Dep. Variable:                      y   No. Observations:                    5
 Model:                        Poisson   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Mon, 26 Sep 2022   Pseudo R-squ.:                  0.2546
-Time:                        20:53:34   Log-Likelihood:                -3.3784
+Date:                Fri, 04 Nov 2022   Pseudo R-squ.:                  0.2546
+Time:                        08:05:54   Log-Likelihood:                -3.3784
 converged:                       True   LL-Null:                       -4.5325
 Covariance Type:            nonrobust   LLR p-value:                    0.3153
 ==============================================================================
@@ -1088,8 +1082,8 @@ model.</p>
 Dep. Variable:                numbil0   No. Observations:                  197
 Model:                        Poisson   Df Residuals:                      193
 Method:                           MLE   Df Model:                            3
-Date:                Mon, 26 Sep 2022   Pseudo R-squ.:                  0.8574
-Time:                        20:53:34   Log-Likelihood:                -438.54
+Date:                Fri, 04 Nov 2022   Pseudo R-squ.:                  0.8574
+Time:                        08:05:54   Log-Likelihood:                -438.54
 converged:                       True   LL-Null:                       -3074.7
 Covariance Type:                  HC0   LLR p-value:                     0.000
 ==============================================================================
@@ -1174,6 +1168,9 @@ No. observations 197        131        131
 =================================================
 Standard errors in parentheses.
 * p&lt;.1, ** p&lt;.05, ***p&lt;.01
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1261,58 +1258,7 @@ Hessian.</p>
 compute the cmf and pmf of the normal distribution.</p>
 </div>
 </div>
-<div class="exercise admonition" id="mle_ex2">
-
-<p class="admonition-title"><span class="caption-number">Exercise 76.2 </span></p>
-<div class="section" id="exercise-content">
-<p>Use the following dataset and initial values of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> to
-estimate the MLE with the Newton-Raphson algorithm developed earlier in
-the lecture</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}
-\mathbf{X} =
-\begin{bmatrix}
-1 &amp; 2 &amp; 4 \\
-1 &amp; 1 &amp; 1 \\
-1 &amp; 4 &amp; 3 \\
-1 &amp; 5 &amp; 6 \\
-1 &amp; 3 &amp; 5
-\end{bmatrix}
-\quad
-y =
-\begin{bmatrix}
-1 \\
-0 \\
-1 \\
-1 \\
-0
-\end{bmatrix}
-\quad
-\boldsymbol{\beta}_{(0)} =
-\begin{bmatrix}
-0.1 \\
-0.1 \\
-0.1
-\end{bmatrix}
-\end{split}\]</div>
-<p>Verify your results with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> - you can import the Probit
-function with the following import statement</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">statsmodels.discrete.discrete_model</span> <span class="kn">import</span> <span class="n">Probit</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Note that the simple Newton-Raphson algorithm developed in this lecture
-is very sensitive to initial values, and therefore you may fail to
-achieve convergence with different starting values.</p>
-</div>
-</div>
-</div>
-<div class="section" id="solutions">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">76.9. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<div class="solution dropdown admonition" id="mle-solution-2">
+<div class="solution dropdown admonition" id="mle-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex1"> Exercise 76.1</a></p>
 <div class="section" id="s">
@@ -1391,11 +1337,60 @@ follows</p>
 </div>
 </div>
 </div>
+<div class="exercise admonition" id="mle_ex2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 76.2 </span></p>
+<div class="section" id="exercise-content">
+<p>Use the following dataset and initial values of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> to
+estimate the MLE with the Newton-Raphson algorithm developed earlier in
+the lecture</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathbf{X} =
+\begin{bmatrix}
+1 &amp; 2 &amp; 4 \\
+1 &amp; 1 &amp; 1 \\
+1 &amp; 4 &amp; 3 \\
+1 &amp; 5 &amp; 6 \\
+1 &amp; 3 &amp; 5
+\end{bmatrix}
+\quad
+y =
+\begin{bmatrix}
+1 \\
+0 \\
+1 \\
+1 \\
+0
+\end{bmatrix}
+\quad
+\boldsymbol{\beta}_{(0)} =
+\begin{bmatrix}
+0.1 \\
+0.1 \\
+0.1
+\end{bmatrix}
+\end{split}\]</div>
+<p>Verify your results with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> - you can import the Probit
+function with the following import statement</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">statsmodels.discrete.discrete_model</span> <span class="kn">import</span> <span class="n">Probit</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that the simple Newton-Raphson algorithm developed in this lecture
+is very sensitive to initial values, and therefore you may fail to
+achieve convergence with different starting values.</p>
+</div>
+</div>
 <div class="solution dropdown admonition" id="mle-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex2"> Exercise 76.2</a></p>
 <div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
+<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
@@ -1449,8 +1444,8 @@ Number of iterations: 4
 Dep. Variable:                      y   No. Observations:                    5
 Model:                         Probit   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Mon, 26 Sep 2022   Pseudo R-squ.:                  0.2961
-Time:                        20:53:35   Log-Likelihood:                -2.3687
+Date:                Fri, 04 Nov 2022   Pseudo R-squ.:                  0.2961
+Time:                        08:05:55   Log-Likelihood:                -2.3687
 converged:                       True   LL-Null:                       -3.3651
 Covariance Type:            nonrobust   LLR p-value:                    0.3692
 ==============================================================================

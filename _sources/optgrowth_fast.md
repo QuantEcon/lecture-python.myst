@@ -245,64 +245,6 @@ Time how long it takes to iterate with the Bellman operator
 Use the default parameterization.
 ```
 
-### Exercise 2
-```{exercise}
-:label: ogfast_ex2
-
-Modify the optimal growth model to use the CRRA utility specification.
-
-$$
-u(c) = \frac{c^{1 - \gamma} } {1 - \gamma}
-$$
-
-Set `γ = 1.5` as the default value and maintaining other specifications.
-
-(Note that `jitclass` currently does not support inheritance, so you will
-have to copy the class and change the relevant parameters and methods.)
-
-Compute an estimate of the optimal policy, plot it and compare visually with
-the same plot from the {ref}`analogous exercise <og_ex1>` in the first optimal
-growth lecture.
-
-Compare execution time as well.
-```
-
-
-```{exercise-start}
-:label: ogfast_ex3
-```
-
-In this exercise we return to the original log utility specification.
-
-Once an optimal consumption policy $\sigma$ is given, income follows
-
-$$
-y_{t+1} = f(y_t - \sigma(y_t)) \xi_{t+1}
-$$
-
-The next figure shows a simulation of 100 elements of this sequence for three
-different discount factors (and hence three different policies).
-
-```{figure} /_static/lecture_specific/optgrowth/solution_og_ex2.png
-```
-
-In each sequence, the initial condition is $y_0 = 0.1$.
-
-The discount factors are `discount_factors = (0.8, 0.9, 0.98)`.
-
-We have also dialed down the shocks a bit with `s = 0.05`.
-
-Otherwise, the parameters and primitives are the same as the log-linear model discussed earlier in the lecture.
-
-Notice that more patient agents typically have higher wealth.
-
-Replicate the figure modulo randomness.
-
-```{exercise-end}
-```
-
-## Solutions
-
 ```{solution-start} ogfast_ex1
 :class: dropdown
 ```
@@ -327,6 +269,27 @@ Compared with our {ref}`timing <og_ex2>` for the non-compiled version of
 value function iteration, the JIT-compiled code is usually an order of magnitude faster.
 
 ```{solution-end}
+```
+
+```{exercise}
+:label: ogfast_ex2
+
+Modify the optimal growth model to use the CRRA utility specification.
+
+$$
+u(c) = \frac{c^{1 - \gamma} } {1 - \gamma}
+$$
+
+Set `γ = 1.5` as the default value and maintaining other specifications.
+
+(Note that `jitclass` currently does not support inheritance, so you will
+have to copy the class and change the relevant parameters and methods.)
+
+Compute an estimate of the optimal policy, plot it and compare visually with
+the same plot from the {ref}`analogous exercise <og_ex1>` in the first optimal
+growth lecture.
+
+Compare execution time as well.
 ```
 
 
@@ -374,6 +337,39 @@ Execution time is an order of magnitude faster.
 ```{solution-end}
 ```
 
+
+```{exercise-start}
+:label: ogfast_ex3
+```
+
+In this exercise we return to the original log utility specification.
+
+Once an optimal consumption policy $\sigma$ is given, income follows
+
+$$
+y_{t+1} = f(y_t - \sigma(y_t)) \xi_{t+1}
+$$
+
+The next figure shows a simulation of 100 elements of this sequence for three
+different discount factors (and hence three different policies).
+
+```{figure} /_static/lecture_specific/optgrowth/solution_og_ex2.png
+```
+
+In each sequence, the initial condition is $y_0 = 0.1$.
+
+The discount factors are `discount_factors = (0.8, 0.9, 0.98)`.
+
+We have also dialed down the shocks a bit with `s = 0.05`.
+
+Otherwise, the parameters and primitives are the same as the log-linear model discussed earlier in the lecture.
+
+Notice that more patient agents typically have higher wealth.
+
+Replicate the figure modulo randomness.
+
+```{exercise-end}
+```
 
 ```{solution-start} ogfast_ex3
 :class: dropdown

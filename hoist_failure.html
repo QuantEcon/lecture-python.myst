@@ -270,7 +270,7 @@ uncertainty about the reliability of a safety system.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: tabulate in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.8.9)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: tabulate in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.8.10)
 </pre></div>
 </div>
 </div>
@@ -333,7 +333,10 @@ mean <span class="math notranslate nohighlight">\(\mu_1 + \mu_2\)</span> and var
 <p>In particular, if <span class="math notranslate nohighlight">\(y_1\)</span> is log normal with parameters <span class="math notranslate nohighlight">\((\mu_1, \sigma_1^2)\)</span> and
 <span class="math notranslate nohighlight">\(y_2\)</span> is log normal with parameters <span class="math notranslate nohighlight">\((\mu_2, \sigma_2^2)\)</span>, then the product <span class="math notranslate nohighlight">\(y_1 y_2\)</span> is log normal
 with parameters <span class="math notranslate nohighlight">\((\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)\)</span>.</p>
-<p><strong>Note:</strong> While the product of two log normal distributions is log normal, the <strong>sum</strong> of two log normal distributions is <strong>not</strong> log normal.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While the product of two log normal distributions is log normal, the <strong>sum</strong> of two log normal distributions is <strong>not</strong> log normal.</p>
+</div>
 <p>This observation sets the stage for challenge that confronts us in this lecture, namely, to approximate probability distributions of <strong>sums</strong> of independent log normal random variables.</p>
 <p>To compute the probability distribution of the sum of two log normal distributions, we can use the following convolution property of a probability distribution that is a sum of independent random variables.</p>
 </div>
@@ -463,7 +466,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(244.69193226422038, 244.6123440570262, 5.0, 1.0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(244.69193226422038, 244.76093766518088, 5.0, 1.0)
 </pre></div>
 </div>
 </div>
@@ -487,8 +490,11 @@ probability density function.</p>
 </div>
 <!-- #region -->
 <p>Now we shall set a grid length <span class="math notranslate nohighlight">\(I\)</span> and a grid increment size <span class="math notranslate nohighlight">\(m =1\)</span> for our discretizations.</p>
-<p><strong>Note</strong>: We set <span class="math notranslate nohighlight">\(I\)</span> equal to a power of two because we want to be free to use a Fast Fourier Transform
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We set <span class="math notranslate nohighlight">\(I\)</span> equal to a power of two because we want to be free to use a Fast Fourier Transform
 to compute a convolution of two sequences (discrete distributions).</p>
+</div>
 <p>We recommend experimenting with different values of the power <span class="math notranslate nohighlight">\(p\)</span> of 2.</p>
 <p>Setting it to 15 rather than 12, for example, improves how well the discretized probability mass function approximates the original continuous probability density function being studied.</p>
 <!-- #endregion --><div class="cell docutils container">
@@ -511,7 +517,7 @@ to compute a convolution of two sequences (discrete distributions).</p>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">NT</span><span class="p">)],</span><span class="n">p1</span><span class="p">[:</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">NT</span><span class="p">)],</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">NT</span><span class="p">)],</span><span class="n">p1</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">NT</span><span class="p">)],</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2500</span><span class="p">)</span>
 <span class="n">count</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">ignored</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;mid&#39;</span><span class="p">)</span>
 
@@ -520,12 +526,7 @@ to compute a convolution of two sequences (discrete distributions).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17206/2130497458.py:10: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  plt.plot(x[:np.int(NT)],p1[:np.int(NT)],label = &#39;&#39;)
-</pre></div>
-</div>
-<img alt="_images/hoist_failure_15_1.png" src="_images/hoist_failure_15_1.png" />
+<img alt="_images/hoist_failure_15_0.png" src="_images/hoist_failure_15_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -539,7 +540,7 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(244.69059898302908, 244.69193226422038)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(244.69059898302916, 244.69193226422038)
 </pre></div>
 </div>
 </div>
@@ -612,7 +613,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time with np.convolve =  91.47056127799988 ; time with fftconvolve =  0.20613663299991458
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time with np.convolve =  86.96754838000015 ; time with fftconvolve =  0.15117748100055906
 </pre></div>
 </div>
 </div>
@@ -625,7 +626,7 @@ calculations very quickly.</p>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">NT</span><span class="p">)],</span><span class="n">c1f</span><span class="p">[:</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">NT</span><span class="p">)]</span><span class="o">/</span><span class="n">m</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">NT</span><span class="p">)],</span><span class="n">c1f</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">NT</span><span class="p">)]</span><span class="o">/</span><span class="n">m</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span>
 
 <span class="n">count</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">ignored</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">ssum2</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;mid&#39;</span><span class="p">)</span>
@@ -636,12 +637,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17206/2364144025.py:5: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  plt.plot(x[:np.int(NT)],c1f[:np.int(NT)]/m,label = &#39;&#39;)
-</pre></div>
-</div>
-<img alt="_images/hoist_failure_20_1.png" src="_images/hoist_failure_20_1.png" />
+<img alt="_images/hoist_failure_20_0.png" src="_images/hoist_failure_20_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -649,7 +645,7 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">NT</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">NT</span><span class="p">)],</span><span class="n">c2f</span><span class="p">[:</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">NT</span><span class="p">)]</span><span class="o">/</span><span class="n">m</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">NT</span><span class="p">)],</span><span class="n">c2f</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">NT</span><span class="p">)]</span><span class="o">/</span><span class="n">m</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span>
 
 <span class="n">count</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">ignored</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">ssum3</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;mid&#39;</span><span class="p">)</span>
@@ -660,12 +656,7 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17206/3883904051.py:4: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  plt.plot(x[:np.int(NT)],c2f[:np.int(NT)]/m,label = &#39;&#39;)
-</pre></div>
-</div>
-<img alt="_images/hoist_failure_21_1.png" src="_images/hoist_failure_21_1.png" />
+<img alt="_images/hoist_failure_21_0.png" src="_images/hoist_failure_21_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -678,7 +669,7 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(489.3810974093853, 489.38386452844077)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(489.3810974093838, 489.38386452844077)
 </pre></div>
 </div>
 </div>
@@ -693,7 +684,7 @@ Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdo
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(734.0714863312277, 734.0757967926611)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(734.071486331224, 734.0757967926611)
 </pre></div>
 </div>
 </div>
@@ -795,8 +786,11 @@ of the systems failure probability <span class="math notranslate nohighlight">\(
 </div>
 </div>
 </div>
-<p><strong>Note:</strong> Because the failure rates are all very small,  log normal distributions with the
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Because the failure rates are all very small,  log normal distributions with the
 above parameter values actually describe <span class="math notranslate nohighlight">\(P(A_i)\)</span> times <span class="math notranslate nohighlight">\(10^{-09}\)</span>.</p>
+</div>
 <p>So the probabilities that we’ll put on the <span class="math notranslate nohighlight">\(x\)</span> axis of the probability mass function and associated cumulative distribution function should be multiplied by <span class="math notranslate nohighlight">\(10^{-09}\)</span></p>
 <p>To extract a table that summarizes computed quantiles, we’ll use a helper function</p>
 <div class="cell docutils container">
@@ -863,7 +857,7 @@ and we’ll also present a counterpart to their Table 11 on page 28.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time for 13 convolutions =  11.609769161999793
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time for 13 convolutions =  7.999906037000073
 </pre></div>
 </div>
 </div>
@@ -871,9 +865,9 @@ and we’ll also present a counterpart to their Table 11 on page 28.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d13</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">c13</span><span class="p">)</span>
-<span class="n">Nx</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="mi">1400</span><span class="p">)</span>
+<span class="n">Nx</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">1400</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">Nx</span><span class="o">/</span><span class="n">m</span><span class="p">)],</span><span class="n">d13</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">Nx</span><span class="o">/</span><span class="n">m</span><span class="p">)])</span>  <span class="c1"># show Yad this -- I multiplied by m -- step size</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">Nx</span><span class="o">/</span><span class="n">m</span><span class="p">)],</span><span class="n">d13</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">Nx</span><span class="o">/</span><span class="n">m</span><span class="p">)])</span>  <span class="c1"># show Yad this -- I multiplied by m -- step size</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">Nx</span><span class="p">,</span><span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dotted&#39;</span><span class="p">,</span><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;black&#39;</span><span class="p">})</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span><span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">Nx</span><span class="p">,</span><span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dotted&#39;</span><span class="p">,</span><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;black&#39;</span><span class="p">})</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span><span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">Nx</span><span class="p">,</span><span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dotted&#39;</span><span class="p">,</span><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;black&#39;</span><span class="p">})</span>
@@ -911,15 +905,7 @@ and we’ll also present a counterpart to their Table 11 on page 28.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17206/3082528578.py:2: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  Nx=np.int(1400)
-/tmp/ipykernel_17206/3082528578.py:4: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  plt.plot(x[0:np.int(Nx/m)],d13[0:np.int(Nx/m)])  # show Yad this -- I multiplied by m -- step size
-</pre></div>
-</div>
-<img alt="_images/hoist_failure_30_1.png" src="_images/hoist_failure_30_1.png" />
+<img alt="_images/hoist_failure_30_0.png" src="_images/hoist_failure_30_0.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Percentile      x * 1e-9
 ------------  ----------
 1%                 76.15

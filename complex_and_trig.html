@@ -521,13 +521,13 @@ condition:</p>
 <span class="c1">## Note: we choose the solution near 0</span>
 <span class="n">eq1</span> <span class="o">=</span> <span class="n">Eq</span><span class="p">(</span><span class="n">x1</span><span class="o">/</span><span class="n">x0</span> <span class="o">-</span> <span class="n">r</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">ω</span><span class="o">+</span><span class="n">θ</span><span class="p">)</span> <span class="o">/</span> <span class="n">cos</span><span class="p">(</span><span class="n">ω</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">ω</span> <span class="o">=</span> <span class="n">nsolve</span><span class="p">(</span><span class="n">eq1</span><span class="p">,</span> <span class="n">ω</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">ω</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">ω</span><span class="p">)</span>
+<span class="n">ω</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ω</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ω = </span><span class="si">{</span><span class="n">ω</span><span class="si">:</span><span class="s1">1.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="c1"># Solve for p</span>
 <span class="n">eq2</span> <span class="o">=</span> <span class="n">Eq</span><span class="p">(</span><span class="n">x0</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">ω</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">nsolve</span><span class="p">(</span><span class="n">eq2</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;p = </span><span class="si">{</span><span class="n">p</span><span class="si">:</span><span class="s1">1.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -535,14 +535,6 @@ condition:</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ω = 0.000
 p = 2.000
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_10672/2347233413.py:14: DeprecationWarning: `np.float` is a deprecated alias for the builtin `float`. To silence this warning, use `float` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.float64` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  ω = np.float(ω)
-/tmp/ipykernel_10672/2347233413.py:20: DeprecationWarning: `np.float` is a deprecated alias for the builtin `float`. To silence this warning, use `float` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.float64` here.
-Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
-  p = np.float(p)
 </pre></div>
 </div>
 </div>
@@ -739,6 +731,10 @@ e^{2i\omega} - e^{-2i\omega}
 </div>
 <div class="section" id="exercises">
 <h3><span class="section-number">5.3.6. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h3>
+<div class="exercise admonition" id="complex_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 5.1 </span></p>
+<div class="section" id="exercise-content">
 <p>We invite the reader to verify analytically and with the <code class="docutils literal notranslate"><span class="pre">sympy</span></code> package the following two equalities:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -748,6 +744,8 @@ e^{2i\omega} - e^{-2i\omega}
 \[
 \int_{-\pi}^{\pi} \sin (\omega)^2 \, d\omega = \frac{\pi}{2}
 \]</div>
+</div>
+</div>
 </div>
 </div>
 </div>

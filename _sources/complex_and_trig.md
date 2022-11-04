@@ -306,13 +306,13 @@ x1 = 2 * r * sqrt(2)
 ## Note: we choose the solution near 0
 eq1 = Eq(x1/x0 - r * cos(ω+θ) / cos(ω), 0)
 ω = nsolve(eq1, ω, 0)
-ω = np.float(ω)
+ω = float(ω)
 print(f'ω = {ω:1.3f}')
 
 # Solve for p
 eq2 = Eq(x0 - 2 * p * cos(ω), 0)
 p = nsolve(eq2, p, 0)
-p = np.float(p)
+p = float(p)
 print(f'p = {p:1.3f}')
 ```
 
@@ -485,6 +485,9 @@ integrate(cos(ω) * sin(ω), (ω, -π, π))
 
 ### Exercises
 
+```{exercise}
+:label: complex_ex1
+
 We invite the reader to verify analytically and with the `sympy` package the following two equalities:
 
 $$
@@ -495,3 +498,4 @@ $$
 \int_{-\pi}^{\pi} \sin (\omega)^2 \, d\omega = \frac{\pi}{2}
 $$
 
+```

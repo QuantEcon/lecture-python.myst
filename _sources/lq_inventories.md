@@ -729,20 +729,6 @@ magnitude to $\bar{\nu}_t$ and simulate paths. You should see how
 firms respond differently by staring at the production plans.
 ```
 
-
-```{exercise}
-:label: lqi_ex2
-
-Change parameters of $C(Q_t)$ and $d(I_t, S_t)$.
-
-1. Make production more costly, by setting $c_2=5$.
-1. Increase the cost of having inventories deviate from sales, by
-   setting $d_2=5$.
-```
-
-
-## Solutions
-
 ```{solution-start} lqi_ex1
 :class: dropdown
 ```
@@ -808,6 +794,15 @@ ex1_no_noise.simulate(x_bar1, T=T)
 ```{solution-end}
 ```
 
+```{exercise}
+:label: lqi_ex2
+
+Change parameters of $C(Q_t)$ and $d(I_t, S_t)$.
+
+1. Make production more costly, by setting $c_2=5$.
+1. Increase the cost of having inventories deviate from sales, by
+   setting $d_2=5$.
+```
 
 ```{solution-start} lqi_ex2
 :class: dropdown

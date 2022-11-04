@@ -777,20 +777,6 @@ Setting $\gamma = 1.5$, compute and plot an estimate of the optimal policy.
 Time how long this function takes to run, so you can compare it to faster code developed in the {doc}`next lecture <optgrowth_fast>`.
 ```
 
-
-```{exercise}
-:label: og_ex2
-
-Time how long it takes to iterate with the Bellman operator
-20 times, starting from initial condition $v(y) = u(y)$.
-
-Use the model specification in the previous exercise.
-
-(As before, we will compare this number with that for the faster code developed in the {doc}`next lecture <optgrowth_fast>`.)
-```
-
-## Solutions
-
 ```{solution-start} og_ex1
 :class: dropdown
 ```
@@ -828,6 +814,16 @@ plt.show()
 ```{solution-end}
 ```
 
+```{exercise}
+:label: og_ex2
+
+Time how long it takes to iterate with the Bellman operator
+20 times, starting from initial condition $v(y) = u(y)$.
+
+Use the model specification in the previous exercise.
+
+(As before, we will compare this number with that for the faster code developed in the {doc}`next lecture <optgrowth_fast>`.)
+```
 
 ```{solution-start} og_ex2
 :class: dropdown

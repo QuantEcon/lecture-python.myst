@@ -590,95 +590,11 @@ Replicate {ref}`the figure presented above <light_heavy_fig1>` that compares nor
 Use `np.random.seed(11)` to set the seed.
 ```
 
-
-```{exercise}
-:label: ht_ex2
-
-Prove: If $X$ has a Pareto tail with tail index $\alpha$, then
-$\mathbb E[X^r] = \infty$ for all $r \geq \alpha$.
-```
-
-
-```{exercise}
-:label: ht_ex3
-
-Repeat exercise 1, but replace the three distributions (two normal, one
-Cauchy) with three Pareto distributions using different choices of
-$\alpha$.
-
-For $\alpha$, try 1.15, 1.5 and 1.75.
-
-Use `np.random.seed(11)` to set the seed.
-```
-
-
-```{exercise}
-:label: ht_ex4
-
-Replicate the rank-size plot figure {ref}`presented above <rank_size_fig1>`.
-
-If you like you can use the function `qe.rank_size` from the `quantecon` library to generate the plots.
-
-Use `np.random.seed(13)` to set the seed.
-```
-
-```{exercise}
-:label: ht_ex5
-
-There is an ongoing argument about whether the firm size distribution should
-be modeled as a Pareto distribution or a lognormal distribution (see, e.g.,
-{cite}`fujiwara2004pareto`, {cite}`kondo2018us` or {cite}`schluter2019size`).
-
-This sounds esoteric but has real implications for a variety of economic
-phenomena.
-
-To illustrate this fact in a simple way, let us consider an economy with
-100,000 firms, an interest rate of `r = 0.05` and a corporate tax rate of
-15%.
-
-Your task is to estimate the present discounted value of projected corporate
-tax revenue over the next 10 years.
-
-Because we are forecasting, we need a model.
-
-We will suppose that
-
-1. the number of firms and the firm size distribution (measured in profits) remain fixed and
-1. the firm size distribution is either lognormal or Pareto.
-
-Present discounted value of tax revenue will be estimated by
-
-1. generating 100,000 draws of firm profit from the firm size distribution,
-1. multiplying by the tax rate, and
-1. summing the results with discounting to obtain present value.
-
-The Pareto distribution is assumed to take the form {eq}`pareto` with $\bar x = 1$ and $\alpha = 1.05$.
-
-(The value the tail index $\alpha$ is plausible given the data {cite}`gabaix2016power`.)
-
-To make the lognormal option as similar as possible to the Pareto option, choose its parameters such that the mean and median of both distributions are the same.
-
-Note that, for each distribution, your estimate of tax revenue will be random because it is based on a finite number of draws.
-
-To take this into account, generate 100 replications (evaluations of tax revenue) for each of the two distributions and compare the two samples by
-
-* producing a [violin plot](https://en.wikipedia.org/wiki/Violin_plot) visualizing the two samples side-by-side and
-* printing the mean and standard deviation of both samples.
-
-For the seed use `np.random.seed(1234)`.
-
-What differences do you observe?
-
-(Note: a better approach to this problem would be to model firm dynamics and
-try to track individual firms given the current distribution.  We will discuss
-firm dynamics in later lectures.)
-```
-
-## Solutions
-
 ```{solution-start} ht_ex1
 :class: dropdown
 ```
+
+Here is one solution:
 
 ```{code-cell} python3
 n = 120
@@ -713,8 +629,16 @@ plt.show()
 ```
 
 
+```{exercise}
+:label: ht_ex2
+
+Prove: If $X$ has a Pareto tail with tail index $\alpha$, then
+$\mathbb E[X^r] = \infty$ for all $r \geq \alpha$.
+```
+
 ```{solution-start} ht_ex2
 :class: dropdown
+```
 
 Let $X$ have a Pareto tail with tail index $\alpha$ and let $F$ be its cdf.
 
@@ -738,15 +662,28 @@ $$
 We know that $\int_{\bar x}^\infty x^{r-\alpha-1} x = \infty$ whenever $r - \alpha - 1 \geq -1$.
 
 Since $r \geq \alpha$, we have $\mathbb E X^r = \infty$.
+
+```{solution-end}
 ```
 
 
-```{solution-end}
+```{exercise}
+:label: ht_ex3
+
+Repeat exercise 1, but replace the three distributions (two normal, one
+Cauchy) with three Pareto distributions using different choices of
+$\alpha$.
+
+For $\alpha$, try 1.15, 1.5 and 1.75.
+
+Use `np.random.seed(11)` to set the seed.
 ```
 
 ```{solution-start} ht_ex3
 :class: dropdown
 ```
+
+Here is one solution:
 
 ```{code-cell} ipython3
 from scipy.stats import pareto
@@ -771,6 +708,17 @@ plt.show()
 ```
 
 ```{solution-end}
+```
+
+
+```{exercise}
+:label: ht_ex4
+
+Replicate the rank-size plot figure {ref}`presented above <rank_size_fig1>`.
+
+If you like you can use the function `qe.rank_size` from the `quantecon` library to generate the plots.
+
+Use `np.random.seed(13)` to set the seed.
 ```
 
 
@@ -818,6 +766,62 @@ plt.show()
 ```
 
 
+```{exercise-start}
+:label: ht_ex5
+```
+
+There is an ongoing argument about whether the firm size distribution should
+be modeled as a Pareto distribution or a lognormal distribution (see, e.g.,
+{cite}`fujiwara2004pareto`, {cite}`kondo2018us` or {cite}`schluter2019size`).
+
+This sounds esoteric but has real implications for a variety of economic
+phenomena.
+
+To illustrate this fact in a simple way, let us consider an economy with
+100,000 firms, an interest rate of `r = 0.05` and a corporate tax rate of
+15%.
+
+Your task is to estimate the present discounted value of projected corporate
+tax revenue over the next 10 years.
+
+Because we are forecasting, we need a model.
+
+We will suppose that
+
+1. the number of firms and the firm size distribution (measured in profits) remain fixed and
+1. the firm size distribution is either lognormal or Pareto.
+
+Present discounted value of tax revenue will be estimated by
+
+1. generating 100,000 draws of firm profit from the firm size distribution,
+1. multiplying by the tax rate, and
+1. summing the results with discounting to obtain present value.
+
+The Pareto distribution is assumed to take the form {eq}`pareto` with $\bar x = 1$ and $\alpha = 1.05$.
+
+(The value the tail index $\alpha$ is plausible given the data {cite}`gabaix2016power`.)
+
+To make the lognormal option as similar as possible to the Pareto option, choose its parameters such that the mean and median of both distributions are the same.
+
+Note that, for each distribution, your estimate of tax revenue will be random because it is based on a finite number of draws.
+
+To take this into account, generate 100 replications (evaluations of tax revenue) for each of the two distributions and compare the two samples by
+
+* producing a [violin plot](https://en.wikipedia.org/wiki/Violin_plot) visualizing the two samples side-by-side and
+* printing the mean and standard deviation of both samples.
+
+For the seed use `np.random.seed(1234)`.
+
+What differences do you observe?
+
+```{note}
+A better approach to this problem would be to model firm dynamics and
+try to track individual firms given the current distribution.  We will discuss
+firm dynamics in later lectures.
+```
+
+```{exercise-end}
+```
 
 ```{solution-start} ht_ex5
 :class: dropdown

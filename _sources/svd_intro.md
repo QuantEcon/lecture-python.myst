@@ -186,16 +186,18 @@ import numpy as np
 X = np.random.rand(5,2)
 U, S, V = np.linalg.svd(X,full_matrices=True)  # full SVD
 Uhat, Shat, Vhat = np.linalg.svd(X,full_matrices=False) # economy SVD
-print('U, S, V ='), U, S, V
+print('U, S, V =')
+U, S, V
 ```
 
 ```{code-cell} ipython3
-print('Uhat, Shat, Vhat = '), Uhat, Shat, Vhat
+print('Uhat, Shat, Vhat = ')
+Uhat, Shat, Vhat
 ```
 
 ```{code-cell} ipython3
 rr = np.linalg.matrix_rank(X)
-print('rank of X - '), rr
+print(f'rank of X = {rr}')
 ```
 
 
@@ -209,14 +211,16 @@ We illustrate these properties for our example with the following code cells.
 ```{code-cell} ipython3
 UTU = U.T@U
 UUT = U@U.T
-print('UUT, UTU = '), UUT, UTU 
+print('UUT, UTU = ')
+UUT, UTU 
 ```
 
 
 ```{code-cell} ipython3
 UhatUhatT = Uhat@Uhat.T
 UhatTUhat = Uhat.T@Uhat
-print('UhatUhatT, UhatTUhat= '), UhatUhatT, UhatTUhat
+print('UhatUhatT, UhatTUhat= ')
+UhatUhatT, UhatTUhat
 ```
 
 
@@ -248,16 +252,18 @@ import numpy as np
 X = np.random.rand(2,5)
 U, S, V = np.linalg.svd(X,full_matrices=True)  # full SVD
 Uhat, Shat, Vhat = np.linalg.svd(X,full_matrices=False) # economy SVD
-print('U, S, V ='), U, S, V
+print('U, S, V = ')
+U, S, V
 ```
 
 ```{code-cell} ipython3
-print('Uhat, Shat, Vhat = '), Uhat, Shat, Vhat
+print('Uhat, Shat, Vhat = ')
+Uhat, Shat, Vhat
 ```
 
 ```{code-cell} ipython3
 rr = np.linalg.matrix_rank(X)
-print('rank X = '), rr
+print(f'rank X = {rr}')
 ```
 ## Digression:  Polar Decomposition
 
@@ -856,7 +862,7 @@ $$
 X =  U \Sigma  V^T 
 $$ (eq:SVDDMD)
 
-where we remind ourselves that for a **reduced** SVD, $X$ is an $m \times n$ matrix of data, $U$ is an $m \times p$ matrix, $\Sigma$  is a $p \times p$ matrix, and $V is an $n \times p$ matrix.  
+where we remind ourselves that for a **reduced** SVD, $X$ is an $m \times n$ matrix of data, $U$ is an $m \times p$ matrix, $\Sigma$  is a $p \times p$ matrix, and $V$ is an $n \times p$ matrix.  
 
 We can    efficiently  construct the pertinent pseudo-inverse $X^+$
 by recognizing the following string of equalities.  

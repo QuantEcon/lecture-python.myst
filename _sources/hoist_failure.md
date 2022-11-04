@@ -124,7 +124,9 @@ In particular, if $y_1$ is log normal with parameters $(\mu_1, \sigma_1^2)$ and
 $y_2$ is log normal with parameters $(\mu_2, \sigma_2^2)$, then the product $y_1 y_2$ is log normal
 with parameters $(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$.
 
-**Note:** While the product of two log normal distributions is log normal, the **sum** of two log normal distributions is **not** log normal.  
+```{note}
+While the product of two log normal distributions is log normal, the **sum** of two log normal distributions is **not** log normal.  
+```
 
 This observation sets the stage for challenge that confronts us in this lecture, namely, to approximate probability distributions of **sums** of independent log normal random variables.
 
@@ -273,9 +275,10 @@ def pdf_seq(μ,σ,I,m):
 <!-- #region -->
 Now we shall set a grid length $I$ and a grid increment size $m =1$ for our discretizations.
 
-**Note**: We set $I$ equal to a power of two because we want to be free to use a Fast Fourier Transform
+```{note}
+We set $I$ equal to a power of two because we want to be free to use a Fast Fourier Transform
 to compute a convolution of two sequences (discrete distributions).
-
+```
 
 We recommend experimenting with different values of the power $p$ of 2.
 
@@ -300,7 +303,7 @@ NT = x.size
 
 plt.figure(figsize = (8,8))
 plt.subplot(2,1,1)
-plt.plot(x[:np.int(NT)],p1[:np.int(NT)],label = '')
+plt.plot(x[:int(NT)],p1[:int(NT)],label = '')
 plt.xlim(0,2500)
 count, bins, ignored = plt.hist(s1, 1000, density=True, align='mid')
 
@@ -413,7 +416,7 @@ NT= np.size(x)
 
 plt.figure(figsize = (8,8))
 plt.subplot(2,1,1)
-plt.plot(x[:np.int(NT)],c1f[:np.int(NT)]/m,label = '')
+plt.plot(x[:int(NT)],c1f[:int(NT)]/m,label = '')
 plt.xlim(0,5000)
 
 count, bins, ignored = plt.hist(ssum2, 1000, density=True, align='mid')
@@ -426,7 +429,7 @@ plt.show()
 NT= np.size(x)
 plt.figure(figsize = (8,8))
 plt.subplot(2,1,1)
-plt.plot(x[:np.int(NT)],c2f[:np.int(NT)]/m,label = '')
+plt.plot(x[:int(NT)],c2f[:int(NT)]/m,label = '')
 plt.xlim(0,5000)
 
 count, bins, ignored = plt.hist(ssum3, 1000, density=True, align='mid')
@@ -577,9 +580,10 @@ mu6, sigma6 = 1.444, 1.4632
 mu7, sigma7 = -.040, 1.4632
 
 ```
-
-**Note:** Because the failure rates are all very small,  log normal distributions with the
+```{note}
+Because the failure rates are all very small,  log normal distributions with the
 above parameter values actually describe $P(A_i)$ times $10^{-09}$.
+```
 
 So the probabilities that we'll put on the $x$ axis of the probability mass function and associated cumulative distribution function should be multiplied by $10^{-09}$
 
@@ -650,9 +654,9 @@ print("time for 13 convolutions = ", tdiff13)
 
 ```{code-cell} python3
 d13 = np.cumsum(c13)
-Nx=np.int(1400)
+Nx=int(1400)
 plt.figure()
-plt.plot(x[0:np.int(Nx/m)],d13[0:np.int(Nx/m)])  # show Yad this -- I multiplied by m -- step size
+plt.plot(x[0:int(Nx/m)],d13[0:int(Nx/m)])  # show Yad this -- I multiplied by m -- step size
 plt.hlines(0.5,min(x),Nx,linestyles='dotted',colors = {'black'})
 plt.hlines(0.9,min(x),Nx,linestyles='dotted',colors = {'black'})
 plt.hlines(0.95,min(x),Nx,linestyles='dotted',colors = {'black'})

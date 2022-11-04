@@ -124,7 +124,9 @@ If he rejects, then he receives unemployment compensation $c$.
 
 The process then repeats.
 
-(Note: we do not allow for job search while employed---this topic is taken up in a {doc}`later lecture <jv>`.)
+```{note}
+We do not allow for job search while employed---this topic is taken up in a {doc}`later lecture <jv>`.
+```
 
 ## Solving the Model
 
@@ -514,8 +516,6 @@ alpha_vals = np.linspace(0.05, 0.5, grid_size) # separation rate
 
 ```{exercise-end}
 ```
-
-## Solutions
 
 ```{solution-start} mmws_ex1
 :class: dropdown

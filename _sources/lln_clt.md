@@ -668,6 +668,56 @@ What is the source of the problem?
 ```{exercise-end}
 ```
 
+```{solution-start} lln_ex1
+:class: dropdown
+```
+
+Here is one solution
+
+```{code-cell} python3
+"""
+Illustrates the delta method, a consequence of the central limit theorem.
+"""
+
+# Set parameters
+n = 250
+replications = 100000
+distribution = uniform(loc=0, scale=(np.pi / 2))
+μ, s = distribution.mean(), distribution.std()
+
+g = np.sin
+g_prime = np.cos
+
+# Generate obs of sqrt{n} (g(X_n) - g(μ))
+data = distribution.rvs((replications, n))
+sample_means = data.mean(axis=1)  # Compute mean of each row
+error_obs = np.sqrt(n) * (g(sample_means) - g(μ))
+
+# Plot
+asymptotic_sd = g_prime(μ) * s
+fig, ax = plt.subplots(figsize=(10, 6))
+xmin = -3 * g_prime(μ) * s
+xmax = -xmin
+ax.set_xlim(xmin, xmax)
+ax.hist(error_obs, bins=60, alpha=0.5, density=True)
+xgrid = np.linspace(xmin, xmax, 200)
+lb = "$N(0, g'(\mu)^2  \sigma^2)$"
+ax.plot(xgrid, norm.pdf(xgrid, scale=asymptotic_sd), 'k-', lw=2, label=lb)
+ax.legend()
+plt.show()
+```
+
+What happens when you replace $[0, \pi / 2]$ with
+$[0, \pi]$?
+
+In this case, the mean $\mu$ of this distribution is
+$\pi/2$, and since $g' = \cos$, we have $g'(\mu) = 0$.
+
+Hence the conditions of the delta theorem are not satisfied.
+
+```{solution-end}
+```
+
 
 ```{exercise-start}
 :label: lln_ex2
@@ -771,66 +821,15 @@ where
 * each $U_i$ is an IID draw from the uniform distribution on $[-2, 2]$.
 * $U_i$ and $W_i$ are independent of each other.
 
-Hints:
+```{hint}
+:class: dropdown
 
 1. `scipy.linalg.sqrtm(A)` computes the square root of `A`.  You still need to invert it.
 1. You should be able to work out $\Sigma$ from the preceding information.
+```
 
 ```{exercise-end}
 ```
-
-## Solutions
-
-```{solution-start} lln_ex1
-:class: dropdown
-```
-
-Here is one solution
-
-```{code-cell} python3
-"""
-Illustrates the delta method, a consequence of the central limit theorem.
-"""
-
-# Set parameters
-n = 250
-replications = 100000
-distribution = uniform(loc=0, scale=(np.pi / 2))
-μ, s = distribution.mean(), distribution.std()
-
-g = np.sin
-g_prime = np.cos
-
-# Generate obs of sqrt{n} (g(X_n) - g(μ))
-data = distribution.rvs((replications, n))
-sample_means = data.mean(axis=1)  # Compute mean of each row
-error_obs = np.sqrt(n) * (g(sample_means) - g(μ))
-
-# Plot
-asymptotic_sd = g_prime(μ) * s
-fig, ax = plt.subplots(figsize=(10, 6))
-xmin = -3 * g_prime(μ) * s
-xmax = -xmin
-ax.set_xlim(xmin, xmax)
-ax.hist(error_obs, bins=60, alpha=0.5, density=True)
-xgrid = np.linspace(xmin, xmax, 200)
-lb = "$N(0, g'(\mu)^2  \sigma^2)$"
-ax.plot(xgrid, norm.pdf(xgrid, scale=asymptotic_sd), 'k-', lw=2, label=lb)
-ax.legend()
-plt.show()
-```
-
-What happens when you replace $[0, \pi / 2]$ with
-$[0, \pi]$?
-
-In this case, the mean $\mu$ of this distribution is
-$\pi/2$, and since $g' = \cos$, we have $g'(\mu) = 0$.
-
-Hence the conditions of the delta theorem are not satisfied.
-
-```{solution-end}
-```
-
 
 ```{solution-start} lln_ex2
 :class: dropdown

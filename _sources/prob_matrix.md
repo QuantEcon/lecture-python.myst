@@ -473,7 +473,9 @@ We can draw a sample of a random variable $X$ with a known CDF as follows:
 
 Thus, knowing the **"inverse"** CDF of a distribution is enough to simulate from this distribution.
 
-**NOTE**: The "inverse" CDF needs to exist for this method to work.
+```{note}
+The "inverse" CDF needs to exist for this method to work.
+```
 
 The inverse CDF is 
 
@@ -624,8 +626,9 @@ Thus $x$ is the smallest integer such that the discrete geometric CDF is greater
 
 We can verify that $x$ is indeed geometrically distributed by the following `numpy` program.
 
-**Note:** The exponential distribution is the continuous analog of geometric distribution.
-
+```{note}
+The exponential distribution is the continuous analog of geometric distribution.
+```
 
 ```{code-cell} ipython3
 n, λ = 1_000_000, 0.8

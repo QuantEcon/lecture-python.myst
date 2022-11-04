@@ -194,11 +194,6 @@ const thebe_selector_output = ".output, .cell_output"
    23.5. Exercises
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#solutions">
-   23.6. Solutions
-  </a>
- </li>
 </ul>
 
                             <p class="logo">
@@ -260,7 +255,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p><a class="reference internal" href="#stationarity-and-asymptotic-stability" id="id5">Stationarity and Asymptotic Stability</a></p></li>
 <li><p><a class="reference internal" href="#ergodicity" id="id6">Ergodicity</a></p></li>
 <li><p><a class="reference internal" href="#exercises" id="id7">Exercises</a></p></li>
-<li><p><a class="reference internal" href="#solutions" id="id8">Solutions</a></p></li>
 </ul>
 </li>
 </ul>
@@ -285,11 +279,6 @@ partly because they help us understand important concepts.</p>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
 </pre></div>
 </div>
 </div>
@@ -559,96 +548,12 @@ M_k =
 <p>Confirm this by simulation at a range of <span class="math notranslate nohighlight">\(k\)</span> using the default parameters from the lecture.</p>
 </div>
 </div>
-<div class="exercise admonition" id="ar1p_ex2">
-
-<p class="admonition-title"><span class="caption-number">Exercise 23.2 </span></p>
-<div class="section" id="exercise-content">
-<p>Write your own version of a one dimensional <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_density_estimation">kernel density
-estimator</a>,
-which estimates a density from a sample.</p>
-<p>Write it as a class that takes the data <span class="math notranslate nohighlight">\(X\)</span> and bandwidth
-<span class="math notranslate nohighlight">\(h\)</span> when initialized and provides a method <span class="math notranslate nohighlight">\(f\)</span> such that</p>
-<div class="math notranslate nohighlight">
-\[
-f(x) = \frac{1}{hn} \sum_{i=1}^n
-K \left( \frac{x-X_i}{h} \right)
-\]</div>
-<p>For <span class="math notranslate nohighlight">\(K\)</span> use the Gaussian kernel (<span class="math notranslate nohighlight">\(K\)</span> is the standard normal
-density).</p>
-<p>Write the class so that the bandwidth defaults to Silverman’s rule (see
-the “rule of thumb” discussion on <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_density_estimation">this
-page</a>). Test
-the class you have written by going through the steps</p>
-<ol class="simple">
-<li><p>simulate data <span class="math notranslate nohighlight">\(X_1, \ldots, X_n\)</span> from distribution <span class="math notranslate nohighlight">\(\phi\)</span></p></li>
-<li><p>plot the kernel density estimate over a suitable range</p></li>
-<li><p>plot the density of <span class="math notranslate nohighlight">\(\phi\)</span> on the same figure</p></li>
-</ol>
-<p>for distributions <span class="math notranslate nohighlight">\(\phi\)</span> of the following types</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Beta_distribution">beta
-distribution</a>
-with <span class="math notranslate nohighlight">\(\alpha = \beta = 2\)</span></p></li>
-<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Beta_distribution">beta
-distribution</a>
-with <span class="math notranslate nohighlight">\(\alpha = 2\)</span> and <span class="math notranslate nohighlight">\(\beta = 5\)</span></p></li>
-<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Beta_distribution">beta
-distribution</a>
-with <span class="math notranslate nohighlight">\(\alpha = \beta = 0.5\)</span></p></li>
-</ul>
-<p>Use <span class="math notranslate nohighlight">\(n=500\)</span>.</p>
-<p>Make a comment on your results. (Do you think this is a good estimator
-of these distributions?)</p>
-</div>
-</div>
-<div class="exercise admonition" id="ar1p_ex3">
-
-<p class="admonition-title"><span class="caption-number">Exercise 23.3 </span></p>
-<div class="section" id="exercise-content">
-<p>In the lecture we discussed the following fact: for the <span class="math notranslate nohighlight">\(AR(1)\)</span> process</p>
-<div class="math notranslate nohighlight">
-\[
-X_{t+1} = a X_t + b + c W_{t+1}
-\]</div>
-<p>with <span class="math notranslate nohighlight">\(\{ W_t \}\)</span> iid and standard normal,</p>
-<div class="math notranslate nohighlight">
-\[
-\psi_t = N(\mu, s^2) \implies \psi_{t+1}
-= N(a \mu + b, a^2 s^2 + c^2)
-\]</div>
-<p>Confirm this, at least approximately, by simulation. Let</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(a = 0.9\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(b = 0.0\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(c = 0.1\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\mu = -3\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(s = 0.2\)</span></p></li>
-</ul>
-<p>First, plot <span class="math notranslate nohighlight">\(\psi_t\)</span> and <span class="math notranslate nohighlight">\(\psi_{t+1}\)</span> using the true
-distributions described above.</p>
-<p>Second, plot <span class="math notranslate nohighlight">\(\psi_{t+1}\)</span> on the same figure (in a different
-color) as follows:</p>
-<ol class="simple">
-<li><p>Generate <span class="math notranslate nohighlight">\(n\)</span> draws of <span class="math notranslate nohighlight">\(X_t\)</span> from the <span class="math notranslate nohighlight">\(N(\mu, s^2)\)</span>
-distribution</p></li>
-<li><p>Update them all using the rule
-<span class="math notranslate nohighlight">\(X_{t+1} = a X_t + b + c W_{t+1}\)</span></p></li>
-<li><p>Use the resulting sample of <span class="math notranslate nohighlight">\(X_{t+1}\)</span> values to produce a
-density estimate via kernel density estimation.</p></li>
-</ol>
-<p>Try this for <span class="math notranslate nohighlight">\(n=2000\)</span> and confirm that the
-simulation based estimate of <span class="math notranslate nohighlight">\(\psi_{t+1}\)</span> does converge to the
-theoretical distribution.</p>
-</div>
-</div>
-</div>
-<div class="section" id="solutions">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">23.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<div class="solution dropdown admonition" id="ar1_processes-solution-3">
+<div class="solution dropdown admonition" id="ar1_processes-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#ar1p_ex1"> Exercise 23.1</a></p>
 <div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
+<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution:</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">factorial2</span>
@@ -692,7 +597,49 @@ theoretical distribution.</p>
 </div>
 </div>
 </div>
-<div class="solution dropdown admonition" id="ar1_processes-solution-4">
+<div class="exercise admonition" id="ar1p_ex2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 23.2 </span></p>
+<div class="section" id="exercise-content">
+<p>Write your own version of a one dimensional <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_density_estimation">kernel density
+estimator</a>,
+which estimates a density from a sample.</p>
+<p>Write it as a class that takes the data <span class="math notranslate nohighlight">\(X\)</span> and bandwidth
+<span class="math notranslate nohighlight">\(h\)</span> when initialized and provides a method <span class="math notranslate nohighlight">\(f\)</span> such that</p>
+<div class="math notranslate nohighlight">
+\[
+f(x) = \frac{1}{hn} \sum_{i=1}^n
+K \left( \frac{x-X_i}{h} \right)
+\]</div>
+<p>For <span class="math notranslate nohighlight">\(K\)</span> use the Gaussian kernel (<span class="math notranslate nohighlight">\(K\)</span> is the standard normal
+density).</p>
+<p>Write the class so that the bandwidth defaults to Silverman’s rule (see
+the “rule of thumb” discussion on <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_density_estimation">this
+page</a>). Test
+the class you have written by going through the steps</p>
+<ol class="simple">
+<li><p>simulate data <span class="math notranslate nohighlight">\(X_1, \ldots, X_n\)</span> from distribution <span class="math notranslate nohighlight">\(\phi\)</span></p></li>
+<li><p>plot the kernel density estimate over a suitable range</p></li>
+<li><p>plot the density of <span class="math notranslate nohighlight">\(\phi\)</span> on the same figure</p></li>
+</ol>
+<p>for distributions <span class="math notranslate nohighlight">\(\phi\)</span> of the following types</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Beta_distribution">beta
+distribution</a>
+with <span class="math notranslate nohighlight">\(\alpha = \beta = 2\)</span></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Beta_distribution">beta
+distribution</a>
+with <span class="math notranslate nohighlight">\(\alpha = 2\)</span> and <span class="math notranslate nohighlight">\(\beta = 5\)</span></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Beta_distribution">beta
+distribution</a>
+with <span class="math notranslate nohighlight">\(\alpha = \beta = 0.5\)</span></p></li>
+</ul>
+<p>Use <span class="math notranslate nohighlight">\(n=500\)</span>.</p>
+<p>Make a comment on your results. (Do you think this is a good estimator
+of these distributions?)</p>
+</div>
+</div>
+<div class="solution dropdown admonition" id="ar1_processes-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#ar1p_ex2"> Exercise 23.2</a></p>
 <div class="section" id="s">
@@ -759,6 +706,46 @@ theoretical distribution.</p>
 </div>
 <p>We see that the kernel density estimator is effective when the underlying
 distribution is smooth but less so otherwise.</p>
+</div>
+</div>
+<div class="exercise admonition" id="ar1p_ex3">
+
+<p class="admonition-title"><span class="caption-number">Exercise 23.3 </span></p>
+<div class="section" id="exercise-content">
+<p>In the lecture we discussed the following fact: for the <span class="math notranslate nohighlight">\(AR(1)\)</span> process</p>
+<div class="math notranslate nohighlight">
+\[
+X_{t+1} = a X_t + b + c W_{t+1}
+\]</div>
+<p>with <span class="math notranslate nohighlight">\(\{ W_t \}\)</span> iid and standard normal,</p>
+<div class="math notranslate nohighlight">
+\[
+\psi_t = N(\mu, s^2) \implies \psi_{t+1}
+= N(a \mu + b, a^2 s^2 + c^2)
+\]</div>
+<p>Confirm this, at least approximately, by simulation. Let</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(a = 0.9\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(b = 0.0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(c = 0.1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu = -3\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(s = 0.2\)</span></p></li>
+</ul>
+<p>First, plot <span class="math notranslate nohighlight">\(\psi_t\)</span> and <span class="math notranslate nohighlight">\(\psi_{t+1}\)</span> using the true
+distributions described above.</p>
+<p>Second, plot <span class="math notranslate nohighlight">\(\psi_{t+1}\)</span> on the same figure (in a different
+color) as follows:</p>
+<ol class="simple">
+<li><p>Generate <span class="math notranslate nohighlight">\(n\)</span> draws of <span class="math notranslate nohighlight">\(X_t\)</span> from the <span class="math notranslate nohighlight">\(N(\mu, s^2)\)</span>
+distribution</p></li>
+<li><p>Update them all using the rule
+<span class="math notranslate nohighlight">\(X_{t+1} = a X_t + b + c W_{t+1}\)</span></p></li>
+<li><p>Use the resulting sample of <span class="math notranslate nohighlight">\(X_{t+1}\)</span> values to produce a
+density estimate via kernel density estimation.</p></li>
+</ol>
+<p>Try this for <span class="math notranslate nohighlight">\(n=2000\)</span> and confirm that the
+simulation based estimate of <span class="math notranslate nohighlight">\(\psi_{t+1}\)</span> does converge to the
+theoretical distribution.</p>
 </div>
 </div>
 <div class="solution dropdown admonition" id="ar1_processes-solution-5">

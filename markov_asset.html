@@ -274,11 +274,6 @@ const thebe_selector_output = ".output, .cell_output"
    71.5. Exercises
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#solutions">
-   71.6. Solutions
-  </a>
- </li>
 </ul>
 
                             <p class="logo">
@@ -340,7 +335,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p><a class="reference internal" href="#prices-in-the-risk-neutral-case" id="id9">Prices in the Risk-Neutral Case</a></p></li>
 <li><p><a class="reference internal" href="#risk-aversion-and-asset-prices" id="id10">Risk Aversion and Asset Prices</a></p></li>
 <li><p><a class="reference internal" href="#exercises" id="id11">Exercises</a></p></li>
-<li><p><a class="reference internal" href="#solutions" id="id12">Solutions</a></p></li>
 </ul>
 </li>
 </ul>
@@ -360,21 +354,19 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
-Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.2)
-Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.22.4)
+Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.4)
+Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
+Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.3)
+Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
 Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
 Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
-Requirement already satisfied: setuptools&lt;60 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (59.8.0)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
+Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
 Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -1108,6 +1100,27 @@ price of a cum-dividend asset?</p>
 what is the equilibrium price of a cum-dividend asset?</p>
 </div>
 </div>
+<div class="solution dropdown admonition" id="markov_asset-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#ma_ex1"> Exercise 71.1</a></p>
+<div class="section" id="solution-content">
+<p>For a cum-dividend asset, the basic risk-neutral asset pricing equation is</p>
+<div class="math notranslate nohighlight">
+\[
+p_t = d_t + \beta {\mathbb E}_t [ p_{t+1} ]
+\]</div>
+<p id="mass-ex1">With constant dividends, the equilibrium price is</p>
+<div class="math notranslate nohighlight">
+\[
+p_t = \frac{1}{1-\beta} d_t
+\]</div>
+<p>With a growing, non-random dividend process, the equilibrium price is</p>
+<div class="math notranslate nohighlight">
+\[
+p_t = \frac{1}{1 - \beta g} d_t
+\]</div>
+</div>
+</div>
 <div class="exercise admonition" id="ma_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 71.2 </span></p>
@@ -1135,65 +1148,7 @@ what is the equilibrium price of a cum-dividend asset?</p>
 </ul>
 </div>
 </div>
-<div class="exercise admonition" id="ma_ex3">
-
-<p class="admonition-title"><span class="caption-number">Exercise 71.3 </span></p>
-<div class="section" id="exercise-content">
-<p>Let’s consider finite horizon call options, which are more common than
-infinite horizon ones.</p>
-<p>Finite horizon options obey functional equations closely related to <a class="reference internal" href="#equation-feoption0">(71.18)</a>.</p>
-<p>A <span class="math notranslate nohighlight">\(k\)</span> period option expires after <span class="math notranslate nohighlight">\(k\)</span> periods.</p>
-<p>If we view today as date zero, a <span class="math notranslate nohighlight">\(k\)</span> period option gives the owner the right to exercise the option to purchase the risk-free consol at the strike price <span class="math notranslate nohighlight">\(p_S\)</span> at dates <span class="math notranslate nohighlight">\(0, 1, \ldots , k-1\)</span>.</p>
-<p>The option expires at time <span class="math notranslate nohighlight">\(k\)</span>.</p>
-<p>Thus, for <span class="math notranslate nohighlight">\(k=1, 2, \ldots\)</span>, let <span class="math notranslate nohighlight">\(w(x, k)\)</span> be the value of a <span class="math notranslate nohighlight">\(k\)</span>-period option.</p>
-<p>It obeys</p>
-<div class="math notranslate nohighlight">
-\[
-w(x, k)
-= \max \left\{
-    \beta \sum_{y \in S} P(x, y) g(y)^{-\gamma}
-    w (y, k-1), \;
-    p(x) - p_S
-\right\}
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(w(x, 0) = 0\)</span> for all <span class="math notranslate nohighlight">\(x\)</span>.</p>
-<p>We can express this  as a sequence of nonlinear vector equations</p>
-<div class="math notranslate nohighlight">
-\[
-w_k = \max \{ \beta M w_{k-1}, \; p - p_S {\mathbb 1} \}
-  \quad k =1, 2, \ldots
-  \quad \text{with } w_0 = 0
-\]</div>
-<p>Write a function that computes <span class="math notranslate nohighlight">\(w_k\)</span> for any given <span class="math notranslate nohighlight">\(k\)</span>.</p>
-<p>Compute the value of the option with <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">5</span></code> and <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">25</span></code> using parameter values as in <a class="reference internal" href="#ma_ex1"><span class="std std-numref">Exercise 71.1</span></a>.</p>
-<p>Is one higher than the other?  Can you give intuition?</p>
-</div>
-</div>
-</div>
-<div class="section" id="solutions">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">71.6. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <div class="solution dropdown admonition" id="markov_asset-solution-3">
-
-<p class="admonition-title">Solution to<a class="reference internal" href="#ma_ex1"> Exercise 71.1</a></p>
-<div class="section" id="solution-content">
-<p>For a cum-dividend asset, the basic risk-neutral asset pricing equation is</p>
-<div class="math notranslate nohighlight">
-\[
-p_t = d_t + \beta {\mathbb E}_t [ p_{t+1} ]
-\]</div>
-<p id="mass-ex1">With constant dividends, the equilibrium price is</p>
-<div class="math notranslate nohighlight">
-\[
-p_t = \frac{1}{1-\beta} d_t
-\]</div>
-<p>With a growing, non-random dividend process, the equilibrium price is</p>
-<div class="math notranslate nohighlight">
-\[
-p_t = \frac{1}{1 - \beta g} d_t
-\]</div>
-</div>
-</div>
-<div class="solution dropdown admonition" id="markov_asset-solution-4">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#ma_ex2"> Exercise 71.2</a></p>
 <div class="section" id="s">
@@ -1277,6 +1232,40 @@ functions</p>
 <img alt="_images/markov_asset_29_0.png" src="_images/markov_asset_29_0.png" />
 </div>
 </div>
+</div>
+</div>
+<div class="exercise admonition" id="ma_ex3">
+
+<p class="admonition-title"><span class="caption-number">Exercise 71.3 </span></p>
+<div class="section" id="exercise-content">
+<p>Let’s consider finite horizon call options, which are more common than
+infinite horizon ones.</p>
+<p>Finite horizon options obey functional equations closely related to <a class="reference internal" href="#equation-feoption0">(71.18)</a>.</p>
+<p>A <span class="math notranslate nohighlight">\(k\)</span> period option expires after <span class="math notranslate nohighlight">\(k\)</span> periods.</p>
+<p>If we view today as date zero, a <span class="math notranslate nohighlight">\(k\)</span> period option gives the owner the right to exercise the option to purchase the risk-free consol at the strike price <span class="math notranslate nohighlight">\(p_S\)</span> at dates <span class="math notranslate nohighlight">\(0, 1, \ldots , k-1\)</span>.</p>
+<p>The option expires at time <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>Thus, for <span class="math notranslate nohighlight">\(k=1, 2, \ldots\)</span>, let <span class="math notranslate nohighlight">\(w(x, k)\)</span> be the value of a <span class="math notranslate nohighlight">\(k\)</span>-period option.</p>
+<p>It obeys</p>
+<div class="math notranslate nohighlight">
+\[
+w(x, k)
+= \max \left\{
+    \beta \sum_{y \in S} P(x, y) g(y)^{-\gamma}
+    w (y, k-1), \;
+    p(x) - p_S
+\right\}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(w(x, 0) = 0\)</span> for all <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<p>We can express this  as a sequence of nonlinear vector equations</p>
+<div class="math notranslate nohighlight">
+\[
+w_k = \max \{ \beta M w_{k-1}, \; p - p_S {\mathbb 1} \}
+  \quad k =1, 2, \ldots
+  \quad \text{with } w_0 = 0
+\]</div>
+<p>Write a function that computes <span class="math notranslate nohighlight">\(w_k\)</span> for any given <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>Compute the value of the option with <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">5</span></code> and <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">25</span></code> using parameter values as in <a class="reference internal" href="#ma_ex1"><span class="std std-numref">Exercise 71.1</span></a>.</p>
+<p>Is one higher than the other?  Can you give intuition?</p>
 </div>
 </div>
 <div class="solution dropdown admonition" id="markov_asset-solution-5">

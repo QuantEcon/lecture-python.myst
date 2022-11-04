@@ -245,11 +245,6 @@ const thebe_selector_output = ".output, .cell_output"
    65.6. Exercises
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#solutions">
-   65.7. Solutions
-  </a>
- </li>
 </ul>
 
                             <p class="logo">
@@ -312,7 +307,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p><a class="reference internal" href="#dynamics-of-an-individual-worker" id="id8">Dynamics of an Individual Worker</a></p></li>
 <li><p><a class="reference internal" href="#endogenous-job-finding-rate" id="id9">Endogenous Job Finding Rate</a></p></li>
 <li><p><a class="reference internal" href="#exercises" id="id10">Exercises</a></p></li>
-<li><p><a class="reference internal" href="#solutions" id="id11">Solutions</a></p></li>
 </ul>
 </li>
 </ul>
@@ -326,22 +320,18 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
+Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
+Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.4)
+Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.3)
 Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.22.4)
-Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.2)
-Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
+Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
 Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
-Requirement already satisfied: setuptools&lt;60 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (59.8.0)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
-Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
+Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 </div>
@@ -1205,47 +1195,12 @@ and <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
 <p>(If you need to refresh your understanding of how these work, consult <a class="reference external" href="https://python-programming.quantecon.org/python_advanced_features.html">this lecture</a>.)</p>
 </div>
 </div>
-<div class="exercise admonition" id="lm_ex2">
-
-<p class="admonition-title"><span class="caption-number">Exercise 65.2 </span></p>
-<div class="section" id="exercise-content">
-<p>Consider an economy with an initial stock  of workers <span class="math notranslate nohighlight">\(N_0 = 100\)</span> at the
-steady state level of employment in the baseline parameterization</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\alpha = 0.013\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\lambda = 0.283\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(b = 0.0124\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(d = 0.00822\)</span></p></li>
-</ul>
-<p>(The values for <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span> follow <span id="id3">[<a class="reference internal" href="zreferences.html#id136" title="Steven J Davis, R Jason Faberman, and John Haltiwanger. The flow approach to labor markets: new data sources, micro-macro links and the recent downturn. Journal of Economic Perspectives, 2006.">DFH06</a>]</span>)</p>
-<p>Suppose that in response to new legislation the hiring rate reduces to <span class="math notranslate nohighlight">\(\lambda = 0.2\)</span>.</p>
-<p>Plot the transition dynamics of the unemployment and employment stocks for 50 periods.</p>
-<p>Plot the transition dynamics for the rates.</p>
-<p>How long does the economy take to converge to its new steady state?</p>
-<p>What is the new steady state level of employment?</p>
-<p>Note: it may be easier to use the class created in exercise 1 to help with changing variables.</p>
-</div>
-</div>
-<div class="exercise admonition" id="lm_ex3">
-
-<p class="admonition-title"><span class="caption-number">Exercise 65.3 </span></p>
-<div class="section" id="exercise-content">
-<p>Consider an economy with an initial stock  of workers <span class="math notranslate nohighlight">\(N_0 = 100\)</span> at the
-steady state level of employment in the baseline parameterization.</p>
-<p>Suppose that for 20 periods the birth rate was temporarily high (<span class="math notranslate nohighlight">\(b = 0.025\)</span>) and then returned to its original level.</p>
-<p>Plot the transition dynamics of the unemployment and employment stocks for 50 periods.</p>
-<p>Plot the transition dynamics for the rates.</p>
-<p>How long does the economy take to return to its original steady state?</p>
-</div>
-</div>
-</div>
-<div class="section" id="solutions">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">65.7. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
-<div class="solution dropdown admonition" id="lake_model-solution-3">
+<div class="solution dropdown admonition" id="lake_model-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#lm_ex1"> Exercise 65.1</a></p>
 <div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
+<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LakeModelModified</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1392,7 +1347,31 @@ steady state level of employment in the baseline parameterization.</p>
 </div>
 </div>
 </div>
-<div class="solution dropdown admonition" id="lake_model-solution-4">
+<div class="exercise admonition" id="lm_ex2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 65.2 </span></p>
+<div class="section" id="exercise-content">
+<p>Consider an economy with an initial stock  of workers <span class="math notranslate nohighlight">\(N_0 = 100\)</span> at the
+steady state level of employment in the baseline parameterization</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha = 0.013\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\lambda = 0.283\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(b = 0.0124\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d = 0.00822\)</span></p></li>
+</ul>
+<p>(The values for <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span> follow <span id="id3">[<a class="reference internal" href="zreferences.html#id136" title="Steven J Davis, R Jason Faberman, and John Haltiwanger. The flow approach to labor markets: new data sources, micro-macro links and the recent downturn. Journal of Economic Perspectives, 2006.">DFH06</a>]</span>)</p>
+<p>Suppose that in response to new legislation the hiring rate reduces to <span class="math notranslate nohighlight">\(\lambda = 0.2\)</span>.</p>
+<p>Plot the transition dynamics of the unemployment and employment stocks for 50 periods.</p>
+<p>Plot the transition dynamics for the rates.</p>
+<p>How long does the economy take to converge to its new steady state?</p>
+<p>What is the new steady state level of employment?</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It may be easier to use the class created in exercise 1 to help with changing variables.</p>
+</div>
+</div>
+</div>
+<div class="solution dropdown admonition" id="lake_model-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#lm_ex2"> Exercise 65.2</a></p>
 <div class="section" id="s">
@@ -1489,6 +1468,18 @@ steady state values to <code class="docutils literal notranslate"><span class="p
 </div>
 <p>We see that it takes 20 periods for the economy to converge to its new
 steady state levels.</p>
+</div>
+</div>
+<div class="exercise admonition" id="lm_ex3">
+
+<p class="admonition-title"><span class="caption-number">Exercise 65.3 </span></p>
+<div class="section" id="exercise-content">
+<p>Consider an economy with an initial stock  of workers <span class="math notranslate nohighlight">\(N_0 = 100\)</span> at the
+steady state level of employment in the baseline parameterization.</p>
+<p>Suppose that for 20 periods the birth rate was temporarily high (<span class="math notranslate nohighlight">\(b = 0.025\)</span>) and then returned to its original level.</p>
+<p>Plot the transition dynamics of the unemployment and employment stocks for 50 periods.</p>
+<p>Plot the transition dynamics for the rates.</p>
+<p>How long does the economy take to return to its original steady state?</p>
 </div>
 </div>
 <div class="solution dropdown admonition" id="lake_model-solution-5">

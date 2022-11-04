@@ -299,9 +299,9 @@ The eigenvalues corresponding to each eigenvector are $\{w^{j}\}_{j=0}^{7}$ in o
 ```{code-cell} ipython3
 def construct_F(N):
 
-    w = np.e ** (-np.complex(0, 2*np.pi/N))
+    w = np.e ** (-complex(0, 2*np.pi/N))
 
-    F = np.ones((N, N), dtype=np.complex)
+    F = np.ones((N, N), dtype=complex)
     for i in range(1, N):
         F[i, 1:] = w ** (i * np.arange(1, N))
 
@@ -337,7 +337,7 @@ P8 = construct_P(8)
 ```
 
 ```{code-cell} ipython3
-diff_arr = np.empty(8, dtype=np.complex)
+diff_arr = np.empty(8, dtype=complex)
 for j in range(8):
     diff = P8 @ Q8[:, j] - w ** j * Q8[:, j]
     diff_arr[j] = diff @ diff.T
@@ -407,7 +407,7 @@ np.abs(C - C8).max()
 The  $k$th column of $P_{8}$ associated with eigenvalue $w^{k-1}$ is an eigenvector of $C_{8}$ associated with an eigenvalue $\sum_{h=0}^{7} c_{j} w^{h k}$.
 
 ```{code-cell} ipython3
-𝜆_C8 = np.zeros(8, dtype=np.complex)
+𝜆_C8 = np.zeros(8, dtype=complex)
 
 for j in range(8):
     for k in range(8):
@@ -446,9 +446,9 @@ def DFT(x):
     "The discrete Fourier transform."
 
     N = len(x)
-    w = np.e ** (-np.complex(0, 2*np.pi/N))
+    w = np.e ** (-complex(0, 2*np.pi/N))
 
-    X = np.zeros(N, dtype=np.complex)
+    X = np.zeros(N, dtype=complex)
     for k in range(N):
         for n in range(N):
             X[k] += x[n] * w ** (k * n)
@@ -530,9 +530,9 @@ $$
 def inverse_transform(X):
 
     N = len(X)
-    w = np.e ** (np.complex(0, 2*np.pi/N))
+    w = np.e ** (complex(0, 2*np.pi/N))
 
-    x = np.zeros(N, dtype=np.complex)
+    x = np.zeros(N, dtype=complex)
     for n in range(N):
         for k in range(N):
             x[n] += X[k] * w ** (k * n) / N

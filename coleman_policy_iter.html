@@ -194,11 +194,6 @@ const thebe_selector_output = ".output, .cell_output"
    44.4. Exercises
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#solutions">
-   44.5. Solutions
-  </a>
- </li>
 </ul>
 
                             <p class="logo">
@@ -259,7 +254,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p><a class="reference internal" href="#the-euler-equation" id="id5">The Euler Equation</a></p></li>
 <li><p><a class="reference internal" href="#implementation" id="id6">Implementation</a></p></li>
 <li><p><a class="reference internal" href="#exercises" id="id7">Exercises</a></p></li>
-<li><p><a class="reference internal" href="#solutions" id="id8">Solutions</a></p></li>
 </ul>
 </li>
 </ul>
@@ -274,33 +268,33 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.2)
+Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.3)
 Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.27.1)
-Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.22.4)
-Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.7.3)
-Requirement already satisfied: setuptools&lt;60 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (59.8.0)
+Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.4)
+Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
+Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
 Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer~=2.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2021.10.8)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.9)
-Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (2.2.4)
-Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.7.3)
-Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.22.4)
-Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (21.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (21.3)
 Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.5.2)
-Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.56.2)
-Requirement already satisfied: setuptools&lt;60 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (59.8.0)
+Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.23.4)
+Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.9.1)
+Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.56.3)
+Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (63.4.1)
 Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
-Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.4)
+Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
 </pre></div>
 </div>
 </div>
@@ -743,7 +737,7 @@ using time iteration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>84.5 ms ± 0 ns per loop (mean ± std. dev. of 1 run, 3 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>87.5 ms ± 0 ns per loop (mean ± std. dev. of 1 run, 3 loops each)
 </pre></div>
 </div>
 </div>
@@ -768,9 +762,6 @@ u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
 <p>Compute and plot the optimal policy.</p>
 </div>
 </div>
-</div>
-<div class="section" id="solutions">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">44.5. </span>Solutions</a><a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h2>
 <div class="solution dropdown admonition" id="coleman_policy_iter-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#cpi_ex1"> Exercise 44.1</a></p>
@@ -864,8 +855,8 @@ u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
 </pre></div>
 </div>
 <img alt="_images/coleman_policy_iter_29_1.png" src="_images/coleman_policy_iter_29_1.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.7 s, sys: 67.7 ms, total: 2.76 s
-Wall time: 2.65 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.38 s, sys: 96 ms, total: 2.48 s
+Wall time: 2.35 s
 </pre></div>
 </div>
 </div>

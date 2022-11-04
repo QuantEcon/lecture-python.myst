@@ -243,7 +243,7 @@ proceeding to read the rest of the lecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (3.4.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (3.5.0)
 Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from prettytable) (0.2.5)
 </pre></div>
 </div>
@@ -314,15 +314,16 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 <li><p>Please write a Python class to compute <span class="math notranslate nohighlight">\(f_k^I\)</span></p></li>
 <li><p>Please use your code to compute <span class="math notranslate nohighlight">\(f_k^I, k = 0, \ldots , n\)</span> and compare them to
 <span class="math notranslate nohighlight">\(\textrm{Prob}(X =  k | \theta)\)</span> for various values of <span class="math notranslate nohighlight">\(\theta, n\)</span> and <span class="math notranslate nohighlight">\(I\)</span></p></li>
-<li><p>With  the Law of Large numbers in mind, use your code to say something</p></li>
+<li><p>With the Law of Large numbers in mind, use your code to say something</p></li>
 </ol>
 </div>
 </div>
-<div class="solution admonition" id="prob_meaning-solution-1">
+<div class="solution dropdown admonition" id="prob_meaning-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex1"> Exercise 11.1</a></p>
 <div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
+<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution:</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">frequentist</span><span class="p">:</span>
 
@@ -402,22 +403,22 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 | 2  | 3.606884752589999e-08  |     0.0     |
 | 3  |  5.04963865362601e-07  |    1e-06    |
 | 4  | 5.007558331512455e-06  |    8e-06    |
-| 5  | 3.7389768875293014e-05 |   3.7e-05   |
-| 6  | 0.00021810698510587546 |   0.000216  |
-| 7  |  0.001017832597160754  |   0.001093  |
-| 8  |  0.003859281930901185  |   0.003808  |
-| 9  |  0.012006654896137007  |   0.012005  |
-| 10 |  0.030817080900085007  |   0.031152  |
-| 11 |   0.065369565545635    |   0.065208  |
-| 12 |  0.11439673970486108   |   0.11397   |
-| 13 |   0.1642619852172365   |   0.164097  |
-| 14 |  0.19163898275344246   |   0.191349  |
-| 15 |  0.17886305056987967   |   0.178719  |
-| 16 |   0.1304209743738704   |   0.130936  |
-| 17 |  0.07160367220526209   |   0.071804  |
-| 18 |  0.027845872524268643  |   0.027874  |
-| 19 |  0.006839337111223871  |   0.006908  |
-| 20 | 0.0007979226629761189  |   0.000815  |
+| 5  | 3.7389768875293014e-05 |   3.8e-05   |
+| 6  | 0.00021810698510587546 |   0.000249  |
+| 7  |  0.001017832597160754  |   0.001024  |
+| 8  |  0.003859281930901185  |   0.003865  |
+| 9  |  0.012006654896137007  |   0.01196   |
+| 10 |  0.030817080900085007  |   0.030725  |
+| 11 |   0.065369565545635    |   0.065082  |
+| 12 |  0.11439673970486108   |   0.114329  |
+| 13 |   0.1642619852172365   |   0.16387   |
+| 14 |  0.19163898275344246   |   0.191817  |
+| 15 |  0.17886305056987967   |   0.178532  |
+| 16 |   0.1304209743738704   |    0.1312   |
+| 17 |  0.07160367220526209   |   0.071936  |
+| 18 |  0.027845872524268643  |   0.027716  |
+| 19 |  0.006839337111223871  |   0.006863  |
+| 20 | 0.0007979226629761189  |   0.000785  |
 +----+------------------------+-------------+
 </pre></div>
 </div>
@@ -590,16 +591,15 @@ a <strong>beta distribution</strong> with parameters <span class="math notransla
 <div class="section" id="exercise-content">
 <p><strong>a)</strong>  Please write down the <strong>likelihood function</strong> for a sample of length <span class="math notranslate nohighlight">\(n\)</span> from a binomial distribution with parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p><strong>b)</strong> Please write down the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of the coin.</p>
-<p><strong>c)</strong> Please pretend  that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span> and that someone who doesn’t know this has a beta prior distribution with parameters  with <span class="math notranslate nohighlight">\(\beta = \alpha = .5\)</span>.</p>
-<p><strong>d)</strong> Please write a Python class to simulate this person’s personal  posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span>  for a <em>single</em> sequence of <span class="math notranslate nohighlight">\(n\)</span> draws.</p>
-<p><strong>e)</strong> Please plot the posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span> as a function of <span class="math notranslate nohighlight">\(\theta\)</span> as <span class="math notranslate nohighlight">\(n\)</span> grows as <span class="math notranslate nohighlight">\(1, 2, \ldots\)</span>.</p>
-<p><strong>f)</strong> For various <span class="math notranslate nohighlight">\(n\)</span>’s, please describe and compute  a Bayesian coverage interval for the interval <span class="math notranslate nohighlight">\([.45, .55]\)</span>.</p>
-<p><strong>g)</strong> Please tell what question a Bayesian coverage interval answers.</p>
-<p><strong>h)</strong> Please compute the Posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> for various values of sample size <span class="math notranslate nohighlight">\(n\)</span>.</p>
-<p><strong>i)</strong> Please use your Python class to study what happens to the posterior distribution as <span class="math notranslate nohighlight">\(n \rightarrow + \infty\)</span>, again assuming that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span>, though it is unknown to the person doing the updating via Bayes’ Law.</p>
+<p><strong>c)</strong> Now pretend that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span> and that someone who doesn’t know this has a beta prior distribution with parameters  with <span class="math notranslate nohighlight">\(\beta = \alpha = .5\)</span>. Please write a Python class to simulate this person’s personal posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span>  for a <em>single</em> sequence of <span class="math notranslate nohighlight">\(n\)</span> draws.</p>
+<p><strong>d)</strong> Please plot the posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span> as a function of <span class="math notranslate nohighlight">\(\theta\)</span> as <span class="math notranslate nohighlight">\(n\)</span> grows as <span class="math notranslate nohighlight">\(1, 2, \ldots\)</span>.</p>
+<p><strong>e)</strong> For various <span class="math notranslate nohighlight">\(n\)</span>’s, please describe and compute  a Bayesian coverage interval for the interval <span class="math notranslate nohighlight">\([.45, .55]\)</span>.</p>
+<p><strong>f)</strong> Please tell what question a Bayesian coverage interval answers.</p>
+<p><strong>g)</strong> Please compute the Posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> for various values of sample size <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<p><strong>h)</strong> Please use your Python class to study what happens to the posterior distribution as <span class="math notranslate nohighlight">\(n \rightarrow + \infty\)</span>, again assuming that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span>, though it is unknown to the person doing the updating via Bayes’ Law.</p>
 </div>
 </div>
-<div class="solution admonition" id="prob_meaning-solution-3">
+<div class="solution dropdown admonition" id="prob_meaning-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex2"> Exercise 11.2</a></p>
 <div class="section" id="s">
@@ -630,8 +630,8 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 \[
 \textrm{Prob}(\theta | Y) \sim \textrm{Beta}(\alpha + Y, \beta + (1-Y))
 \]</div>
-<p><strong>c)</strong> Please pretend  that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span> and that someone who doesn’t know this has a beta prior with <span class="math notranslate nohighlight">\(\beta = \alpha = .5\)</span>.</p>
-<p><strong>d)</strong> Please write a Python class to simulate this person’s personal  posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span>  for a <em>single</em> sequence of <span class="math notranslate nohighlight">\(n\)</span> draws.</p>
+<p>Now please pretend that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span> and that someone who doesn’t know this has a beta prior with <span class="math notranslate nohighlight">\(\beta = \alpha = .5\)</span>.</p>
+<p><strong>c)</strong> Now pretend that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span> and that someone who doesn’t know this has a beta prior distribution with parameters  with <span class="math notranslate nohighlight">\(\beta = \alpha = .5\)</span>. Please write a Python class to simulate this person’s personal posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span>  for a <em>single</em> sequence of <span class="math notranslate nohighlight">\(n\)</span> draws.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Bayesian</span><span class="p">:</span>
@@ -697,7 +697,7 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 </div>
 </div>
 </div>
-<p><strong>e)</strong> Please plot the posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span> as a function of <span class="math notranslate nohighlight">\(\theta\)</span> as <span class="math notranslate nohighlight">\(n\)</span> grows from <span class="math notranslate nohighlight">\(1, 2, \ldots\)</span>.</p>
+<p><strong>d)</strong> Please plot the posterior distribution for <span class="math notranslate nohighlight">\(\theta\)</span> as a function of <span class="math notranslate nohighlight">\(\theta\)</span> as <span class="math notranslate nohighlight">\(n\)</span> grows from <span class="math notranslate nohighlight">\(1, 2, \ldots\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Bay_stat</span> <span class="o">=</span> <span class="n">Bayesian</span><span class="p">()</span>
@@ -729,7 +729,7 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 <img alt="_images/prob_meaning_19_0.png" src="_images/prob_meaning_19_0.png" />
 </div>
 </div>
-<p><strong>f)</strong> For various <span class="math notranslate nohighlight">\(n\)</span>’s, please describe and compute  <span class="math notranslate nohighlight">\(.05\)</span> and <span class="math notranslate nohighlight">\(.95\)</span> quantiles for  posterior probabilities.</p>
+<p><strong>e)</strong> For various <span class="math notranslate nohighlight">\(n\)</span>’s, please describe and compute  <span class="math notranslate nohighlight">\(.05\)</span> and <span class="math notranslate nohighlight">\(.95\)</span> quantiles for  posterior probabilities.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">upper_bound</span> <span class="o">=</span> <span class="p">[</span><span class="n">ii</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">Bay_stat</span><span class="o">.</span><span class="n">posterior_list</span><span class="p">[:</span><span class="mi">14</span><span class="p">]]</span>
@@ -782,44 +782,44 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
   <tbody>
     <tr>
       <th>upper</th>
-      <td>0.001543</td>
-      <td>0.097308</td>
+      <td>0.228520</td>
+      <td>0.430741</td>
       <td>0.235534</td>
       <td>0.349293</td>
-      <td>0.260634</td>
-      <td>0.347322</td>
+      <td>0.437155</td>
+      <td>0.441873</td>
       <td>0.324234</td>
-      <td>0.354342</td>
-      <td>0.329116</td>
-      <td>0.268394</td>
-      <td>0.284691</td>
-      <td>0.334893</td>
-      <td>0.366416</td>
-      <td>0.383644</td>
+      <td>0.264015</td>
+      <td>0.292234</td>
+      <td>0.348182</td>
+      <td>0.331729</td>
+      <td>0.367325</td>
+      <td>0.380167</td>
+      <td>0.387598</td>
     </tr>
     <tr>
       <th>lower</th>
-      <td>0.771480</td>
-      <td>0.902692</td>
+      <td>0.998457</td>
+      <td>0.999132</td>
       <td>0.937587</td>
       <td>0.953993</td>
-      <td>0.872224</td>
-      <td>0.814884</td>
+      <td>0.963553</td>
+      <td>0.882671</td>
       <td>0.675766</td>
-      <td>0.645658</td>
-      <td>0.555887</td>
-      <td>0.454460</td>
-      <td>0.441218</td>
-      <td>0.426809</td>
-      <td>0.438419</td>
-      <td>0.434744</td>
+      <td>0.549653</td>
+      <td>0.516104</td>
+      <td>0.540960</td>
+      <td>0.492070</td>
+      <td>0.460571</td>
+      <td>0.452549</td>
+      <td>0.438773</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
 <p>As <span class="math notranslate nohighlight">\(n\)</span> increases, we can see that Bayesian coverage intervals narrow and move toward <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
-<p><strong>g)</strong> Please tell what question a Bayesian coverage interval answers.</p>
+<p><strong>f)</strong> Please tell what question a Bayesian coverage interval answers.</p>
 <p>The Bayesian coverage interval tells the range of <span class="math notranslate nohighlight">\(\theta\)</span> that corresponds to the [<span class="math notranslate nohighlight">\(p_1\)</span>, <span class="math notranslate nohighlight">\(p_2\)</span>] quantiles of the cumulative probability distribution (CDF)  of the posterior distribution.</p>
 <p>To construct the coverage interval we first compute a posterior distribution of the unknown parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p>If the CDF is <span class="math notranslate nohighlight">\(F(\theta)\)</span>, then the Bayesian coverage interval <span class="math notranslate nohighlight">\([a,b]\)</span> for the interval <span class="math notranslate nohighlight">\([p_1,p_2]\)</span> is described by</p>
@@ -827,7 +827,7 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 \[
 F(a)=p_1,F(b)=p_2
 \]</div>
-<p><strong>h)</strong> Please compute the Posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> for various values of sample size <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<p><strong>g)</strong> Please compute the Posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> for various values of sample size <span class="math notranslate nohighlight">\(n\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_value</span><span class="p">,</span> <span class="n">right_value</span> <span class="o">=</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.55</span>
@@ -850,7 +850,7 @@ F(a)=p_1,F(b)=p_2
 <img alt="_images/prob_meaning_23_0.png" src="_images/prob_meaning_23_0.png" />
 </div>
 </div>
-<p>Notice  that in the graph above the posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> typically exhibits a hump shape  as <span class="math notranslate nohighlight">\(n\)</span> increases.</p>
+<p>Notice that in the graph above the posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> typically exhibits a hump shape as <span class="math notranslate nohighlight">\(n\)</span> increases.</p>
 <p>Two opposing forces are at work.</p>
 <p>The first force is that the individual  adjusts his belief as he observes new outcomes, so his posterior probability distribution  becomes more and more realistic, which explains the rise of the posterior probabililty.</p>
 <p>However, <span class="math notranslate nohighlight">\([.45, .55]\)</span> actually excludes the true <span class="math notranslate nohighlight">\(\theta =.4 \)</span> that generates the data.</p>
@@ -858,7 +858,7 @@ F(a)=p_1,F(b)=p_2
 <p>The descent seems precipitous only because of the scale of the graph  that has the number of observations increasing disproportionately.</p>
 <p>When the number of observations becomes large enough, our Bayesian becomes so confident about <span class="math notranslate nohighlight">\(\theta\)</span> that he considers <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> very unlikely.</p>
 <p>That is why we see a nearly horizontal line when the number of observations exceeds 500.</p>
-<p><strong>i)</strong> Please use your Python class to study what happens to the posterior distribution as <span class="math notranslate nohighlight">\(n \rightarrow + \infty\)</span>, again assuming that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span>, though it is unknown to the person doing the updating via Bayes’ Law.</p>
+<p><strong>h)</strong> Please use your Python class to study what happens to the posterior distribution as <span class="math notranslate nohighlight">\(n \rightarrow + \infty\)</span>, again assuming that the true value of <span class="math notranslate nohighlight">\(\theta = .4\)</span>, though it is unknown to the person doing the updating via Bayes’ Law.</p>
 <p>Using the Python class we made above, we can see the evolution of posterior distributions as <span class="math notranslate nohighlight">\(n\)</span> approaches infinity.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

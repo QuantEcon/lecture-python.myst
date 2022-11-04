@@ -526,8 +526,6 @@ In doing so, you will need to use the definition of the value function and the
 Bellman equation.
 ```
 
-## Solutions
-
 ```{solution} cep_ex1
 :class: dropdown
 
