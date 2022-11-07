@@ -414,7 +414,6 @@ This is because the value of waiting increases with unemployment compensation.
 
 ## Exercises
 
-### Exercise 1
 ```{exercise}
 :label: mc_ex1
 
@@ -424,13 +423,11 @@ Investigate how mean unemployment duration varies with the discount factor $\bet
 * Do your results match up?
 ```
 
-## Solutions
-
 ```{solution-start} mc_ex1
 :class: dropdown
 ```
 
-Here is one solution.
+Here is one solution
 
 ```{code-cell} ipython3
 beta_vals = np.linspace(0.94, 0.99, 8)

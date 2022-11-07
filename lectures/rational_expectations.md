@@ -588,65 +588,6 @@ Express the solution of the firm's problem in the form {eq}`ree_ex5` and give th
 If there were a unit measure of  identical competitive firms all behaving according to {eq}`ree_ex5`, what would {eq}`ree_ex5`  imply for the *actual* law of motion {eq}`ree_hlom` for market supply.
 ```
 
-
-```{exercise}
-:label: ree_ex2
-
-Consider the following $\kappa_0, \kappa_1$ pairs as candidates for the
-aggregate law of motion component of a rational expectations equilibrium (see
-{eq}`ree_hlom2`).
-
-Extending the program that you wrote for {ref}`ree_ex1`, determine which if any
-satisfy {ref}`the definition <ree_def>` of a rational expectations equilibrium
-
-* (94.0886298678, 0.923409232937)
-* (93.2119845412, 0.984323478873)
-* (95.0818452486, 0.952459076301)
-
-Describe an iterative algorithm that uses the program that you wrote for {ref}`ree_ex1` to compute a rational expectations equilibrium.
-
-(You are not being asked actually to use the algorithm you are suggesting)
-```
-
-
-```{exercise}
-:label: ree_ex3
-
-Recall the planner's problem {ref}`described above <ree_pp>`
-
-1. Formulate the planner's problem as an LQ problem.
-1. Solve it using the same parameter values in exercise 1
-    * $a_0= 100, a_1= 0.05, \beta = 0.95, \gamma=10$
-1. Represent the solution in the form $Y_{t+1} = \kappa_0 + \kappa_1 Y_t$.
-1. Compare your answer with the results from exercise 2.
-```
-
-
-```{exercise}
-:label: ree_ex4
-
-A monopolist faces the industry demand curve {eq}`ree_comp3d`  and chooses $\{Y_t\}$ to maximize $\sum_{t=0}^{\infty} \beta^t r_t$ where
-
-$$
-r_t = p_t Y_t - \frac{\gamma (Y_{t+1} - Y_t)^2 }{2}
-$$
-
-Formulate this problem as an LQ problem.
-
-Compute the optimal policy using the same parameters as {ref}`ree_ex2`.
-
-In particular, solve for the parameters in
-
-$$
-Y_{t+1} = m_0 + m_1 Y_t
-$$
-
-Compare your results with {ref}`ree_ex2` -- comment.
-```
-
-## Solutions
-
-
 ```{solution-start} ree_ex1
 :class: dropdown
 ```
@@ -765,6 +706,25 @@ $$
 ```
 
 
+```{exercise}
+:label: ree_ex2
+
+Consider the following $\kappa_0, \kappa_1$ pairs as candidates for the
+aggregate law of motion component of a rational expectations equilibrium (see
+{eq}`ree_hlom2`).
+
+Extending the program that you wrote for {ref}`ree_ex1`, determine which if any
+satisfy {ref}`the definition <ree_def>` of a rational expectations equilibrium
+
+* (94.0886298678, 0.923409232937)
+* (93.2119845412, 0.984323478873)
+* (95.0818452486, 0.952459076301)
+
+Describe an iterative algorithm that uses the program that you wrote for {ref}`ree_ex1` to compute a rational expectations equilibrium.
+
+(You are not being asked actually to use the algorithm you are suggesting)
+```
+
 ```{solution-start} ree_ex2
 :class: dropdown
 ```
@@ -834,6 +794,19 @@ converge to a rational expectations equilibrium)
 ```
 
 
+
+```{exercise}
+:label: ree_ex3
+
+Recall the planner's problem {ref}`described above <ree_pp>`
+
+1. Formulate the planner's problem as an LQ problem.
+1. Solve it using the same parameter values in exercise 1
+    * $a_0= 100, a_1= 0.05, \beta = 0.95, \gamma=10$
+1. Represent the solution in the form $Y_{t+1} = \kappa_0 + \kappa_1 Y_t$.
+1. Compare your answer with the results from exercise 2.
+```
+
 ```{solution-start} ree_ex3
 :class: dropdown
 ```
@@ -902,6 +875,27 @@ an equilibrium from the previous exercise.
 ```{solution-end}
 ```
 
+```{exercise}
+:label: ree_ex4
+
+A monopolist faces the industry demand curve {eq}`ree_comp3d`  and chooses $\{Y_t\}$ to maximize $\sum_{t=0}^{\infty} \beta^t r_t$ where
+
+$$
+r_t = p_t Y_t - \frac{\gamma (Y_{t+1} - Y_t)^2 }{2}
+$$
+
+Formulate this problem as an LQ problem.
+
+Compute the optimal policy using the same parameters as {ref}`ree_ex2`.
+
+In particular, solve for the parameters in
+
+$$
+Y_{t+1} = m_0 + m_1 Y_t
+$$
+
+Compare your results with {ref}`ree_ex2` -- comment.
+```
 
 ```{solution-start} ree_ex4
 :class: dropdown

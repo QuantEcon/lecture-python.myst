@@ -875,8 +875,6 @@ state in which $f'(K)=\rho +\delta$.
 - Why does the saving rate respond as it does?
 ```
 
-### Solution
-
 ```{solution-start} ck1_ex1
 :class: dropdown
 ```

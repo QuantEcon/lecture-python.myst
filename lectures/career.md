@@ -383,43 +383,6 @@ To generate the draws from the distributions $F$ and $G$, use `quantecon.random.
 ```
 
 
-```{exercise}
-:label: career_ex2
-
-Let's now consider how long it takes for the worker to settle down to a
-permanent job, given a starting point of $(\theta, \epsilon) = (0, 0)$.
-
-In other words, we want to study the distribution of the random variable
-
-$$
-T^* := \text{the first point in time from which the worker's job no longer changes}
-$$
-
-Evidently, the worker's job becomes permanent if and only if $(\theta_t, \epsilon_t)$ enters the
-"stay put" region of $(\theta, \epsilon)$ space.
-
-Letting $S$ denote this region, $T^*$ can be expressed as the
-first passage time to $S$ under the optimal policy:
-
-$$
-T^* := \inf\{t \geq 0 \,|\, (\theta_t, \epsilon_t) \in S\}
-$$
-
-Collect 25,000 draws of this random variable and compute the median (which should be about 7).
-
-Repeat the exercise with $\beta=0.99$ and interpret the change.
-```
-
-
-```{exercise}
-:label: career_ex3
-
-Set the parameterization to `G_a = G_b = 100` and generate a new optimal policy
-figure -- interpret.
-```
-
-## Solutions
-
 ```{solution-start} career_ex1
 :class: dropdown
 ```
@@ -469,6 +432,32 @@ plt.show()
 ```{solution-end}
 ```
 
+```{exercise}
+:label: career_ex2
+
+Let's now consider how long it takes for the worker to settle down to a
+permanent job, given a starting point of $(\theta, \epsilon) = (0, 0)$.
+
+In other words, we want to study the distribution of the random variable
+
+$$
+T^* := \text{the first point in time from which the worker's job no longer changes}
+$$
+
+Evidently, the worker's job becomes permanent if and only if $(\theta_t, \epsilon_t)$ enters the
+"stay put" region of $(\theta, \epsilon)$ space.
+
+Letting $S$ denote this region, $T^*$ can be expressed as the
+first passage time to $S$ under the optimal policy:
+
+$$
+T^* := \inf\{t \geq 0 \,|\, (\theta_t, \epsilon_t) \in S\}
+$$
+
+Collect 25,000 draws of this random variable and compute the median (which should be about 7).
+
+Repeat the exercise with $\beta=0.99$ and interpret the change.
+```
 
 ```{solution-start} career_ex2
 :class: dropdown
@@ -519,9 +508,18 @@ Not surprisingly, more patient workers will wait longer to settle down to their 
 ```
 
 
+```{exercise}
+:label: career_ex3
+
+Set the parameterization to `G_a = G_b = 100` and generate a new optimal policy
+figure -- interpret.
+```
+
 ```{solution-start} career_ex3
 :class: dropdown
 ```
+
+Here is one solution
 
 ```{code-cell} python3
 cw = CareerWorkerProblem(G_a=100, G_b=100)
@@ -536,7 +534,7 @@ ax.contourf(tg, eg, greedy_star.T, levels=lvls, cmap=cm.winter, alpha=0.5)
 ax.contour(tg, eg, greedy_star.T, colors='k', levels=lvls, linewidths=2)
 ax.set(xlabel='θ', ylabel='ϵ')
 ax.text(1.8, 2.5, 'new life', fontsize=14)
-ax.text(4.5, 2.5, 'new job', fontsize=14, rotation='vertical')
+ax.text(4.5, 1.5, 'new job', fontsize=14, rotation='vertical')
 ax.text(4.0, 4.5, 'stay put', fontsize=14)
 plt.show()
 ```

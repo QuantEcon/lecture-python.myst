@@ -607,8 +607,6 @@ Your task is to try again, repeating the exercise, but now with our more sophist
 Use the default parameters.
 ```
 
-## Solutions
-
 ```{solution-start} ifpa_ex1
 :class: dropdown
 ```

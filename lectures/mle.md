@@ -809,58 +809,6 @@ The `scipy` module `stats.norm` contains the functions needed to
 compute the cmf and pmf of the normal distribution.
 ```
 
-
-```{exercise-start}
-:label: mle_ex2
-```
-
-Use the following dataset and initial values of $\boldsymbol{\beta}$ to
-estimate the MLE with the Newton-Raphson algorithm developed earlier in
-the lecture
-
-$$
-\mathbf{X} =
-\begin{bmatrix}
-1 & 2 & 4 \\
-1 & 1 & 1 \\
-1 & 4 & 3 \\
-1 & 5 & 6 \\
-1 & 3 & 5
-\end{bmatrix}
-\quad
-y =
-\begin{bmatrix}
-1 \\
-0 \\
-1 \\
-1 \\
-0
-\end{bmatrix}
-\quad
-\boldsymbol{\beta}_{(0)} =
-\begin{bmatrix}
-0.1 \\
-0.1 \\
-0.1
-\end{bmatrix}
-$$
-
-Verify your results with `statsmodels` - you can import the Probit
-function with the following import statement
-
-```{code-cell} python3
-from statsmodels.discrete.discrete_model import Probit
-```
-
-Note that the simple Newton-Raphson algorithm developed in this lecture
-is very sensitive to initial values, and therefore you may fail to
-achieve convergence with different starting values.
-
-```{exercise-end}
-```
-
-## Solutions
-
 ```{solution-start} mle_ex1
 :class: dropdown
 ```
@@ -944,10 +892,60 @@ class ProbitRegression:
 ```{solution-end}
 ```
 
+```{exercise-start}
+:label: mle_ex2
+```
+
+Use the following dataset and initial values of $\boldsymbol{\beta}$ to
+estimate the MLE with the Newton-Raphson algorithm developed earlier in
+the lecture
+
+$$
+\mathbf{X} =
+\begin{bmatrix}
+1 & 2 & 4 \\
+1 & 1 & 1 \\
+1 & 4 & 3 \\
+1 & 5 & 6 \\
+1 & 3 & 5
+\end{bmatrix}
+\quad
+y =
+\begin{bmatrix}
+1 \\
+0 \\
+1 \\
+1 \\
+0
+\end{bmatrix}
+\quad
+\boldsymbol{\beta}_{(0)} =
+\begin{bmatrix}
+0.1 \\
+0.1 \\
+0.1
+\end{bmatrix}
+$$
+
+Verify your results with `statsmodels` - you can import the Probit
+function with the following import statement
+
+```{code-cell} python3
+from statsmodels.discrete.discrete_model import Probit
+```
+
+Note that the simple Newton-Raphson algorithm developed in this lecture
+is very sensitive to initial values, and therefore you may fail to
+achieve convergence with different starting values.
+
+```{exercise-end}
+```
 
 ```{solution-start} mle_ex2
 :class: dropdown
 ```
+
+Here is one solution
 
 ```{code-cell} python3
 X = np.array([[1, 2, 4],

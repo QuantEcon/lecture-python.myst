@@ -449,35 +449,6 @@ Argue that at the steady state, $s_t \approx 0$ and $\phi_t \approx 0.6$.
 ```{exercise-end}
 ```
 
-
-```{exercise}
-:label: jv_ex2
-
-In {ref}`jv_ex1`, we found that $s_t$ converges to zero
-and $\phi_t$ converges to about 0.6.
-
-Since these results were calculated at a value of $\beta$ close to
-one, let's compare them to the best choice for an *infinitely* patient worker.
-
-Intuitively, an infinitely patient worker would like to maximize steady state
-wages, which are a function of steady state capital.
-
-You can take it as given---it's certainly true---that the infinitely patient worker does not
-search in the long run (i.e., $s_t = 0$ for large $t$).
-
-Thus, given $\phi$, steady state capital is the positive fixed point
-$x^*(\phi)$ of the map $x \mapsto g(x, \phi)$.
-
-Steady state wages can be written as $w^*(\phi) = x^*(\phi) (1 - \phi)$.
-
-Graph $w^*(\phi)$ with respect to $\phi$, and examine the best
-choice of $\phi$.
-
-Can you give a rough interpretation for the value that you see?
-```
-
-## Solutions
-
 ```{solution-start} jv_ex1
 :class: dropdown
 ```
@@ -533,6 +504,32 @@ $\phi_t = \phi(x_t) \approx 0.6$.
 ```{solution-end}
 ```
 
+
+```{exercise}
+:label: jv_ex2
+
+In {ref}`jv_ex1`, we found that $s_t$ converges to zero
+and $\phi_t$ converges to about 0.6.
+
+Since these results were calculated at a value of $\beta$ close to
+one, let's compare them to the best choice for an *infinitely* patient worker.
+
+Intuitively, an infinitely patient worker would like to maximize steady state
+wages, which are a function of steady state capital.
+
+You can take it as given---it's certainly true---that the infinitely patient worker does not
+search in the long run (i.e., $s_t = 0$ for large $t$).
+
+Thus, given $\phi$, steady state capital is the positive fixed point
+$x^*(\phi)$ of the map $x \mapsto g(x, \phi)$.
+
+Steady state wages can be written as $w^*(\phi) = x^*(\phi) (1 - \phi)$.
+
+Graph $w^*(\phi)$ with respect to $\phi$, and examine the best
+choice of $\phi$.
+
+Can you give a rough interpretation for the value that you see?
+```
 
 ```{solution-start} jv_ex2
 :class: dropdown

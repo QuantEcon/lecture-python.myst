@@ -599,6 +599,38 @@ Using the above information, estimate a Hausman test and interpret your
 results.
 ```
 
+```{solution-start} ols_ex1
+:class: dropdown
+```
+
+```{code-cell} python3
+# Load in data
+df4 = pd.read_stata('https://github.com/QuantEcon/lecture-python/blob/master/source/_static/lecture_specific/ols/maketable4.dta?raw=true')
+
+# Add a constant term
+df4['const'] = 1
+
+# Estimate the first stage regression
+reg1 = sm.OLS(endog=df4['avexpr'],
+              exog=df4[['const', 'logem4']],
+              missing='drop').fit()
+
+# Retrieve the residuals
+df4['resid'] = reg1.resid
+
+# Estimate the second stage residuals
+reg2 = sm.OLS(endog=df4['logpgp95'],
+              exog=df4[['const', 'avexpr', 'resid']],
+              missing='drop').fit()
+
+print(reg2.summary())
+```
+
+The output shows that the coefficient on the residuals is statistically
+significant, indicating $avexpr_i$ is endogenous.
+
+```{solution-end}
+```
 
 ```{exercise}
 :label: ols_ex2
@@ -639,42 +671,6 @@ Using the above information, compute $\hat{\beta}$ from model 1
 using `numpy` - your results should be the same as those in the
 `statsmodels` output from earlier in the lecture.
 ```
-
-## Solutions
-
-```{solution-start} ols_ex1
-:class: dropdown
-```
-
-```{code-cell} python3
-# Load in data
-df4 = pd.read_stata('https://github.com/QuantEcon/lecture-python/blob/master/source/_static/lecture_specific/ols/maketable4.dta?raw=true')
-
-# Add a constant term
-df4['const'] = 1
-
-# Estimate the first stage regression
-reg1 = sm.OLS(endog=df4['avexpr'],
-              exog=df4[['const', 'logem4']],
-              missing='drop').fit()
-
-# Retrieve the residuals
-df4['resid'] = reg1.resid
-
-# Estimate the second stage residuals
-reg2 = sm.OLS(endog=df4['logpgp95'],
-              exog=df4[['const', 'avexpr', 'resid']],
-              missing='drop').fit()
-
-print(reg2.summary())
-```
-
-The output shows that the coefficient on the residuals is statistically
-significant, indicating $avexpr_i$ is endogenous.
-
-```{solution-end}
-```
-
 
 ```{solution-start} ols_ex2
 :class: dropdown

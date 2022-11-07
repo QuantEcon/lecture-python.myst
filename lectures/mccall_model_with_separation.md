@@ -517,8 +517,6 @@ alpha_vals = np.linspace(0.05, 0.5, grid_size) # separation rate
 ```{exercise-end}
 ```
 
-## Solutions
-
 ```{solution-start} mmws_ex1
 :class: dropdown
 ```

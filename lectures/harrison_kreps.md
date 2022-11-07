@@ -568,8 +568,6 @@ We'll use these transition matrices when we present our solution of exercise 1 b
 ```{exercise-end}
 ```
 
-## Solutions
-
 ```{solution-start} hk_ex1
 :class: dropdown
 ```
