@@ -564,6 +564,29 @@ The figure shows that higher interest rates boost savings and hence suppress con
 ```{exercise-end}
 ```
 
+```{solution-start} ifp_ex1
+:class: dropdown
+```
+
+Here's one solution:
+
+```{code-cell} python3
+r_vals = np.linspace(0, 0.04, 4)
+
+fig, ax = plt.subplots()
+for r_val in r_vals:
+    ifp = IFP(r=r_val)
+    σ_star = solve_model_time_iter(ifp, σ_init, verbose=False)
+    ax.plot(ifp.asset_grid, σ_star[:, 0], label=f'$r = {r_val:.3f}$')
+
+ax.set(xlabel='asset level', ylabel='consumption (low income)')
+ax.legend()
+plt.show()
+```
+
+```{solution-end}
+```
+
 
 ```{exercise-start}
 :label: ifp_ex2
@@ -623,57 +646,6 @@ Your task is to generate such a histogram.
 ```{exercise-end}
 ```
 
-
-```{exercise}
-:label: ifp_ex3
-
-Following on from exercises 1 and 2, let's look at how savings and aggregate
-asset holdings vary with the interest rate
-
-* Note: {cite}`Ljungqvist2012` section 18.6 can be consulted for more
-  background on the topic treated in this exercise.
-
-For a given parameterization of the model, the mean of the stationary
-distribution of assets can be interpreted as aggregate capital in an economy
-with a unit mass of *ex-ante* identical households facing idiosyncratic
-shocks.
-
-Your task is to investigate how this measure of aggregate capital varies with
-the interest rate.
-
-Following tradition, put the price (i.e., interest rate) on the vertical axis.
-
-On the horizontal axis put aggregate capital, computed as the mean of the
-stationary distribution given the interest rate.
-```
-
-
-## Solutions
-
-```{solution-start} ifp_ex1
-:class: dropdown
-```
-
-Here's one solution:
-
-```{code-cell} python3
-r_vals = np.linspace(0, 0.04, 4)
-
-fig, ax = plt.subplots()
-for r_val in r_vals:
-    ifp = IFP(r=r_val)
-    σ_star = solve_model_time_iter(ifp, σ_init, verbose=False)
-    ax.plot(ifp.asset_grid, σ_star[:, 0], label=f'$r = {r_val:.3f}$')
-
-ax.set(xlabel='asset level', ylabel='consumption (low income)')
-ax.legend()
-plt.show()
-```
-
-```{solution-end}
-```
-
-
 ```{solution-start} ifp_ex2
 :class: dropdown
 ```
@@ -728,6 +700,31 @@ more realistic features to the model.
 ```{solution-end}
 ```
 
+```{exercise-start}
+:label: ifp_ex3
+```
+
+Following on from exercises 1 and 2, let's look at how savings and aggregate
+asset holdings vary with the interest rate
+
+```{note}
+{cite}`Ljungqvist2012` section 18.6 can be consulted for more background on the topic treated in this exercise.
+```
+For a given parameterization of the model, the mean of the stationary
+distribution of assets can be interpreted as aggregate capital in an economy
+with a unit mass of *ex-ante* identical households facing idiosyncratic
+shocks.
+
+Your task is to investigate how this measure of aggregate capital varies with
+the interest rate.
+
+Following tradition, put the price (i.e., interest rate) on the vertical axis.
+
+On the horizontal axis put aggregate capital, computed as the mean of the
+stationary distribution given the interest rate.
+
+```{exercise-end}
+```
 
 ```{solution-start} ifp_ex3
 :class: dropdown

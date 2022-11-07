@@ -186,16 +186,18 @@ import numpy as np
 X = np.random.rand(5,2)
 U, S, V = np.linalg.svd(X,full_matrices=True)  # full SVD
 Uhat, Shat, Vhat = np.linalg.svd(X,full_matrices=False) # economy SVD
-print('U, S, V ='), U, S, V
+print('U, S, V =')
+U, S, V
 ```
 
 ```{code-cell} ipython3
-print('Uhat, Shat, Vhat = '), Uhat, Shat, Vhat
+print('Uhat, Shat, Vhat = ')
+Uhat, Shat, Vhat
 ```
 
 ```{code-cell} ipython3
 rr = np.linalg.matrix_rank(X)
-print('rank of X - '), rr
+print(f'rank of X = {rr}')
 ```
 
 
@@ -209,14 +211,16 @@ We illustrate these properties for our example with the following code cells.
 ```{code-cell} ipython3
 UTU = U.T@U
 UUT = U@U.T
-print('UUT, UTU = '), UUT, UTU 
+print('UUT, UTU = ')
+UUT, UTU 
 ```
 
 
 ```{code-cell} ipython3
 UhatUhatT = Uhat@Uhat.T
 UhatTUhat = Uhat.T@Uhat
-print('UhatUhatT, UhatTUhat= '), UhatUhatT, UhatTUhat
+print('UhatUhatT, UhatTUhat= ')
+UhatUhatT, UhatTUhat
 ```
 
 
@@ -248,16 +252,18 @@ import numpy as np
 X = np.random.rand(2,5)
 U, S, V = np.linalg.svd(X,full_matrices=True)  # full SVD
 Uhat, Shat, Vhat = np.linalg.svd(X,full_matrices=False) # economy SVD
-print('U, S, V ='), U, S, V
+print('U, S, V = ')
+U, S, V
 ```
 
 ```{code-cell} ipython3
-print('Uhat, Shat, Vhat = '), Uhat, Shat, Vhat
+print('Uhat, Shat, Vhat = ')
+Uhat, Shat, Vhat
 ```
 
 ```{code-cell} ipython3
 rr = np.linalg.matrix_rank(X)
-print('rank X = '), rr
+print(f'rank X = {rr}')
 ```
 ## Digression:  Polar Decomposition
 

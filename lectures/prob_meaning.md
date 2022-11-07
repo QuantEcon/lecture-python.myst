@@ -129,11 +129,14 @@ As usual, a law of large numbers justifies this answer.
 2. Please use your code to compute $f_k^I, k = 0, \ldots , n$ and compare them to
   $\textrm{Prob}(X =  k | \theta)$ for various values of $\theta, n$ and $I$
 
-3. With  the Law of Large numbers in mind, use your code to say something
+3. With the Law of Large numbers in mind, use your code to say something
 ```
 
 ```{solution-start} pm_ex1
+:class: dropdown
 ```
+
+Here is one solution:
 
 ```{code-cell} ipython3
 class frequentist:
@@ -368,23 +371,22 @@ a **beta distribution** with parameters $\alpha, \beta$.
 
 **b)** Please write down the **posterior** distribution for $\theta$ after observing  one flip of the coin.
 
-**c)** Please pretend  that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior distribution with parameters  with $\beta = \alpha = .5$.
+**c)** Now pretend that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior distribution with parameters  with $\beta = \alpha = .5$. Please write a Python class to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
 
-**d)** Please write a Python class to simulate this person's personal  posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
+**d)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows as $1, 2, \ldots$.  
 
-**e)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows as $1, 2, \ldots$.  
+**e)** For various $n$'s, please describe and compute  a Bayesian coverage interval for the interval $[.45, .55]$.
 
-**f)** For various $n$'s, please describe and compute  a Bayesian coverage interval for the interval $[.45, .55]$.
+**f)** Please tell what question a Bayesian coverage interval answers.
 
-**g)** Please tell what question a Bayesian coverage interval answers.
+**g)** Please compute the Posterior probabililty that $\theta \in [.45, .55]$ for various values of sample size $n$. 
 
-**h)** Please compute the Posterior probabililty that $\theta \in [.45, .55]$ for various values of sample size $n$. 
-
-**i)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
+**h)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
 ```
 
 
 ```{solution-start} pm_ex2
+:class: dropdown
 ```
 
 **a)** Please write down the **likelihood function** and the **posterior** distribution for $\theta$ after observing  one flip of our coin.
@@ -421,9 +423,9 @@ $$
 \textrm{Prob}(\theta | Y) \sim \textrm{Beta}(\alpha + Y, \beta + (1-Y))
 $$
 
-**c)** Please pretend  that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior with $\beta = \alpha = .5$.
+Now please pretend that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior with $\beta = \alpha = .5$.
 
-**d)** Please write a Python class to simulate this person's personal  posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
+**c)** Now pretend that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior distribution with parameters  with $\beta = \alpha = .5$. Please write a Python class to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
 
 ```{code-cell} ipython3
 class Bayesian:
@@ -487,7 +489,7 @@ class Bayesian:
             self.posterior_list.append(self.form_single_posterior(num))
 ```
 
-**e)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows from $1, 2, \ldots$.  
+**d)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows from $1, 2, \ldots$.  
 
 ```{code-cell} ipython3
 Bay_stat = Bayesian()
@@ -514,7 +516,7 @@ ax.legend(fontsize=11)
 plt.show()
 ```
 
-**f)** For various $n$'s, please describe and compute  $.05$ and $.95$ quantiles for  posterior probabilities.
+**e)** For various $n$'s, please describe and compute  $.05$ and $.95$ quantiles for  posterior probabilities.
 
 ```{code-cell} ipython3
 upper_bound = [ii.ppf(0.05) for ii in Bay_stat.posterior_list[:14]]
@@ -530,7 +532,7 @@ interval_df
 
 As $n$ increases, we can see that Bayesian coverage intervals narrow and move toward $0.4$.
 
-**g)** Please tell what question a Bayesian coverage interval answers.
+**f)** Please tell what question a Bayesian coverage interval answers.
 
 The Bayesian coverage interval tells the range of $\theta$ that corresponds to the [$p_1$, $p_2$] quantiles of the cumulative probability distribution (CDF)  of the posterior distribution.
 
@@ -542,7 +544,7 @@ $$
 F(a)=p_1,F(b)=p_2
 $$
 
-**h)** Please compute the Posterior probabililty that $\theta \in [.45, .55]$ for various values of sample size $n$. 
+**g)** Please compute the Posterior probabililty that $\theta \in [.45, .55]$ for various values of sample size $n$. 
 
 ```{code-cell} ipython3
 left_value, right_value = 0.45, 0.55
@@ -560,7 +562,7 @@ ax.set_xlabel('Number of Observations', fontsize=11)
 plt.show()
 ```
 
-Notice  that in the graph above the posterior probabililty that $\theta \in [.45, .55]$ typically exhibits a hump shape  as $n$ increases. 
+Notice that in the graph above the posterior probabililty that $\theta \in [.45, .55]$ typically exhibits a hump shape as $n$ increases. 
 
 Two opposing forces are at work. 
 
@@ -576,7 +578,7 @@ When the number of observations becomes large enough, our Bayesian becomes so co
 
 That is why we see a nearly horizontal line when the number of observations exceeds 500.
 
-**i)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
+**h)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
 
 Using the Python class we made above, we can see the evolution of posterior distributions as $n$ approaches infinity.
 
