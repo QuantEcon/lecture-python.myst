@@ -20,7 +20,7 @@ kernelspec:
 ```{index} single: python
 ```
 
-# Fast Fixed Point Computation Using Newton's Method
+# Application of Newton's Method
 
 ```{contents} Contents
 :depth: 2
@@ -28,7 +28,7 @@ kernelspec:
 
 ## Overview
 
-The lecture describes application of Newton's method to calculate fixed points in one-dimentional and multi-dimentional settings. 
+The lecture describes applications of Newton's method in one-dimentional and multi-dimentional settings. 
 
 We consider an easy, one-dimensional fixed point problem where we know the solution first.
 
@@ -36,17 +36,7 @@ We will compute it by both successive approximation and Newton's method.
 
 Then we will generalise Newton's method to a multi-dimentional setting.
 
-The objective is to practice Python coding and investigate these algorithms.
-
-We recall that, to find the fixed point of scalar function $g$, Newton's method iterates on 
-
-
-```{math}
-:label: newtons_method
-
-x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
-\qquad x_0 \text{ given}
-```
+The objective of this lecture is to implement the algorithm of Newton's method in the economic problems.
 
 We use the following imports
 
@@ -55,7 +45,6 @@ import numpy as np
 from numpy import exp, sqrt
 import matplotlib.pyplot as plt
 from collections import namedtuple
-from numba import njit
 from scipy.optimize import root
 import jax
 import jax.numpy as jnp
@@ -63,8 +52,18 @@ import jax.numpy as jnp
 plt.rcParams["figure.figsize"] = (10, 5.7)
 ```
 
+## One-dimensional Newton's Method
 
-## The Solow Model
+We recall that, to find the fixed point of scalar function $g$, Newton's method iterates on 
+
+```{math}
+:label: newtons_method
+
+x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
+\qquad x_0 \text{ given}
+```
+
+### The Solow Model
 
 Assuming Cobb-Douglas production technology, the law of motion for capital is
 
@@ -73,7 +72,7 @@ Assuming Cobb-Douglas production technology, the law of motion for capital is
 k_{t+1} = sAk_t^\alpha + (1-\delta) k_t
 ```
 
-We store the parameters in a `namedtuple`
+We store the parameters in a [`namedtuple`](https://docs.python.org/3/library/collections.html#collections.namedtuple)
 
 ```{code-cell} python3
 SolowParameters = namedtuple("SolowParameters", ('A', 's', 'α', 'δ'))
@@ -104,7 +103,7 @@ Here is a function to provide a 45 degree plot of the dynamics.
 ```{code-cell} python3
 def plot_45(params, ax, fontsize=14):
     
-    k_min, k_max = 0, 3
+    k_min, k_max = 0.0, 3.0
     k_grid = np.linspace(k_min, k_max, 1200)
 
     # Plot the functions
@@ -126,7 +125,7 @@ def plot_45(params, ax, fontsize=14):
     ax.legend(loc="upper left", frameon=False, fontsize=fontsize)
 
     ax.set_yticks((0, 1, 2, 3))
-    ax.set_yticklabels((0, 1, 2, 3), fontsize=fontsize)
+    ax.set_yticklabels((0.0, 1.0, 2.0, 3.0), fontsize=fontsize)
     ax.set_ylim(0, 3)
     ax.set_xlabel("$k_t$", fontsize=fontsize)
     ax.set_ylabel("$k_{t+1}$", fontsize=fontsize)
@@ -147,6 +146,10 @@ fig, ax = plt.subplots(figsize=(8, 8))
 plot_45(params, ax)
 plt.show()
 ```
+
+#### Successive Approximation
+
+First, we compute the fixed point using successive approximation.
 
 Here's a time series from a particular choice of $k_0$.
 
@@ -175,7 +178,7 @@ ax.set_ylim(0, 3)
 plt.show()
 ```
 
-Since we are iterating on $g$, we are also implemening successive approximation.
+Since we are iterating on $g$, we are implemening successive approximation
 
 ```{code-cell} python3
 k_series = compute_iterates(k_0, g, params, n=10_000)
@@ -183,12 +186,11 @@ k_star_approx = k_series[-1]
 k_star_approx
 ```
 
-
 ```{code-cell} python3
 k_star
 ```
 
-## Newton's Method 
+#### Newton's Method 
 
 To implement Newton's method we observe that
 
@@ -205,7 +207,6 @@ def Dg(k, params):
     A, s, α, δ = params
     return α * A * s * k**(α-1) + (1 - δ)
 ```
-
 
 Here's a function $q$ such that iterating with $q$ is equivalent to Newton's method.
 
@@ -253,10 +254,12 @@ params = create_solow_params()
 plot_trajectories(params)
 ```
 
+We can see that Newton's Method reaches convergence faster than the successive approximation.
+
 
 ## Multivariate Newton’s Method
 
-In multi-dimentional setting, the [formula](newtons_method) is written as
+In multi-dimentional setting, the [formula](newtons_method) for Newton's method is written as
 
 ```{math}
 :label: newton_method_multi
@@ -375,9 +378,8 @@ At a price level of $p = (p_0, p_1)$, the excess demand is
 ```{code-cell} python3
 ex_demand = e((1.0, 0.5), A, b, c)
 
-print(
-f'The excess demand for good 0 is {ex_demand[0]:.3f} \n'
-f'The excess demand for good 1 is {ex_demand[1]:.3f}')
+print(f'The excess demand for good 0 is {ex_demand[0]:.3f} \n'
+      f'The excess demand for good 1 is {ex_demand[1]:.3f}')
 ```
 
 
@@ -456,6 +458,7 @@ This uses the [modified Powell method](https://docs.scipy.org/doc/scipy/referenc
 solution = root(lambda p: e(p, A, b, c), init_p, method='hybr')
 ```
 
+
 Here's the resulting value:
 
 ```{code-cell} python3
@@ -497,7 +500,7 @@ def jacobian(p, A, b, c):
     return np.array(J)
 ```
 
-```{code-cell} python3
+```{code-cell} python3 
 %%time
 solution = root(lambda p: e(p, A, b, c),
                 init_p, 
@@ -511,6 +514,8 @@ Now the solution is even more accurate (although, in this low-dimensional proble
 p = solution.x
 np.max(np.abs(e(p, A, b, c)))
 ```
+
+#### Using Newton's Method
 
 We can also use Newton's method in this lower dimensional case. 
 
@@ -531,14 +536,14 @@ def newton(f, x_0, tol=1e-5, maxIter=100):
     error = tol + 1
     x = x_0
     n = 0
-    while error > tol and n <= maxIter:
+    while error > tol:
         n+=1
+        if(n > maxIter):
+            raise Exception('Max iteration reached without convergence')
         y = iteration(x)
         error = jnp.linalg.norm(x - y)
         x = y
-        print(f'iteration {n}: error = {error:.5f}')
-    if(n == maxIter+1):
-        raise Exception('Max iteration reached without convergence')
+        print(f'iteration {n}, error = {error:.5f}')
     return x
 ```
 
@@ -567,7 +572,7 @@ However, things will change slightly when we move to higher dimensional problems
 
 ### High-Dimensional Problems
 
-Our next step is to investigate a high-dimensional version of the market described above. This market consists of 2,500 goods.
+Our next step is to investigate a high-dimensional version of the market described above. This market consists of 5000 goods.
 
 The excess demand function is essentially the same, but now the matrix $A$ is $5000 \times 5000$ and the parameter vectors $b$ and $c$ are $5000 \times 1$.
 
@@ -601,14 +606,14 @@ Here's our initial condition
 init_p = jnp.ones(dim)
 ```
 
-The `root` function would cost several minutes to run in this case
+The `root` function using [modified Powell method](https://docs.scipy.org/doc/scipy/reference/optimize.root-hybr.html) would cost several minutes to run in this case
 
-```python
+```{code-cell} python3
 %%time
 solution = root(lambda p: e(p, A, b, c),
                 init_p, 
                 jac=lambda p: jax.jacobian(e)(p, A, b, c), 
-                method='hybr')
+                method='hybr')         
 ```
 
 Newton's method reaches a relatively small error within a minute
@@ -623,14 +628,11 @@ np.max(np.abs(e(p, A, b, c)))
 ```
 
 
-
-
-
 ```{exercise-start}
 :label: newton_ex1
 ```
 
-In this exercise, please try to use different initial values and check how Newton's method will respond to different starting points.
+In this exercise, let's try different initial values and check how Newton's method responds to different starting points.
 
 Let's define a three-good problem with the following default values:
 
@@ -687,7 +689,9 @@ c = np.array([1.0, 1.0, 1.0])
 ```
 
 ```{code-cell} python3
-initLs = [np.ones(3), np.array([1.0,2.0,3.0]), np.array([5.0,5.0,5.0])]
+initLs = [np.ones(3), 
+          np.array([1.0, 2.0, 3.0]), 
+          np.array([5.0, 5.0, 5.0])]
 ```
 
 ```{code-cell} python3
@@ -703,34 +707,6 @@ p = newton(lambda p: e(p, A, b, c), initLs[1]).block_until_ready()
 ```{code-cell} python3
 %%time
 p = newton(lambda p: e(p, A, b, c), initLs[2]).block_until_ready()
-```
-
-```{solution-end}
-```
-
-
-
-```{exercise-start}
-:label: newton_ex2
-```
-
-```{exercise-end}
-```
-
-```{solution-start} newton_ex2
-:class: dropdown
-```
-
-```{solution-start} newton_ex2
-A = np.array([2.0, 1.0])
-s = np.array([0.3, 0.2])
-α = np.array([0.3, 0.7])
-δ = np.array([0.4, 0.5])
-
-def multi(k, A, s, α, δ):
-    return A * s * k ** α + (1 - δ) * k
-
-multi(0.25, A, s, α, δ)
 ```
 
 ```{solution-end}
