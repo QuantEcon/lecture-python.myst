@@ -28,11 +28,11 @@ kernelspec:
 
 ## Overview
 
-The lecture will apply Newton's method in one-dimensional and multi-dimensional settings to solve fixed point and root finding problems. 
+The lecture will apply Newton's method in one-dimensional and multi-dimensional settings to solve fixed-point and root-finding problems. 
 
-We consider an easy, one-dimensional fixed point problem where we know the solution first and solve it using both successive approximation and Newton's method.
+We first consider an easy, one-dimensional fixed point problem where we know the solution and solve it using both successive approximation and Newton's method.
 
-Then we generalize Newton's method to multi-dimensional settings to solve multiple goods market equilibrium.
+Then we generalize Newton's method to multi-dimensional settings to solve market equilibrium with multiple goods.
 
 We use the following imports in this lecture
 
@@ -48,7 +48,7 @@ import jax.numpy as jnp
 plt.rcParams["figure.figsize"] = (10, 5.7)
 ```
 
-## One-dimensional Newton's Method for Fixed Point Computation
+## One-dimensional Fixed Point Computation Using Newton's Method
 
 To find the fixed point of a scalar function $g$, Newton's method iterates on 
 
@@ -255,23 +255,25 @@ plot_trajectories(params)
 
 We can see that Newton's Method reaches convergence faster than the successive approximation.
 
-We can transform this problem into a root finding problem since the computation of fixed point can be seen as computing $x_t$ such that $g(x_{t}) - x_{t} = 0$.
+The above problem can be seen as a root-finding problem since the computation of a fixed point can be seen as approximating $x^*$ iteratively such that $g(x^*) - x^* = 0$.
 
-For one-dimensional root finding problem, the Newton's method iterates on the equation:
+For one-dimensional root-finding problems, Newton's method iterates on:
 
 $$
 x_{t+1} = x_t - \frac{ g(x_t) }{ g'(x_t) },
 \qquad x_0 \text{ given}
 $$
 
-The following code implements Newton's method in one-dimensional setting
+This is also a more familiar formula for Newton's method.
+
+The following code implements the iteration
 
 ```{code-cell} python3
-def newton(f, Df, x_0, tol, params=params, maxIter=10):
+def newton(g, Dg, x_0, tol, params=params, maxIter=10):
     x = x_0
 
     # Implement the one-dimensional Newton's method
-    iteration = lambda x, params: x - f(x, params)/Df(x, params)
+    iteration = lambda x, params: x - g(x, params)/Dg(x, params)
 
     error = tol + 1
     n = 0
@@ -289,8 +291,8 @@ def newton(f, Df, x_0, tol, params=params, maxIter=10):
 ```{code-cell} python3
 # Apply our transformation
 k_star_approx_newton = newton(
-                        f=lambda x, params: g(x, params) - x,
-                        Df=lambda x, params: Dg(x, params) - 1,
+                        g=lambda x, params: g(x, params) - x,
+                        Dg=lambda x, params: Dg(x, params) - 1,
                         x_0=0.8,
                         tol=1e-7)
 ```
@@ -299,15 +301,15 @@ k_star_approx_newton = newton(
 k_star_approx_newton
 ```
 
-The result confirms descent we saw in the graphs above: A very accurate result is reached with only 5 iterations.
+The result confirms the descent we saw in the graphs above: a very accurate result is reached with only 5 iterations.
 
-The multi-dimensional variant of the problem will be left as an [exercise](newton_ex1).
+The multi-dimensional variant will be left as an [exercise](newton_ex1).
 
 By observing the formula of Newton's method, it is easy to see the possibility to implement Newton's method using Jacobian when we move up the ladder to higher dimensions.
 
 This naturally leads us to use Newton's method to solve multi-dimensional problems for which we will use the powerful auto-differentiation functionality in `jax` to solve intricate calculations.
 
-## Multivariate Newton’s Method for Root Finding
+## Multivariate Newton’s Method
 
 ### A Two Goods Market Equilibrium
 
@@ -571,7 +573,7 @@ starting from some initial guess of the price vector $p_0$. (Here $J_e(p_n)$ is 
 
 We use the `jax.jacobian()` function to auto-differentiate and calculate the jacobian.
 
-With only slight modification, we can generalize our previous attempt to multi-dimensional problem
+With only slight modification, we can generalize our previous attempt to multi-dimensional problems
 
 ```{code-cell} python3
 def newton(f, x_0, tol=1e-5, maxIter=10):
@@ -584,6 +586,8 @@ def newton(f, x_0, tol=1e-5, maxIter=10):
         if(n > maxIter):
             raise Exception('Max iteration reached without convergence')
         y = iteration(x)
+        if(any(jnp.isnan(y))):
+            raise Exception('Solution not found with NaN generated')
         error = jnp.linalg.norm(x - y)
         x = y
         print(f'iteration {n}, error = {error:.5f}')
@@ -617,7 +621,7 @@ However, things will change slightly when we move to higher dimensional problems
 
 ### A High-Dimensional Problem
 
-Our next step is to investigate a high-dimensional version of the market described above. This market consists of 5000 goods.
+Our next step is to investigate a larger market with 5000 goods.
 
 The excess demand function is essentially the same, but now the matrix $A$ is $5000 \times 5000$ and the parameter vectors $b$ and $c$ are $5000 \times 1$.
 
@@ -710,12 +714,13 @@ $$
 \end{align}
 $$
 
-Set the tolerance to $1e^{-7}$ for more accurate output.
+
+Set the tolerance to $1\text{e-}7$ for more accurate output.
 
 ````{hint} 
 :class: dropdown
 
-- The computation of fixed point can be seen as computing $k_t$ such that $f(k_{t}) - k_{t} = 0$.
+- The computation of fixed point can be seen as computing $k^*$ such that $f(k^*) - k^* = 0$.
 
 - If you are unsure about your solution, you can start with the known solution to check your formula:
 
@@ -814,9 +819,13 @@ s = 0.3
 init = jnp.repeat(1.0, 3)
 
 
-%time k = newton(lambda k: multivariate_solow(k) - k, \
+%time k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, \
                  init, \
                  tol=1e-7).block_until_ready()
+```
+
+```{code-cell} python3
+k
 ```
 
 ```{solution-end}
@@ -858,6 +867,8 @@ p_1 = (1, 1, 1) \\
 p_2 = (1, 2, 3) \\
 p_3 = (5, 5, 5) \\
 $$
+
+Set the tolerance to $1\text{e-}7$ for more accurate output.
 
 ```{exercise-end}
 ```
@@ -912,11 +923,12 @@ We can find that Newton's method may fail for some starting values.
 
 Sometimes it may take a few initial guesses to achieve convergence.
 
-Substitute it back to the formulate to check our result
+Substitute it back to the formula to check our result
 
 ```{code-cell} python3
 e(p, A, b, c)
 ```
+
 We can see the result is very accurate.
 
 ```{solution-end}
