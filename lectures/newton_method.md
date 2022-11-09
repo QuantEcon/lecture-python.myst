@@ -299,19 +299,13 @@ k_star_approx_newton = newton(
 k_star_approx_newton
 ```
 
-The result confirms descent we saw in the graphs above.
-
-We can see the result is very accurate with only 5 iterations.
+The result confirms descent we saw in the graphs above: A very accurate result is reached with only 5 iterations.
 
 The multi-dimensional variant of the problem will be left as an [exercise](newton_ex1).
 
-Observe that the implementation of Newton's method requires the differentiated function.
+By observing the formula of Newton's method, it is easy to see the possibility to implement Newton's method using Jacobian when we move up the ladder to higher dimensions.
 
-We could potentially use implement Newton's method using Jacobian.
-
-This naturally leads us to use Newton's method to solve multi-dimensional problems.
-
-We will also use the powerful auto-differentiation functionality in `jax` to solve intricate calculations.
+This naturally leads us to use Newton's method to solve multi-dimensional problems for which we will use the powerful auto-differentiation functionality in `jax` to solve intricate calculations.
 
 ## Multivariate Newton’s Method for Root Finding
 
