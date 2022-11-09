@@ -28,17 +28,13 @@ kernelspec:
 
 ## Overview
 
-The lecture describes applications of Newton's method in one-dimentional and multi-dimentional settings. 
+The lecture will apply Newton's method in one-dimensional and multi-dimensional settings to solve fixed point and root finding problems. 
 
-We consider an easy, one-dimensional fixed point problem where we know the solution first.
+We consider an easy, one-dimensional fixed point problem where we know the solution first and solve it using both successive approximation and Newton's method.
 
-We will compute it by both successive approximation and Newton's method.
+Then we generalise Newton's method to multi-dimensional settings to solve multiple goods market equilibrium.
 
-Then we will generalise Newton's method to a multi-dimentional setting.
-
-The objective of this lecture is to implement the algorithm of Newton's method in the economic problems.
-
-We use the following imports
+We use the following imports in this lecture
 
 ```{code-cell} python3
 import numpy as np
@@ -52,9 +48,9 @@ import jax.numpy as jnp
 plt.rcParams["figure.figsize"] = (10, 5.7)
 ```
 
-## One-dimensional Newton's Method
+## One-dimensional Newton's Method for Fixed Point Computation
 
-We recall that, to find the fixed point of scalar function $g$, Newton's method iterates on 
+To find the fixed point of a scalar function $g$, Newton's method iterates on 
 
 ```{math}
 :label: newtons_method
@@ -63,6 +59,7 @@ x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
 \qquad x_0 \text{ given}
 ```
 
+(solow)=
 ### The Solow Model
 
 Assuming Cobb-Douglas production technology, the law of motion for capital is
@@ -131,7 +128,7 @@ def plot_45(params, ax, fontsize=14):
     ax.set_ylabel("$k_{t+1}$", fontsize=fontsize)
 ```
 
-Let's look at the 45 degree diagram for one or two parameterizations.
+Let's look at the 45 degree diagram for two parameterizations.
 
 ```{code-cell} python3
 params = create_solow_params()
@@ -149,7 +146,7 @@ plt.show()
 
 #### Successive Approximation
 
-First, we compute the fixed point using successive approximation.
+First, let's compute the fixed point using successive approximation.
 
 Here's a time series from a particular choice of $k_0$.
 
@@ -178,7 +175,7 @@ ax.set_ylim(0, 3)
 plt.show()
 ```
 
-Since we are iterating on $g$, we are implemening successive approximation
+Since we are iterating on $g$, we are implementing successive approximation
 
 ```{code-cell} python3
 k_series = compute_iterates(k_0, g, params, n=10_000)
@@ -197,7 +194,7 @@ To implement Newton's method we observe that
 ```{math}
 :label: newton_method2
 
-g'(k) = \alpha s A k^{1-\alpha} + (1-\delta)
+g'(k) = \alpha s A k^{\alpha-1} + (1-\delta)
 
 ```
 
@@ -256,19 +253,11 @@ plot_trajectories(params)
 
 We can see that Newton's Method reaches convergence faster than the successive approximation.
 
+The multi-dimensional version of the fixed point computation will be left as an [exercise](newton_ex1).
 
-## Multivariate Newton’s Method
+Before we start working on the exercise, let's familiarize ourselves with the implementation of multivariate Newton's method.
 
-In multi-dimentional setting, the [formula](newtons_method) for Newton's method is written as
-
-```{math}
-:label: newton_method_multi
-
-x_{k+1} = (I - J(x_k))^{-1}(Tx_k - J(x_k)) x_k
-
-```
-Here $J(x) := $ the Jacobian of $T$ evaluated at $x$.
-
+## Multivariate Newton’s Method for Root Finding
 
 ### A Two Goods Market Equilibrium
 
@@ -292,6 +281,8 @@ Here $c_i$, $b_i$ and $a_{ij}$ are parameters.
 
 For example, the two goods might be computer components that are typically used together, in which case they are complements. Hence demand depends on the price of both components.
 
+The excess demand function is,
+
 $$
 e_i(p) = q^d_i(p) - q^s_i(p), \qquad i = 0, 1
 $$
@@ -300,7 +291,7 @@ $$
 An equilibrium price vector $p^*$ satisfies $e_i(p^*) = 0$.
 
 
-We set:
+We set
 
 $$
 A = \begin{pmatrix}
@@ -319,10 +310,11 @@ A = \begin{pmatrix}
         \end{pmatrix}
 $$
 
+for this particular question.
 
 #### A Graphical Exploration
 
-Since our problem is only two dimensional, we can use graphical analysis to visualize and help understand the problem.
+Since our problem is only two-dimensional, we can use graphical analysis to visualize and help understand the problem.
 
 Our first step is to define the excess demand function
 
@@ -334,7 +326,7 @@ e(p) =
     \end{pmatrix}
 $$
 
-The function below calculate the excess demand for given parameters
+The function below calculates the excess demand for given parameters
 
 ```{code-cell} python3
 def e(p, A, b, c):
@@ -372,7 +364,7 @@ b = np.ones(2)
 c = np.ones(2)
 ```
 
-At a price level of $p = (p_0, p_1)$, the excess demand is 
+At a price level of $p = (1, 0.5)$, the excess demand is 
 
 
 ```{code-cell} python3
@@ -404,8 +396,8 @@ def plot_excess_demand(ax, good=0, grid_size=100, grid_max=4, surface=True):
         plt.colorbar(cs1, ax=ax, format="%.6f")
 
     ctr1 = ax.contour(p_grid, p_grid, z.T, levels=[0.0])
-    ax.set_xlabel(r'p_0')
-    ax.set_ylabel(r'p_1')
+    ax.set_xlabel("$p_0$")
+    ax.set_ylabel("$p_1$")
     ax.set_title(f'Excess Demand for Good {good}')
     plt.clabel(ctr1, inline=1, fontsize=13)
 ```
@@ -425,6 +417,7 @@ plt.show()
 ```
 
 We see the black contour line of zero, which tells us when $e_i(p)=0$.
+
 For a price vector $p$ such that $e_i(p)=0$ we know that good $i$ is in equilibrium (demand equals supply).
 
 
@@ -443,7 +436,7 @@ It seems there is an equilibrium close to $p = (1.6, 1.5)$.
 
 #### Using a Multidimensional Root Finder
 
-To solve for $p^*$ more precisely, we use root, a root-finding algorithm from `scipy.optimize`.
+To solve for $p^*$ more precisely, we use a root-finding algorithm from `scipy.optimize`.
 
 We supply $p = (1, 1)$ as our initial guess.
 
@@ -457,7 +450,6 @@ This uses the [modified Powell method](https://docs.scipy.org/doc/scipy/referenc
 %%time
 solution = root(lambda p: e(p, A, b, c), init_p, method='hybr')
 ```
-
 
 Here's the resulting value:
 
@@ -476,7 +468,7 @@ This is indeed a very small error.
 
 In most cases, for root-finding algorithms applied to smooth functions, supplying the Jacobian of the function leads to better convergence properties.
 
-In this case we manually calculate the elements of the Jacobian
+Here we manually calculate the elements of the Jacobian
 
 $$
 J(p) = 
@@ -517,21 +509,20 @@ np.max(np.abs(e(p, A, b, c)))
 
 #### Using Newton's Method
 
-We can also use Newton's method in this lower dimensional case. 
+We can also use Newton's method to find the root. 
 
 We are going to try to compute the equilibrium price using the multivariate version of Newton's method, which means iterating on the equation:
 
 $$
-p_{n+1} = p_n - J(p_n)^{-1} e(p_n)
+p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)
 $$
 
-starting from some initial guess of the price vector $p_0$. (Here $J$ is the Jacobian of $e$.)
+starting from some initial guess of the price vector $p_0$. (Here $J_e(p_n)$ is the Jacobian of $e$ evaluated at $p_n$.)
 
-We use the `jax.jacobian()` function to auto differentiate and calculate the jacobian
+We use the `jax.jacobian()` function to auto-differentiate and calculate the jacobian
 
 ```{code-cell} python3
-
-def newton(f, x_0, tol=1e-5, maxIter=100):
+def newton(f, x_0, tol=1e-5, maxIter=10):
     iteration = jax.jit(lambda x: x - jnp.linalg.solve(jax.jacobian(f)(x), f(x)))
     error = tol + 1
     x = x_0
@@ -553,24 +544,26 @@ def e(p, A, b, c):
     return jnp.exp(- jnp.dot(A, p)) + c - b * jnp.sqrt(p)
 ```
 
-We find the convergence is reached within 5 steps
+We find the convergence is reached in 4 steps
 
 ```{code-cell} python3
 %%time
 p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
 ```
 
-With the larger overhead for Newton's method, the performance is not better than the optimised `scipy` optimization function.
-
 ```{code-cell} python3
-p = solution.x
 np.max(np.abs(e(p, A, b, c)))
 ```
+
+The error is almost 0. 
+
+With the larger overhead, the speed is not better than the optimised `scipy` function.
 
 However, things will change slightly when we move to higher dimensional problems.
 
 
-### High-Dimensional Problems
+
+### A High-Dimensional Problem
 
 Our next step is to investigate a high-dimensional version of the market described above. This market consists of 5000 goods.
 
@@ -606,16 +599,6 @@ Here's our initial condition
 init_p = jnp.ones(dim)
 ```
 
-The `root` function using [modified Powell method](https://docs.scipy.org/doc/scipy/reference/optimize.root-hybr.html) would cost several minutes to run in this case
-
-```{code-cell} python3
-%%time
-solution = root(lambda p: e(p, A, b, c),
-                init_p, 
-                jac=lambda p: jax.jacobian(e)(p, A, b, c), 
-                method='hybr')         
-```
-
 Newton's method reaches a relatively small error within a minute
 
 ```{code-cell} python3
@@ -627,9 +610,138 @@ p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
 np.max(np.abs(e(p, A, b, c)))
 ```
 
+With the same tolerance, the `root` function would cost minutes to run
+
+```{code-cell} python3
+%%time
+solution = root(lambda p: e(p, A, b, c),
+                init_p, 
+                jac=lambda p: jax.jacobian(e)(p, A, b, c), 
+                method='hybr',
+                tol=1e-5)
+```
+
+```{code-cell} python3
+p = solution.x
+np.max(np.abs(e(p, A, b, c)))
+```
+
+And the result is less accurate.
+
+## Exercises
 
 ```{exercise-start}
 :label: newton_ex1
+```
+
+Consider a three-dimensional extension of the same fixed point problem we have solved [before](solow) with
+
+$$
+A = \begin{pmatrix}
+            2 & 3 & 3 \\
+            2 & 4 & 2 \\
+            1 & 5 & 1 \\
+        \end{pmatrix},
+            \qquad 
+s = 0.2
+α = 0.5
+δ = 0.8
+$$
+
+In this exercise, solve the fixed point using Newton's method with the following initial values:
+
+
+$$
+k_1 = (1, 1, 1)
+$$
+
+$$
+k_2 = (3, 5, 5)
+$$
+
+$$
+k_3 = (9, 9, 9)
+$$
+
+$$
+k_4 = (100, 100, 100)
+$$
+
+Set the tolerance to $1e^{-7}$ for more accurate output.
+
+```{hint}
+:class: dropdown
+
+The computation of fixed point can be seen as computing $k_t$ such that $f(k_{t}) - k_{t-1} = 0$.
+
+```
+
+```{exercise-end}
+```
+
+
+```{solution-start} newton_ex1
+:class: dropdown
+```
+
+Let's first define the parameters for this problem
+
+```{code-cell} python3
+A = jnp.array([[2.0, 3.0, 3.0],
+               [2.0, 4.0, 2.0],
+               [1.0, 5.0, 1.0]])
+
+s = 0.2
+α = 0.5
+δ = 0.8
+
+initLs = [jnp.ones(3),
+          jnp.array([3.0, 5.0, 5.0]),
+          jnp.repeat(9.0, 3),
+          jnp.repeat(100.0, 3)]
+```
+
+Then define the multivariate version of the formula for the [law of motion of captial](motion_law)
+
+```{code-cell} python3
+def multivariate_solow(k, A=A, s=s, α=α, δ=δ):
+    return (s * jnp.dot(A, k**α) + (1 - δ) * k)
+```
+
+Let's run through each starting value and see the output
+
+```{code-cell} python3
+attempt = 1
+for init in initLs:
+    print(f'Attempt {attempt}: Starting value is {init} \n')
+
+    %time k = newton(lambda k: multivariate_solow(k) - k, \
+                     init, \
+                     tol=1e-7).block_until_ready()
+
+    print('\n' + f'Result = {k} \n')
+    print('-'*64)
+    attempt +=1
+```
+
+We find that the results are invariant to the starting values given the well-defined property of this question.
+
+But the number of iterations it takes to converge is dependent on the starting values.
+
+Substitute it back to the formulate to check our result
+
+```{code-cell} python3
+multivariate_solow(k)
+```
+
+Note the error is very small.
+
+```{solution-end}
+```
+
+
+```{exercise-start}
+:label: newton_ex2
 ```
 
 In this exercise, let's try different initial values and check how Newton's method responds to different starting points.
@@ -643,20 +755,20 @@ A = \begin{pmatrix}
             0.1 & 0.8 & 0.1 \\
         \end{pmatrix},
             \qquad 
-    b = \begin{pmatrix}
+b = \begin{pmatrix}
             1 \\
             1 \\
             1
         \end{pmatrix}
     \qquad \text{and} \qquad
-    c = \begin{pmatrix}
+c = \begin{pmatrix}
             1 \\
             1 \\
             1
         \end{pmatrix}
 $$
 
-Please use the following price vectors as our initial values:
+For this exercise, use the following price vectors as initial values:
 
 $$
 p_1 = (1, 1, 1)
@@ -673,9 +785,11 @@ $$
 ```{exercise-end}
 ```
 
-```{solution-start} newton_ex1
+```{solution-start} newton_ex2
 :class: dropdown
 ```
+
+Define parameters and initial values
 
 ```{code-cell} python3
 A = np.array([
@@ -686,28 +800,47 @@ A = np.array([
 
 b = np.array([1.0, 1.0, 1.0])
 c = np.array([1.0, 1.0, 1.0])
+
+initLs = [np.ones(3),
+          np.array([5.0, 5.0, 5.0]),
+          np.array([1.0, 2.0, 3.0])]
+```
+
+Let’s run through each initial guess and check the output
+
+```{code-cell} python3
+
+%time p = newton(lambda p: e(p, A, b, c), \
+                 initLs[0], \
+                 tol=1e-7).block_until_ready()
 ```
 
 ```{code-cell} python3
-initLs = [np.ones(3), 
-          np.array([1.0, 2.0, 3.0]), 
-          np.array([5.0, 5.0, 5.0])]
+
+%time p = newton(lambda p: e(p, A, b, c), \
+                 initLs[1], \
+                 tol=1e-7).block_until_ready()
 ```
 
 ```{code-cell} python3
-%%time
-p = newton(lambda p: e(p, A, b, c), initLs[0]).block_until_ready()
+
+%time p = newton(lambda p: e(p, A, b, c), \
+                 initLs[2], \
+                 tol=1e-7).block_until_ready()
+print('\n' + f'Result = {p} \n')
 ```
 
-```{code-cell} python3
-%%time
-p = newton(lambda p: e(p, A, b, c), initLs[1]).block_until_ready()
-```
+
+We can find that Newton's method may fail for some starting values.
+
+Sometimes it may take a few initial guesses to achieve convergence.
+
+Substitute it back to the formulate to check our result
 
 ```{code-cell} python3
-%%time
-p = newton(lambda p: e(p, A, b, c), initLs[2]).block_until_ready()
+e(p, A, b, c)
 ```
+We can see the result is very accurate.
 
 ```{solution-end}
 ```
