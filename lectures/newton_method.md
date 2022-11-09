@@ -32,7 +32,7 @@ The lecture will apply Newton's method in one-dimensional and multi-dimensional 
 
 We consider an easy, one-dimensional fixed point problem where we know the solution first and solve it using both successive approximation and Newton's method.
 
-Then we generalise Newton's method to multi-dimensional settings to solve multiple goods market equilibrium.
+Then we generalize Newton's method to multi-dimensional settings to solve multiple goods market equilibrium.
 
 We use the following imports in this lecture
 
@@ -183,6 +183,7 @@ k_star_approx = k_series[-1]
 k_star_approx
 ```
 
+(solved_k)=
 ```{code-cell} python3
 k_star
 ```
@@ -242,6 +243,7 @@ def plot_trajectories(params,
         ax.set_ylim(0.6, 3.2)
         ax.set_yticks((k_star,))
         ax.set_yticklabels(("$k^*$",), fontsize=fs)
+        ax.set_xticks(np.linspace(0, 19, 20))
         
     plt.show()
 ```
@@ -253,9 +255,63 @@ plot_trajectories(params)
 
 We can see that Newton's Method reaches convergence faster than the successive approximation.
 
-The multi-dimensional version of the fixed point computation will be left as an [exercise](newton_ex1).
+We can transform this problem into a root finding problem since the computation of fixed point can be seen as computing $x_t$ such that $g(x_{t}) - x_{t} = 0$.
 
-Before we start working on the exercise, let's familiarize ourselves with the implementation of multivariate Newton's method.
+For one-dimensional root finding problem, the Newton's method iterates on the equation:
+
+$$
+x_{t+1} = x_t - \frac{ g(x_t) }{ g'(x_t) },
+\qquad x_0 \text{ given}
+$$
+
+The following code implements Newton's method in one-dimensional setting
+
+```{code-cell} python3
+def newton(f, Df, x_0, tol, params=params, maxIter=10):
+    x = x_0
+
+    # Implement the one-dimensional Newton's method
+    iteration = lambda x, params: x - f(x, params)/Df(x, params)
+
+    error = tol + 1
+    n = 0
+    while error > tol:
+        n+=1
+        if(n > maxIter):
+            raise Exception('Max iteration reached without convergence')
+        y = iteration(x, params)
+        error = jnp.abs(x - y)
+        x = y
+        print(f'iteration {n}, error = {error:.5f}')
+    return x
+```
+
+```{code-cell} python3
+# Apply our transformation
+k_star_approx_newton = newton(
+                        f=lambda x, params: g(x, params) - x,
+                        Df=lambda x, params: Dg(x, params) - 1,
+                        x_0=0.8,
+                        tol=1e-7)
+```
+
+```{code-cell} python3
+k_star_approx_newton
+```
+
+The result confirms descent we saw in the graphs above.
+
+We can see the result is very accurate with only 5 iterations.
+
+The multi-dimensional variant of the problem will be left as an [exercise](newton_ex1).
+
+Observe that the implementation of Newton's method requires the differentiated function.
+
+We could potentially use implement Newton's method using Jacobian.
+
+This naturally leads us to use Newton's method to solve multi-dimensional problems.
+
+We will also use the powerful auto-differentiation functionality in `jax` to solve intricate calculations.
 
 ## Multivariate Newton’s Method for Root Finding
 
@@ -519,13 +575,15 @@ $$
 
 starting from some initial guess of the price vector $p_0$. (Here $J_e(p_n)$ is the Jacobian of $e$ evaluated at $p_n$.)
 
-We use the `jax.jacobian()` function to auto-differentiate and calculate the jacobian
+We use the `jax.jacobian()` function to auto-differentiate and calculate the jacobian.
+
+With only slight modification, we can generalize our previous attempt to multi-dimensional problem
 
 ```{code-cell} python3
 def newton(f, x_0, tol=1e-5, maxIter=10):
+    x = x_0
     iteration = jax.jit(lambda x: x - jnp.linalg.solve(jax.jacobian(f)(x), f(x)))
     error = tol + 1
-    x = x_0
     n = 0
     while error > tol:
         n+=1
@@ -557,7 +615,7 @@ np.max(np.abs(e(p, A, b, c)))
 
 The error is almost 0. 
 
-With the larger overhead, the speed is not better than the optimised `scipy` function.
+With the larger overhead, the speed is not better than the optimized `scipy` function.
 
 However, things will change slightly when we move to higher dimensional problems.
 
@@ -610,7 +668,8 @@ p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
 np.max(np.abs(e(p, A, b, c)))
 ```
 
-With the same tolerance, the `root` function would cost minutes to run
+With the same tolerance, the `root` function would cost minutes to run with jacobian supplied
+
 
 ```{code-cell} python3
 %%time
@@ -642,39 +701,50 @@ A = \begin{pmatrix}
             2 & 4 & 2 \\
             1 & 5 & 1 \\
         \end{pmatrix},
-            \qquad 
-s = 0.2
-α = 0.5
-δ = 0.8
+            \quad
+s = 0.2, \quad α = 0.5, \quad δ = 0.8
 $$
 
 In this exercise, solve the fixed point using Newton's method with the following initial values:
 
-
 $$
-k_1 = (1, 1, 1)
-$$
-
-$$
-k_2 = (3, 5, 5)
-$$
-
-$$
-k_3 = (9, 9, 9)
-$$
-
-$$
-k_4 = (100, 100, 100)
+\begin{align}
+    k_1 &= (1, 1, 1) \\
+    k_2 &= (3, 5, 5) \\
+    k_3 &= (9, 9, 9) \\
+    k_4 &= (100, 100, 100)
+\end{align}
 $$
 
 Set the tolerance to $1e^{-7}$ for more accurate output.
 
-```{hint}
+````{hint} 
 :class: dropdown
 
-The computation of fixed point can be seen as computing $k_t$ such that $f(k_{t}) - k_{t-1} = 0$.
+- The computation of fixed point can be seen as computing $k_t$ such that $f(k_{t}) - k_{t} = 0$.
 
+- If you are unsure about your solution, you can start with the known solution to check your formula:
+
+```{math}
+A = \begin{pmatrix}
+            2 & 0 & 0 \\
+            0 & 2 & 0 \\
+            0 & 0 & 2 \\
+        \end{pmatrix}
 ```
+
+with $s = 0.3$, $α = 0.3$, and $δ = 0.4$ and starting value: 
+
+```{math}
+k_0 = \begin{pmatrix}
+            1 \\
+            1 \\
+            1
+        \end{pmatrix}
+```
+
+The result should converge to the [solved solution in the one-dimensional problem](solved_k).
+````
 
 ```{exercise-end}
 ```
@@ -736,6 +806,25 @@ multivariate_solow(k)
 
 Note the error is very small.
 
+We can also test our results on the known solution
+
+```{code-cell} python3
+A = jnp.array([[2.0, 0.0, 0.0],
+               [0.0, 2.0, 0.0],
+               [0.0, 0.0, 2.0]])
+
+s = 0.3
+α = 0.3
+δ = 0.4
+
+init = jnp.repeat(1.0, 3)
+
+
+%time k = newton(lambda k: multivariate_solow(k) - k, \
+                 init, \
+                 tol=1e-7).block_until_ready()
+```
+
 ```{solution-end}
 ```
 
@@ -771,15 +860,9 @@ $$
 For this exercise, use the following price vectors as initial values:
 
 $$
-p_1 = (1, 1, 1)
-$$
-
-$$
-p_2 = (1, 2, 3)
-$$
-
-$$
-p_3 = (5, 5, 5)
+p_1 = (1, 1, 1) \\
+p_2 = (1, 2, 3) \\
+p_3 = (5, 5, 5) \\
 $$
 
 ```{exercise-end}
