@@ -706,12 +706,12 @@ $$
 In this exercise, solve the fixed point using Newton's method with the following initial values:
 
 $$
-\begin{align}
+\begin{aligned}
     k_1 &= (1, 1, 1) \\
     k_2 &= (3, 5, 5) \\
     k_3 &= (9, 9, 9) \\
     k_4 &= (100, 100, 100)
-\end{align}
+\end{aligned}
 $$
 
 
