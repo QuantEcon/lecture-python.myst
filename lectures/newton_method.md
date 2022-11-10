@@ -287,6 +287,7 @@ def newton(g, Dg, x_0, tol, params=params, maxIter=10):
         error = jnp.abs(x - y)
         x = y
         print(f'iteration {n}, error = {error:.5f}')
+    print('\n' + f'Result = {x} \n')
     return x
 ```
 
@@ -595,11 +596,11 @@ def newton(f, x_0, tol=1e-5, maxIter=10):
         error = jnp.linalg.norm(x - y)
         x = y
         print(f'iteration {n}, error = {error:.5f}')
+    print('\n' + f'Result = {x} \n')
     return x
 ```
 
 ```{code-cell} python3
-@jax.jit
 def e(p, A, b, c):
     return jnp.exp(- jnp.dot(A, p)) + c - b * jnp.sqrt(p)
 ```
@@ -636,19 +637,18 @@ np.random.seed(123)
 
 # Create a random matrix A and normalize the rows to sum to one
 A = np.random.rand(dim, dim)
-A = np.asarray(A)
-s = np.sum(A, axis=0)
+A = jnp.asarray(A)
+s = jnp.sum(A, axis=0)
 A = A / s
 
 # Set up b and c
-b = np.ones(dim)
-c = np.ones(dim)
+b = jnp.ones(dim)
+c = jnp.ones(dim)
 ```
 
 Here's the same demand function expressed in matrix syntax:
 
 ```{code-cell} python3
-@jax.jit
 def e(p, A, b, c):
     return jnp.exp(- jnp.dot(A, p)) + c - b * jnp.sqrt(p)
 ```
@@ -711,9 +711,9 @@ In this exercise, solve the fixed point using Newton's method with the following
 
 $$
 \begin{aligned}
-    k_1 &= (1, 1, 1) \\
-    k_2 &= (3, 5, 5) \\
-    k_4 &= (50, 50, 50)
+    k_{0}1 &= (1, 1, 1) \\
+    k_{0}2 &= (3, 5, 5) \\
+    k_{0}3 &= (50, 50, 50)
 \end{aligned}
 $$
 
@@ -786,8 +786,6 @@ for init in initLs:
 
     %time k = newton(lambda k: multivariate_solow(k) - k, \
                      init).block_until_ready()
-
-    print('\n' + f'Result = {k} \n')
     print('-'*64)
     attempt +=1
 ```
@@ -822,13 +820,9 @@ init = jnp.repeat(1.0, 3)
                  init).block_until_ready()
 ```
 
-```{code-cell} python3
-k
-```
+The result is very close to the ground truth but still slightly different.
 
-The result is very close but still slightly different.
-
-We can increase the precision of the floating point to obtain a more accurate approximation
+We can increase the precision of the floating point and restrict the tolerance to obtain a more accurate approximation
 
 ```{code-cell} python3
 from jax.config import config; config.update("jax_enable_x64", True)
@@ -843,6 +837,8 @@ init = init.astype('float64')
 ```{code-cell} python3
 k
 ```
+
+We can see Newton's method steps towards a more accurate solution.
 
 ```{solution-end}
 ```
@@ -876,13 +872,18 @@ c = \begin{pmatrix}
         \end{pmatrix}
 $$
 
-For this exercise, use the following price vectors as initial values:
+For this exercise, use the following extreme price vectors as initial values:
 
 $$
-p_1 = (5, 5, 5) \\
-p_2 = (1, 2, 3) \\
-p_3 = (1, 1, 1) \\
+
+\begin{aligned}
+    p_{0}1 &= (5, 5, 5) \\
+    p_{0}2 &= (1, 1, 1) \\
+    p_{0}3 &= (4.25, 4.25, 4.25)
+\end{aligned}
 $$
+
+Set the tolerance to $1\text{e-}7$ for more accurate output.
 
 ```{exercise-end}
 ```
@@ -894,41 +895,32 @@ $$
 Define parameters and initial values
 
 ```{code-cell} python3
-A = np.array([
+A = jnp.array([
     [0.2, 0.1, 0.7],
     [0.3, 0.2, 0.5],
     [0.1, 0.8, 0.1]
 ])
 
-b = np.array([1.0, 1.0, 1.0])
-c = np.array([1.0, 1.0, 1.0])
+b = jnp.array([1.0, 1.0, 1.0])
+c = jnp.array([1.0, 1.0, 1.0])
 
-initLs = [np.array([5.0, 5.0, 5.0]),
-          np.array([1.0, 2.0, 3.0]),
-          np.ones(3)]
+initLs = [jnp.repeat(5.0, 3),
+          jnp.ones(3),
+          jnp.repeat(4.25, 3)] 
 ```
 
 Let’s run through each initial guess and check the output
 
 ```{code-cell} python3
-
-%time p = newton(lambda p: e(p, A, b, c), \
-                 initLs[0]).block_until_ready()
+attempt = 1
+for init in initLs:
+    print(f'Attempt {attempt}: Starting value is {init} \n')
+    %time p = newton(lambda p: e(p, A, b, c), \
+                 init, \
+                 tol=0.0).block_until_ready()
+    print('-'*64)
+    attempt +=1
 ```
-
-```{code-cell} python3
-
-%time p = newton(lambda p: e(p, A, b, c), \
-                 initLs[1]).block_until_ready()
-```
-
-```{code-cell} python3
-
-%time p = newton(lambda p: e(p, A, b, c), \
-                 initLs[2]).block_until_ready()
-print('\n' + f'Result = {p} \n')
-```
-
 
 We can find that Newton's method may fail for some starting values.
 
