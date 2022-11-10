@@ -790,11 +790,11 @@ for init in initLs:
     attempt +=1
 ```
 
-We find that the results are invariant to the starting values given the well-defined property of this question.
+We find that the results are invariant to the starting values given the well-defined property of this question. We can apply more a restrictive threshold for tolerance to achieve more accurate results.
 
 But the number of iterations it takes to converge is dependent on the starting values.
 
-Substitute it back to the formulate to check our result
+Substitute it back to the formulate to check our last result
 
 ```{code-cell} python3
 multivariate_solow(k)
@@ -822,7 +822,7 @@ init = jnp.repeat(1.0, 3)
 
 The result is very close to the ground truth but still slightly different.
 
-We can increase the precision of the floating point and restrict the tolerance to obtain a more accurate approximation
+We can increase the precision of the floating point numbers and restrict the tolerance to obtain a more accurate approximation
 
 ```{code-cell} python3
 from jax.config import config; config.update("jax_enable_x64", True)
