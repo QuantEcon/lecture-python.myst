@@ -834,10 +834,6 @@ init = init.astype('float64')
                  tol=1e-7).block_until_ready()
 ```   
 
-```{code-cell} python3
-k
-```
-
 We can see Newton's method steps towards a more accurate solution.
 
 ```{solution-end}
@@ -905,7 +901,7 @@ b = jnp.array([1.0, 1.0, 1.0])
 c = jnp.array([1.0, 1.0, 1.0])
 
 initLs = [jnp.repeat(5.0, 3),
-          jnp.repeat(4.25, 3)
+          jnp.repeat(4.25, 3),
           jnp.ones(3)] 
 ```
 
@@ -926,7 +922,7 @@ We can find that Newton's method may fail for some starting values.
 
 Sometimes it may take a few initial guesses to achieve convergence.
 
-Substitute it back to the formula to check our result
+Substitute one result back to the formula to check our result
 
 ```{code-cell} python3
 e(p, A, b, c)
