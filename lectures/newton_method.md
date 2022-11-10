@@ -259,10 +259,12 @@ The above problem can be seen as a root-finding problem since the computation of
 
 For one-dimensional root-finding problems, Newton's method iterates on:
 
-$$
+```{math}
+:label: oneD-newton
+
 x_{t+1} = x_t - \frac{ g(x_t) }{ g'(x_t) },
 \qquad x_0 \text{ given}
-$$
+```
 
 This is also a more familiar formula for Newton's method.
 
@@ -565,9 +567,11 @@ We can also use Newton's method to find the root.
 
 We are going to try to compute the equilibrium price using the multivariate version of Newton's method, which means iterating on the equation:
 
-$$
+```{math}
+:label: multi-newton
+
 p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)
-$$
+```
 
 starting from some initial guess of the price vector $p_0$. (Here $J_e(p_n)$ is the Jacobian of $e$ evaluated at $p_n$.)
 
@@ -709,13 +713,9 @@ $$
 \begin{aligned}
     k_1 &= (1, 1, 1) \\
     k_2 &= (3, 5, 5) \\
-    k_3 &= (9, 9, 9) \\
-    k_4 &= (100, 100, 100)
+    k_4 &= (50, 50, 50)
 \end{aligned}
 $$
-
-
-Set the tolerance to $1\text{e-}7$ for more accurate output.
 
 ````{hint} 
 :class: dropdown
@@ -733,6 +733,7 @@ A = \begin{pmatrix}
 ```
 
 with $s = 0.3$, $α = 0.3$, and $δ = 0.4$ and starting value: 
+
 
 ```{math}
 k_0 = \begin{pmatrix}
@@ -766,8 +767,7 @@ s = 0.2
 
 initLs = [jnp.ones(3),
           jnp.array([3.0, 5.0, 5.0]),
-          jnp.repeat(9.0, 3),
-          jnp.repeat(100.0, 3)]
+          jnp.repeat(50.0, 3)]
 ```
 
 Then define the multivariate version of the formula for the [law of motion of captial](motion_law)
@@ -785,8 +785,7 @@ for init in initLs:
     print(f'Attempt {attempt}: Starting value is {init} \n')
 
     %time k = newton(lambda k: multivariate_solow(k) - k, \
-                     init, \
-                     tol=1e-7).block_until_ready()
+                     init).block_until_ready()
 
     print('\n' + f'Result = {k} \n')
     print('-'*64)
@@ -820,9 +819,26 @@ init = jnp.repeat(1.0, 3)
 
 
 %time k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, \
-                 init, \
-                 tol=1e-7).block_until_ready()
+                 init).block_until_ready()
 ```
+
+```{code-cell} python3
+k
+```
+
+The result is very close but still slightly different.
+
+We can increase the precision of the floating point to obtain a more accurate approximation
+
+```{code-cell} python3
+from jax.config import config; config.update("jax_enable_x64", True)
+
+init = init.astype('float64')
+
+%time k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, \
+                 init,\
+                 tol=1e-7).block_until_ready()
+```   
 
 ```{code-cell} python3
 k
@@ -863,12 +879,10 @@ $$
 For this exercise, use the following price vectors as initial values:
 
 $$
-p_1 = (1, 1, 1) \\
+p_1 = (5, 5, 5) \\
 p_2 = (1, 2, 3) \\
-p_3 = (5, 5, 5) \\
+p_3 = (1, 1, 1) \\
 $$
-
-Set the tolerance to $1\text{e-}7$ for more accurate output.
 
 ```{exercise-end}
 ```
@@ -889,9 +903,9 @@ A = np.array([
 b = np.array([1.0, 1.0, 1.0])
 c = np.array([1.0, 1.0, 1.0])
 
-initLs = [np.ones(3),
-          np.array([5.0, 5.0, 5.0]),
-          np.array([1.0, 2.0, 3.0])]
+initLs = [np.array([5.0, 5.0, 5.0]),
+          np.array([1.0, 2.0, 3.0]),
+          np.ones(3)]
 ```
 
 Let’s run through each initial guess and check the output
@@ -899,22 +913,19 @@ Let’s run through each initial guess and check the output
 ```{code-cell} python3
 
 %time p = newton(lambda p: e(p, A, b, c), \
-                 initLs[0], \
-                 tol=1e-7).block_until_ready()
+                 initLs[0]).block_until_ready()
 ```
 
 ```{code-cell} python3
 
 %time p = newton(lambda p: e(p, A, b, c), \
-                 initLs[1], \
-                 tol=1e-7).block_until_ready()
+                 initLs[1]).block_until_ready()
 ```
 
 ```{code-cell} python3
 
 %time p = newton(lambda p: e(p, A, b, c), \
-                 initLs[2], \
-                 tol=1e-7).block_until_ready()
+                 initLs[2]).block_until_ready()
 print('\n' + f'Result = {p} \n')
 ```
 
