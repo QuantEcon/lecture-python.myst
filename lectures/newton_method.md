@@ -878,12 +878,12 @@ $$
 
 \begin{aligned}
     p1_{0} &= (5, 5, 5) \\
-    p2_{0} &= (1, 1, 1) \\
-    p3_{0} &= (4.25, 4.25, 4.25)
+    p2_{0} &= (4.25, 4.25, 4.25) \\
+    p3_{0} &= (1, 1, 1)
 \end{aligned}
 $$
 
-Set the tolerance to $1\text{e-}7$ for more accurate output.
+Set the tolerance to $0.0$ for more accurate output.
 
 ```{exercise-end}
 ```
@@ -905,8 +905,8 @@ b = jnp.array([1.0, 1.0, 1.0])
 c = jnp.array([1.0, 1.0, 1.0])
 
 initLs = [jnp.repeat(5.0, 3),
-          jnp.ones(3),
-          jnp.repeat(4.25, 3)] 
+          jnp.repeat(4.25, 3)
+          jnp.ones(3)] 
 ```
 
 Let’s run through each initial guess and check the output
