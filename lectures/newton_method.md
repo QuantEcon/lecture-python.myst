@@ -711,9 +711,9 @@ In this exercise, solve the fixed point using Newton's method with the following
 
 $$
 \begin{aligned}
-    k_{0}1 &= (1, 1, 1) \\
-    k_{0}2 &= (3, 5, 5) \\
-    k_{0}3 &= (50, 50, 50)
+    k1_{0} &= (1, 1, 1) \\
+    k2_{0} &= (3, 5, 5) \\
+    k3_{0} &= (50, 50, 50)
 \end{aligned}
 $$
 
@@ -877,9 +877,9 @@ For this exercise, use the following extreme price vectors as initial values:
 $$
 
 \begin{aligned}
-    p_{0}1 &= (5, 5, 5) \\
-    p_{0}2 &= (1, 1, 1) \\
-    p_{0}3 &= (4.25, 4.25, 4.25)
+    p1_{0} &= (5, 5, 5) \\
+    p2_{0} &= (1, 1, 1) \\
+    p3_{0} &= (4.25, 4.25, 4.25)
 \end{aligned}
 $$
 
