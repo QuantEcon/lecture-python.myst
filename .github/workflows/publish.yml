@@ -1,12 +1,35 @@
-name: Build & Publish to GH-PAGES
+name: Build & Publish to GH Pages
 on:
   push:
     tags:
       - 'publish*'
 jobs:
+  deploy-runner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: iterative/setup-cml@v1
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Deploy runner on EC2
+        env:
+          REPO_TOKEN: ${{ secrets.QUANTECON_SERVICES_PAT }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          cml runner launch \
+              --cloud=aws \
+              --cloud-region=us-west-2 \
+              --cloud-type=p3.2xlarge \
+              --labels=cml-gpu \
+              --cloud-hdd-size=40
   publish:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-    runs-on: ubuntu-latest
+    needs: deploy-runner
+    runs-on: [self-hosted, cml-gpu]
+    container:
+      image: docker://nvidia/cuda:11.2.1-devel-ubuntu20.04
+      options: --gpus all
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -19,25 +42,32 @@ jobs:
           python-version: 3.9
           environment-file: environment.yml
           activate-environment: quantecon
-      - name: Install latex dependencies
+      - name: Install Jax and Upgrade CUDA
+        shell: bash -l {0}
         run: |
-          sudo apt-get -qq update
-          sudo apt-get install -y     \
+          pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+          nvidia-smi
+      - name: Install Supporting Packages
+        run: |
+          apt-get -qq update
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get install -y tzdata
+          apt-get install -y git
+          apt-get install -y     \
             texlive-latex-recommended \
             texlive-latex-extra       \
             texlive-fonts-recommended \
             texlive-fonts-extra       \
             texlive-xetex             \
             latexmk                   \
-            xindy                     \
-            dvipng                    \
-            cm-super
+            xindy
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
       - name: Display Pip Versions
         shell: bash -l {0}
         run: pip list
+      # Download Build Cache from cache.yml
       - name: Download "build" folder (cache)
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -45,11 +75,11 @@ jobs:
           branch: main
           name: build-cache
           path: _build
-      # Build Assets (Download Notebooks and PDF via LaTeX)
+      # Build Assets (Download Notebooks, PDF via LaTeX)
       - name: Build PDF from LaTeX
         shell: bash -l {0}
         run: |
-          jb build lectures --builder pdflatex --path-output ./ -n --keep-going
+          jb build lectures --builder pdflatex --path-output ./ -n -W --keep-going
       - name: Copy LaTeX PDF for GH-PAGES
         shell: bash -l {0}
         run: |
@@ -58,7 +88,7 @@ jobs:
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
         run: |
-          jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter
+          jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -n -W --keep-going
           zip -r download-notebooks.zip _build/jupyter
       - uses: actions/upload-artifact@v2
         with:
@@ -69,11 +99,11 @@ jobs:
         run: |
           mkdir -p _build/html/_notebooks
           cp -u _build/jupyter/*.ipynb _build/html/_notebooks
-      # Build HTML (Website)
+      # Final Build of HTML (with assets)
       - name: Build HTML
         shell: bash -l {0}
         run: |
-          jb build lectures --path-output ./
+          jb build lectures --path-output ./ -n -W --keep-going
       - name: Deploy website to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -87,14 +117,18 @@ jobs:
           cp -a _notebook_repo/. _build/lecture-python.notebooks
           cp _build/jupyter/*.ipynb _build/lecture-python.notebooks
           ls -a _build/lecture-python.notebooks
-      - name: Commit latest notebooks to lecture-python.notebooks
-        uses: cpina/github-action-push-to-another-repository@v1.3
+      - name: Commit notebooks to lecture-python.notebooks
+        shell: bash -l {0}
         env:
-          API_TOKEN_GITHUB: ${{ secrets.QUANTECON_SERVICES_PAT }}
-        with:
-          source-directory: '_build/lecture-python.notebooks/'
-          destination-repository-username: 'QuantEcon'
-          destination-repository-name: 'lecture-python.notebooks'
-          commit-message: 'auto publishing updates to notebooks'
-          destination-github-username: 'quantecon-services'
-          user-email: services@quantecon.org
+          QE_SERVICES_PAT: ${{ secrets.QUANTECON_SERVICES_PAT }}
+        run: |
+          git clone https://quantecon-services:$QE_SERVICES_PAT@github.com/quantecon/lecture-python.notebooks
+
+          cp _build/lecture-python.notebooks/*.ipynb lecture-python.notebooks
+
+          cd lecture-python.notebooks
+          git config user.name "QuantEcon Services"
+          git config user.email "admin@quantecon.org"
+          git add *.ipynb
+          git commit -m "auto publishing updates to notebooks"
+          git push origin master
