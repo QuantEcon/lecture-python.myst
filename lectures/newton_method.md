@@ -34,11 +34,12 @@ We first consider an easy, one-dimensional fixed point problem where we know the
 
 Then we generalize Newton's method to multi-dimensional settings to solve market equilibrium with multiple goods.
 
+In each step, we will refine and improve our implementation and compare our results to alternative methods.
+
 We use the following imports in this lecture
 
 ```{code-cell} python3
 import numpy as np
-from numpy import exp, sqrt
 import matplotlib.pyplot as plt
 from collections import namedtuple
 from scipy.optimize import root
@@ -74,7 +75,7 @@ def create_solow_params(A=2.0, s=0.3, α=0.3, δ=0.4):
     return SolowParameters(A=A, s=s, α=α, δ=δ)
 ```
 
-The next two functions describe the [law of motion](motion_law) and the true fixed point $k^*$.
+The next two functions implements the law of motion [](motion_law) and the true fixed point $k^*$.
 
 ```{code-cell} python3
 def g(k, params):
@@ -206,7 +207,7 @@ def Dg(k, params):
     return α * A * s * k**(α-1) + (1 - δ)
 ```
 
-Here's a function $q$ representing the [formula for newtons' method above](newtons_method).
+Here's a function $q$ representing [](newtons_method).
 
 ```{code-cell} python3
 def q(k, params):
@@ -255,7 +256,7 @@ plot_trajectories(params)
 
 We can see that Newton's Method reaches convergence faster than the successive approximation.
 
-The above problem can be seen as a root-finding problem since the computation of a fixed point can be seen as approximating $x^*$ iteratively such that $g(x^*) - x^* = 0$.
+The above fixed-point calculation can be seen as a root-finding problem since the computation of a fixed point can be seen as approximating $x^*$ iteratively such that $g(x^*) - x^* = 0$.
 
 For one-dimensional root-finding problems, Newton's method iterates on:
 
@@ -266,15 +267,16 @@ x_{t+1} = x_t - \frac{ g(x_t) }{ g'(x_t) },
 \qquad x_0 \text{ given}
 ```
 
-This is also a more frequently used representation of Newton's method (in textbooks and online resources).
+Root-finding formula is also a more frequently used form of Newton's method.
 
 The following code implements the iteration
 
+(first_newton_attempt)=
 ```{code-cell} python3
 def newton(g, Dg, x_0, tol, params=params, maxIter=10):
     x = x_0
 
-    # Implement the one-dimensional Newton's method
+    # Implement the root-finding formula
     iteration = lambda x, params: x - g(x, params)/Dg(x, params)
 
     error = tol + 1
@@ -310,7 +312,7 @@ The multi-dimensional variant will be left as an [exercise](newton_ex1).
 
 By observing the formula of Newton's method, it is easy to see the possibility to implement Newton's method using Jacobian when we move up the ladder to higher dimensions.
 
-This naturally leads us to use Newton's method to solve multi-dimensional problems for which we will use the powerful auto-differentiation functionality in `jax` to solve intricate calculations.
+This naturally leads us to use Newton's method to solve multi-dimensional problems for which we will use the powerful auto-differentiation functionality in JAX to do intricate calculations.
 
 ## Multivariate Newton’s Method
 
@@ -385,7 +387,7 @@ The function below calculates the excess demand for given parameters
 
 ```{code-cell} python3
 def e(p, A, b, c):
-    return exp(- A @ p) + c - b * sqrt(p)
+    return np.exp(- A @ p) + c - b * np.sqrt(p)
 ```
 
 
@@ -538,10 +540,10 @@ def jacobian(p, A, b, c):
     p_0, p_1 = p
     a_00, a_01 = A[0, :]
     a_10, a_11 = A[1, :]
-    j_00 = -a_00 * exp(-a_00 * p_0) - (b[0]/2) * p_0**(-1/2)
-    j_01 = -a_01 * exp(-a_01 * p_1)
-    j_10 = -a_10 * exp(-a_10 * p_0)
-    j_11 = -a_11 * exp(-a_11 * p_1) - (b[1]/2) * p_1**(-1/2)
+    j_00 = -a_00 * np.exp(-a_00 * p_0) - (b[0]/2) * p_0**(-1/2)
+    j_01 = -a_01 * np.exp(-a_01 * p_1)
+    j_10 = -a_10 * np.exp(-a_10 * p_0)
+    j_11 = -a_11 * np.exp(-a_11 * p_1) - (b[1]/2) * p_1**(-1/2)
     J = [[j_00, j_01],
          [j_10, j_11]]
     return np.array(J)
@@ -564,9 +566,7 @@ np.max(np.abs(e(p, A, b, c)))
 
 #### Using Newton's Method
 
-We can also use Newton's method to find the root. 
-
-We are going to try to compute the equilibrium price using the multivariate version of Newton's method, which means iterating on the equation:
+Now let's use Newton's method to compute the equilibrium price using the multivariate version of Newton's method:
 
 ```{math}
 :label: multi-newton
@@ -576,9 +576,9 @@ p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)
 
 starting from some initial guess of the price vector $p_0$. (Here $J_e(p_n)$ is the Jacobian of $e$ evaluated at $p_n$.)
 
-We use the `jax.jacobian()` function to auto-differentiate and calculate the jacobian.
+Instead of coding Jacobian by hand, We use the `jax.jacobian()` function to auto-differentiate and calculate Jacobian.
 
-With only slight modification, we can generalize our previous attempt to multi-dimensional problems
+With only slight modification, we can generalize [our previous attempt](first_newton_attempt) to multi-dimensional problems
 
 ```{code-cell} python3
 def newton(f, x_0, tol=1e-5, maxIter=10):
@@ -616,11 +616,11 @@ p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
 np.max(np.abs(e(p, A, b, c)))
 ```
 
-The error is almost 0. 
+The result is very accurate. 
 
 With the larger overhead, the speed is not better than the optimized `scipy` function.
 
-However, things will change slightly when we move to higher dimensional problems.
+However, things will change when we move to higher dimensional problems.
 
 
 
@@ -646,7 +646,7 @@ b = jnp.ones(dim)
 c = jnp.ones(dim)
 ```
 
-Here's the same demand function expressed in matrix syntax:
+Here's the same demand function using `jax.numpy`:
 
 ```{code-cell} python3
 def e(p, A, b, c):
@@ -659,7 +659,7 @@ Here's our initial condition
 init_p = jnp.ones(dim)
 ```
 
-Newton's method reaches a relatively small error within a minute
+Newton's method reaches a relatively small error within 10 seconds
 
 ```{code-cell} python3
 %%time
@@ -687,7 +687,7 @@ p = solution.x
 np.max(np.abs(e(p, A, b, c)))
 ```
 
-And the result is less accurate.
+The result is also less accurate.
 
 ## Exercises
 
@@ -722,7 +722,7 @@ $$
 
 - The computation of fixed point can be seen as computing $k^*$ such that $f(k^*) - k^* = 0$.
 
-- If you are unsure about your solution, you can start with the known solution to check your formula:
+- If you are unsure about your solution, you can start with the solved example:
 
 ```{math}
 A = \begin{pmatrix}
@@ -736,14 +736,10 @@ with $s = 0.3$, $α = 0.3$, and $δ = 0.4$ and starting value:
 
 
 ```{math}
-k_0 = \begin{pmatrix}
-            1 \\
-            1 \\
-            1
-        \end{pmatrix}
+k_0 = (1, 1, 1)
 ```
 
-The result should converge to the [solved solution in the one-dimensional problem](solved_k).
+The result should converge to the [analytical solution](solved_k).
 ````
 
 ```{exercise-end}
@@ -790,14 +786,14 @@ for init in initLs:
     attempt +=1
 ```
 
-We find that the results are invariant to the starting values given the well-defined property of this question. We can apply more a restrictive threshold for tolerance to achieve more accurate results.
+We find that the results are invariant to the starting values given the well-defined property of this question.
 
 But the number of iterations it takes to converge is dependent on the starting values.
 
 Substitute it back to the formulate to check our last result
 
 ```{code-cell} python3
-multivariate_solow(k)
+multivariate_solow(k) - k
 ```
 
 Note the error is very small.
@@ -822,10 +818,12 @@ init = jnp.repeat(1.0, 3)
 
 The result is very close to the ground truth but still slightly different.
 
-We can increase the precision of the floating point numbers and restrict the tolerance to obtain a more accurate approximation
+We can increase the precision of the floating point numbers and restrict the tolerance to obtain a more accurate approximation (see detailed discussion in the [lecture on JAX](https://python-programming.quantecon.org/jax_intro.html#differences))
 
 ```{code-cell} python3
-from jax.config import config; config.update("jax_enable_x64", True)
+from jax.config import config
+
+config.update("jax_enable_x64", True)
 
 init = init.astype('float64')
 
@@ -834,7 +832,7 @@ init = init.astype('float64')
                  tol=1e-7).block_until_ready()
 ```   
 
-We can see Newton's method steps towards a more accurate solution.
+We can see it steps towards a more accurate solution.
 
 ```{solution-end}
 ```
@@ -874,8 +872,8 @@ $$
 
 \begin{aligned}
     p1_{0} &= (5, 5, 5) \\
-    p2_{0} &= (4.25, 4.25, 4.25) \\
-    p3_{0} &= (1, 1, 1)
+    p2_{0} &= (1, 1, 1) \\
+    p3_{0} &= (4.5, 0.1, 4)
 \end{aligned}
 $$
 
@@ -885,7 +883,7 @@ Set the tolerance to $0.0$ for more accurate output.
 ```{hint} 
 :class: dropdown
 
-Similar to [exercise 1](newton_ex1), enabling `float64` for `JAX` can improve the precision of our results.
+Similar to [exercise 1](newton_ex1), enabling `float64` for JAX can improve the precision of our results.
 ```
 
 
@@ -910,7 +908,7 @@ c = jnp.array([1.0, 1.0, 1.0])
 
 initLs = [jnp.repeat(5.0, 3),
           jnp.ones(3),
-          jnp.array([4.5, 0.1, 4])] 
+          jnp.array([4.5, 0.1, 4.0])] 
 ```
 
 Let’s run through each initial guess and check the output
@@ -933,7 +931,7 @@ We can find that Newton's method may fail for some starting values.
 
 Sometimes it may take a few initial guesses to achieve convergence.
 
-Substitute one result back to the formula to check our result
+Substitute the result back to the formula to check our result
 
 ```{code-cell} python3
 e(p, A, b, c)
