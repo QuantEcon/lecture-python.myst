@@ -50,15 +50,6 @@ plt.rcParams["figure.figsize"] = (10, 5.7)
 
 ## One-dimensional Fixed Point Computation Using Newton's Method
 
-To find the fixed point of a scalar function $g$, Newton's method iterates on 
-
-```{math}
-:label: newtons_method
-
-x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
-\qquad x_0 \text{ given}
-```
-
 (solow)=
 ### The Solow Model
 
@@ -69,7 +60,7 @@ Assuming Cobb-Douglas production technology, the law of motion for capital is
 k_{t+1} = sAk_t^\alpha + (1-\delta) k_t
 ```
 
-We store the parameters in a [`namedtuple`](https://docs.python.org/3/library/collections.html#collections.namedtuple)
+Since we will use these parameters in many functions for this example, let's store our parameters in [`namedtuple`](https://docs.python.org/3/library/collections.html#collections.namedtuple) to help us keep our code clean and concise.
 
 ```{code-cell} python3
 SolowParameters = namedtuple("SolowParameters", ('A', 's', 'α', 'δ'))
@@ -77,14 +68,13 @@ SolowParameters = namedtuple("SolowParameters", ('A', 's', 'α', 'δ'))
 
 This function creates a `namedtuple` of the right type and has default parameter values.
 
-
 ```{code-cell} python3
 def create_solow_params(A=2.0, s=0.3, α=0.3, δ=0.4):
     "Creates a Solow model parameterization with default values."
     return SolowParameters(A=A, s=s, α=α, δ=δ)
 ```
 
-The next two functions describe the law of motion and the true fixed point $k^*$.
+The next two functions describe the [law of motion](motion_law) and the true fixed point $k^*$.
 
 ```{code-cell} python3
 def g(k, params):
@@ -190,6 +180,16 @@ k_star
 
 #### Newton's Method 
 
+To find the fixed point of a scalar function $g$, Newton's method iterates on 
+
+```{math}
+:label: newtons_method
+
+x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
+\qquad x_0 \text{ given}
+```
+
+
 To implement Newton's method we observe that
 
 ```{math}
@@ -206,7 +206,7 @@ def Dg(k, params):
     return α * A * s * k**(α-1) + (1 - δ)
 ```
 
-Here's a function $q$ such that iterating with $q$ is equivalent to Newton's method.
+Here's a function $q$ representing the [formula for newtons' method above](newtons_method).
 
 ```{code-cell} python3
 def q(k, params):
@@ -266,7 +266,7 @@ x_{t+1} = x_t - \frac{ g(x_t) }{ g'(x_t) },
 \qquad x_0 \text{ given}
 ```
 
-This is also a more familiar formula for Newton's method.
+This is also a more frequently used representation of Newton's method (in textbooks and online resources).
 
 The following code implements the iteration
 
@@ -881,6 +881,14 @@ $$
 
 Set the tolerance to $0.0$ for more accurate output.
 
+
+```{hint} 
+:class: dropdown
+
+Similar to [exercise 1](newton_ex1), enabling `float64` for `JAX` can improve the precision of our results.
+```
+
+
 ```{exercise-end}
 ```
 
@@ -901,8 +909,8 @@ b = jnp.array([1.0, 1.0, 1.0])
 c = jnp.array([1.0, 1.0, 1.0])
 
 initLs = [jnp.repeat(5.0, 3),
-          jnp.repeat(4.25, 3),
-          jnp.ones(3)] 
+          jnp.ones(3),
+          jnp.array([4.5, 0.1, 4])] 
 ```
 
 Let’s run through each initial guess and check the output
@@ -911,6 +919,9 @@ Let’s run through each initial guess and check the output
 attempt = 1
 for init in initLs:
     print(f'Attempt {attempt}: Starting value is {init} \n')
+
+    init = init.astype('float64')
+
     %time p = newton(lambda p: e(p, A, b, c), \
                  init, \
                  tol=0.0).block_until_ready()
