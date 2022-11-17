@@ -49,7 +49,7 @@ import jax.numpy as jnp
 plt.rcParams["figure.figsize"] = (10, 5.7)
 ```
 
-## One-dimensional Fixed Point Computation Using Newton's Method
+## Fixed Point Computation Using Newton's Method
 
 (solow)=
 ### The Solow Model
@@ -60,6 +60,15 @@ Assuming Cobb-Douglas production technology, the law of motion for capital is
 :label: motion_law
 k_{t+1} = sAk_t^\alpha + (1-\delta) k_t
 ```
+
+where
+- $k_t$ is capital stock per worker,
+- $A, \alpha>0$ are production parameters, $\alpha<1$
+- $s>0$ is a savings rate, and
+- $\delta \in(0,1)$ is a rate of depreciation
+
+In this example, we will try to calculate the fixed point for the law of motion for capital.
+
 
 Since we will use these parameters in many functions for this example, let's store our parameters in [`namedtuple`](https://docs.python.org/3/library/collections.html#collections.namedtuple) to help us keep our code clean and concise.
 
@@ -181,7 +190,23 @@ k_star
 
 #### Newton's Method 
 
-To find the fixed point of a scalar function $g$, Newton's method iterates on 
+To implement Newton's method, we propose an initial value $x_0$ as fixed point, and then iterate towards the a point where $x_t = g(x_{t-1})$.
+
+To begin with, we know that 
+
+```{math}
+:label: motivation
+
+\hat{g}(x) \approx g\left(x_0\right)+g^{\prime}\left(x_0\right)\left(x-x_0\right)
+```
+
+Setting $\hat{g}(x_1) = x_1$ and solve for $x_1$ to get
+
+$$
+x_1=\frac{g\left(x_0\right)-g^{\prime}\left(x_0\right) x_0}{1-g^{\prime}\left(x_0\right)}
+$$
+
+Generalising the process above, Newton's method iterates on 
 
 ```{math}
 :label: newtons_method
@@ -258,7 +283,21 @@ We can see that Newton's Method reaches convergence faster than the successive a
 
 The above fixed-point calculation can be seen as a root-finding problem since the computation of a fixed point can be seen as approximating $x^*$ iteratively such that $g(x^*) - x^* = 0$.
 
-For one-dimensional root-finding problems, Newton's method iterates on:
+Therefore, assuming $f(x) = g(x) - x$, we can rewrite the formula [](motivation) to 
+
+$$
+\hat{f}(x) \approx f\left(x_0\right)+f^{\prime}\left(x_0\right)\left(x-x_0\right)
+$$
+
+
+Setting $\hat{f}(x_1) = 0$ and solve for $x_1$ to get
+
+$$
+x_1 = x_0 - \frac{ f(x_0) }{ f'(x_0) },
+\qquad x_0 \text{ given}
+$$
+
+Therefore, generalizing the formula above, for one-dimensional root-finding problems, Newton's method iterates on
 
 ```{math}
 :label: oneD-newton
@@ -267,17 +306,17 @@ x_{t+1} = x_t - \frac{ g(x_t) }{ g'(x_t) },
 \qquad x_0 \text{ given}
 ```
 
-Root-finding formula is also a more frequently used form of Newton's method.
+Root-finding formula is also a more frequently used iteration.
 
 The following code implements the iteration
 
 (first_newton_attempt)=
 ```{code-cell} python3
-def newton(g, Dg, x_0, tol, params=params, maxIter=10):
+def newton(f, Df, x_0, tol, params=params, maxIter=10):
     x = x_0
 
     # Implement the root-finding formula
-    iteration = lambda x, params: x - g(x, params)/Dg(x, params)
+    iteration = lambda x, params: x - f(x, params)/Df(x, params)
 
     error = tol + 1
     n = 0
@@ -296,8 +335,8 @@ def newton(g, Dg, x_0, tol, params=params, maxIter=10):
 ```{code-cell} python3
 # Apply our transformation
 k_star_approx_newton = newton(
-                        g=lambda x, params: g(x, params) - x,
-                        Dg=lambda x, params: Dg(x, params) - 1,
+                        f=lambda x, params: g(x, params) - x,
+                        Df=lambda x, params: Dg(x, params) - 1,
                         x_0=0.8,
                         tol=1e-7)
 ```
