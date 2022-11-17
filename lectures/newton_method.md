@@ -212,11 +212,11 @@ Generalising the process above, Newton's method iterates on
 :label: newtons_method
 
 x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
-\qquad x_0 \text{ given}
+\quad x_0 \text{ given}
 ```
 
 
-To implement Newton's method we observe that
+To implement Newton's method we observe that the derivative of the law of motion for capital [](motion_law) is
 
 ```{math}
 :label: newton_method2
@@ -294,7 +294,7 @@ Setting $\hat{f}(x_1) = 0$ and solve for $x_1$ to get
 
 $$
 x_1 = x_0 - \frac{ f(x_0) }{ f'(x_0) },
-\qquad x_0 \text{ given}
+\quad x_0 \text{ given}
 $$
 
 Therefore, generalizing the formula above, for one-dimensional root-finding problems, Newton's method iterates on
@@ -302,8 +302,8 @@ Therefore, generalizing the formula above, for one-dimensional root-finding prob
 ```{math}
 :label: oneD-newton
 
-x_{t+1} = x_t - \frac{ g(x_t) }{ g'(x_t) },
-\qquad x_0 \text{ given}
+x_{t+1} = x_t - \frac{ f(x_t) }{ f'(x_t) },
+\quad x_0 \text{ given}
 ```
 
 Root-finding formula is also a more frequently used iteration.
@@ -380,7 +380,7 @@ For example, the two goods might be computer components that are typically used 
 The excess demand function is,
 
 $$
-e_i(p) = q^d_i(p) - q^s_i(p), \qquad i = 0, 1
+e_i(p) = q^d_i(p) - q^s_i(p), \quad i = 0, 1
 $$
 
 
