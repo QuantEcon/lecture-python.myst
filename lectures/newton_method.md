@@ -190,7 +190,7 @@ k_star
 
 #### Newton's Method 
 
-To implement Newton's method, we propose an initial value $x_0$ as fixed point, and then iterate towards the a point where $x_t = g(x_{t-1})$.
+To implement Newton's method, we propose an initial value $x_0$ as fixed point, and then iterate towards the fixed point $x^*$ where $x^* = g(x^*)$.
 
 To begin with, we know that 
 
@@ -200,7 +200,7 @@ To begin with, we know that
 \hat{g}(x) \approx g\left(x_0\right)+g^{\prime}\left(x_0\right)\left(x-x_0\right)
 ```
 
-Setting $\hat{g}(x_1) = x_1$ and solve for $x_1$ to get
+Set $\hat{g}(x_1) = x_1$ and solve for $x_1$ to get
 
 $$
 x_1=\frac{g\left(x_0\right)-g^{\prime}\left(x_0\right) x_0}{1-g^{\prime}\left(x_0\right)}
@@ -283,14 +283,14 @@ We can see that Newton's Method reaches convergence faster than the successive a
 
 The above fixed-point calculation can be seen as a root-finding problem since the computation of a fixed point can be seen as approximating $x^*$ iteratively such that $g(x^*) - x^* = 0$.
 
-Therefore, assuming $f(x) = g(x) - x$, we can rewrite the formula [](motivation) to 
+We the formula [](motivation) can be rewritten in terms of $f(x)$
 
 $$
 \hat{f}(x) \approx f\left(x_0\right)+f^{\prime}\left(x_0\right)\left(x-x_0\right)
 $$
 
 
-Setting $\hat{f}(x_1) = 0$ and solve for $x_1$ to get
+Assuming $f(x) = g(x) - x$, set $\hat{f}(x_1) = 0$ and solve for $x_1$ to get
 
 $$
 x_1 = x_0 - \frac{ f(x_0) }{ f'(x_0) },
@@ -308,7 +308,7 @@ x_{t+1} = x_t - \frac{ f(x_t) }{ f'(x_t) },
 
 Root-finding formula is also a more frequently used iteration.
 
-The following code implements the iteration
+The following code implements the iteration [](oneD-newton)
 
 (first_newton_attempt)=
 ```{code-cell} python3
