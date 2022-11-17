@@ -1,0 +1,51 @@
+\documentclass[tikz, border=1mm]{standalone}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows}
+\usetikzlibrary{calc}
+\usetikzlibrary{intersections}
+\usetikzlibrary{matrix}
+\usetikzlibrary{decorations}
+\usepackage{pgf}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16} % Tom %'d out May 8, 2020 because it was causing hickups 
+\usetikzlibrary{shapes, fit}
+\usetikzlibrary{arrows.meta} % from fazeleh
+\usetikzlibrary{decorations.pathreplacing}  %for brac
+
+
+\begin{document}
+
+\begin{tikzpicture}
+  \node[circle, draw, scale=1.3856, red] (1) at (1, 1) {$q_1$};
+  \node[circle, draw, scale=1.6, red] (2) at (3, 3) {$q_2$};
+  \node[circle, draw, scale=1.3856, red] (3) at (5, 0) {$q_3$};
+  \node[circle, draw, scale=1.6, red] (4) at (7, 2) {$q_4$};
+  \node[circle, draw, scale=1.1312, blue] (01) at (1.5, 2.5) {${p}_1$};
+  \node[circle, draw, scale=0.8, blue] (02) at (0, 0) {${p}_2$};
+  \node[circle, draw, scale=1.3856, blue] (03) at (3, 1) {${p}_3$};
+  \node[circle, draw, scale=1.1312, blue] (04) at (6.5, 0.5) {${p}_4$};
+  \node[circle, draw, scale=0.8, blue] (05) at (8, 3) {${p}_5$};
+  \node[circle, draw, scale=1.1312, blue] (06) at (5, 3) {${p}_6$};
+  \node[circle, draw, scale=1.3856, blue] (07) at (4.5, 1.5) {${p}_7$};
+  
+  
+  \draw[->, thick, blue]
+  (01) edge [bend left=0, left, -{Stealth[scale=1]}, line width=1pt] node {}(1)
+  (01) edge [bend left=0, below, -{Stealth[scale=1]}, line width=1pt] node {} (2)
+  (02) edge [bend left=0, below, -{Stealth[scale=1]}, line width=1pt] node {} (1)
+  (03) edge [bend left=0, below, -{Stealth[scale=1]}, line width=1pt] node {} (1)
+  (03) edge [bend left=0, below, -{Stealth[scale=1]}, line width=1pt] node {} (2)
+  (03) edge [bend left=0, below, -{Stealth[scale=1]}, line width=1pt] node {} (3)
+  (04) edge [bend left=0, below, -{Stealth[scale=1]}, line width=1pt] node {} (3)
+  (04) edge [bend left=0, below, -{Stealth[scale=1]}, line width=1pt] node {} (4)
+  (05) edge [bend left=0, below, -{Stealth[scale=1]}, line width=1pt] node {} (4)
+  (06) edge [bend left=0, below, -{Stealth[scale=1]}, line width=1pt] node {} (2)
+  (06) edge [bend left=0, below, -{Stealth[scale=1]}, line width=1pt] node {} (4)
+  (07) edge [bend left=0, below, -{Stealth[scale=1]}, line width=1pt] node {} (2)
+  (07) edge [bend left=0, below, -{Stealth[scale=1]}, line width=1pt] node {} (3)
+  (07) edge [bend left=0, below, -{Stealth[scale=1]}, line width=1pt] node {} (4);
+\end{tikzpicture}
+
+\end{document}

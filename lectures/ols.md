@@ -47,7 +47,7 @@ Along the way, we'll discuss a variety of topics, including
 
 As an example, we will replicate results from Acemoglu, Johnson and Robinson's seminal paper {cite}`Acemoglu2001`.
 
-* You can download a copy [here](https://economics.mit.edu/files/4123).
+* You can download a copy [here](https://economics.mit.edu/research/publications/colonial-origins-comparative-development-empirical-investigation).
 
 In the paper, the authors emphasize the importance of institutions in economic development.
 
@@ -86,7 +86,7 @@ In this paper,
 - economic outcomes are proxied by log GDP per capita in 1995, adjusted for exchange rates.
 - institutional differences are proxied by an index of protection against expropriation on average over 1985-95, constructed by the [Political Risk Services Group](https://www.prsgroup.com/).
 
-These variables and other data used in the paper are available for download on Daron Acemoglu's [webpage](https://economics.mit.edu/faculty/acemoglu/data/ajr2001).
+These variables and other data used in the paper are available for download on Daron Acemoglu's [webpage](https://economics.mit.edu/people/faculty/daron-acemoglu/data-archive).
 
 We will use pandas' `.read_stata()` function to read in data contained in the `.dta` files to dataframes
 
@@ -214,7 +214,7 @@ To view the OLS regression results, we can call the `.summary()`
 method.
 
 Note that an observation was mistakenly dropped from the results in the
-original paper (see the note located in maketable2.do from Acemoglu's webpage), and thus the
+original paper (see the note located in `maketable2.do` from Acemoglu's webpage), and thus the
 coefficients differ slightly.
 
 ```{code-cell} python3
@@ -552,11 +552,12 @@ significance of institutions in economic development.
 
 We have demonstrated basic OLS and 2SLS regression in `statsmodels` and `linearmodels`.
 
-If you are familiar with R, you may want to use the [formula interface](http://www.statsmodels.org/dev/example_formulas.html) to `statsmodels`, or consider using [r2py](https://rpy2.github.io/) to call R from within Python.
+If you are familiar with R, you may want to use the [formula interface](https://www.statsmodels.org/dev/example_formulas.html) to `statsmodels`, or consider using [r2py](https://rpy2.github.io/) to call R from within Python.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: ols_ex1
 
 In the lecture, we think the original model suffers from endogeneity
 bias due to the likely effect income has on institutional development.
@@ -596,8 +597,43 @@ endogenous.
 
 Using the above information, estimate a Hausman test and interpret your
 results.
+```
 
-### Exercise 2
+```{solution-start} ols_ex1
+:class: dropdown
+```
+
+```{code-cell} python3
+# Load in data
+df4 = pd.read_stata('https://github.com/QuantEcon/lecture-python/blob/master/source/_static/lecture_specific/ols/maketable4.dta?raw=true')
+
+# Add a constant term
+df4['const'] = 1
+
+# Estimate the first stage regression
+reg1 = sm.OLS(endog=df4['avexpr'],
+              exog=df4[['const', 'logem4']],
+              missing='drop').fit()
+
+# Retrieve the residuals
+df4['resid'] = reg1.resid
+
+# Estimate the second stage residuals
+reg2 = sm.OLS(endog=df4['logpgp95'],
+              exog=df4[['const', 'avexpr', 'resid']],
+              missing='drop').fit()
+
+print(reg2.summary())
+```
+
+The output shows that the coefficient on the residuals is statistically
+significant, indicating $avexpr_i$ is endogenous.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: ols_ex2
 
 The OLS parameter $\beta$ can also be estimated using matrix
 algebra and `numpy` (you may need to review the
@@ -634,38 +670,11 @@ $$
 Using the above information, compute $\hat{\beta}$ from model 1
 using `numpy` - your results should be the same as those in the
 `statsmodels` output from earlier in the lecture.
-
-## Solutions
-
-### Exercise 1
-
-```{code-cell} python3
-# Load in data
-df4 = pd.read_stata('https://github.com/QuantEcon/lecture-python/blob/master/source/_static/lecture_specific/ols/maketable4.dta?raw=true')
-
-# Add a constant term
-df4['const'] = 1
-
-# Estimate the first stage regression
-reg1 = sm.OLS(endog=df4['avexpr'],
-              exog=df4[['const', 'logem4']],
-              missing='drop').fit()
-
-# Retrieve the residuals
-df4['resid'] = reg1.resid
-
-# Estimate the second stage residuals
-reg2 = sm.OLS(endog=df4['logpgp95'],
-              exog=df4[['const', 'avexpr', 'resid']],
-              missing='drop').fit()
-
-print(reg2.summary())
 ```
 
-The output shows that the coefficient on the residuals is statistically
-significant, indicating $avexpr_i$ is endogenous.
-
-### Exercise 2
+```{solution-start} ols_ex2
+:class: dropdown
+```
 
 ```{code-cell} python3
 # Load in data
@@ -691,3 +700,5 @@ It is also possible to use `np.linalg.inv(X.T @ X) @ X.T @ y` to solve
 for $\beta$, however `.solve()` is preferred as it involves fewer
 computations.
 
+```{solution-end}
+```

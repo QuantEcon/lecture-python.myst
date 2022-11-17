@@ -29,7 +29,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 !pip install interpolation
 ```
 
@@ -129,7 +129,7 @@ $$
 
 Differentiating with respect to $y$,  and then evaluating at the optimum yields {eq}`cpi_env`.
 
-(Section 12.1 of [EDTC](http://johnstachurski.net/edtc.html) contains full proofs of these results, and closely related discussions can be found in many other texts.)
+(Section 12.1 of [EDTC](https://johnstachurski.net/edtc.html) contains full proofs of these results, and closely related discussions can be found in many other texts.)
 
 Differentiability of the value function and interiority of the optimal policy
 imply that optimal consumption satisfies the first order condition associated
@@ -424,7 +424,8 @@ and accuracy, at least for this model.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: cpi_ex1
 
 Solve the model with CRRA utility
 
@@ -435,10 +436,11 @@ $$
 Set `γ = 1.5`.
 
 Compute and plot the optimal policy.
+```
 
-## Solutions
-
-### Exercise 1
+```{solution-start} cpi_ex1
+:class: dropdown
+```
 
 We use the class `OptimalGrowthModel_CRRA` from our {doc}`VFI lecture <optgrowth_fast>`.
 
@@ -468,3 +470,5 @@ ax.legend()
 plt.show()
 ```
 
+```{solution-end}
+```

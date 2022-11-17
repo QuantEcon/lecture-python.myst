@@ -29,7 +29,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 ```
 
 ## Overview
@@ -529,7 +529,8 @@ We see that greater volatility has the effect of increasing inequality in this m
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: wd_ex1
 
 For a wealth or income distribution with Pareto tail, a higher tail index suggests lower inequality.
 
@@ -547,8 +548,43 @@ Use sample of size 1,000 for each $a$ and the sampling method for generating Par
 
 To the extent that you can, interpret the monotone relationship between the
 Gini index and $a$.
+```
 
-### Exercise 2
+```{solution-start} wd_ex1
+:class: dropdown
+```
+
+Here is one solution, which produces a good match between theory and
+simulation.
+
+```{code-cell} ipython3
+a_vals = np.linspace(1, 10, 25)  # Pareto tail index
+ginis = np.empty_like(a_vals)
+
+n = 1000                         # size of each sample
+fig, ax = plt.subplots()
+for i, a in enumerate(a_vals):
+    y = np.random.uniform(size=n)**(-1/a)
+    ginis[i] = qe.gini_coefficient(y)
+ax.plot(a_vals, ginis, label='sampled')
+ax.plot(a_vals, 1/(2*a_vals - 1), label='theoretical')
+ax.legend()
+plt.show()
+```
+
+In general, for a Pareto distribution, a higher tail index implies less weight
+in the right hand tail.
+
+This means less extreme values for wealth and hence more equality.
+
+More equality translates to a lower Gini index.
+
+```{solution-end}
+```
+
+```{exercise-start}
+:label: wd_ex2
+```
 
 The wealth process {eq}`wealth_dynam_ah` is similar to a {doc}`Kesten process <kesten_processes>`.
 
@@ -580,36 +616,12 @@ T = 500                                      # shift forward T periods
 z_0 = wdy.z_mean
 ```
 
-## Solutions
-
-Here is one solution, which produces a good match between theory and
-simulation.
-
-### Exercise 1
-
-```{code-cell} ipython3
-a_vals = np.linspace(1, 10, 25)  # Pareto tail index
-ginis = np.empty_like(a_vals)
-
-n = 1000                         # size of each sample
-fig, ax = plt.subplots()
-for i, a in enumerate(a_vals):
-    y = np.random.uniform(size=n)**(-1/a)
-    ginis[i] = qe.gini_coefficient(y)
-ax.plot(a_vals, ginis, label='sampled')
-ax.plot(a_vals, 1/(2*a_vals - 1), label='theoretical')
-ax.legend()
-plt.show()
+```{exercise-end}
 ```
 
-In general, for a Pareto distribution, a higher tail index implies less weight
-in the right hand tail.
-
-This means less extreme values for wealth and hence more equality.
-
-More equality translates to a lower Gini index.
-
-### Exercise 2
+```{solution-start} wd_ex2
+:class: dropdown
+```
 
 First let's generate the distribution:
 
@@ -635,3 +647,5 @@ ax.set_ylabel("log size")
 plt.show()
 ```
 
+```{solution-end}
+```

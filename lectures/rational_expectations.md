@@ -34,23 +34,24 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 ```
 
 ## Overview
 
-This lecture introduces the concept of *rational expectations equilibrium*.
+This lecture introduces the concept of a *rational expectations equilibrium*.
 
-To illustrate it, we describe a linear quadratic version of a famous and important model
+To illustrate it, we describe a linear quadratic version of a  model
 due to Lucas and Prescott {cite}`LucasPrescott1971`.
 
-This 1971 paper is one of a small number of research articles that kicked off the *rational expectations revolution*.
+That 1971 paper is one of a small number of research articles that ignited a *rational expectations revolution*.
 
-We follow Lucas and Prescott by employing a setting that is readily "Bellmanized" (i.e., capable of being formulated in terms of dynamic programming problems).
+We follow Lucas and Prescott by employing a setting that is readily "Bellmanized" (i.e., susceptible to  being formulated as a dynamic programming problems.
 
-Because we use linear quadratic setups for demand and costs, we can adapt the LQ programming techniques described in {doc}`this lecture <lqcontrol>`.
+Because we use linear quadratic setups for demand and costs, we can deploy the LQ programming techniques described in {doc}`this lecture <lqcontrol>`.
 
-We will learn about how a representative agent's problem differs from a planner's, and how a planning problem can be used to compute rational expectations quantities.
+We will learn about how a representative agent's problem differs from a planner's, and how a planning problem can be used to compute  quantities and prices in a rational expectations
+equilibrium.
 
 We will also learn about how a rational expectations equilibrium can be characterized as a [fixed point](https://en.wikipedia.org/wiki/Fixed_point_%28mathematics%29) of a mapping from a *perceived law of motion* to an *actual law of motion*.
 
@@ -72,20 +73,32 @@ plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 ```
 
-We'll also use the LQ class from QuantEcon.py.
+We'll also use the LQ class from `QuantEcon.py`.
 
 ```{code-cell} ipython
 from quantecon import LQ
 ```
 
-### The Big Y, Little y Trick
+### The Big Y, little y Trick
 
-This widely used method applies in contexts in which a "representative firm" or agent is a "price taker" operating within a competitive equilibrium.
+This widely used method applies in contexts in which a **representative firm** or agent is a "price taker" operating within a competitive equilibrium.
+
+The following setting justifies the concept of a representative firm that stands in for a large number of other firms too.
+
+There is a uniform unit measure  of identical firms named  $\omega \in \Omega = [0,1]$.
+
+The output of firm $\omega$ is $y(\omega)$.  
+
+The output of all firms is $Y = \int_{0}^1 y(\omega) d \, \omega $.
+
+All firms end up choosing to produce the same output, so that at the end of the day $ y(\omega) = y $ and $Y =y = \int_{0}^1 y(\omega) d \, \omega $.
+
+This setting allows us to speak of a representative firm that chooses to produce $y$.
 
 We want to impose that
 
-* The representative firm or individual takes *aggregate* $Y$ as given when it chooses individual $y$, but $\ldots$.
-* At the end of the day, $Y = y$, so that the representative firm is indeed representative.
+* The representative firm or individual firm takes *aggregate* $Y$ as given when it chooses individual $y(\omega)$, but $\ldots$.
+* At the end of the day, $Y = y(\omega) = y$, so that the representative firm is indeed representative.
 
 The Big $Y$, little $y$ trick accomplishes these two goals by
 
@@ -96,11 +109,11 @@ Please watch for how this strategy is applied as the lecture unfolds.
 
 We begin by applying the  Big $Y$, little $y$ trick in a very simple static context.
 
-#### A Simple Static Example of the Big Y, Little y Trick
+#### A Simple Static Example of the Big Y, little y Trick
 
-Consider a static model in which a collection of $n$ firms produce a homogeneous good that is sold in a competitive market.
+Consider a static model in which a unit measure of  firms produce a homogeneous good that is sold in a competitive market.
 
-Each of these $n$ firms sells output $y$.
+Each of these firms ends up producing and selling output $y (\omega) = y$.
 
 The price $p$ of the good lies on an inverse demand curve
 
@@ -113,7 +126,9 @@ p = a_0 - a_1 Y
 where
 
 * $a_i > 0$ for $i = 0, 1$
-* $Y = n y$ is the market-wide level of output
+* $Y = \int_0^1 y(\omega) d \omega$ is the market-wide level of output
+
+For convenience, we'll often just write $y$ instead of $y(\omega)$ when we are describing the choice problem of an individual firm $\omega \in \Omega$.
 
 Each firm has a total cost function
 
@@ -149,18 +164,42 @@ The first-order condition for problem {eq}`max_problem_static` is
 a_0 - a_1 Y - c_1 - c_2 y = 0
 ```
 
-At this point, *but not before*, we substitute $Y = ny$ into {eq}`BigYsimpleFONC`
+At this point, *but not before*, we substitute $Y = y$ into {eq}`BigYsimpleFONC`
 to obtain the following linear equation
 
 ```{math}
 :label: staticY
 
-a_0 - c_1 - (a_1 + n^{-1} c_2) Y = 0
+a_0 - c_1 - (a_1 +  c_2) Y = 0
 ```
 
 to be solved for the competitive equilibrium market-wide output $Y$.
 
 After solving for $Y$, we can compute the competitive equilibrium price $p$ from the inverse demand curve {eq}`ree_comp3d_static`.
+
+### Related Planning Problem
+
+Define **consumer surplus** as the  area under the inverse demand curve:
+
+$$
+S_c (Y)= \int_0^Y (a_0 - a_1 s) ds = a_o Y - \frac{a_1}{2} Y^2 .
+$$
+
+Define the social cost of production as 
+
+$$ S_p (Y) = c_1 Y + \frac{c_2}{2} Y^2  $$
+
+Consider the planning problem  
+
+$$
+\max_{Y} [ S_c(Y) - S_p(Y) ]
+$$
+
+The first-order necessary condition for the planning problem is equation {eq}`staticY`.  
+
+Thus, a $Y$ that solves {eq}`staticY` is a competitive equilibrium output as well as an output that solves the planning problem.  
+
+This type of outcome provides an intellectual justification for liking a competitive equilibrium.
 
 ### Further Reading
 
@@ -170,18 +209,18 @@ References for this lecture include
 * {cite}`Sargent1987`, chapter XIV
 * {cite}`Ljungqvist2012`, chapter 7
 
-## Defining Rational Expectations Equilibrium
+## Rational Expectations Equilibrium
 
 ```{index} single: Rational Expectations Equilibrium; Definition
 ```
 
-Our first illustration of a rational expectations equilibrium involves a market with $n$ firms, each of which seeks to maximize the discounted present value of profits in the face of adjustment costs.
+Our first illustration of a rational expectations equilibrium involves a market with a unit measure of identical  firms, each of which seeks to maximize the discounted present value of profits in the face of adjustment costs.
 
 The adjustment costs induce the firms to make gradual adjustments, which in turn requires consideration of future prices.
 
 Individual firms understand that, via the inverse demand curve, the price is determined by the amounts supplied by other firms.
 
-Hence each firm wants to  forecast future total industry supplies.
+Hence each firm wants to  forecast future total industry output.
 
 In our context, a forecast is generated by a belief about the law of motion for the aggregate state.
 
@@ -198,7 +237,7 @@ We formulate a rational expectations equilibrium in terms of a fixed point of an
 
 To illustrate, consider a collection of $n$ firms producing a homogeneous good that is sold in a competitive market.
 
-Each of these $n$ firms sell output $y_t$.
+Each firm sell output $y_t(\omega) = y_t$.
 
 The price $p_t$ of the good lies on the inverse demand curve
 
@@ -211,7 +250,7 @@ p_t = a_0 - a_1 Y_t
 where
 
 * $a_i > 0$ for $i = 0, 1$
-* $Y_t = n y_t$ is the market-wide level of output
+* $Y_t = \int_0^1 y_t(\omega) d \omega = y_t$ is the market-wide level of output
 
 (ree_fp)=
 #### The Firm's Problem
@@ -256,11 +295,11 @@ In view of {eq}`ree_comp3d`, the firm's incentive to forecast the market price t
 
 Aggregate output depends on the choices of other firms.
 
-We assume that $n$ is such a large number  that the output of any single firm has a negligible effect on aggregate output.
+The output $y_t(\omega)$ of a single firm $\omega$ has a negligible effect on aggregate output $\int_0^1 y_t(\omega) d \omega$.
 
 That justifies firms in regarding their forecasts of aggregate output as being unaffected by their own output decisions.
 
-#### The Firm's Beliefs
+#### Representative Firm's Beliefs
 
 We suppose the firm believes that market-wide output $Y_t$ follows the law of motion
 
@@ -301,13 +340,13 @@ where
 ```{math}
 :label: ree_opbe
 
-h(y, Y) := \argmax_{y'}
+h(y, Y) := \textrm{argmax}_{y'}
 \left\{ a_0 y - a_1 y Y - \frac{ \gamma (y' - y)^2}{2}   + \beta v(y', H(Y))\right\}
 ```
 
 Evidently $v$ and $h$ both depend on $H$.
 
-#### A First-Order Characterization
+#### Characterization with First-Order Necessary Conditions
 
 In what follows it will be helpful to have a second characterization of $h$, based on first-order conditions.
 
@@ -342,7 +381,7 @@ The firm optimally sets  an output path that satisfies {eq}`ree_comp7`, taking {
 
 This last condition is called the *transversality condition*, and acts as a first-order necessary condition "at infinity".
 
-The firm's decision rule solves the difference equation {eq}`ree_comp7` subject to the given initial condition $y_0$ and the transversality condition.
+A representative  firm's decision rule solves the difference equation {eq}`ree_comp7` subject to the given initial condition $y_0$ and the transversality condition.
 
 Note that solving the Bellman equation {eq}`comp4` for $v$ and then $h$ in {eq}`ree_opbe` yields
 a decision rule that automatically imposes both the Euler equation {eq}`ree_comp7` and the transversality condition.
@@ -351,12 +390,12 @@ a decision rule that automatically imposes both the Euler equation {eq}`ree_comp
 
 As we've seen, a given belief translates into a particular decision rule $h$.
 
-Recalling that $Y_t = ny_t$, the *actual law of motion* for market-wide output is then
+Recalling that in equilbrium  $Y_t = y_t$, the *actual law of motion* for market-wide output is then
 
 ```{math}
 :label: ree_comp9a
 
-Y_{t+1} = n h(Y_t/n, Y_t)
+Y_{t+1} =  h(Y_t, Y_t)
 ```
 
 Thus, when firms believe that the law of motion for market-wide output is {eq}`ree_hlom`, their optimizing behavior makes the actual law of motion be {eq}`ree_comp9a`.
@@ -367,7 +406,7 @@ Thus, when firms believe that the law of motion for market-wide output is {eq}`r
 A *rational expectations equilibrium* or *recursive competitive equilibrium*  of the model with adjustment costs is a decision rule $h$ and an aggregate law of motion $H$ such that
 
 1. Given belief $H$, the map $h$ is the firm's optimal policy function.
-1. The law of motion $H$ satisfies $H(Y)= nh(Y/n,Y)$ for all
+1. The law of motion $H$ satisfies $H(Y)= h(Y,Y)$ for all
    $Y$.
 
 Thus, a rational expectations equilibrium equates the perceived and actual laws of motion {eq}`ree_hlom` and {eq}`ree_comp9a`.
@@ -376,16 +415,16 @@ Thus, a rational expectations equilibrium equates the perceived and actual laws 
 
 As we've seen, the firm's optimum problem induces a mapping $\Phi$ from a perceived law of motion $H$ for market-wide output to an actual law of motion $\Phi(H)$.
 
-The mapping $\Phi$ is the composition of two operations, taking a perceived law of motion into a decision rule via {eq}`comp4`--{eq}`ree_opbe`, and a decision rule into an actual law via {eq}`ree_comp9a`.
+The mapping $\Phi$ is the composition of two mappings, the first of which maps a perceived law of motion into a decision rule via {eq}`comp4`--{eq}`ree_opbe`, the second of which maps a decision rule into an actual law via {eq}`ree_comp9a`.
 
 The $H$ component of a rational expectations equilibrium is a fixed point of $\Phi$.
 
-## Computation of an Equilibrium
+## Computing  an Equilibrium
 
 ```{index} single: Rational Expectations Equilibrium; Computation
 ```
 
-Now let's consider the problem of computing the rational expectations equilibrium.
+Now let's compute a  rational expectations equilibrium.
 
 ### Failure of Contractivity
 
@@ -393,18 +432,18 @@ Readers accustomed to dynamic programming arguments might try to address this pr
 
 Unfortunately, the mapping $\Phi$ is not a contraction.
 
-In particular, there is no guarantee that direct iterations on $\Phi$ converge [^fn_im].
+Indeed, there is no guarantee that direct iterations on $\Phi$ converge [^fn_im].
 
-Furthermore, there are examples in which these iterations diverge.
+There are examples in which these iterations diverge.
 
-Fortunately, there is another method that works here.
+Fortunately,  another method  works here.
 
 The method exploits a  connection between equilibrium and Pareto optimality expressed in
 the fundamental theorems of welfare economics (see, e.g, {cite}`MCWG1995`).
 
 Lucas and Prescott {cite}`LucasPrescott1971` used this method to construct a rational expectations equilibrium.
 
-The details follow.
+Some details follow.
 
 (ree_pp)=
 ### A Planning Problem Approach
@@ -416,11 +455,10 @@ Our plan of attack is to match the Euler equations of the market problem with th
 
 As we'll see, this planning problem can be solved by LQ control ({doc}`linear regulator <lqcontrol>`).
 
-The optimal quantities from the planning problem are rational expectations equilibrium quantities.
+Optimal quantities from the planning problem are rational expectations equilibrium quantities.
 
 The rational expectations equilibrium price can be obtained as a shadow price in the planning problem.
 
-For convenience, in this section, we set $n=1$.
 
 We first compute a sum of  consumer and producer surplus at time $t$
 
@@ -441,7 +479,7 @@ $$
 
 subject to an initial condition for $Y_0$.
 
-### Solution of the Planning Problem
+### Solution of  Planning Problem
 
 Evaluating the integral in {eq}`comp10` yields the quadratic form $a_0
 Y_t - a_1 Y_t^2 / 2$.
@@ -478,12 +516,9 @@ equation
 \beta a_0 + \gamma Y_t - [\beta a_1 + \gamma (1+ \beta)]Y_{t+1} + \gamma \beta Y_{t+2} =0
 ```
 
-### The Key Insight
+### Key Insight
 
 Return to equation {eq}`ree_comp7` and set $y_t = Y_t$ for all $t$.
-
-(Recall that for this section we've set $n=1$ to simplify the
-calculations)
 
 A small amount of algebra will convince you that when $y_t=Y_t$, equations {eq}`comp16` and {eq}`ree_comp7` are identical.
 
@@ -491,7 +526,7 @@ Thus, the Euler equation for the planning problem matches the second-order diffe
 that we derived by
 
 1. finding the Euler equation of the representative firm and
-1. substituting into it the expression $Y_t = n y_t$ that "makes the representative firm be representative".
+1. substituting into it the expression $Y_t =  y_t$ that "makes the representative firm be representative".
 
 If it is appropriate to apply the same terminal conditions for these two difference equations, which it is, then we have verified that a solution of the planning problem is also a rational expectations equilibrium quantity sequence.
 
@@ -503,7 +538,7 @@ $H$ that the representative firm faces within a rational expectations equilibriu
 #### Structure of the Law of Motion
 
 As you are asked to show in the exercises, the fact that the planner's
-problem is an LQ problem implies an optimal policy --- and hence aggregate law
+problem is an LQ control problem implies an optimal policy --- and hence aggregate law
 of motion --- taking the form
 
 ```{math}
@@ -533,8 +568,8 @@ $(\kappa_0, \kappa_1, h_0, h_1, h_2)$ in {eq}`ree_hlom2`--{eq}`ree_ex5`.
 
 ## Exercises
 
-(ree_ex1)=
-### Exercise 1
+```{exercise}
+:label: ree_ex1
 
 Consider the firm problem {ref}`described above <ree_fp>`.
 
@@ -550,61 +585,12 @@ $$
 
 Express the solution of the firm's problem in the form {eq}`ree_ex5` and give the values for each $h_j$.
 
-If there were $n$ identical competitive firms all behaving according to {eq}`ree_ex5`, what would {eq}`ree_ex5`  imply for the *actual* law of motion {eq}`ree_hlom` for market supply.
+If there were a unit measure of  identical competitive firms all behaving according to {eq}`ree_ex5`, what would {eq}`ree_ex5`  imply for the *actual* law of motion {eq}`ree_hlom` for market supply.
+```
 
-(ree_ex2)=
-### Exercise 2
-
-Consider the following $\kappa_0, \kappa_1$ pairs as candidates for the
-aggregate law of motion component of a rational expectations equilibrium (see
-{eq}`ree_hlom2`).
-
-Extending the program that you wrote for exercise 1, determine which if any
-satisfy {ref}`the definition <ree_def>` of a rational expectations equilibrium
-
-* (94.0886298678, 0.923409232937)
-* (93.2119845412, 0.984323478873)
-* (95.0818452486, 0.952459076301)
-
-Describe an iterative algorithm that uses the program that you wrote for exercise 1 to compute a rational expectations equilibrium.
-
-(You are not being asked actually to use the algorithm you are suggesting)
-
-(ree_ex3)=
-### Exercise 3
-
-Recall the planner's problem {ref}`described above <ree_pp>`
-
-1. Formulate the planner's problem as an LQ problem.
-1. Solve it using the same parameter values in exercise 1
-    * $a_0= 100, a_1= 0.05, \beta = 0.95, \gamma=10$
-1. Represent the solution in the form $Y_{t+1} = \kappa_0 + \kappa_1 Y_t$.
-1. Compare your answer with the results from exercise 2.
-
-(ree_ex4)=
-### Exercise 4
-
-A monopolist faces the industry demand curve {eq}`ree_comp3d`  and chooses $\{Y_t\}$ to maximize $\sum_{t=0}^{\infty} \beta^t r_t$ where
-
-$$
-r_t = p_t Y_t - \frac{\gamma (Y_{t+1} - Y_t)^2 }{2}
-$$
-
-Formulate this problem as an LQ problem.
-
-Compute the optimal policy using the same parameters as the previous exercise.
-
-In particular, solve for the parameters in
-
-$$
-Y_{t+1} = m_0 + m_1 Y_t
-$$
-
-Compare your results with the previous exercise -- comment.
-
-## Solutions
-
-### Exercise 1
+```{solution-start} ree_ex1
+:class: dropdown
+```
 
 To map a problem into a [discounted optimal linear control
 problem](https://python.quantecon.org/lqcontrol.html), we need to define
@@ -716,7 +702,32 @@ Y_{t+1}
 = n 96.949 + (1 - n 0.046) Y_t
 $$
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{exercise}
+:label: ree_ex2
+
+Consider the following $\kappa_0, \kappa_1$ pairs as candidates for the
+aggregate law of motion component of a rational expectations equilibrium (see
+{eq}`ree_hlom2`).
+
+Extending the program that you wrote for {ref}`ree_ex1`, determine which if any
+satisfy {ref}`the definition <ree_def>` of a rational expectations equilibrium
+
+* (94.0886298678, 0.923409232937)
+* (93.2119845412, 0.984323478873)
+* (95.0818452486, 0.952459076301)
+
+Describe an iterative algorithm that uses the program that you wrote for {ref}`ree_ex1` to compute a rational expectations equilibrium.
+
+(You are not being asked actually to use the algorithm you are suggesting)
+```
+
+```{solution-start} ree_ex2
+:class: dropdown
+```
 
 To determine whether a $\kappa_0, \kappa_1$ pair forms the
 aggregate law of motion component of a rational expectations
@@ -779,7 +790,26 @@ lecture.
 (There is in general no guarantee that this iterative process will
 converge to a rational expectations equilibrium)
 
-### Exercise 3
+```{solution-end}
+```
+
+
+
+```{exercise}
+:label: ree_ex3
+
+Recall the planner's problem {ref}`described above <ree_pp>`
+
+1. Formulate the planner's problem as an LQ problem.
+1. Solve it using the same parameter values in exercise 1
+    * $a_0= 100, a_1= 0.05, \beta = 0.95, \gamma=10$
+1. Represent the solution in the form $Y_{t+1} = \kappa_0 + \kappa_1 Y_t$.
+1. Compare your answer with the results from exercise 2.
+```
+
+```{solution-start} ree_ex3
+:class: dropdown
+```
 
 We are asked to write the planner problem as an LQ problem.
 
@@ -842,7 +872,34 @@ print(κ0, κ1)
 The output yields the same $(\kappa_0, \kappa_1)$ pair obtained as
 an equilibrium from the previous exercise.
 
-### Exercise 4
+```{solution-end}
+```
+
+```{exercise}
+:label: ree_ex4
+
+A monopolist faces the industry demand curve {eq}`ree_comp3d`  and chooses $\{Y_t\}$ to maximize $\sum_{t=0}^{\infty} \beta^t r_t$ where
+
+$$
+r_t = p_t Y_t - \frac{\gamma (Y_{t+1} - Y_t)^2 }{2}
+$$
+
+Formulate this problem as an LQ problem.
+
+Compute the optimal policy using the same parameters as {ref}`ree_ex2`.
+
+In particular, solve for the parameters in
+
+$$
+Y_{t+1} = m_0 + m_1 Y_t
+$$
+
+Compare your results with {ref}`ree_ex2` -- comment.
+```
+
+```{solution-start} ree_ex4
+:class: dropdown
+```
 
 The monopolist's LQ problem is almost identical to the planner's problem
 from the previous exercise, except that
@@ -887,6 +944,9 @@ lower long-run quantity than obtained by the competitive market,
 implying a higher market price.
 
 This is analogous to the elementary static-case results
+
+```{solution-end}
+```
 
 [^fn_im]: A literature that studies whether models populated  with agents
 who learn can converge  to rational expectations equilibria features

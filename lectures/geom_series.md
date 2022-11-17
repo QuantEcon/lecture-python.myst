@@ -626,7 +626,7 @@ $$
 Similarly, applying the Taylor series to $G^{T+1}$ about $g=0$:
 
 $$
-(1+g)^{T+1} = 1+(T+1)g(1+g)^T+(T+1)Tg^2(1+g)^{T-1}+\dots \approx 1+ (T+1)g
+(1+g)^{T+1} = 1+(T+1)g+\frac{T(T+1)}{2!}g^2+\frac{(T-1)T(T+1)}{3!}g^3+\dots \approx 1+ (T+1)g
 $$
 
 Thus, we get the following approximation:
@@ -769,7 +769,7 @@ visualization!
 # Second view
 fig = plt.figure()
 T = 3
-ax = fig.gca(projection='3d')
+ax = plt.subplot(projection='3d')
 r = np.arange(0.01, 0.99, 0.005)
 g = np.arange(0.011, 0.991, 0.005)
 
@@ -920,4 +920,3 @@ plt.show()
 Notice here, whether government spending increases from 0.3 to 0.4 or
 investment increases from 0.3 to 0.4, the shifts in the graphs are
 identical.
-

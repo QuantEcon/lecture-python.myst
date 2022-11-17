@@ -38,22 +38,22 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 ```
 
 ## Overview
 
 The McCall search model {cite}`McCall1970` helped transform economists' way of thinking about labor markets.
 
-To clarify vague notions such as "involuntary" unemployment, McCall modeled the decision problem of unemployed agents directly, in terms of factors such as
+To clarify  notions such as "involuntary" unemployment, McCall modeled the decision problem of an unemployed worker  in terms of factors including
 
 * current and likely future wages
 * impatience
 * unemployment compensation
 
-To solve the decision problem he used dynamic programming.
+To solve the decision problem McCall used dynamic programming.
 
-Here we set up McCall's model and adopt the same solution method.
+Here we set up McCall's model and use dynamic programming to analyze it.
 
 As we'll see, McCall's model is not only interesting in its own right but also an excellent vehicle for learning dynamic programming.
 
@@ -75,28 +75,28 @@ from quantecon.distributions import BetaBinomial
 ```{index} single: Models; McCall
 ```
 
-An unemployed agent receives in each period a job offer at wage $w_t$.
+At the beginning of each period, a worker who was  unemployed last period  receives one job offer to work this period at all subsequent periods at a wage $w_t$.
 
-The wage offer is a nonnegative function of some underlying state:
+The wage offer $w_t$ is a nonnegative function of some underlying state $s_t$:
 
 $$
 w_t = w(s_t) \quad \text{where } \; s_t \in \mathbb{S}
 $$
 
 Here you should think of state process $\{s_t\}$ as some underlying, unspecified
-random factor that impacts on wages.
+random factor that determines wages.
 
 (Introducing an exogenous stochastic state process is a standard way for
 economists to inject randomness into their models.)
 
 In this lecture, we adopt the following simple environment:
 
-* $\{s_t\}$ is IID, with $q(s)$ being the probability of observing state $s$ in $\mathbb{S}$ at each point in time, and
+* $\{s_t\}$ is IID, with $q(s)$ being the probability of observing state $s$ in $\mathbb{S}$ at each point in time,
 * the agent observes $s_t$ at the start of $t$ and hence knows
   $w_t = w(s_t)$,
 * the set $\mathbb S$ is finite.
 
-(In later lectures, we will relax all of these assumptions.)
+(In later lectures, we shall relax some  of these assumptions.)
 
 At time $t$, our agent has two choices:
 
@@ -112,15 +112,16 @@ $$
 
 The constant $\beta$ lies in $(0, 1)$ and is called a **discount factor**.
 
-The smaller is $\beta$, the more the agent discounts future utility relative to current utility.
+The smaller is $\beta$, the more the agent discounts future utilities relative to current utility.
 
 The variable  $y_t$ is income, equal to
 
 * his/her wage $w_t$ when employed
 * unemployment compensation $c$ when unemployed
 
-The agent is assumed to know that $\{s_t\}$ is IID with common
-distribution $q$ and can use this when computing expectations.
+The worker knows  that $\{s_t\}$ is IID with common
+distribution $q$ and uses knowledge when he or she computes mathematical expectations of various random variables that are functions of
+$s_t$.
 
 ### A Trade-Off
 
@@ -133,40 +134,48 @@ To decide optimally in the face of this trade-off, we use dynamic programming.
 
 Dynamic programming can be thought of as a two-step procedure that
 
-1. first assigns values to "states" and
+1. first assigns values to "states"
 1. then deduces optimal actions given those values
 
 We'll go through these steps in turn.
 
 ### The Value Function
 
-In order to optimally trade-off current and future rewards, we need to think about two things:
+In order optimally to  trade-off current and future rewards, we  think about two things:
 
-1. the current payoffs we get from different choices
-1. the different states that those choices will lead to in next period (in this case, either employment or unemployment)
+1. current payoffs that arise from making alternative choices
+1. different states  that those choices take us  to  next period (in this case, either employment or unemployment)
 
-To weigh these two aspects of the decision problem, we need to assign *values*
+To assess these two aspects of the decision problem, we  assign expected discounted *values*
 to states.
 
-To this end, let $v^*(s)$ be the total lifetime *value* accruing to an
-unemployed worker who enters the current period unemployed when the state is
-$s \in \mathbb{S}$.
+This leads us to construct an instance of the celebrated **value function** of dynamic programming.
 
-In particular, the agent has wage offer $w(s)$ in hand.
+Definitions of value functions typically begin with the word ``let''.
 
-More precisely, $v^*(s)$ denotes the value of the objective function
-{eq}`objective` when an agent in this situation makes *optimal* decisions now
-and at all future points in time.
+Thus,
 
-Of course $v^*(s)$ is not trivial to calculate because we don't yet know
+Let $v^*(s)$ be the optimal value of the problem when $s \in \mathbb{S}$  for a previously unemployed worker who, starting this period, has just received an offer to work forever   at wage $w(s)$  and who is yet  to decide whether to accept or reject the offer.
+
+
+
+
+Thus, the function $v^*(s)$ is the maximum value of  objective
+{eq}`objective` for a previously unemployed worker who has offer $w(s)$ in  hand and has yet to choose whether to accept it.
+
+Notice that $v^*(s)$ is part of the **solution** of the problem, so it isn't obvious that it is a good idea  to start working on the problem by focusing on  $v^*(s)$.
+
+There is a chicken and egg problem: we don't know how to compute  $v^*(s)$  because we don't yet know
 what decisions are optimal and what aren't!
 
-But think of $v^*$ as a function that assigns to each possible state
-$s$ the maximal lifetime value that can be obtained with that offer in
+But it turns out to be a really good idea by asking what properties the optimal value function $v^*(s)$ must have in order it
+to qualify as an optimal value function.
+
+Think of $v^*$ as a function that assigns to each possible state
+$s$ the maximal expected discounted income stream  that can be obtained with that offer in
 hand.
 
-A crucial observation is that this function $v^*$ must satisfy the
-recursion
+A crucial observation is that the optimal value function $v^*$ must satisfy functional equation
 
 ```{math}
 :label: odu_pv
@@ -180,7 +189,10 @@ v^*(s)
 
 for every possible $s$  in $\mathbb S$.
 
-This important equation is a version of the **Bellman equation**, which is
+Notice how the function $v^*(s)$ appears on both the right and left sides of  equation {eq}`odu_pv` -- that is why it is called
+a **functional equation**, i.e., an equation that restricts a **function**.
+
+This important equation is a version of a **Bellman equation**, an equation that is
 ubiquitous in economic dynamics and other fields involving planning over time.
 
 The intuition behind it is as follows:
@@ -191,7 +203,7 @@ $$
 \frac{w(s)}{1 - \beta} = w(s) + \beta w(s) + \beta^2 w(s) + \cdots
 $$
 
-* the second term inside the max operation is the **continuation value**, which is the lifetime payoff from rejecting the current offer and then behaving optimally in all subsequent periods
+* the second term inside the max operation is the lifetime payoff from rejecting the current offer and then behaving optimally in all subsequent periods
 
 If we optimize and pick the best of these two options, we obtain maximal lifetime value from today, given current state $s$.
 
@@ -202,13 +214,12 @@ But this is precisely $v^*(s)$, which is the l.h.s. of {eq}`odu_pv`.
 Suppose for now that we are able to solve {eq}`odu_pv` for the unknown
 function $v^*$.
 
-Once we have this function in hand we can behave optimally (i.e., make the
-right choice between accept and reject).
+Once we have this function in hand we can figure out how  behave optimally (i.e., to choose whether to accept and reject $w(s)$).
 
 All we have to do is select the maximal choice on the r.h.s. of {eq}`odu_pv`.
 
-The optimal action is best thought of as a **policy**, which is, in general, a map from
-states to actions.
+The optimal action in state $s$ can be  thought of as a part of a **policy** that  maps a
+state into an  action.
 
 Given *any* $s$, we can read off the corresponding best choice (accept or
 reject) by picking the max on the r.h.s. of {eq}`odu_pv`.
@@ -241,13 +252,13 @@ where
 \bar w := (1 - \beta) \left\{ c + \beta \sum_{s'} v^*(s') q (s') \right\}
 ```
 
-Here $\bar w$ (called the *reservation wage*) is a constant depending on $\beta, c$ and the wage distribution.
+Here $\bar w$ (called the *reservation wage*) is a constant that depends on $\beta, c$,  and the wage probability distribution induced by $q(s)$ and $w(s)$.
 
-The agent should accept if and only if the current wage offer exceeds the reservation wage.
+The agent should accept offer $w(s)$ if and only if it exceeds the reservation wage.
 
 In view of {eq}`reswage`, we can compute this reservation wage if we can compute the value function.
 
-## Computing the Optimal Policy: Take 1
+## Computing an Optimal Policy: Take 1
 
 To put the above ideas into action, we need to compute the value function at
 each possible state $s \in \mathbb S$.
@@ -273,7 +284,7 @@ v^*(i)
 
 ### The Algorithm
 
-To compute this vector, we use successive approximations:
+To compute th vector $v^*(i), i = 1, \ldots, n$, we use successive approximations:
 
 Step 1: pick an arbitrary initial guess $v \in \mathbb R^n$.
 
@@ -291,17 +302,17 @@ v'(i)
 \text{for } i = 1, \ldots, n
 ```
 
-Step 3: calculate a measure of the deviation between $v$ and $v'$, such as $\max_i |v(i)- v'(i)|$.
+Step 3: calculate a measure of a discrepancy between $v$ and $v'$, such as $\max_i |v(i)- v'(i)|$.
 
 Step 4: if the deviation is larger than some fixed tolerance, set $v = v'$ and go to step 2, else continue.
 
 Step 5: return $v$.
 
-For small tolerance, the returned function $v$ is a close approximation to the value function $v^*$.
+For a small tolerance, the returned function $v$ is a close approximation to the value function $v^*$.
 
 The theory below elaborates on this point.
 
-### The Fixed Point Theory
+### Fixed Point Theory
 
 What's the mathematics behind these ideas?
 
@@ -320,7 +331,7 @@ itself via
 \text{for } i = 1, \ldots, n
 ```
 
-(A new vector $Tv$ is obtained from given vector $v$ by evaluating
+(A new vector $Tv$ is obtained a given vector $v$ by evaluating
 the r.h.s. at each $i$.)
 
 The element $v_k$ in the sequence $\{v_k\}$ of successive
@@ -332,20 +343,20 @@ approximations corresponds to $T^k v$.
 One can show that the conditions of the [Banach fixed point theorem](https://en.wikipedia.org/wiki/Banach_fixed-point_theorem) are
 satisfied by $T$ on $\mathbb R^n$.
 
-One implication is that $T$ has a unique fixed point in $\mathbb R^n$.
+One implication is that $T$ has a unique fixed point $\bar v \in \mathbb R^n$.
 
-* That is, a unique vector $\bar v$ such that $T \bar v = \bar v$.
+* The fixed point is  a unique vector $\bar v$ that satisfies $T \bar v = \bar v$.
 
 Moreover, it's immediate from the definition of $T$ that this fixed
 point is $v^*$.
 
 A second implication of the  Banach contraction mapping theorem is that
-$\{ T^k v \}$ converges to the fixed point $v^*$ regardless of
-$v$.
+$\{ T^k v \}$ converges to the fixed point $v^*$ regardless of the initial
+$v \in \mathbb R^n$.
 
 ### Implementation
 
-Our default for $q$, the distribution of the state process, will be
+Our default for the  probability distribution $q$  of the state process is a
 [Beta-binomial](https://en.wikipedia.org/wiki/Beta-binomial_distribution).
 
 ```{code-cell} python3
@@ -360,7 +371,7 @@ w_min, w_max = 10, 60
 w_default = np.linspace(w_min, w_max, n+1)
 ```
 
-Here's a plot of the probabilities of different wage outcomes:
+Here's a plot of  probabilities of different wage outcomes:
 
 ```{code-cell} python3
 fig, ax = plt.subplots()
@@ -375,7 +386,7 @@ We are going to use Numba to accelerate our code.
 
 * See, in particular, the discussion of `@jitclass` in [our lecture on Numba](https://python-programming.quantecon.org/numba.html).
 
-The following helps Numba by providing some type
+The following helps Numba by providing some information about types
 
 ```{code-cell} python3
 mccall_data = [
@@ -386,9 +397,8 @@ mccall_data = [
 ]
 ```
 
-Here's a class that stores the data and computes the values of state-action pairs,
-i.e. the value in the maximum bracket on the right hand side of the Bellman equation {eq}`odu_pv2p`,
-given the current state and an arbitrary feasible action.
+Here's a class that stores the data and computes  values of state-action pairs,
+i.e.,  values associated with pairs consisting of  the current state and alternative feasible actions that occur inside the maximum bracket on the right hand side of  Bellman equation {eq}`odu_pv2p`.
 
 Default parameter values are embedded in the class.
 
@@ -418,7 +428,7 @@ class McCallModel:
 Based on these defaults, let's try plotting the first few approximate value functions
 in the sequence $\{ T^k v \}$.
 
-We will start from guess $v$ given by $v(i) = w(i) / (1 - β)$, which is the value of accepting at every given wage.
+We will start from guess $v$ given by $v(i) = w(i) / (1 - β)$, which is the value of accepting $w(i)$.
 
 Here's a function to implement this:
 
@@ -445,7 +455,7 @@ def plot_value_function_seq(mcm, ax, num_plots=6):
     ax.legend(loc='lower right')
 ```
 
-Now let's create an instance of `McCallModel` and call the function:
+Now let's create an instance of `McCallModel` and watch iterations  $T^k v$ converge from below:
 
 ```{code-cell} python3
 mcm = McCallModel()
@@ -457,9 +467,9 @@ plot_value_function_seq(mcm, ax)
 plt.show()
 ```
 
-You can see that convergence is occuring: successive iterates are getting closer together.
+You can see that convergence is occurring: successive iterates are getting closer together.
 
-Here's a more serious iteration effort to compute the limit, which continues until measured deviation between successive iterates is below tol.
+Here's a more serious iteration effort to compute the limit, which continues until a discrepancy between successive iterates is below tol.
 
 Once we obtain a good approximation to the limit, we will use it to calculate
 the reservation wage.
@@ -480,16 +490,15 @@ def compute_reservation_wage(mcm,
     n = len(w)
     v = w / (1 - β)          # initial guess
     v_next = np.empty_like(v)
-    counter = 0
+    j = 0
     error = tol + 1
-    
-    while counter < max_iter and error > tol:
+    while j < max_iter and error > tol:
 
         for i in range(n):
             v_next[i] = np.max(mcm.state_action_values(i, v))
 
         error = np.max(np.abs(v_next - v))
-        counter += 1
+        j += 1
 
         v[:] = v_next  # copy contents into v
 
@@ -498,7 +507,7 @@ def compute_reservation_wage(mcm,
     return (1 - β) * (c + β * np.sum(v * q))
 ```
 
-The next line computes the reservation wage at the default parameters
+The next line computes the reservation wage at  default parameters
 
 ```{code-cell} python3
 compute_reservation_wage(mcm)
@@ -506,7 +515,7 @@ compute_reservation_wage(mcm)
 
 ### Comparative Statics
 
-Now we know how to compute the reservation wage, let's see how it varies with
+Now that we know how to compute the reservation wage, let's see how it varies with
 parameters.
 
 In particular, let's look at what happens when we change $\beta$ and
@@ -548,12 +557,12 @@ As expected, the reservation wage increases both with patience and with
 unemployment compensation.
 
 (mm_op2)=
-## Computing the Optimal Policy: Take 2
+## Computing an Optimal Policy: Take 2
 
-The approach to dynamic programming just described is very standard and
+The approach to dynamic programming just described is standard and
 broadly applicable.
 
-For this particular problem, there's also an easier way, which circumvents the
+But for our McCall search model there's also an easier way that  circumvents the
 need to compute the value function.
 
 Let $h$ denote the continuation value:
@@ -612,9 +621,9 @@ Step 3: calculate the deviation $|h - h'|$.
 
 Step 4: if the deviation is larger than some fixed tolerance, set $h = h'$ and go to step 2, else return $h$.
 
-Once again, one can use the Banach contraction mapping theorem to show that this process always converges.
+One can again use the Banach contraction mapping theorem to show that this process always converges.
 
-The big difference here, however, is that we're iterating on a single number, rather than an $n$-vector.
+The big difference here, however, is that we're iterating on a scalar $h$, rather than an $n$-vector, $v(i), i = 1, \ldots, n$.
 
 Here's an implementation:
 
@@ -651,21 +660,76 @@ You can use this code to solve the exercise below.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: mm_ex1
 
 Compute the average duration of unemployment when $\beta=0.99$ and
 $c$ takes the following values
 
 > `c_vals = np.linspace(10, 40, 25)`
 
-That is, start the agent off as unemployed, compute their reservation wage
-given the parameters, and then simulate to see how long it takes to accept.
+That is, start a worker off as unemployed, compute a reservation wage
+given the parameters, and then simulate to see how long it takes the worker  to accept.
 
 Repeat a large number of times and take the average.
 
 Plot mean unemployment duration as a function of $c$ in `c_vals`.
+```
 
-### Exercise 2
+```{solution-start} mm_ex1
+:class: dropdown
+```
+
+Here's one solution
+
+```{code-cell} python3
+cdf = np.cumsum(q_default)
+
+@jit(nopython=True)
+def compute_stopping_time(w_bar, seed=1234):
+
+    np.random.seed(seed)
+    t = 1
+    while True:
+        # Generate a wage draw
+        w = w_default[qe.random.draw(cdf)]
+        # Stop when the draw is above the reservation wage
+        if w >= w_bar:
+            stopping_time = t
+            break
+        else:
+            t += 1
+    return stopping_time
+
+@jit(nopython=True)
+def compute_mean_stopping_time(w_bar, num_reps=100000):
+    obs = np.empty(num_reps)
+    for i in range(num_reps):
+        obs[i] = compute_stopping_time(w_bar, seed=i)
+    return obs.mean()
+
+c_vals = np.linspace(10, 40, 25)
+stop_times = np.empty_like(c_vals)
+for i, c in enumerate(c_vals):
+    mcm = McCallModel(c=c)
+    w_bar = compute_reservation_wage_two(mcm)
+    stop_times[i] = compute_mean_stopping_time(w_bar)
+
+fig, ax = plt.subplots()
+
+ax.plot(c_vals, stop_times, label="mean unemployment duration")
+ax.set(xlabel="unemployment compensation", ylabel="months")
+ax.legend()
+
+plt.show()
+```
+
+```{solution-end}
+```
+
+```{exercise-start}
+:label: mm_ex2
+```
 
 The purpose of this exercise is to show how to replace the discrete wage
 offer distribution used above with a continuous distribution.
@@ -720,55 +784,14 @@ For default parameters, use `c=25, β=0.99, σ=0.5, μ=2.5`.
 
 Once your code is working, investigate how the reservation wage changes with $c$ and $\beta$.
 
-## Solutions
-
-### Exercise 1
-
-Here's one solution
-
-```{code-cell} python3
-cdf = np.cumsum(q_default)
-
-@jit(nopython=True)
-def compute_stopping_time(w_bar, seed=1234):
-
-    np.random.seed(seed)
-    t = 1
-    while True:
-        # Generate a wage draw
-        w = w_default[qe.random.draw(cdf)]
-        # Stop when the draw is above the reservation wage
-        if w >= w_bar:
-            stopping_time = t
-            break
-        else:
-            t += 1
-    return stopping_time
-
-@jit(nopython=True)
-def compute_mean_stopping_time(w_bar, num_reps=100000):
-    obs = np.empty(num_reps)
-    for i in range(num_reps):
-        obs[i] = compute_stopping_time(w_bar, seed=i)
-    return obs.mean()
-
-c_vals = np.linspace(10, 40, 25)
-stop_times = np.empty_like(c_vals)
-for i, c in enumerate(c_vals):
-    mcm = McCallModel(c=c)
-    w_bar = compute_reservation_wage_two(mcm)
-    stop_times[i] = compute_mean_stopping_time(w_bar)
-
-fig, ax = plt.subplots()
-
-ax.plot(c_vals, stop_times, label="mean unemployment duration")
-ax.set(xlabel="unemployment compensation", ylabel="months")
-ax.legend()
-
-plt.show()
+```{exercise-end}
 ```
 
-### Exercise 2
+```{solution-start} mm_ex2
+:class: dropdown
+```
+
+Here is one solution:
 
 ```{code-cell} python3
 mccall_data_continuous = [
@@ -852,3 +875,5 @@ ax.ticklabel_format(useOffset=False)
 plt.show()
 ```
 
+```{solution-end}
+```

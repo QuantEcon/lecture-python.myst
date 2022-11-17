@@ -33,7 +33,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 ```
 
 ## Overview
@@ -512,110 +512,19 @@ As expected, output is higher and prices are lower under duopoly than monopoly.
 
 ## Exercises
 
-### Exercise 1
+```{exercise} 
+:label: mp_ex1
 
 Replicate the {ref}`pair of figures <mpe_vs_monopolist>` showing the comparison of output and prices for the monopolist and duopoly under MPE.
 
 Parameters are as in duopoly_mpe.py and you can use that code to compute MPE policies under duopoly.
 
 The optimal policy in the monopolist case can be computed using [QuantEcon.py](http://quantecon.org/quantecon-py)'s LQ class.
-
-### Exercise 2
-
-In this exercise, we consider a slightly more sophisticated duopoly problem.
-
-It takes the form of infinite horizon linear-quadratic game proposed by Judd {cite}`Judd1990`.
-
-Two firms set prices and quantities of two goods interrelated through their demand curves.
-
-Relevant variables are defined as follows:
-
-* $I_{it}$ = inventories of firm $i$ at beginning of $t$
-* $q_{it}$ = production of firm $i$ during period $t$
-* $p_{it}$ = price charged by firm $i$ during period $t$
-* $S_{it}$ = sales made by firm $i$ during period $t$
-* $E_{it}$ = costs of production of firm $i$ during period $t$
-* $C_{it}$ = costs of carrying inventories for firm $i$ during $t$
-
-The firms' cost functions are
-
-* $C_{it} = c_{i1} + c_{i2} I_{it} + 0.5 c_{i3} I_{it}^2$
-* $E_{it} = e_{i1} + e_{i2}q_{it} + 0.5 e_{i3} q_{it}^2$ where $e_{ij}, c_{ij}$ are positive scalars
-
-Inventories obey the laws of motion
-
-$$
-I_{i,t+1} = (1 - \delta)  I_{it} + q_{it} - S_{it}
-$$
-
-Demand is governed by the linear schedule
-
-$$
-S_t = D p_{it} + b
-$$
-
-where
-
-* $S_t = \begin{bmatrix} S_{1t} & S_{2t} \end{bmatrix}'$
-* $D$ is a $2\times 2$ negative definite matrix and
-* $b$ is a vector of constants
-
-Firm $i$ maximizes the undiscounted sum
-
-$$
-\lim_{T \to \infty}\ {1 \over T}\   \sum^T_{t=0}\   \left( p_{it} S_{it} - E_{it} - C_{it} \right)
-$$
-
-We can convert this to a linear-quadratic problem by taking
-
-$$
-u_{it} =
-\begin{bmatrix}
-    p_{it} \\
-    q_{it}
-\end{bmatrix}
-\quad \text{and} \quad
-x_t =
-\begin{bmatrix}
-    I_{1t} \\
-    I_{2t} \\
-    1
-\end{bmatrix}
-$$
-
-Decision rules for price and quantity take the form $u_{it} = -F_i  x_t$.
-
-The Markov perfect equilibrium of Judd’s model can be computed by filling in the matrices appropriately.
-
-The exercise is to calculate these matrices and compute the following figures.
-
-The first figure shows the dynamics of inventories for each firm when the parameters are
-
-```{code-cell} python3
-δ = 0.02
-D = np.array([[-1, 0.5], [0.5, -1]])
-b = np.array([25, 25])
-c1 = c2 = np.array([1, -2, 1])
-e1 = e2 = np.array([10, 10, 3])
 ```
 
-```{figure} /_static/lecture_specific/markov_perf/judd_fig2.png
-
+```{solution-start} mp_ex1
+:class: dropdown
 ```
-
-Inventories trend to a common steady state.
-
-If we increase the depreciation rate to $\delta = 0.05$, then we expect steady state inventories to fall.
-
-This is indeed the case, as the next figure shows
-
-```{figure} /_static/lecture_specific/markov_perf/judd_fig1.png
-
-```
-
-## Solutions
-
-### Exercise 1
 
 First, let's compute the duopoly MPE under the stated parameters
 
@@ -728,7 +637,110 @@ ax.legend(loc='upper right', frameon=0)
 plt.show()
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+```{exercise-start}
+:label: mp_ex2
+```
+
+In this exercise, we consider a slightly more sophisticated duopoly problem.
+
+It takes the form of infinite horizon linear-quadratic game proposed by Judd {cite}`Judd1990`.
+
+Two firms set prices and quantities of two goods interrelated through their demand curves.
+
+Relevant variables are defined as follows:
+
+* $I_{it}$ = inventories of firm $i$ at beginning of $t$
+* $q_{it}$ = production of firm $i$ during period $t$
+* $p_{it}$ = price charged by firm $i$ during period $t$
+* $S_{it}$ = sales made by firm $i$ during period $t$
+* $E_{it}$ = costs of production of firm $i$ during period $t$
+* $C_{it}$ = costs of carrying inventories for firm $i$ during $t$
+
+The firms' cost functions are
+
+* $C_{it} = c_{i1} + c_{i2} I_{it} + 0.5 c_{i3} I_{it}^2$
+* $E_{it} = e_{i1} + e_{i2}q_{it} + 0.5 e_{i3} q_{it}^2$ where $e_{ij}, c_{ij}$ are positive scalars
+
+Inventories obey the laws of motion
+
+$$
+I_{i,t+1} = (1 - \delta)  I_{it} + q_{it} - S_{it}
+$$
+
+Demand is governed by the linear schedule
+
+$$
+S_t = D p_{it} + b
+$$
+
+where
+
+* $S_t = \begin{bmatrix} S_{1t} & S_{2t} \end{bmatrix}'$
+* $D$ is a $2\times 2$ negative definite matrix and
+* $b$ is a vector of constants
+
+Firm $i$ maximizes the undiscounted sum
+
+$$
+\lim_{T \to \infty}\ {1 \over T}\   \sum^T_{t=0}\   \left( p_{it} S_{it} - E_{it} - C_{it} \right)
+$$
+
+We can convert this to a linear-quadratic problem by taking
+
+$$
+u_{it} =
+\begin{bmatrix}
+    p_{it} \\
+    q_{it}
+\end{bmatrix}
+\quad \text{and} \quad
+x_t =
+\begin{bmatrix}
+    I_{1t} \\
+    I_{2t} \\
+    1
+\end{bmatrix}
+$$
+
+Decision rules for price and quantity take the form $u_{it} = -F_i  x_t$.
+
+The Markov perfect equilibrium of Judd’s model can be computed by filling in the matrices appropriately.
+
+The exercise is to calculate these matrices and compute the following figures.
+
+The first figure shows the dynamics of inventories for each firm when the parameters are
+
+```{code-cell} python3
+δ = 0.02
+D = np.array([[-1, 0.5], [0.5, -1]])
+b = np.array([25, 25])
+c1 = c2 = np.array([1, -2, 1])
+e1 = e2 = np.array([10, 10, 3])
+```
+
+```{figure} /_static/lecture_specific/markov_perf/judd_fig2.png
+```
+
+Inventories trend to a common steady state.
+
+If we increase the depreciation rate to $\delta = 0.05$, then we expect steady state inventories to fall.
+
+This is indeed the case, as the next figure shows
+
+```{figure} /_static/lecture_specific/markov_perf/judd_fig1.png
+```
+
+In this exercise, reproduce the figure when $\delta = 0.02$.
+
+```{exercise-end}
+```
+
+```{solution-start} mp_ex2
+:class: dropdown
+```
 
 We treat the case $\delta = 0.02$
 
@@ -833,3 +845,5 @@ ax.legend()
 plt.show()
 ```
 
+```{solution-end}
+```

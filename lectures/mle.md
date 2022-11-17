@@ -35,7 +35,7 @@ involves specifying a class of distributions, indexed by unknown parameters, and
 
 The benefit relative to linear regression is that it allows more flexibility in the probabilistic relationships between variables.
 
-Here we illustrate maximum likelihood by replicating Daniel Treisman's (2016) paper, [Russia's Billionaires](http://pubs.aeaweb.org/doi/pdfplus/10.1257/aer.p20161068), which connects the number of billionaires in a country to its economic characteristics.
+Here we illustrate maximum likelihood by replicating Daniel Treisman's (2016) paper, [Russia's Billionaires](https://pubs.aeaweb.org/doi/pdfplus/10.1257/aer.p20161068), which connects the number of billionaires in a country to its economic characteristics.
 
 The paper concludes that Russia has a higher number of billionaires than
 economic factors such as market size and tax rate predict.
@@ -135,7 +135,7 @@ Let's have a look at the distribution of the data we'll be working with in this 
 
 Treisman's main source of data is *Forbes'* annual rankings of billionaires and their estimated net worth.
 
-The dataset `mle/fp.dta` can be downloaded from [here](https://lectures.quantecon.org/_downloads/mle/fp.dta)
+The dataset `mle/fp.dta` can be downloaded from [here](https://python.quantecon.org/_static/lecture_specific/mle/fp.dta)
 or its [AER page](https://www.aeaweb.org/articles?id=10.1257/aer.p20161068).
 
 ```{code-cell} python3
@@ -636,7 +636,7 @@ print(stats_poisson.summary())
 ```
 
 Now let's replicate results from Daniel Treisman's paper, [Russia's
-Billionaires](http://pubs.aeaweb.org/doi/pdfplus/10.1257/aer.p20161068),
+Billionaires](https://pubs.aeaweb.org/doi/pdfplus/10.1257/aer.p20161068),
 mentioned earlier in the lecture.
 
 Treisman starts by estimating equation {eq}`poissonreg`, where:
@@ -766,18 +766,20 @@ In this lecture, we used Maximum Likelihood Estimation to estimate the
 parameters of a Poisson model.
 
 `statsmodels` contains other built-in likelihood models such as
-[Probit](http://www.statsmodels.org/dev/generated/statsmodels.discrete.discrete_model.Probit.html)
+[Probit](https://www.statsmodels.org/dev/generated/statsmodels.discrete.discrete_model.Probit.html)
 and
-[Logit](http://www.statsmodels.org/dev/generated/statsmodels.discrete.discrete_model.Logit.html).
+[Logit](https://www.statsmodels.org/dev/generated/statsmodels.discrete.discrete_model.Logit.html).
 
 For further flexibility, `statsmodels` provides a way to specify the
 distribution manually using the `GenericLikelihoodModel` class - an
 example notebook can be found
-[here](http://www.statsmodels.org/dev/examples/notebooks/generated/generic_mle.html).
+[here](https://www.statsmodels.org/dev/examples/notebooks/generated/generic_mle.html).
 
 ## Exercises
 
-### Exercise 1
+
+```{exercise}
+:label: mle_ex1
 
 Suppose we wanted to estimate the probability of an event $y_i$
 occurring, given some observations.
@@ -805,54 +807,11 @@ Hessian.
 
 The `scipy` module `stats.norm` contains the functions needed to
 compute the cmf and pmf of the normal distribution.
-
-### Exercise 2
-
-Use the following dataset and initial values of $\boldsymbol{\beta}$ to
-estimate the MLE with the Newton-Raphson algorithm developed earlier in
-the lecture
-
-$$
-\mathbf{X} =
-\begin{bmatrix}
-1 & 2 & 4 \\
-1 & 1 & 1 \\
-1 & 4 & 3 \\
-1 & 5 & 6 \\
-1 & 3 & 5
-\end{bmatrix}
-\quad
-y =
-\begin{bmatrix}
-1 \\
-0 \\
-1 \\
-1 \\
-0
-\end{bmatrix}
-\quad
-\boldsymbol{\beta}_{(0)} =
-\begin{bmatrix}
-0.1 \\
-0.1 \\
-0.1
-\end{bmatrix}
-$$
-
-Verify your results with `statsmodels` - you can import the Probit
-function with the following import statement
-
-```{code-cell} python3
-from statsmodels.discrete.discrete_model import Probit
 ```
 
-Note that the simple Newton-Raphson algorithm developed in this lecture
-is very sensitive to initial values, and therefore you may fail to
-achieve convergence with different starting values.
-
-## Solutions
-
-### Exercise 1
+```{solution-start} mle_ex1
+:class: dropdown
+```
 
 The log-likelihood can be written as
 
@@ -930,7 +889,63 @@ class ProbitRegression:
         return -(ϕ * (y * a + (1 - y) * b) * X.T) @ X
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+```{exercise-start}
+:label: mle_ex2
+```
+
+Use the following dataset and initial values of $\boldsymbol{\beta}$ to
+estimate the MLE with the Newton-Raphson algorithm developed earlier in
+the lecture
+
+$$
+\mathbf{X} =
+\begin{bmatrix}
+1 & 2 & 4 \\
+1 & 1 & 1 \\
+1 & 4 & 3 \\
+1 & 5 & 6 \\
+1 & 3 & 5
+\end{bmatrix}
+\quad
+y =
+\begin{bmatrix}
+1 \\
+0 \\
+1 \\
+1 \\
+0
+\end{bmatrix}
+\quad
+\boldsymbol{\beta}_{(0)} =
+\begin{bmatrix}
+0.1 \\
+0.1 \\
+0.1
+\end{bmatrix}
+$$
+
+Verify your results with `statsmodels` - you can import the Probit
+function with the following import statement
+
+```{code-cell} python3
+from statsmodels.discrete.discrete_model import Probit
+```
+
+Note that the simple Newton-Raphson algorithm developed in this lecture
+is very sensitive to initial values, and therefore you may fail to
+achieve convergence with different starting values.
+
+```{exercise-end}
+```
+
+```{solution-start} mle_ex2
+:class: dropdown
+```
+
+Here is one solution
 
 ```{code-cell} python3
 X = np.array([[1, 2, 4],
@@ -957,3 +972,5 @@ newton_raphson(prob)
 print(Probit(y, X).fit().summary())
 ```
 
+```{solution-end}
+```

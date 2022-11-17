@@ -30,14 +30,14 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 ```
 
 ## Overview
 
 In this lecture, we describe the structure of a class of models that build on work by Truman Bewley {cite}`Bewley1977`.
 
-We begin by discussing an example of a Bewley model due to [Rao Aiyagari](https://lectures.quantecon.org/_downloads/aiyagari_obit.pdf).
+We begin by discussing an example of a Bewley model due to Rao Aiyagari {cite}`Aiyagari1994`.
 
 The model features
 
@@ -70,7 +70,7 @@ The primary reference for this lecture is {cite}`Aiyagari1994`.
 
 A textbook treatment is available in chapter 18 of {cite}`Ljungqvist2012`.
 
-A continuous time version of the model by SeHyoun Ahn and Benjamin Moll can be found [here](http://nbviewer.jupyter.org/github/QuantEcon/QuantEcon.notebooks/blob/master/aiyagari_continuous_time.ipynb).
+A continuous time version of the model by SeHyoun Ahn and Benjamin Moll can be found [here](https://nbviewer.org/github/QuantEcon/QuantEcon.notebooks/blob/master/aiyagari_continuous_time.ipynb).
 
 ## The Economy
 
@@ -187,7 +187,7 @@ If this final quantity agrees with $K$ then we have a SREE.
 
 Let's look at how we might compute such an equilibrium in practice.
 
-To solve the household's dynamic programming problem we'll use the [DiscreteDP](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/markov/ddp.py) class from [QuantEcon.py](http://quantecon.org/quantecon-py).
+To solve the household's dynamic programming problem we'll use the [DiscreteDP](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/markov/ddp.py) class from [QuantEcon.py](https://quantecon.org/quantecon-py/).
 
 Our first task is the least exciting one: write code that maps parameters for a household problem into the `R` and `Q` matrices needed to generate an instance of `DiscreteDP`.
 

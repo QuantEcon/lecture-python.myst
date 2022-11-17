@@ -322,7 +322,8 @@ important concept for statistics and simulation.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: ar1p_ex1
 
 Let $k$ be a natural number.
 
@@ -355,8 +356,57 @@ $$
 when $m$ is large.
 
 Confirm this by simulation at a range of $k$ using the default parameters from the lecture.
+```
 
-### Exercise 2
+
+```{solution-start} ar1p_ex1
+:class: dropdown
+```
+
+Here is one solution:
+
+```{code-cell} python3
+from numba import njit
+from scipy.special import factorial2
+
+@njit
+def sample_moments_ar1(k, m=100_000, mu_0=0.0, sigma_0=1.0, seed=1234):
+    np.random.seed(seed)
+    sample_sum = 0.0
+    x = mu_0 + sigma_0 * np.random.randn()
+    for t in range(m):
+        sample_sum += (x - mu_star)**k
+        x = a * x + b + c * np.random.randn()
+    return sample_sum / m
+
+def true_moments_ar1(k):
+    if k % 2 == 0:
+        return std_star**k * factorial2(k - 1)
+    else:
+        return 0
+
+k_vals = np.arange(6) + 1
+sample_moments = np.empty_like(k_vals)
+true_moments = np.empty_like(k_vals)
+
+for k_idx, k in enumerate(k_vals):
+    sample_moments[k_idx] = sample_moments_ar1(k)
+    true_moments[k_idx] = true_moments_ar1(k)
+
+fig, ax = plt.subplots()
+ax.plot(k_vals, true_moments, label="true moments")
+ax.plot(k_vals, sample_moments, label="sample moments")
+ax.legend()
+
+plt.show()
+```
+
+```{solution-end}
+```
+
+
+```{exercise}
+:label: ar1p_ex2
 
 Write your own version of a one dimensional [kernel density
 estimator](https://en.wikipedia.org/wiki/Kernel_density_estimation),
@@ -398,88 +448,12 @@ Use $n=500$.
 
 Make a comment on your results. (Do you think this is a good estimator
 of these distributions?)
-
-### Exercise 3
-
-In the lecture we discussed the following fact: for the $AR(1)$ process
-
-$$
-X_{t+1} = a X_t + b + c W_{t+1}
-$$
-
-with $\{ W_t \}$ iid and standard normal,
-
-$$
-\psi_t = N(\mu, s^2) \implies \psi_{t+1}
-= N(a \mu + b, a^2 s^2 + c^2)
-$$
-
-Confirm this, at least approximately, by simulation. Let
-
-- $a = 0.9$
-- $b = 0.0$
-- $c = 0.1$
-- $\mu = -3$
-- $s = 0.2$
-
-First, plot $\psi_t$ and $\psi_{t+1}$ using the true
-distributions described above.
-
-Second, plot $\psi_{t+1}$ on the same figure (in a different
-color) as follows:
-
-1. Generate $n$ draws of $X_t$ from the $N(\mu, s^2)$
-   distribution
-1. Update them all using the rule
-   $X_{t+1} = a X_t + b + c W_{t+1}$
-1. Use the resulting sample of $X_{t+1}$ values to produce a
-   density estimate via kernel density estimation.
-
-Try this for $n=2000$ and confirm that the
-simulation based estimate of $\psi_{t+1}$ does converge to the
-theoretical distribution.
-
-## Solutions
-
-### Exercise 1
-
-```{code-cell} python3
-from numba import njit
-from scipy.special import factorial2
-
-@njit
-def sample_moments_ar1(k, m=100_000, mu_0=0.0, sigma_0=1.0, seed=1234):
-    np.random.seed(seed)
-    sample_sum = 0.0
-    x = mu_0 + sigma_0 * np.random.randn()
-    for t in range(m):
-        sample_sum += (x - mu_star)**k
-        x = a * x + b + c * np.random.randn()
-    return sample_sum / m
-
-def true_moments_ar1(k):
-    if k % 2 == 0:
-        return std_star**k * factorial2(k - 1)
-    else:
-        return 0
-
-k_vals = np.arange(6) + 1
-sample_moments = np.empty_like(k_vals)
-true_moments = np.empty_like(k_vals)
-
-for k_idx, k in enumerate(k_vals):
-    sample_moments[k_idx] = sample_moments_ar1(k)
-    true_moments[k_idx] = true_moments_ar1(k)
-
-fig, ax = plt.subplots()
-ax.plot(k_vals, true_moments, label="true moments")
-ax.plot(k_vals, sample_moments, label="sample moments")
-ax.legend()
-
-plt.show()
 ```
 
-### Exercise 2
+
+```{solution-start} ar1p_ex2
+:class: dropdown
+```
 
 Here is one solution:
 
@@ -532,7 +506,55 @@ for α, β in parameter_pairs:
 We see that the kernel density estimator is effective when the underlying
 distribution is smooth but less so otherwise.
 
-### Exercise 3
+```{solution-end}
+```
+
+
+```{exercise}
+:label: ar1p_ex3
+
+In the lecture we discussed the following fact: for the $AR(1)$ process
+
+$$
+X_{t+1} = a X_t + b + c W_{t+1}
+$$
+
+with $\{ W_t \}$ iid and standard normal,
+
+$$
+\psi_t = N(\mu, s^2) \implies \psi_{t+1}
+= N(a \mu + b, a^2 s^2 + c^2)
+$$
+
+Confirm this, at least approximately, by simulation. Let
+
+- $a = 0.9$
+- $b = 0.0$
+- $c = 0.1$
+- $\mu = -3$
+- $s = 0.2$
+
+First, plot $\psi_t$ and $\psi_{t+1}$ using the true
+distributions described above.
+
+Second, plot $\psi_{t+1}$ on the same figure (in a different
+color) as follows:
+
+1. Generate $n$ draws of $X_t$ from the $N(\mu, s^2)$
+   distribution
+1. Update them all using the rule
+   $X_{t+1} = a X_t + b + c W_{t+1}$
+1. Use the resulting sample of $X_{t+1}$ values to produce a
+   density estimate via kernel density estimation.
+
+Try this for $n=2000$ and confirm that the
+simulation based estimate of $\psi_{t+1}$ does converge to the
+theoretical distribution.
+```
+
+```{solution-start} ar1p_ex3
+:class: dropdown
+```
 
 Here is our solution
 
@@ -579,3 +601,5 @@ plt.show()
 The simulated distribution approximately coincides with the theoretical
 distribution, as predicted.
 
+```{solution-end}
+```

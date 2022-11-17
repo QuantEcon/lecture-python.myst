@@ -43,8 +43,8 @@ We also demonstrate how the LLN and CLT break down when the assumptions they are
 
 In addition, we examine several useful extensions of the classical theorems, such as
 
-* The delta method, for smooth functions of random variables.
-* The multivariate case.
+* The delta method, for smooth functions of random variables, and
+* the multivariate case.
 
 Some of these extensions are presented as exercises.
 
@@ -263,7 +263,7 @@ for ax in axes:
 
     # Plot
     ax.plot(list(range(n)), data, 'o', color='grey', alpha=0.5)
-    axlabel = '$\\bar X_n$ for $X_i \sim$' + name
+    axlabel = '$\\bar{X}_n$ for $X_i \sim$' + name
     ax.plot(list(range(n)), sample_mean, 'g-', lw=3, alpha=0.6, label=axlabel)
     m = distribution.mean()
     ax.plot(list(range(n)), [m] * n, 'k--', lw=1.5, label='$\mu$')
@@ -631,8 +631,10 @@ n \to \infty
 
 ## Exercises
 
-(lln_ex1)=
-### Exercise 1
+
+```{exercise-start}
+:label: lln_ex1
+```
 
 One very useful consequence of the central limit theorem is as follows.
 
@@ -663,8 +665,63 @@ What happens when you replace $[0, \pi / 2]$ with $[0, \pi]$?
 
 What is the source of the problem?
 
-(lln_ex2)=
-### Exercise 2
+```{exercise-end}
+```
+
+```{solution-start} lln_ex1
+:class: dropdown
+```
+
+Here is one solution
+
+```{code-cell} python3
+"""
+Illustrates the delta method, a consequence of the central limit theorem.
+"""
+
+# Set parameters
+n = 250
+replications = 100000
+distribution = uniform(loc=0, scale=(np.pi / 2))
+μ, s = distribution.mean(), distribution.std()
+
+g = np.sin
+g_prime = np.cos
+
+# Generate obs of sqrt{n} (g(X_n) - g(μ))
+data = distribution.rvs((replications, n))
+sample_means = data.mean(axis=1)  # Compute mean of each row
+error_obs = np.sqrt(n) * (g(sample_means) - g(μ))
+
+# Plot
+asymptotic_sd = g_prime(μ) * s
+fig, ax = plt.subplots(figsize=(10, 6))
+xmin = -3 * g_prime(μ) * s
+xmax = -xmin
+ax.set_xlim(xmin, xmax)
+ax.hist(error_obs, bins=60, alpha=0.5, density=True)
+xgrid = np.linspace(xmin, xmax, 200)
+lb = "$N(0, g'(\mu)^2  \sigma^2)$"
+ax.plot(xgrid, norm.pdf(xgrid, scale=asymptotic_sd), 'k-', lw=2, label=lb)
+ax.legend()
+plt.show()
+```
+
+What happens when you replace $[0, \pi / 2]$ with
+$[0, \pi]$?
+
+In this case, the mean $\mu$ of this distribution is
+$\pi/2$, and since $g' = \cos$, we have $g'(\mu) = 0$.
+
+Hence the conditions of the delta theorem are not satisfied.
+
+```{solution-end}
+```
+
+
+```{exercise-start}
+:label: lln_ex2
+```
 
 Here's a result that's often used in developing statistical tests, and is connected to the multivariate central limit theorem.
 
@@ -764,59 +821,19 @@ where
 * each $U_i$ is an IID draw from the uniform distribution on $[-2, 2]$.
 * $U_i$ and $W_i$ are independent of each other.
 
-Hints:
+```{hint}
+:class: dropdown
 
 1. `scipy.linalg.sqrtm(A)` computes the square root of `A`.  You still need to invert it.
 1. You should be able to work out $\Sigma$ from the preceding information.
-
-## Solutions
-
-### Exercise 1
-
-Here is one solution
-
-```{code-cell} python3
-"""
-Illustrates the delta method, a consequence of the central limit theorem.
-"""
-
-# Set parameters
-n = 250
-replications = 100000
-distribution = uniform(loc=0, scale=(np.pi / 2))
-μ, s = distribution.mean(), distribution.std()
-
-g = np.sin
-g_prime = np.cos
-
-# Generate obs of sqrt{n} (g(X_n) - g(μ))
-data = distribution.rvs((replications, n))
-sample_means = data.mean(axis=1)  # Compute mean of each row
-error_obs = np.sqrt(n) * (g(sample_means) - g(μ))
-
-# Plot
-asymptotic_sd = g_prime(μ) * s
-fig, ax = plt.subplots(figsize=(10, 6))
-xmin = -3 * g_prime(μ) * s
-xmax = -xmin
-ax.set_xlim(xmin, xmax)
-ax.hist(error_obs, bins=60, alpha=0.5, density=True)
-xgrid = np.linspace(xmin, xmax, 200)
-lb = "$N(0, g'(\mu)^2  \sigma^2)$"
-ax.plot(xgrid, norm.pdf(xgrid, scale=asymptotic_sd), 'k-', lw=2, label=lb)
-ax.legend()
-plt.show()
 ```
 
-What happens when you replace $[0, \pi / 2]$ with
-$[0, \pi]$?
+```{exercise-end}
+```
 
-In this case, the mean $\mu$ of this distribution is
-$\pi/2$, and since $g' = \cos$, we have $g'(\mu) = 0$.
-
-Hence the conditions of the delta theorem are not satisfied.
-
-### Exercise 2
+```{solution-start} lln_ex2
+:class: dropdown
+```
 
 First we want to verify the claim that
 
@@ -908,3 +925,5 @@ ax.hist(chisq_obs, bins=50, density=True)
 plt.show()
 ```
 
+```{solution-end}
+```

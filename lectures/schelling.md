@@ -135,8 +135,9 @@ Even with these preferences, the outcome is a high degree of segregation.
 
 ## Exercises
 
-(schelling_ex1)=
-### Exercise 1
+```{exercise-start}
+:label: schelling_ex1
+```
 
 Implement and run this simulation for yourself.
 
@@ -171,9 +172,12 @@ while agents are still moving
 
 Use 250 agents of each type.
 
-## Solutions
+```{exercise-end}
+```
 
-### Exercise 1
+```{solution-start} schelling_ex1
+:class: dropdown
+```
 
 Here's one solution that does the job we want.
 
@@ -272,3 +276,5 @@ while True:
 print('Converged, terminating.')
 ```
 
+```{solution-end}
+```

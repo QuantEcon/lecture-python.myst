@@ -29,7 +29,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 !pip install interpolation
 ```
 
@@ -544,14 +544,15 @@ Success!
 
 ## Exercises
 
-### Exercise 1
+```{exercise-start}
+:label: ifp_ex1
+```
 
 Let's consider how the interest rate affects consumption.
 
 Reproduce the following figure, which shows (approximately) optimal consumption policies for different interest rates
 
 ```{figure} /_static/lecture_specific/ifp/ifp_policies.png
-
 ```
 
 * Other than `r`, all parameters are at their default values.
@@ -560,8 +561,36 @@ Reproduce the following figure, which shows (approximately) optimal consumption 
 
 The figure shows that higher interest rates boost savings and hence suppress consumption.
 
-(ifp_lrex)=
-### Exercise 2
+```{exercise-end}
+```
+
+```{solution-start} ifp_ex1
+:class: dropdown
+```
+
+Here's one solution:
+
+```{code-cell} python3
+r_vals = np.linspace(0, 0.04, 4)
+
+fig, ax = plt.subplots()
+for r_val in r_vals:
+    ifp = IFP(r=r_val)
+    σ_star = solve_model_time_iter(ifp, σ_init, verbose=False)
+    ax.plot(ifp.asset_grid, σ_star[:, 0], label=f'$r = {r_val:.3f}$')
+
+ax.set(xlabel='asset level', ylabel='consumption (low income)')
+ax.legend()
+plt.show()
+```
+
+```{solution-end}
+```
+
+
+```{exercise-start}
+:label: ifp_ex2
+```
 
 Now let's consider the long run asset levels held by households under the
 default parameters.
@@ -614,48 +643,12 @@ Your task is to generate such a histogram.
   z_0)$ will not matter.
 * You might find it helpful to use the `MarkovChain` class from `quantecon`.
 
-### Exercise 3
-
-Following on from exercises 1 and 2, let's look at how savings and aggregate
-asset holdings vary with the interest rate
-
-* Note: {cite}`Ljungqvist2012` section 18.6 can be consulted for more
-  background on the topic treated in this exercise.
-
-For a given parameterization of the model, the mean of the stationary
-distribution of assets can be interpreted as aggregate capital in an economy
-with a unit mass of *ex-ante* identical households facing idiosyncratic
-shocks.
-
-Your task is to investigate how this measure of aggregate capital varies with
-the interest rate.
-
-Following tradition, put the price (i.e., interest rate) on the vertical axis.
-
-On the horizontal axis put aggregate capital, computed as the mean of the
-stationary distribution given the interest rate.
-
-## Solutions
-
-### Exercise 1
-
-Here's one solution:
-
-```{code-cell} python3
-r_vals = np.linspace(0, 0.04, 4)
-
-fig, ax = plt.subplots()
-for r_val in r_vals:
-    ifp = IFP(r=r_val)
-    σ_star = solve_model_time_iter(ifp, σ_init, verbose=False)
-    ax.plot(ifp.asset_grid, σ_star[:, 0], label=f'$r = {r_val:.3f}$')
-
-ax.set(xlabel='asset level', ylabel='consumption (low income)')
-ax.legend()
-plt.show()
+```{exercise-end}
 ```
 
-### Exercise 2
+```{solution-start} ifp_ex2
+:class: dropdown
+```
 
 First we write a function to compute a long asset series.
 
@@ -704,7 +697,38 @@ Here it is left skewed when in reality it has a long right tail.
 In a {doc}`subsequent lecture <ifp_advanced>` we will rectify this by adding
 more realistic features to the model.
 
-### Exercise 3
+```{solution-end}
+```
+
+```{exercise-start}
+:label: ifp_ex3
+```
+
+Following on from exercises 1 and 2, let's look at how savings and aggregate
+asset holdings vary with the interest rate
+
+```{note}
+{cite}`Ljungqvist2012` section 18.6 can be consulted for more background on the topic treated in this exercise.
+```
+For a given parameterization of the model, the mean of the stationary
+distribution of assets can be interpreted as aggregate capital in an economy
+with a unit mass of *ex-ante* identical households facing idiosyncratic
+shocks.
+
+Your task is to investigate how this measure of aggregate capital varies with
+the interest rate.
+
+Following tradition, put the price (i.e., interest rate) on the vertical axis.
+
+On the horizontal axis put aggregate capital, computed as the mean of the
+stationary distribution given the interest rate.
+
+```{exercise-end}
+```
+
+```{solution-start} ifp_ex3
+:class: dropdown
+```
 
 Here's one solution
 
@@ -728,3 +752,5 @@ plt.show()
 
 As expected, aggregate savings increases with the interest rate.
 
+```{solution-end}
+```

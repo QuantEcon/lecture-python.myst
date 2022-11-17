@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.11.5
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -31,11 +33,10 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
-!conda install -y quantecon
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install quantecon
 !pip install interpolation
 ```
 
@@ -64,7 +65,7 @@ Key ideas in play will be:
 
 We'll begin with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
 from numba import jit, prange, float64, int64
@@ -123,7 +124,7 @@ We'll formulate the problem using dynamic programming.
 The following presentation of the problem closely follows Dmitri
 Berskekas's treatment in **Dynamic Programming and Stochastic Control** {cite}`Bertekas75`.
 
-A decision-maker observes a sequence of draws of a random variable $z$.
+A decision-maker can observe a sequence of draws of a random variable $z$.
 
 He (or she) wants to know which of two probability distributions $f_0$ or $f_1$ governs $z$.
 
@@ -136,19 +137,23 @@ random variables is also independently and identically distributed (IID).
 But the observer does not know which of the two distributions generated the sequence.
 
 For reasons explained in  [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html), this means that the sequence is not
-IID and that the observer has something to learn, even though he knows both $f_0$ and $f_1$.
+IID.  
 
-The decision maker   chooses a number of draws (i.e., random samples from the unknown distribution) and uses them to decide
+The observer has something to learn, namely, whether the observations are drawn from  $f_0$ or from $f_1$.
+
+The decision maker   wants  to decide
 which of the  two distributions is generating outcomes.
 
-He starts with prior
+We adopt a Bayesian formulation.
+
+The decision maker begins  with a prior probability
 
 $$
 \pi_{-1} =
 \mathbb P \{ f = f_0 \mid \textrm{ no observations} \} \in (0, 1)
 $$
 
-After observing $k+1$ observations $z_k, z_{k-1}, \ldots, z_0$, he updates this value to
+After observing $k+1$ observations $z_k, z_{k-1}, \ldots, z_0$, he updates his personal probability that the observations are described by distribution $f_0$  to
 
 $$
 \pi_k = \mathbb P \{ f = f_0 \mid z_k, z_{k-1}, \ldots, z_0 \}
@@ -185,7 +190,7 @@ The next figure shows two beta distributions in the top panel.
 
 The bottom panel presents mixtures of these distributions, with various mixing probabilities $\pi_k$
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit(nopython=True)
 def p(x, a, b):
     r = gamma(a + b) / (gamma(a) * gamma(b))
@@ -251,7 +256,7 @@ So when we treat $f=f_0$ as the null hypothesis
 
 ### Intuition
 
-Let's try to guess what an optimal decision rule might look like before we go further.
+Before proceeding,  let's try to guess what an optimal decision rule might look like.
 
 Suppose at some given point in time that $\pi$ is close to 1.
 
@@ -259,7 +264,7 @@ Then our prior beliefs and the evidence so far point strongly to $f = f_0$.
 
 If, on the other hand, $\pi$ is close to 0, then $f = f_1$ is strongly favored.
 
-Finally, if $\pi$ is in the middle of the interval $[0, 1]$, then we have little information in either direction.
+Finally, if $\pi$ is in the middle of the interval $[0, 1]$, then we are confronted with more uncertainty.
 
 This reasoning suggests a decision rule such as the one shown in the figure
 
@@ -269,8 +274,7 @@ This reasoning suggests a decision rule such as the one shown in the figure
 
 As we'll see, this is indeed the correct form of the decision rule.
 
-The key problem is to determine the threshold values $\alpha, \beta$,
-which will depend on the parameters listed above.
+Our problem is to determine threshold values $\alpha, \beta$ that somehow depend on the parameters described  above.
 
 You might like to pause at this point and try to predict the impact of a
 parameter such as $c$ or $L_0$ on $\alpha$ or $\beta$.
@@ -325,7 +329,7 @@ where $\pi \in [0,1]$ and
   $f_0$ (i.e., the cost of making a type II error).
 - $\pi L_1$ is the expected loss associated with accepting
   $f_1$ (i.e., the cost of making a type I error).
-- $h(\pi) :=  c + \mathbb E [J(\pi')]$ the continuation value; i.e.,
+- $h(\pi) :=  c + \mathbb E [J(\pi')]$; this is the continuation value; i.e.,
   the expected cost associated with drawing one more $z$.
 
 The optimal decision rule is characterized by two numbers $\alpha, \beta \in (0,1) \times (0,1)$ that satisfy
@@ -350,10 +354,10 @@ $$
 \end{aligned}
 $$
 
-Our aim is to compute the value function $J$, and from it the associated cutoffs $\alpha$
+Our aim is to compute the cost function $J$, and from it the associated cutoffs $\alpha$
 and $\beta$.
 
-To make our computations simpler, using {eq}`optdec`, we can write the continuation value $h(\pi)$ as
+To make our computations manageable, using {eq}`optdec`, we can write the continuation cost $h(\pi)$ as
 
 ```{math}
 :label: optdec2
@@ -374,9 +378,9 @@ h(\pi) =
 c + \int \min \{ (1 - \kappa(z', \pi) ) L_0, \kappa(z', \pi)  L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
 ```
 
-can be understood as a functional equation, where $h$ is the unknown.
+is a **functional equation** in an unknown function  $h$.
 
-Using the functional equation, {eq}`funceq`, for the continuation value, we can back out
+Using the functional equation, {eq}`funceq`, for the continuation cost, we can back out
 optimal choices using the right side of {eq}`optdec`.
 
 This functional equation can be solved by taking an initial guess and iterating
@@ -393,7 +397,7 @@ $$
 
 First, we will construct a `jitclass` to store the parameters of the model
 
-```{code-cell} python3
+```{code-cell} ipython3
 wf_data = [('a0', float64),          # Parameters of beta distributions
            ('b0', float64),
            ('a1', float64),
@@ -408,7 +412,7 @@ wf_data = [('a0', float64),          # Parameters of beta distributions
            ('z1', float64[:])]
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jitclass(wf_data)
 class WaldFriedman:
 
@@ -467,7 +471,7 @@ As in the {doc}`optimal growth lecture <optgrowth>`, to approximate a continuous
 
 We define the operator function `Q` below.
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit(nopython=True, parallel=True)
 def Q(h, wf):
 
@@ -500,13 +504,13 @@ def Q(h, wf):
     return h_new
 ```
 
-To solve the model, we will iterate using `Q` to find the fixed point
+To solve the key functional equation, we will iterate using `Q` to find the fixed point
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit(nopython=True)
 def solve_model(wf, tol=1e-4, max_iter=1000):
     """
-    Compute the continuation value function
+    Compute the continuation cost function
 
     * wf is an instance of WaldFriedman
     """
@@ -522,7 +526,7 @@ def solve_model(wf, tol=1e-4, max_iter=1000):
         i += 1
         h = h_new
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
 
     return h_new
@@ -534,7 +538,7 @@ Let's inspect outcomes.
 
 We will be using the default parameterization with distributions like so
 
-```{code-cell} python3
+```{code-cell} ipython3
 wf = WaldFriedman()
 
 fig, ax = plt.subplots(figsize=(10, 6))
@@ -550,19 +554,19 @@ plt.show()
 
 To solve the model, we will call our `solve_model` function
 
-```{code-cell} python3
+```{code-cell} ipython3
 h_star = solve_model(wf)    # Solve the model
 ```
 
 We will also set up a function to compute the cutoffs $\alpha$ and $\beta$
-and plot these on our value function plot
+and plot these on our cost function plot
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit(nopython=True)
 def find_cutoff_rule(wf, h):
 
     """
-    This function takes a continuation value function and returns the
+    This function takes a continuation cost function and returns the
     corresponding cutoffs of where you transition between continuing and
     choosing a specific model
     """
@@ -593,12 +597,12 @@ cost_L1 = wf.π_grid * wf.L1
 
 fig, ax = plt.subplots(figsize=(10, 6))
 
-ax.plot(wf.π_grid, h_star, label='continuation value')
+ax.plot(wf.π_grid, h_star, label='sample again')
 ax.plot(wf.π_grid, cost_L1, label='choose f1')
 ax.plot(wf.π_grid, cost_L0, label='choose f0')
 ax.plot(wf.π_grid,
         np.amin(np.column_stack([h_star, cost_L0, cost_L1]),axis=1),
-        lw=15, alpha=0.1, color='b', label='minimum cost')
+        lw=15, alpha=0.1, color='b', label='$J(\pi)$')
 
 ax.annotate(r"$\beta$", xy=(β + 0.01, 0.5), fontsize=14)
 ax.annotate(r"$\alpha$", xy=(α + 0.01, 0.5), fontsize=14)
@@ -607,19 +611,19 @@ plt.vlines(β, 0, β * wf.L0, linestyle="--")
 plt.vlines(α, 0, (1 - α) * wf.L1, linestyle="--")
 
 ax.set(xlim=(0, 1), ylim=(0, 0.5 * max(wf.L0, wf.L1)), ylabel="cost",
-       xlabel="$\pi$", title="Value function")
+       xlabel="$\pi$", title="Cost function $J(\pi)$")
 
 plt.legend(borderpad=1.1)
 plt.show()
 ```
 
-The value function equals $\pi L_1$ for $\pi \leq \beta$, and $(1-\pi )L_0$ for $\pi
+The cost function $J$ equals $\pi L_1$ for $\pi \leq \beta$, and $(1-\pi )L_0$ for $\pi
 \geq \alpha$.
 
-The slopes of the two linear pieces of the value function are determined by $L_1$
+The slopes of the two linear pieces of the cost   function $J(\pi)$ are determined by $L_1$
 and $- L_0$.
 
-The value function is smooth in the interior region, where the posterior
+The cost function $J$ is smooth in the interior region, where the posterior
 probability assigned to $f_0$ is in the indecisive region $\pi \in (\beta, \alpha)$.
 
 The decision-maker continues to sample until the probability that he attaches to
@@ -629,7 +633,7 @@ model $f_0$ falls below $\beta$ or above $\alpha$.
 
 The next figure shows the outcomes of 500 simulations of the decision process.
 
-On the left is a histogram of the stopping times, which equal the number of draws of $z_k$ required to make a decision.
+On the left is a histogram of **stopping times**, i.e.,  the number of draws of $z_k$ required to make a decision.
 
 The average number of draws is around 6.6.
 
@@ -637,7 +641,7 @@ On the right is the fraction of correct decisions at the stopping time.
 
 In this case, the decision-maker is correct 80% of the time
 
-```{code-cell} python3
+```{code-cell} ipython3
 def simulate(wf, true_dist, h_star, π_0=0.5):
 
     """
@@ -741,7 +745,7 @@ Before you look, think about what will happen:
 - Will the decision-maker be correct more or less often?
 - Will he make decisions sooner or later?
 
-```{code-cell} python3
+```{code-cell} ipython3
 wf = WaldFriedman(c=2.5)
 simulation_plot(wf)
 ```
@@ -755,7 +759,7 @@ This leads to him having a higher expected loss when he puts equal weight on bot
 ### A Notebook Implementation
 
 To facilitate comparative statics, we provide
-a [Jupyter notebook](https://nbviewer.jupyter.org/github/QuantEcon/lecture-python-advanced.notebooks/blob/master/wald_friedman.ipynb) that
+a [Jupyter notebook](https://nbviewer.org/github/QuantEcon/lecture-python.notebooks/blob/master/wald_friedman.ipynb) that
 generates the same plots, but with sliders.
 
 With these sliders, you can adjust parameters and immediately observe
@@ -898,11 +902,11 @@ Wald summarizes Neyman and Pearson's setup as follows:
 
 > Neyman and Pearson show that a region consisting of all samples
 > $(z_1, z_2, \ldots, z_n)$ which satisfy the inequality
-> 
+>
 > $$
   \frac{ f_1(z_1) \cdots f_1(z_n)}{f_0(z_1) \cdots f_0(z_n)} \geq k
   $$
-> 
+>
 > is a most powerful critical region for testing the hypothesis
 > $H_0$ against the alternative hypothesis $H_1$. The term
 > $k$ on the right side is a constant chosen so that the region

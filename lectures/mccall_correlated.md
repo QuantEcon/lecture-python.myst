@@ -29,7 +29,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 !pip install interpolation
 ```
 
@@ -281,10 +281,9 @@ def compute_fixed_point(js,
             print(f"Error at iteration {i} is {error}.")
         f_in[:] = f_out
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
-
-    if verbose and i < max_iter:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return f_out
@@ -415,18 +414,20 @@ This is because the value of waiting increases with unemployment compensation.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: mc_ex1
 
 Investigate how mean unemployment duration varies with the discount factor $\beta$.
 
 * What is your prior expectation?
 * Do your results match up?
+```
 
-## Solutions
+```{solution-start} mc_ex1
+:class: dropdown
+```
 
-### Exercise 1
-
-Here is one solution.
+Here is one solution
 
 ```{code-cell} ipython3
 beta_vals = np.linspace(0.94, 0.99, 8)
@@ -447,3 +448,5 @@ plt.show()
 
 The figure shows that more patient individuals tend to wait longer before accepting an offer.
 
+```{solution-end}
+```

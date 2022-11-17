@@ -37,7 +37,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 ```
 
 ## Overview
@@ -1042,7 +1042,7 @@ $$
 
 regardless of the initial conditions $\mu_0$ and $\Sigma_0$.
 
-This is the *globally stable case* --- see [these notes](https://lectures.quantecon.org/_downloads/iteration_notes.pdf) for more a theoretical treatment.
+This is the *globally stable case* --- see [these notes](https://python.quantecon.org/_static/lecture_specific/linear_models/iteration_notes.pdf) for more a theoretical treatment.
 
 However, global stability is more than we need for stationary solutions, and often more than we want.
 
@@ -1345,8 +1345,8 @@ Examples of usage are given in the solutions to the exercises.
 
 ## Exercises
 
-(lss_ex1)=
-### Exercise 1
+```{exercise}
+:label: lss_ex1
 
 In several contexts, we want to compute forecasts of  geometric sums of future random variables governed by the linear state-space system {eq}`st_space_rep`.
 
@@ -1375,10 +1375,10 @@ $$
 $$
 
 what must the modulus for every eigenvalue of $A$ be less than?
+```
 
-## Solutions
-
-### Exercise 1
+```{solution} lss_ex1
+:class: dropdown
 
 Suppose that every eigenvalue of $A$ has modulus strictly less than $\frac{1}{\beta}$.
 
@@ -1401,6 +1401,8 @@ $$
 = G[I - \beta A]^{-1} x_t
 $$
 
+```
+
 [^foot1]: The eigenvalues of $A$ are $(1,-1, i,-i)$.
 
 [^fn_ag]: The correct way to argue this is by induction.  Suppose that
@@ -1408,4 +1410,3 @@ $x_t$ is Gaussian.  Then {eq}`st_space_rep` and
 {eq}`lss_glig` imply that $x_{t+1}$ is Gaussian.  Since $x_0$
 is assumed to be Gaussian, it follows that every $x_t$ is Gaussian.
 Evidently, this implies that each $y_t$ is Gaussian.
-

@@ -33,7 +33,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 ```
 
 ## Overview
@@ -275,7 +275,7 @@ def operator_factory(cw, parallel_flag=True):
 ```
 
 Lastly, `solve_model` will  take an instance of `CareerWorkerProblem` and
-iterate using the Bellman operator to find the fixed point of the value function.
+iterate using the Bellman operator to find the fixed point of the Bellman equation.
 
 ```{code-cell} python3
 def solve_model(cw,
@@ -300,12 +300,11 @@ def solve_model(cw,
             print(f"Error at iteration {i} is {error}.")
         v = v_new
 
-    if i == max_iter and error > tol:
+    if error > tol:
         print("Failed to converge!")
 
-    else:
-        if verbose:
-            print(f"\nConverged in {i} iterations.")
+    elif verbose:
+        print(f"\nConverged in {i} iterations.")
 
     return v_new
 ```
@@ -362,8 +361,9 @@ the worker cannot change careers without changing jobs.
 
 ## Exercises
 
-(career_ex1)=
-### Exercise 1
+```{exercise-start}
+:label: career_ex1
+```
 
 Using the default parameterization in the class `CareerWorkerProblem`,
 generate and plot typical sample paths for $\theta$ and $\epsilon$
@@ -372,46 +372,20 @@ when the worker follows the optimal policy.
 In particular, modulo randomness, reproduce the following figure (where the horizontal axis represents time)
 
 ```{figure} /_static/lecture_specific/career/career_solutions_ex1_py.png
-
 ```
 
-Hint: To generate the draws from the distributions $F$ and $G$, use `quantecon.random.draw()`.
+```{hint}
+:class: dropdown
+To generate the draws from the distributions $F$ and $G$, use `quantecon.random.draw()`.
+```
 
-(career_ex2)=
-### Exercise 2
+```{exercise-end}
+```
 
-Let's now consider how long it takes for the worker to settle down to a
-permanent job, given a starting point of $(\theta, \epsilon) = (0, 0)$.
 
-In other words, we want to study the distribution of the random variable
-
-$$
-T^* := \text{the first point in time from which the worker's job no longer changes}
-$$
-
-Evidently, the worker's job becomes permanent if and only if $(\theta_t, \epsilon_t)$ enters the
-"stay put" region of $(\theta, \epsilon)$ space.
-
-Letting $S$ denote this region, $T^*$ can be expressed as the
-first passage time to $S$ under the optimal policy:
-
-$$
-T^* := \inf\{t \geq 0 \,|\, (\theta_t, \epsilon_t) \in S\}
-$$
-
-Collect 25,000 draws of this random variable and compute the median (which should be about 7).
-
-Repeat the exercise with $\beta=0.99$ and interpret the change.
-
-(career_ex3)=
-### Exercise 3
-
-Set the parameterization to `G_a = G_b = 100` and generate a new optimal policy
-figure -- interpret.
-
-## Solutions
-
-### Exercise 1
+```{solution-start} career_ex1
+:class: dropdown
+```
 
 Simulate job/career paths.
 
@@ -455,7 +429,39 @@ plt.legend()
 plt.show()
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+```{exercise}
+:label: career_ex2
+
+Let's now consider how long it takes for the worker to settle down to a
+permanent job, given a starting point of $(\theta, \epsilon) = (0, 0)$.
+
+In other words, we want to study the distribution of the random variable
+
+$$
+T^* := \text{the first point in time from which the worker's job no longer changes}
+$$
+
+Evidently, the worker's job becomes permanent if and only if $(\theta_t, \epsilon_t)$ enters the
+"stay put" region of $(\theta, \epsilon)$ space.
+
+Letting $S$ denote this region, $T^*$ can be expressed as the
+first passage time to $S$ under the optimal policy:
+
+$$
+T^* := \inf\{t \geq 0 \,|\, (\theta_t, \epsilon_t) \in S\}
+$$
+
+Collect 25,000 draws of this random variable and compute the median (which should be about 7).
+
+Repeat the exercise with $\beta=0.99$ and interpret the change.
+```
+
+```{solution-start} career_ex2
+:class: dropdown
+```
 
 The median for the original parameterization can be computed as follows
 
@@ -498,7 +504,22 @@ The medians are subject to randomness but should be about 7 and 14 respectively.
 
 Not surprisingly, more patient workers will wait longer to settle down to their final job.
 
-### Exercise 3
+```{solution-end}
+```
+
+
+```{exercise}
+:label: career_ex3
+
+Set the parameterization to `G_a = G_b = 100` and generate a new optimal policy
+figure -- interpret.
+```
+
+```{solution-start} career_ex3
+:class: dropdown
+```
+
+Here is one solution
 
 ```{code-cell} python3
 cw = CareerWorkerProblem(G_a=100, G_b=100)
@@ -513,7 +534,7 @@ ax.contourf(tg, eg, greedy_star.T, levels=lvls, cmap=cm.winter, alpha=0.5)
 ax.contour(tg, eg, greedy_star.T, colors='k', levels=lvls, linewidths=2)
 ax.set(xlabel='θ', ylabel='ϵ')
 ax.text(1.8, 2.5, 'new life', fontsize=14)
-ax.text(4.5, 2.5, 'new job', fontsize=14, rotation='vertical')
+ax.text(4.5, 1.5, 'new job', fontsize=14, rotation='vertical')
 ax.text(4.0, 4.5, 'stay put', fontsize=14)
 plt.show()
 ```
@@ -522,3 +543,6 @@ In the new figure, you see that the region for which the worker
 stays put has grown because the distribution for $\epsilon$
 has become more concentrated around the mean, making high-paying jobs
 less realistic.
+
+```{solution-end}
+```

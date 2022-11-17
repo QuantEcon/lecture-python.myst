@@ -29,7 +29,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 !pip install interpolation
 ```
 
@@ -213,8 +213,6 @@ mccall_data_continuous = [
     ('c', float64),          # unemployment compensation
     ('α', float64),          # job separation rate
     ('β', float64),          # discount factor
-    ('σ', float64),          # scale parameter in lognormal distribution
-    ('μ', float64),          # location parameter in lognormal distribution
     ('w_grid', float64[:]),  # grid of points for fitted VFI
     ('w_draws', float64[:])  # draws of wages for Monte Carlo
 ]
@@ -239,7 +237,7 @@ class McCallModelContinuous:
     def update(self, v, d):
 
         # Simplify names
-        c, α, β, σ, μ = self.c, self.α, self.β, self.σ, self.μ
+        c, α, β = self.c, self.α, self.β
         w = self.w_grid
         u = lambda x: np.log(x)
 
@@ -315,7 +313,8 @@ The exercises ask you to explore the solution and how it changes with parameters
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: mfv_ex1
 
 Use the code above to explore what happens to the reservation wage when the wage parameter $\mu$
 changes.
@@ -323,30 +322,13 @@ changes.
 Use the default parameters and $\mu$ in `mu_vals = np.linspace(0.0, 2.0, 15)`.
 
 Is the impact on the reservation wage as you expected?
+```
 
-### Exercise 2
+```{solution-start} mfv_ex1
+:class: dropdown
+```
 
-Let us now consider how the agent responds to an increase in volatility.
-
-To try to understand this, compute the reservation wage when the wage offer
-distribution is uniform on $(m - s, m + s)$ and $s$ varies.
-
-The idea here is that we are holding the mean constant and spreading the
-support.
-
-(This is a form of *mean-preserving spread*.)
-
-Use `s_vals = np.linspace(1.0, 2.0, 15)` and `m = 2.0`.
-
-State how you expect the reservation wage to vary with $s$.
-
-Now compute it.  Is this as you expected?
-
-## Solutions
-
-### Exercise 1
-
-Here is one solution.
+Here is one solution
 
 ```{code-cell} python3
 mcm = McCallModelContinuous()
@@ -370,9 +352,34 @@ plt.show()
 Not surprisingly, the agent is more inclined to wait when the distribution of
 offers shifts to the right.
 
-### Exercise 2
+```{solution-end}
+```
 
-Here is one solution.
+```{exercise}
+:label: mfv_ex2
+
+Let us now consider how the agent responds to an increase in volatility.
+
+To try to understand this, compute the reservation wage when the wage offer
+distribution is uniform on $(m - s, m + s)$ and $s$ varies.
+
+The idea here is that we are holding the mean constant and spreading the
+support.
+
+(This is a form of *mean-preserving spread*.)
+
+Use `s_vals = np.linspace(1.0, 2.0, 15)` and `m = 2.0`.
+
+State how you expect the reservation wage to vary with $s$.
+
+Now compute it.  Is this as you expected?
+```
+
+```{solution-start} mfv_ex2
+:class: dropdown
+```
+
+Here is one solution
 
 ```{code-cell} python3
 mcm = McCallModelContinuous()
@@ -405,3 +412,5 @@ But job search is like holding an option: the worker is only exposed to upside r
 
 More volatility means higher upside potential, which encourages the agent to wait.
 
+```{solution-end}
+```

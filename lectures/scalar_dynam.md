@@ -435,7 +435,8 @@ ts_plot(g, xmin, xmax, x0, ts_length=20)
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: sd_ex1
 
 Consider again the linear model $x_{t+1} = a x_t + b$ with $a
 \not=1$.
@@ -452,10 +453,11 @@ What differences do you notice in the cases $a \in (-1, 0)$ and $a
 Use $a=0.5$ and then $a=-0.5$ and study the trajectories
 
 Set $b=1$ throughout.
+```
 
-## Solutions
-
-### Exercise 1
+```{solution-start} sd_ex1
+:class: dropdown
+```
 
 We will start with the case $a=0.5$.
 
@@ -513,3 +515,5 @@ and back again.
 
 In the current context, the series is said to exhibit **damped oscillations**.
 
+```{solution-end}
+```

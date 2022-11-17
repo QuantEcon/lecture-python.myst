@@ -40,6 +40,9 @@ QuantEcon lecture.
 
 (That lecture also describes some technicalities about second-order linear difference equations.)
 
+In this lecture, we'll also learn about an **autoregressive** representation and a **moving average** representation of a  non-stationary
+univariate time series $\{y_t\}_{t=0}^T$.
+
 We'll also study a "perfect foresight" model of stock prices that involves solving
 a "forward-looking" linear difference equation.
 
@@ -49,6 +52,7 @@ We will use the following imports:
 import numpy as np
 %matplotlib inline
 import matplotlib.pyplot as plt
+from matplotlib import cm
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 ```
 
@@ -75,10 +79,12 @@ Equation {eq}`tswm_1` is called a **second-order linear difference equation**.
 But actually, it is a collection of $T$ simultaneous linear
 equations in the $T$ variables $y_1, y_2, \ldots, y_T$.
 
-**Note:** To be able to solve a second-order linear difference
+```{note}
+To be able to solve a second-order linear difference
 equation, we require two **boundary conditions** that can take the form
 either of two **initial conditions** or two **terminal conditions** or
 possibly one of each.
+```
 
 Let’s write our equations as a stacked system
 
@@ -116,7 +122,7 @@ $$
 where
 
 $$
-y = \begin{bmatrix} y_1 \cr y_2 \cr \cdots \cr y_T \end{bmatrix}
+y = \begin{bmatrix} y_1 \cr y_2 \cr \vdots \cr y_T \end{bmatrix}
 $$
 
 Evidently $y$ can be computed from
@@ -144,12 +150,12 @@ y_1 = 28. # y_{-1}
 y0 = 24.
 ```
 
+Now we construct $A$ and $b$.
+
 ```{code-cell} python3
-# construct A and b
-A = np.zeros((T, T))
+A = np.identity(T)  # The T x T identity matrix
 
 for i in range(T):
-    A[i, i] = 1
 
     if i-1 >= 0:
         A[i, i-1] = -𝛼1
@@ -174,11 +180,37 @@ Now let’s solve for the path of $y$.
 If $y_t$ is GNP at time $t$, then we have a version of
 Samuelson’s model of the dynamics for GNP.
 
+To solve $y = A^{-1} b$ we can either invert $A$ directly, as in 
+
 ```{code-cell} python3
 A_inv = np.linalg.inv(A)
 
 y = A_inv @ b
 ```
+
+or we can use `np.linalg.solve`: 
+
+
+```{code-cell} python3
+y_second_method = np.linalg.solve(A, b)
+```
+
+Here make sure the two methods give the same result, at least up to floating
+point precision:
+
+```{code-cell} python3
+np.allclose(y, y_second_method)
+```
+
+```{note}
+In general, `np.linalg.solve` is more numerically stable than using
+`np.linalg.inv` directly. 
+However, stability is not an issue for this small example. Moreover, we will
+repeatedly use `A_inv` in what follows, so there is added value in computing
+it directly.
+```
+
+Now we can plot.
 
 ```{code-cell} python3
 plt.plot(np.arange(T)+1, y)
@@ -188,17 +220,20 @@ plt.ylabel('y')
 plt.show()
 ```
 
-If we set both initial values at the **steady state** value of $y_t$, namely,
+The **steady state** value $y^*$ of $y_t$ is obtained by setting $y_t = y_{t-1} =
+y_{t-2} = y^*$ in {eq}`tswm_1`, which yields
 
 $$
-y_{0} = y_{-1} = \frac{\alpha_{0}}{1 - \alpha_{1} - \alpha_{2}}
+y^* = \frac{\alpha_{0}}{1 - \alpha_{1} - \alpha_{2}}
 $$
 
-then $y_{t}$ will be constant
+If we set the initial values to $y_{0} = y_{-1} = y^*$, then $y_{t}$ will be
+constant:
 
 ```{code-cell} python3
-y_1_steady = 𝛼0 / (1 - 𝛼1 - 𝛼2) # y_{-1}
-y0_steady = 𝛼0 / (1 - 𝛼1 - 𝛼2)
+y_star = 𝛼0 / (1 - 𝛼1 - 𝛼2)
+y_1_steady = y_star # y_{-1}
+y0_steady = y_star
 
 b_steady = np.full(T, 𝛼0)
 b_steady[0] = 𝛼0 + 𝛼1 * y0_steady + 𝛼2 * y_1_steady
@@ -217,7 +252,7 @@ plt.ylabel('y')
 plt.show()
 ```
 
-## Adding a random term
+## Adding a Random Term
 
 To generate some excitement, we'll follow in the spirit of the great economists
 Eugen Slutsky and Ragnar Frisch and replace our original second-order difference
@@ -252,13 +287,13 @@ governed by the system
 
 $$
 A y = b + u
-$$
+$$ (eq:eqar)
 
 The solution for $y$ becomes
 
 $$
 y = A^{-1} \left(b + u\right)
-$$
+$$ (eq:eqma)
 
 Let’s try it out in Python.
 
@@ -288,9 +323,10 @@ We can simulate $N$ paths.
 N = 100
 
 for i in range(N):
+    col = cm.viridis(np.random.rand())  # Choose a random color from viridis
     u = np.random.normal(0, 𝜎u, size=T)
     y = A_inv @ (b + u)
-    plt.plot(np.arange(T)+1, y, lw=0.5)
+    plt.plot(np.arange(T)+1, y, lw=0.5, color=col)
 
 plt.xlabel('t')
 plt.ylabel('y')
@@ -305,9 +341,10 @@ steady state.
 N = 100
 
 for i in range(N):
+    col = cm.viridis(np.random.rand())  # Choose a random color from viridis
     u = np.random.normal(0, 𝜎u, size=T)
     y_steady = A_inv @ (b_steady + u)
-    plt.plot(np.arange(T)+1, y_steady, lw=0.5)
+    plt.plot(np.arange(T)+1, y_steady, lw=0.5, color=col)
 
 plt.xlabel('t')
 plt.ylabel('y')
@@ -315,7 +352,238 @@ plt.ylabel('y')
 plt.show()
 ```
 
-## A forward looking model
+
+
+## Computing Population Moments
+
+
+We can apply standard formulas for multivariate normal distributions to compute the mean vector and covariance matrix
+for our time series model
+
+$$
+y = A^{-1} (b + u) .
+$$
+
+You can read about multivariate normal distributions in this lecture {doc}`Multivariate Normal Distribution <multivariate_normal>`.
+
+Let's write our  model as 
+
+$$ 
+y = \tilde A (b + u)
+$$
+
+where $\tilde A = A^{-1}$.
+
+Because  linear combinations of normal random variables are normal, we know that
+
+$$
+y \sim {\mathcal N}(\mu_y, \Sigma_y)
+$$
+
+where
+
+$$ 
+\mu_y = \tilde A b
+$$
+
+and 
+
+$$
+\Sigma_y = \tilde A (\sigma_u^2 I_{T \times T} ) \tilde A^T
+$$
+
+Let's write a Python  class that computes the mean vector $\mu_y$ and covariance matrix $\Sigma_y$.
+
+
+
+```{code-cell} ipython3
+class population_moments:
+    """
+    Compute population moments mu_y, Sigma_y.
+    ---------
+    Parameters:
+    alpha0, alpha1, alpha2, T, y_1, y0
+    """
+    def __init__(self, alpha0, alpha1, alpha2, T, y_1, y0, sigma_u):
+
+        # compute A
+        A = np.identity(T)
+
+        for i in range(T):
+            if i-1 >= 0:
+                A[i, i-1] = -alpha1
+
+            if i-2 >= 0:
+                A[i, i-2] = -alpha2
+
+        # compute b
+        b = np.full(T, alpha0)
+        b[0] = alpha0 + alpha1 * y0 + alpha2 * y_1
+        b[1] = alpha0 + alpha2 * y0
+
+        # compute A inverse
+        A_inv = np.linalg.inv(A)
+
+        self.A, self.b, self.A_inv, self.sigma_u, self.T = A, b, A_inv, sigma_u, T
+    
+    def sample_y(self, n):
+        """
+        Give a sample of size n of y.
+        """
+        A_inv, sigma_u, b, T = self.A_inv, self.sigma_u, self.b, self.T
+        us = np.random.normal(0, sigma_u, size=[n, T])
+        ys = np.vstack([A_inv @ (b + u) for u in us])
+
+        return ys
+
+    def get_moments(self):
+        """
+        Compute the population moments of y.
+        """
+        A_inv, sigma_u, b = self.A_inv, self.sigma_u, self.b
+
+        # compute mu_y
+        self.mu_y = A_inv @ b
+        self.Sigma_y = sigma_u**2 * (A_inv @ A_inv.T)
+
+        return self.mu_y, self.Sigma_y
+
+
+my_process = population_moments(
+    alpha0=10.0, alpha1=1.53, alpha2=-.9, T=80, y_1=28., y0=24., sigma_u=1)
+    
+mu_y, Sigma_y = my_process.get_moments()
+A_inv = my_process.A_inv
+```
+
+It is enlightening  to study the $\mu_y, \Sigma_y$'s implied by  various parameter values.
+
+Among other things, we can use the class to exhibit how  **statistical stationarity** of $y$ prevails only for very special initial conditions. 
+
+Let's begin by generating $N$ time realizations of $y$ plotting them together with  population  mean $\mu_y$ .
+
+```{code-cell} ipython3
+# plot mean
+N = 100
+
+for i in range(N):
+    col = cm.viridis(np.random.rand())  # Choose a random color from viridis
+    ys = my_process.sample_y(N)
+    plt.plot(ys[i,:], lw=0.5, color=col)
+    plt.plot(mu_y, color='red')
+
+plt.xlabel('t')
+plt.ylabel('y')
+
+plt.show()
+```
+
+Visually, notice how the  variance across realizations of $y_t$ decreases as $t$ increases.
+
+Let's plot the population variance of $y_t$ against $t$.
+
+```{code-cell} ipython3
+# plot variance
+plt.plot(Sigma_y.diagonal())
+plt.show()
+```
+
+Notice how the population variance increases and asymptotes
+
++++
+
+Let's print out the covariance matrix $\Sigma_y$ for a  time series $y$
+
+```{code-cell} ipython3
+my_process = population_moments(alpha0=0, alpha1=.8, alpha2=0, T=6, y_1=0., y0=0., sigma_u=1)
+    
+mu_y, Sigma_y = my_process.get_moments()
+print("mu_y = ",mu_y)
+print("Sigma_y = ", Sigma_y)
+```
+
+Notice that  the covariance between $y_t$ and $y_{t-1}$ -- the elements on the superdiagonal -- are **not** identical.
+
+This is is an indication that the time series respresented by our $y$ vector is not **stationary**.  
+
+To make it stationary, we'd have to alter our system so that our **initial conditions** $(y_1, y_0)$ are not fixed numbers but instead a jointly normally distributed random vector with a particular mean and  covariance matrix.
+
+We describe how to do that in another lecture in this lecture {doc}`Linear State Space Models <linear_models>`.
+
+But just to set the stage for that analysis, let's  print out the bottom right corner of $\Sigma_y$.
+
+```{code-cell} ipython3
+mu_y, Sigma_y = my_process.get_moments()
+print("bottom right corner of Sigma_y = \n", Sigma_y[72:,72:])
+```
+
+Please notice how the sub diagonal and super diagonal elements seem to have converged.
+
+This is an indication that our process is asymptotically stationary.
+
+You can read  about stationarity of more general linear time series models in this lecture {doc}`Linear State Space Models <linear_models>`.
+
+There is a lot to be learned about the process by staring at the off diagonal elements of $\Sigma_y$ corresponding to different time periods $t$, but we resist the temptation to do so here.
+
++++
+
+
+## Moving Average Representation
+
+Let's print out  $A^{-1}$ and stare at  its structure 
+
+  *  is it triangular or almost triangular or $\ldots$ ?
+
+To study the structure of $A^{-1}$, we shall print just  up to $3$ decimals.
+
+Let's begin by printing out just the upper left hand corner of $A^{-1}$
+
+```{code-cell} ipython3
+with np.printoptions(precision=3, suppress=True):
+    print(A_inv[0:7,0:7])
+```
+
+
+
+
+Evidently, $A^{-1}$ is a lower triangular matrix. 
+
+
+Let's print out the lower right hand corner of $A^{-1}$ and stare at it.
+
+```{code-cell} ipython3
+with np.printoptions(precision=3, suppress=True):
+    print(A_inv[72:,72:])
+```
+
+
+Notice how  every row ends with the previous row's pre-diagonal entries.
+
+
+
+ 
+
+Since $A^{-1}$ is lower triangular,  each  row represents  $ y_t$ for a particular $t$ as the sum of 
+- a time-dependent function $A^{-1} b$ of the initial conditions incorporated in $b$, and 
+- a weighted sum of  current and past values of the IID shocks $\{u_t\}$
+
+Thus,  let $\tilde{A}=A^{-1}$. 
+
+Evidently,  for $t\geq0$,
+
+$$
+y_{t+1}=\sum_{i=1}^{t+1}\tilde{A}_{t+1,i}b_{i}+\sum_{i=1}^{t}\tilde{A}_{t+1,i}u_{i}+u_{t+1}
+$$
+
+This is  a **moving average** representation with time-varying coefficients.
+
+Just as system {eq}`eq:eqma` constitutes  a 
+**moving average** representation for $y$, system  {eq}`eq:eqar` constitutes  an **autoregressive** representation for $y$.
+
+
+
+
+## A Forward Looking Model
 
 Samuelson’s model is **backwards looking** in the sense that we give it **initial conditions** and let it
 run.

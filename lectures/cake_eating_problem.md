@@ -506,7 +506,8 @@ Combining this fact with {eq}`bellman_envelope` recovers the Euler equation.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: cep_ex1
 
 How does one obtain the expressions for the value function and optimal policy
 given in {eq}`crra_vstar` and {eq}`crra_opt_pol` respectively?
@@ -523,10 +524,10 @@ Starting from this conjecture, try to obtain the solutions {eq}`crra_vstar` and 
 
 In doing so, you will need to use the definition of the value function and the
 Bellman equation.
+```
 
-## Solutions
-
-### Exercise 1
+```{solution} cep_ex1
+:class: dropdown
 
 We start with the conjecture $c_t^*=\theta x_t$, which leads to a path
 for the state variable (cake size) given by
@@ -611,4 +612,4 @@ v^*(x_t) = \left(1-\beta^\frac{1}{\gamma}\right)^{-\gamma}u(x_t)
 $$
 
 Our claims are now verified.
-
+```

@@ -153,7 +153,7 @@ Selecting one year and stacking the two lower levels of the
 `MultiIndex` creates a cross-section of our panel data
 
 ```{code-cell} python3
-realwage['2015'].stack(level=(1, 2)).transpose().head()
+realwage.loc['2015'].stack(level=(1, 2)).transpose().head()
 ```
 
 For the rest of lecture, we will work with a dataframe of the hourly
@@ -398,13 +398,13 @@ We can also specify a level of the `MultiIndex` (in the column axis)
 to aggregate over
 
 ```{code-cell} python3
-merged.mean(level='Continent', axis=1).head()
+merged.groupby(level='Continent', axis=1).mean().head()
 ```
 
 We can plot the average minimum wages in each continent as a time series
 
 ```{code-cell} python3
-merged.mean(level='Continent', axis=1).plot()
+merged.groupby(level='Continent', axis=1).mean().plot()
 plt.title('Average real minimum wage')
 plt.ylabel('2015 USD')
 plt.xlabel('Year')
@@ -415,7 +415,7 @@ We will drop Australia as a continent for plotting purposes
 
 ```{code-cell} python3
 merged = merged.drop('Australia', level='Continent', axis=1)
-merged.mean(level='Continent', axis=1).plot()
+merged.groupby(level='Continent', axis=1).mean().plot()
 plt.title('Average real minimum wage')
 plt.ylabel('2015 USD')
 plt.xlabel('Year')
@@ -473,7 +473,7 @@ import seaborn as sns
 continents = grouped.groups.keys()
 
 for continent in continents:
-    sns.kdeplot(grouped.get_group(continent)['2015'].unstack(), label=continent, shade=True)
+    sns.kdeplot(grouped.get_group(continent).loc['2015'].unstack(), label=continent, shade=True)
 
 plt.title('Real minimum wages in 2015')
 plt.xlabel('US dollars')
@@ -487,15 +487,17 @@ This lecture has provided an introduction to some of pandas' more
 advanced features, including multiindices, merging, grouping and
 plotting.
 
-Other tools that may be useful in panel data analysis include [xarray](http://xarray.pydata.org/en/stable/), a python package that
+Other tools that may be useful in panel data analysis include [xarray](https://docs.xarray.dev/en/stable/), a python package that
 extends pandas to N-dimensional data structures.
 
 ## Exercises
 
-### Exercise 1
+```{exercise-start}
+:label: pp_ex1
+```
 
 In these exercises, you'll work with a dataset of employment rates
-in Europe by age and sex from [Eurostat](http://ec.europa.eu/eurostat/data/database).
+in Europe by age and sex from [Eurostat](https://ec.europa.eu/eurostat/data/database).
 
 The dataset can be accessed with the following link:
 
@@ -511,19 +513,12 @@ Start off by exploring the dataframe and the variables available in the
 
 Write a program that quickly returns all values in the `MultiIndex`.
 
-### Exercise 2
+```{exercise-end}
+```
 
-Filter the above dataframe to only include employment as a percentage of
-'active population'.
-
-Create a grouped boxplot using `seaborn` of employment rates in 2015
-by age group and sex.
-
-**Hint:** `GEO` includes both areas and countries.
-
-## Solutions
-
-### Exercise 1
+```{solution-start} pp_ex1
+:class: dropdown
+```
 
 ```{code-cell} python3
 employ = pd.read_csv(url3)
@@ -548,7 +543,31 @@ for name in employ.columns.names:
     print(name, employ.columns.get_level_values(name).unique())
 ```
 
-### Exercise 2
+```{solution-end}
+```
+
+```{exercise-start}
+:label: pp_ex2
+```
+
+Filter the above dataframe to only include employment as a percentage of
+'active population'.
+
+Create a grouped boxplot using `seaborn` of employment rates in 2015
+by age group and sex.
+
+```{hint}
+:class: dropdown
+
+`GEO` includes both areas and countries.
+```
+
+```{exercise-end}
+```
+
+```{solution-start} pp_ex2
+:class: dropdown
+```
 
 To easily filter by country, swap `GEO` to the top level and sort the
 `MultiIndex`
@@ -587,7 +606,7 @@ employ_f = employ_f.drop('Total', level='SEX', axis=1)
 ```
 
 ```{code-cell} python3
-box = employ_f['2015'].unstack().reset_index()
+box = employ_f.loc['2015'].unstack().reset_index()
 sns.boxplot(x="AGE", y=0, hue="SEX", data=box, palette=("husl"), showfliers=False)
 plt.xlabel('')
 plt.xticks(rotation=35)
@@ -597,3 +616,5 @@ plt.legend(bbox_to_anchor=(1,0.5))
 plt.show()
 ```
 
+```{solution-end}
+```

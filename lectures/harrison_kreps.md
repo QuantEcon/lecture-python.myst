@@ -33,7 +33,7 @@ In addition to what's in Anaconda, this lecture uses following libraries:
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 ```
 
 ## Overview
@@ -82,7 +82,6 @@ There is a fixed number $A$ of shares of an asset.
 
 Each share entitles its owner to a stream of dividends $\{d_t\}$ governed by a Markov chain defined on a state space $S \in \{0, 1\}$.
 
-Thus, the stock is traded **ex dividend**.
 
 The dividend obeys
 
@@ -94,9 +93,11 @@ d_t =
 \end{cases}
 $$
 
-The owner of a share at the beginning of time $t$ is entitled to the dividend paid at time $t$.
+An owner of a share at the end  of time $t$ and the beginning of time $t+1$ is entitled to the dividend paid at time $t+1$.
 
-The owner of the share at the beginning of time $t$ is also entitled to sell the share to another investor during time $t$.
+Thus, the stock is traded **ex dividend**.
+
+An owner of a share at the beginning of time $t+1$ is also entitled to sell the share to another investor during time $t+1$.
 
 Two types $h=a, b$ of investors differ only in their beliefs about a Markov transition matrix $P$ with typical element
 
@@ -154,7 +155,7 @@ An owner of the asset at the end of time $t$ is entitled to the dividend at time
 
 Both types of investors are risk-neutral and both have the same fixed discount factor $\beta \in (0,1)$.
 
-In our numerical example, we’ll set $\beta = .75$, just as Harrison and Kreps did.
+In our numerical example, we’ll set $\beta = .75$, just as Harrison and Kreps {cite}`HarrKreps1978` did.
 
 We’ll eventually study the consequences of two alternative assumptions about the number of shares $A$ relative to the resources that our two types of investors can invest in the stock.
 
@@ -169,7 +170,7 @@ In case 2, both types of investors always hold at least some of the asset.
 
 No short sales are allowed.
 
-This matters because it limits how  pessimists can express their opinion.
+This matters because it limits how  pessimists can express their opinions.
 
 * They **can** express themselves by selling their shares.
 * They **cannot** express themsevles  more loudly by artificially "manufacturing shares" -- that is, they cannot borrow shares from more optimistic investors and then immediately sell them.
@@ -181,9 +182,9 @@ The above specifications of the perceived transition matrices $P_a$ and $P_b$, t
 Remember that state $1$ is the high dividend state.
 
 * In state $0$, a type $a$ agent is more optimistic about next period's dividend than a type $b$ agent.
-* In state $1$, a type $b$ agent is more optimistic about next period's dividend.
+* In state $1$, a type $b$ agent is more optimistic about next period's dividend than a type $a$ agaub is.
 
-However, the stationary distributions $\pi_a = \begin{bmatrix} .57 & .43 \end{bmatrix}$ and $\pi_b = \begin{bmatrix} .43 & .57 \end{bmatrix}$ tell us that a type $B$ person is more optimistic about the dividend process in the long run than is a type $A$ person.
+However, the stationary distributions $\pi_a = \begin{bmatrix} .57 & .43 \end{bmatrix}$ and $\pi_b = \begin{bmatrix} .43 & .57 \end{bmatrix}$ tell us that a type $b$ person is more optimistic about the dividend process in the long run than is a type $a$ person.
 
 ### Information
 
@@ -216,14 +217,14 @@ The table reports  implications of Harrison and Kreps's specifications of $P_a, 
 ```{raw} html
 <div class="content-table"></div>
 ```
-|$ s_t $|0|1|
-|:---------------------:|:----:|:----:|
-|$ p_a $|1.33|1.22|
-|$ p_b $|1.45|1.91|
-|$ p_o $|1.85|2.08|
-|$ p_p $|1|1|
-|$ \hat{p}_a $|1.85|1.69|
-|$ \hat{p}_b $|1.69|2.08|
+|    $ s_t $    |   0   |   1   |
+| :-----------: | :---: | :---: |
+|    $ p_a $    | 1.33  | 1.22  |
+|    $ p_b $    | 1.45  | 1.91  |
+|    $ p_o $    | 1.85  | 2.08  |
+|    $ p_p $    |   1   |   1   |
+| $ \hat{p}_a $ | 1.85  | 1.69  |
+| $ \hat{p}_b $ | 1.69  | 2.08  |
 
 Here
 
@@ -256,7 +257,7 @@ The price today equals the expected discounted value of tomorrow's dividend and 
 
 $$
 p_h(s) = \beta \left( P_h(s,0) (0 + p_h(0)) + P_h(s,1) ( 1 + p_h(1)) \right), \quad s = 0, 1
-$$
+$$ (eq:assetpricehomog)
 
 These equations imply that the equilibrium price vector is
 
@@ -289,7 +290,7 @@ def price_single_beliefs(transition, dividend_payoff, β=.75):
 
 These equilibrium prices under homogeneous beliefs are important benchmarks for the subsequent analysis.
 
-* $p_h(s)$ tells what investor $h$ thinks is the "fundamental value" of the asset.
+* $p_h(s)$ tells what a type $h$ investor  thinks is the "fundamental value" of the asset.
 * Here "fundamental value" means the expected discounted present value of future dividends.
 
 We will compare these fundamental values of the asset with equilibrium values when traders have different beliefs.
@@ -317,7 +318,7 @@ In this case, the marginal investor who prices the asset is the more optimistic 
 
 for $s=0,1$.
 
-In the above equation, the $max$ on the right side is evidently over two prospective values of next period's payout
+In the above equation, the $max$ on the right side is over the two prospective values of next period's payout
 from owning the asset.
 
 The marginal investor who prices the asset in state $s$ is of type $a$ if
@@ -368,7 +369,7 @@ Nevertheless, the economy recurrently visits a state that makes each investor wa
 purchase the asset for more than he believes its future dividends are
 worth.
 
-The reason that an investor is willing to pay more than what he believes is warranted by fundamental value of the prospective dividend stream is he expects to have the option to sell the asset later to another investor who will value the asset more highly than he will.
+An investor is willing to pay more than what he believes is warranted by fundamental value of the prospective dividend stream because he expects to have the option later to sell the asset  to another investor who will value the asset more highly than he will then.
 
 * Investors of type $a$ are willing to pay the following price for the asset
 
@@ -396,7 +397,7 @@ Investors of type $a$ want to sell the asset in state $1$ while investors of typ
 
 * The asset changes hands whenever the state changes from $0$ to $1$ or from $1$ to $0$.
 * The valuations $\hat p_a(s)$ and $\hat p_b(s)$ are displayed in the fourth and fifth rows of the table.
-* Even the pessimistic investors who don't buy the asset think that it is worth more than they think future dividends are worth.
+* Even  pessimistic investors who don't buy the asset think that it is worth more than they think future dividends are worth.
 
 Here's code to solve for $\bar p$, $\hat p_a$ and $\hat p_b$ using the iterative method described above
 
@@ -498,15 +499,15 @@ def price_pessimistic_beliefs(transitions, dividend_payoff, β=.75,
 
 Scheinkman stresses these features of the Harrison-Kreps model:
 
-* Compared to the homogeneous beliefs setting leading to the pricing formula, high volume occurs when the Harrison-Kreps pricing formula prevails.
+* High volume occurs when the Harrison-Kreps pricing formula {eq}`hakr2` prevails.
 
-Type $a$ investors sell the entire stock of the asset to type $b$ investors every time the state switches from $s_t =0$ to $s_t =1$.
+* Type $a$ investors sell the entire stock of the asset to type $b$ investors every time the state switches from $s_t =0$ to $s_t =1$.
 
-Type $b$ investors sell the asset to type $a$ investors every time the state switches from $s_t = 1$ to $s_t =0$.
+* Type $b$ investors sell the asset to type $a$ investors every time the state switches from $s_t = 1$ to $s_t =0$.
 
 Scheinkman takes this as a strength of the model because he observes high volume during *famous bubbles*.
 
-* If the *supply* of the asset is increased sufficiently either physically (more "houses" are built) or artificially (ways are invented to short sell "houses"), bubbles end when the supply has grown enough to outstrip optimistic investors’ resources for purchasing the asset.
+* If the *supply* of the asset is increased sufficiently either physically (more "houses" are built) or artificially (ways are invented to short sell "houses"), bubbles end  when the asset supply has grown enough to outstrip optimistic investors’ resources for purchasing the asset.
 * If optimistic investors finance their purchases by borrowing, tightening leverage constraints can extinguish a bubble.
 
 Scheinkman extracts insights about the effects of financial regulations on bubbles.
@@ -515,21 +516,23 @@ He emphasizes how limiting short sales and limiting leverage have opposite effec
 
 ## Exercises
 
-### Exercise 1
+```{exercise-start}
+:label: hk_ex1
+```
 
 This exercise invites you to recreate the summary table using the functions we have built above.
 
 ```{raw} html
 <div class="content-table"></div>
 ```
-|$s_t$|0|1|
-|:---------------------:|:----:|:----:|
-|$p_a$|1.33|1.22|
-|$p_b$|1.45|1.91|
-|$p_o$|1.85|2.08|
-|$p_p$|1|1|
-|$\hat{p}_a$|1.85|1.69|
-|$\hat{p}_b$|1.69|2.08|
+|    $s_t$    |   0   |   1   |
+| :---------: | :---: | :---: |
+|    $p_a$    | 1.33  | 1.22  |
+|    $p_b$    | 1.45  | 1.91  |
+|    $p_o$    | 1.85  | 2.08  |
+|    $p_p$    |   1   |   1   |
+| $\hat{p}_a$ | 1.85  | 1.69  |
+| $\hat{p}_b$ | 1.69  | 2.08  |
 
 You will want first  to define the transition matrices and dividend payoff vector.
 
@@ -562,9 +565,12 @@ $$
 
 We'll use these transition matrices when we present our solution of exercise 1 below.
 
-## Solutions
+```{exercise-end}
+```
 
-### Exercise 1
+```{solution-start} hk_ex1
+:class: dropdown
+```
 
 First, we will obtain equilibrium price vectors with homogeneous beliefs, including when all
 investors are optimistic or pessimistic.
@@ -610,5 +616,7 @@ for p, label in zip(opt_beliefs, labels):
 Notice that the equilibrium price with heterogeneous beliefs is equal to the price under single beliefs
 with **permanently optimistic** investors - this is due to the marginal investor in the heterogeneous beliefs equilibrium always being the type who is  temporarily optimistic.
 
-[^f1]: By assuming that both types of agents always have "deep enough pockets" to purchase all of the asset, the model takes wealth dynamics off the table. The Harrison-Kreps model generates high trading volume when the state changes either from 0 to 1 or from 1 to 0.
+```{solution-end}
+```
 
+[^f1]: By assuming that both types of agents always have "deep enough pockets" to purchase all of the asset, the model takes wealth dynamics off the table. The Harrison-Kreps model generates high trading volume when the state changes either from 0 to 1 or from 1 to 0.

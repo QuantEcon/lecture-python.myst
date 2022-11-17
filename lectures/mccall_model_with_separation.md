@@ -33,7 +33,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 ```
 
 ## Overview
@@ -124,7 +124,9 @@ If he rejects, then he receives unemployment compensation $c$.
 
 The process then repeats.
 
-(Note: we do not allow for job search while employed---this topic is taken up in a {doc}`later lecture <jv>`.)
+```{note}
+We do not allow for job search while employed---this topic is taken up in a {doc}`later lecture <jv>`.
+```
 
 ## Solving the Model
 
@@ -497,7 +499,9 @@ Hence the reservation wage is lower.
 
 ## Exercises
 
-### Exercise 1
+```{exercise-start}
+:label: mmws_ex1
+```
 
 Reproduce all the reservation wage figures shown above.
 
@@ -510,9 +514,12 @@ beta_vals = np.linspace(0.8, 0.99, grid_size)  # discount factors
 alpha_vals = np.linspace(0.05, 0.5, grid_size) # separation rate
 ```
 
-## Solutions
+```{exercise-end}
+```
 
-### Exercise 1
+```{solution-start} mmws_ex1
+:class: dropdown
+```
 
 Here's the first figure.
 
@@ -568,5 +575,8 @@ ax.plot(alpha_vals, w_bar_vals, label=r'$\bar w$ as a function of $\alpha$')
 ax.legend()
 
 plt.show()
+```
+
+```{solution-end}
 ```
 

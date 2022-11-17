@@ -88,11 +88,11 @@ The basic idea is:
 
 1. Take an arbitary intial guess of $v$.
 1. Obtain an update $w$ defined by
-   
+
    $$
    w(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
    $$
-   
+
 1. Stop if $w$ is approximately equal to $v$, otherwise set
    $v=w$ and go back to step 2.
 
@@ -299,10 +299,9 @@ def compute_value_function(ce,
 
         v = v_new
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
-
-    if verbose and i < max_iter:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return v_new
@@ -482,7 +481,8 @@ This is due to
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: cen_ex1
 
 Try the following modification of the problem.
 
@@ -500,15 +500,11 @@ where $\alpha$ is a parameter satisfying $0 < \alpha < 1$.
 Make the required changes to value function iteration code and plot the value and policy functions.
 
 Try to reuse as much code as possible.
+```
 
-### Exercise 2
-
-Implement time iteration, returning to the original case (i.e., dropping the
-modification in the exercise above).
-
-## Solutions
-
-### Exercise 1
+```{solution-start} cen_ex1
+:class: dropdown
+```
 
 We need to create a class to hold our primitives and return the right hand side of the Bellman equation.
 
@@ -582,7 +578,21 @@ plt.show()
 
 Consumption is higher when $\alpha < 1$ because, at least for large $x$, the return to savings is lower.
 
-### Exercise 2
+```{solution-end}
+```
+
+
+```{exercise}
+:label: cen_ex2
+
+Implement time iteration, returning to the original case (i.e., dropping the
+modification in the exercise above).
+```
+
+
+```{solution-start} cen_ex2
+:class: dropdown
+```
 
 Here's one way to implement time iteration.
 
@@ -643,10 +653,9 @@ def iterate_euler_equation(ce,
 
         σ = σ_new
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
-
-    if verbose and i < max_iter:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return σ
@@ -670,3 +679,5 @@ ax.legend(fontsize=12)
 plt.show()
 ```
 
+```{solution-end}
+```

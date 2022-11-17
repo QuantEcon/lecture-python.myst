@@ -18,7 +18,7 @@ kernelspec:
 </div>
 ```
 
-# Cass-Koopmans Planning Problem
+# Cass-Koopmans Model
 
 ```{contents} Contents
 :depth: 2
@@ -26,12 +26,12 @@ kernelspec:
 
 ## Overview
 
-This lecture and lecture {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` describe a model that Tjalling Koopmans {cite}`Koopmans`
+This lecture and {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` describe a model that Tjalling Koopmans {cite}`Koopmans`
 and David Cass {cite}`Cass` used to analyze optimal growth.
 
 The model can be viewed as an extension of the model of Robert Solow
-described in [an earlier lecture](https://lectures.quantecon.org/py/python_oop.html)
-but adapted to make the saving rate the outcome of an optimal choice.
+described in [an earlier lecture](https://python-programming.quantecon.org/python_oop.html)
+but adapted to make the saving rate be a choice.
 
 (Solow assumed a constant saving rate determined outside the model.)
 
@@ -42,6 +42,17 @@ more general connection between a **planned economy** and a decentralized econom
 organized as a **competitive equilibrium**.
 
 This lecture is devoted to the planned economy version.
+
+In the planned economy, there are
+
+- no prices
+- no budget constraints
+
+Instead there is a dictator that tells people
+
+- what to produce
+- what to invest in physical capital
+- who is to consume what  and when
 
 The lecture uses important ideas including
 
@@ -66,21 +77,76 @@ import numpy as np
 
 Time is discrete and takes values $t = 0, 1 , \ldots, T$ where $T$ is  finite.
 
-(We'll study a limiting case in which  $T = + \infty$ before concluding).
+(We'll eventually study a limiting case in which  $T = + \infty$)
 
 A single good can either be consumed or invested in physical capital.
 
 The consumption good is not durable and depreciates completely if not
 consumed immediately.
 
-The capital good is durable but depreciates some each period.
+The capital good is durable but depreciates.
 
-We let $C_t$ be a nondurable consumption good at time $t$.
+We let $C_t$ be the total consumption of a nondurable  consumption good at time $t$.
 
 Let $K_t$ be the stock of physical capital at time $t$.
 
 Let $\vec{C}$ = $\{C_0,\dots, C_T\}$ and
 $\vec{K}$ = $\{K_0,\dots,K_{T+1}\}$.
+
+### Digression: an Aggregation Theory
+
+We use a concept of a representative consumer to be thought of as follows.
+
+There is a unit mass of identical consumers.
+
+For $\omega \in [0,1]$, consumption of consumer  is $c(\omega)$.
+
+Aggregate consumption is 
+
+$$ 
+C = \int_0^1 c(\omega) d \omega
+$$
+
+Consider the a welfare problem of choosing an allocation $\{c(\omega)\}$ across consumers to maximize
+
+$$
+ \int_0^1 u(c(\omega)) d \omega
+$$ 
+
+where $u(\cdot)$ is a concave utility function with $u' >0, u'' < 0$ and  maximization is subject to 
+
+$$ 
+C = \int_0^1 c(\omega) d \omega .
+$$ (eq:feas200)
+
+Form a Lagrangian $L = \int_0^1 u(c(\omega)) d \omega + \lambda [C - \int_0^1 c(\omega) d \omega ] $.
+
+Differentiate under the integral signs with respect to each $\omega$ to  obtain the first-order
+necessary condtions 
+
+$$
+u'(c(\omega)) = \lambda. 
+$$ 
+
+This condition implies that $c(\omega)$ equals a constant $c$ that is independent 
+of $\omega$.  
+
+To find $c$, use the  feasibility constraint {eq}`eq:feas200` to conclude that 
+
+$$ 
+c(\omega) = c = C.
+$$
+
+This line of argument indicates the special *aggregation theory* that lies beneath outcomes in which a representative consumer 
+consumes amount $C$.
+
+It appears often in aggregate economics. 
+
+We shall use it in this lecture and in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
+
+
+#### An  Economy
+
 
 A representative household is endowed with one unit of labor at each
 $t$ and likes the consumption good at each $t$.
@@ -153,7 +219,7 @@ $$
 \mathcal{L}(\vec{C} ,\vec{K} ,\vec{\mu} ) =
 \sum_{t=0}^T \beta^t\left\{ u(C_t)+ \mu_t
 \left(F(K_t,1) + (1-\delta) K_t- C_t - K_{t+1} \right)\right\}
-$$
+$$ (eq:Lagrangian201)
 
 and then pose the following min-max problem:
 
@@ -226,7 +292,7 @@ $$
 
 ### First-order necessary conditions
 
-We now compute **first order necessary conditions** for extremization of the Lagrangian:
+We now compute **first-order necessary conditions** for extremization of the Lagrangian {eq}`eq:Lagrangian201`:
 
 ```{math}
 :label: constraint1
@@ -255,7 +321,7 @@ K_{T+1}: \qquad -\mu_T \leq 0, \ \leq 0 \text{ if } K_{T+1}=0; \ =0 \text{ if } 
 In computing  {eq}`constraint3` we recognize that $K_t$ appears
 in both the time  $t$ and time $t-1$ feasibility constraints.
 
-{eq}`constraint4` comes from differentiating with respect
+Restrictions {eq}`constraint4` come from differentiating with respect
 to $K_{T+1}$ and applying the following **Karush-Kuhn-Tucker condition** (KKT)
 (see [Karush-Kuhn-Tucker conditions](https://en.wikipedia.org/wiki/Karush-Kuhn-Tucker_conditions)):
 
@@ -745,7 +811,7 @@ def plot_saving_rate(pp, c0, k0, T_arr, k_ter=0, k_ss=None, s_ss=None):
 plot_saving_rate(pp, 0.3, k_ss/3, [250, 150, 75, 50], k_ss=k_ss)
 ```
 
-## A Limiting Economy
+## A Limiting Infinite Horizon Economy
 
 We want to set $T = +\infty$.
 
@@ -800,15 +866,24 @@ state in which $f'(K)=\rho +\delta$.
 
 ### Exercise
 
+```{exercise}
+:label: ck1_ex1
+
 - Plot the optimal consumption, capital, and saving paths when the
   initial capital level begins at 1.5 times the steady state level
   as we shoot towards the steady state at $T=130$.
 - Why does the saving rate respond as it does?
+```
 
-### Solution
+```{solution-start} ck1_ex1
+:class: dropdown
+```
 
 ```{code-cell} python3
 plot_saving_rate(pp, 0.3, k_ss*1.5, [130], k_ter=k_ss, k_ss=k_ss, s_ss=s_ss)
+```
+
+```{solution-end}
 ```
 
 ## Concluding Remarks
@@ -816,12 +891,11 @@ plot_saving_rate(pp, 0.3, k_ss*1.5, [130], k_ter=k_ss, k_ss=k_ss, s_ss=s_ss)
 In {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`,  we study a decentralized version of an economy with exactly the same
 technology and preference structure as deployed here.
 
-In that lecture, we replace the  planner of this lecture with Adam Smith's **invisible hand**
+In that lecture, we replace the  planner of this lecture with Adam Smith's **invisible hand**.
 
-In place of quantity choices made by the planner, there are market prices somewhat produced by
-the invisible hand.
+In place of quantity choices made by the planner, there are market prices that are set by a mechanism outside the model, a so-called invisible hand.
 
-Market prices must adjust to reconcile distinct decisions that are made independently
+Equilibrium market prices must reconcile distinct decisions that are made independently
 by a representative household and a representative firm.
 
 The relationship between a command economy like the one studied in this lecture and a market economy like that

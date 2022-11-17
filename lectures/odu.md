@@ -30,7 +30,7 @@ In addition to what’s in Anaconda, this lecture deploys the libraries:
 ---
 tags: [hide-output]
 ---
-  !conda install -y quantecon
+  !pip install quantecon
   !pip install interpolation
 ```
 
@@ -97,7 +97,12 @@ At time $t$, our worker either
 The wage sequence ${W_t}$ is IID and generated from known density $q$.
 
 The worker aims to maximize the expected discounted sum of earnings
-$\mathbb{E} \sum_{t=0}^{\infty}\beta^t y_t$ The function $V$ satisfies the recursion
+$\mathbb{E} \sum_{t=0}^{\infty}\beta^t y_t$.
+
+Let $v(w)$ be the optimal value of the problem for a previously unemployed worker who has just received offer $w$ and is
+yet to decide whether to accept or reject the offer.
+
+The value  function $v$ satisfies the recursion
 
 ```{math}
 :label: odu_odu_pv
@@ -122,16 +127,34 @@ The model is as above, apart from the fact that
 - the worker learns about $q$ by starting with a prior and updating
   based on wage offers that he/she observes
 
-The worker knows there are two possible distributions $F$ and $G$ —
-with densities $f$ and $g$.
+The worker knows there are two possible distributions $F$ and $G$.
 
-At the start of time, “nature” selects $q$ to be either $f$ or $g$
-— the wage distribution from which the entire sequence ${W_t}$ will be
+These two distributions have  densities $f$ and $g$, repectively.
+
+Just before time starts,  “nature” selects $q$ to be either $f$ or $g$.
+
+This is then the wage distribution from which the entire sequence ${W_t}$ will be
 drawn.
 
-This choice is not observed by the worker, who puts prior probability $\pi_0$ on $f$ being chosen.
+The worker does not know which distribution nature has drawn, but the worker does know
+the two possible distributions $f$ and $g$.
 
-Update rule: worker's time $t$ estimate of the distribution is $\pi_t f + (1 - \pi_t) g$,
+The worker  puts a (subjective) prior probability $\pi_0$ on $f$ having been  chosen.
+
+The worker's time $0$ subjective distribution for the distribution of $W_0$ is
+
+$$
+\pi_0 f + (1 - \pi_0) g
+$$
+
+
+
+The  worker's time $t$ subjective belief about the  the distribution of $W_t$  is
+
+$$
+\pi_t f + (1 - \pi_t) g,
+$$
+
 where $\pi_t$ updates via
 
 ```{math}
@@ -228,8 +251,8 @@ fact, it should be decreasing in $\pi$ because
 - larger $\pi$ means more weight on $f$ and less on
   $g$
 
-Thus larger $\pi$ depresses the worker’s assessment of
-her future prospects, and relatively low current offers become more
+Thus,  larger $\pi$ depresses the worker’s assessment of
+her future prospects, so relatively low current offers become more
 attractive.
 
 **Summary:** We conjecture that the optimal policy is of the form
@@ -404,10 +427,9 @@ def solve_model(sp,
             print(f"Error at iteration {i} is {error}.")
         v = v_new
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
-
-    if verbose and i < max_iter:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
 
@@ -654,7 +676,8 @@ $\bar w$.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: odu_ex1
 
 Use the default parameters and `Q_factory` to compute an optimal
 policy.
@@ -664,10 +687,13 @@ policy [shown above](#Take-1:-Solution-by-VFI).
 
 Try experimenting with different parameters, and confirm that the change
 in the optimal policy coincides with your intuition.
+```
 
 ## Solutions
 
-### Exercise 1
+```{solution-start} odu_ex1
+:class: dropdown
+```
 
 This code solves the “Offer Distribution Unknown” model by iterating on
 a guess of the reservation wage function.
@@ -704,10 +730,9 @@ def solve_wbar(sp,
             print(f"Error at iteration {i} is {error}.")
         w = w_new
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
-
-    if verbose and i < max_iter:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return w_new
@@ -729,6 +754,9 @@ ax.text(0.7, 0.9, 'accept')
 ax.set(xlabel='$\pi$', ylabel='$w$')
 ax.grid()
 plt.show()
+```
+
+```{solution-end}
 ```
 
 ## Appendix A
@@ -1148,4 +1176,3 @@ after having acquired less information about the wage distribution.
 ```{code-cell} python3
 job_search_example(1, 1, 3, 1.2, c=0.1)
 ```
-

@@ -533,7 +533,7 @@ If $A$ and $B$ are two matrices, then their product $A B$ is formed by taking as
 $i,j$-th element the inner product of the $i$-th row of $A$ and the
 $j$-th column of $B$.
 
-There are many tutorials to help you visualize this operation, such as [this one](http://www.mathsisfun.com/algebra/matrix-multiplying.html), or the discussion on the [Wikipedia page](https://en.wikipedia.org/wiki/Matrix_multiplication).
+There are many tutorials to help you visualize this operation, such as [this one](https://www.mathsisfun.com/algebra/matrix-multiplying.html), or the discussion on the [Wikipedia page](https://en.wikipedia.org/wiki/Matrix_multiplication).
 
 If $A$ is $n \times k$ and $B$ is $j \times m$, then
 to multiply $A$ and $B$ we require $k = j$, and the
@@ -838,7 +838,7 @@ $x$ that makes the distance $\| y - Ax\|$ as small as possible.
 To solve this problem, one can use either calculus or the theory of orthogonal
 projections.
 
-The solution is known to be $\hat x = (A'A)^{-1}A'y$ --- see for example chapter 3 of [these notes](https://lectures.quantecon.org/_downloads/course_notes.pdf).
+The solution is known to be $\hat x = (A'A)^{-1}A'y$ --- see for example chapter 3 of [these notes](https://python.quantecon.org/_static/lecture_specific/linear_algebra/course_notes.pdf).
 
 ### More Columns than Rows
 
@@ -1151,13 +1151,13 @@ Then
 1. $\frac{\partial y'B z}{\partial y} = B z$
 1. $\frac{\partial y'B z}{\partial B} = y z'$
 
-Exercise 1 below asks you to apply these formulas.
+{ref}`la_ex1` below asks you to apply these formulas.
 
 ### Further Reading
 
-The documentation of the `scipy.linalg` submodule can be found [here](http://docs.scipy.org/doc/scipy/reference/linalg.html).
+The documentation of the `scipy.linalg` submodule can be found [here](https://docs.scipy.org/doc/scipy/reference/linalg.html).
 
-Chapters 2 and 3 of the [Econometric Theory](http://www.johnstachurski.net/emet.html) contains
+Chapters 2 and 3 of the [Econometric Theory](https://johnstachurski.net/emet.html) contains
 a discussion of linear algebra along the same lines as above, with solved exercises.
 
 If you don't mind a slightly abstract approach, a nice intermediate-level text on linear algebra
@@ -1165,7 +1165,9 @@ is {cite}`Janich1994`.
 
 ## Exercises
 
-### Exercise 1
+```{exercise-start}
+:label: la_ex1
+```
 
 Let $x$ be a given $n \times 1$ vector and consider the problem
 
@@ -1209,9 +1211,12 @@ As we will see, in economic contexts Lagrange multipliers often are shadow price
 If we don't care about the Lagrange multipliers, we can substitute the constraint into the objective function, and then just maximize $-(Ax + Bu)'P (Ax + Bu) - u' Q u$ with respect to $u$.  You can verify that this leads to the same maximizer.
 ```
 
-## Solutions
+```{exercise-end}
+```
 
-### Solution to Exercise 1
+```{solution-start} la_ex1
+:class: dropdown
+```
 
 We have an optimization problem:
 
@@ -1361,8 +1366,10 @@ Therefore, the solution to the optimization problem
 $v(x) = -x' \tilde{P}x$ follows the above result by denoting
 $\tilde{P} := A'PA - A'PB(Q + B'PB)^{-1}B'PA$
 
+```{solution-end}
+```
+
 [^fn_mdt]: Although there is a specialized matrix data type defined in NumPy, it's more standard to work with ordinary NumPy arrays.
 See [this discussion](https://python-programming.quantecon.org/numpy.html#matrix-multiplication).
 
 [^cfn]: Suppose that $\|S \| < 1$. Take any nonzero vector $x$, and let $r := \|x\|$. We have $\| Sx \| = r \| S (x/r) \| \leq r \| S \| < r = \| x\|$. Hence every point is pulled towards the origin.
-

@@ -29,7 +29,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!conda install -y quantecon
+!pip install quantecon
 !pip install interpolation
 ```
 
@@ -494,10 +494,9 @@ def solve_model_time_iter(model,        # Class with model information
             print(f"Error at iteration {i} is {error}.")
         a_vec, σ_vec = np.copy(a_new), np.copy(σ_new)
 
-    if i == max_iter:
+    if error > tol:
         print("Failed to converge!")
-
-    if verbose and i < max_iter:
+    elif verbose:
         print(f"\nConverged in {i} iterations.")
 
     return a_new, σ_new
@@ -591,9 +590,10 @@ diverge even in the highest state.
 
 ## Exercises
 
-### Exercise 1
+```{exercise}
+:label: ifpa_ex1
 
-Let's repeat our {ref}`earlier exercise <ifp_lrex>` on the long-run
+Let's repeat our {ref}`earlier exercise <ifp_ex2>` on the long-run
 cross sectional distribution of assets.
 
 In that exercise, we used a relatively simple income fluctuation model.
@@ -605,10 +605,11 @@ In particular, we failed to match the long right tail of the wealth distribution
 Your task is to try again, repeating the exercise, but now with our more sophisticated model.
 
 Use the default parameters.
+```
 
-## Solutions
-
-### Exercise 1
+```{solution-start} ifpa_ex1
+:class: dropdown
+```
 
 First we write a function to compute a long asset series.
 
@@ -678,3 +679,5 @@ ax.set(xlabel='assets')
 plt.show()
 ```
 
+```{solution-end}
+```

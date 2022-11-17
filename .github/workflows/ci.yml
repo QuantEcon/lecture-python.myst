@@ -1,34 +1,63 @@
 name: Build Project [using jupyter-book]
-on: [push]
+on: [pull_request]
 jobs:
-  tests:
+  deploy-runner:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: iterative/setup-cml@v1
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Deploy runner on EC2
+        env:
+          REPO_TOKEN: ${{ secrets.QUANTECON_SERVICES_PAT }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          cml runner launch \
+              --cloud=aws \
+              --cloud-region=us-west-2 \
+              --cloud-type=p3.2xlarge \
+              --labels=cml-gpu \
+              --cloud-hdd-size=40
+  preview:
+    needs: deploy-runner
+    runs-on: [self-hosted, cml-gpu]
+    container:
+      image: docker://nvidia/cuda:11.2.1-devel-ubuntu20.04
+      options: --gpus all
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - name: Setup Anaconda
         uses: conda-incubator/setup-miniconda@v2
         with:
           auto-update-conda: true
           auto-activate-base: true
           miniconda-version: 'latest'
-          python-version: 3.8
+          python-version: 3.9
           environment-file: environment.yml
           activate-environment: quantecon
-      - name: Install latex dependencies
+      - name: Install Jax and Upgrade CUDA
+        shell: bash -l {0}
         run: |
-          sudo apt-get -qq update
-          sudo apt-get install -y     \
+          pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+          nvidia-smi
+      - name: Install latex dependencies
+        shell: bash -l {0}
+        run: |
+          apt-get -qq update
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get install -y tzdata
+          apt-get install -y     \
             texlive-latex-recommended \
             texlive-latex-extra       \
             texlive-fonts-recommended \
             texlive-fonts-extra       \
             texlive-xetex             \
             latexmk                   \
-            xindy                     \
-            dvipng                    \
-            cm-super                  \
-            msttcorefonts
+            xindy
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
@@ -43,33 +72,34 @@ jobs:
           name: build-cache
           path: _build
       # Build Assets (Download Notebooks and PDF via LaTeX)
-      - name: Build PDF from LaTeX
-        shell: bash -l {0}
-        run: |
-          jb build lectures --builder pdflatex --path-output ./ -n --keep-going
-          mkdir -p _build/html/_pdf
-          cp -u _build/latex/*.pdf _build/html/_pdf
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
         run: |
-          jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter
+          jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -n -W --keep-going
           mkdir -p _build/html/_notebooks
           cp -u _build/jupyter/*.ipynb _build/html/_notebooks
-      # Build HTML (Website)
+      - name: Build PDF from LaTeX
+        shell: bash -l {0}
+        run: |
+          jb build lectures --builder pdflatex --path-output ./ -n -W --keep-going
+          mkdir _build/html/_pdf
+          cp -u _build/latex/*.pdf _build/html/_pdf
+      # Final Build of HTML
       - name: Build HTML
         shell: bash -l {0}
         run: |
-          jb build -W --keep-going lectures --path-output ./
-      - name: Save Build as Artifact
-        uses: actions/upload-artifact@v1
+          jb build lectures --path-output ./ -n -W --keep-going
+      - name: Upload Execution Reports
+        uses: actions/upload-artifact@v2
+        if: failure()
         with:
-          name: _build
-          path: _build
+          name: execution-reports
+          path: _build/html/reports
       - name: Preview Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.1
         with:
           publish-dir: '_build/html/'
-          production-branch: master
+          production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Preview Deploy from GitHub Actions"
         env:
