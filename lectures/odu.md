@@ -233,6 +233,7 @@ ax.legend()
 plt.show()
 ```
 
+(looking-forward)=
 ### Looking Forward
 
 What kind of optimal policy might result from
@@ -259,6 +260,7 @@ attractive.
 $\mathbb 1{w\geq \bar w(\pi) }$ for some
 decreasing function $\bar w$.
 
+(take-1-solution-by-vfi)=
 ## Take 1: Solution by VFI
 
 Let’s set about solving the model and see how our results match with our
@@ -468,7 +470,7 @@ plt.show()
 ```
 
 The results fit well with our intuition from section [looking
-forward](#Looking-Forward).
+forward](looking-forward).
 
 - The black line in the figure above corresponds to the function
   $\bar w(\pi)$ introduced there.
@@ -683,7 +685,7 @@ Use the default parameters and `Q_factory` to compute an optimal
 policy.
 
 Your result should coincide closely with the figure for the optimal
-policy [shown above](#Take-1:-Solution-by-VFI).
+policy [shown above](take-1-solution-by-vfi).
 
 Try experimenting with different parameters, and confirm that the change
 in the optimal policy coincides with your intuition.
