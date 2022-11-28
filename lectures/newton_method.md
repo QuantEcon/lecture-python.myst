@@ -20,7 +20,7 @@ kernelspec:
 ```{index} single: python
 ```
 
-# Application of Newton's Method
+# Using Newton's Method to Solve Economic Models
 
 ```{contents} Contents
 :depth: 2
@@ -50,6 +50,10 @@ plt.rcParams["figure.figsize"] = (10, 5.7)
 ```
 
 ## Fixed Point Computation Using Newton's Method
+
+In this section, we will solve the fixed point of the law of motion for capital under the Solow model.
+
+We will inspect the fixed point visually, solve it by successive approximation, and then apply Newton's method to achieve faster convergence.
 
 (solow)=
 ### The Solow Model
@@ -354,6 +358,10 @@ By observing the formula of Newton's method, it is easy to see the possibility t
 This naturally leads us to use Newton's method to solve multi-dimensional problems for which we will use the powerful auto-differentiation functionality in JAX to do intricate calculations.
 
 ## Multivariate Newton’s Method
+
+In this section, we will first introduce a two-good problem, present a visualization of the problem, and solve the equilibrium of the two-good market using both a root finder in `SciPy` and Newton's method.
+
+We will then expand the idea to a larger market with 5000 goods and compare the performance of the two methods again to show a significant improvement in performance using Netwon's method.
 
 ### A Two Goods Market Equilibrium
 
