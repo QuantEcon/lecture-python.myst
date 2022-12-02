@@ -41,11 +41,11 @@ In other words, an equilibrium is a root of the excess demand function.
 There are various computational techniques for solving for fixed points and
 roots.
 
-In this lecture we study a very important one called [Newton's
+In this lecture we study an important gradient-based technique called [Newton's
 method](https://en.wikipedia.org/wiki/Newton%27s_method).
 
 Newton's method does not always work but, in situations where it does,
-convergence is often very fast when compared to other methods.
+convergence is often fast when compared to other methods.
 
 The lecture will apply Newton's method in one-dimensional and
 multi-dimensional settings to solve fixed-point and root-finding problems. 
@@ -74,7 +74,7 @@ plt.rcParams["figure.figsize"] = (10, 5.7)
 
 ## Fixed Point Computation Using Newton's Method
 
-In this section, we will solve the fixed point of the law of motion for capital in the setting of the [Solow growth model](https://en.wikipedia.org/wiki/Solow%E2%80%93Swan_model).
+In this section we solve the fixed point of the law of motion for capital in the setting of the [Solow growth model](https://en.wikipedia.org/wiki/Solow%E2%80%93Swan_model).
 
 We will inspect the fixed point visually, solve it by successive approximation, and then apply Newton's method to achieve faster convergence.
 
@@ -181,8 +181,8 @@ plt.show()
 
 First, let's compute the fixed point using successive approximation.
 
-This elementary method simply involves repeatedly updating capital using the
-law of motion until it converges.
+In this case, successive approximation involves repeatedly updating capital
+using the law of motion until it converges.
 
 Here's a time series from a particular choice of $k_0$.
 
@@ -242,7 +242,7 @@ $$
 x_1=\frac{g\left(x_0\right)-g^{\prime}\left(x_0\right) x_0}{1-g^{\prime}\left(x_0\right)}
 $$
 
-Generalising the process above, Newton's method iterates on 
+Generalising the process above, Newton's fixed point method iterates on 
 
 ```{math}
 :label: newtons_method
@@ -315,18 +315,18 @@ params = create_solow_params()
 plot_trajectories(params)
 ```
 
-We can see that Newton's Method reaches convergence faster than the successive approximation.
+We can see that Newton's method converges faster than successive approximation.
 
-The above fixed-point calculation can be seen as a root-finding problem since the computation of a fixed point can be seen as approximating $x^*$ iteratively such that $g(x^*) - x^* = 0$.
+The above fixed-point calculation is connected to root-finding because the computation of a fixed point of $g$ is equivalent to finding a root of $f(x) = g(x)-x$.
 
-We the formula [](motivation) can be rewritten in terms of $f(x)$
+The formula [](motivation) can be rewritten in terms of $f(x)$
 
 $$
 \hat{f}(x) \approx f\left(x_0\right)+f^{\prime}\left(x_0\right)\left(x-x_0\right)
 $$
 
 
-Assuming $f(x) = g(x) - x$, set $\hat{f}(x_1) = 0$ and solve for $x_1$ to get
+With $f(x) = g(x) - x$, set $\hat{f}(x_1) = 0$ and solve for $x_1$ to get
 
 $$
 x_1 = x_0 - \frac{ f(x_0) }{ f'(x_0) },
@@ -341,8 +341,6 @@ Therefore, generalizing the formula above, for one-dimensional root-finding prob
 x_{t+1} = x_t - \frac{ f(x_t) }{ f'(x_t) },
 \quad x_0 \text{ given}
 ```
-
-Root-finding formula is also a more frequently used iteration.
 
 The following code implements the iteration [](oneD-newton)
 
@@ -383,23 +381,26 @@ k_star_approx_newton
 
 The result confirms the descent we saw in the graphs above: a very accurate result is reached with only 5 iterations.
 
-The multi-dimensional variant will be left as an [exercise](newton_ex1).
 
-By observing the formula of Newton's method, it is easy to see the possibility to implement Newton's method using Jacobian when we move up the ladder to higher dimensions.
-
-This naturally leads us to use Newton's method to solve multi-dimensional problems for which we will use the powerful auto-differentiation functionality in JAX to do intricate calculations.
 
 ## Multivariate Newton’s Method
 
-In this section, we will first introduce a two-good problem, present a visualization of the problem, and solve the equilibrium of the two-good market using both a root finder in `SciPy` and Newton's method.
+In this section, we introduce a two-good problem, present a
+visualization of the problem, and solve for the equilibrium of the two-good market
+using both a root finder in `SciPy` and Newton's method.
 
-We will then expand the idea to a larger market with 5000 goods and compare the performance of the two methods again to show a significant improvement in performance using Netwon's method.
+We then expand the idea to a larger market with 5000 goods and compare the
+performance of the two methods again to show a significant improvement in
+performance using Netwon's method.
+
 
 ### A Two Goods Market Equilibrium
 
-Before moving to higher dimensional settings, let's compute the market equilibrium of a two-good problem.
+Before moving to higher dimensional settings, let's compute the market
+equilibrium of a two-good problem.
 
-We first consider a market for two related products, good 0 and good 1, with price vector $p = (p_0, p_1)$
+We first consider a market for two related products, good 0 and good 1, with
+price vector $p = (p_0, p_1)$
 
 Supply of good $i$ at price $p$,
 
@@ -556,7 +557,6 @@ We see the black contour line of zero, which tells us when $e_i(p)=0$.
 
 For a price vector $p$ such that $e_i(p)=0$ we know that good $i$ is in equilibrium (demand equals supply).
 
-
 If these two contour lines cross at some price vector $p^*$, then $p^*$ is an equilibrium price vector.
 
 
@@ -645,7 +645,7 @@ np.max(np.abs(e(p, A, b, c)))
 
 #### Using Newton's Method
 
-Now let's use Newton's method to compute the equilibrium price using the multivariate version of Newton's method:
+Now let's use Newton's method to compute the equilibrium price using the multivariate version of Newton's method
 
 ```{math}
 :label: multi-newton
@@ -653,9 +653,13 @@ Now let's use Newton's method to compute the equilibrium price using the multiva
 p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)
 ```
 
-starting from some initial guess of the price vector $p_0$. (Here $J_e(p_n)$ is the Jacobian of $e$ evaluated at $p_n$.)
+This is a multivariate version of [](oneD-newton)
 
-Instead of coding Jacobian by hand, We use the `jax.jacobian()` function to auto-differentiate and calculate Jacobian.
+(Here $J_e(p_n)$ is the Jacobian of $e$ evaluated at $p_n$.)
+
+The iteration starts from some initial guess of the price vector $p_0$. 
+
+Here, instead of coding Jacobian by hand, We use the `jax.jacobian()` function to auto-differentiate and calculate Jacobian.
 
 With only slight modification, we can generalize [our previous attempt](first_newton_attempt) to multi-dimensional problems
 
@@ -684,7 +688,7 @@ def e(p, A, b, c):
     return jnp.exp(- jnp.dot(A, p)) + c - b * jnp.sqrt(p)
 ```
 
-We find the convergence is reached in 4 steps
+We find the algorithm terminates in 4 steps
 
 ```{code-cell} python3
 %%time
