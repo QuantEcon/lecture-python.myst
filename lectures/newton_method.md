@@ -28,11 +28,34 @@ kernelspec:
 
 ## Overview
 
-The lecture will apply Newton's method in one-dimensional and multi-dimensional settings to solve fixed-point and root-finding problems. 
+Many economic problems involve solving for [fixed
+points](https://en.wikipedia.org/wiki/Fixed_point_(mathematics)) and
+[roots](https://en.wikipedia.org/wiki/Zero_of_a_function) (sometimes called
+"zeros") of functions.
+
+For example, in a simple supply and demand model, an equilibrium price is one
+that makes excess demand zero.  
+
+In other words, an equilibrium is a root of the excess demand function.
+
+There are various computational techniques for solving for fixed points and
+roots.
+
+In this lecture we study a very important one called [Newton's
+method](https://en.wikipedia.org/wiki/Newton%27s_method).
+
+Newton's method does not always work but, in situations where it does,
+convergence is often very fast when compared to other methods.
+
+The lecture will apply Newton's method in one-dimensional and
+multi-dimensional settings to solve fixed-point and root-finding problems. 
 
 We first consider an easy, one-dimensional fixed point problem where we know the solution and solve it using both successive approximation and Newton's method.
 
 Then we generalize Newton's method to multi-dimensional settings to solve market equilibrium with multiple goods.
+
+At the end of the lecture we leverage the power of JAX and automatic
+differentiation to solve a very high-dimensional equilibrium problem.
 
 In each step, we will refine and improve our implementation and compare our results to alternative methods.
 
@@ -51,14 +74,15 @@ plt.rcParams["figure.figsize"] = (10, 5.7)
 
 ## Fixed Point Computation Using Newton's Method
 
-In this section, we will solve the fixed point of the law of motion for capital under the Solow model.
+In this section, we will solve the fixed point of the law of motion for capital in the setting of the [Solow growth model](https://en.wikipedia.org/wiki/Solow%E2%80%93Swan_model).
 
 We will inspect the fixed point visually, solve it by successive approximation, and then apply Newton's method to achieve faster convergence.
 
 (solow)=
 ### The Solow Model
 
-Assuming Cobb-Douglas production technology, the law of motion for capital is
+In the Solow growth model, assuming Cobb-Douglas production technology and
+zero population growth, the law of motion for capital is
 
 ```{math}
 :label: motion_law
@@ -73,8 +97,13 @@ where
 
 In this example, we will try to calculate the fixed point for the law of motion for capital.
 
+In other words, we seek a $k^*$ such that $g(k^*)=k^*$, where $g(k) :=
+sAk^\alpha + (1-\delta)k$.
 
-Since we will use these parameters in many functions for this example, let's store our parameters in [`namedtuple`](https://docs.python.org/3/library/collections.html#collections.namedtuple) to help us keep our code clean and concise.
+* $k^*$ is called a [steady state](https://en.wikipedia.org/wiki/Steady_state)
+  because $k_t = k^*$ implies $k_{t+1} = k^*$.
+
+Let's store our parameters in [`namedtuple`](https://docs.python.org/3/library/collections.html#collections.namedtuple) to help us keep our code clean and concise.
 
 ```{code-cell} python3
 SolowParameters = namedtuple("SolowParameters", ('A', 's', 'α', 'δ'))
@@ -88,7 +117,7 @@ def create_solow_params(A=2.0, s=0.3, α=0.3, δ=0.4):
     return SolowParameters(A=A, s=s, α=α, δ=δ)
 ```
 
-The next two functions implements the law of motion [](motion_law) and the true fixed point $k^*$.
+The next two functions implement the law of motion [](motion_law) and the true fixed point $k^*$.
 
 ```{code-cell} python3
 def g(k, params):
@@ -151,6 +180,9 @@ plt.show()
 #### Successive Approximation
 
 First, let's compute the fixed point using successive approximation.
+
+This elementary method simply involves repeatedly updating capital using the
+law of motion until it converges.
 
 Here's a time series from a particular choice of $k_0$.
 
