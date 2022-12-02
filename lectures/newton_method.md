@@ -120,7 +120,7 @@ In other words, we seek a $k^* > 0$ such that $g(k^*)=k^*$.
 
 Using pencil and paper to solve $g(k)=k$, you will be able to confirm that
 
-$$ k^* = \left(\frac{s * A}{δ}\right)^{1/(1 - α)}  $$
+$$ k^* = \left(\frac{s A}{δ}\right)^{1/(1 - α)}  $$
 
 ### Implementation
 
@@ -258,7 +258,8 @@ we start with a guess $x_0$ of the fixed
 point and then update by solving for the fixed point of a tangent line at
 $x_0$.
 
-To begin with, we recall that the first order approximation of $g$ at $x_0$ is
+To begin with, we recall that the first-order approximation of $g$ at $x_0$
+(i.e., the first order Taylor approximation of $g$ at $x_0$) is
 the function
 
 ```{math}
@@ -364,7 +365,7 @@ the problem of finding fixed points.
 
 ### Newton's Method for Zeros
 
-Let's suppose we want to find an $x$ such that $f(x)=0$ for some given
+Let's suppose we want to find an $x$ such that $f(x)=0$ for some smooth
 function $f$ mapping real numbers to real numbers.
 
 Suppose we have a guess $x_0$ and we want to update it to a new point $x_1$.
@@ -737,14 +738,14 @@ With only slight modification, we can generalize [our previous attempt](first_ne
 ```{code-cell} python3
 def newton(f, x_0, tol=1e-5, max_iter=10):
     x = x_0
-    iteration = jax.jit(lambda x: x - jnp.linalg.solve(jax.jacobian(f)(x), f(x)))
+    q = jax.jit(lambda x: x - jnp.linalg.solve(jax.jacobian(f)(x), f(x)))
     error = tol + 1
     n = 0
     while error > tol:
         n+=1
         if(n > max_iter):
             raise Exception('Max iteration reached without convergence')
-        y = iteration(x)
+        y = q(x)
         if(any(jnp.isnan(y))):
             raise Exception('Solution not found with NaN generated')
         error = jnp.linalg.norm(x - y)
@@ -782,6 +783,8 @@ However, things will change when we move to higher dimensional problems.
 
 Our next step is to investigate a large market with 5,000 goods.
 
+To handle this large problem we will use Google JAX.
+
 The excess demand function is essentially the same, but now the matrix $A$ is $5000 \times 5000$ and the parameter vectors $b$ and $c$ are $5000 \times 1$.
 
 
@@ -800,7 +803,7 @@ b = jnp.ones(dim)
 c = jnp.ones(dim)
 ```
 
-Here's the same demand function using `jax.numpy`:
+Here is essentially the same demand function we applied before, but now using `jax.numpy` for the calculations.
 
 ```{code-cell} python3
 def e(p, A, b, c):
@@ -813,7 +816,9 @@ Here's our initial condition
 init_p = jnp.ones(dim)
 ```
 
-Newton's method reaches a relatively small error within 10 seconds
+By leveraging the power of Newton's method, JAX accelerated linear algebra,
+automatic differentiation, and a GPU, we obtain a relatively small error for
+this very large problem in just a few seconds:
 
 ```{code-cell} python3
 %%time
@@ -824,7 +829,8 @@ p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
 np.max(np.abs(e(p, A, b, c)))
 ```
 
-With the same tolerance, the `root` function would cost minutes to run with jacobian supplied
+With the same tolerance, SciPy's `root` function takes much longer to run,
+even with the Jacobian supplied.
 
 
 ```{code-cell} python3
@@ -842,6 +848,8 @@ np.max(np.abs(e(p, A, b, c)))
 ```
 
 The result is also less accurate.
+
+
 
 ## Exercises
 
