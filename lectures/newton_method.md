@@ -28,13 +28,45 @@ kernelspec:
 
 ## Overview
 
-The lecture will apply Newton's method in one-dimensional and multi-dimensional settings to solve fixed-point and root-finding problems. 
+Many economic problems involve finding [fixed
+points](https://en.wikipedia.org/wiki/Fixed_point_(mathematics)) or
+[zeros](https://en.wikipedia.org/wiki/Zero_of_a_function) (sometimes called
+"roots") of functions.
 
-We first consider an easy, one-dimensional fixed point problem where we know the solution and solve it using both successive approximation and Newton's method.
+For example, in a simple supply and demand model, an equilibrium price is one
+that makes excess demand zero.  
 
-Then we generalize Newton's method to multi-dimensional settings to solve market equilibrium with multiple goods.
+In other words, an equilibrium is a zero of the excess demand function.
 
-In each step, we will refine and improve our implementation and compare our results to alternative methods.
+There are various computational techniques for solving for fixed points and
+zeros.
+
+In this lecture we study an important gradient-based technique called [Newton's
+method](https://en.wikipedia.org/wiki/Newton%27s_method).
+
+Newton's method does not always work but, in situations where it does,
+convergence is often fast when compared to other methods.
+
+The lecture will apply Newton's method in one-dimensional and
+multi-dimensional settings to solve fixed-point and zero-finding problems. 
+
+* When finding the fixed point of a function $f$, Newton's method updates
+  an existing guess of the fixed point by solving for the fixed point of a
+  linear approximation to the function $f$.
+
+* When finding the zero of a function $f$, Newton's method updates
+  an existing guess by solving for the zero of a linear approximation to
+  the function $f$.
+
+To build intuition, we first consider an easy, one-dimensional fixed point
+problem where we know the solution and solve it using both successive
+approximation and Newton's method.
+
+Then we apply Newton's method to multi-dimensional settings to solve
+market for equilibria with multiple goods.
+
+At the end of the lecture we leverage the power of JAX and automatic
+differentiation to solve a very high-dimensional equilibrium problem.
 
 We use the following imports in this lecture
 
@@ -49,38 +81,56 @@ import jax.numpy as jnp
 plt.rcParams["figure.figsize"] = (10, 5.7)
 ```
 
+
 ## Fixed Point Computation Using Newton's Method
 
-In this section, we will solve the fixed point of the law of motion for capital under the Solow model.
+In this section we solve the fixed point of the law of motion for capital in
+the setting of the [Solow growth
+model](https://en.wikipedia.org/wiki/Solow%E2%80%93Swan_model).
 
-We will inspect the fixed point visually, solve it by successive approximation, and then apply Newton's method to achieve faster convergence.
+We will inspect the fixed point visually, solve it by successive
+approximation, and then apply Newton's method to achieve faster convergence.
 
 (solow)=
 ### The Solow Model
 
-Assuming Cobb-Douglas production technology, the law of motion for capital is
+In the Solow growth model, assuming Cobb-Douglas production technology and
+zero population growth, the law of motion for capital is
 
 ```{math}
 :label: motion_law
-k_{t+1} = sAk_t^\alpha + (1-\delta) k_t
+    k_{t+1} = g(k_t) \quad \text{where} \quad
+    g(k) := sAk^\alpha + (1-\delta) k
 ```
 
-where
+Here
+
 - $k_t$ is capital stock per worker,
 - $A, \alpha>0$ are production parameters, $\alpha<1$
 - $s>0$ is a savings rate, and
 - $\delta \in(0,1)$ is a rate of depreciation
 
-In this example, we will try to calculate the fixed point for the law of motion for capital.
+In this example, we wish to calculate the unique strictly positive fixed point
+of $g$, the law of motion for capital.
 
+In other words, we seek a $k^* > 0$ such that $g(k^*)=k^*$.
 
-Since we will use these parameters in many functions for this example, let's store our parameters in [`namedtuple`](https://docs.python.org/3/library/collections.html#collections.namedtuple) to help us keep our code clean and concise.
+* such a $k^*$ is called a [steady state](https://en.wikipedia.org/wiki/Steady_state),
+  since $k_t = k^*$ implies $k_{t+1} = k^*$.
+
+Using pencil and paper to solve $g(k)=k$, you will be able to confirm that
+
+$$ k^* = \left(\frac{s A}{δ}\right)^{1/(1 - α)}  $$
+
+### Implementation
+
+Let's store our parameters in [`namedtuple`](https://docs.python.org/3/library/collections.html#collections.namedtuple) to help us keep our code clean and concise.
 
 ```{code-cell} python3
 SolowParameters = namedtuple("SolowParameters", ('A', 's', 'α', 'δ'))
 ```
 
-This function creates a `namedtuple` of the right type and has default parameter values.
+This function creates a suitable `namedtuple` with default parameter values.
 
 ```{code-cell} python3
 def create_solow_params(A=2.0, s=0.3, α=0.3, δ=0.4):
@@ -88,7 +138,7 @@ def create_solow_params(A=2.0, s=0.3, α=0.3, δ=0.4):
     return SolowParameters(A=A, s=s, α=α, δ=δ)
 ```
 
-The next two functions implements the law of motion [](motion_law) and the true fixed point $k^*$.
+The next two functions implement the law of motion [](motion_law) and store the true fixed point $k^*$.
 
 ```{code-cell} python3
 def g(k, params):
@@ -148,9 +198,15 @@ plot_45(params, ax)
 plt.show()
 ```
 
+We see that $k^*$ is indeed the unique positive fixed point.
+
+
 #### Successive Approximation
 
-First, let's compute the fixed point using successive approximation.
+First let's compute the fixed point using successive approximation.
+
+In this case, successive approximation means repeatedly updating capital
+from some initial state $k_0$ using the law of motion.
 
 Here's a time series from a particular choice of $k_0$.
 
@@ -179,7 +235,7 @@ ax.set_ylim(0, 3)
 plt.show()
 ```
 
-Since we are iterating on $g$, we are implementing successive approximation
+Let's see the output for a long time series.
 
 ```{code-cell} python3
 k_series = compute_iterates(k_0, g, params, n=10_000)
@@ -187,30 +243,38 @@ k_star_approx = k_series[-1]
 k_star_approx
 ```
 
+This is close to the true value.
+
 (solved_k)=
 ```{code-cell} python3
 k_star
 ```
 
+
 #### Newton's Method 
 
-To implement Newton's method, we propose an initial value $x_0$ as fixed point, and then iterate towards the fixed point $x^*$ where $x^* = g(x^*)$.
+In general, when applying Newton's fixed point method to some function $g$, 
+we start with a guess $x_0$ of the fixed
+point and then update by solving for the fixed point of a tangent line at
+$x_0$.
 
-To begin with, we know that 
+To begin with, we recall that the first-order approximation of $g$ at $x_0$
+(i.e., the first order Taylor approximation of $g$ at $x_0$) is
+the function
 
 ```{math}
 :label: motivation
 
-\hat{g}(x) \approx g\left(x_0\right)+g^{\prime}\left(x_0\right)\left(x-x_0\right)
+\hat g(x) \approx g(x_0)+g'(x_0)(x-x_0)
 ```
 
-Set $\hat{g}(x_1) = x_1$ and solve for $x_1$ to get
+We solve for the fixed point of $\hat g$ by calculating the $x_1$ that solves
 
 $$
-x_1=\frac{g\left(x_0\right)-g^{\prime}\left(x_0\right) x_0}{1-g^{\prime}\left(x_0\right)}
+x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
 $$
 
-Generalising the process above, Newton's method iterates on 
+Generalising the process above, Newton's fixed point method iterates on 
 
 ```{math}
 :label: newtons_method
@@ -229,6 +293,7 @@ g'(k) = \alpha s A k^{\alpha-1} + (1-\delta)
 
 ```
 
+Let's define this:
 
 ```{code-cell} python3
 def Dg(k, params):
@@ -283,66 +348,99 @@ params = create_solow_params()
 plot_trajectories(params)
 ```
 
-We can see that Newton's Method reaches convergence faster than the successive approximation.
+We can see that Newton's method converges faster than successive approximation.
 
-The above fixed-point calculation can be seen as a root-finding problem since the computation of a fixed point can be seen as approximating $x^*$ iteratively such that $g(x^*) - x^* = 0$.
 
-We the formula [](motivation) can be rewritten in terms of $f(x)$
+## Root-Finding in One Dimension
+
+In the previous section we computed fixed points.
+
+In fact Newton's method is more commonly associated with the problem of
+finding zeros of functions.
+
+Let's discuss this "root-finding" problem and then show how it is connected to
+the problem of finding fixed points.
+
+
+
+### Newton's Method for Zeros
+
+Let's suppose we want to find an $x$ such that $f(x)=0$ for some smooth
+function $f$ mapping real numbers to real numbers.
+
+Suppose we have a guess $x_0$ and we want to update it to a new point $x_1$.
+
+As a first step, we take the first-order approximation of $f$ around $x_0$:
 
 $$
-\hat{f}(x) \approx f\left(x_0\right)+f^{\prime}\left(x_0\right)\left(x-x_0\right)
+\hat f(x) \approx f\left(x_0\right)+f^{\prime}\left(x_0\right)\left(x-x_0\right)
 $$
 
+Now we solve for the zero of $\hat f$.  
 
-Assuming $f(x) = g(x) - x$, set $\hat{f}(x_1) = 0$ and solve for $x_1$ to get
+In particular, we set $\hat{f}(x_1) = 0$ and solve for $x_1$ to get
 
 $$
 x_1 = x_0 - \frac{ f(x_0) }{ f'(x_0) },
 \quad x_0 \text{ given}
 $$
 
-Therefore, generalizing the formula above, for one-dimensional root-finding problems, Newton's method iterates on
+Generalizing the formula above, for one-dimensional zero-finding problems, Newton's method iterates on
 
 ```{math}
 :label: oneD-newton
-
 x_{t+1} = x_t - \frac{ f(x_t) }{ f'(x_t) },
 \quad x_0 \text{ given}
 ```
-
-Root-finding formula is also a more frequently used iteration.
 
 The following code implements the iteration [](oneD-newton)
 
 (first_newton_attempt)=
 ```{code-cell} python3
-def newton(f, Df, x_0, tol, params=params, maxIter=10):
+def newton(f, Df, x_0, tol=1e-7, max_iter=100_000):
     x = x_0
 
-    # Implement the root-finding formula
-    iteration = lambda x, params: x - f(x, params)/Df(x, params)
+    # Implement the zero-finding formula
+    def q(x):
+        return x - f(x) / Df(x)
 
     error = tol + 1
     n = 0
     while error > tol:
-        n+=1
-        if(n > maxIter):
+        n += 1
+        if(n > max_iter):
             raise Exception('Max iteration reached without convergence')
-        y = iteration(x, params)
-        error = jnp.abs(x - y)
+        y = q(x)
+        error = np.abs(x - y)
         x = y
         print(f'iteration {n}, error = {error:.5f}')
-    print('\n' + f'Result = {x} \n')
     return x
 ```
 
+Numerous libraries implement Newton's method in one dimension, including
+SciPy, so the code is just for illustrative purposes.
+
+(That said, when we want to apply Newton's method using techniques such as
+automatic differentiation or GPU acceleration, it will be helpful to know how
+to implement Newton's method ourselves.)
+
+
+### Application to Finding Fixed Points
+
+Now consider again the Solow fixed-point calculation, where we solve for $k$
+satisfying $g(k) = k$.
+
+We can convert to this to a zero-finding problem by setting $f(x) := g(x)-x$.
+
+Any zero of $f$ is clearly a fixed point of $g$.
+
+Let's apply this idea to the Solow problem
+
 ```{code-cell} python3
-# Apply our transformation
-k_star_approx_newton = newton(
-                        f=lambda x, params: g(x, params) - x,
-                        Df=lambda x, params: Dg(x, params) - 1,
-                        x_0=0.8,
-                        tol=1e-7)
+params = create_solow_params()
+k_star_approx_newton = newton(f=lambda x: g(x, params) - x,
+                              Df=lambda x: Dg(x, params) - 1,
+                              x_0=0.8)
 ```
 
 ```{code-cell} python3
@@ -351,23 +449,26 @@ k_star_approx_newton
 
 The result confirms the descent we saw in the graphs above: a very accurate result is reached with only 5 iterations.
 
-The multi-dimensional variant will be left as an [exercise](newton_ex1).
 
-By observing the formula of Newton's method, it is easy to see the possibility to implement Newton's method using Jacobian when we move up the ladder to higher dimensions.
-
-This naturally leads us to use Newton's method to solve multi-dimensional problems for which we will use the powerful auto-differentiation functionality in JAX to do intricate calculations.
 
 ## Multivariate Newton’s Method
 
-In this section, we will first introduce a two-good problem, present a visualization of the problem, and solve the equilibrium of the two-good market using both a root finder in `SciPy` and Newton's method.
+In this section, we introduce a two-good problem, present a
+visualization of the problem, and solve for the equilibrium of the two-good market
+using both a zero finder in `SciPy` and Newton's method.
 
-We will then expand the idea to a larger market with 5000 goods and compare the performance of the two methods again to show a significant improvement in performance using Netwon's method.
+We then expand the idea to a larger market with 5,000 goods and compare the
+performance of the two methods again.
+
+We will see a significant performance gain when using Netwon's method.
+
 
 ### A Two Goods Market Equilibrium
 
-Before moving to higher dimensional settings, let's compute the market equilibrium of a two-good problem.
+Let's start by computing the market equilibrium of a two-good problem.
 
-We first consider a market for two related products, good 0 and good 1, with price vector $p = (p_0, p_1)$
+We consider a market for two related products, good 0 and good 1, with
+price vector $p = (p_0, p_1)$
 
 Supply of good $i$ at price $p$,
 
@@ -524,7 +625,6 @@ We see the black contour line of zero, which tells us when $e_i(p)=0$.
 
 For a price vector $p$ such that $e_i(p)=0$ we know that good $i$ is in equilibrium (demand equals supply).
 
-
 If these two contour lines cross at some price vector $p^*$, then $p^*$ is an equilibrium price vector.
 
 
@@ -540,7 +640,7 @@ It seems there is an equilibrium close to $p = (1.6, 1.5)$.
 
 #### Using a Multidimensional Root Finder
 
-To solve for $p^*$ more precisely, we use a root-finding algorithm from `scipy.optimize`.
+To solve for $p^*$ more precisely, we use a zero-finding algorithm from `scipy.optimize`.
 
 We supply $p = (1, 1)$ as our initial guess.
 
@@ -548,7 +648,7 @@ We supply $p = (1, 1)$ as our initial guess.
 init_p = np.ones(2)
 ```
 
-This uses the [modified Powell method](https://docs.scipy.org/doc/scipy/reference/optimize.root-hybr.html#optimize-root-hybr) to find the root
+This uses the [modified Powell method](https://docs.scipy.org/doc/scipy/reference/optimize.root-hybr.html#optimize-root-hybr) to find the zero
 
 ```{code-cell} python3
 %%time
@@ -570,7 +670,10 @@ np.max(np.abs(e(p, A, b, c)))
 
 This is indeed a very small error.
 
-In most cases, for root-finding algorithms applied to smooth functions, supplying the Jacobian of the function leads to better convergence properties.
+
+#### Adding Gradient Information
+
+In many cases, for zero-finding algorithms applied to smooth functions, supplying the [Jacobian](https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant) of the function leads to better convergence properties.
 
 Here we manually calculate the elements of the Jacobian
 
@@ -611,9 +714,10 @@ p = solution.x
 np.max(np.abs(e(p, A, b, c)))
 ```
 
+
 #### Using Newton's Method
 
-Now let's use Newton's method to compute the equilibrium price using the multivariate version of Newton's method:
+Now let's use Newton's method to compute the equilibrium price using the multivariate version of Newton's method
 
 ```{math}
 :label: multi-newton
@@ -621,23 +725,27 @@ Now let's use Newton's method to compute the equilibrium price using the multiva
 p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)
 ```
 
-starting from some initial guess of the price vector $p_0$. (Here $J_e(p_n)$ is the Jacobian of $e$ evaluated at $p_n$.)
+This is a multivariate version of [](oneD-newton)
 
-Instead of coding Jacobian by hand, We use the `jax.jacobian()` function to auto-differentiate and calculate Jacobian.
+(Here $J_e(p_n)$ is the Jacobian of $e$ evaluated at $p_n$.)
+
+The iteration starts from some initial guess of the price vector $p_0$. 
+
+Here, instead of coding Jacobian by hand, We use the `jax.jacobian()` function to auto-differentiate and calculate the Jacobian.
 
 With only slight modification, we can generalize [our previous attempt](first_newton_attempt) to multi-dimensional problems
 
 ```{code-cell} python3
-def newton(f, x_0, tol=1e-5, maxIter=10):
+def newton(f, x_0, tol=1e-5, max_iter=10):
     x = x_0
-    iteration = jax.jit(lambda x: x - jnp.linalg.solve(jax.jacobian(f)(x), f(x)))
+    q = jax.jit(lambda x: x - jnp.linalg.solve(jax.jacobian(f)(x), f(x)))
     error = tol + 1
     n = 0
     while error > tol:
         n+=1
-        if(n > maxIter):
+        if(n > max_iter):
             raise Exception('Max iteration reached without convergence')
-        y = iteration(x)
+        y = q(x)
         if(any(jnp.isnan(y))):
             raise Exception('Solution not found with NaN generated')
         error = jnp.linalg.norm(x - y)
@@ -652,7 +760,7 @@ def e(p, A, b, c):
     return jnp.exp(- jnp.dot(A, p)) + c - b * jnp.sqrt(p)
 ```
 
-We find the convergence is reached in 4 steps
+We find the algorithm terminates in 4 steps
 
 ```{code-cell} python3
 %%time
@@ -673,13 +781,15 @@ However, things will change when we move to higher dimensional problems.
 
 ### A High-Dimensional Problem
 
-Our next step is to investigate a larger market with 5000 goods.
+Our next step is to investigate a large market with 5,000 goods.
+
+To handle this large problem we will use Google JAX.
 
 The excess demand function is essentially the same, but now the matrix $A$ is $5000 \times 5000$ and the parameter vectors $b$ and $c$ are $5000 \times 1$.
 
 
 ```{code-cell} python3
-dim = 5000
+dim = 5_000
 np.random.seed(123)
 
 # Create a random matrix A and normalize the rows to sum to one
@@ -693,7 +803,7 @@ b = jnp.ones(dim)
 c = jnp.ones(dim)
 ```
 
-Here's the same demand function using `jax.numpy`:
+Here is essentially the same demand function we applied before, but now using `jax.numpy` for the calculations.
 
 ```{code-cell} python3
 def e(p, A, b, c):
@@ -706,7 +816,9 @@ Here's our initial condition
 init_p = jnp.ones(dim)
 ```
 
-Newton's method reaches a relatively small error within 10 seconds
+By leveraging the power of Newton's method, JAX accelerated linear algebra,
+automatic differentiation, and a GPU, we obtain a relatively small error for
+this very large problem in just a few seconds:
 
 ```{code-cell} python3
 %%time
@@ -717,7 +829,8 @@ p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
 np.max(np.abs(e(p, A, b, c)))
 ```
 
-With the same tolerance, the `root` function would cost minutes to run with jacobian supplied
+With the same tolerance, SciPy's `root` function takes much longer to run,
+even with the Jacobian supplied.
 
 
 ```{code-cell} python3
@@ -736,13 +849,15 @@ np.max(np.abs(e(p, A, b, c)))
 
 The result is also less accurate.
 
+
+
 ## Exercises
 
 ```{exercise-start}
 :label: newton_ex1
 ```
 
-Consider a three-dimensional extension of the same fixed point problem we have solved [before](solow) with
+Consider a three-dimensional extension of the Solow fixed point problem with
 
 $$
 A = \begin{pmatrix}
@@ -754,7 +869,16 @@ A = \begin{pmatrix}
 s = 0.2, \quad α = 0.5, \quad δ = 0.8
 $$
 
-In this exercise, solve the fixed point using Newton's method with the following initial values:
+As before the law of motion is
+
+```{math}
+    k_{t+1} = g(k_t) \quad \text{where} \quad
+    g(k) := sAk^\alpha + (1-\delta) k
+```
+
+However $k_t$ is now a $3 \times 1$ vector.
+
+Solve for the fixed point using Newton's method with the following initial values:
 
 $$
 \begin{aligned}
@@ -767,7 +891,7 @@ $$
 ````{hint} 
 :class: dropdown
 
-- The computation of fixed point can be seen as computing $k^*$ such that $f(k^*) - k^* = 0$.
+- The computation of the fixed point is equivalent to computing $k^*$ such that $f(k^*) - k^* = 0$.
 
 - If you are unsure about your solution, you can start with the solved example:
 
@@ -837,7 +961,7 @@ We find that the results are invariant to the starting values given the well-def
 
 But the number of iterations it takes to converge is dependent on the starting values.
 
-Substitute it back to the formulate to check our last result
+Let substitute the output back to the formulate to check our last result
 
 ```{code-cell} python3
 multivariate_solow(k) - k
