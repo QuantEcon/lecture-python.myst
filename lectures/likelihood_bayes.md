@@ -53,7 +53,7 @@ We'll begin by loading some Python modules.
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from numba import vectorize, njit
+from numba import vectorize, njit, prange
 from math import gamma
 import pandas as pd
 
