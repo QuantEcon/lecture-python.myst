@@ -713,7 +713,6 @@ plt.show()
 
 
 
-**Drilling down a little bit**
 
 For the preceding ensemble that assumed $\pi_0 = .5$, the following graph shows two  paths of
 $w_t$'s and the $\pi_t$ sequences that gave rise to them.
@@ -762,20 +761,20 @@ table
 The fraction of simulations for which $\pi_{t}$  had converged to $1$ is indeed always  close  to $\pi_{-1}$, as anticipated.
 
 
+## Drilling Down a Little Bit
 
+To understand how the local dynamics of $\pi_t$ behaves, it is enlightening to consult the  variance of $\pi_{t}$ conditional on $\pi_{t-1}$.
 
-
-### Conditional Variance of Subjective Distribution
-
-We can use a Monte Carlo simulation to approximate the conditional variance of $\pi_{t+1}$ under the
-subjective distribution:
-
+Under the subjective distribution this conditional variance is defined as
+  
 $$
 \sigma^2(\pi_t | \pi_{t-1})  = \int \Bigl[  { \pi_{t-1} f(w) \over \pi_{t-1} f(w) + (1-\pi_{t-1})g(w)  } - \pi_{t-1} \Bigr]^2
  \Bigl[ \pi_{t-1} f(w) + (1-\pi_{t-1})g(w) \Bigr]  d w
 $$
 
-We approximate this for  a grid of points $\pi_{t-1} \in [0,1]$.
+We can use  a Monte Carlo simulation to approximate this conditional variance. 
+
+We approximate it for  a grid of points $\pi_{t-1} \in [0,1]$.
 
 Then we'll plot it.
 
@@ -807,17 +806,11 @@ ax.set_ylabel('$\sigma^{2}(\pi_{t}\\vert \pi_{t-1})$')
 plt.show()
 ```
 
-Notice how the conditional variance approaches $0$ for $\pi_{t-1}$ near  either $0$ or $1$, where
-the agent is almost sure that $w_t$ is drawn from $F$ or from $G$.
+The shape of the the conditional variance as a function of $\pi_{t-1}$ is informative about the behavior of sample paths of $\{\pi_t\}$.
 
-```{code-cell} ipython3
+Notice how the conditional variance approaches $0$ for $\pi_{t-1}$ near  either $0$ or $1$.
 
-```
-
-
-
-
-
+In each of these reasons, the agent is almost sure that $w_t$ is drawn from $F$ or from $G$.
 
 ## Sequels
 
