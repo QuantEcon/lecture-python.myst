@@ -810,7 +810,7 @@ The shape of the the conditional variance as a function of $\pi_{t-1}$ is inform
 
 Notice how the conditional variance approaches $0$ for $\pi_{t-1}$ near  either $0$ or $1$.
 
-In each of these reasons, the agent is almost sure that $w_t$ is drawn from $F$ or from $G$.
+The conditional variance is nearly zero only when the agent  is almost sure that $w_t$ is drawn from $F$,  or is almost sure it is drawn from $G$.
 
 ## Sequels
 
