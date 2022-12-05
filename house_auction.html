@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>78. Multiple Good Allocation Mechanisms &#8212; Quantitative Economics with Python</title>
+    <title>79. Multiple Good Allocation Mechanisms &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -96,13 +96,13 @@ const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/house_auction.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="79. Troubleshooting" href="troubleshooting.html" />
-    <link rel="prev" title="77. First-Price and Second-Price Auctions" href="two_auctions.html" />
+    <link rel="next" title="80. Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="78. First-Price and Second-Price Auctions" href="two_auctions.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -152,106 +152,106 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   78.1. Overview
+   79.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#ascending-bids-auction-for-multiple-goods">
-   78.2. Ascending Bids Auction for Multiple Goods
+   79.2. Ascending Bids Auction for Multiple Goods
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-benevolent-planner">
-   78.3. A Benevolent Planner
+   79.3. A Benevolent Planner
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#equivalence-of-allocations">
-   78.4. Equivalence of Allocations
+   79.4. Equivalence of Allocations
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#ascending-bid-auction">
-   78.5. Ascending Bid Auction
+   79.5. Ascending Bid Auction
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#basic-setting">
-     78.5.1. Basic Setting
+     79.5.1. Basic Setting
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pseudocode">
-   78.6. Pseudocode
+   79.6. Pseudocode
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#an-example">
-   78.7. An Example
+   79.7. An Example
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#round-1">
-     78.7.1. round 1
+     79.7.1. round 1
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#round-2">
-     78.7.2. round 2
+     79.7.2. round 2
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#round-3">
-     78.7.3. round 3
+     79.7.3. round 3
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#round-4">
-     78.7.4. round 4
+     79.7.4. round 4
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#round-5">
-     78.7.5. round 5
+     79.7.5. round 5
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-python-class">
-   78.8. A Python Class
+   79.8. A Python Class
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#robustness-checks">
-   78.9. Robustness Checks
+   79.9. Robustness Checks
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-groves-clarke-mechanism">
-   78.10. A Groves-Clarke Mechanism
+   79.10. A Groves-Clarke Mechanism
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#an-example-solved-by-hand">
-   78.11. An Example Solved by Hand
+   79.11. An Example Solved by Hand
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#another-python-class">
-   78.12. Another Python Class
+   79.12. Another Python Class
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#elaborations">
-     78.12.1. Elaborations
+     79.12.1. Elaborations
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#social-cost">
-     78.12.2. Social Cost
+     79.12.2. Social Cost
     </a>
    </li>
   </ul>
@@ -302,7 +302,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <div class="tex2jax_ignore mathjax_ignore section" id="multiple-good-allocation-mechanisms">
-<h1><span class="section-number">78. </span>Multiple Good Allocation Mechanisms<a class="headerlink" href="#multiple-good-allocation-mechanisms" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">79. </span>Multiple Good Allocation Mechanisms<a class="headerlink" href="#multiple-good-allocation-mechanisms" title="Permalink to this headline">¶</a></h1>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install prettytable
@@ -310,14 +310,18 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (3.5.0)
-Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from prettytable) (0.2.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (3.5.0)
+Requirement already satisfied: wcwidth in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from prettytable) (0.2.5)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
+
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="overview">
-<h2><span class="section-number">78.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">79.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture describes two mechanisms for allocating <span class="math notranslate nohighlight">\(n\)</span> private goods (“houses”)  to <span class="math notranslate nohighlight">\(m\)</span> people (“buyers”).</p>
 <p>We assume that  <span class="math notranslate nohighlight">\(m &gt; n\)</span> so that there are more potential buyers than there are houses.</p>
 <p>Prospective buyers regard the houses  as <strong>substitutes</strong>.</p>
@@ -339,7 +343,7 @@ Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/l
 <p>We begin with  overviews of the two mechanisms.</p>
 </div>
 <div class="section" id="ascending-bids-auction-for-multiple-goods">
-<h2><span class="section-number">78.2. </span>Ascending Bids Auction for Multiple Goods<a class="headerlink" href="#ascending-bids-auction-for-multiple-goods" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">79.2. </span>Ascending Bids Auction for Multiple Goods<a class="headerlink" href="#ascending-bids-auction-for-multiple-goods" title="Permalink to this headline">¶</a></h2>
 <p>An auction is administered by an <strong>auctioneer</strong></p>
 <p>The auctioneer has an <span class="math notranslate nohighlight">\(n \times 1\)</span> vector <span class="math notranslate nohighlight">\(r\)</span> of reservation prices on the <span class="math notranslate nohighlight">\(n\)</span> houses.</p>
 <p>The auctioneer sells house <span class="math notranslate nohighlight">\(i\)</span> only if the final price bid for it exceeds <span class="math notranslate nohighlight">\(r_i\)</span></p>
@@ -358,7 +362,7 @@ Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/l
 <p>In this auction,  person <span class="math notranslate nohighlight">\(j\)</span> never tells anyone else his/her private values <span class="math notranslate nohighlight">\(v_{ij}\)</span></p>
 </div>
 <div class="section" id="a-benevolent-planner">
-<h2><span class="section-number">78.3. </span>A Benevolent Planner<a class="headerlink" href="#a-benevolent-planner" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">79.3. </span>A Benevolent Planner<a class="headerlink" href="#a-benevolent-planner" title="Permalink to this headline">¶</a></h2>
 <p>This mechanism is designed so that all prospective buyers voluntarily choose to reveal their private values to a <strong>social planner</strong> who uses them to construct a socially optimal allocation.</p>
 <p>Among all feasible allocations,  a <strong>socially optimal allocation</strong> maximizes the sum of  private values across all prospective buyers.</p>
 <p>The planner tells everyone in advance how he/she will allocate houses based on the matrix of values that prospective buyers report.</p>
@@ -366,16 +370,16 @@ Requirement already satisfied: wcwidth in /usr/share/miniconda3/envs/quantecon/l
 <p>After the planner receives everyone’s vector of private values, the planner deploys a <strong>sequential</strong> algorithm to determine an <strong>allocation</strong> of houses and a set of <strong>fees</strong> that he charges awardees  for the negative <strong>externality</strong> that their presence impose on other prospective buyers.</p>
 </div>
 <div class="section" id="equivalence-of-allocations">
-<h2><span class="section-number">78.4. </span>Equivalence of Allocations<a class="headerlink" href="#equivalence-of-allocations" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">79.4. </span>Equivalence of Allocations<a class="headerlink" href="#equivalence-of-allocations" title="Permalink to this headline">¶</a></h2>
 <p>Remarkably, these two mechanisms can produce virtually identical allocations.</p>
 <p>We construct Python code for both mechanism.</p>
 <p>We also work out some examples by hand or almost by hand.</p>
 <p>Next, let’s dive down into the details.</p>
 </div>
 <div class="section" id="ascending-bid-auction">
-<h2><span class="section-number">78.5. </span>Ascending Bid Auction<a class="headerlink" href="#ascending-bid-auction" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">79.5. </span>Ascending Bid Auction<a class="headerlink" href="#ascending-bid-auction" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="basic-setting">
-<h3><span class="section-number">78.5.1. </span>Basic Setting<a class="headerlink" href="#basic-setting" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">79.5.1. </span>Basic Setting<a class="headerlink" href="#basic-setting" title="Permalink to this headline">¶</a></h3>
 <p>We start with  a more detailed description of the setting.</p>
 <ul class="simple">
 <li><p>A seller owns <span class="math notranslate nohighlight">\(n\)</span> houses that he wants to sell for the maximum possible amounts to a  set of <span class="math notranslate nohighlight">\(m\)</span> prospective eligible buyers.</p></li>
@@ -405,7 +409,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 <div class="section" id="pseudocode">
-<h2><span class="section-number">78.6. </span>Pseudocode<a class="headerlink" href="#pseudocode" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">79.6. </span>Pseudocode<a class="headerlink" href="#pseudocode" title="Permalink to this headline">¶</a></h2>
 <p>Here is a quick sketch of a possible simple structure for our Python code</p>
 <p><strong>Inputs:</strong></p>
 <ul class="simple">
@@ -487,7 +491,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 <div class="section" id="an-example">
-<h2><span class="section-number">78.7. </span>An Example<a class="headerlink" href="#an-example" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">79.7. </span>An Example<a class="headerlink" href="#an-example" title="Permalink to this headline">¶</a></h2>
 <p>Before building a Python class, let’s step by step solve things almost “by hand”  to grasp  how the auction proceeds.</p>
 <p>A step-by-step procedure also helps reduce bugs, especially when the value matrix is peculiar (e.g. the differences between values are negligible, a column containing identical values or multiple buyers have the same valuation etc.).</p>
 <p>Fortunately, our auction  behaves well and  robustly with various peculiar matrices.</p>
@@ -623,7 +627,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 <div class="section" id="round-1">
-<h3><span class="section-number">78.7.1. </span>round 1<a class="headerlink" href="#round-1" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">79.7.1. </span>round 1<a class="headerlink" href="#round-1" title="Permalink to this headline">¶</a></h3>
 <p><strong>submit bid</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -819,7 +823,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 <div class="section" id="round-2">
-<h3><span class="section-number">78.7.2. </span>round 2<a class="headerlink" href="#round-2" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">79.7.2. </span>round 2<a class="headerlink" href="#round-2" title="Permalink to this headline">¶</a></h3>
 <p>From the second round on, the auction proceeds differently from the first round.</p>
 <p>Now only active losers (those who have positive surplus values) have  an incentive to submit bids to displace temporary winners from the previous round.</p>
 <div class="cell docutils container">
@@ -944,7 +948,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 <div class="section" id="round-3">
-<h3><span class="section-number">78.7.3. </span>round 3<a class="headerlink" href="#round-3" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">79.7.3. </span>round 3<a class="headerlink" href="#round-3" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">,</span><span class="n">bid_info</span> <span class="o">=</span> <span class="n">submit_bid</span><span class="p">(</span><span class="n">loser_list</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">bid_info</span><span class="p">)</span>
@@ -1010,7 +1014,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 <div class="section" id="round-4">
-<h3><span class="section-number">78.7.4. </span>round 4<a class="headerlink" href="#round-4" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">79.7.4. </span>round 4<a class="headerlink" href="#round-4" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">,</span><span class="n">bid_info</span> <span class="o">=</span> <span class="n">submit_bid</span><span class="p">(</span><span class="n">loser_list</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">bid_info</span><span class="p">)</span>
@@ -1077,7 +1081,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 <div class="section" id="round-5">
-<h3><span class="section-number">78.7.5. </span>round 5<a class="headerlink" href="#round-5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">79.7.5. </span>round 5<a class="headerlink" href="#round-5" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">,</span><span class="n">bid_info</span> <span class="o">=</span> <span class="n">submit_bid</span><span class="p">(</span><span class="n">loser_list</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">bid_info</span><span class="p">)</span>
@@ -1173,7 +1177,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 </div>
 </div>
 <div class="section" id="a-python-class">
-<h2><span class="section-number">78.8. </span>A Python Class<a class="headerlink" href="#a-python-class" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">79.8. </span>A Python Class<a class="headerlink" href="#a-python-class" title="Permalink to this headline">¶</a></h2>
 <p>Above we simulated an ascending bid auction step by step.</p>
 <p>When defining  functions, we repeatedly computed some intermediate objects because our Python function loses track of variables once the  function is executed.</p>
 <p>That of course led  to redundancy in our code</p>
@@ -1642,7 +1646,7 @@ The total revenue is 10.00
 </div>
 </div>
 <div class="section" id="robustness-checks">
-<h2><span class="section-number">78.9. </span>Robustness Checks<a class="headerlink" href="#robustness-checks" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">79.9. </span>Robustness Checks<a class="headerlink" href="#robustness-checks" title="Permalink to this headline">¶</a></h2>
 <p>Let’s do some stress testing of our code by applying it to  auctions characterized by different matrices of private values.</p>
 <p><strong>1. number of houses = number of buyers</strong></p>
 <div class="cell docutils container">
@@ -2045,9 +2049,7 @@ The losers are
 
 
 Round 8
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The bid information is
+The bid information is
 +--------------+-----+-----+-----+
 | House Number |  1  |  2  |  0  |
 +--------------+-----+-----+-----+
@@ -2232,7 +2234,9 @@ The losers are
 
 
 Round 6
-The bid information is
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The bid information is
 +--------------+-----+-----+
 | House Number |  1  |  2  |
 +--------------+-----+-----+
@@ -2379,7 +2383,7 @@ The auction can not start because of high reservation prices
 </div>
 </div>
 <div class="section" id="a-groves-clarke-mechanism">
-<h2><span class="section-number">78.10. </span>A Groves-Clarke Mechanism<a class="headerlink" href="#a-groves-clarke-mechanism" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">79.10. </span>A Groves-Clarke Mechanism<a class="headerlink" href="#a-groves-clarke-mechanism" title="Permalink to this headline">¶</a></h2>
 <p>We now decribe an alternative way for society to allocate <span class="math notranslate nohighlight">\(n\)</span>  houses to <span class="math notranslate nohighlight">\(m\)</span> possible buyers in a way that maximizes
 total value across all potential buyers.</p>
 <p>We continue to assume that each buyer can purchase at most one house.</p>
@@ -2410,7 +2414,7 @@ total value across all potential buyers.</p>
 </ul>
 </div>
 <div class="section" id="an-example-solved-by-hand">
-<h2><span class="section-number">78.11. </span>An Example Solved by Hand<a class="headerlink" href="#an-example-solved-by-hand" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">79.11. </span>An Example Solved by Hand<a class="headerlink" href="#an-example-solved-by-hand" title="Permalink to this headline">¶</a></h2>
 <p>Let’s see how our Groves-Clarke algorithm would work for the following simple  matrix <span class="math notranslate nohighlight">\(V\)</span> matrix of private values</p>
 <div class="math notranslate nohighlight">
 \[
@@ -2668,7 +2672,7 @@ V =\begin{bmatrix} 10 &amp; 9 &amp; 8 &amp; 7 &amp; 6 \cr
 </div>
 </div>
 <div class="section" id="another-python-class">
-<h2><span class="section-number">78.12. </span>Another Python Class<a class="headerlink" href="#another-python-class" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">79.12. </span>Another Python Class<a class="headerlink" href="#another-python-class" title="Permalink to this headline">¶</a></h2>
 <p>It is efficient to assemble our calculations in a single Python Class.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2798,7 +2802,7 @@ The surplus matrix:
 </div>
 </div>
 <div class="section" id="elaborations">
-<h3><span class="section-number">78.12.1. </span>Elaborations<a class="headerlink" href="#elaborations" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">79.12.1. </span>Elaborations<a class="headerlink" href="#elaborations" title="Permalink to this headline">¶</a></h3>
 <p>Here we use some additional notation designed to conform with standard notation in parts of the VCG literature.</p>
 <p>We want to verify that our pseudo code is indeed a <strong>pivot mechanism</strong>, also called a <strong>VCG</strong> (Vickrey-Clarke-Groves) mechanism.</p>
 <ul class="simple">
@@ -2812,17 +2816,17 @@ The surplus matrix:
 <p>Let <span class="math notranslate nohighlight">\(\check t_j(v)\)</span> the payment that the mechanism charges person <span class="math notranslate nohighlight">\(j\)</span>.</p>
 <p>The  VCG mechanism chooses the allocation</p>
 <div class="math notranslate nohighlight" id="equation-eq-gc1">
-<span class="eqno">(78.1)<a class="headerlink" href="#equation-eq-gc1" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(79.1)<a class="headerlink" href="#equation-eq-gc1" title="Permalink to this equation">¶</a></span>\[
 X(v)  = \operatorname{argmax}_{x \in X} \sum_{j=1}^m v_j(x)  
 \]</div>
 <p>and charges person <span class="math notranslate nohighlight">\(j\)</span> a “social cost”</p>
 <div class="math notranslate nohighlight" id="equation-eq-gc2">
-<span class="eqno">(78.2)<a class="headerlink" href="#equation-eq-gc2" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(79.2)<a class="headerlink" href="#equation-eq-gc2" title="Permalink to this equation">¶</a></span>\[
 \check t_j(v) = \max_{x \in  X} \sum_{k \neq j} v_k(x) -  \sum_{k \neq j} v_k(X(v)) 
 \]</div>
-<p>In our setting, equation <a class="reference internal" href="#equation-eq-gc1">(78.1)</a> says that the VCG allocation allocates houses to maximize the total value of the successful prospective buyers.</p>
-<p>In our setting, equation <a class="reference internal" href="#equation-eq-gc2">(78.2)</a> says that the mechanism charges people for the externality that their presence in society imposes on other prospective buyers.</p>
-<p>Thus, notice that according to equation <a class="reference internal" href="#equation-eq-gc2">(78.2)</a>:</p>
+<p>In our setting, equation <a class="reference internal" href="#equation-eq-gc1">(79.1)</a> says that the VCG allocation allocates houses to maximize the total value of the successful prospective buyers.</p>
+<p>In our setting, equation <a class="reference internal" href="#equation-eq-gc2">(79.2)</a> says that the mechanism charges people for the externality that their presence in society imposes on other prospective buyers.</p>
+<p>Thus, notice that according to equation <a class="reference internal" href="#equation-eq-gc2">(79.2)</a>:</p>
 <ul class="simple">
 <li><p>unsuccessful prospective buyers pay <span class="math notranslate nohighlight">\(0\)</span> because removing  them from “society” would not affect the allocation chosen by the mechanim</p></li>
 <li><p>successful prospective buyers pay the difference between the total value society could achieve without them present and the total value that others present in society do achieve under the mechanism.</p></li>
@@ -2831,7 +2835,7 @@ X(v)  = \operatorname{argmax}_{x \in X} \sum_{j=1}^m v_j(x)
 We want to compute <span class="math notranslate nohighlight">\(\check t_j\)</span> for <span class="math notranslate nohighlight">\(j = 1, \ldots, m\)</span> and compare with <span class="math notranslate nohighlight">\(p_j\)</span> from the second price auction.</p>
 </div>
 <div class="section" id="social-cost">
-<h3><span class="section-number">78.12.2. </span>Social Cost<a class="headerlink" href="#social-cost" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">79.12.2. </span>Social Cost<a class="headerlink" href="#social-cost" title="Permalink to this headline">¶</a></h3>
 <p>Using the GC_Mechanism class, we can  calculate the social cost of each buyer.</p>
 <p>Let’s see a simpler example with private value matrix</p>
 <div class="math notranslate nohighlight">
@@ -3115,6 +3119,11 @@ The social cost of buyer 2: 5.0
    7. Singular Value Decomposition (SVD)
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   8. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -3124,57 +3133,57 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="prob_matrix.html">
-   8. Elementary Probability with Matrices
+   9. Elementary Probability with Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   9. Univariate Time Series with Matrix Algebra
+   10. Univariate Time Series with Matrix Algebra
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   10. LLN and CLT
+   11. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   11. Two Meanings of Probability
+   12. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   12. Multivariate Hypergeometric Distribution
+   13. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   13. Multivariate Normal Distribution
+   14. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   14. Heavy-Tailed Distributions
+   15. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   15. Fault Tree Uncertainties
+   16. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   16. Introduction to Artificial Neural Networks
+   17. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   17. Randomized Response Surveys
+   18. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   18. Expected Utilities of Random Responses
+   19. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -3186,17 +3195,17 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   19. Linear Programming
+   20. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   20. Optimal Transport
+   21. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   21. Von Neumann Growth Model (and a Generalization)
+   22. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -3208,52 +3217,52 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   22. Dynamics in One Dimension
+   23. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   23. AR1 Processes
+   24. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   24. Finite Markov Chains
+   25. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   25. Inventory Dynamics
+   26. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   26. Linear State Space Models
+   27. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   27. Samuelson Multiplier-Accelerator
+   28. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   28. Kesten Processes and Firm Dynamics
+   29. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   29. Wealth Distribution Dynamics
+   30. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   30. A First Look at the Kalman Filter
+   31. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   31. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -3265,32 +3274,32 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   32. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   33. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   34. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   35. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   36. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   37. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -3302,52 +3311,52 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   38. Cass-Koopmans Model
+   39. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   39. Cass-Koopmans Competitive Equilibrium
+   40. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   40. Cake Eating I: Introduction to Optimal Saving
+   41. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   41. Cake Eating II: Numerical Methods
+   42. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   42. Optimal Growth I: The Stochastic Optimal Growth Model
+   43. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   43. Optimal Growth II: Accelerating the Code with Numba
+   44. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   44. Optimal Growth III: Time Iteration
+   45. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   45. Optimal Growth IV: The Endogenous Grid Method
+   46. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   46. The Income Fluctuation Problem I: Basic Model
+   47. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   47. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   48. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -3359,17 +3368,17 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   48. Non-Conjugate Priors
+   49. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   49. Posterior Distributions for  AR(1) Parameters
+   50. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   50. Forecasting  an AR(1) process
+   51. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -3381,37 +3390,37 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   51. Job Search VII: Search with Learning
+   52. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   52. Likelihood Ratio Processes
+   53. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   53. Computing Mean of a Likelihood Ratio Process
+   54. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   54. A Problem that Stumped Milton Friedman
+   55. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   55. Exchangeability and Bayesian Updating
+   56. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   56. Likelihood Ratio Processes and Bayesian Learning
+   57. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   57. Bayesian versus Frequentist Decision Rules
+   58. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -3423,32 +3432,32 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   58. LQ Control: Foundations
+   59. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   59. Lagrangian for LQ Control
+   60. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   60. Eliminating Cross Products
+   61. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   61. The Permanent Income Model
+   62. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   62. Permanent Income II: LQ Techniques
+   63. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   63. Production Smoothing via Inventories
+   64. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -3460,37 +3469,37 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   64. Schelling’s Segregation Model
+   65. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   65. A Lake Model of Employment and Unemployment
+   66. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   66. Rational Expectations Equilibrium
+   67. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   67. Stability in Linear Rational Expectations Models
+   68. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   68. Markov Perfect Equilibrium
+   69. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   69. Uncertainty Traps
+   70. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   70. The Aiyagari Model
+   71. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -3502,17 +3511,17 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   71. Asset Pricing: Finite State Models
+   72. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   72. Competitive Equilibria with Arrow Securities
+   73. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   73. Heterogeneous Beliefs and Bubbles
+   74. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -3524,17 +3533,17 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   74. Pandas for Panel Data
+   75. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   75. Linear Regression in Python
+   76. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   76. Maximum Likelihood Estimation
+   77. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -3546,12 +3555,12 @@ The social cost of buyer 2: 5.0
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   77. First-Price and Second-Price Auctions
+   78. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   78. Multiple Good Allocation Mechanisms
+   79. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -3563,17 +3572,17 @@ The social cost of buyer 2: 5.0
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   79. Troubleshooting
+   80. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   80. References
+   81. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   81. Execution Statistics
+   82. Execution Statistics
   </a>
  </li>
 </ul>

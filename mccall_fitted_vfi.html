@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>34. Job Search III: Fitted Value Function Iteration &#8212; Quantitative Economics with Python</title>
+    <title>35. Job Search III: Fitted Value Function Iteration &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -96,13 +96,13 @@ const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/mccall_fitted_vfi.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="35. Job Search IV: Correlated Wage Offers" href="mccall_correlated.html" />
-    <link rel="prev" title="33. Job Search II: Search and Separation" href="mccall_model_with_separation.html" />
+    <link rel="next" title="36. Job Search IV: Correlated Wage Offers" href="mccall_correlated.html" />
+    <link rel="prev" title="34. Job Search II: Search and Separation" href="mccall_model_with_separation.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -152,34 +152,34 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   34.1. Overview
+   35.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-algorithm">
-   34.2. The Algorithm
+   35.2. The Algorithm
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#value-function-iteration">
-     34.2.1. Value Function Iteration
+     35.2.1. Value Function Iteration
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#fitted-value-function-iteration">
-     34.2.2. Fitted Value Function Iteration
+     35.2.2. Fitted Value Function Iteration
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#implementation">
-   34.3. Implementation
+   35.3. Implementation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   34.4. Exercises
+   35.4. Exercises
   </a>
  </li>
 </ul>
@@ -232,7 +232,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="tex2jax_ignore mathjax_ignore section" id="job-search-iii-fitted-value-function-iteration">
-<h1><a class="toc-backref" href="#id3"><span class="section-number">34. </span>Job Search III: Fitted Value Function Iteration</a><a class="headerlink" href="#job-search-iii-fitted-value-function-iteration" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id3"><span class="section-number">35. </span>Job Search III: Fitted Value Function Iteration</a><a class="headerlink" href="#job-search-iii-fitted-value-function-iteration" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -255,36 +255,48 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
-Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.3)
-Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.4)
-Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
-Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
-Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
-Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (2.2.4)
-Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.23.4)
-Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (21.3)
-Requirement already satisfied: numba&gt;=0.47 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.56.3)
-Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.5.2)
-Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.9.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
-Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (63.4.1)
-Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: scipy&gt;=1.0.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
+Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
+Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
+
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (2.2.4)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.9.1)
+Requirement already satisfied: numba&gt;=0.47 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.56.4)
+Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.23.5)
+Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (21.3)
+Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.5.2)
+Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (63.4.1)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
+Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
+
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">34.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">35.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture we again study the <a class="reference internal" href="mccall_model_with_separation.html"><span class="doc">McCall job search model with separation</span></a>, but now with a continuous wage distribution.</p>
 <p>While we already considered continuous wage distributions briefly in the
 exercises of the <a class="reference internal" href="mccall_model.html"><span class="doc">first job search lecture</span></a>,
@@ -315,45 +327,45 @@ comes to applying value function iteration (VFI).</p>
 </div>
 </div>
 <div class="section" id="the-algorithm">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">34.2. </span>The Algorithm</a><a class="headerlink" href="#the-algorithm" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">35.2. </span>The Algorithm</a><a class="headerlink" href="#the-algorithm" title="Permalink to this headline">¶</a></h2>
 <p>The model is the same as the McCall model with job separation we <a class="reference internal" href="mccall_model_with_separation.html"><span class="doc">studied before</span></a>, except that the wage offer distribution is continuous.</p>
 <p>We are going to start with the two Bellman equations we obtained for the model with job separation after <a class="reference internal" href="mccall_model_with_separation.html#ast-mcm"><span class="std std-ref">a simplifying transformation</span></a>.</p>
 <p>Modified to accommodate continuous wage draws, they take the following form:</p>
 <div class="math notranslate nohighlight" id="equation-bell1mcmc">
-<span class="eqno">(34.1)<a class="headerlink" href="#equation-bell1mcmc" title="Permalink to this equation">¶</a></span>\[d = \int \max \left\{ v(w'), \,  u(c) + \beta d \right\} q(w') d w'\]</div>
+<span class="eqno">(35.1)<a class="headerlink" href="#equation-bell1mcmc" title="Permalink to this equation">¶</a></span>\[d = \int \max \left\{ v(w'), \,  u(c) + \beta d \right\} q(w') d w'\]</div>
 <p>and</p>
 <div class="math notranslate nohighlight" id="equation-bell2mcmc">
-<span class="eqno">(34.2)<a class="headerlink" href="#equation-bell2mcmc" title="Permalink to this equation">¶</a></span>\[v(w) = u(w) + \beta
+<span class="eqno">(35.2)<a class="headerlink" href="#equation-bell2mcmc" title="Permalink to this equation">¶</a></span>\[v(w) = u(w) + \beta
     \left[
         (1-\alpha)v(w) + \alpha d
     \right]\]</div>
 <p>The unknowns here are the function <span class="math notranslate nohighlight">\(v\)</span> and the scalar <span class="math notranslate nohighlight">\(d\)</span>.</p>
 <p>The difference between these and the pair of Bellman equations we previously worked on are</p>
 <ol class="simple">
-<li><p>in <a class="reference internal" href="#equation-bell1mcmc">(34.1)</a>, what used to be a sum over a finite number of wage values is an integral over an infinite set.</p></li>
-<li><p>The function <span class="math notranslate nohighlight">\(v\)</span> in <a class="reference internal" href="#equation-bell2mcmc">(34.2)</a> is defined over all <span class="math notranslate nohighlight">\(w \in \mathbb R_+\)</span>.</p></li>
+<li><p>in <a class="reference internal" href="#equation-bell1mcmc">(35.1)</a>, what used to be a sum over a finite number of wage values is an integral over an infinite set.</p></li>
+<li><p>The function <span class="math notranslate nohighlight">\(v\)</span> in <a class="reference internal" href="#equation-bell2mcmc">(35.2)</a> is defined over all <span class="math notranslate nohighlight">\(w \in \mathbb R_+\)</span>.</p></li>
 </ol>
-<p>The function <span class="math notranslate nohighlight">\(q\)</span> in <a class="reference internal" href="#equation-bell1mcmc">(34.1)</a> is the density of the wage offer distribution.</p>
+<p>The function <span class="math notranslate nohighlight">\(q\)</span> in <a class="reference internal" href="#equation-bell1mcmc">(35.1)</a> is the density of the wage offer distribution.</p>
 <p>Its support is taken as equal to <span class="math notranslate nohighlight">\(\mathbb R_+\)</span>.</p>
 <div class="section" id="value-function-iteration">
-<h3><span class="section-number">34.2.1. </span>Value Function Iteration<a class="headerlink" href="#value-function-iteration" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">35.2.1. </span>Value Function Iteration<a class="headerlink" href="#value-function-iteration" title="Permalink to this headline">¶</a></h3>
 <p>In theory, we should now proceed as follows:</p>
 <ol class="simple">
-<li><p>Begin with a guess <span class="math notranslate nohighlight">\(v, d\)</span> for the solutions to <a class="reference internal" href="#equation-bell1mcmc">(34.1)</a>–<a class="reference internal" href="#equation-bell2mcmc">(34.2)</a>.</p></li>
-<li><p>Plug <span class="math notranslate nohighlight">\(v, d\)</span> into the right hand side of <a class="reference internal" href="#equation-bell1mcmc">(34.1)</a>–<a class="reference internal" href="#equation-bell2mcmc">(34.2)</a> and
+<li><p>Begin with a guess <span class="math notranslate nohighlight">\(v, d\)</span> for the solutions to <a class="reference internal" href="#equation-bell1mcmc">(35.1)</a>–<a class="reference internal" href="#equation-bell2mcmc">(35.2)</a>.</p></li>
+<li><p>Plug <span class="math notranslate nohighlight">\(v, d\)</span> into the right hand side of <a class="reference internal" href="#equation-bell1mcmc">(35.1)</a>–<a class="reference internal" href="#equation-bell2mcmc">(35.2)</a> and
 compute the left hand side to obtain updates <span class="math notranslate nohighlight">\(v', d'\)</span></p></li>
 <li><p>Unless some stopping condition is satisfied, set <span class="math notranslate nohighlight">\((v, d) = (v', d')\)</span>
 and go to step 2.</p></li>
 </ol>
 <p>However, there is a problem we must confront before we implement this procedure:
 The iterates of the value function can neither be calculated exactly nor stored on a computer.</p>
-<p>To see the issue, consider <a class="reference internal" href="#equation-bell2mcmc">(34.2)</a>.</p>
+<p>To see the issue, consider <a class="reference internal" href="#equation-bell2mcmc">(35.2)</a>.</p>
 <p>Even if <span class="math notranslate nohighlight">\(v\)</span> is a known function,  the only way to store its update <span class="math notranslate nohighlight">\(v'\)</span>
 is to record its value <span class="math notranslate nohighlight">\(v'(w)\)</span> for every <span class="math notranslate nohighlight">\(w \in \mathbb R_+\)</span>.</p>
 <p>Clearly, this is impossible.</p>
 </div>
 <div class="section" id="fitted-value-function-iteration">
-<h3><span class="section-number">34.2.2. </span>Fitted Value Function Iteration<a class="headerlink" href="#fitted-value-function-iteration" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">35.2.2. </span>Fitted Value Function Iteration<a class="headerlink" href="#fitted-value-function-iteration" title="Permalink to this headline">¶</a></h3>
 <p>What we will do instead is use <strong>fitted value function iteration</strong>.</p>
 <p>The procedure is as follows:</p>
 <p>Let a current guess <span class="math notranslate nohighlight">\(v\)</span> be given.</p>
@@ -412,7 +424,7 @@ function on grid points <span class="math notranslate nohighlight">\(0, 0.2, 0.4
 </div>
 </div>
 <div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">34.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">35.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>The first step is to build a jitted class for the McCall model with separation and
 a continuous wage offer distribution.</p>
 <p>We will take the utility function to be the log function for this application, with <span class="math notranslate nohighlight">\(u(c) = \ln c\)</span>.</p>
@@ -541,10 +553,10 @@ and returns the associated reservation wage.</p>
 <p>The exercises ask you to explore the solution and how it changes with parameters.</p>
 </div>
 <div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">34.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">35.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="exercise admonition" id="mfv_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 34.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 35.1 </span></p>
 <div class="section" id="exercise-content">
 <p>Use the code above to explore what happens to the reservation wage when the wage parameter <span class="math notranslate nohighlight">\(\mu\)</span>
 changes.</p>
@@ -554,7 +566,7 @@ changes.</p>
 </div>
 <div class="solution dropdown admonition" id="mccall_fitted_vfi-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#mfv_ex1"> Exercise 34.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#mfv_ex1"> Exercise 35.1</a></p>
 <div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution</p>
 <div class="cell docutils container">
@@ -588,7 +600,7 @@ offers shifts to the right.</p>
 </div>
 <div class="exercise admonition" id="mfv_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 34.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 35.2 </span></p>
 <div class="section" id="exercise-content">
 <p>Let us now consider how the agent responds to an increase in volatility.</p>
 <p>To try to understand this, compute the reservation wage when the wage offer
@@ -603,7 +615,7 @@ support.</p>
 </div>
 <div class="solution dropdown admonition" id="mccall_fitted_vfi-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#mfv_ex2"> Exercise 34.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#mfv_ex2"> Exercise 35.2</a></p>
 <div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution</p>
 <div class="cell docutils container">
@@ -734,6 +746,11 @@ risk.</p>
    7. Singular Value Decomposition (SVD)
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   8. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -743,57 +760,57 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="prob_matrix.html">
-   8. Elementary Probability with Matrices
+   9. Elementary Probability with Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   9. Univariate Time Series with Matrix Algebra
+   10. Univariate Time Series with Matrix Algebra
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   10. LLN and CLT
+   11. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   11. Two Meanings of Probability
+   12. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   12. Multivariate Hypergeometric Distribution
+   13. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   13. Multivariate Normal Distribution
+   14. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   14. Heavy-Tailed Distributions
+   15. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   15. Fault Tree Uncertainties
+   16. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   16. Introduction to Artificial Neural Networks
+   17. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   17. Randomized Response Surveys
+   18. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   18. Expected Utilities of Random Responses
+   19. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -805,17 +822,17 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   19. Linear Programming
+   20. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   20. Optimal Transport
+   21. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   21. Von Neumann Growth Model (and a Generalization)
+   22. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -827,52 +844,52 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   22. Dynamics in One Dimension
+   23. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   23. AR1 Processes
+   24. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   24. Finite Markov Chains
+   25. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   25. Inventory Dynamics
+   26. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   26. Linear State Space Models
+   27. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   27. Samuelson Multiplier-Accelerator
+   28. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   28. Kesten Processes and Firm Dynamics
+   29. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   29. Wealth Distribution Dynamics
+   30. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   30. A First Look at the Kalman Filter
+   31. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   31. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -884,32 +901,32 @@ risk.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   32. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   33. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   34. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   35. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   36. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   37. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -921,52 +938,52 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   38. Cass-Koopmans Model
+   39. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   39. Cass-Koopmans Competitive Equilibrium
+   40. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   40. Cake Eating I: Introduction to Optimal Saving
+   41. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   41. Cake Eating II: Numerical Methods
+   42. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   42. Optimal Growth I: The Stochastic Optimal Growth Model
+   43. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   43. Optimal Growth II: Accelerating the Code with Numba
+   44. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   44. Optimal Growth III: Time Iteration
+   45. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   45. Optimal Growth IV: The Endogenous Grid Method
+   46. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   46. The Income Fluctuation Problem I: Basic Model
+   47. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   47. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   48. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -978,17 +995,17 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   48. Non-Conjugate Priors
+   49. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   49. Posterior Distributions for  AR(1) Parameters
+   50. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   50. Forecasting  an AR(1) process
+   51. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1000,37 +1017,37 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   51. Job Search VII: Search with Learning
+   52. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   52. Likelihood Ratio Processes
+   53. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   53. Computing Mean of a Likelihood Ratio Process
+   54. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   54. A Problem that Stumped Milton Friedman
+   55. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   55. Exchangeability and Bayesian Updating
+   56. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   56. Likelihood Ratio Processes and Bayesian Learning
+   57. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   57. Bayesian versus Frequentist Decision Rules
+   58. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1042,32 +1059,32 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   58. LQ Control: Foundations
+   59. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   59. Lagrangian for LQ Control
+   60. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   60. Eliminating Cross Products
+   61. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   61. The Permanent Income Model
+   62. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   62. Permanent Income II: LQ Techniques
+   63. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   63. Production Smoothing via Inventories
+   64. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1079,37 +1096,37 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   64. Schelling’s Segregation Model
+   65. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   65. A Lake Model of Employment and Unemployment
+   66. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   66. Rational Expectations Equilibrium
+   67. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   67. Stability in Linear Rational Expectations Models
+   68. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   68. Markov Perfect Equilibrium
+   69. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   69. Uncertainty Traps
+   70. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   70. The Aiyagari Model
+   71. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1121,17 +1138,17 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   71. Asset Pricing: Finite State Models
+   72. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   72. Competitive Equilibria with Arrow Securities
+   73. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   73. Heterogeneous Beliefs and Bubbles
+   74. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1143,17 +1160,17 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   74. Pandas for Panel Data
+   75. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   75. Linear Regression in Python
+   76. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   76. Maximum Likelihood Estimation
+   77. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1165,12 +1182,12 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   77. First-Price and Second-Price Auctions
+   78. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   78. Multiple Good Allocation Mechanisms
+   79. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1182,17 +1199,17 @@ risk.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   79. Troubleshooting
+   80. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   80. References
+   81. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   81. Execution Statistics
+   82. Execution Statistics
   </a>
  </li>
 </ul>

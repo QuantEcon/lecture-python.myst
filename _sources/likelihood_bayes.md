@@ -53,7 +53,7 @@ We'll begin by loading some Python modules.
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from numba import vectorize, njit
+from numba import vectorize, njit, prange
 from math import gamma
 import pandas as pd
 
@@ -413,7 +413,7 @@ Bayes' law is simply an application of  laws of
  
 After our worker puts a subjective probability $\pi_{-1}$ on nature having selected distribution $F$, we have in effect assumes from the start that the   decision maker **knows** the joint distribution  for the process $\{w_t\}_{t=0}$.  
 
-We assume that the workers also knows the laws of probability theory.
+We assume that the worker also knows the laws of probability theory.
 
 A respectable view is that Bayes' law is less a theory of learning than a statement  about the consequences of information inflows for a decision maker who thinks he knows the truth (i.e., a joint probability distribution) from the beginning.
 
@@ -651,8 +651,78 @@ ax.set_ylabel('$\pi_t$')
 plt.show()
 ```
 
-Now let's plot two paths of pairs of $\{\pi_t, w_t\}$ sequences, one in which $\pi_t \rightarrow 1$,
-another in which $\pi_t \rightarrow 0$.
+
+
+The above graph indicates that 
+
+* each of paths converges
+
+* some of the paths converge to $1$
+
+* some of the paths converge to $0$
+
+* none of the paths converge to a limit point not equal to $0$ or $1$
+
+Convergence actually occurs pretty fast, as the following graph of the cross-ensemble distribution of $\pi_t$ for various small $t$'s indicates. 
+
+
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+for t in [1, 10, T-1]:
+    ax.hist(π_path[:,t], bins=20, alpha=0.4, label=f'T={t}')
+    
+ax.set_ylabel('count')
+ax.set_xlabel('$\pi_T$')
+ax.legend(loc='lower right')
+plt.show()
+```
+
+Evidently, by $t = 199$, $\pi_t$ has converged to either $0$ or $1$.
+
+The fraction of paths that have converged to $1$ is $.5$
+
+The fractions of paths that have converged to $0$ is also $.5.
+
+Does the fraction $.5$ ring a bell?
+
+Yes, it does: it equals the value of $\pi_0 = .5 $ that we used to generate each sequence
+in the ensemble.
+
+So let's change $\pi_0$ to $.3$ and watch what happens to the distribution of the ensemble of
+$\pi_t$'s for various $t$'s.
+
+```{code-cell} ipython3
+# simulate
+T = 200
+π0 = .3
+
+π_path3, w_path3 = martingale_simulate(π0=π0, T=T, N=10000)
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+for t in [1, 10, T-1]:
+    ax.hist(π_path3[:,t], bins=20, alpha=0.4, label=f'T={t}')
+    
+ax.set_ylabel('count')
+ax.set_xlabel('$\pi_T$')
+ax.legend(loc='upper right')
+plt.show()
+```
+
+
+
+
+For the preceding ensemble that assumed $\pi_0 = .5$, the following graph shows two  paths of
+$w_t$'s and the $\pi_t$ sequences that gave rise to them.
+
+Notice that one of the paths involves systematically higher $w_t$'s, outcomes that push $\pi_t$ upward.
+
+The luck of the draw early in a simulation push the subjective distribution to draw from 
+$F$ more frequently along a sample path, and this pushes $\pi_t$ toward $0$.
+
+
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -668,23 +738,7 @@ ax2.set_ylabel("$w_t$")
 plt.show()
 ```
 
-
-Let's plot histograms of $\pi_t$ for various values of $t$.
-
-```{code-cell} ipython3
-fig, ax = plt.subplots()
-for t in [1, 10, T-1]:
-    ax.hist(π_path[:,t], bins=20, alpha=0.4, label=f'T={t}')
-    
-ax.set_ylabel('count')
-ax.set_xlabel('$\pi_T$')
-ax.legend(loc='upper right')
-plt.show()
-```
-
-
-The above graphs display how the distribution of $\pi_t$ across realizations are moving toward 
-limit points that we described above and that put all probability either on $0$ or on $1$. 
+##  Initial Prior is Verified by Paths Drawn from Subjective Conditional Densities
 
 
 
@@ -707,15 +761,63 @@ table
 The fraction of simulations for which $\pi_{t}$  had converged to $1$ is indeed always  close  to $\pi_{-1}$, as anticipated.
 
 
+## Drilling Down a Little Bit
 
+To understand how the local dynamics of $\pi_t$ behaves, it is enlightening to consult the  variance of $\pi_{t}$ conditional on $\pi_{t-1}$.
 
+Under the subjective distribution this conditional variance is defined as
+  
+$$
+\sigma^2(\pi_t | \pi_{t-1})  = \int \Bigl[  { \pi_{t-1} f(w) \over \pi_{t-1} f(w) + (1-\pi_{t-1})g(w)  } - \pi_{t-1} \Bigr]^2
+ \Bigl[ \pi_{t-1} f(w) + (1-\pi_{t-1})g(w) \Bigr]  d w
+$$
 
+We can use  a Monte Carlo simulation to approximate this conditional variance. 
 
+We approximate it for  a grid of points $\pi_{t-1} \in [0,1]$.
 
+Then we'll plot it.
 
+```{code-cell} ipython3
+@njit
+def compute_cond_var(pi, mc_size=int(1e6)):
+    # create monte carlo draws
+    mc_draws = np.zeros(mc_size)
+    
+    for i in prange(mc_size):
+        if np.random.rand() <= pi:
+            mc_draws[i] = np.random.beta(F_a, F_b)
+        else:
+            mc_draws[i] = np.random.beta(G_a, G_b)
+    
+    dev = pi*f(mc_draws)/(pi*f(mc_draws) + (1-pi)*g(mc_draws)) - pi
+    return np.mean(dev**2)
+
+pi_array = np.linspace(0, 1, 40)
+cond_var_array = []
+
+for pi in pi_array:
+    cond_var_array.append(compute_cond_var(pi))
+
+fig, ax = plt.subplots()
+ax.plot(pi_array, cond_var_array)
+ax.set_xlabel('$\pi_{t-1}$')
+ax.set_ylabel('$\sigma^{2}(\pi_{t}\\vert \pi_{t-1})$')
+plt.show()
+```
+
+The shape of the the conditional variance as a function of $\pi_{t-1}$ is informative about the behavior of sample paths of $\{\pi_t\}$.
+
+Notice how the conditional variance approaches $0$ for $\pi_{t-1}$ near  either $0$ or $1$.
+
+The conditional variance is nearly zero only when the agent  is almost sure that $w_t$ is drawn from $F$,  or is almost sure it is drawn from $G$.
 
 ## Sequels
 
 This lecture has been devoted to building some useful infrastructure that will help us understand inferences that are the foundations of
 results described  in {doc}`this lecture <odu>` and {doc}`this lecture <wald_friedman>` and {doc}`this lecture <navy_captain>`.
+
+
+
+
 

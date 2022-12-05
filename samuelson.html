@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>27. Samuelson Multiplier-Accelerator &#8212; Quantitative Economics with Python</title>
+    <title>28. Samuelson Multiplier-Accelerator &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -96,13 +96,13 @@ const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/samuelson.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="28. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
-    <link rel="prev" title="26. Linear State Space Models" href="linear_models.html" />
+    <link rel="next" title="29. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
+    <link rel="prev" title="27. Linear State Space Models" href="linear_models.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -152,115 +152,115 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   27.1. Overview
+   28.1. Overview
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#samuelsons-model">
-     27.1.1. Samuelson’s Model
+     28.1.1. Samuelson’s Model
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#details">
-   27.2. Details
+   28.2. Details
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#stochastic-version-of-the-model">
-     27.2.1. Stochastic Version of the Model
+     28.2.1. Stochastic Version of the Model
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#mathematical-analysis-of-the-model">
-     27.2.2. Mathematical Analysis of the Model
+     28.2.2. Mathematical Analysis of the Model
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#things-this-lecture-does">
-     27.2.3. Things This Lecture Does
+     28.2.3. Things This Lecture Does
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#implementation">
-   27.3. Implementation
+   28.3. Implementation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#function-to-describe-implications-of-characteristic-polynomial">
-     27.3.1. Function to Describe Implications of Characteristic Polynomial
+     28.3.1. Function to Describe Implications of Characteristic Polynomial
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#function-for-plotting-paths">
-     27.3.2. Function for Plotting Paths
+     28.3.2. Function for Plotting Paths
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#manual-or-by-hand-root-calculations">
-     27.3.3. Manual or “by hand” Root Calculations
+     28.3.3. Manual or “by hand” Root Calculations
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#reverse-engineering-parameters-to-generate-damped-cycles">
-     27.3.4. Reverse-Engineering Parameters to Generate Damped Cycles
+     28.3.4. Reverse-Engineering Parameters to Generate Damped Cycles
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#root-finding-using-numpy">
-     27.3.5. Root Finding Using Numpy
+     28.3.5. Root Finding Using Numpy
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#reverse-engineered-complex-roots-example">
-     27.3.6. Reverse-Engineered Complex Roots: Example
+     28.3.6. Reverse-Engineered Complex Roots: Example
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#digression-using-sympy-to-find-roots">
-     27.3.7. Digression: Using Sympy to Find Roots
+     28.3.7. Digression: Using Sympy to Find Roots
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#stochastic-shocks">
-   27.4. Stochastic Shocks
+   28.4. Stochastic Shocks
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#government-spending">
-   27.5. Government Spending
+   28.5. Government Spending
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#wrapping-everything-into-a-class">
-   27.6. Wrapping Everything Into a Class
+   28.6. Wrapping Everything Into a Class
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#illustration-of-samuelson-class">
-     27.6.1. Illustration of Samuelson Class
+     28.6.1. Illustration of Samuelson Class
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#using-the-graph">
-     27.6.2. Using the Graph
+     28.6.2. Using the Graph
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#using-the-linearstatespace-class">
-   27.7. Using the LinearStateSpace Class
+   28.7. Using the LinearStateSpace Class
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#other-methods-in-the-linearstatespace-class">
-     27.7.1. Other Methods in the
+     28.7.1. Other Methods in the
      <code class="docutils literal notranslate">
       <span class="pre">
        LinearStateSpace
@@ -271,7 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#inheriting-methods-from-linearstatespace">
-     27.7.2. Inheriting Methods from
+     28.7.2. Inheriting Methods from
      <code class="docutils literal notranslate">
       <span class="pre">
        LinearStateSpace
@@ -281,19 +281,19 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#illustrations">
-     27.7.3. Illustrations
+     28.7.3. Illustrations
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pure-multiplier-model">
-   27.8. Pure Multiplier Model
+   28.8. Pure Multiplier Model
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#summary">
-   27.9. Summary
+   28.9. Summary
   </a>
  </li>
 </ul>
@@ -346,7 +346,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="tex2jax_ignore mathjax_ignore section" id="samuelson-multiplier-accelerator">
-<h1><a class="toc-backref" href="#id7"><span class="section-number">27. </span>Samuelson Multiplier-Accelerator</a><a class="headerlink" href="#samuelson-multiplier-accelerator" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id7"><span class="section-number">28. </span>Samuelson Multiplier-Accelerator</a><a class="headerlink" href="#samuelson-multiplier-accelerator" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -373,25 +373,31 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
-Requirement already satisfied: numba in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
-Requirement already satisfied: sympy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: numpy in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
-Requirement already satisfied: requests in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: scipy&gt;=1.0.0 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
-Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
-Requirement already satisfied: setuptools in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
-Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
+Requirement already satisfied: numpy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
+Requirement already satisfied: scipy&gt;=1.0.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
+Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
+Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
+Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
+Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
+
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">27.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">28.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture creates non-stochastic and stochastic versions of Paul Samuelson’s celebrated multiplier accelerator model <span id="id1">[<a class="reference internal" href="zreferences.html#id84" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Sam39</a>]</span>.</p>
 <p>In doing so, we extend the example of the Solow model class in <a class="reference external" href="https://python-programming.quantecon.org/python_oop.html">our second OOP lecture</a>.</p>
 <p>Our objectives are to</p>
@@ -425,7 +431,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /usr/share/miniconda3/envs/qua
 </div>
 </div>
 <div class="section" id="samuelsons-model">
-<h3><span class="section-number">27.1.1. </span>Samuelson’s Model<a class="headerlink" href="#samuelsons-model" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.1.1. </span>Samuelson’s Model<a class="headerlink" href="#samuelsons-model" title="Permalink to this headline">¶</a></h3>
 <p>Samuelson used a <em>second-order linear difference equation</em> to
 represent a model of national output based on three components:</p>
 <ul class="simple">
@@ -463,7 +469,7 @@ gives rise to recurrent irregular business cycles.</p>
 </div>
 </div>
 <div class="section" id="details">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">27.2. </span>Details</a><a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">28.2. </span>Details</a><a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
 <p>Let’s assume that</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\{G_t\}\)</span> is a sequence of levels of government expenditures –
@@ -487,22 +493,22 @@ that we’ll start with.</p></li>
 </ul>
 <p>The model combines the consumption function</p>
 <div class="math notranslate nohighlight" id="equation-consumption">
-<span class="eqno">(27.1)<a class="headerlink" href="#equation-consumption" title="Permalink to this equation">¶</a></span>\[C_t = a Y_{t-1} + \gamma\]</div>
+<span class="eqno">(28.1)<a class="headerlink" href="#equation-consumption" title="Permalink to this equation">¶</a></span>\[C_t = a Y_{t-1} + \gamma\]</div>
 <p>with the investment accelerator</p>
 <div class="math notranslate nohighlight" id="equation-accelerator">
-<span class="eqno">(27.2)<a class="headerlink" href="#equation-accelerator" title="Permalink to this equation">¶</a></span>\[I_t = b (Y_{t-1} - Y_{t-2})\]</div>
+<span class="eqno">(28.2)<a class="headerlink" href="#equation-accelerator" title="Permalink to this equation">¶</a></span>\[I_t = b (Y_{t-1} - Y_{t-2})\]</div>
 <p>and the national income identity</p>
 <div class="math notranslate nohighlight" id="equation-income-identity">
-<span class="eqno">(27.3)<a class="headerlink" href="#equation-income-identity" title="Permalink to this equation">¶</a></span>\[Y_t = C_t + I_t + G_t\]</div>
+<span class="eqno">(28.3)<a class="headerlink" href="#equation-income-identity" title="Permalink to this equation">¶</a></span>\[Y_t = C_t + I_t + G_t\]</div>
 <ul class="simple">
 <li><p>The parameter <span class="math notranslate nohighlight">\(a\)</span> is peoples’ <em>marginal propensity to consume</em>
-out of income - equation <a class="reference internal" href="#equation-consumption">(27.1)</a> asserts that people consume a fraction of
+out of income - equation <a class="reference internal" href="#equation-consumption">(28.1)</a> asserts that people consume a fraction of
 <span class="math notranslate nohighlight">\(a \in (0,1)\)</span> of each additional dollar of income.</p></li>
 <li><p>The parameter <span class="math notranslate nohighlight">\(b &gt; 0\)</span> is the investment accelerator coefficient - equation
-<a class="reference internal" href="#equation-accelerator">(27.2)</a> asserts that people invest in physical capital when
+<a class="reference internal" href="#equation-accelerator">(28.2)</a> asserts that people invest in physical capital when
 income is increasing and disinvest when it is decreasing.</p></li>
 </ul>
-<p>Equations <a class="reference internal" href="#equation-consumption">(27.1)</a>, <a class="reference internal" href="#equation-accelerator">(27.2)</a>, and <a class="reference internal" href="#equation-income-identity">(27.3)</a>
+<p>Equations <a class="reference internal" href="#equation-consumption">(28.1)</a>, <a class="reference internal" href="#equation-accelerator">(28.2)</a>, and <a class="reference internal" href="#equation-income-identity">(28.3)</a>
 imply the following second-order linear difference equation for national income:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -510,7 +516,7 @@ Y_t = (a+b) Y_{t-1} - b Y_{t-2} + (\gamma + G_t)
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-second-order">
-<span class="eqno">(27.4)<a class="headerlink" href="#equation-second-order" title="Permalink to this equation">¶</a></span>\[Y_t = \rho_1 Y_{t-1} + \rho_2 Y_{t-2} + (\gamma + G_t)\]</div>
+<span class="eqno">(28.4)<a class="headerlink" href="#equation-second-order" title="Permalink to this equation">¶</a></span>\[Y_t = \rho_1 Y_{t-1} + \rho_2 Y_{t-2} + (\gamma + G_t)\]</div>
 <p>where <span class="math notranslate nohighlight">\(\rho_1 = (a+b)\)</span> and <span class="math notranslate nohighlight">\(\rho_2 = -b\)</span>.</p>
 <p>To complete the model, we require two <strong>initial conditions</strong>.</p>
 <p>If the model is to generate time series for <span class="math notranslate nohighlight">\(t=0, \ldots, T\)</span>, we
@@ -534,42 +540,42 @@ no random shocks hit aggregate demand — has only transient fluctuations.</p>
 <p>We can convert the model to one that has persistent irregular
 fluctuations by adding a random shock to aggregate demand.</p>
 <div class="section" id="stochastic-version-of-the-model">
-<h3><span class="section-number">27.2.1. </span>Stochastic Version of the Model<a class="headerlink" href="#stochastic-version-of-the-model" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.2.1. </span>Stochastic Version of the Model<a class="headerlink" href="#stochastic-version-of-the-model" title="Permalink to this headline">¶</a></h3>
 <p>We create a <strong>random</strong> or <strong>stochastic</strong> version of the model by adding
 a random process of <strong>shocks</strong> or <strong>disturbances</strong>
-<span class="math notranslate nohighlight">\(\{\sigma \epsilon_t \}\)</span> to the right side of equation <a class="reference internal" href="#equation-second-order">(27.4)</a>,
+<span class="math notranslate nohighlight">\(\{\sigma \epsilon_t \}\)</span> to the right side of equation <a class="reference internal" href="#equation-second-order">(28.4)</a>,
 leading to the <strong>second-order scalar linear stochastic difference
 equation</strong>:</p>
 <div class="math notranslate nohighlight" id="equation-second-stochastic">
-<span class="eqno">(27.5)<a class="headerlink" href="#equation-second-stochastic" title="Permalink to this equation">¶</a></span>\[Y_t = G_t + a (1-b) Y_{t-1} - a b Y_{t-2} + \sigma \epsilon_{t}\]</div>
+<span class="eqno">(28.5)<a class="headerlink" href="#equation-second-stochastic" title="Permalink to this equation">¶</a></span>\[Y_t = G_t + a (1-b) Y_{t-1} - a b Y_{t-2} + \sigma \epsilon_{t}\]</div>
 </div>
 <div class="section" id="mathematical-analysis-of-the-model">
-<h3><span class="section-number">27.2.2. </span>Mathematical Analysis of the Model<a class="headerlink" href="#mathematical-analysis-of-the-model" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.2.2. </span>Mathematical Analysis of the Model<a class="headerlink" href="#mathematical-analysis-of-the-model" title="Permalink to this headline">¶</a></h3>
 <p>To get started, let’s set <span class="math notranslate nohighlight">\(G_t \equiv 0\)</span>, <span class="math notranslate nohighlight">\(\sigma = 0\)</span>, and
 <span class="math notranslate nohighlight">\(\gamma = 0\)</span>.</p>
-<p>Then we can write equation <a class="reference internal" href="#equation-second-stochastic">(27.5)</a> as</p>
+<p>Then we can write equation <a class="reference internal" href="#equation-second-stochastic">(28.5)</a> as</p>
 <div class="math notranslate nohighlight">
 \[
 Y_t = \rho_1 Y_{t-1} + \rho_2 Y_{t-2}
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-second-stochastic2">
-<span class="eqno">(27.6)<a class="headerlink" href="#equation-second-stochastic2" title="Permalink to this equation">¶</a></span>\[Y_{t+2} - \rho_1 Y_{t+1} - \rho_2 Y_t  = 0\]</div>
-<p>To discover the properties of the solution of <a class="reference internal" href="#equation-second-stochastic2">(27.6)</a>,
+<span class="eqno">(28.6)<a class="headerlink" href="#equation-second-stochastic2" title="Permalink to this equation">¶</a></span>\[Y_{t+2} - \rho_1 Y_{t+1} - \rho_2 Y_t  = 0\]</div>
+<p>To discover the properties of the solution of <a class="reference internal" href="#equation-second-stochastic2">(28.6)</a>,
 it is useful first to form the <strong>characteristic polynomial</strong>
-for <a class="reference internal" href="#equation-second-stochastic2">(27.6)</a>:</p>
+for <a class="reference internal" href="#equation-second-stochastic2">(28.6)</a>:</p>
 <div class="math notranslate nohighlight" id="equation-polynomial">
-<span class="eqno">(27.7)<a class="headerlink" href="#equation-polynomial" title="Permalink to this equation">¶</a></span>\[z^2 - \rho_1 z  - \rho_2\]</div>
+<span class="eqno">(28.7)<a class="headerlink" href="#equation-polynomial" title="Permalink to this equation">¶</a></span>\[z^2 - \rho_1 z  - \rho_2\]</div>
 <p>where <span class="math notranslate nohighlight">\(z\)</span> is possibly a complex number.</p>
 <p>We want to find the two <strong>zeros</strong> (a.k.a. <strong>roots</strong>) – namely
 <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2\)</span> – of the characteristic polynomial.</p>
 <p>These are two special values of <span class="math notranslate nohighlight">\(z\)</span>, say <span class="math notranslate nohighlight">\(z= \lambda_1\)</span> and
 <span class="math notranslate nohighlight">\(z= \lambda_2\)</span>, such that if we set <span class="math notranslate nohighlight">\(z\)</span> equal to one of
-these values in expression <a class="reference internal" href="#equation-polynomial">(27.7)</a>,
-the characteristic polynomial <a class="reference internal" href="#equation-polynomial">(27.7)</a> equals zero:</p>
+these values in expression <a class="reference internal" href="#equation-polynomial">(28.7)</a>,
+the characteristic polynomial <a class="reference internal" href="#equation-polynomial">(28.7)</a> equals zero:</p>
 <div class="math notranslate nohighlight" id="equation-polynomial-sol">
-<span class="eqno">(27.8)<a class="headerlink" href="#equation-polynomial-sol" title="Permalink to this equation">¶</a></span>\[z^2 - \rho_1 z  - \rho_2  = (z- \lambda_1 ) (z -\lambda_2) = 0\]</div>
-<p>Equation <a class="reference internal" href="#equation-polynomial-sol">(27.8)</a> is said to <strong>factor</strong> the characteristic polynomial.</p>
+<span class="eqno">(28.8)<a class="headerlink" href="#equation-polynomial-sol" title="Permalink to this equation">¶</a></span>\[z^2 - \rho_1 z  - \rho_2  = (z- \lambda_1 ) (z -\lambda_2) = 0\]</div>
+<p>Equation <a class="reference internal" href="#equation-polynomial-sol">(28.8)</a> is said to <strong>factor</strong> the characteristic polynomial.</p>
 <p>When the roots are complex, they will occur as a complex conjugate pair.</p>
 <p>When the roots are complex, it is convenient to represent them in the
 polar form</p>
@@ -591,7 +597,7 @@ polar form</p>
 <p>(To read about the polar form, see
 <a class="reference external" href="https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf:complex/x9e81a4f98389efdf:complex-mul-div-polar/a/complex-number-polar-form-review">here</a>)</p>
 <p>Given <strong>initial conditions</strong> <span class="math notranslate nohighlight">\(Y_{-1}, Y_{-2}\)</span>, we want to generate
-a <strong>solution</strong> of the difference equation <a class="reference internal" href="#equation-second-stochastic2">(27.6)</a>.</p>
+a <strong>solution</strong> of the difference equation <a class="reference internal" href="#equation-second-stochastic2">(28.6)</a>.</p>
 <p>It can be represented as</p>
 <div class="math notranslate nohighlight">
 \[
@@ -645,7 +651,7 @@ one governs the rate of convergence to the steady state of the non
 stochastic version of the model.</p>
 </div>
 <div class="section" id="things-this-lecture-does">
-<h3><span class="section-number">27.2.3. </span>Things This Lecture Does<a class="headerlink" href="#things-this-lecture-does" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.2.3. </span>Things This Lecture Does<a class="headerlink" href="#things-this-lecture-does" title="Permalink to this headline">¶</a></h3>
 <p>We write a function to generate simulations of a <span class="math notranslate nohighlight">\(\{Y_t\}\)</span> sequence as a function of time.</p>
 <p>The function requires that we put in initial conditions for <span class="math notranslate nohighlight">\(Y_{-1}, Y_{-2}\)</span>.</p>
 <p>The function checks that <span class="math notranslate nohighlight">\(a, b\)</span> are set so that <span class="math notranslate nohighlight">\(\lambda_1, \lambda_2\)</span> are less than
@@ -665,7 +671,7 @@ unity in absolute value (also called “modulus”).</p>
 <p>We want to have a method in the class that automatically generates a simulation, either non-stochastic (<span class="math notranslate nohighlight">\(\sigma=0\)</span>) or stochastic (<span class="math notranslate nohighlight">\(\sigma &gt; 0\)</span>).</p>
 <p>We also show how to map the Samuelson model into a simple instance of the <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> class described <a class="reference external" href="https://python.quantecon.org/linear_models.html">here</a>.</p>
 <p>We can use a <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> instance to do various things that we did above with our homemade function and class.</p>
-<p>Among other things, we show by example that the eigenvalues of the matrix <span class="math notranslate nohighlight">\(A\)</span> that we use to form the instance of the <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> class for the Samuelson model equal the roots of the characteristic polynomial <a class="reference internal" href="#equation-polynomial">(27.7)</a> for the Samuelson multiplier accelerator model.</p>
+<p>Among other things, we show by example that the eigenvalues of the matrix <span class="math notranslate nohighlight">\(A\)</span> that we use to form the instance of the <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> class for the Samuelson model equal the roots of the characteristic polynomial <a class="reference internal" href="#equation-polynomial">(28.7)</a> for the Samuelson multiplier accelerator model.</p>
 <p>Here is the formula for the matrix <span class="math notranslate nohighlight">\(A\)</span> in the linear state space system in the case that government expenditures are a constant <span class="math notranslate nohighlight">\(G\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -676,7 +682,7 @@ A = \begin{bmatrix} 1 &amp; 0 &amp; 0 \cr
 </div>
 </div>
 <div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">27.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">28.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p>We’ll start by drawing an informative graph from page 189 of <span id="id5">[<a class="reference internal" href="zreferences.html#id206" title="Thomas J Sargent. Macroeconomic Theory. Academic Press, New York, 2nd edition, 1987.">Sar87</a>]</span></p>
 <div class="cell tag_output_scroll docutils container">
 <div class="cell_input docutils container">
@@ -774,7 +780,7 @@ convergence to the steady state without damped cycles.</p></li>
 <p>Later we’ll present the graph with a red mark showing the particular
 point implied by the setting of <span class="math notranslate nohighlight">\((a,b)\)</span>.</p>
 <div class="section" id="function-to-describe-implications-of-characteristic-polynomial">
-<h3><span class="section-number">27.3.1. </span>Function to Describe Implications of Characteristic Polynomial<a class="headerlink" href="#function-to-describe-implications-of-characteristic-polynomial" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.3.1. </span>Function to Describe Implications of Characteristic Polynomial<a class="headerlink" href="#function-to-describe-implications-of-characteristic-polynomial" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">categorize_solution</span><span class="p">(</span><span class="n">ρ1</span><span class="p">,</span> <span class="n">ρ2</span><span class="p">):</span>
@@ -814,7 +820,7 @@ point implied by the setting of <span class="math notranslate nohighlight">\((a,
 </div>
 </div>
 <div class="section" id="function-for-plotting-paths">
-<h3><span class="section-number">27.3.2. </span>Function for Plotting Paths<a class="headerlink" href="#function-for-plotting-paths" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.3.2. </span>Function for Plotting Paths<a class="headerlink" href="#function-for-plotting-paths" title="Permalink to this headline">¶</a></h3>
 <p>A useful function for our work below is</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -834,7 +840,7 @@ point implied by the setting of <span class="math notranslate nohighlight">\((a,
 </div>
 </div>
 <div class="section" id="manual-or-by-hand-root-calculations">
-<h3><span class="section-number">27.3.3. </span>Manual or “by hand” Root Calculations<a class="headerlink" href="#manual-or-by-hand-root-calculations" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.3.3. </span>Manual or “by hand” Root Calculations<a class="headerlink" href="#manual-or-by-hand-root-calculations" title="Permalink to this headline">¶</a></h3>
 <p>The following function calculates roots of the characteristic polynomial
 using high school algebra.</p>
 <p>(We’ll calculate the roots in other ways later)</p>
@@ -909,7 +915,7 @@ Absolute values of roots are less than one
 </div>
 </div>
 <div class="section" id="reverse-engineering-parameters-to-generate-damped-cycles">
-<h3><span class="section-number">27.3.4. </span>Reverse-Engineering Parameters to Generate Damped Cycles<a class="headerlink" href="#reverse-engineering-parameters-to-generate-damped-cycles" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.3.4. </span>Reverse-Engineering Parameters to Generate Damped Cycles<a class="headerlink" href="#reverse-engineering-parameters-to-generate-damped-cycles" title="Permalink to this headline">¶</a></h3>
 <p>The next cell writes code that takes as inputs the modulus <span class="math notranslate nohighlight">\(r\)</span> and
 phase <span class="math notranslate nohighlight">\(\phi\)</span> of a conjugate pair of complex numbers in polar form</p>
 <div class="math notranslate nohighlight">
@@ -987,7 +993,7 @@ pairs that would generate those roots</p></li>
 </div>
 </div>
 <div class="section" id="root-finding-using-numpy">
-<h3><span class="section-number">27.3.5. </span>Root Finding Using Numpy<a class="headerlink" href="#root-finding-using-numpy" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.3.5. </span>Root Finding Using Numpy<a class="headerlink" href="#root-finding-using-numpy" title="Permalink to this headline">¶</a></h3>
 <p>Here we’ll use numpy to compute the roots of the characteristic
 polynomial</p>
 <div class="cell docutils container">
@@ -1077,7 +1083,7 @@ Roots are less than one
 </div>
 </div>
 <div class="section" id="reverse-engineered-complex-roots-example">
-<h3><span class="section-number">27.3.6. </span>Reverse-Engineered Complex Roots: Example<a class="headerlink" href="#reverse-engineered-complex-roots-example" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.3.6. </span>Reverse-Engineered Complex Roots: Example<a class="headerlink" href="#reverse-engineered-complex-roots-example" title="Permalink to this headline">¶</a></h3>
 <p>The next cell studies the implications of reverse-engineered complex
 roots.</p>
 <p>We’ll generate an <strong>undamped</strong> cycle of period 10</p>
@@ -1116,7 +1122,7 @@ Roots are not less than one
 </div>
 </div>
 <div class="section" id="digression-using-sympy-to-find-roots">
-<h3><span class="section-number">27.3.7. </span>Digression: Using Sympy to Find Roots<a class="headerlink" href="#digression-using-sympy-to-find-roots" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.3.7. </span>Digression: Using Sympy to Find Roots<a class="headerlink" href="#digression-using-sympy-to-find-roots" title="Permalink to this headline">¶</a></h3>
 <p>We can also use sympy to compute analytic formulas for the roots</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1154,7 +1160,7 @@ Roots are not less than one
 </div>
 </div>
 <div class="section" id="stochastic-shocks">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">27.4. </span>Stochastic Shocks</a><a class="headerlink" href="#stochastic-shocks" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">28.4. </span>Stochastic Shocks</a><a class="headerlink" href="#stochastic-shocks" title="Permalink to this headline">¶</a></h2>
 <p>Now we’ll construct some code to simulate the stochastic version of the
 model that emerges when we add a random shock process to aggregate
 demand</p>
@@ -1254,7 +1260,7 @@ Roots are less than one
 </div>
 </div>
 <div class="section" id="government-spending">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">27.5. </span>Government Spending</a><a class="headerlink" href="#government-spending" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">28.5. </span>Government Spending</a><a class="headerlink" href="#government-spending" title="Permalink to this headline">¶</a></h2>
 <p>This function computes a response to either a permanent or one-off increase
 in government expenditures</p>
 <div class="cell docutils container">
@@ -1380,7 +1386,7 @@ Roots are less than one
 </div>
 </div>
 <div class="section" id="wrapping-everything-into-a-class">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">27.6. </span>Wrapping Everything Into a Class</a><a class="headerlink" href="#wrapping-everything-into-a-class" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">28.6. </span>Wrapping Everything Into a Class</a><a class="headerlink" href="#wrapping-everything-into-a-class" title="Permalink to this headline">¶</a></h2>
 <p>Up to now, we have written functions to do the work.</p>
 <p>Now we’ll roll up our sleeves and write a Python class called <code class="docutils literal notranslate"><span class="pre">Samuelson</span></code>
 for the Samuelson model</p>
@@ -1581,7 +1587,7 @@ for the Samuelson model</p>
 </div>
 </div>
 <div class="section" id="illustration-of-samuelson-class">
-<h3><span class="section-number">27.6.1. </span>Illustration of Samuelson Class<a class="headerlink" href="#illustration-of-samuelson-class" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.6.1. </span>Illustration of Samuelson Class<a class="headerlink" href="#illustration-of-samuelson-class" title="Permalink to this headline">¶</a></h3>
 <p>Now we’ll put our Samuelson class to work on an example</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1617,7 +1623,7 @@ Permanent government spending shock at t = 20
 </div>
 </div>
 <div class="section" id="using-the-graph">
-<h3><span class="section-number">27.6.2. </span>Using the Graph<a class="headerlink" href="#using-the-graph" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.6.2. </span>Using the Graph<a class="headerlink" href="#using-the-graph" title="Permalink to this headline">¶</a></h3>
 <p>We’ll use our graph to show where the roots lie and how their location
 is consistent with the behavior of the path just graphed.</p>
 <p>The red <span class="math notranslate nohighlight">\(+\)</span> sign shows the location of the roots</p>
@@ -1635,7 +1641,7 @@ is consistent with the behavior of the path just graphed.</p>
 </div>
 </div>
 <div class="section" id="using-the-linearstatespace-class">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">27.7. </span>Using the LinearStateSpace Class</a><a class="headerlink" href="#using-the-linearstatespace-class" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">28.7. </span>Using the LinearStateSpace Class</a><a class="headerlink" href="#using-the-linearstatespace-class" title="Permalink to this headline">¶</a></h2>
 <p>It turns out that we can use the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>
 <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class to do
 much of the work that we have done from scratch above.</p>
@@ -1690,7 +1696,7 @@ much of the work that we have done from scratch above.</p>
 </div>
 </div>
 <div class="section" id="other-methods-in-the-linearstatespace-class">
-<h3><span class="section-number">27.7.1. </span>Other Methods in the <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> Class<a class="headerlink" href="#other-methods-in-the-linearstatespace-class" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.7.1. </span>Other Methods in the <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> Class<a class="headerlink" href="#other-methods-in-the-linearstatespace-class" title="Permalink to this headline">¶</a></h3>
 <p>Let’s plot <strong>impulse response functions</strong> for the instance of the
 Samuelson model using a method in the <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> class</p>
 <div class="cell docutils container">
@@ -1726,7 +1732,7 @@ calculating the eigenvalues of <span class="math notranslate nohighlight">\(A\)<
 </div>
 </div>
 <div class="section" id="inheriting-methods-from-linearstatespace">
-<h3><span class="section-number">27.7.2. </span>Inheriting Methods from <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code><a class="headerlink" href="#inheriting-methods-from-linearstatespace" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.7.2. </span>Inheriting Methods from <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code><a class="headerlink" href="#inheriting-methods-from-linearstatespace" title="Permalink to this headline">¶</a></h3>
 <p>We could also create a subclass of <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> (inheriting all its
 methods and attributes) to add more functions to use</p>
 <div class="cell docutils container">
@@ -1839,7 +1845,7 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 <div class="section" id="illustrations">
-<h3><span class="section-number">27.7.3. </span>Illustrations<a class="headerlink" href="#illustrations" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">28.7.3. </span>Illustrations<a class="headerlink" href="#illustrations" title="Permalink to this headline">¶</a></h3>
 <p>Let’s show how we can use the <code class="docutils literal notranslate"><span class="pre">SamuelsonLSS</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1896,7 +1902,7 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 <div class="section" id="pure-multiplier-model">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">27.8. </span>Pure Multiplier Model</a><a class="headerlink" href="#pure-multiplier-model" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">28.8. </span>Pure Multiplier Model</a><a class="headerlink" href="#pure-multiplier-model" title="Permalink to this headline">¶</a></h2>
 <p>Let’s shut down the accelerator by setting <span class="math notranslate nohighlight">\(b=0\)</span> to get a pure
 multiplier model</p>
 <ul class="simple">
@@ -1952,7 +1958,7 @@ accelerator</p></li>
 </div>
 </div>
 <div class="section" id="summary">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">27.9. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">28.9. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>In this lecture, we wrote functions and classes to represent non-stochastic and
 stochastic versions of the Samuelson (1939) multiplier-accelerator model, described
 in <span id="id6">[<a class="reference internal" href="zreferences.html#id84" title="Paul A. Samuelson. Interactions between the multiplier analysis and the principle of acceleration. Review of Economic Studies, 21(2):75–78, 1939.">Sam39</a>]</span>.</p>
@@ -2053,6 +2059,11 @@ could either be stationary, explosive, or oscillating.</p>
    7. Singular Value Decomposition (SVD)
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   8. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -2062,57 +2073,57 @@ could either be stationary, explosive, or oscillating.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="prob_matrix.html">
-   8. Elementary Probability with Matrices
+   9. Elementary Probability with Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   9. Univariate Time Series with Matrix Algebra
+   10. Univariate Time Series with Matrix Algebra
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   10. LLN and CLT
+   11. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   11. Two Meanings of Probability
+   12. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   12. Multivariate Hypergeometric Distribution
+   13. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   13. Multivariate Normal Distribution
+   14. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   14. Heavy-Tailed Distributions
+   15. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   15. Fault Tree Uncertainties
+   16. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   16. Introduction to Artificial Neural Networks
+   17. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   17. Randomized Response Surveys
+   18. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   18. Expected Utilities of Random Responses
+   19. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -2124,17 +2135,17 @@ could either be stationary, explosive, or oscillating.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   19. Linear Programming
+   20. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   20. Optimal Transport
+   21. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   21. Von Neumann Growth Model (and a Generalization)
+   22. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -2146,52 +2157,52 @@ could either be stationary, explosive, or oscillating.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   22. Dynamics in One Dimension
+   23. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   23. AR1 Processes
+   24. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   24. Finite Markov Chains
+   25. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   25. Inventory Dynamics
+   26. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   26. Linear State Space Models
+   27. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   27. Samuelson Multiplier-Accelerator
+   28. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   28. Kesten Processes and Firm Dynamics
+   29. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   29. Wealth Distribution Dynamics
+   30. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   30. A First Look at the Kalman Filter
+   31. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   31. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -2203,32 +2214,32 @@ could either be stationary, explosive, or oscillating.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   32. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   33. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   34. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   35. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   36. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   37. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -2240,52 +2251,52 @@ could either be stationary, explosive, or oscillating.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   38. Cass-Koopmans Model
+   39. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   39. Cass-Koopmans Competitive Equilibrium
+   40. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   40. Cake Eating I: Introduction to Optimal Saving
+   41. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   41. Cake Eating II: Numerical Methods
+   42. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   42. Optimal Growth I: The Stochastic Optimal Growth Model
+   43. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   43. Optimal Growth II: Accelerating the Code with Numba
+   44. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   44. Optimal Growth III: Time Iteration
+   45. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   45. Optimal Growth IV: The Endogenous Grid Method
+   46. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   46. The Income Fluctuation Problem I: Basic Model
+   47. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   47. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   48. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -2297,17 +2308,17 @@ could either be stationary, explosive, or oscillating.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   48. Non-Conjugate Priors
+   49. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   49. Posterior Distributions for  AR(1) Parameters
+   50. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   50. Forecasting  an AR(1) process
+   51. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -2319,37 +2330,37 @@ could either be stationary, explosive, or oscillating.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   51. Job Search VII: Search with Learning
+   52. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   52. Likelihood Ratio Processes
+   53. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   53. Computing Mean of a Likelihood Ratio Process
+   54. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   54. A Problem that Stumped Milton Friedman
+   55. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   55. Exchangeability and Bayesian Updating
+   56. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   56. Likelihood Ratio Processes and Bayesian Learning
+   57. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   57. Bayesian versus Frequentist Decision Rules
+   58. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -2361,32 +2372,32 @@ could either be stationary, explosive, or oscillating.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   58. LQ Control: Foundations
+   59. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   59. Lagrangian for LQ Control
+   60. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   60. Eliminating Cross Products
+   61. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   61. The Permanent Income Model
+   62. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   62. Permanent Income II: LQ Techniques
+   63. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   63. Production Smoothing via Inventories
+   64. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2398,37 +2409,37 @@ could either be stationary, explosive, or oscillating.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   64. Schelling’s Segregation Model
+   65. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   65. A Lake Model of Employment and Unemployment
+   66. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   66. Rational Expectations Equilibrium
+   67. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   67. Stability in Linear Rational Expectations Models
+   68. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   68. Markov Perfect Equilibrium
+   69. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   69. Uncertainty Traps
+   70. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   70. The Aiyagari Model
+   71. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -2440,17 +2451,17 @@ could either be stationary, explosive, or oscillating.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   71. Asset Pricing: Finite State Models
+   72. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   72. Competitive Equilibria with Arrow Securities
+   73. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   73. Heterogeneous Beliefs and Bubbles
+   74. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -2462,17 +2473,17 @@ could either be stationary, explosive, or oscillating.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   74. Pandas for Panel Data
+   75. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   75. Linear Regression in Python
+   76. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   76. Maximum Likelihood Estimation
+   77. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2484,12 +2495,12 @@ could either be stationary, explosive, or oscillating.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   77. First-Price and Second-Price Auctions
+   78. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   78. Multiple Good Allocation Mechanisms
+   79. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2501,17 +2512,17 @@ could either be stationary, explosive, or oscillating.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   79. Troubleshooting
+   80. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   80. References
+   81. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   81. Execution Statistics
+   82. Execution Statistics
   </a>
  </li>
 </ul>

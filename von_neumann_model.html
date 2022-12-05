@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>21. Von Neumann Growth Model (and a Generalization) &#8212; Quantitative Economics with Python</title>
+    <title>22. Von Neumann Growth Model (and a Generalization) &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -96,13 +96,13 @@ const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/von_neumann_model.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="22. Dynamics in One Dimension" href="scalar_dynam.html" />
-    <link rel="prev" title="20. Optimal Transport" href="opt_transport.html" />
+    <link rel="next" title="23. Dynamics in One Dimension" href="scalar_dynam.html" />
+    <link rel="prev" title="21. Optimal Transport" href="opt_transport.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -152,66 +152,66 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#notation">
-   21.1. Notation
+   22.1. Notation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#model-ingredients-and-assumptions">
-   21.2. Model Ingredients and Assumptions
+   22.2. Model Ingredients and Assumptions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dynamic-interpretation">
-   21.3. Dynamic Interpretation
+   22.3. Dynamic Interpretation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#balanced-growth">
-     21.3.1. Balanced Growth
+     22.3.1. Balanced Growth
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#duality">
-   21.4. Duality
+   22.4. Duality
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#interpretation-as-two-player-zero-sum-game">
-   21.5. Interpretation as Two-player Zero-sum Game
+   22.5. Interpretation as Two-player Zero-sum Game
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#connection-with-linear-programming-lp">
-     21.5.1. Connection with Linear Programming (LP)
+     22.5.1. Connection with Linear Programming (LP)
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#algorithm">
-     21.5.2. Algorithm
+     22.5.2. Algorithm
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#step-1">
-       21.5.2.1. Step 1
+       22.5.2.1. Step 1
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#step-2">
-       21.5.2.2. Step 2
+       22.5.2.2. Step 2
       </a>
      </li>
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#uniqueness-and-irreducibility">
-     21.5.3. Uniqueness and Irreducibility
+     22.5.3. Uniqueness and Irreducibility
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#a-special-case">
-     21.5.4. A Special Case
+     22.5.4. A Special Case
     </a>
    </li>
   </ul>
@@ -266,7 +266,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="tex2jax_ignore mathjax_ignore section" id="von-neumann-growth-model-and-a-generalization">
-<span id="index-0"></span><h1><a class="toc-backref" href="#id14"><span class="section-number">21. </span>Von Neumann Growth Model (and a Generalization)</a><a class="headerlink" href="#von-neumann-growth-model-and-a-generalization" title="Permalink to this headline">¶</a></h1>
+<span id="index-0"></span><h1><a class="toc-backref" href="#id14"><span class="section-number">22. </span>Von Neumann Growth Model (and a Generalization)</a><a class="headerlink" href="#von-neumann-growth-model-and-a-generalization" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -575,7 +575,7 @@ following important tools:</p>
 </div>
 </div>
 <div class="section" id="notation">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">21.1. </span>Notation</a><a class="headerlink" href="#notation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">22.1. </span>Notation</a><a class="headerlink" href="#notation" title="Permalink to this headline">¶</a></h2>
 <p>We use the following notation.</p>
 <p><span class="math notranslate nohighlight">\(\mathbf{0}\)</span> denotes
 a vector of zeros.</p>
@@ -604,7 +604,7 @@ denote the <span class="math notranslate nohighlight">\(j\)</span> th column and
 respectively.</p>
 </div>
 <div class="section" id="model-ingredients-and-assumptions">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">21.2. </span>Model Ingredients and Assumptions</a><a class="headerlink" href="#model-ingredients-and-assumptions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">22.2. </span>Model Ingredients and Assumptions</a><a class="headerlink" href="#model-ingredients-and-assumptions" title="Permalink to this headline">¶</a></h2>
 <p>A pair <span class="math notranslate nohighlight">\((A,B)\)</span> of <span class="math notranslate nohighlight">\(m\times n\)</span> non-negative matrices defines
 an economy.</p>
 <ul class="simple">
@@ -731,7 +731,7 @@ Assumptions:
 </div>
 </div>
 <div class="section" id="dynamic-interpretation">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">21.3. </span>Dynamic Interpretation</a><a class="headerlink" href="#dynamic-interpretation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id17"><span class="section-number">22.3. </span>Dynamic Interpretation</a><a class="headerlink" href="#dynamic-interpretation" title="Permalink to this headline">¶</a></h2>
 <p>Attach a time index <span class="math notranslate nohighlight">\(t\)</span> to the preceding objects, regard an economy
 as a dynamic system, and study sequences</p>
 <div class="math notranslate nohighlight">
@@ -760,7 +760,7 @@ yesterday.</p>
 <p>Accordingly, <span class="math notranslate nohighlight">\(Ap_t\)</span> tells the costs of production in period
 <span class="math notranslate nohighlight">\(t\)</span> and <span class="math notranslate nohighlight">\(Bp_t\)</span> tells revenues in period <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
 <div class="section" id="balanced-growth">
-<h3><span class="section-number">21.3.1. </span>Balanced Growth<a class="headerlink" href="#balanced-growth" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">22.3.1. </span>Balanced Growth<a class="headerlink" href="#balanced-growth" title="Permalink to this headline">¶</a></h3>
 <p>We follow John von Neumann in studying “balanced growth”.</p>
 <p>Let <span class="math notranslate nohighlight">\(./\)</span> denote an elementwise division of one vector by another and let
 <span class="math notranslate nohighlight">\(\alpha &gt;0\)</span> be a scalar.</p>
@@ -795,7 +795,7 @@ conduct an analysis purely in terms of a time-invariant growth rate
 </div>
 </div>
 <div class="section" id="duality">
-<h2><a class="toc-backref" href="#id18"><span class="section-number">21.4. </span>Duality</a><a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id18"><span class="section-number">22.4. </span>Duality</a><a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
 <p>Two problems are connected by a remarkable dual
 relationship between  technological and valuation characteristics of
 the economy:</p>
@@ -896,7 +896,7 @@ this extra condition does not affect the existence result, while it
 significantly reduces the number of (relevant) solutions.</p>
 </div>
 <div class="section" id="interpretation-as-two-player-zero-sum-game">
-<h2><a class="toc-backref" href="#id19"><span class="section-number">21.5. </span>Interpretation as Two-player Zero-sum Game</a><a class="headerlink" href="#interpretation-as-two-player-zero-sum-game" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id19"><span class="section-number">22.5. </span>Interpretation as Two-player Zero-sum Game</a><a class="headerlink" href="#interpretation-as-two-player-zero-sum-game" title="Permalink to this headline">¶</a></h2>
 <p>To compute the equilibrium <span class="math notranslate nohighlight">\((\gamma^{*}, x_0, p_0)\)</span>, we follow the
 algorithm proposed by Hamburger, Thompson and Weil (1967), building on
 the key insight that an equilibrium (with balanced growth) can be
@@ -940,7 +940,7 @@ zero-sum game.</p>
 V(C) = \max_x \min_p \hspace{2mm} x^T C p = \min_p \max_x \hspace{2mm} x^T C p = (x^*)^T C p^*
 \]</div>
 <div class="section" id="connection-with-linear-programming-lp">
-<h3><span class="section-number">21.5.1. </span>Connection with Linear Programming (LP)<a class="headerlink" href="#connection-with-linear-programming-lp" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">22.5.1. </span>Connection with Linear Programming (LP)<a class="headerlink" href="#connection-with-linear-programming-lp" title="Permalink to this headline">¶</a></h3>
 <p>Nash equilibria of a finite two-player zero-sum game solve  a linear programming problem.</p>
 <p>To see this, we introduce
 the following notation</p>
@@ -1055,12 +1055,12 @@ nonincreasing in <span class="math notranslate nohighlight">\(\gamma\)</span>.</
 input-output pair <span class="math notranslate nohighlight">\((A, B)\)</span>.</p>
 </div>
 <div class="section" id="algorithm">
-<h3><span class="section-number">21.5.2. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">22.5.2. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
 <p>Hamburger, Thompson and Weil <span id="id11">[<a class="reference internal" href="zreferences.html#id76" title="Michael J Hamburger, Gerald L Thompson, and Roman L Weil. Computation of expansion rates for the generalized von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 542–547, 1967.">HTW67</a>]</span> propose a simple bisection algorithm
 to find the minimal and maximal roots (i.e. <span class="math notranslate nohighlight">\(\beta_0\)</span> and
 <span class="math notranslate nohighlight">\(\alpha_0\)</span>) of the function <span class="math notranslate nohighlight">\(\gamma \mapsto V(M(\gamma))\)</span>.</p>
 <div class="section" id="step-1">
-<h4><span class="section-number">21.5.2.1. </span>Step 1<a class="headerlink" href="#step-1" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">22.5.2.1. </span>Step 1<a class="headerlink" href="#step-1" title="Permalink to this headline">¶</a></h4>
 <p>First, notice that we can easily find trivial upper and lower bounds for
 <span class="math notranslate nohighlight">\(\alpha_0\)</span> and <span class="math notranslate nohighlight">\(\beta_0\)</span>.</p>
 <ul class="simple">
@@ -1094,7 +1094,7 @@ solves <span class="math notranslate nohighlight">\(\min_j\{[\iota^T_m(B-\beta^{
 </div>
 </div>
 <div class="section" id="step-2">
-<h4><span class="section-number">21.5.2.2. </span>Step 2<a class="headerlink" href="#step-2" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">22.5.2.2. </span>Step 2<a class="headerlink" href="#step-2" title="Permalink to this headline">¶</a></h4>
 <p>Compute <span class="math notranslate nohighlight">\(\alpha_0\)</span> and <span class="math notranslate nohighlight">\(\beta_0\)</span></p>
 <ul class="simple">
 <li><p>Finding <span class="math notranslate nohighlight">\(\alpha_0\)</span></p>
@@ -1224,7 +1224,7 @@ a ‘‘full duality’’ result, i.e. <span class="math notranslate nohighligh
 </div>
 </div>
 <div class="section" id="uniqueness-and-irreducibility">
-<h3><span class="section-number">21.5.3. </span>Uniqueness and Irreducibility<a class="headerlink" href="#uniqueness-and-irreducibility" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">22.5.3. </span>Uniqueness and Irreducibility<a class="headerlink" href="#uniqueness-and-irreducibility" title="Permalink to this headline">¶</a></h3>
 <p>As an illustration, compute first the maximal and minimal roots of
 <span class="math notranslate nohighlight">\(V(M(\cdot))\)</span> for our Example 2 that has a reducible
 input-output pair <span class="math notranslate nohighlight">\((A, B)\)</span></p>
@@ -1282,7 +1282,7 @@ imposing irreducibility is sufficient for uniqueness of
 <span class="math notranslate nohighlight">\((A,B)\)</span> is irreducible, then <span class="math notranslate nohighlight">\(\gamma^*=\alpha_0=\beta_0\)</span>.</p>
 </div>
 <div class="section" id="a-special-case">
-<h3><span class="section-number">21.5.4. </span>A Special Case<a class="headerlink" href="#a-special-case" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">22.5.4. </span>A Special Case<a class="headerlink" href="#a-special-case" title="Permalink to this headline">¶</a></h3>
 <p>There is a special <span class="math notranslate nohighlight">\((A,B)\)</span> that allows us to simplify the solution
 method significantly by invoking the powerful Perron-Frobenius theorem
 for non-negative matrices.</p>
@@ -1413,6 +1413,11 @@ associated expansion and interest factors, respectively. Then we have</p>
    7. Singular Value Decomposition (SVD)
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   8. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1422,57 +1427,57 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="prob_matrix.html">
-   8. Elementary Probability with Matrices
+   9. Elementary Probability with Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   9. Univariate Time Series with Matrix Algebra
+   10. Univariate Time Series with Matrix Algebra
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   10. LLN and CLT
+   11. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   11. Two Meanings of Probability
+   12. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   12. Multivariate Hypergeometric Distribution
+   13. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   13. Multivariate Normal Distribution
+   14. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   14. Heavy-Tailed Distributions
+   15. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   15. Fault Tree Uncertainties
+   16. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   16. Introduction to Artificial Neural Networks
+   17. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   17. Randomized Response Surveys
+   18. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   18. Expected Utilities of Random Responses
+   19. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1484,17 +1489,17 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   19. Linear Programming
+   20. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   20. Optimal Transport
+   21. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   21. Von Neumann Growth Model (and a Generalization)
+   22. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1506,52 +1511,52 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   22. Dynamics in One Dimension
+   23. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   23. AR1 Processes
+   24. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   24. Finite Markov Chains
+   25. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   25. Inventory Dynamics
+   26. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   26. Linear State Space Models
+   27. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   27. Samuelson Multiplier-Accelerator
+   28. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   28. Kesten Processes and Firm Dynamics
+   29. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   29. Wealth Distribution Dynamics
+   30. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   30. A First Look at the Kalman Filter
+   31. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   31. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1563,32 +1568,32 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   32. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   33. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   34. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   35. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   36. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   37. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -1600,52 +1605,52 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   38. Cass-Koopmans Model
+   39. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   39. Cass-Koopmans Competitive Equilibrium
+   40. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   40. Cake Eating I: Introduction to Optimal Saving
+   41. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   41. Cake Eating II: Numerical Methods
+   42. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   42. Optimal Growth I: The Stochastic Optimal Growth Model
+   43. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   43. Optimal Growth II: Accelerating the Code with Numba
+   44. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   44. Optimal Growth III: Time Iteration
+   45. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   45. Optimal Growth IV: The Endogenous Grid Method
+   46. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   46. The Income Fluctuation Problem I: Basic Model
+   47. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   47. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   48. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1657,17 +1662,17 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   48. Non-Conjugate Priors
+   49. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   49. Posterior Distributions for  AR(1) Parameters
+   50. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   50. Forecasting  an AR(1) process
+   51. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1679,37 +1684,37 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   51. Job Search VII: Search with Learning
+   52. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   52. Likelihood Ratio Processes
+   53. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   53. Computing Mean of a Likelihood Ratio Process
+   54. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   54. A Problem that Stumped Milton Friedman
+   55. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   55. Exchangeability and Bayesian Updating
+   56. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   56. Likelihood Ratio Processes and Bayesian Learning
+   57. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   57. Bayesian versus Frequentist Decision Rules
+   58. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1721,32 +1726,32 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   58. LQ Control: Foundations
+   59. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   59. Lagrangian for LQ Control
+   60. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   60. Eliminating Cross Products
+   61. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   61. The Permanent Income Model
+   62. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   62. Permanent Income II: LQ Techniques
+   63. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   63. Production Smoothing via Inventories
+   64. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1758,37 +1763,37 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   64. Schelling’s Segregation Model
+   65. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   65. A Lake Model of Employment and Unemployment
+   66. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   66. Rational Expectations Equilibrium
+   67. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   67. Stability in Linear Rational Expectations Models
+   68. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   68. Markov Perfect Equilibrium
+   69. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   69. Uncertainty Traps
+   70. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   70. The Aiyagari Model
+   71. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1800,17 +1805,17 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   71. Asset Pricing: Finite State Models
+   72. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   72. Competitive Equilibria with Arrow Securities
+   73. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   73. Heterogeneous Beliefs and Bubbles
+   74. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1822,17 +1827,17 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   74. Pandas for Panel Data
+   75. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   75. Linear Regression in Python
+   76. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   76. Maximum Likelihood Estimation
+   77. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1844,12 +1849,12 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   77. First-Price and Second-Price Auctions
+   78. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   78. Multiple Good Allocation Mechanisms
+   79. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1861,17 +1866,17 @@ associated expansion and interest factors, respectively. Then we have</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   79. Troubleshooting
+   80. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   80. References
+   81. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   81. Execution Statistics
+   82. Execution Statistics
   </a>
  </li>
 </ul>

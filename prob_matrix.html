@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>8. Elementary Probability with Matrices &#8212; Quantitative Economics with Python</title>
+    <title>9. Elementary Probability with Matrices &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -96,13 +96,13 @@ const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-svg.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://python.quantecon.org/prob_matrix.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="9. Univariate Time Series with Matrix Algebra" href="time_series_with_matrices.html" />
-    <link rel="prev" title="7. Singular Value Decomposition (SVD)" href="svd_intro.html" />
+    <link rel="next" title="10. Univariate Time Series with Matrix Algebra" href="time_series_with_matrices.html" />
+    <link rel="prev" title="8. Using Newton’s Method to Solve Economic Models" href="newton_method.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -152,143 +152,143 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sketch-of-basic-concepts">
-   8.1. Sketch of Basic Concepts
+   9.1. Sketch of Basic Concepts
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#digression-what-does-probability-mean">
-   8.2. Digression: What Does Probability Mean?
+   9.2. Digression: What Does Probability Mean?
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#representing-probability-distributions">
-   8.3. Representing  Probability Distributions
+   9.3. Representing  Probability Distributions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#univariate-probability-distributions">
-   8.4. Univariate Probability Distributions
+   9.4. Univariate Probability Distributions
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#discrete-random-variable">
-     8.4.1. Discrete random variable
+     9.4.1. Discrete random variable
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#continuous-random-variable">
-     8.4.2. Continuous random variable
+     9.4.2. Continuous random variable
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#bivariate-probability-distributions">
-   8.5. Bivariate Probability Distributions
+   9.5. Bivariate Probability Distributions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#marginal-probability-distributions">
-   8.6. Marginal Probability Distributions
+   9.6. Marginal Probability Distributions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conditional-probability-distributions">
-   8.7. Conditional Probability  Distributions
+   9.7. Conditional Probability  Distributions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#statistical-independence">
-   8.8. Statistical Independence
+   9.8. Statistical Independence
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#means-and-variances">
-   8.9. Means and Variances
+   9.9. Means and Variances
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#classic-trick-for-generating-random-numbers">
-   8.10. Classic Trick for Generating Random Numbers
+   9.10. Classic Trick for Generating Random Numbers
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#some-discrete-probability-distributions">
-   8.11. Some Discrete Probability Distributions
+   9.11. Some Discrete Probability Distributions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#geometric-distribution">
-   8.12. Geometric distribution
+   9.12. Geometric distribution
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#newcombbenford-distribution">
-     8.12.1. Newcomb–Benford distribution
+     9.12.1. Newcomb–Benford distribution
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#pascal-negative-binomial-distribution">
-     8.12.2. Pascal (negative binomial) distribution
+     9.12.2. Pascal (negative binomial) distribution
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#continuous-random-variables">
-   8.13. Continuous Random Variables
+   9.13. Continuous Random Variables
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#univariate-gaussian-distribution">
-     8.13.1. Univariate Gaussian distribution
+     9.13.1. Univariate Gaussian distribution
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#uniform-distribution">
-     8.13.2. Uniform Distribution
+     9.13.2. Uniform Distribution
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-mixed-discrete-continuous-distribution">
-   8.14. A Mixed Discrete-Continuous Distribution
+   9.14. A Mixed Discrete-Continuous Distribution
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#matrix-representation-of-some-bivariate-distributions">
-   8.15. Matrix Representation of Some Bivariate Distributions
+   9.15. Matrix Representation of Some Bivariate Distributions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-continuous-bivariate-random-vector">
-   8.16. A Continuous Bivariate Random Vector
+   9.16. A Continuous Bivariate Random Vector
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sum-of-two-independently-distributed-random-variables">
-   8.17. Sum of Two Independently Distributed Random Variables
+   9.17. Sum of Two Independently Distributed Random Variables
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#transition-probability-matrix">
-   8.18. Transition Probability Matrix
+   9.18. Transition Probability Matrix
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#coupling">
-   8.19. Coupling
+   9.19. Coupling
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#copula-functions">
-   8.20. Copula Functions
+   9.20. Copula Functions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#time-series">
-   8.21. Time Series
+   9.21. Time Series
   </a>
  </li>
 </ul>
@@ -337,7 +337,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <div class="tex2jax_ignore mathjax_ignore section" id="elementary-probability-with-matrices">
-<h1><span class="section-number">8. </span>Elementary Probability with Matrices<a class="headerlink" href="#elementary-probability-with-matrices" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">9. </span>Elementary Probability with Matrices<a class="headerlink" href="#elementary-probability-with-matrices" title="Permalink to this headline">¶</a></h1>
 <p>This lecture uses matrix algebra to illustrate some basic ideas about probability theory.</p>
 <p>After providing somewhat informal definitions of the underlying objects, we’ll use matrices and vectors to describe probability distributions.</p>
 <p>Among concepts that we’ll be studying include</p>
@@ -382,14 +382,14 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_14090/4202758366.py:6: DeprecationWarning: `set_matplotlib_formats` is deprecated since IPython 7.23, directly use `matplotlib_inline.backend_inline.set_matplotlib_formats()`
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_2903/4202758366.py:6: DeprecationWarning: `set_matplotlib_formats` is deprecated since IPython 7.23, directly use `matplotlib_inline.backend_inline.set_matplotlib_formats()`
   set_matplotlib_formats(&#39;retina&#39;)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="sketch-of-basic-concepts">
-<h2><span class="section-number">8.1. </span>Sketch of Basic Concepts<a class="headerlink" href="#sketch-of-basic-concepts" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.1. </span>Sketch of Basic Concepts<a class="headerlink" href="#sketch-of-basic-concepts" title="Permalink to this headline">¶</a></h2>
 <p>We’ll briefly define what we mean by a <strong>probability space</strong>, a <strong>probability measure</strong>, and a <strong>random variable</strong>.</p>
 <p>For most of this lecture, we sweep these objects into the background, but they are there underlying the other objects that we’ll mainly focus on.</p>
 <p>Let <span class="math notranslate nohighlight">\(\Omega\)</span> be a set of possible underlying outcomes and let <span class="math notranslate nohighlight">\(\omega \in \Omega\)</span> be a particular underlying outcomes.</p>
@@ -404,14 +404,14 @@ const thebe_selector_output = ".output, .cell_output"
 <p>The random variable <span class="math notranslate nohighlight">\(X(\omega)\)</span>  has a <strong>probability distribution</strong> that is induced by the underlying probability measure <span class="math notranslate nohighlight">\(\mu\)</span> and the function
 <span class="math notranslate nohighlight">\(X(\omega)\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-cdffromdensity">
-<span class="eqno">(8.1)<a class="headerlink" href="#equation-eq-cdffromdensity" title="Permalink to this equation">¶</a></span>\[ 
+<span class="eqno">(9.1)<a class="headerlink" href="#equation-eq-cdffromdensity" title="Permalink to this equation">¶</a></span>\[ 
 \textrm{Prob} (X \in A ) = \int_{\mathcal{G}} \mu(\omega) d \omega 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\({\mathcal G}\)</span> is the subset of <span class="math notranslate nohighlight">\(\Omega\)</span> for which <span class="math notranslate nohighlight">\(X(\omega) \in A\)</span>.</p>
 <p>We call this the induced probability distribution of random variable <span class="math notranslate nohighlight">\(X\)</span>.</p>
 </div>
 <div class="section" id="digression-what-does-probability-mean">
-<h2><span class="section-number">8.2. </span>Digression: What Does Probability Mean?<a class="headerlink" href="#digression-what-does-probability-mean" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.2. </span>Digression: What Does Probability Mean?<a class="headerlink" href="#digression-what-does-probability-mean" title="Permalink to this headline">¶</a></h2>
 <p>Before diving in, we’ll say a few words about what probability theory means and how it connects to statistics.</p>
 <p>These are topics that are also touched on in the quantecon lectures  <a class="reference external" href="https://python.quantecon.org/prob_meaning.html">https://python.quantecon.org/prob_meaning.html</a> and <a class="reference external" href="https://python.quantecon.org/navy_captain.html">https://python.quantecon.org/navy_captain.html</a>.</p>
 <p>For much of this lecture we’ll be discussing  fixed “population” probabilities.</p>
@@ -474,7 +474,7 @@ N &amp; = \sum^{I-1}_{i=0} N_i \quad \text{total number of draws},\\
 </ul>
 </div>
 <div class="section" id="representing-probability-distributions">
-<h2><span class="section-number">8.3. </span>Representing  Probability Distributions<a class="headerlink" href="#representing-probability-distributions" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.3. </span>Representing  Probability Distributions<a class="headerlink" href="#representing-probability-distributions" title="Permalink to this headline">¶</a></h2>
 <p>A  probability distribution <span class="math notranslate nohighlight">\(\textrm{Prob} (X \in A)\)</span> can  be described by its <strong>cumulative distribution function (CDF)</strong></p>
 <div class="math notranslate nohighlight">
 \[
@@ -496,24 +496,24 @@ F(x) = \int_{-\infty}^{x}f(t)dt
 <ul class="simple">
 <li><p>the number  of possible values of <span class="math notranslate nohighlight">\(X\)</span> is finite or countably infinite</p></li>
 <li><p>we replace a  <strong>density</strong> with a <strong>probability mass function</strong>, a non-negative sequence that sums to one</p></li>
-<li><p>we replace integration with summation in the formula like <a class="reference internal" href="#equation-eq-cdffromdensity">(8.1)</a> that relates a CDF to a probability mass function</p></li>
+<li><p>we replace integration with summation in the formula like <a class="reference internal" href="#equation-eq-cdffromdensity">(9.1)</a> that relates a CDF to a probability mass function</p></li>
 </ul>
 <p>In this lecture, we mostly discuss discrete random variables.</p>
 <p>Doing this enables us to confine our tool set basically to linear algebra.</p>
 <p>Later we’ll briefly discuss how to approximate a continuous random variable with a discrete random variable.</p>
 </div>
 <div class="section" id="univariate-probability-distributions">
-<h2><span class="section-number">8.4. </span>Univariate Probability Distributions<a class="headerlink" href="#univariate-probability-distributions" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.4. </span>Univariate Probability Distributions<a class="headerlink" href="#univariate-probability-distributions" title="Permalink to this headline">¶</a></h2>
 <p>We’ll devote most of this lecture to discrete-valued random variables, but we’ll say a few things
 about continuous-valued random variables.</p>
 <div class="section" id="discrete-random-variable">
-<h3><span class="section-number">8.4.1. </span>Discrete random variable<a class="headerlink" href="#discrete-random-variable" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">9.4.1. </span>Discrete random variable<a class="headerlink" href="#discrete-random-variable" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> be a discrete random variable that takes possible values: <span class="math notranslate nohighlight">\(i=0,1,\ldots,I-1 = \bar{X}\)</span>.</p>
 <p>Here, we choose  the maximum index <span class="math notranslate nohighlight">\(I-1\)</span> because of how this aligns nicely with Python’s index convention.</p>
 <p>Define <span class="math notranslate nohighlight">\(f_i \equiv \textrm{Prob}\{X=i\}\)</span>
 and assemble  the non-negative vector</p>
 <div class="math notranslate nohighlight" id="equation-eq-discretedist">
-<span class="eqno">(8.2)<a class="headerlink" href="#equation-eq-discretedist" title="Permalink to this equation">¶</a></span>\[\begin{split} 
+<span class="eqno">(9.2)<a class="headerlink" href="#equation-eq-discretedist" title="Permalink to this equation">¶</a></span>\[\begin{split} 
 f=\left[\begin{array}{c}
 f_{0}\\
 f_{1}\\
@@ -523,7 +523,7 @@ f_{I-1}
 \end{split}\]</div>
 <p>for which  <span class="math notranslate nohighlight">\(f_{i} \in [0,1]\)</span> for each <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(\sum_{i=0}^{I-1}f_i=1\)</span>.</p>
 <p>This vector defines a <strong>probability mass function</strong>.</p>
-<p>The distribution <a class="reference internal" href="#equation-eq-discretedist">(8.2)</a>
+<p>The distribution <a class="reference internal" href="#equation-eq-discretedist">(9.2)</a>
 has <strong>parameters</strong>  <span class="math notranslate nohighlight">\(\{f_{i}\}_{i=0,1, \cdots ,I-2}\)</span> since <span class="math notranslate nohighlight">\(f_{I-1} = 1-\sum_{i=0}^{I-2}f_{i}\)</span>.</p>
 <p>These parameters pin down the shape of the distribution.</p>
 <p>(Sometimes <span class="math notranslate nohighlight">\(I = \infty\)</span>.)</p>
@@ -557,7 +557,7 @@ f_i( \theta)\ge0, \sum_{i=0}^{\infty}f_i(\theta)=1
 \]</div>
 </div>
 <div class="section" id="continuous-random-variable">
-<h3><span class="section-number">8.4.2. </span>Continuous random variable<a class="headerlink" href="#continuous-random-variable" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">9.4.2. </span>Continuous random variable<a class="headerlink" href="#continuous-random-variable" title="Permalink to this headline">¶</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> be a continous random variable that takes values <span class="math notranslate nohighlight">\(X \in \tilde{X}\equiv[X_U,X_L]\)</span> whose distributions have parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -571,7 +571,7 @@ f_i( \theta)\ge0, \sum_{i=0}^{\infty}f_i(\theta)=1
 </div>
 </div>
 <div class="section" id="bivariate-probability-distributions">
-<h2><span class="section-number">8.5. </span>Bivariate Probability Distributions<a class="headerlink" href="#bivariate-probability-distributions" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.5. </span>Bivariate Probability Distributions<a class="headerlink" href="#bivariate-probability-distributions" title="Permalink to this headline">¶</a></h2>
 <p>We’ll now discuss a bivariate <strong>joint distribution</strong>.</p>
 <p>To begin, we restrict ourselves to two discrete random variables.</p>
 <p>Let <span class="math notranslate nohighlight">\(X,Y\)</span> be two discrete random variables that take values:</p>
@@ -600,7 +600,7 @@ f_{ij}=\textrm{Prob}\{X=i,Y=j\} \geq 0
 \]</div>
 </div>
 <div class="section" id="marginal-probability-distributions">
-<h2><span class="section-number">8.6. </span>Marginal Probability Distributions<a class="headerlink" href="#marginal-probability-distributions" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.6. </span>Marginal Probability Distributions<a class="headerlink" href="#marginal-probability-distributions" title="Permalink to this headline">¶</a></h2>
 <p>The joint distribution induce marginal distributions</p>
 <div class="math notranslate nohighlight">
 \[
@@ -612,7 +612,7 @@ f_{ij}=\textrm{Prob}\{X=i,Y=j\} \geq 0
 \]</div>
 <p>For example, let the joint distribution over <span class="math notranslate nohighlight">\((X,Y)\)</span> be</p>
 <div class="math notranslate nohighlight" id="equation-eq-example101discrete">
-<span class="eqno">(8.3)<a class="headerlink" href="#equation-eq-example101discrete" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(9.3)<a class="headerlink" href="#equation-eq-example101discrete" title="Permalink to this equation">¶</a></span>\[\begin{split}
 F = \left[
    \begin{matrix}
    .25 &amp; .1\\
@@ -640,7 +640,7 @@ f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 \end{split}\]</div>
 </div>
 <div class="section" id="conditional-probability-distributions">
-<h2><span class="section-number">8.7. </span>Conditional Probability  Distributions<a class="headerlink" href="#conditional-probability-distributions" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.7. </span>Conditional Probability  Distributions<a class="headerlink" href="#conditional-probability-distributions" title="Permalink to this headline">¶</a></h2>
 <p>Conditional probabilities are defined according to</p>
 <div class="math notranslate nohighlight">
 \[
@@ -665,14 +665,14 @@ f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 \[
 \textrm{Prob}\{X=i|Y=j\}	=\frac{\textrm{Prob}\{X=i,Y=j\}}{\textrm{Prob}\{Y=j\}}=\frac{\textrm{Prob}\{Y=j|X=i\}\textrm{Prob}\{X=i\}}{\textrm{Prob}\{Y=j\}}
 \]</div>
-<p>For the joint distribution <a class="reference internal" href="#equation-eq-example101discrete">(8.3)</a></p>
+<p>For the joint distribution <a class="reference internal" href="#equation-eq-example101discrete">(9.3)</a></p>
 <div class="math notranslate nohighlight">
 \[
 \textrm{Prob}\{X=0|Y=1\} =\frac{ .1}{.1+.5}=\frac{.1}{.6}
 \]</div>
 </div>
 <div class="section" id="statistical-independence">
-<h2><span class="section-number">8.8. </span>Statistical Independence<a class="headerlink" href="#statistical-independence" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.8. </span>Statistical Independence<a class="headerlink" href="#statistical-independence" title="Permalink to this headline">¶</a></h2>
 <p>Random variables X and Y are statistically <strong>independent</strong> if</p>
 <div class="math notranslate nohighlight">
 \[ 
@@ -696,7 +696,7 @@ f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 \end{split}\]</div>
 </div>
 <div class="section" id="means-and-variances">
-<h2><span class="section-number">8.9. </span>Means and Variances<a class="headerlink" href="#means-and-variances" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.9. </span>Means and Variances<a class="headerlink" href="#means-and-variances" title="Permalink to this headline">¶</a></h2>
 <p>The  mean and variance of a discrete random variable <span class="math notranslate nohighlight">\(X\)</span>  are</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -716,7 +716,7 @@ f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 \end{split}\]</div>
 </div>
 <div class="section" id="classic-trick-for-generating-random-numbers">
-<h2><span class="section-number">8.10. </span>Classic Trick for Generating Random Numbers<a class="headerlink" href="#classic-trick-for-generating-random-numbers" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.10. </span>Classic Trick for Generating Random Numbers<a class="headerlink" href="#classic-trick-for-generating-random-numbers" title="Permalink to this headline">¶</a></h2>
 <p>Suppose we have at our disposal a pseudo random number that draws a uniform random variable, i.e., one with probability distribution</p>
 <div class="math notranslate nohighlight">
 \[
@@ -903,7 +903,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>61
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>63
 </pre></div>
 </div>
 </div>
@@ -915,7 +915,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7610560044063084
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7610560044063083
 </pre></div>
 </div>
 </div>
@@ -933,7 +933,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="section" id="some-discrete-probability-distributions">
-<h2><span class="section-number">8.11. </span>Some Discrete Probability Distributions<a class="headerlink" href="#some-discrete-probability-distributions" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.11. </span>Some Discrete Probability Distributions<a class="headerlink" href="#some-discrete-probability-distributions" title="Permalink to this headline">¶</a></h2>
 <p>Let’s write some Python code to compute   means and variances of some  univariate random variables.</p>
 <p>We’ll use our code to</p>
 <ul class="simple">
@@ -943,7 +943,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </ul>
 </div>
 <div class="section" id="geometric-distribution">
-<h2><span class="section-number">8.12. </span>Geometric distribution<a class="headerlink" href="#geometric-distribution" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.12. </span>Geometric distribution<a class="headerlink" href="#geometric-distribution" title="Permalink to this headline">¶</a></h2>
 <div class="math notranslate nohighlight">
 \[
 \textrm{Prob}(X=k)=(1-p)^{k-1}p,k=1,2, \ldots 
@@ -977,8 +977,8 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.330728 
-The sample variance is:  7.7575089900159995
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.335248 
+The sample variance is:  7.784856778496004
 
 The population mean is:  3.3333333333333335
 The population variance is:  7.777777777777778
@@ -987,7 +987,7 @@ The population variance is:  7.777777777777778
 </div>
 </div>
 <div class="section" id="newcombbenford-distribution">
-<h3><span class="section-number">8.12.1. </span>Newcomb–Benford distribution<a class="headerlink" href="#newcombbenford-distribution" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">9.12.1. </span>Newcomb–Benford distribution<a class="headerlink" href="#newcombbenford-distribution" title="Permalink to this headline">¶</a></h3>
 <p>The <strong>Newcomb–Benford law</strong> fits  many data sets, e.g., reports of incomes to tax authorities, in which
 the leading digit is more likely to be small than large.</p>
 <p>See <a class="reference external" href="https://en.wikipedia.org/wiki/Benford%27s_law">https://en.wikipedia.org/wiki/Benford%27s_law</a></p>
@@ -1030,9 +1030,9 @@ the leading digit is more likely to be small than large.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
-3.4402369671232065
-6.056512631375665
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9999999999999999
+3.440236967123206
+6.056512631375667
 </pre></div>
 </div>
 </div>
@@ -1052,7 +1052,7 @@ the leading digit is more likely to be small than large.</p>
 </div>
 </div>
 <div class="section" id="pascal-negative-binomial-distribution">
-<h3><span class="section-number">8.12.2. </span>Pascal (negative binomial) distribution<a class="headerlink" href="#pascal-negative-binomial-distribution" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">9.12.2. </span>Pascal (negative binomial) distribution<a class="headerlink" href="#pascal-negative-binomial-distribution" title="Permalink to this headline">¶</a></h3>
 <p>Consider a sequence of independent Bernoulli trials.</p>
 <p>Let <span class="math notranslate nohighlight">\(p\)</span> be the probability of success.</p>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> be a random variable that represents the number of failures before we get <span class="math notranslate nohighlight">\(r\)</span> success.</p>
@@ -1092,8 +1092,8 @@ X  &amp; \sim NB(r,p) \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.33595 
-The sample variance is:  77.69617359749998
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.358809 
+The sample variance is:  77.852643101519
 
 The population mean is:  23.333333333333336
 The population variance is:  77.77777777777779
@@ -1104,9 +1104,9 @@ The population variance is:  77.77777777777779
 </div>
 </div>
 <div class="section" id="continuous-random-variables">
-<h2><span class="section-number">8.13. </span>Continuous Random Variables<a class="headerlink" href="#continuous-random-variables" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.13. </span>Continuous Random Variables<a class="headerlink" href="#continuous-random-variables" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="univariate-gaussian-distribution">
-<h3><span class="section-number">8.13.1. </span>Univariate Gaussian distribution<a class="headerlink" href="#univariate-gaussian-distribution" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">9.13.1. </span>Univariate Gaussian distribution<a class="headerlink" href="#univariate-gaussian-distribution" title="Permalink to this headline">¶</a></h3>
 <p>We write</p>
 <div class="math notranslate nohighlight">
 \[ 
@@ -1137,8 +1137,8 @@ X \sim N(\mu,\sigma^2)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  2.423971072326835e-05
-The sample standard deviation is:  0.10001012198823145
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  -0.00012450678698800694
+The sample standard deviation is:  0.10008375754397264
 </pre></div>
 </div>
 </div>
@@ -1160,7 +1160,7 @@ True
 </div>
 </div>
 <div class="section" id="uniform-distribution">
-<h3><span class="section-number">8.13.2. </span>Uniform Distribution<a class="headerlink" href="#uniform-distribution" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">9.13.2. </span>Uniform Distribution<a class="headerlink" href="#uniform-distribution" title="Permalink to this headline">¶</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -1198,8 +1198,8 @@ f(x)&amp; = \begin{cases} \frac{1}{b-a}, &amp; a \leq x \leq b \\ \quad0, &amp; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  14.998266769948533 
-The sample variance is:  8.339201453111174
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  14.995306302571004 
+The sample variance is:  8.330829878593951
 
 The population mean is:  15.0
 The population variance is:  8.333333333333334
@@ -1210,7 +1210,7 @@ The population variance is:  8.333333333333334
 </div>
 </div>
 <div class="section" id="a-mixed-discrete-continuous-distribution">
-<h2><span class="section-number">8.14. </span>A Mixed Discrete-Continuous Distribution<a class="headerlink" href="#a-mixed-discrete-continuous-distribution" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.14. </span>A Mixed Discrete-Continuous Distribution<a class="headerlink" href="#a-mixed-discrete-continuous-distribution" title="Permalink to this headline">¶</a></h2>
 <p>We’ll motivate this example with  a little story.</p>
 <p>Suppose that  to apply for a job  you take an interview and either pass or fail it.</p>
 <p>You have <span class="math notranslate nohighlight">\(5\%\)</span> chance to pass an interview and you know your salary will uniformly distributed in the interval 300~400 a day only if you pass.</p>
@@ -1243,8 +1243,8 @@ f(x) = 0.0005
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.544237182639908 
-The sample variance is:  5873.087967099961
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.558984444228468 
+The sample variance is:  5876.540624645368
 </pre></div>
 </div>
 </div>
@@ -1284,7 +1284,7 @@ variance:  5860.416666666666
 </div>
 </div>
 <div class="section" id="matrix-representation-of-some-bivariate-distributions">
-<h2><span class="section-number">8.15. </span>Matrix Representation of Some Bivariate Distributions<a class="headerlink" href="#matrix-representation-of-some-bivariate-distributions" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.15. </span>Matrix Representation of Some Bivariate Distributions<a class="headerlink" href="#matrix-representation-of-some-bivariate-distributions" title="Permalink to this headline">¶</a></h2>
 <p>Let’s use matrices to represent a joint distribution, conditional distribution, marginal distribution, and the mean and variance of a  bivariate random variable.</p>
 <p>The table below illustrates a  probability distribution  for a bivariate random variable.</p>
 <div class="math notranslate nohighlight">
@@ -1327,8 +1327,8 @@ F=[f_{ij}]=\left[\begin{array}{cc}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.  1.  1. ...  1.  0.  0.]
- [10. 20. 20. ... 20. 10. 10.]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.  0.  1. ...  0.  1.  1.]
+ [10. 10. 20. ... 10. 20. 20.]]
 </pre></div>
 </div>
 </div>
@@ -1359,20 +1359,20 @@ F=[f_{ij}]=\left[\begin{array}{cc}
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>marginal distribution for x
-+---------+----------+
-| x_value |  x_prob  |
-+---------+----------+
-|    0    | 0.499339 |
-|    1    | 0.500661 |
-+---------+----------+
++---------+---------------------+
+| x_value |        x_prob       |
++---------+---------------------+
+|    0    |       0.500697      |
+|    1    | 0.49930300000000005 |
++---------+---------------------+
 
 marginal distribution for y
-+---------+----------+
-| y_value |  y_prob  |
-+---------+----------+
-|    10   | 0.399958 |
-|    20   | 0.600042 |
-+---------+----------+
++---------+--------------------+
+| y_value |       y_prob       |
++---------+--------------------+
+|    10   |      0.400392      |
+|    20   | 0.5996079999999999 |
++---------+--------------------+
 </pre></div>
 </div>
 </div>
@@ -1409,19 +1409,19 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
-+---------+---------------------+---------------------+
-| y_value |      prob(x=0)      |      prob(x=1)      |
-+---------+---------------------+---------------------+
-|    10   |  0.7498687362173028 | 0.25013126378269723 |
-|    20   | 0.33234840227850715 |  0.6676515977214929 |
-+---------+---------------------+---------------------+
++---------+--------------------+---------------------+
+| y_value |     prob(x=0)      |      prob(x=1)      |
++---------+--------------------+---------------------+
+|    10   | 0.751161361865372  | 0.24883863813462803 |
+|    20   | 0.3334478525970301 |  0.6665521474029699 |
++---------+--------------------+---------------------+
 
 conditional distribution for y
 +---------+---------------------+--------------------+
 | x_value |      prob(y=10)     |     prob(y=20)     |
 +---------+---------------------+--------------------+
-|    0    |  0.6006260276084985 | 0.3993739723915015 |
-|    1    | 0.19981983817393406 | 0.800180161826066  |
+|    0    |  0.6006806511722659 | 0.3993193488277341 |
+|    1    | 0.19954416456540416 | 0.8004558354345959 |
 +---------+---------------------+--------------------+
 </pre></div>
 </div>
@@ -1626,8 +1626,8 @@ x=x_2 &amp; \vdots &amp; \frac{0.1}{0.5}=0.2 &amp; \frac{0.4}{0.5}=0.8 \\
  +---------+---------+
 | x_value |  x_prob |
 +---------+---------+
-|    0    | 0.50035 |
-|    1    | 0.49965 |
+|    0    | 0.50044 |
+|    1    | 0.49956 |
 |   sum   |   1.0   |
 +---------+---------+
 
@@ -1635,8 +1635,8 @@ marginal distribution for y
  +---------+----------+
 | y_value |  y_prob  |
 +---------+----------+
-|    10   | 0.399541 |
-|    20   | 0.600459 |
+|    10   | 0.399834 |
+|    20   | 0.600166 |
 |   sum   |   1.0    |
 +---------+----------+
 </pre></div>
@@ -1652,19 +1652,19 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
- +---------+---------------------+---------------------+-----+
-| x_value |          0          |          1          | sum |
-+---------+---------------------+---------------------+-----+
-|    10   |  0.7500356659266508 | 0.24996433407334917 | 1.0 |
-|    20   | 0.33421099525529635 |  0.6657890047447036 | 1.0 |
-+---------+---------------------+---------------------+-----+
+ +---------+--------------------+---------------------+-----+
+| x_value |         0          |          1          | sum |
++---------+--------------------+---------------------+-----+
+|    10   | 0.7497811591810601 | 0.25021884081893986 | 1.0 |
+|    20   | 0.3343275027242463 |  0.6656724972757537 | 1.0 |
++---------+--------------------+---------------------+-----+
 
 conditional distribution for y
  +---------+--------------------+--------------------+-----+
 | y_value |         10         |         20         | sum |
 +---------+--------------------+--------------------+-----+
-|    0    | 0.5989207554711702 | 0.4010792445288298 | 1.0 |
-|    1    | 0.1998819173421395 | 0.8001180826578606 | 1.0 |
+|    0    | 0.5990488370234194 | 0.4009511629765806 | 1.0 |
+|    1    | 0.200268236047722  | 0.799731763952278  | 1.0 |
 +---------+--------------------+--------------------+-----+
 </pre></div>
 </div>
@@ -1707,9 +1707,9 @@ conditional distribution for y
  +---------+----------+
 | x_value |  x_prob  |
 +---------+----------+
-|    10   | 0.299567 |
-|    20   | 0.400343 |
-|    30   | 0.30009  |
+|    10   | 0.299926 |
+|    20   | 0.400142 |
+|    30   | 0.299932 |
 |   sum   |   1.0    |
 +---------+----------+
 
@@ -1717,8 +1717,8 @@ marginal distribution for y
  +---------+----------+
 | y_value |  y_prob  |
 +---------+----------+
-|    1    | 0.449858 |
-|    2    | 0.550142 |
+|    1    | 0.450582 |
+|    2    | 0.549418 |
 |   sum   |   1.0    |
 +---------+----------+
 </pre></div>
@@ -1733,28 +1733,28 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
- +---------+---------------------+---------------------+--------------------+-----+
-| x_value |          10         |          20         |         30         | sum |
-+---------+---------------------+---------------------+--------------------+-----+
-|    1    | 0.44450693329895213 | 0.22205006913292638 | 0.3334429975681215 | 1.0 |
-|    2    | 0.18104780220379466 |  0.5461353614157799 | 0.2728168363804254 | 1.0 |
-+---------+---------------------+---------------------+--------------------+-----+
+ +---------+---------------------+---------------------+---------------------+-----+
+| x_value |          10         |          20         |          30         | sum |
++---------+---------------------+---------------------+---------------------+-----+
+|    1    |  0.4450555059900307 | 0.22165332836198517 | 0.33329116564798417 | 1.0 |
+|    2    | 0.18090415676224658 |  0.5465219559606711 |  0.2725738872770823 | 1.0 |
++---------+---------------------+---------------------+---------------------+-----+
 
 conditional distribution for y
- +---------+---------------------+--------------------+-----+
-| y_value |          1          |         2          | sum |
-+---------+---------------------+--------------------+-----+
-|    10   |  0.6675134444047576 | 0.3324865555952425 | 1.0 |
-|    20   |  0.249513542137617  | 0.750486457862383  | 1.0 |
-|    30   | 0.49985670965377055 | 0.5001432903462295 | 1.0 |
-+---------+---------------------+--------------------+-----+
+ +---------+---------------------+---------------------+-----+
+| y_value |          1          |          2          | sum |
++---------+---------------------+---------------------+-----+
+|    10   |  0.6686115908590786 | 0.33138840914092144 | 1.0 |
+|    20   | 0.24959389416757052 |  0.7504061058324295 | 1.0 |
+|    30   |  0.5006968246135791 | 0.49930317538642094 | 1.0 |
++---------+---------------------+---------------------+-----+
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="section" id="a-continuous-bivariate-random-vector">
-<h2><span class="section-number">8.16. </span>A Continuous Bivariate Random Vector<a class="headerlink" href="#a-continuous-bivariate-random-vector" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.16. </span>A Continuous Bivariate Random Vector<a class="headerlink" href="#a-continuous-bivariate-random-vector" title="Permalink to this headline">¶</a></h2>
 <p>A two-dimensional Gaussian distribution has  joint density</p>
 <div class="math notranslate nohighlight">
 \[ 
@@ -1872,7 +1872,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.0031443621826755135 2.2348521047319423
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.0012664941268711234 2.235305624811854
 </pre></div>
 </div>
 <img alt="_images/prob_matrix_52_1.png" src="_images/prob_matrix_52_1.png" />
@@ -1890,7 +1890,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.999534866682253 0.9995534647330167
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.998082519370839 0.9997715325284249
 </pre></div>
 </div>
 <img alt="_images/prob_matrix_53_1.png" src="_images/prob_matrix_53_1.png" />
@@ -1997,9 +1997,9 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.9997518414498433 2.22658413316977
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.9997518414498433 2.2265841331697698
 -1.0 2.227105745132009
-5.039999456960771 0.9959851265795591
+5.039999456960766 0.9959851265795596
 5.04 0.9959919678390986
 </pre></div>
 </div>
@@ -2007,7 +2007,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="section" id="sum-of-two-independently-distributed-random-variables">
-<h2><span class="section-number">8.17. </span>Sum of Two Independently Distributed Random Variables<a class="headerlink" href="#sum-of-two-independently-distributed-random-variables" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.17. </span>Sum of Two Independently Distributed Random Variables<a class="headerlink" href="#sum-of-two-independently-distributed-random-variables" title="Permalink to this headline">¶</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(X, Y\)</span> be two independent discrete random variables that take values in <span class="math notranslate nohighlight">\(\bar{X}, \bar{Y}\)</span>, respectively.</p>
 <p>Define a new random variable <span class="math notranslate nohighlight">\(Z=X+Y\)</span>.</p>
 <p>Evidently, <span class="math notranslate nohighlight">\(Z\)</span> takes values from <span class="math notranslate nohighlight">\(\bar{Z}\)</span> defined as follows:</p>
@@ -2041,7 +2041,7 @@ f_{Z}(z)=\int_{-\infty}^{\infty} f_{X}(x) f_{Y}(z-x) dx \equiv f_{X}*g_{Y}
 <p>where <span class="math notranslate nohighlight">\( f_{X}*g_{Y} \)</span> denotes the <strong>convolution</strong> of the <span class="math notranslate nohighlight">\(f_X\)</span> and <span class="math notranslate nohighlight">\(g_Y\)</span> functions.</p>
 </div>
 <div class="section" id="transition-probability-matrix">
-<h2><span class="section-number">8.18. </span>Transition Probability Matrix<a class="headerlink" href="#transition-probability-matrix" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.18. </span>Transition Probability Matrix<a class="headerlink" href="#transition-probability-matrix" title="Permalink to this headline">¶</a></h2>
 <p>Consider the following joint probability distribution of  two random variables.</p>
 <p>Let <span class="math notranslate nohighlight">\(X,Y\)</span> be discrete random variables with joint distribution</p>
 <div class="math notranslate nohighlight">
@@ -2082,7 +2082,7 @@ p_{ij}=\textrm{Prob}\{Y=j|X=i\}= \frac{\rho_{ij}}{ \sum_{j}\rho_{ij}}
 </ul>
 </div>
 <div class="section" id="coupling">
-<h2><span class="section-number">8.19. </span>Coupling<a class="headerlink" href="#coupling" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.19. </span>Coupling<a class="headerlink" href="#coupling" title="Permalink to this headline">¶</a></h2>
 <p>Start with a joint distribution</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -2182,7 +2182,7 @@ f_{ij}=
 </ul>
 </div>
 <div class="section" id="copula-functions">
-<h2><span class="section-number">8.20. </span>Copula Functions<a class="headerlink" href="#copula-functions" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.20. </span>Copula Functions<a class="headerlink" href="#copula-functions" title="Permalink to this headline">¶</a></h2>
 <p>Suppose that <span class="math notranslate nohighlight">\(X_1, X_2, \dots, X_n\)</span> are <span class="math notranslate nohighlight">\(N\)</span> random variables  and that</p>
 <ul class="simple">
 <li><p>their marginal distributions are <span class="math notranslate nohighlight">\(F_1(x_1), F_2(x_2),\dots, F_N(x_N)\)</span>,  and</p></li>
@@ -2264,18 +2264,18 @@ C(u_1,u_2,\dots,u_n) = H[F^{-1}_1(u_1),F^{-1}_2(u_2),\dots,F^{-1}_N(u_N)]
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distribution for x
-+---------+--------------------+
-| x_value |       x_prob       |
-+---------+--------------------+
-|    0    | 0.5995440000000001 |
-|    1    |      0.400456      |
-+---------+--------------------+
++---------+----------+
+| x_value |  x_prob  |
++---------+----------+
+|    0    | 0.599681 |
+|    1    | 0.400319 |
++---------+----------+
 distribution for y
 +---------+----------+
 | y_value |  y_prob  |
 +---------+----------+
-|    0    | 0.300095 |
-|    1    | 0.699905 |
+|    0    | 0.299551 |
+|    1    | 0.700449 |
 +---------+----------+
 </pre></div>
 </div>
@@ -2351,10 +2351,10 @@ distribution for y
 +------------+------------+----------+
 | c1_x_value | c1_y_value | c1_prob  |
 +------------+------------+----------+
-|     0      |     0      | 0.179744 |
-|     0      |     1      | 0.420118 |
-|     1      |     0      | 0.119939 |
-|     1      |     1      | 0.280199 |
+|     0      |     0      | 0.180101 |
+|     0      |     1      | 0.420359 |
+|     1      |     0      | 0.119755 |
+|     1      |     1      | 0.279785 |
 +------------+------------+----------+
 </pre></div>
 </div>
@@ -2388,16 +2388,16 @@ distribution for y
 +------------+-----------+
 | c1_x_value | c1_x_prob |
 +------------+-----------+
-|     0      |  0.599862 |
-|     1      |  0.400138 |
+|     0      |  0.60046  |
+|     1      |  0.39954  |
 +------------+-----------+
 marginal distribution for y
-+------------+---------------------+
-| c1_y_value |      c1_y_prob      |
-+------------+---------------------+
-|     0      | 0.29968300000000003 |
-|     1      |       0.700317      |
-+------------+---------------------+
++------------+-----------+
+| c1_y_value | c1_y_prob |
++------------+-----------+
+|     0      |  0.299856 |
+|     1      |  0.700144 |
++------------+-----------+
 </pre></div>
 </div>
 </div>
@@ -2465,10 +2465,10 @@ marginal distribution for y
 +------------+------------+----------+
 | c2_x_value | c2_y_value | c2_prob  |
 +------------+------------+----------+
-|     0      |     0      | 0.300054 |
-|     0      |     1      | 0.299985 |
+|     0      |     0      | 0.299546 |
+|     0      |     1      | 0.300489 |
 |     1      |     0      |   0.0    |
-|     1      |     1      | 0.399961 |
+|     1      |     1      | 0.399965 |
 +------------+------------+----------+
 </pre></div>
 </div>
@@ -2502,16 +2502,16 @@ marginal distribution for y
 +------------+-----------+
 | c2_x_value | c2_x_prob |
 +------------+-----------+
-|     0      |  0.600039 |
-|     1      |  0.399961 |
+|     0      |  0.600035 |
+|     1      |  0.399965 |
 +------------+-----------+
 marginal distribution for y
-+------------+---------------------+
-| c2_y_value |      c2_y_prob      |
-+------------+---------------------+
-|     0      | 0.30005400000000004 |
-|     1      |       0.699946      |
-+------------+---------------------+
++------------+-----------+
+| c2_y_value | c2_y_prob |
++------------+-----------+
+|     0      |  0.299546 |
+|     1      |  0.700454 |
++------------+-----------+
 </pre></div>
 </div>
 </div>
@@ -2520,7 +2520,7 @@ marginal distribution for y
 <p>So they are both couplings of <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>.</p>
 </div>
 <div class="section" id="time-series">
-<h2><span class="section-number">8.21. </span>Time Series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">9.21. </span>Time Series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h2>
 <p>Suppose that there are two time periods.</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(t=0\)</span>  “today”</p></li>
@@ -2636,6 +2636,11 @@ marginal distribution for y
    7. Singular Value Decomposition (SVD)
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   8. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -2645,57 +2650,57 @@ marginal distribution for y
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   8. Elementary Probability with Matrices
+   9. Elementary Probability with Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   9. Univariate Time Series with Matrix Algebra
+   10. Univariate Time Series with Matrix Algebra
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   10. LLN and CLT
+   11. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   11. Two Meanings of Probability
+   12. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   12. Multivariate Hypergeometric Distribution
+   13. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   13. Multivariate Normal Distribution
+   14. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   14. Heavy-Tailed Distributions
+   15. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   15. Fault Tree Uncertainties
+   16. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   16. Introduction to Artificial Neural Networks
+   17. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   17. Randomized Response Surveys
+   18. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   18. Expected Utilities of Random Responses
+   19. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -2707,17 +2712,17 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   19. Linear Programming
+   20. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   20. Optimal Transport
+   21. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   21. Von Neumann Growth Model (and a Generalization)
+   22. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -2729,52 +2734,52 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   22. Dynamics in One Dimension
+   23. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   23. AR1 Processes
+   24. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   24. Finite Markov Chains
+   25. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   25. Inventory Dynamics
+   26. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   26. Linear State Space Models
+   27. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   27. Samuelson Multiplier-Accelerator
+   28. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   28. Kesten Processes and Firm Dynamics
+   29. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   29. Wealth Distribution Dynamics
+   30. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   30. A First Look at the Kalman Filter
+   31. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   31. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -2786,32 +2791,32 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   32. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   33. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   34. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   35. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   36. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   37. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
 </ul>
@@ -2823,52 +2828,52 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   38. Cass-Koopmans Model
+   39. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   39. Cass-Koopmans Competitive Equilibrium
+   40. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   40. Cake Eating I: Introduction to Optimal Saving
+   41. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   41. Cake Eating II: Numerical Methods
+   42. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   42. Optimal Growth I: The Stochastic Optimal Growth Model
+   43. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   43. Optimal Growth II: Accelerating the Code with Numba
+   44. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   44. Optimal Growth III: Time Iteration
+   45. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   45. Optimal Growth IV: The Endogenous Grid Method
+   46. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   46. The Income Fluctuation Problem I: Basic Model
+   47. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   47. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   48. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -2880,17 +2885,17 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   48. Non-Conjugate Priors
+   49. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   49. Posterior Distributions for  AR(1) Parameters
+   50. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   50. Forecasting  an AR(1) process
+   51. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -2902,37 +2907,37 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   51. Job Search VII: Search with Learning
+   52. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   52. Likelihood Ratio Processes
+   53. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   53. Computing Mean of a Likelihood Ratio Process
+   54. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   54. A Problem that Stumped Milton Friedman
+   55. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   55. Exchangeability and Bayesian Updating
+   56. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   56. Likelihood Ratio Processes and Bayesian Learning
+   57. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   57. Bayesian versus Frequentist Decision Rules
+   58. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -2944,32 +2949,32 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   58. LQ Control: Foundations
+   59. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   59. Lagrangian for LQ Control
+   60. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   60. Eliminating Cross Products
+   61. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   61. The Permanent Income Model
+   62. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   62. Permanent Income II: LQ Techniques
+   63. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   63. Production Smoothing via Inventories
+   64. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2981,37 +2986,37 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   64. Schelling’s Segregation Model
+   65. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   65. A Lake Model of Employment and Unemployment
+   66. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   66. Rational Expectations Equilibrium
+   67. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   67. Stability in Linear Rational Expectations Models
+   68. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   68. Markov Perfect Equilibrium
+   69. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   69. Uncertainty Traps
+   70. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   70. The Aiyagari Model
+   71. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -3023,17 +3028,17 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   71. Asset Pricing: Finite State Models
+   72. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   72. Competitive Equilibria with Arrow Securities
+   73. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   73. Heterogeneous Beliefs and Bubbles
+   74. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -3045,17 +3050,17 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   74. Pandas for Panel Data
+   75. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   75. Linear Regression in Python
+   76. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   76. Maximum Likelihood Estimation
+   77. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -3067,12 +3072,12 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   77. First-Price and Second-Price Auctions
+   78. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   78. Multiple Good Allocation Mechanisms
+   79. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -3084,17 +3089,17 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   79. Troubleshooting
+   80. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   80. References
+   81. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   81. Execution Statistics
+   82. Execution Statistics
   </a>
  </li>
 </ul>
