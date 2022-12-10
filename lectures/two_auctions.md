@@ -191,7 +191,7 @@ v = np.random.uniform(0,1,(N,R))
 
 # BNE in first-price sealed bid
 
-b_star = lambda vi,N :((N-1)/N) * vi
+b_star = lambda vi,N: ((N-1)/N) * vi
 b = b_star(v,N)
 ```
 
