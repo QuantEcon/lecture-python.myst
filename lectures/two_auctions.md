@@ -3,10 +3,8 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.10.3
 kernelspec:
-  display_name: Python 3 (ipykernel)
+  display_name: Python 3
   language: python
   name: python3
 ---
@@ -192,7 +190,7 @@ In a  **SPSB**, it is optimal for bidder $i$ to bid $v_i$.
 
 ## Python Code
 
-```{code-cell} ipython3
+```{code-cell} 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -212,7 +210,7 @@ We repeat an auction with 5 bidders for 100,000 times.
 
 The valuations of each bidder is distributed $U(0,1)$. 
 
-```{code-cell} ipython3
+```{code-cell} python3
 N = 5
 R = 100_000
 
@@ -226,7 +224,7 @@ b = b_star(v,N)
 
 We compute and sort bid price distributions   that emerge under both  FPSB and SPSB.
 
-```{code-cell} ipython3
+```{code-cell} python3
 idx = np.argsort(v, axis=0)  # Biders' values are sorted in ascending order in each auction. 
 # We record the order because we want to apply it to bid price and their id.
 
@@ -249,7 +247,7 @@ Note that
 - FPSB: There is a unique bid corresponding to each valuation
 - SPSB: Because it  equals  the valuation of a second-highest bidder, what a winner pays varies even holding fixed the winner's valuation. So here there is a frequency distribution of payments for each valuation.
 
-```{code-cell} ipython3
+```{code-cell} python3
 # We intend to compute average payments of different groups of bidders 
 
 binned = stats.binned_statistic(v[-1,:], v[-2,:], statistic='mean', bins=20)
@@ -309,7 +307,7 @@ $$
 
 Thus, while probability distributions of winning bids typically differ across the two types of auction, we deduce that  expected payments are identical in FPSB and SPSB. 
 
-```{code-cell} ipython3
+```{code-cell} python3
 fig, ax = plt.subplots(figsize=(6, 4))
 
 for payment,label in zip([winner_pays_fpsb, winner_pays_spsb], ['FPSB', 'SPSB']):
@@ -379,7 +377,7 @@ For most probability distributions of private values, analytical solutions aren'
 
 Instead, we can  compute  bid prices in FPSB auctions numerically as functions of the distribution of private values.
 
-```{code-cell} ipython3
+```{code-cell} python3
 def evaluate_largest(v_hat, array, order=1):
     """
     A method to estimate the largest (or certain-order largest) value of the other biders,
@@ -413,7 +411,7 @@ We find that despite small discrepancy, the evaluate_largest method functions we
 
 Furthermore, if we take a very large number of auctions, say 1 million, the discrepancy disappears.
 
-```{code-cell} ipython3
+```{code-cell} python3
 v_grid = np.linspace(0.3,1,8)
 bid_analytical = b_star(v_grid,N)
 bid_simulated = [evaluate_largest(ii, v) for ii in v_grid]
@@ -436,7 +434,7 @@ Let's try an example in which the distribution of private values is a $\chi^2$ d
 
 We'll start by taking a look at a $\chi^2$ distribution with the help of the following Python code:
 
-```{code-cell} ipython3
+```{code-cell} python3
 np.random.seed(1337)
 v = np.random.chisquare(df=2, size=(N*R,))
 
@@ -447,7 +445,7 @@ plt.show()
 
 Now we'll get Python to construct a bid price function
 
-```{code-cell} ipython3
+```{code-cell} python3
 np.random.seed(1337)
 v = np.random.chisquare(df=2, size=(N,R))
 
@@ -460,7 +458,7 @@ EV=[evaluate_largest(ii, v) for ii in v_grid]
 # nan values are returned for some low quantiles due to lack of observations 
 ```
 
-```{code-cell} ipython3
+```{code-cell} python3
 # we insert 0 into our grid and bid price function as a complement
 EV=np.insert(EV,0,0)
 v_grid=np.insert(v_grid,0,0)
@@ -470,7 +468,7 @@ b_star_num = interp.interp1d(v_grid, EV, fill_value="extrapolate")
 
 We check our bid price function by computing and visualizing the result.
 
-```{code-cell} ipython3
+```{code-cell} python3
 pct_quantile_fine = np.linspace(0, 100, 1001)[1:-1]
 v_grid_fine = np.percentile(v.flatten(), q=pct_quantile_fine)
 
@@ -487,7 +485,7 @@ sns.despine()
 
 Now we can use Python to compute the probability distribution of the price paid by the winning bidder 
 
-```{code-cell} ipython3
+```{code-cell} python3
 b=b_star_num(v)
 
 idx = np.argsort(v, axis=0)
@@ -503,7 +501,7 @@ winner_pays_fpsb = b[-1,:]  # highest bid
 winner_pays_spsb = v[-2,:]  # 2nd-highest valuation
 ```
 
-```{code-cell} ipython3
+```{code-cell} python3
 fig, ax = plt.subplots(figsize=(6, 4))
 
 for payment,label in zip([winner_pays_fpsb, winner_pays_spsb], ['FPSB', 'SPSB']):
@@ -525,7 +523,7 @@ sns.despine()
 
 We assemble the functions that we have used into a Python  class
 
-```{code-cell} ipython3
+```{code-cell} python3
 class bid_price_solution:
     
     def __init__(self, array):
@@ -625,22 +623,22 @@ class bid_price_solution:
         return None
 ```
 
-```{code-cell} ipython3
+```{code-cell} python3
 np.random.seed(1337)
 v = np.random.chisquare(df=2, size=(N,R))
 
 chi_squ_case = bid_price_solution(v)
 ```
 
-```{code-cell} ipython3
+```{code-cell} python3
 chi_squ_case.plot_value_distribution()
 ```
 
-```{code-cell} ipython3
+```{code-cell} python3
 chi_squ_case.compute_optimal_bid_FPSB()
 ```
 
-```{code-cell} ipython3
+```{code-cell} python3
 chi_squ_case.plot_winner_payment_distribution()
 ```
 

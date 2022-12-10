@@ -70,7 +70,7 @@ At the same time, all of the techniques discussed here can be plugged into model
 
 We will use the following imports.
 
-```{code-cell} ipython3
+```{code-cell} python3
 %matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
@@ -93,7 +93,7 @@ The package [QuantEcon.py](https://github.com/QuantEcon/QuantEcon.py), already i
 
 To illustrate, suppose that
 
-```{code-cell} ipython3
+```{code-cell} python3
 n = 10_000                      # size of sample
 w = np.exp(np.random.randn(n))  # lognormal draws
 ```
@@ -102,7 +102,7 @@ is data representing the wealth of 10,000 households.
 
 We can compute and plot the Lorenz curve as follows:
 
-```{code-cell} ipython3
+```{code-cell} python3
 f_vals, l_vals = qe.lorenz_curve(w)
 
 fig, ax = plt.subplots()
@@ -130,7 +130,7 @@ We generate 10,000 observations using the Pareto distribution with a range of
 parameters, and then compute the Lorenz curve corresponding to each set of
 observations.
 
-```{code-cell} ipython3
+```{code-cell} python3
 a_vals = (1, 2, 5)              # Pareto tail index
 n = 10_000                      # size of each sample
 fig, ax = plt.subplots()
@@ -167,7 +167,7 @@ $$
 Let's see if the Gini coefficient computed from a simulated sample matches
 this at each fixed value of $a$.
 
-```{code-cell} ipython3
+```{code-cell} python3
 a_vals = range(1, 20)
 ginis = []
 ginis_theoretical = []
@@ -254,7 +254,7 @@ acknowledging that low wealth households tend to save very little.
 
 Here's some type information to help Numba.
 
-```{code-cell} ipython3
+```{code-cell} python3
 wealth_dynamics_data = [
     ('w_hat',  float64),    # savings parameter
     ('s_0',    float64),    # savings parameter
@@ -277,7 +277,7 @@ wealth_dynamics_data = [
 Here's a class that stores instance data and implements methods that update
 the aggregate state and household wealth.
 
-```{code-cell} ipython3
+```{code-cell} python3
 @jitclass(wealth_dynamics_data)
 class WealthDynamics:
 
@@ -344,7 +344,7 @@ class WealthDynamics:
 
 Here's function to simulate the time series of wealth for in individual households.
 
-```{code-cell} ipython3
+```{code-cell} python3
 @njit
 def wealth_time_series(wdy, w_0, n):
     """
@@ -372,7 +372,7 @@ Now here's function to simulate a cross section of households forward in time.
 
 Note the use of parallelization to speed up computation.
 
-```{code-cell} ipython3
+```{code-cell} python3
 @njit(parallel=True)
 def update_cross_section(wdy, w_distribution, shift_length=500):
     """
@@ -413,7 +413,7 @@ the implications for the wealth distribution.
 
 Let's look at the wealth dynamics of an individual household.
 
-```{code-cell} ipython3
+```{code-cell} python3
 wdy = WealthDynamics()
 
 ts_length = 200
@@ -435,7 +435,7 @@ Let's look at how inequality varies with returns on financial assets.
 The next function generates a cross section and then computes the Lorenz
 curve and Gini coefficient.
 
-```{code-cell} ipython3
+```{code-cell} python3
 def generate_lorenz_and_gini(wdy, num_households=100_000, T=500):
     """
     Generate the Lorenz curve data and gini coefficient corresponding to a
@@ -458,7 +458,7 @@ This is unavoidable because we are executing a CPU intensive task.
 
 In fact the code, which is JIT compiled and parallelized, runs extremely fast relative to the number of computations.
 
-```{code-cell} ipython3
+```{code-cell} python3
 fig, ax = plt.subplots()
 μ_r_vals = (0.0, 0.025, 0.05)
 gini_vals = []
@@ -495,7 +495,7 @@ hardware.
 
 Now let's check the Gini coefficient.
 
-```{code-cell} ipython3
+```{code-cell} python3
 fig, ax = plt.subplots()
 ax.plot(μ_r_vals, gini_vals, label='gini coefficient')
 ax.set_xlabel("$\mu_r$")
@@ -509,7 +509,7 @@ rise.
 Let's finish this section by investigating what happens when we change the
 volatility term $\sigma_r$ in financial returns.
 
-```{code-cell} ipython3
+```{code-cell} python3
 fig, ax = plt.subplots()
 σ_r_vals = (0.35, 0.45, 0.52)
 gini_vals = []
@@ -557,7 +557,7 @@ Gini index and $a$.
 Here is one solution, which produces a good match between theory and
 simulation.
 
-```{code-cell} ipython3
+```{code-cell} python3
 a_vals = np.linspace(1, 10, 25)  # Pareto tail index
 ginis = np.empty_like(a_vals)
 
@@ -609,7 +609,7 @@ this what you see?
 
 For sample size and initial conditions, use
 
-```{code-cell} ipython3
+```{code-cell} python3
 num_households = 250_000
 T = 500                                      # shift forward T periods
 ψ_0 = np.full(num_households, wdy.y_mean)   # initial distribution
@@ -625,7 +625,7 @@ z_0 = wdy.z_mean
 
 First let's generate the distribution:
 
-```{code-cell} ipython3
+```{code-cell} python3
 num_households = 250_000
 T = 500  # how far to shift forward in time
 ψ_0 = np.full(num_households, wdy.y_mean)
@@ -636,7 +636,7 @@ z_0 = wdy.z_mean
 
 Now let's see the rank-size plot:
 
-```{code-cell} ipython3
+```{code-cell} python3
 fig, ax = plt.subplots()
 
 rank_data, size_data = qe.rank_size(ψ_star, c=0.001)
