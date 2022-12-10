@@ -319,17 +319,15 @@ of the posterior probability $ \pi_t $, an instance of **Bayes’ Law**.
 
 Bayes’ law implies that $ \{\pi_t\} $ obeys the recursion
 
-
-<a id='equation-eq-recur1'></a>
 $$
-\pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}} \tag{56.1}
-$$
+\pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
+$$ (equation-eq-recur1)
 
 with $ \pi_{0} $ being a Bayesian prior probability that $ q = f $,
 i.e., a personal or subjective belief about $ q $ based on our having seen no data.
 
 Below we define a Python function that updates belief $ \pi $ using
-likelihood ratio $ \ell $ according to  recursion [(56.1)](#equation-eq-recur1)
+likelihood ratio $ \ell $ according to  recursion {eq}`equation-eq-recur1`
 
 ```{code-cell} ipython3
 :hide-output: false
@@ -344,7 +342,7 @@ def update(π, l):
     return π
 ```
 
-Formula [(56.1)](#equation-eq-recur1) can be generalized  by iterating on it and thereby deriving an
+Formula {eq}`equation-eq-recur1` can be generalized  by iterating on it and thereby deriving an
 expression for  the time $ t $ posterior $ \pi_{t+1} $ as a function
 of the time $ 0 $ prior $ \pi_0 $ and the likelihood ratio process
 $ L(w^{t+1}) $ at time $ t $.
@@ -394,14 +392,13 @@ After rearranging the preceding equation, we can express $ \pi_{t+1} $ as a
 function of  $ L\left(w^{t+1}\right) $, the  likelihood ratio process at $ t+1 $,
 and the initial prior $ \pi_{0} $
 
-<a id='equation-eq-bayeslaw103'></a>
 $$
-\pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}} . \tag{56.2}
-$$
+\pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}}.
+$$ (equation-eq-bayeslaw103)
 
-Formula [(56.2)](#equation-eq-bayeslaw103) generalizes formula [(56.1)](#equation-eq-recur1).
+Formula {eq}`equation-eq-bayeslaw103` generalizes formula {eq}`equation-eq-recur1`.
 
-Formula [(56.2)](#equation-eq-bayeslaw103)  can be regarded as a one step  revision of prior probability $ \pi_0 $ after seeing
+Formula {eq}`equation-eq-bayeslaw103`  can be regarded as a one step  revision of prior probability $ \pi_0 $ after seeing
 the batch of data $ \left\{ w_{i}\right\} _{i=1}^{t+1} $.
 
 ## What a type 1 Agent Learns when Mixture $H$ Generates Data
