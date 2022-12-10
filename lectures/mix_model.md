@@ -697,11 +697,9 @@ def MCMC_run(ws):
     return sample['α']
 ```
 
-After the following code, please scroll down all the way to the end to see the graph that displays Bayesian posteriors for $\alpha$
-at various history lengths.
+The following code displays Bayesian posteriors for $\alpha$ at various history lengths.
 
 ```{code-cell} ipython3
-:tags: ["output_scroll"]
 
 fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -716,8 +714,6 @@ ax.legend()
 ax.set_xlabel('$\\alpha$')
 plt.show() 
 ```
-
-Again, please scroll down to the end of the output to see a graph of posteriors at different history lengths.
 
 It shows how the Bayesian posterior  narrows in on the true value  $\alpha = .8$ of the mixing parameter as the length of a history of observations grows.  
 
