@@ -228,7 +228,7 @@ Our second method uses a uniform distribution and the following fact that we als
 
 In other words, if $X \sim F(x)$ we can generate a random sample from $F$ by drawing a random sample from
 a uniform distribution on $[0,1]$ and computing $F^{-1}(U)$.
-$
+
 
 We'll  use this  fact 
 in conjunction with the `numpy.searchsorted` command to sample from $H$ directly.
@@ -570,6 +570,7 @@ fig, ax = plt.subplots(1, figsize=[10, 6])
 ax.plot(α_arr, KL_g_arr, label='KL(g, h)')
 ax.plot(α_arr, KL_f_arr, label='KL(f, h)')
 ax.set_ylabel('K-L divergence')
+ax.set_xlabel(r'$\alpha$')
 
 ax.legend(loc='upper right')
 plt.show()
@@ -617,6 +618,7 @@ fig, ax = plt.subplots(1, figsize=[10, 6])
 ax.plot(α_arr, KL_g_arr, label='KL(g, h)')
 ax.plot(α_arr, KL_f_arr, label='KL(f, h)')
 ax.set_ylabel('K-L divergence')
+ax.set_xlabel(r'$\alpha$')
 
 # plot KL
 ax2 = ax.twinx()
@@ -697,7 +699,7 @@ def MCMC_run(ws):
     return sample['α']
 ```
 
-The following code displays Bayesian posteriors for $\alpha$ at various history lengths.
+The following code generates the graph below that displays Bayesian posteriors for $\alpha$ at various history lengths.
 
 ```{code-cell} ipython3
 
@@ -715,7 +717,7 @@ ax.set_xlabel('$\\alpha$')
 plt.show() 
 ```
 
-It shows how the Bayesian posterior  narrows in on the true value  $\alpha = .8$ of the mixing parameter as the length of a history of observations grows.  
+Evidently,  the Bayesian posterior  narrows in on the true value  $\alpha = .8$ of the mixing parameter as the length of a history of observations grows.  
 
 ## Concluding Remarks
 
@@ -728,13 +730,17 @@ That is wrong because nature is actually mixing each period with mixing probabil
 
 Our type 1 agent  eventually believes that either $f$ or $g$ generated the $w$ sequence, the outcome being determined by the model, either $f$ or $g$, whose  KL divergence relative to $h$ is smaller.
 
-Our type 2 agent has a statistical model that lets him learn more.
+Our type 2 agent has a different statistical model, one that is correctly specified.  
 
-Using Bayes law he eventually figures out $\alpha$.
+He knows the parametric form of the statistical model but not the mixing parameter $\alpha$.
+
+He knows that he does not know it.
+
+But by using Bayes' law in conjunction with his statistical model and a history of data,  he eventually acquires a more and more accurate inference about $\alpha$.
 
 This little laboratory  exhibits some important general principles that govern outcomes of Bayesian learning of misspecified models.
 
-The following situation prevails quite generally in empirical work.
+Thus, the  following situation prevails quite generally in empirical work.
 
 A scientist approaches the data with a manifold $S$ of statistical models $ s (X | \theta)$ , where $s$ is a probability distribution over a random vector $X$, $\theta \in \Theta$
 is a vector of parameters, and $\Theta$ indexes the manifold of models.
