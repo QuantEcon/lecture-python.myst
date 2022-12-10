@@ -32,7 +32,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Install Build Essentials
         shell: bash -l {0}
-        run: apt-get --qq update && apt-get install -y git
+        run: apt-get -qq update && apt-get install -y git
       - name: Setup Anaconda
         uses: conda-incubator/setup-miniconda@v2
         with:
