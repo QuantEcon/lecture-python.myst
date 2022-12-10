@@ -46,6 +46,7 @@ jobs:
         shell: bash -l {0}
         run: |
           pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+          pip install --upgrade "numpyro[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
           nvidia-smi
       - name: Install latex dependencies
         shell: bash -l {0}
@@ -93,7 +94,7 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
-      - name: Upload Execution Reports
+      - name: Upload Execution Reports (HTML)
         uses: actions/upload-artifact@v2
         if: failure()
         with:
