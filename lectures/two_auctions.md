@@ -173,7 +173,7 @@ import scipy.interpolate as interp
 
 # for plots
 plt.rcParams.update({"text.usetex": True, 'font.size': 14})
-colors = plt. rcParams['axes.prop_cycle'].by_key()['color']
+colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
 # ensure the notebook generate the same randomess
 np.random.seed(1337)
