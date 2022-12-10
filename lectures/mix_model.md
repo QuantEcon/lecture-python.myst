@@ -730,7 +730,7 @@ def MCMC_run(ws):
     "Compute posterior using MCMC with observed ws"
     
     kernal = NUTS(model)
-    mcmc = MCMC(kernal, num_samples=5000, num_warmup=1000)
+    mcmc = MCMC(kernal, num_samples=5000, num_warmup=1000, progress_bar=False)
 
     mcmc.run(rng_key=random.PRNGKey(142857), w=jnp.array(ws))
     sample = mcmc.get_samples()
