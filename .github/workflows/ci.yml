@@ -84,12 +84,18 @@ jobs:
           jb build lectures --builder pdflatex --path-output ./ -n -W --keep-going
           mkdir _build/html/_pdf
           cp -u _build/latex/*.pdf _build/html/_pdf
+      - name: Upload Execution Reports (LaTeX)
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: execution-reports
+          path: _build/latex/reports
       # Final Build of HTML
       - name: Build HTML
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
-      - name: Upload Execution Reports
+      - name: Upload Execution Reports (HTML)
         uses: actions/upload-artifact@v2
         if: failure()
         with:
