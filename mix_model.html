@@ -1,0 +1,1685 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>58. Incorrect Models &#8212; Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/mix_model.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="59. Bayesian versus Frequentist Decision Rules" href="navy_captain.html" />
+    <link rel="prev" title="57. Likelihood Ratio Processes and Bayesian Learning" href="likelihood_bayes.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Incorrect Models"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Incorrect Models" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/mix_model.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=mix_model>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   58.1. Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sampling-from-compound-lottery-h">
+   58.2. Sampling from  Compound Lottery
+   <span class="math notranslate nohighlight">
+    \(H\)
+   </span>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#type-1-agent">
+   58.3. Type 1 Agent
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data">
+   58.4. What a type 1 Agent Learns when Mixture
+   <span class="math notranslate nohighlight">
+    \(H\)
+   </span>
+   Generates Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#kullback-leibler-divergence-governs-limit-of-pi-t">
+   58.5. Kullback-Leibler Divergence Governs Limit of
+   <span class="math notranslate nohighlight">
+    \(\pi_t\)
+   </span>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#type-2-agent">
+   58.6. Type 2 Agent
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#concluding-remarks">
+   58.7. Concluding Remarks
+  </a>
+ </li>
+</ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="qe-page__header-subheading">Incorrect Models</p>
+
+                    </div>
+
+                    <p class="qe-page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <div class="tex2jax_ignore mathjax_ignore section" id="incorrect-models">
+<span id="likelihood-ratio-process"></span><h1><span class="section-number">58. </span>Incorrect Models<a class="headerlink" href="#incorrect-models" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2><span class="section-number">58.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This  is a sequel to <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this  quantecon lecture</span></a>.</p>
+<p>We discuss  two ways to create compound lottery and their consequences.</p>
+<p>A compound lottery can be said to create a <em>mixture distribution</em>.</p>
+<p>Our two ways of constructing a compound lottery will differ in their <strong>timing</strong>.</p>
+<ul class="simple">
+<li><p>in one, mixing between two possible probability distributions  will occur once and all at the beginning of time</p></li>
+<li><p>in the other, mixing between the same two possible possible probability distributions will occur each period</p></li>
+</ul>
+<p>The statistical setting is close but not identical to the problem studied in that quantecon lecture.</p>
+<p>In that lecture, there were two  i.i.d. processes that could possibly govern successive draws of a non-negative random variable <span class="math notranslate nohighlight">\(W\)</span>.</p>
+<p>Nature decided  once and for all whether to make  a sequence of IID draws from either <span class="math notranslate nohighlight">\( f \)</span> or from <span class="math notranslate nohighlight">\( g \)</span>.</p>
+<p>That lecture studied an agent who knew both <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> but  did not know which distribution nature chose at time <span class="math notranslate nohighlight">\(-1\)</span>.</p>
+<p>The agent represented that ignorance  by assuming that nature had chosen  <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> by  flipping an unfair coin that put probability  <span class="math notranslate nohighlight">\(\pi_{-1}\)</span> on probability distribution <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>That assumption allowed the agent to construct a subjective joint probability distribution over the
+random sequence <span class="math notranslate nohighlight">\(\{W_t\}_{t=0}^\infty\)</span>.</p>
+<p>We studied how the agent would then use the laws of conditional probability and an observed   history <span class="math notranslate nohighlight">\(w^t =\{w_s\}_{t=0}^t\)</span>   to form</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_t = E [ \textrm{nature chose distribution}  f | w^t] , \quad  t = 0, 1, 2, \ldots
+\]</div>
+<p>However, in the  setting of this lecture, that rule imputes to the agent an incorrect model.</p>
+<p>The reason is that  now the wage sequence is actually described by a different statistical model.</p>
+<p>Thus, we change the <a class="reference internal" href="likelihood_bayes.html"><span class="doc">quantecon lecture</span></a> specification in the following way.</p>
+<p>Now, <strong>each period</strong> <span class="math notranslate nohighlight">\(t \geq 0\)</span>, nature flips a possibly unfair coin that comes up <span class="math notranslate nohighlight">\(f\)</span> with probability <span class="math notranslate nohighlight">\(\alpha\)</span>
+and <span class="math notranslate nohighlight">\(g\)</span> with probability <span class="math notranslate nohighlight">\(1 -\alpha\)</span>.</p>
+<p>Thus, naturally perpetually draws from the <strong>mixture distribution</strong> with c.d.f.</p>
+<div class="math notranslate nohighlight">
+\[ 
+H(w ) = \alpha F(w) + (1-\alpha) G(w), \quad \alpha \in (0,1)
+\]</div>
+<p>We’ll study two agents  who try to learn about the wage process, but who use different  statistical models.</p>
+<p>Both types of agent know <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> but neither knows <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+<p>Our first type of agent erroneously thinks that at time <span class="math notranslate nohighlight">\(-1\)</span> nature once and for all chose <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> and thereafter
+permanently draws from that distribution.</p>
+<p>Our second type of agent knows, correctly, that nature mixes <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> with mixing probability <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span>
+each period, though the agent doesn’t know the mixing parameter.</p>
+<p>Our first type of agent applies the learning algorithm described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this  quantecon lecture</span></a>&gt;.</p>
+<p>In the context of the statistical model that prevailed in that lecture, that was a good learning algorithm and it enabled the Bayesian learner
+eventually to learn the distribution that nature had drawn at time <span class="math notranslate nohighlight">\(-1\)</span>.</p>
+<p>This is because the agent’s statistical model was <em>correct</em> in the sense of being aligned with the data
+generating process.</p>
+<p>But in the present context, our type 1 decision maker’s model is incorrect because the model <span class="math notranslate nohighlight">\(h\)</span> that actually
+generates the data is neither <span class="math notranslate nohighlight">\(f\)</span> nor <span class="math notranslate nohighlight">\(g\)</span> and so is beyond the support of the models that the agent thinks are
+possible.</p>
+<p>Nevertheless, we’ll see that our first type of agent muddles through and eventually learns something  interesting and useful, even though it is not <em>true</em>.</p>
+<p>Instead, it turn out that our type 1 agent who is armed with a wrong statistical model ends up learning  whichever probability distribution, <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>,
+is in a special sense <em>closest</em> to the <span class="math notranslate nohighlight">\(h\)</span> that actually generates the data.</p>
+<p>We’ll tell the sense in which it is closest.</p>
+<p>Our second type of agent understands that nature mixes between <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> each period with a fixed mixing
+probability <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+<p>But  the agent doesn’t know <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+<p>The agent sets out to learn <span class="math notranslate nohighlight">\(\alpha\)</span> using Bayes’ law applied to his model.</p>
+<p>His model is correct in the sense that
+it includes the actual data generating process <span class="math notranslate nohighlight">\(h\)</span> as a possible distribution.</p>
+<p>In this lecture, we’ll learn about</p>
+<ul class="simple">
+<li><p>how nature can <em>mix</em> between two distributions <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> to create a new distribution <span class="math notranslate nohighlight">\(h\)</span>.</p></li>
+<li><p>The Kullback-Leibler statistical divergence <a class="reference external" href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence</a> that governs statistical learning under an incorrect statistical model</p></li>
+<li><p>A useful Python function <code class="docutils literal notranslate"><span class="pre">numpy.searchsorted</span></code> that,  in conjunction with a uniform random number generator, can be used to sample from an arbitrary distribution</p></li>
+</ul>
+<p>As usual, we’ll start by importing some Python tools.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">vectorize</span><span class="p">,</span> <span class="n">njit</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gamma</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
+
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()</span>
+
+<span class="kn">import</span> <span class="nn">numpyro</span>
+<span class="kn">import</span> <span class="nn">numpyro.distributions</span> <span class="k">as</span> <span class="nn">dist</span>
+<span class="kn">from</span> <span class="nn">numpyro.infer</span> <span class="kn">import</span> <span class="n">MCMC</span><span class="p">,</span> <span class="n">NUTS</span>
+
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">random</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">142857</span><span class="p">)</span>
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">set_seed</span><span class="p">():</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">142857</span><span class="p">)</span>
+<span class="n">set_seed</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s use Python to generate two beta distributions</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameters in the two beta distributions.</span>
+<span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">1.2</span>
+
+<span class="nd">@vectorize</span>
+<span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">gamma</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># The two density functions.</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Generate N sets of T observations of the likelihood ratio,</span>
+<span class="sd">    return as N x T matrix.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">l_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+            <span class="n">l_arr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">l_arr</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll also use the following Python code to prepare some informative simulations</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l_arr_g</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">50000</span><span class="p">)</span>
+<span class="n">l_seq_g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">l_arr_g</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l_arr_f</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">50000</span><span class="p">)</span>
+<span class="n">l_seq_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">l_arr_f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="sampling-from-compound-lottery-h">
+<h2><span class="section-number">58.2. </span>Sampling from  Compound Lottery <span class="math notranslate nohighlight">\(H\)</span><a class="headerlink" href="#sampling-from-compound-lottery-h" title="Permalink to this headline">¶</a></h2>
+<p>We implement two methods  to draw samples from
+our mixture model <span class="math notranslate nohighlight">\(\alpha F + (1-\alpha) G\)</span>.</p>
+<p>We’ll generate samples using each of them and verify that they match well.</p>
+<p>Here is pseudo code for a direct “method 1” for drawing from our compound lottery:</p>
+<ul class="simple">
+<li><p>Step one:</p>
+<ul>
+<li><p>use the numpy.random.choice function to flip an unfair coin that selects distribution <span class="math notranslate nohighlight">\(F\)</span> with prob <span class="math notranslate nohighlight">\(\alpha\)</span>
+and <span class="math notranslate nohighlight">\(G\)</span> with prob <span class="math notranslate nohighlight">\(1 -\alpha\)</span></p></li>
+</ul>
+</li>
+<li><p>Step two:</p>
+<ul>
+<li><p>draw from either <span class="math notranslate nohighlight">\(F\)</span> or <span class="math notranslate nohighlight">\(G\)</span>, as determined by the coin flip.</p></li>
+</ul>
+</li>
+<li><p>Step three:</p>
+<ul>
+<li><p>put the first two steps in a big loop and do them for each realization of <span class="math notranslate nohighlight">\(w\)</span></p></li>
+</ul>
+</li>
+</ul>
+<p>Our second method uses a uniform distribution and the following fact that we also described and used in the quantecon lecture <a class="reference external" href="https://python.quantecon.org/prob_matrix.html">https://python.quantecon.org/prob_matrix.html</a>:</p>
+<ul class="simple">
+<li><p>If a random variable <span class="math notranslate nohighlight">\(X\)</span> has c.d.f. <span class="math notranslate nohighlight">\(F(X)\)</span>, then a random variable <span class="math notranslate nohighlight">\(F^{-1}(U)\)</span> also has c.d.f. <span class="math notranslate nohighlight">\(F(x)\)</span>, where <span class="math notranslate nohighlight">\(U\)</span> is a uniform random variable on <span class="math notranslate nohighlight">\([0,1]\)</span>.</p></li>
+</ul>
+<p>In other words, if <span class="math notranslate nohighlight">\(X \sim F(x)\)</span> we can generate a random sample from <span class="math notranslate nohighlight">\(F\)</span> by drawing a random sample from
+a uniform distribution on <span class="math notranslate nohighlight">\([0,1]\)</span> and computing <span class="math notranslate nohighlight">\(F^{-1}(U)\)</span>.</p>
+<p>We’ll  use this  fact
+in conjunction with the <code class="docutils literal notranslate"><span class="pre">numpy.searchsorted</span></code> command to sample from <span class="math notranslate nohighlight">\(H\)</span> directly.</p>
+<p>See <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html">https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html</a> for the
+<code class="docutils literal notranslate"><span class="pre">searchsorted</span></code> function.</p>
+<p>See the Mr. P Solver video on Monte Carlo simulation to see other applications of this powerful trick: <a class="reference external" href="https://www.google.com/search?client=firefox-b-1-d&amp;amp;q=Mr+P+solver+Monte+Carlo#fpstate=ive&amp;amp;vld=cid:bdcddc9f,vid:U00Kseb6SB4">https://www.google.com/search?client=firefox-b-1-d&amp;amp;q=Mr+P+solver+Monte+Carlo#fpstate=ive&amp;amp;vld=cid:bdcddc9f,vid:U00Kseb6SB4</a></p>
+<p>In the Python code below, we’ll use both of our methods and confirm that each of them does a good job of sampling
+from our target mixture distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">draw_lottery</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="s2">&quot;Draw from the compound lottery directly.&quot;</span>
+
+    <span class="n">draws</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span><span class="o">&lt;=</span><span class="n">p</span><span class="p">:</span>
+            <span class="n">draws</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">draws</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">draws</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">draw_lottery_MC</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="s2">&quot;Draw from the compound lottery using the Monte Carlo trick.&quot;</span>
+
+    <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">),</span><span class="mi">10000</span><span class="p">)</span>
+    <span class="n">CDF</span> <span class="o">=</span> <span class="n">p</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">sp</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">)</span>
+
+    <span class="n">Us</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">draws</span> <span class="o">=</span> <span class="n">xs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">CDF</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">Us</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">draws</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># verify</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">α</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="n">sample1</span> <span class="o">=</span> <span class="n">draw_lottery</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">sample2</span> <span class="o">=</span> <span class="n">draw_lottery_MC</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+<span class="c1"># plot draws and density function</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sample1</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;direct draws&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sample2</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;MC draws&#39;</span><span class="p">)</span>
+
+<span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">α</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">α</span><span class="p">)</span><span class="o">*</span><span class="n">g</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;density&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/mix_model_10_0.png" src="_images/mix_model_10_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># %%timeit    # compare speed</span>
+<span class="c1"># sample1 = draw_lottery(α, N=int(1e6))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># %%timeit</span>
+<span class="c1"># sample2 = draw_lottery_MC(α, N=int(1e6))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Note:</strong> With numba acceleration the first method is actually only slightly slower than the second when we generated 1,000,000 samples.</p>
+</div>
+<div class="section" id="type-1-agent">
+<h2><span class="section-number">58.3. </span>Type 1 Agent<a class="headerlink" href="#type-1-agent" title="Permalink to this headline">¶</a></h2>
+<p>We’ll now study what our type 1 agent learns</p>
+<p>Remember that our type 1 agent uses the wrong statistical model, thinking that nature mixed between <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> once and for all at time <span class="math notranslate nohighlight">\(-1\)</span>.</p>
+<p>The type 1 agent thus uses the learning algorithm studied in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this  quantecon lecture</span></a>.</p>
+<p>We’ll briefly review that learning algorithm now.</p>
+<p>Let <span class="math notranslate nohighlight">\( \pi_t \)</span> be a Bayesian posterior defined as</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_t = {\rm Prob}(q=f|w^t)
+\]</div>
+<p>The likelihood ratio process plays a principal role  in the formula that governs the evolution
+of the posterior probability <span class="math notranslate nohighlight">\( \pi_t \)</span>, an instance of <strong>Bayes’ Law</strong>.</p>
+<p>Bayes’ law implies that <span class="math notranslate nohighlight">\( \{\pi_t\} \)</span> obeys the recursion</p>
+<div class="math notranslate nohighlight" id="equation-equation-eq-recur1">
+<span class="eqno">(58.1)<a class="headerlink" href="#equation-equation-eq-recur1" title="Permalink to this equation">¶</a></span>\[
+\pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
+\]</div>
+<p>with <span class="math notranslate nohighlight">\( \pi_{0} \)</span> being a Bayesian prior probability that <span class="math notranslate nohighlight">\( q = f \)</span>,
+i.e., a personal or subjective belief about <span class="math notranslate nohighlight">\( q \)</span> based on our having seen no data.</p>
+<p>Below we define a Python function that updates belief <span class="math notranslate nohighlight">\( \pi \)</span> using
+likelihood ratio <span class="math notranslate nohighlight">\( \ell \)</span> according to  recursion <a class="reference internal" href="#equation-equation-eq-recur1">(58.1)</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">π</span><span class="p">,</span> <span class="n">l</span><span class="p">):</span>
+    <span class="s2">&quot;Update π using likelihood l&quot;</span>
+
+    <span class="c1"># Update belief</span>
+    <span class="n">π</span> <span class="o">=</span> <span class="n">π</span> <span class="o">*</span> <span class="n">l</span> <span class="o">/</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">π</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Formula <a class="reference internal" href="#equation-equation-eq-recur1">(58.1)</a> can be generalized  by iterating on it and thereby deriving an
+expression for  the time <span class="math notranslate nohighlight">\( t \)</span> posterior <span class="math notranslate nohighlight">\( \pi_{t+1} \)</span> as a function
+of the time <span class="math notranslate nohighlight">\( 0 \)</span> prior <span class="math notranslate nohighlight">\( \pi_0 \)</span> and the likelihood ratio process
+<span class="math notranslate nohighlight">\( L(w^{t+1}) \)</span> at time <span class="math notranslate nohighlight">\( t \)</span>.</p>
+<p>To begin, notice that the updating rule</p>
+<div class="math notranslate nohighlight">
+\[
+\pi_{t+1}
+=\frac{\pi_{t}\ell \left(w_{t+1}\right)}
+{\pi_{t}\ell \left(w_{t+1}\right)+\left(1-\pi_{t}\right)}
+\]</div>
+<p>implies</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\frac{1}{\pi_{t+1}}
+    &amp;=\frac{\pi_{t}\ell \left(w_{t+1}\right)
+        +\left(1-\pi_{t}\right)}{\pi_{t}\ell \left(w_{t+1}\right)} \\
+    &amp;=1-\frac{1}{\ell \left(w_{t+1}\right)}
+        +\frac{1}{\ell \left(w_{t+1}\right)}\frac{1}{\pi_{t}}.
+\end{aligned}
+\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[
+\Rightarrow
+\frac{1}{\pi_{t+1}}-1
+=\frac{1}{\ell \left(w_{t+1}\right)}\left(\frac{1}{\pi_{t}}-1\right).
+\]</div>
+<p>Therefore</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{aligned}
+    \frac{1}{\pi_{t+1}}-1
+    =\frac{1}{\prod_{i=1}^{t+1}\ell \left(w_{i}\right)}
+        \left(\frac{1}{\pi_{0}}-1\right)
+    =\frac{1}{L\left(w^{t+1}\right)}\left(\frac{1}{\pi_{0}}-1\right).
+\end{aligned}
+\]</div>
+<p>Since <span class="math notranslate nohighlight">\( \pi_{0}\in\left(0,1\right) \)</span> and
+<span class="math notranslate nohighlight">\( L\left(w^{t+1}\right)&gt;0 \)</span>, we can verify that
+<span class="math notranslate nohighlight">\( \pi_{t+1}\in\left(0,1\right) \)</span>.</p>
+<p>After rearranging the preceding equation, we can express <span class="math notranslate nohighlight">\( \pi_{t+1} \)</span> as a
+function of  <span class="math notranslate nohighlight">\( L\left(w^{t+1}\right) \)</span>, the  likelihood ratio process at <span class="math notranslate nohighlight">\( t+1 \)</span>,
+and the initial prior <span class="math notranslate nohighlight">\( \pi_{0} \)</span></p>
+<div class="math notranslate nohighlight" id="equation-equation-eq-bayeslaw103">
+<span class="eqno">(58.2)<a class="headerlink" href="#equation-equation-eq-bayeslaw103" title="Permalink to this equation">¶</a></span>\[
+\pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}}.
+\]</div>
+<p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(58.2)</a> generalizes formula <a class="reference internal" href="#equation-equation-eq-recur1">(58.1)</a>.</p>
+<p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(58.2)</a>  can be regarded as a one step  revision of prior probability <span class="math notranslate nohighlight">\( \pi_0 \)</span> after seeing
+the batch of data <span class="math notranslate nohighlight">\( \left\{ w_{i}\right\} _{i=1}^{t+1} \)</span>.</p>
+</div>
+<div class="section" id="what-a-type-1-agent-learns-when-mixture-h-generates-data">
+<h2><span class="section-number">58.4. </span>What a type 1 Agent Learns when Mixture <span class="math notranslate nohighlight">\(H\)</span> Generates Data<a class="headerlink" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data" title="Permalink to this headline">¶</a></h2>
+<p>We now study what happens when the mixture distribution <span class="math notranslate nohighlight">\(h;\alpha\)</span>  truly generated the data each period.</p>
+<p>A submartingale or supermartingale continues to describe <span class="math notranslate nohighlight">\(\pi_t\)</span></p>
+<p>It raises its ugly head and causes <span class="math notranslate nohighlight">\(\pi_t\)</span> to converge either to <span class="math notranslate nohighlight">\(0\)</span> or to <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>This is true even though in truth nature always mixes between <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>After verifying that claim about possible limit points of <span class="math notranslate nohighlight">\(\pi_t\)</span> sequences, we’ll drill down and study
+what fundamental force determines the limiting value of <span class="math notranslate nohighlight">\(\pi_t\)</span>.</p>
+<p>Let’s set a value of <span class="math notranslate nohighlight">\(\alpha\)</span> and then watch how <span class="math notranslate nohighlight">\(\pi_t\)</span> evolves.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simulate_mixed</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate N sets of T observations of the likelihood ratio,</span>
+<span class="sd">    return as N x T matrix, when the true density is mixed h;α</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">w_s</span> <span class="o">=</span> <span class="n">draw_lottery</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="n">N</span><span class="o">*</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+    <span class="n">l_arr</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">w_s</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span><span class="p">(</span><span class="n">w_s</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">l_arr</span>
+
+<span class="k">def</span> <span class="nf">plot_π_seq</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="n">π1</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">π2</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute and plot π_seq and the log likelihood ratio process </span>
+<span class="sd">    when the mixed distribution governs the data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">l_arr_mixed</span> <span class="o">=</span> <span class="n">simulate_mixed</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">l_seq_mixed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">l_arr_mixed</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">T</span> <span class="o">=</span> <span class="n">l_arr_mixed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">π_seq_mixed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">π_seq_mixed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">π1</span><span class="p">,</span> <span class="n">π2</span>
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+            <span class="n">π_seq_mixed</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">π_seq_mixed</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">],</span> <span class="n">l_arr_mixed</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span>
+    
+    <span class="c1"># plot</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">π_seq_mixed</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;$\pi_0$=</span><span class="si">{</span><span class="n">π_seq_mixed</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>  <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Log likelihood ratio process&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;$\pi_t$&quot;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;when $</span><span class="se">\\</span><span class="s2">alpha G + (1-</span><span class="se">\\</span><span class="s2">alpha)$ F governs data&quot;</span><span class="p">)</span>
+
+    <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">l_seq_mixed</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;$log(L(w^</span><span class="si">{t}</span><span class="s2">))$&quot;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_π_seq</span><span class="p">(</span><span class="n">α</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/mix_model_17_0.png" src="_images/mix_model_17_0.png" />
+</div>
+</div>
+<p>The above graph shows a sample path of the log likelihood ratio process as the blue dotted line, together with
+sample paths of <span class="math notranslate nohighlight">\(\pi_t\)</span> that start from two distinct initial conditions.</p>
+<p>Let’s see what happens when we change <span class="math notranslate nohighlight">\(\alpha\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_π_seq</span><span class="p">(</span><span class="n">α</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/mix_model_19_0.png" src="_images/mix_model_19_0.png" />
+</div>
+</div>
+<p>Evidently, <span class="math notranslate nohighlight">\(\alpha\)</span> is having a big effect on the destination of <span class="math notranslate nohighlight">\(\pi_t\)</span> as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span></p>
+</div>
+<div class="section" id="kullback-leibler-divergence-governs-limit-of-pi-t">
+<h2><span class="section-number">58.5. </span>Kullback-Leibler Divergence Governs Limit of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#kullback-leibler-divergence-governs-limit-of-pi-t" title="Permalink to this headline">¶</a></h2>
+<p>To understand what determines whether the limit point of  <span class="math notranslate nohighlight">\(\pi_t\)</span> is  <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>  and how the answer depends on the true value of the mixing probability  <span class="math notranslate nohighlight">\(\alpha \in (0,1) \)</span> that generates</p>
+<div class="math notranslate nohighlight">
+\[ h(w) \equiv h(w | \alpha) = \alpha f(w) + (1-\alpha) g(w) \]</div>
+<p>we shall compute the following two Kullback-Leibler divergences</p>
+<div class="math notranslate nohighlight">
+\[ 
+KL_g (\alpha) = \int \log\left(\frac{g(w)}{h(w)}\right) h(w) d w 
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[ 
+KL_f (\alpha) = \int \log\left(\frac{f(w)}{h(w)}\right) h(w) d w 
+\]</div>
+<p>We shall plot both of these functions against <span class="math notranslate nohighlight">\(\alpha\)</span> as we use <span class="math notranslate nohighlight">\(\alpha\)</span> to vary
+<span class="math notranslate nohighlight">\(h(w) = h(w|\alpha)\)</span>.</p>
+<p>The limit of <span class="math notranslate nohighlight">\(\pi_t\)</span> is  determined by</p>
+<div class="math notranslate nohighlight">
+\[ \min_{f,g} \{KL_g, KL_f\} \]</div>
+<p>The only possible limits are <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>As <span class="math notranslate nohighlight">\(\rightarrow +\infty\)</span>, <span class="math notranslate nohighlight">\(\pi_t\)</span> goes to one if and only if  <span class="math notranslate nohighlight">\(KL_f &lt; KL_g\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@vectorize</span>
+<span class="k">def</span> <span class="nf">KL_g</span><span class="p">(</span><span class="n">α</span><span class="p">):</span>
+    <span class="s2">&quot;Compute the KL divergence between g and h.&quot;</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="mf">1e-8</span>                          <span class="c1"># to avoid 0 at end points</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">err</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span> 
+    <span class="n">gs</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">ws</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
+    <span class="n">hs</span> <span class="o">=</span> <span class="n">α</span><span class="o">*</span><span class="n">fs</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">α</span><span class="p">)</span><span class="o">*</span><span class="n">gs</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">gs</span><span class="o">/</span><span class="n">hs</span><span class="p">)</span><span class="o">*</span><span class="n">hs</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span>
+    
+<span class="nd">@vectorize</span>
+<span class="k">def</span> <span class="nf">KL_f</span><span class="p">(</span><span class="n">α</span><span class="p">):</span>
+    <span class="s2">&quot;Compute the KL divergence between f and h.&quot;</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="mf">1e-8</span>                          <span class="c1"># to avoid 0 at end points</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">err</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+    <span class="n">gs</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">ws</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
+    <span class="n">hs</span> <span class="o">=</span> <span class="n">α</span><span class="o">*</span><span class="n">fs</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">α</span><span class="p">)</span><span class="o">*</span><span class="n">gs</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">fs</span><span class="o">/</span><span class="n">hs</span><span class="p">)</span><span class="o">*</span><span class="n">hs</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span>
+
+
+<span class="c1"># compute KL using quad in Scipy</span>
+<span class="k">def</span> <span class="nf">KL_g_quad</span><span class="p">(</span><span class="n">α</span><span class="p">):</span>
+    <span class="s2">&quot;Compute the KL divergence between g and h using scipy.integrate.&quot;</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">α</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">α</span><span class="p">)</span><span class="o">*</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">*</span><span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">KL_f_quad</span><span class="p">(</span><span class="n">α</span><span class="p">):</span>
+    <span class="s2">&quot;Compute the KL divergence between f and h using scipy.integrate.&quot;</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">α</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">α</span><span class="p">)</span><span class="o">*</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">*</span><span class="n">h</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># vectorize</span>
+<span class="n">KL_g_quad_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">KL_g_quad</span><span class="p">)</span>
+<span class="n">KL_f_quad_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">KL_f_quad</span><span class="p">)</span>
+
+
+<span class="c1"># Let us find the limit point</span>
+<span class="k">def</span> <span class="nf">π_lim</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">π_0</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
+    <span class="s2">&quot;Find limit of π sequence.&quot;</span>
+    <span class="n">π_seq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">π_seq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">π_0</span>
+    <span class="n">l_arr</span> <span class="o">=</span> <span class="n">simulate_mixed</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+        <span class="n">π_seq</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">π_seq</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">l_arr</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">π_seq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">π_lim_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">π_lim</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let us first plot the KL divergences <span class="math notranslate nohighlight">\(KL_g\left(\alpha\right), KL_f\left(\alpha\right)\)</span> for each <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">α_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">KL_g_arr</span> <span class="o">=</span> <span class="n">KL_g</span><span class="p">(</span><span class="n">α_arr</span><span class="p">)</span>
+<span class="n">KL_f_arr</span> <span class="o">=</span> <span class="n">KL_f</span><span class="p">(</span><span class="n">α_arr</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_arr</span><span class="p">,</span> <span class="n">KL_g_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL(g, h)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_arr</span><span class="p">,</span> <span class="n">KL_f_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL(f, h)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;K-L divergence&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\alpha$&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/mix_model_23_0.png" src="_images/mix_model_23_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # using Scipy to compute KL divergence</span>
+
+<span class="c1"># α_arr = np.linspace(0, 1, 100)</span>
+<span class="c1"># KL_g_arr = KL_g_quad_v(α_arr)</span>
+<span class="c1"># KL_f_arr = KL_f_quad_v(α_arr)</span>
+
+<span class="c1"># fig, ax = plt.subplots(1, figsize=[10, 6])</span>
+
+<span class="c1"># ax.plot(α_arr, KL_g_arr, label=&#39;KL(g, h)&#39;)</span>
+<span class="c1"># ax.plot(α_arr, KL_f_arr, label=&#39;KL(f, h)&#39;)</span>
+<span class="c1"># ax.set_ylabel(&#39;K-L divergence&#39;)</span>
+
+<span class="c1"># ax.legend(loc=&#39;upper right&#39;)</span>
+<span class="c1"># plt.show()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s compute an <span class="math notranslate nohighlight">\(\alpha\)</span> for which  the KL divergence  between <span class="math notranslate nohighlight">\(h\)</span> and <span class="math notranslate nohighlight">\(g\)</span> is the same as that between <span class="math notranslate nohighlight">\(h\)</span> and <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># where KL_f = KL_g</span>
+<span class="n">α_arr</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">KL_g_arr</span><span class="o">-</span><span class="n">KL_f_arr</span><span class="p">))]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.31313131313131315
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can compute and plot the convergence point <span class="math notranslate nohighlight">\(\pi_{\infty}\)</span> for each <span class="math notranslate nohighlight">\(\alpha\)</span> to verify that the convergence is indeed governed by the KL divergence.</p>
+<p>The blue circles show the limiting values of <span class="math notranslate nohighlight">\(\pi_t\)</span> that simulations discover for different values of <span class="math notranslate nohighlight">\(\alpha\)</span>
+recorded on the <span class="math notranslate nohighlight">\(x\)</span> axis.</p>
+<p>Thus, the graph below confirms how a minimum  KL divergence governs what our type 1 agent eventually learns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">α_arr_x</span> <span class="o">=</span> <span class="n">α_arr</span><span class="p">[(</span><span class="n">α_arr</span><span class="o">&lt;</span><span class="mf">0.28</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">α_arr</span><span class="o">&gt;</span><span class="mf">0.38</span><span class="p">)]</span>
+<span class="n">π_lim_arr</span> <span class="o">=</span> <span class="n">π_lim_v</span><span class="p">(</span><span class="n">α_arr_x</span><span class="p">)</span>
+
+<span class="c1"># plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_arr</span><span class="p">,</span> <span class="n">KL_g_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL(g, h)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">α_arr</span><span class="p">,</span> <span class="n">KL_f_arr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;KL(f, h)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;K-L divergence&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\alpha$&#39;</span><span class="p">)</span>
+
+<span class="c1"># plot KL</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+<span class="c1"># plot limit point</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">α_arr_x</span><span class="p">,</span> <span class="n">π_lim_arr</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$\pi$ lim&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;π lim&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="p">[</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="p">[</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.73</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/mix_model_28_0.png" src="_images/mix_model_28_0.png" />
+</div>
+</div>
+<p>Evidently, our type 1 learner who applies Bayes’ law to his misspecified set of statistical models eventually learns an approximating model that is as close as possible to the true model, as measured by its
+Kullback-Leibler divergence.</p>
+</div>
+<div class="section" id="type-2-agent">
+<h2><span class="section-number">58.6. </span>Type 2 Agent<a class="headerlink" href="#type-2-agent" title="Permalink to this headline">¶</a></h2>
+<p>We now describe how our type 2 agent formulates his learning problem and what he eventually learns.</p>
+<p>Our type 2 agent understands the correct statistical  model but acknowledges does not know <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+<p>We apply Bayes law to deduce an algorithm for  learning <span class="math notranslate nohighlight">\(\alpha\)</span> under the assumption
+that the agent knows that</p>
+<div class="math notranslate nohighlight">
+\[ 
+h(w) = h(w| \alpha)
+\]</div>
+<p>but does not know <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+<p>We’ll assume that the person starts out with a prior probabilty <span class="math notranslate nohighlight">\(\pi_0(\alpha)\)</span> on
+<span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span> where the prior has one of the forms that we deployed in <a class="reference internal" href="bayes_nonconj.html"><span class="doc">this quantecon lecture</span></a>.</p>
+<p>We’ll fire up <code class="docutils literal notranslate"><span class="pre">numpyro</span></code> and  apply it  to the present situation.</p>
+<p>Bayes’ law now takes the form</p>
+<div class="math notranslate nohighlight">
+\[ 
+\pi_{t+1}(\alpha) = \frac {h(w_{t+1} | \alpha) \pi_t(\alpha)} 
+       { \int h(w_{t+1} | \hat \alpha) \pi_t(\hat \alpha) d \hat \alpha } 
+\]</div>
+<p>We’ll use numpyro  to approximate this equation.</p>
+<p>We’ll create  graphs of the posterior <span class="math notranslate nohighlight">\(\pi_t(\alpha)\)</span> as
+<span class="math notranslate nohighlight">\(t \rightarrow +\infty\)</span> corresponding to ones presented in the quantecon lecture <a class="reference external" href="https://python.quantecon.org/bayes_nonconj.html">https://python.quantecon.org/bayes_nonconj.html</a>.</p>
+<p>We anticipate that a posterior  distribution will collapse around  the true <span class="math notranslate nohighlight">\(\alpha\)</span> as
+<span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>.</p>
+<p>Let us try a uniform prior first.</p>
+<p>We use the <code class="docutils literal notranslate"><span class="pre">Mixture</span></code> class in Numpyro to construct the likelihood function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">α</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+<span class="c1"># simulate data with true α</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">draw_lottery</span><span class="p">(</span><span class="n">α</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">25000</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+    <span class="n">α</span> <span class="o">=</span> <span class="n">numpyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s1">&#39;α&#39;</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))</span>
+
+    <span class="n">y_samp</span> <span class="o">=</span> <span class="n">numpyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> 
+        <span class="n">dist</span><span class="o">.</span><span class="n">Mixture</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">α</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">α</span><span class="p">])),</span> <span class="p">[</span><span class="n">dist</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">),</span> <span class="n">dist</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">)]),</span> <span class="n">obs</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">MCMC_run</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="s2">&quot;Compute posterior using MCMC with observed ws&quot;</span>
+    
+    <span class="n">kernal</span> <span class="o">=</span> <span class="n">NUTS</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">mcmc</span> <span class="o">=</span> <span class="n">MCMC</span><span class="p">(</span><span class="n">kernal</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">num_warmup</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">mcmc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">rng_key</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">142857</span><span class="p">),</span> <span class="n">w</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ws</span><span class="p">))</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">mcmc</span><span class="o">.</span><span class="n">get_samples</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">sample</span><span class="p">[</span><span class="s1">&#39;α&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following code generates the graph below that displays Bayesian posteriors for <span class="math notranslate nohighlight">\(\alpha\)</span> at various history lengths.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sizes</span><span class="p">)):</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">MCMC_run</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">sizes</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s1">&#39;density&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> 
+        <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">binwidth</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;t=</span><span class="si">{</span><span class="n">sizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;$\pi_t(</span><span class="se">\\</span><span class="s1">alpha)$ as $t$ increases&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">alpha$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/mix_model_32_0.png" src="_images/mix_model_32_0.png" />
+</div>
+</div>
+<p>Evidently,  the Bayesian posterior  narrows in on the true value  <span class="math notranslate nohighlight">\(\alpha = .8\)</span> of the mixing parameter as the length of a history of observations grows.</p>
+</div>
+<div class="section" id="concluding-remarks">
+<h2><span class="section-number">58.7. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
+<p>Our type 1 person  deploys an incorrect statistical  model.</p>
+<p>He believes
+that either <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> generated the <span class="math notranslate nohighlight">\(w\)</span> process, but just doesn’t know which one.</p>
+<p>That is wrong because nature is actually mixing each period with mixing probability <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+<p>Our type 1 agent  eventually believes that either <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> generated the <span class="math notranslate nohighlight">\(w\)</span> sequence, the outcome being determined by the model, either <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>, whose  KL divergence relative to <span class="math notranslate nohighlight">\(h\)</span> is smaller.</p>
+<p>Our type 2 agent has a different statistical model, one that is correctly specified.</p>
+<p>He knows the parametric form of the statistical model but not the mixing parameter <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+<p>He knows that he does not know it.</p>
+<p>But by using Bayes’ law in conjunction with his statistical model and a history of data,  he eventually acquires a more and more accurate inference about <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+<p>This little laboratory  exhibits some important general principles that govern outcomes of Bayesian learning of misspecified models.</p>
+<p>Thus, the  following situation prevails quite generally in empirical work.</p>
+<p>A scientist approaches the data with a manifold <span class="math notranslate nohighlight">\(S\)</span> of statistical models <span class="math notranslate nohighlight">\( s (X | \theta)\)</span> , where <span class="math notranslate nohighlight">\(s\)</span> is a probability distribution over a random vector <span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\(\theta \in \Theta\)</span>
+is a vector of parameters, and <span class="math notranslate nohighlight">\(\Theta\)</span> indexes the manifold of models.</p>
+<p>The scientist with observations that he interprests as realizations <span class="math notranslate nohighlight">\(x\)</span> of the random vector <span class="math notranslate nohighlight">\(X\)</span> wants to solve an <strong>inverse problem</strong> of somehow <em>inverting</em>
+<span class="math notranslate nohighlight">\(s(x | \theta)\)</span> to infer <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<p>But the scientist’s model is misspecified, being only an approximation to an unknown  model <span class="math notranslate nohighlight">\(h\)</span> that nature uses to generate <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>If the scientist uses Bayes’ law or a related  likelihood-based  method to infer <span class="math notranslate nohighlight">\(\theta\)</span>, it occurs quite generally that for large sample sizes the inverse problem infers a  <span class="math notranslate nohighlight">\(\theta\)</span> that minimizes  the KL divergence of the scientist’s model <span class="math notranslate nohighlight">\(s\)</span> relative to nature’s   model <span class="math notranslate nohighlight">\(h\)</span>.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   2. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   3. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   4. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   6. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   7. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   8. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Elementary Statistics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_matrix.html">
+   9. Elementary Probability with Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   10. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   11. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   12. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   13. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   14. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   15. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   16. Fault Tree Uncertainties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   17. Introduction to Artificial Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rand_resp.html">
+   18. Randomized Response Surveys
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="util_rand_resp.html">
+   19. Expected Utilities of Random Responses
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lp_intro.html">
+   20. Linear Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   21. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   22. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   23. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   24. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   25. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   26. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   27. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   28. Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   29. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   30. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   31. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   32. Shortest Paths
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   33. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   34. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   35. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   36. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   37. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   38. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Consumption, Savings and Capital
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   39. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   40. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   41. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   42. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   43. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   44. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   45. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   46. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   47. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   48. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   49. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   50. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   51. Forecasting  an AR(1) process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   52. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   53. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   54. Computing Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   55. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   56. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   57. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   58. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   59. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   60. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   61. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   62. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   63. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   64. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   65. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   66. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   67. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   68. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   69. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   70. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   71. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   72. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   73. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   74. Competitive Equilibria with Arrow Securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   75. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   76. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   77. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   78. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   79. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   80. Multiple Good Allocation Mechanisms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   81. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   82. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   83. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/mix_model.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/mix_model.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/mix_model.ipynb">BinderHub</option>
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/mix_model.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/mix_model.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/mix_model.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "mix_model";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/mix_model.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-54984338-10', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </body>
+</html>
