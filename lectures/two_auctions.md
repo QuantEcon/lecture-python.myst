@@ -13,6 +13,11 @@ kernelspec:
 
 # First-Price and Second-Price Auctions
 
+```{code-cell} python3
+import matplotlib
+print(matplotlib.get_cachedir())
+```
+
 This lecture is designed to set the stage for a subsequent lecture about [Multiple Good Allocation Mechanisms](https://python.quantecon.org/house_auction.html)
 
 In that lecture, a planner or auctioneer simultaneously allocates several goods to set of people.
