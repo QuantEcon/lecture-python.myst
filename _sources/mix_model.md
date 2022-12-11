@@ -236,7 +236,7 @@ in conjunction with the `numpy.searchsorted` command to sample from $H$ directly
 See <https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html> for the
 `searchsorted` function.
 
-See the Mr. P Solver video on Monte Carlo simulation to see other applications of this powerful trick: <https://www.google.com/search?client=firefox-b-1-d&q=Mr+P+solver+Monte+Carlo#fpstate=ive&vld=cid:bdcddc9f,vid:U00Kseb6SB4>
+See the [Mr. P Solver video on Monte Carlo simulation](https://www.google.com/search?client=firefox-b-1-d&q=Mr+P+solver+Monte+Carlo#fpstate=ive&vld=cid:bdcddc9f,vid:U00Kseb6SB4) to see other applications of this powerful trick. 
 
 In the Python code below, we'll use both of our methods and confirm that each of them does a good job of sampling
 from our target mixture distribution.
