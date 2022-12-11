@@ -51,6 +51,9 @@ jobs:
             dvipng                    \
             ghostscript               \
             cm-super
+      - name: Install Git
+        shell: bash -l {0}
+        run: apt-get install -y git
       - name: Setup Anaconda
         uses: conda-incubator/setup-miniconda@v2
         with:
