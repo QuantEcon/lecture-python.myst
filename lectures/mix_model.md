@@ -11,17 +11,12 @@ kernelspec:
   name: python3
 ---
 
-
-<a id='likelihood-ratio-process'></a>
-
-+++
-
+(likelihood-ratio-process)=
 # Incorrect Models 
 
 ## Overview
 
-
-This  is a sequel to   {doc}`this  quantecon lecture <likelihood_bayes>`.  
+This  is a sequel to {doc}`this  quantecon lecture <likelihood_bayes>`.  
 
 We discuss  two ways to create compound lottery and their consequences.
 
@@ -29,12 +24,11 @@ A compound lottery can be said to create a _mixture distribution_.
 
 Our two ways of constructing a compound lottery will differ in their **timing**.
 
- * in one, mixing between two possible probability distributions  will occur once and all at the beginning of time
- 
- * in the other, mixing between the same two possible possible probability distributions will occur each period
+* in one, mixing between two possible probability distributions  will occur once and all at the beginning of time
+
+* in the other, mixing between the same two possible possible probability distributions will occur each period
 
 The statistical setting is close but not identical to the problem studied in that quantecon lecture.
-
 
 In that lecture, there were two  i.i.d. processes that could possibly govern successive draws of a non-negative random variable $W$.
 
@@ -53,8 +47,6 @@ $$
 \pi_t = E [ \textrm{nature chose distribution}  f | w^t] , \quad  t = 0, 1, 2, \ldots
 $$
 
-
-
 However, in the  setting of this lecture, that rule imputes to the agent an incorrect model.
 
 The reason is that  now the wage sequence is actually described by a different statistical model.
@@ -69,7 +61,6 @@ Thus, naturally perpetually draws from the **mixture distribution** with c.d.f.
 $$ 
 H(w ) = \alpha F(w) + (1-\alpha) G(w), \quad \alpha \in (0,1)
 $$
-
 
 We'll study two agents  who try to learn about the wage process, but who use different  statistical models.
 
@@ -100,7 +91,6 @@ is in a special sense *closest* to the $h$ that actually generates the data.
 
 We'll tell the sense in which it is closest.
 
-
 Our second type of agent understands that nature mixes between $f$ and $g$ each period with a fixed mixing
 probability $\alpha$.
 
@@ -111,16 +101,13 @@ The agent sets out to learn $\alpha$ using Bayes' law applied to his model.
 His model is correct in the sense that
 it includes the actual data generating process $h$ as a possible distribution.
 
-
 In this lecture, we'll learn about 
 
 * how nature can *mix* between two distributions $f$ and $g$ to create a new distribution $h$.
    
-*  The Kullback-Leibler statistical divergence <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence> that governs statistical learning under an incorrect statistical model
+* The Kullback-Leibler statistical divergence <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence> that governs statistical learning under an incorrect statistical model
 
 * A useful Python function `numpy.searchsorted` that,  in conjunction with a uniform random number generator, can be used to sample from an arbitrary distribution
-
-
 
 As usual, we'll start by importing some Python tools.
 
@@ -214,13 +201,10 @@ l_seq_f = np.cumprod(l_arr_f, axis=1)
 
 ## Sampling from  Compound Lottery $H$
 
-
 We implement two methods  to draw samples from 
 our mixture model $\alpha F + (1-\alpha) G$.  
 
 We'll generate samples using each of them and verify that they match well. 
-
-
 
 Here is pseudo code for a direct "method 1" for drawing from our compound lottery:
 
@@ -244,7 +228,7 @@ Our second method uses a uniform distribution and the following fact that we als
 
 In other words, if $X \sim F(x)$ we can generate a random sample from $F$ by drawing a random sample from
 a uniform distribution on $[0,1]$ and computing $F^{-1}(U)$.
-$
+
 
 We'll  use this  fact 
 in conjunction with the `numpy.searchsorted` command to sample from $H$ directly.
@@ -252,7 +236,7 @@ in conjunction with the `numpy.searchsorted` command to sample from $H$ directly
 See <https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html> for the
 `searchsorted` function.
 
-See the Mr. P Solver video on Monte Carlo simulation to see other applications of this powerful trick: <https://www.google.com/search?client=firefox-b-1-d&q=Mr+P+solver+Monte+Carlo#fpstate=ive&vld=cid:bdcddc9f,vid:U00Kseb6SB4>
+See the [Mr. P Solver video on Monte Carlo simulation](https://www.google.com/search?client=firefox-b-1-d&q=Mr+P+solver+Monte+Carlo#fpstate=ive&vld=cid:bdcddc9f,vid:U00Kseb6SB4) to see other applications of this powerful trick. 
 
 In the Python code below, we'll use both of our methods and confirm that each of them does a good job of sampling
 from our target mixture distribution.
@@ -314,8 +298,6 @@ plt.show()
 
 **Note:** With numba acceleration the first method is actually only slightly slower than the second when we generated 1,000,000 samples.
 
-+++
-
 ## Type 1 Agent 
 
 We'll now study what our type 1 agent learns
@@ -325,7 +307,6 @@ Remember that our type 1 agent uses the wrong statistical model, thinking that n
 The type 1 agent thus uses the learning algorithm studied in {doc}`this  quantecon lecture <likelihood_bayes>`.
 
 We'll briefly review that learning algorithm now.
-
 
 Let $ \pi_t $ be a Bayesian posterior defined as
 
@@ -338,17 +319,15 @@ of the posterior probability $ \pi_t $, an instance of **Bayes’ Law**.
 
 Bayes’ law implies that $ \{\pi_t\} $ obeys the recursion
 
-
-<a id='equation-eq-recur1'></a>
 $$
-\pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}} \tag{56.1}
-$$
+\pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
+$$ (equation-eq-recur1)
 
 with $ \pi_{0} $ being a Bayesian prior probability that $ q = f $,
 i.e., a personal or subjective belief about $ q $ based on our having seen no data.
 
 Below we define a Python function that updates belief $ \pi $ using
-likelihood ratio $ \ell $ according to  recursion [(56.1)](#equation-eq-recur1)
+likelihood ratio $ \ell $ according to  recursion {eq}`equation-eq-recur1`
 
 ```{code-cell} ipython3
 :hide-output: false
@@ -363,7 +342,7 @@ def update(π, l):
     return π
 ```
 
-Formula [(56.1)](#equation-eq-recur1) can be generalized  by iterating on it and thereby deriving an
+Formula {eq}`equation-eq-recur1` can be generalized  by iterating on it and thereby deriving an
 expression for  the time $ t $ posterior $ \pi_{t+1} $ as a function
 of the time $ 0 $ prior $ \pi_0 $ and the likelihood ratio process
 $ L(w^{t+1}) $ at time $ t $.
@@ -413,24 +392,20 @@ After rearranging the preceding equation, we can express $ \pi_{t+1} $ as a
 function of  $ L\left(w^{t+1}\right) $, the  likelihood ratio process at $ t+1 $,
 and the initial prior $ \pi_{0} $
 
-
-<a id='equation-eq-bayeslaw103'></a>
 $$
-\pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}} . \tag{56.2}
-$$
+\pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}}.
+$$ (equation-eq-bayeslaw103)
 
-Formula [(56.2)](#equation-eq-bayeslaw103) generalizes formula [(56.1)](#equation-eq-recur1).
+Formula {eq}`equation-eq-bayeslaw103` generalizes formula {eq}`equation-eq-recur1`.
 
-Formula [(56.2)](#equation-eq-bayeslaw103)  can be regarded as a one step  revision of prior probability $ \pi_0 $ after seeing
+Formula {eq}`equation-eq-bayeslaw103`  can be regarded as a one step  revision of prior probability $ \pi_0 $ after seeing
 the batch of data $ \left\{ w_{i}\right\} _{i=1}^{t+1} $.
-
-+++
 
 ## What a type 1 Agent Learns when Mixture $H$ Generates Data
 
 We now study what happens when the mixture distribution $h;\alpha$  truly generated the data each period.   
 
-A  submartingale or supermartingale continues to describe $\pi_t$
+A submartingale or supermartingale continues to describe $\pi_t$
 
 It raises its ugly head and causes $\pi_t$ to converge either to $0$ or to $1$.
 
@@ -439,9 +414,7 @@ This is true even though in truth nature always mixes between $f$ and $g$.
 After verifying that claim about possible limit points of $\pi_t$ sequences, we'll drill down and study
 what fundamental force determines the limiting value of $\pi_t$.
 
-
 Let's set a value of $\alpha$ and then watch how $\pi_t$ evolves.
-
 
 ```{code-cell} ipython3
 def simulate_mixed(α, T=50, N=500):
@@ -506,12 +479,7 @@ plot_π_seq(α = 0.2)
 
 Evidently, $\alpha$ is having a big effect on the destination of $\pi_t$ as $t \rightarrow + \infty$
 
-
-
-+++
-
 ## Kullback-Leibler Divergence Governs Limit of $\pi_t$
-
 
 To understand what determines whether the limit point of  $\pi_t$ is  $0$ or $1$  and how the answer depends on the true value of the mixing probability  $\alpha \in (0,1) $ that generates
 
@@ -525,7 +493,9 @@ $$
 
 and 
 
-$$ KL_f (\alpha) = \int \log\left(\frac{f(w)}{h(w)}\right) h(w) d w $$
+$$ 
+KL_f (\alpha) = \int \log\left(\frac{f(w)}{h(w)}\right) h(w) d w 
+$$
 
 We shall plot both of these functions against $\alpha$ as we use $\alpha$ to vary
 $h(w) = h(w|\alpha)$.
@@ -600,6 +570,7 @@ fig, ax = plt.subplots(1, figsize=[10, 6])
 ax.plot(α_arr, KL_g_arr, label='KL(g, h)')
 ax.plot(α_arr, KL_f_arr, label='KL(f, h)')
 ax.set_ylabel('K-L divergence')
+ax.set_xlabel(r'$\alpha$')
 
 ax.legend(loc='upper right')
 plt.show()
@@ -647,6 +618,7 @@ fig, ax = plt.subplots(1, figsize=[10, 6])
 ax.plot(α_arr, KL_g_arr, label='KL(g, h)')
 ax.plot(α_arr, KL_f_arr, label='KL(f, h)')
 ax.set_ylabel('K-L divergence')
+ax.set_xlabel(r'$\alpha$')
 
 # plot KL
 ax2 = ax.twinx()
@@ -662,19 +634,18 @@ plt.show()
 Evidently, our type 1 learner who applies Bayes' law to his misspecified set of statistical models eventually learns an approximating model that is as close as possible to the true model, as measured by its
 Kullback-Leibler divergence.
 
-+++
-
 ## Type 2 Agent
 
 We now describe how our type 2 agent formulates his learning problem and what he eventually learns.
 
 Our type 2 agent understands the correct statistical  model but acknowledges does not know $\alpha$.
 
-
 We apply Bayes law to deduce an algorithm for  learning $\alpha$ under the assumption
 that the agent knows that
 
-$$ h(w) = h(w| \alpha)$$
+$$ 
+h(w) = h(w| \alpha)
+$$
 
 but does not know $\alpha$.
 
@@ -690,24 +661,15 @@ Bayes' law now takes the form
 $$ 
 \pi_{t+1}(\alpha) = \frac {h(w_{t+1} | \alpha) \pi_t(\alpha)} 
        { \int h(w_{t+1} | \hat \alpha) \pi_t(\hat \alpha) d \hat \alpha } 
-       $$
-
+$$
 
 We'll use numpyro  to approximate this equation.
-
 
 We'll create  graphs of the posterior $\pi_t(\alpha)$ as 
 $t \rightarrow +\infty$ corresponding to ones presented in the quantecon lecture <https://python.quantecon.org/bayes_nonconj.html>.
 
 We anticipate that a posterior  distribution will collapse around  the true $\alpha$ as 
 $t \rightarrow + \infty$.
-
-
-
-
-
-
-+++
 
 Let us try a uniform prior first.
 
@@ -737,11 +699,9 @@ def MCMC_run(ws):
     return sample['α']
 ```
 
-After the following code, please scroll down all the way to the end to see the graph that displays Bayesian posteriors for $\alpha$
-at various history lengths.
+The following code generates the graph below that displays Bayesian posteriors for $\alpha$ at various history lengths.
 
 ```{code-cell} ipython3
-:tags: ["output_scroll"]
 
 fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -757,10 +717,7 @@ ax.set_xlabel('$\\alpha$')
 plt.show() 
 ```
 
-Again, please scroll down to the end of the output to see a graph of posteriors at different history lengths.
-
-It shows how the Bayesian posterior  narrows in on the true value  $\alpha = .8$ of the mixing parameter as the length of a history of observations grows.  
-
+Evidently,  the Bayesian posterior  narrows in on the true value  $\alpha = .8$ of the mixing parameter as the length of a history of observations grows.  
 
 ## Concluding Remarks
 
@@ -773,13 +730,17 @@ That is wrong because nature is actually mixing each period with mixing probabil
 
 Our type 1 agent  eventually believes that either $f$ or $g$ generated the $w$ sequence, the outcome being determined by the model, either $f$ or $g$, whose  KL divergence relative to $h$ is smaller.
 
-Our type 2 agent has a statistical model that lets him learn more.
+Our type 2 agent has a different statistical model, one that is correctly specified.  
 
-Using Bayes law he eventually figures out $\alpha$.
+He knows the parametric form of the statistical model but not the mixing parameter $\alpha$.
+
+He knows that he does not know it.
+
+But by using Bayes' law in conjunction with his statistical model and a history of data,  he eventually acquires a more and more accurate inference about $\alpha$.
 
 This little laboratory  exhibits some important general principles that govern outcomes of Bayesian learning of misspecified models.
 
-The following situation prevails quite generally in empirical work.
+Thus, the  following situation prevails quite generally in empirical work.
 
 A scientist approaches the data with a manifold $S$ of statistical models $ s (X | \theta)$ , where $s$ is a probability distribution over a random vector $X$, $\theta \in \Theta$
 is a vector of parameters, and $\Theta$ indexes the manifold of models.
@@ -788,6 +749,5 @@ The scientist with observations that he interprests as realizations $x$ of the r
 $s(x | \theta)$ to infer $\theta$ from $x$.
 
 But the scientist's model is misspecified, being only an approximation to an unknown  model $h$ that nature uses to generate $X$.
-
 
 If the scientist uses Bayes' law or a related  likelihood-based  method to infer $\theta$, it occurs quite generally that for large sample sizes the inverse problem infers a  $\theta$ that minimizes  the KL divergence of the scientist's model $s$ relative to nature's   model $h$.
