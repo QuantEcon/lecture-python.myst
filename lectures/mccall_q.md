@@ -19,7 +19,6 @@ This lecture illustrates a powerful machine learning technique called Q-learning
 
 {cite}`Sutton_2018` presents Q-learning and a variety of other statistical learning procedures.
 
-
 The Q-learning algorithm combines ideas from
 
 * dynamic programming
@@ -30,8 +29,8 @@ This lecture applies a Q-learning algorithm to the situation faced by  a   McCal
 
 Relative to the dynamic programming formulation of the McCall worker model that we studied in  {doc}`quantecon lecture <mccall_model>`, a Q-learning algorithm gives the worker less knowledge about 
 
-  * the random process that generates a sequence of wages 
-  * the reward function that tells  consequences of accepting or rejecting a job
+* the random process that generates a sequence of wages 
+* the reward function that tells  consequences of accepting or rejecting a job
  
 The Q-learning algorithm  invokes a statistical learning model to learn about these things.
 
@@ -266,10 +265,11 @@ This definition of $Q(w,a)$ presumes that in subsequent periods the worker  take
 An optimal   Q-function for our McCall worker satisfies
 
 $$
-\begin{align}
+\begin{aligned}
 Q\left(w,\text{accept}\right) & =\frac{w}{1-\beta} \\
 Q\left(w,\text{reject}\right) & =c+\beta\int\max_{\text{accept, reject}}\left\{ \frac{w'}{1-\beta},Q\left(w',\text{reject}\right)\right\} dF\left(w'\right) 
-\end{align} $$ (eq:impliedq)
+\end{aligned} 
+$$ (eq:impliedq)
 
 
 Note that the first equation of system {eq}`eq:impliedq` presumes that after  the agent has  accepted an offer, he will not have the objection to reject that same offer in the future.   
@@ -352,7 +352,7 @@ $$
 \begin{aligned}
          w  & + \beta \max_{\textrm{accept, reject}} \left\{ Q (w, \textrm{accept}), Q(w, \textrm{reject}) \right\} - Q (w, \textrm{accept})   = 0  \cr
          c  & +\beta\int\max_{\text{accept, reject}}\left\{ Q(w', \textrm{accept}),Q\left(w',\text{reject}\right)\right\} dF\left(w'\right) - Q\left(w,\text{reject}\right)  = 0  \cr 
-       \end{aligned} 
+\end{aligned} 
 $$ (eq:probtosample1)
 
 Notice the integral over $F(w')$ on the second line.
@@ -366,7 +366,7 @@ $$
 \begin{aligned}
          w  & + \beta \max_{\textrm{accept, reject}} \left\{ Q (w, \textrm{accept}), Q(w, \textrm{reject}) \right\} - Q (w, \textrm{accept})   = 0  \cr
          c  & +\beta \max_{\text{accept, reject}}\left\{ Q(w', \textrm{accept}),Q\left(w',\text{reject}\right)\right\}  - Q\left(w,\text{reject}\right)  \approx 0  \cr 
-       \end{aligned} 
+\end{aligned} 
 $$(eq:probtosample2)
 
 
@@ -387,7 +387,7 @@ $$
 \begin{aligned}
          w  & + \beta \max_{\textrm{accept, reject}} \left\{ \hat Q_t (w_t, \textrm{accept}), \hat Q_t(w_t, \textrm{reject}) \right\} - \hat Q_t(w_t, \textrm{accept})   = \textrm{diff}_{\textrm{accept},t}  \cr
          c  & +\beta\int\max_{\text{accept, reject}}\left\{ \hat Q_t(w_{t+1}, \textrm{accept}),\hat Q_t\left(w_{t+1},\text{reject}\right)\right\}  - \hat Q_t\left(w_t,\text{reject}\right)  = \textrm{diff}_{\textrm{reject},t}  \cr 
-       \end{aligned}
+\end{aligned}
 $$ (eq:old105)
 
 The adaptive learning scheme would then be some version of
@@ -400,9 +400,6 @@ where $\alpha \in (0,1)$ is a small **gain** parameter that governs the rate of 
 to  objects in equation system {eq}`eq:old105`.
 
 This informal argument takes us to the threshold of Q-learning.
-
-
-+++
 
 ## Q-Learning 
 
@@ -436,10 +433,10 @@ $$ (eq:old3)
 where 
 
 $$
-\begin{align*}
+\begin{aligned}
 \widetilde{TD}\left(w,\text{accept}\right) & = \left[ w+\beta\max_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w,a'\right) \right]-\widetilde{Q}^{old}\left(w,\text{accept}\right) \\
 \widetilde{TD}\left(w,\text{reject}\right) & = \left[ c+\beta\max_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w',a'\right) \right]-\widetilde{Q}^{old}\left(w,\text{reject}\right),\;w'\sim F
-\end{align*}
+\end{aligned}
 $$ (eq:old4)
 
 The terms  $\widetilde{TD}(w,a) $ for $a = \left\{\textrm{accept,reject} \right\}$  are the **temporal difference errors** that drive the updates.
@@ -515,9 +512,6 @@ For example, an agent who has accepted a wage offer based on her Q-table will be
 By using the $\epsilon$-greedy method and also by increasing the number of episodes, the Q-learning algorithm  balances  gains from exploration and from exploitation.
 
 **Remark:** Notice that    $\widetilde{TD}$ associated with  an optimal Q-table defined in equation (2) automatically above satisfies  $\widetilde{TD}=0$ for all state action pairs.  Whether a limit of our Q-learning algorithm converges to an optimal Q-table depends on whether the algorithm visits all state, action pairs often enough.
-
-
-
 
 We implement this pseudo code  in a Python class. 
 
@@ -736,18 +730,15 @@ plot_epochs(ns_to_plot=[100, 1000, 10000, 100000, 200000])
 
 The above graphs indicates that
 
-  * the Q-learning algorithm has trouble  learning  the Q-table well for wages that are rarely drawn
-  
-  * the quality of approximation to the "true" value function computed by value function iteration improves for longer epochs
+* the Q-learning algorithm has trouble  learning  the Q-table well for wages that are rarely drawn
 
-+++
+* the quality of approximation to the "true" value function computed by value function iteration improves for longer epochs
 
 ## Employed Worker Can't Quit
 
 
 The preceding version of temporal difference Q-learning described in  equation system  (4) lets an an employed  worker quit, i.e., reject her wage as an incumbent and instead accept receive unemployment compensation this period
 and draw a new offer next period.
-
 
 This is an option that the McCall worker described in {doc}`this quantecon lecture <mccall_model>` would not take.  
 
@@ -757,17 +748,16 @@ But in the context of Q-learning, giving the worker the option to quit and get u
 unemployed turns out to accelerate the learning process by promoting experimentation vis a vis premature
 exploitation only.
 
-
 To illustrate this, we'll amend our formulas for temporal differences to forbid an employed worker from quitting a job she had accepted earlier. 
 
 With this understanding about available choices, we obtain the following temporal difference values:
 
 $$
-\begin{align*}
+\begin{aligned}
 \widetilde{TD}\left(w,\text{accept}\right) & = \left[ w+\beta\widetilde{Q}^{old}\left(w,\text{accept}\right) \right]-\widetilde{Q}^{old}\left(w,\text{accept}\right) \\
 \widetilde{TD}\left(w,\text{reject}\right) & = \left[ c+\beta\max_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w',a'\right) \right]-\widetilde{Q}^{old}\left(w,\text{reject}\right),\;w'\sim F
 \tag{4'}
-\end{align*}
+\end{aligned}
 $$
 
 It turns out that formulas (4') combined with our Q-learning recursion (3) can lead our agent to eventually learn the optimal value function as well as in the case where an option to redraw can be exercised. 
