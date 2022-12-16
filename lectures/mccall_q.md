@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# A McCall Worker Q-Learns
+# Job Search VII: A McCall Worker Q-Learns
 
 ## Overview
 
