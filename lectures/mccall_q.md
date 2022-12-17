@@ -756,11 +756,10 @@ $$
 \begin{aligned}
 \widetilde{TD}\left(w,\text{accept}\right) & = \left[ w+\beta\widetilde{Q}^{old}\left(w,\text{accept}\right) \right]-\widetilde{Q}^{old}\left(w,\text{accept}\right) \\
 \widetilde{TD}\left(w,\text{reject}\right) & = \left[ c+\beta\max_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w',a'\right) \right]-\widetilde{Q}^{old}\left(w,\text{reject}\right),\;w'\sim F
-\tag{4'}
 \end{aligned}
-$$
+$$ (eq:temp-diff)
 
-It turns out that formulas (4') combined with our Q-learning recursion (3) can lead our agent to eventually learn the optimal value function as well as in the case where an option to redraw can be exercised. 
+It turns out that formulas {eq}`eq:temp-diff` combined with our Q-learning recursion (3) can lead our agent to eventually learn the optimal value function as well as in the case where an option to redraw can be exercised. 
 
 But learning is slower because  an agent who ends up accepting a wage offer prematurally loses the option to explore new states in the same episode and to adjust the value associated with that state.
 
