@@ -313,6 +313,7 @@ The next figure shows a simulation, where
 * $g_t = \exp(X_t)$, so that $\ln g_t = X_t$ is the growth rate.
 
 ```{code-cell} ipython
+n = 7
 mc = qe.tauchen(n, 0.96, 0.25)
 sim_length = 80
 
@@ -962,7 +963,7 @@ $$
 Consider the following primitives
 
 ```{code-cell} python3
-n = 5
+n = 5  # Size of State Space
 P = np.full((n, n), 0.0125)
 P[range(n), range(n)] += 1 - P.sum(1)
 # State values of the Markov chain
