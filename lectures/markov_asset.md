@@ -53,7 +53,7 @@ An asset is a claim on one or more future payoffs.
 
 The spot price of an asset depends primarily on
 
-* the anticipated  income stream  
+* the anticipated  income stream
 * attitudes about risk
 * rates of time preference
 
@@ -313,7 +313,7 @@ The next figure shows a simulation, where
 * $g_t = \exp(X_t)$, so that $\ln g_t = X_t$ is the growth rate.
 
 ```{code-cell} ipython
-mc = qe.tauchen(0.96, 0.25, n=25)
+mc = qe.tauchen(n, 0.96, 0.25)
 sim_length = 80
 
 x_series = mc.simulate(sim_length, init=np.median(mc.state_values))
@@ -404,7 +404,7 @@ Here's the code, including a test of the spectral radius condition
 ```{code-cell} python3
 n = 25  # Size of state space
 β = 0.9
-mc = qe.tauchen(0.96, 0.02, n=n)
+mc = qe.tauchen(n, 0.96, 0.02)
 
 K = mc.P * np.exp(mc.state_values)
 
@@ -566,7 +566,7 @@ class AssetPriceModel:
         if mc is None:
             self.ρ = 0.9
             self.σ = 0.02
-            self.mc = qe.tauchen(self.ρ, self.σ, n=25)
+            self.mc = qe.tauchen(n, self.ρ, self.σ)
         else:
             self.mc = mc
 
