@@ -1,0 +1,1828 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>39. Job Search VII: A McCall Worker Q-Learns &#8212; Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/mccall_q.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="40. Cass-Koopmans Model" href="cass_koopmans_1.html" />
+    <link rel="prev" title="38. Job Search VI: On-the-Job Search" href="jv.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Job Search VII: A McCall Worker Q-Learns"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Job Search VII: A McCall Worker Q-Learns" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/mccall_q.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=mccall_q>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   39.1. Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#review-of-mccall-model">
+   39.2. Review of McCall Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implied-quality-function-q">
+   39.3. Implied Quality Function
+   <span class="math notranslate nohighlight">
+    \(Q\)
+   </span>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#from-probabilities-to-samples">
+   39.4. From Probabilities  to Samples
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#q-learning">
+   39.5. Q-Learning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#employed-worker-cant-quit">
+   39.6. Employed Worker Can’t Quit
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#possible-extensions">
+   39.7. Possible Extensions
+  </a>
+ </li>
+</ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="qe-page__header-subheading">Job Search VII: A McCall Worker Q-Learns</p>
+
+                    </div>
+
+                    <p class="qe-page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <div class="tex2jax_ignore mathjax_ignore section" id="job-search-vii-a-mccall-worker-q-learns">
+<h1><span class="section-number">39. </span>Job Search VII: A McCall Worker Q-Learns<a class="headerlink" href="#job-search-vii-a-mccall-worker-q-learns" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2><span class="section-number">39.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This lecture illustrates a powerful machine learning technique called Q-learning.</p>
+<p><span id="id1">[<a class="reference internal" href="zreferences.html#id29" title="Richard S Sutton and Andrew G Barto. Reinforcement learning: An introduction. MIT press, 2018.">SB18</a>]</span> presents Q-learning and a variety of other statistical learning procedures.</p>
+<p>The Q-learning algorithm combines ideas from</p>
+<ul class="simple">
+<li><p>dynamic programming</p></li>
+<li><p>a recursive version of least squares known as <strong>temporal difference learning</strong></p></li>
+</ul>
+<p>This lecture applies a Q-learning algorithm to the situation faced by  a   McCall worker.</p>
+<p>Relative to the dynamic programming formulation of the McCall worker model that we studied in  <a class="reference internal" href="mccall_model.html"><span class="doc">quantecon lecture</span></a>, a Q-learning algorithm gives the worker less knowledge about</p>
+<ul class="simple">
+<li><p>the random process that generates a sequence of wages</p></li>
+<li><p>the reward function that tells  consequences of accepting or rejecting a job</p></li>
+</ul>
+<p>The Q-learning algorithm  invokes a statistical learning model to learn about these things.</p>
+<p>Statistical learning often comes down to some version of least squares, and it will here too.</p>
+<p>Any time we say <em>statistical learning</em>, we have to say what object is being learned.</p>
+<p>For Q-learning, the object that is learned is not quite the <strong>value function</strong> that is a focus
+of dynamic programming, but it is something that is closely affiliated with it.</p>
+<p>In the finite-action, finite state context studied in this lecture, the object to be learned statistical
+is a Q-table, an instance of a Q-function for finite sets.</p>
+<p>Sometimes a Q-function or Q-table is called  a quality-function or quality-table.</p>
+<p>The rows and columns of a Q-table correspond to possible states that an agent might encounter, and possible
+actions that he can take in each state.</p>
+<p>An equation  that resembles a  Bellman equation  plays an important role in the algorithm.</p>
+<p>It  differs from the Bellman equation for the McCall model that we have seen in <a class="reference internal" href="mccall_model.html"><span class="doc">this quantecon lecture</span></a></p>
+<p>In this lecture, we’ll learn a little about</p>
+<ul class="simple">
+<li><p>the <strong>Q-function</strong> or <strong>quality function</strong> that is affiliated with any Markov decision problem whose optimal value function satisfies a Bellman equation</p></li>
+<li><p><strong>temporal difference learning</strong>,  a key component of a Q-learning algorithm</p></li>
+</ul>
+<p>As usual, let’s  import some Python modules.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">prange</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">int64</span>
+<span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
+<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
+<span class="kn">from</span> <span class="nn">quantecon.distributions</span> <span class="kn">import</span> <span class="n">BetaBinomial</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="review-of-mccall-model">
+<h2><span class="section-number">39.2. </span>Review of McCall Model<a class="headerlink" href="#review-of-mccall-model" title="Permalink to this headline">¶</a></h2>
+<p>We begin by reviewing the McCall model described in <a class="reference internal" href="mccall_model.html"><span class="doc">this quantecon lecture</span></a>.</p>
+<p>We’ll  compute an optimal value function and a policy that attains it.</p>
+<p>We’ll eventually compare that optimal policy to what the Q-learning McCall worker learns.</p>
+<p>The McCall model is characterized by parameters <span class="math notranslate nohighlight">\(\beta,c\)</span> and a known distribution of wage offers <span class="math notranslate nohighlight">\(F\)</span>.</p>
+<p>A McCall worker wants to maximize an expected discounted sum of lifetime incomes</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{E} \sum_{t=0}^{\infty} \beta^t y_t
+\]</div>
+<p>The worker’s income <span class="math notranslate nohighlight">\(y_t\)</span> equals his wage <span class="math notranslate nohighlight">\(w\)</span> if he is employed, and unemployment compensation <span class="math notranslate nohighlight">\(c\)</span> if he is unemployed.</p>
+<p>An optimal value  <span class="math notranslate nohighlight">\(V\left(w\right) \)</span> for a McCall worker who has just received a wage offer <span class="math notranslate nohighlight">\(w\)</span> and is deciding whether
+to accept or reject it satisfies the Bellman equation</p>
+<div class="math notranslate nohighlight" id="equation-eq-mccallbellman">
+<span class="eqno">(39.1)<a class="headerlink" href="#equation-eq-mccallbellman" title="Permalink to this equation">¶</a></span>\[ 
+V\left(w\right)=\max_{\text{accept, reject}}\;\left\{ \frac{w}{1-\beta},c+\beta\int V\left(w'\right)dF\left(w'\right)\right\} 
+\]</div>
+<p>To form a benchmark to compare with results from Q-learning, we  first approximate the optimal value function.</p>
+<p>With possible states residing in a finite discrete state space indexed by <span class="math notranslate nohighlight">\(\{1,2,...,n\}\)</span>, we make an initial guess for the value function of <span class="math notranslate nohighlight">\(v\in\mathbb{R}^{n}\)</span> and then iterate on the Bellman equation:</p>
+<div class="math notranslate nohighlight">
+\[
+v^{\prime}(i)=\max \left\{\frac{w(i)}{1-\beta}, c+\beta \sum_{1 \leq j \leq n} v(j) q(j)\right\} \quad \text { for } i=1, \ldots, n
+\]</div>
+<p>Let’s use  Python   code from <a class="reference internal" href="mccall_model.html"><span class="doc">this quantecon lecture</span></a>.</p>
+<p>We use a Python method called <code class="docutils literal notranslate"><span class="pre">VFI</span></code> to compute the optimal value function using value function iterations.</p>
+<p>We construct an assumed distribution  of wages and plot it with the following Python code</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">100</span>                        <span class="c1"># default parameters</span>
+<span class="n">q_default</span> <span class="o">=</span> <span class="n">BetaBinomial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">pdf</span><span class="p">()</span>       <span class="c1"># default choice of q</span>
+
+<span class="n">w_min</span><span class="p">,</span> <span class="n">w_max</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">60</span>
+<span class="n">w_default</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">w_min</span><span class="p">,</span> <span class="n">w_max</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># plot distribution of wage offer</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_default</span><span class="p">,</span> <span class="n">q_default</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$q(w(i))$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;wages&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probabilities&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/mccall_q_3_0.png" src="_images/mccall_q_3_0.png" />
+</div>
+</div>
+<p>Next we’ll compute the worker’s optimal value function by iterating to convergence on the Bellman equation.</p>
+<p>Then we’ll plot various iterates on the Bellman operator.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mccall_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>      <span class="c1"># unemployment compensation</span>
+    <span class="p">(</span><span class="s1">&#39;β&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>      <span class="c1"># discount factor</span>
+    <span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:]),</span>   <span class="c1"># array of wage values, w[i] = wage at state i</span>
+    <span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:]),</span>    <span class="c1"># array of probabilities</span>
+<span class="p">]</span>
+
+
+<span class="nd">@jitclass</span><span class="p">(</span><span class="n">mccall_data</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">McCallModel</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w_default</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="n">q_default</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span> <span class="o">=</span> <span class="n">c</span><span class="p">,</span> <span class="n">β</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">w</span><span class="p">,</span> <span class="n">q</span>
+
+    <span class="k">def</span> <span class="nf">state_action_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The values of state-action pairs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Simplify names</span>
+        <span class="n">c</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span>
+        <span class="c1"># Evaluate value for each state-action pair</span>
+        <span class="c1"># Consider action = accept or reject the current offer</span>
+        <span class="n">accept</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span>
+        <span class="n">reject</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">accept</span><span class="p">,</span> <span class="n">reject</span><span class="p">])</span>
+    
+    <span class="k">def</span> <span class="nf">VFI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find the optimal value function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">)</span>
+        <span class="n">v_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">flag</span><span class="o">=</span><span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="n">v_next</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_action_values</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_next</span> <span class="o">-</span> <span class="n">v</span><span class="p">))</span><span class="o">&lt;=</span><span class="n">eps</span><span class="p">:</span>
+                <span class="n">flag</span><span class="o">=</span><span class="mi">1</span>
+                <span class="k">break</span>
+            <span class="n">v</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">v_next</span>
+
+        <span class="k">return</span> <span class="n">v</span><span class="p">,</span> <span class="n">flag</span>
+    
+<span class="k">def</span> <span class="nf">plot_value_function_seq</span><span class="p">(</span><span class="n">mcm</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">num_plots</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot a sequence of value functions.</span>
+
+<span class="sd">        * mcm is an instance of McCallModel</span>
+<span class="sd">        * ax is an axes object that implements a plot method.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mcm</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">mcm</span><span class="o">.</span><span class="n">w</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">mcm</span><span class="o">.</span><span class="n">β</span><span class="p">)</span>
+    <span class="n">v_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_plots</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mcm</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;iterate </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Update guess</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">v_next</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">mcm</span><span class="o">.</span><span class="n">state_action_values</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="n">v</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">v_next</span>  <span class="c1"># copy contents into v</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mcm</span> <span class="o">=</span> <span class="n">McCallModel</span><span class="p">()</span>
+<span class="n">valfunc_VFI</span><span class="p">,</span> <span class="n">flag</span> <span class="o">=</span> <span class="n">mcm</span><span class="o">.</span><span class="n">VFI</span><span class="p">()</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;wage&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+<span class="n">plot_value_function_seq</span><span class="p">(</span><span class="n">mcm</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/mccall_q_6_0.png" src="_images/mccall_q_6_0.png" />
+</div>
+</div>
+<p>Next we’ll print out the limit of the sequence of iterates.</p>
+<p>This  is the approximation to the McCall worker’s value function that is produced by value function iteration.</p>
+<p>We’ll use this value function as a benchmark later after we have done some Q-learning.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">valfunc_VFI</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[5322.27935875 5322.27935875 5322.27935875 5322.27935875 5322.27935875
+ 5322.27935875 5322.27935875 5322.27935875 5322.27935875 5500.
+ 6000.        ]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="implied-quality-function-q">
+<h2><span class="section-number">39.3. </span>Implied Quality Function  <span class="math notranslate nohighlight">\(Q\)</span><a class="headerlink" href="#implied-quality-function-q" title="Permalink to this headline">¶</a></h2>
+<p>A <strong>quality function</strong> <span class="math notranslate nohighlight">\(Q\)</span> map  state-action pairs into optimal values.</p>
+<p>They are tightly linked to optimal  value functions.</p>
+<p>But value functions  are functions just of states, and not actions.</p>
+<p>For each given  state, the quality function gives a list of optimal values that can be attained starting from that
+state, with each component of the list indicating one of the possible actions that is taken.</p>
+<p>For our McCall worker with a finite set of possible wages</p>
+<ul class="simple">
+<li><p>the state space  <span class="math notranslate nohighlight">\(\mathcal{W}=\{w_1,w_2,...,w_n\}\)</span> is indexed by integers <span class="math notranslate nohighlight">\(1,2,...,n\)</span></p></li>
+<li><p>the action space is  <span class="math notranslate nohighlight">\(\mathcal{A}=\{\text{accept}, \text{reject}\}\)</span></p></li>
+</ul>
+<p>Let <span class="math notranslate nohighlight">\(a \in \mathcal{A}\)</span> be one of the  two possible actions, i.e., accept or reject.</p>
+<p>For our McCall worker, an optimal Q-function <span class="math notranslate nohighlight">\(Q(w,a)\)</span> equals the maximum value of that a  previously unemployed   worker who has offer <span class="math notranslate nohighlight">\(w\)</span> in hand can attain if he takes action <span class="math notranslate nohighlight">\(a\)</span>.</p>
+<p>This definition of <span class="math notranslate nohighlight">\(Q(w,a)\)</span> presumes that in subsequent periods the worker  takes  optimal actions.</p>
+<p>An optimal   Q-function for our McCall worker satisfies</p>
+<div class="math notranslate nohighlight" id="equation-eq-impliedq">
+<span class="eqno">(39.2)<a class="headerlink" href="#equation-eq-impliedq" title="Permalink to this equation">¶</a></span>\[\begin{split}
+\begin{aligned}
+Q\left(w,\text{accept}\right) &amp; =\frac{w}{1-\beta} \\
+Q\left(w,\text{reject}\right) &amp; =c+\beta\int\max_{\text{accept, reject}}\left\{ \frac{w'}{1-\beta},Q\left(w',\text{reject}\right)\right\} dF\left(w'\right) 
+\end{aligned} 
+\end{split}\]</div>
+<p>Note that the first equation of system <a class="reference internal" href="#equation-eq-impliedq">(39.2)</a> presumes that after  the agent has  accepted an offer, he will not have the objection to reject that same offer in the future.</p>
+<p>These equations are aligned with the Bellman equation for the worker’s  optimal value function that we studied in <a class="reference internal" href="mccall_model.html"><span class="doc">this quantecon lecture</span></a>.</p>
+<p>Evidently, the optimal value function <span class="math notranslate nohighlight">\(V(w)\)</span> described in that lecture is related to our Q-function by</p>
+<div class="math notranslate nohighlight">
+\[
+V(w) = \max_{\textrm{accept},\textrm{reject}} \left\{ Q(w, \text{accept} \right), Q\left(w,\text{reject} \right\}
+\]</div>
+<p>If we stare at the second equation of system <a class="reference internal" href="#equation-eq-impliedq">(39.2)</a>, we notice that since the wage process is identically and independently distributed over time,
+<span class="math notranslate nohighlight">\(Q\left(w,\text{reject}\right)\)</span>, the right side of the equation is independent of the current state   <span class="math notranslate nohighlight">\(w\)</span>.</p>
+<p>So we can denote it as a scalar</p>
+<div class="math notranslate nohighlight">
+\[ Q_r=Q\left(w,\text{reject}\right),\forall w\in\mathcal{W}. 
+\]</div>
+<p>This fact provides us with an
+an alternative, and  as it turns out in this case, a faster way to compute an optimal value function and associated optimal policy for the McCall worker.</p>
+<p>Instead of using the  value function iterations that we deployed above, we can instead  iterate to convergence on a version of the second equation in system <a class="reference internal" href="#equation-eq-impliedq">(39.2)</a>  that maps an estimate of  <span class="math notranslate nohighlight">\(Q_r\)</span> into an improved estimate <span class="math notranslate nohighlight">\(Q_r'\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+Q_{r}^\prime=c+\beta\int\max_{\text{}}\left\{ \frac{w'}{1-\beta},Q_{r}\right\} dF\left(w'\right)
+\]</div>
+<p>After a <span class="math notranslate nohighlight">\(Q_r\)</span> sequence has converged, we can recover the optimal value function <span class="math notranslate nohighlight">\(V(w)\)</span> for the McCall worker from</p>
+<div class="math notranslate nohighlight">
+\[
+V\left(w\right)=\max\left\{ \frac{w}{1-\beta},Q_{r}\right\} 
+\]</div>
+<p>Let’s try this out and compare the results with those from value function iteration.</p>
+<p>We get appropriate code by modifying some code from  the second part of <a class="reference internal" href="mccall_model.html"><span class="doc">this quantecon lecture</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_value_function_two</span><span class="p">(</span><span class="n">mcm</span><span class="p">,</span>
+                               <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                               <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+
+    <span class="c1"># Simplify names</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">mcm</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">mcm</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">mcm</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="n">mcm</span><span class="o">.</span><span class="n">q</span>
+
+    <span class="c1"># == First compute h == #</span>
+
+    <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span> <span class="ow">and</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">),</span> <span class="n">h</span><span class="p">)</span>
+        <span class="n">h_next</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">s</span> <span class="o">*</span> <span class="n">q</span><span class="p">)</span>
+
+        <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">h_next</span> <span class="o">-</span> <span class="n">h</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">h</span> <span class="o">=</span> <span class="n">h_next</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">w</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">β</span><span class="p">),</span> <span class="n">h</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can confirm that  we have obtained the same value function <span class="math notranslate nohighlight">\(V(w)\)</span> obtained above by applying value function iteration</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">compute_value_function_two</span><span class="p">(</span><span class="n">mcm</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[5322.27936882 5322.27936882 5322.27936882 5322.27936882 5322.27936882
+  5322.27936882 5322.27936882 5322.27936882 5322.27936882 5500.
+  6000.        ]]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="from-probabilities-to-samples">
+<h2><span class="section-number">39.4. </span>From Probabilities  to Samples<a class="headerlink" href="#from-probabilities-to-samples" title="Permalink to this headline">¶</a></h2>
+<p>We noted  above that  the optimal Q function for our McCall worker satisfies the Bellman equations</p>
+<div class="math notranslate nohighlight" id="equation-eq-probtosample1">
+<span class="eqno">(39.3)<a class="headerlink" href="#equation-eq-probtosample1" title="Permalink to this equation">¶</a></span>\[
+\begin{aligned}
+         w  &amp; + \beta \max_{\textrm{accept, reject}} \left\{ Q (w, \textrm{accept}), Q(w, \textrm{reject}) \right\} - Q (w, \textrm{accept})   = 0  \cr
+         c  &amp; +\beta\int\max_{\text{accept, reject}}\left\{ Q(w', \textrm{accept}),Q\left(w',\text{reject}\right)\right\} dF\left(w'\right) - Q\left(w,\text{reject}\right)  = 0  \cr 
+\end{aligned} 
+\]</div>
+<p>Notice the integral over <span class="math notranslate nohighlight">\(F(w')\)</span> on the second line.</p>
+<p>Erasing the integral sign sets the stage for an illegitmate argument that can get us started thinking about  Q-learning.</p>
+<p>Thus, construct a difference  equation system that keeps the first equation of <a class="reference internal" href="#equation-eq-probtosample1">(39.3)</a>
+but replaces the second by removing integration over <span class="math notranslate nohighlight">\(F (w')\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-probtosample2">
+<span class="eqno">(39.4)<a class="headerlink" href="#equation-eq-probtosample2" title="Permalink to this equation">¶</a></span>\[
+\begin{aligned}
+         w  &amp; + \beta \max_{\textrm{accept, reject}} \left\{ Q (w, \textrm{accept}), Q(w, \textrm{reject}) \right\} - Q (w, \textrm{accept})   = 0  \cr
+         c  &amp; +\beta \max_{\text{accept, reject}}\left\{ Q(w', \textrm{accept}),Q\left(w',\text{reject}\right)\right\}  - Q\left(w,\text{reject}\right)  \approx 0  \cr 
+\end{aligned} 
+\]</div>
+<p>The second equation can’t  hold for all <span class="math notranslate nohighlight">\(w, w'\)</span> pairs in the appropriate Cartesian product of our  state space.</p>
+<p>But maybe an appeal to  a   Law of Large numbers could let  us  hope that it would hold
+<strong>on average</strong> for a long time series sequence of draws of <span class="math notranslate nohighlight">\(w_t, w_{t+1}\)</span> pairs, where
+we are thinking of <span class="math notranslate nohighlight">\(w_t\)</span> as <span class="math notranslate nohighlight">\(w\)</span> and <span class="math notranslate nohighlight">\(w_{t+1}\)</span> as <span class="math notranslate nohighlight">\(w'\)</span>.</p>
+<p>The basic idea of Q-learning is to draw a long sample of wage offers from <span class="math notranslate nohighlight">\(F\)</span> (we know <span class="math notranslate nohighlight">\(F\)</span> though we assume that the worker doesn’t) and iterate on a  recursion
+that maps an estimate <span class="math notranslate nohighlight">\(\hat Q_t\)</span> of a  Q-function at date <span class="math notranslate nohighlight">\(t\)</span> into an improved estimate
+<span class="math notranslate nohighlight">\(\hat Q_{t+1}\)</span> at date
+<span class="math notranslate nohighlight">\(t+1\)</span>.</p>
+<p>To set up such an algorithm, we first define some errors or “differences”</p>
+<div class="math notranslate nohighlight" id="equation-eq-old105">
+<span class="eqno">(39.5)<a class="headerlink" href="#equation-eq-old105" title="Permalink to this equation">¶</a></span>\[
+\begin{aligned}
+         w  &amp; + \beta \max_{\textrm{accept, reject}} \left\{ \hat Q_t (w_t, \textrm{accept}), \hat Q_t(w_t, \textrm{reject}) \right\} - \hat Q_t(w_t, \textrm{accept})   = \textrm{diff}_{\textrm{accept},t}  \cr
+         c  &amp; +\beta\int\max_{\text{accept, reject}}\left\{ \hat Q_t(w_{t+1}, \textrm{accept}),\hat Q_t\left(w_{t+1},\text{reject}\right)\right\}  - \hat Q_t\left(w_t,\text{reject}\right)  = \textrm{diff}_{\textrm{reject},t}  \cr 
+\end{aligned}
+\]</div>
+<p>The adaptive learning scheme would then be some version of</p>
+<div class="math notranslate nohighlight" id="equation-eq-old106">
+<span class="eqno">(39.6)<a class="headerlink" href="#equation-eq-old106" title="Permalink to this equation">¶</a></span>\[
+\hat Q_{t+1} = \hat Q_t + \alpha \ \textrm{diff}_t 
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span> is a small <strong>gain</strong> parameter that governs the rate of learning and  <span class="math notranslate nohighlight">\(\hat Q_t\)</span> and <span class="math notranslate nohighlight">\(\textrm{diff}_t\)</span> are <span class="math notranslate nohighlight">\(2 \times 1\)</span> vectors corresponding
+to  objects in equation system <a class="reference internal" href="#equation-eq-old105">(39.5)</a>.</p>
+<p>This informal argument takes us to the threshold of Q-learning.</p>
+</div>
+<div class="section" id="q-learning">
+<h2><span class="section-number">39.5. </span>Q-Learning<a class="headerlink" href="#q-learning" title="Permalink to this headline">¶</a></h2>
+<p>Let’s first describe  a <span class="math notranslate nohighlight">\(Q\)</span>-learning algorithm precisely.</p>
+<p>Then we’ll  implement it.</p>
+<p>The algorithm works by using a Monte Carlo method to  update estimates of a Q-function.</p>
+<p>We begin with an initial guess for a  Q-function.</p>
+<p>In the example studied in this lecture,  we have a finite action space and also a finite state space.</p>
+<p>That means that we can represent a Q-function as a matrix or Q-table, <span class="math notranslate nohighlight">\(\widetilde{Q}(w,a)\)</span>.</p>
+<p>Q-learning proceeds by updating the Q-function as the decision maker acquires experience along a path of wage draws generated by simulation.</p>
+<p>During the learning process, our McCall worker  takes actions and
+experiences rewards that are consequences of those actions.</p>
+<p>He learns simultaneously about the environment, in this case the distribution of wages, and the reward function,
+in this case the unemployment compensation <span class="math notranslate nohighlight">\(c\)</span> and the present value of wages.</p>
+<p>The updating algorithm is based on a slight modification (to be described soon) of  a  recursion  like</p>
+<div class="math notranslate nohighlight" id="equation-eq-old3">
+<span class="eqno">(39.7)<a class="headerlink" href="#equation-eq-old3" title="Permalink to this equation">¶</a></span>\[
+\widetilde{Q}^{new}\left(w,a\right)=\widetilde{Q}^{old}\left(w,a\right)+\alpha \widetilde{TD}\left(w,a\right) 
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight" id="equation-eq-old4">
+<span class="eqno">(39.8)<a class="headerlink" href="#equation-eq-old4" title="Permalink to this equation">¶</a></span>\[\begin{split}
+\begin{aligned}
+\widetilde{TD}\left(w,\text{accept}\right) &amp; = \left[ w+\beta\max_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w,a'\right) \right]-\widetilde{Q}^{old}\left(w,\text{accept}\right) \\
+\widetilde{TD}\left(w,\text{reject}\right) &amp; = \left[ c+\beta\max_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w',a'\right) \right]-\widetilde{Q}^{old}\left(w,\text{reject}\right),\;w'\sim F
+\end{aligned}
+\end{split}\]</div>
+<p>The terms  <span class="math notranslate nohighlight">\(\widetilde{TD}(w,a) \)</span> for <span class="math notranslate nohighlight">\(a = \left\{\textrm{accept,reject} \right\}\)</span>  are the <strong>temporal difference errors</strong> that drive the updates.</p>
+<p>This system is thus a version of the adaptive system that we sketched informally
+in equation <a class="reference internal" href="#equation-eq-old106">(39.6)</a>.</p>
+<p>An aspect of the algorithm not yet captured by equation system <a class="reference internal" href="#equation-eq-old4">(39.8)</a> is random <strong>experimentation</strong> that
+we add by occasionally randomly replacing</p>
+<div class="math notranslate nohighlight">
+\[ 
+\textrm{argmax}_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w,a'\right)
+\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[ 
+\textrm{argmin}_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w,a'\right)
+\]</div>
+<p>and
+occasionally replacing</p>
+<div class="math notranslate nohighlight">
+\[
+\textrm{argmax}_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w',a'\right)
+\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[
+\textrm{argmin}_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w',a'\right)
+\]</div>
+<p>We activate such experimentation with probability <span class="math notranslate nohighlight">\(\epsilon\)</span> in step 3 of the following
+pseudo-code for   our McCall worker to do Q-learning:</p>
+<ol class="simple">
+<li><p>Set  an arbitrary initial Q-table.</p></li>
+<li><p>Draw an initial wage offer <span class="math notranslate nohighlight">\(w\)</span> from <span class="math notranslate nohighlight">\(F\)</span>.</p></li>
+<li><p>From the appropriate row in the Q-table, choose an action using the following <span class="math notranslate nohighlight">\(\epsilon\)</span>-greedy algorithm:</p>
+<ul class="simple">
+<li><p>with probability <span class="math notranslate nohighlight">\(1-\epsilon\)</span>, choose the action that maximizes the value, and</p></li>
+<li><p>with probability <span class="math notranslate nohighlight">\(\epsilon\)</span>, choose the alternative action.</p></li>
+</ul>
+</li>
+<li><p>Update the state associated with the chosen action and compute <span class="math notranslate nohighlight">\(\widetilde{TD}\)</span> according to <a class="reference internal" href="#equation-eq-old4">(39.8)</a> and update <span class="math notranslate nohighlight">\(\widetilde{Q}\)</span> according to <a class="reference internal" href="#equation-eq-old3">(39.7)</a>.</p></li>
+<li><p>Either draw a new state  <span class="math notranslate nohighlight">\(w'\)</span> if required or else take existing wage if and update the Q-table again again according to <a class="reference internal" href="#equation-eq-old3">(39.7)</a>.</p></li>
+<li><p>Stop when the old and new Q-tables are close enough, i.e., <span class="math notranslate nohighlight">\(\lVert\tilde{Q}^{new}-\tilde{Q}^{old}\rVert_{\infty}\leq\delta\)</span> for given <span class="math notranslate nohighlight">\(\delta\)</span> or if the worker keeps accepting for <span class="math notranslate nohighlight">\(T\)</span> periods for a prescribed <span class="math notranslate nohighlight">\(T\)</span>.</p></li>
+<li><p>Return to step 2 with the updated Q-table.</p></li>
+</ol>
+<p>Repeat this procedure for <span class="math notranslate nohighlight">\(N\)</span> episodes or until the updated Q-table has converged.</p>
+<p>We call one pass through  steps 2 to 7 an “episode” or “epoch”  of temporal difference learning.</p>
+<p>In our context, each episode starts with an agent drawing an initial wage offer, i.e., a new state.</p>
+<p>The agent then takes actions based on the preset Q-table, receives rewards, and then enters a new state implied by this period’s actions.</p>
+<p>The Q-table is updated via temporal difference learning.</p>
+<p>We iterate this until convergence of the Q-table or the maximum length of an episode is reached.</p>
+<p>Multiple episodes allow the agent to start afresh and visit states that she was less likely to visit from the terminal state of a previos episode.</p>
+<p>For example, an agent who has accepted a wage offer based on her Q-table will be less likely to draw a new offer from other parts of the wage distribution.</p>
+<p>By using the <span class="math notranslate nohighlight">\(\epsilon\)</span>-greedy method and also by increasing the number of episodes, the Q-learning algorithm  balances  gains from exploration and from exploitation.</p>
+<p><strong>Remark:</strong> Notice that    <span class="math notranslate nohighlight">\(\widetilde{TD}\)</span> associated with  an optimal Q-table defined in equation (2) automatically above satisfies  <span class="math notranslate nohighlight">\(\widetilde{TD}=0\)</span> for all state action pairs.  Whether a limit of our Q-learning algorithm converges to an optimal Q-table depends on whether the algorithm visits all state, action pairs often enough.</p>
+<p>We implement this pseudo code  in a Python class.</p>
+<p>For simplicity and convenience, we let <code class="docutils literal notranslate"><span class="pre">s</span></code> represent the state index between <span class="math notranslate nohighlight">\(0\)</span> and <span class="math notranslate nohighlight">\(n=50\)</span> and <span class="math notranslate nohighlight">\(w_s=w[s]\)</span>.</p>
+<p>The first column of the Q-table represents the value associated with rejecting the wage and the second represents accepting the wage.</p>
+<p>We use <code class="docutils literal notranslate"><span class="pre">numba</span></code> compilation to accelerate computations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>      <span class="c1"># unemployment compensation</span>
+    <span class="p">(</span><span class="s1">&#39;β&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>      <span class="c1"># discount factor</span>
+    <span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:]),</span>   <span class="c1"># array of wage values, w[i] = wage at state i</span>
+    <span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:]),</span>   <span class="c1"># array of probabilities</span>
+    <span class="p">(</span><span class="s1">&#39;eps&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>      <span class="c1"># for epsilon greedy algorithm</span>
+    <span class="p">(</span><span class="s1">&#39;δ&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>      <span class="c1"># Q-table threshold</span>
+    <span class="p">(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>     <span class="c1"># the learning rate α</span>
+    <span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="n">int64</span><span class="p">),</span>         <span class="c1"># maximum periods of accepting </span>
+    <span class="p">(</span><span class="s1">&#39;noquit&#39;</span><span class="p">,</span> <span class="n">int64</span><span class="p">)</span>         <span class="c1"># whether quit is allowed after accepting the wage offer</span>
+<span class="p">]</span>
+
+<span class="nd">@jitclass</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Qlearning_McCall</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w_default</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="n">q_default</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">noquit</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span> <span class="o">=</span> <span class="n">c</span><span class="p">,</span> <span class="n">β</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">w</span><span class="p">,</span> <span class="n">q</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">δ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="n">eps</span><span class="p">,</span> <span class="n">δ</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">N</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noquit</span> <span class="o">=</span> <span class="n">noquit</span>
+
+
+    <span class="k">def</span> <span class="nf">draw_offer_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Draw a state index from the wage distribution.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">q</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">temp_diff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qtable</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">accept</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the TD associated with state and action.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">c</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span>
+
+        <span class="k">if</span> <span class="n">accept</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">state_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_offer_index</span><span class="p">()</span>
+            <span class="n">TD</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">β</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">qtable</span><span class="p">[</span><span class="n">state_next</span><span class="p">,</span> <span class="p">:])</span> <span class="o">-</span> <span class="n">qtable</span><span class="p">[</span><span class="n">state</span><span class="p">,</span> <span class="n">accept</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state_next</span> <span class="o">=</span> <span class="n">state</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">noquit</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">TD</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">state_next</span><span class="p">]</span> <span class="o">+</span> <span class="n">β</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">qtable</span><span class="p">[</span><span class="n">state_next</span><span class="p">,</span> <span class="p">:])</span> <span class="o">-</span> <span class="n">qtable</span><span class="p">[</span><span class="n">state</span><span class="p">,</span> <span class="n">accept</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">TD</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="n">state_next</span><span class="p">]</span> <span class="o">+</span> <span class="n">β</span><span class="o">*</span><span class="n">qtable</span><span class="p">[</span><span class="n">state_next</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">qtable</span><span class="p">[</span><span class="n">state</span><span class="p">,</span> <span class="n">accept</span><span class="p">]</span>
+        
+        <span class="k">return</span> <span class="n">TD</span><span class="p">,</span> <span class="n">state_next</span>
+    
+    <span class="k">def</span> <span class="nf">run_one_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qtable</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run an &quot;epoch&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">c</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span>
+        <span class="n">eps</span><span class="p">,</span> <span class="n">δ</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">δ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span>
+
+        <span class="n">s0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_offer_index</span><span class="p">()</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s0</span>
+        <span class="n">action_hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">max_length</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_length</span><span class="p">):</span>
+
+            <span class="c1"># choose action</span>
+            <span class="n">accept</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">qtable</span><span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="p">:])</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="o">&lt;=</span><span class="n">eps</span><span class="p">:</span>
+                <span class="n">accept</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">accept</span>
+                
+            <span class="n">action_hist</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">accept</span>
+            
+            <span class="n">TD</span><span class="p">,</span> <span class="n">s_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_diff</span><span class="p">(</span><span class="n">qtable</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">accept</span><span class="p">)</span>
+
+            <span class="c1"># update qtable</span>
+            <span class="n">qtable_new</span> <span class="o">=</span> <span class="n">qtable</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">qtable_new</span><span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">accept</span><span class="p">]</span> <span class="o">=</span> <span class="n">qtable</span><span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">accept</span><span class="p">]</span> <span class="o">+</span> <span class="n">lr</span><span class="o">*</span><span class="n">TD</span>
+
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">qtable_new</span><span class="o">-</span><span class="n">qtable</span><span class="p">))</span><span class="o">&lt;=</span><span class="n">δ</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">action_hist</span><span class="p">[</span><span class="o">-</span><span class="n">N</span><span class="p">:]</span><span class="o">==</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">break</span>
+            
+            <span class="n">s</span><span class="p">,</span> <span class="n">qtable</span> <span class="o">=</span> <span class="n">s_next</span><span class="p">,</span> <span class="n">qtable_new</span>
+
+        <span class="k">return</span> <span class="n">qtable_new</span>
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">run_epochs</span><span class="p">(</span><span class="n">qlmc</span><span class="p">,</span> <span class="n">qtable</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run epochs N times with qtable from the last iteration each time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="n">qlmc</span><span class="o">.</span><span class="n">N</span>
+
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span><span class="o">%</span><span class="p">(</span><span class="n">N</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Progress: EPOCHs = </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">new_qtable</span> <span class="o">=</span> <span class="n">qlmc</span><span class="o">.</span><span class="n">run_one_epoch</span><span class="p">(</span><span class="n">qtable</span><span class="p">)</span>
+        <span class="n">qtable</span> <span class="o">=</span> <span class="n">new_qtable</span>
+    
+    <span class="k">return</span> <span class="n">qtable</span>
+
+<span class="k">def</span> <span class="nf">valfunc_from_qtable</span><span class="p">(</span><span class="n">qtable</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">qtable</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">compute_error</span><span class="p">(</span><span class="n">valfunc</span><span class="p">,</span> <span class="n">valfunc_VFI</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">valfunc</span><span class="o">-</span><span class="n">valfunc_VFI</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set num of epochs N</span>
+<span class="n">qlmc</span> <span class="o">=</span> <span class="n">Qlearning_McCall</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">20000</span><span class="p">)</span>
+
+<span class="c1"># run</span>
+<span class="n">qtable0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">w_default</span><span class="p">),</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">qtable</span> <span class="o">=</span> <span class="n">run_epochs</span><span class="p">(</span><span class="n">qlmc</span><span class="p">,</span> <span class="n">qtable0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 0
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 2000
+Progress: EPOCHs = 4000
+Progress: EPOCHs = 6000
+Progress: EPOCHs = 8000
+Progress: EPOCHs = 10000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 12000
+Progress: EPOCHs = 14000
+Progress: EPOCHs = 16000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 18000
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">qtable</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[5218.56086204    0.        ]
+ [5361.54830836 5226.53022831]
+ [5258.40187714 5269.28977692]
+ [5490.59101968 5328.62908869]
+ [5300.98694142 5221.84842333]
+ [5259.33299971 5244.17953786]
+ [5296.04692008 5225.59635377]
+ [5267.80295915 5144.87554764]
+ [5381.97351073 5253.1268256 ]
+ [5311.40848282 5500.00062173]
+ [5419.46121846 6000.        ]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># inspect value function</span>
+<span class="n">valfunc_qlr</span> <span class="o">=</span> <span class="n">valfunc_from_qtable</span><span class="p">(</span><span class="n">qtable</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">valfunc_qlr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[5218.56086204 5361.54830836 5269.28977692 5490.59101968 5300.98694142
+ 5259.33299971 5296.04692008 5267.80295915 5381.97351073 5500.00062173
+ 6000.        ]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_default</span><span class="p">,</span> <span class="n">valfunc_VFI</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;VFI&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_default</span><span class="p">,</span> <span class="n">valfunc_qlr</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;QL&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;wages&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;optimal value&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/mccall_q_18_0.png" src="_images/mccall_q_18_0.png" />
+</div>
+</div>
+<p>Now, let us compute the case with a larger state space: <span class="math notranslate nohighlight">\(n=20\)</span> instead of <span class="math notranslate nohighlight">\(n=10\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">100</span>                        <span class="c1"># default parameters</span>
+<span class="n">q_new</span> <span class="o">=</span> <span class="n">BetaBinomial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">pdf</span><span class="p">()</span>       <span class="c1"># default choice of q</span>
+
+<span class="n">w_min</span><span class="p">,</span> <span class="n">w_max</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">60</span>
+<span class="n">w_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">w_min</span><span class="p">,</span> <span class="n">w_max</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="c1"># plot distribution of wage offer</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_new</span><span class="p">,</span> <span class="n">q_new</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$q(w(i))$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;wages&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probabilities&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># VFI</span>
+<span class="n">mcm</span> <span class="o">=</span> <span class="n">McCallModel</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="n">w_new</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="n">q_new</span><span class="p">)</span>
+<span class="n">valfunc_VFI</span><span class="p">,</span> <span class="n">flag</span> <span class="o">=</span> <span class="n">mcm</span><span class="o">.</span><span class="n">VFI</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/mccall_q_20_0.png" src="_images/mccall_q_20_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mcm</span> <span class="o">=</span> <span class="n">McCallModel</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="n">w_new</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="n">q_new</span><span class="p">)</span>
+<span class="n">valfunc_VFI</span><span class="p">,</span> <span class="n">flag</span> <span class="o">=</span> <span class="n">mcm</span><span class="o">.</span><span class="n">VFI</span><span class="p">()</span>
+<span class="n">valfunc_VFI</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([4859.77015703, 4859.77015703, 4859.77015703, 4859.77015703,
+       4859.77015703, 4859.77015703, 4859.77015703, 4859.77015703,
+       4859.77015703, 4859.77015703, 4859.77015703, 4859.77015703,
+       4859.77015703, 4859.77015703, 4859.77015703, 4859.77015703,
+       4859.77015703, 4859.77015703, 4859.77015703, 4859.77015703,
+       4859.77015703, 4859.77015703, 4859.77015703, 4859.77015703,
+       5000.        , 5166.66666667, 5333.33333333, 5500.        ,
+       5666.66666667, 5833.33333333, 6000.        ])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_epochs</span><span class="p">(</span><span class="n">ns_to_plot</span><span class="p">,</span> <span class="n">noquit</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="s2">&quot;Plot value function implied by outcomes of an increasing number of epochs.&quot;</span>
+    <span class="n">qlmc_new</span> <span class="o">=</span> <span class="n">Qlearning_McCall</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w_new</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="n">q_new</span><span class="p">,</span> <span class="n">noquit</span><span class="o">=</span><span class="n">noquit</span><span class="p">)</span>
+    <span class="n">qtable</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">w_new</span><span class="p">),</span><span class="mi">2</span><span class="p">))</span>
+
+    <span class="c1"># plot</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_new</span><span class="p">,</span> <span class="n">valfunc_VFI</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;VFI&#39;</span><span class="p">)</span>
+
+    <span class="c1"># iterate on epoch numbers</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ns_to_plot</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span><span class="o">%</span><span class="p">(</span><span class="n">ns_to_plot</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Progress: EPOCHs = </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ns_to_plot</span><span class="p">:</span>
+            <span class="n">valfunc_qlr</span> <span class="o">=</span> <span class="n">valfunc_from_qtable</span><span class="p">(</span><span class="n">qtable</span><span class="p">)</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">compute_error</span><span class="p">(</span><span class="n">valfunc_qlr</span><span class="p">,</span> <span class="n">valfunc_VFI</span><span class="p">)</span>
+            
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_new</span><span class="p">,</span> <span class="n">valfunc_qlr</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;QL:epochs=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">, mean error=</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+        <span class="n">new_qtable</span> <span class="o">=</span> <span class="n">qlmc_new</span><span class="o">.</span><span class="n">run_one_epoch</span><span class="p">(</span><span class="n">qtable</span><span class="p">)</span>
+        <span class="n">qtable</span> <span class="o">=</span> <span class="n">new_qtable</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;wages&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;optimal value&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_epochs</span><span class="p">(</span><span class="n">ns_to_plot</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">,</span> <span class="mi">200000</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 0
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 20000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 40000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 60000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 80000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 100000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 120000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 140000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 160000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 180000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 200000
+</pre></div>
+</div>
+<img alt="_images/mccall_q_23_11.png" src="_images/mccall_q_23_11.png" />
+</div>
+</div>
+<p>The above graphs indicates that</p>
+<ul class="simple">
+<li><p>the Q-learning algorithm has trouble  learning  the Q-table well for wages that are rarely drawn</p></li>
+<li><p>the quality of approximation to the “true” value function computed by value function iteration improves for longer epochs</p></li>
+</ul>
+</div>
+<div class="section" id="employed-worker-cant-quit">
+<h2><span class="section-number">39.6. </span>Employed Worker Can’t Quit<a class="headerlink" href="#employed-worker-cant-quit" title="Permalink to this headline">¶</a></h2>
+<p>The preceding version of temporal difference Q-learning described in  equation system  (4) lets an an employed  worker quit, i.e., reject her wage as an incumbent and instead accept receive unemployment compensation this period
+and draw a new offer next period.</p>
+<p>This is an option that the McCall worker described in <a class="reference internal" href="mccall_model.html"><span class="doc">this quantecon lecture</span></a> would not take.</p>
+<p>See <span id="id2">[<a class="reference internal" href="zreferences.html#id183" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, chapter 7 on search, for a proof.</p>
+<p>But in the context of Q-learning, giving the worker the option to quit and get unemployment compensation while
+unemployed turns out to accelerate the learning process by promoting experimentation vis a vis premature
+exploitation only.</p>
+<p>To illustrate this, we’ll amend our formulas for temporal differences to forbid an employed worker from quitting a job she had accepted earlier.</p>
+<p>With this understanding about available choices, we obtain the following temporal difference values:</p>
+<div class="math notranslate nohighlight" id="equation-eq-temp-diff">
+<span class="eqno">(39.9)<a class="headerlink" href="#equation-eq-temp-diff" title="Permalink to this equation">¶</a></span>\[\begin{split}
+\begin{aligned}
+\widetilde{TD}\left(w,\text{accept}\right) &amp; = \left[ w+\beta\widetilde{Q}^{old}\left(w,\text{accept}\right) \right]-\widetilde{Q}^{old}\left(w,\text{accept}\right) \\
+\widetilde{TD}\left(w,\text{reject}\right) &amp; = \left[ c+\beta\max_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w',a'\right) \right]-\widetilde{Q}^{old}\left(w,\text{reject}\right),\;w'\sim F
+\end{aligned}
+\end{split}\]</div>
+<p>It turns out that formulas <a class="reference internal" href="#equation-eq-temp-diff">(39.9)</a> combined with our Q-learning recursion (3) can lead our agent to eventually learn the optimal value function as well as in the case where an option to redraw can be exercised.</p>
+<p>But learning is slower because  an agent who ends up accepting a wage offer prematurally loses the option to explore new states in the same episode and to adjust the value associated with that state.</p>
+<p>This can leads to inferior outcomes when the number of epochs/episods is low.</p>
+<p>But if we increase the numb</p>
+<p>We illustrate these possibilities with the following code and graph.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_epochs</span><span class="p">(</span><span class="n">ns_to_plot</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">,</span> <span class="mi">200000</span><span class="p">],</span> <span class="n">noquit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 0
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 20000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 40000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 60000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 80000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 100000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 120000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 140000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 160000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 180000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 200000
+</pre></div>
+</div>
+<img alt="_images/mccall_q_25_11.png" src="_images/mccall_q_25_11.png" />
+</div>
+</div>
+</div>
+<div class="section" id="possible-extensions">
+<h2><span class="section-number">39.7. </span>Possible Extensions<a class="headerlink" href="#possible-extensions" title="Permalink to this headline">¶</a></h2>
+<p>To extend the algorthm to handle problems with continuous state spaces,
+a typical approach is to restrict Q-functions and policy functions to take particular
+functional forms.</p>
+<p>This is the approach in <strong>deep Q-learning</strong> where the idea is to use a multilayer neural
+network as a good function approximator.</p>
+<p>We will take up this topic in a subsequent quantecon lecture.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   2. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   3. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   4. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   6. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   7. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   8. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Elementary Statistics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_matrix.html">
+   9. Elementary Probability with Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   10. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   11. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   12. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   13. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   14. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   15. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   16. Fault Tree Uncertainties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   17. Introduction to Artificial Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rand_resp.html">
+   18. Randomized Response Surveys
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="util_rand_resp.html">
+   19. Expected Utilities of Random Responses
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lp_intro.html">
+   20. Linear Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   21. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   22. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   23. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   24. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   25. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   26. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   27. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   28. Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   29. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   30. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   31. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   32. Shortest Paths
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   33. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   34. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   35. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   36. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   37. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   38. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   39. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Consumption, Savings and Capital
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   40. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   41. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   42. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   43. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   45. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   46. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   47. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   48. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   50. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   51. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   52. Forecasting  an AR(1) process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   53. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   54. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   55. Computing Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   56. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   57. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   58. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mix_model.html">
+   59. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   60. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   61. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   62. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   63. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   64. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   65. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   66. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   67. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   68. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   69. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   70. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   71. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   72. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   73. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   74. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   75. Competitive Equilibria with Arrow Securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   76. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   77. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   78. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   79. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   80. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   81. Multiple Good Allocation Mechanisms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   82. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   83. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   84. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/mccall_q.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/mccall_q.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/mccall_q.ipynb">BinderHub</option>
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/mccall_q.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/mccall_q.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/mccall_q.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "mccall_q";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/mccall_q.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-54984338-10', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </body>
+</html>

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>47. The Income Fluctuation Problem I: Basic Model &#8212; Quantitative Economics with Python</title>
+    <title>48. The Income Fluctuation Problem I: Basic Model &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -101,8 +101,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="48. The Income Fluctuation Problem II: Stochastic Returns on Assets" href="ifp_advanced.html" />
-    <link rel="prev" title="46. Optimal Growth IV: The Endogenous Grid Method" href="egm_policy_iter.html" />
+    <link rel="next" title="49. The Income Fluctuation Problem II: Stochastic Returns on Assets" href="ifp_advanced.html" />
+    <link rel="prev" title="47. Optimal Growth IV: The Endogenous Grid Method" href="egm_policy_iter.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -152,70 +152,70 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   47.1. Overview
+   48.1. Overview
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#references">
-     47.1.1. References
+     48.1.1. References
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-optimal-savings-problem">
-   47.2. The Optimal Savings Problem
+   48.2. The Optimal Savings Problem
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#set-up">
-     47.2.1. Set-Up
+     48.2.1. Set-Up
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#value-function-and-euler-equation">
-     47.2.2. Value Function and Euler Equation
+     48.2.2. Value Function and Euler Equation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#optimality-results">
-     47.2.3. Optimality Results
+     48.2.3. Optimality Results
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#computation">
-   47.3. Computation
+   48.3. Computation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#time-iteration">
-     47.3.1. Time Iteration
+     48.3.1. Time Iteration
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#some-technical-details">
-     47.3.2. Some Technical Details
+     48.3.2. Some Technical Details
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#implementation">
-   47.4. Implementation
+   48.4. Implementation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#a-sanity-check">
-     47.4.1. A Sanity Check
+     48.4.1. A Sanity Check
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   47.5. Exercises
+   48.5. Exercises
   </a>
  </li>
 </ul>
@@ -268,7 +268,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="tex2jax_ignore mathjax_ignore section" id="the-income-fluctuation-problem-i-basic-model">
-<h1><a class="toc-backref" href="#id16"><span class="section-number">47. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem I: Basic Model</a><a class="headerlink" href="#the-income-fluctuation-problem-i-basic-model" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id16"><span class="section-number">48. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem I: Basic Model</a><a class="headerlink" href="#the-income-fluctuation-problem-i-basic-model" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -294,18 +294,16 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
 Requirement already satisfied: numpy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: scipy&gt;=1.0.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
+Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
 Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
 Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: scipy&gt;=1.0.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
 Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
 Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
 Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
 Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -314,13 +312,15 @@ Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lectu
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (2.2.4)
-Requirement already satisfied: numba&gt;=0.47 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.56.4)
 Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.23.5)
-Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (21.3)
-Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.5.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (21.3)
 Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.9.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
+Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.5.2)
+Requirement already satisfied: numba&gt;=0.47 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.56.4)
 Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (63.4.1)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
 Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
 </pre></div>
 </div>
@@ -331,12 +331,12 @@ Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /__w/lecture-pytho
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">47.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>In this lecture, we study an optimal savings problem for an infinitely lived consumer—the “common ancestor” described in <span id="id1">[<a class="reference internal" href="zreferences.html#id182" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 1.3.</p>
+<h2><a class="toc-backref" href="#id17"><span class="section-number">48.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>In this lecture, we study an optimal savings problem for an infinitely lived consumer—the “common ancestor” described in <span id="id1">[<a class="reference internal" href="zreferences.html#id183" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 1.3.</p>
 <p>This is an essential sub-problem for many representative macroeconomic models</p>
 <ul class="simple">
-<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id137" title="S Rao Aiyagari. Uninsured Idiosyncratic Risk and Aggregate Saving. The Quarterly Journal of Economics, 109(3):659–684, 1994.">Aiy94</a>]</span></p></li>
-<li><p><span id="id3">[<a class="reference internal" href="zreferences.html#id172" title="Mark Huggett. The risk-free rate in heterogeneous-agent incomplete-insurance economies. Journal of Economic Dynamics and Control, 17(5-6):953–969, 1993.">Hug93</a>]</span></p></li>
+<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id138" title="S Rao Aiyagari. Uninsured Idiosyncratic Risk and Aggregate Saving. The Quarterly Journal of Economics, 109(3):659–684, 1994.">Aiy94</a>]</span></p></li>
+<li><p><span id="id3">[<a class="reference internal" href="zreferences.html#id173" title="Mark Huggett. The risk-free rate in heterogeneous-agent incomplete-insurance economies. Journal of Economic Dynamics and Control, 17(5-6):953–969, 1993.">Hug93</a>]</span></p></li>
 <li><p>etc.</p></li>
 </ul>
 <p>It is related to the decision problem in the <a class="reference internal" href="optgrowth.html"><span class="doc">stochastic optimal growth model</span></a> and yet differs in important ways.</p>
@@ -364,18 +364,18 @@ the <a class="reference internal" href="optgrowth.html"><span class="doc">stocha
 </div>
 </div>
 <div class="section" id="references">
-<h3><span class="section-number">47.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
-<p>Our presentation is a simplified version of <span id="id4">[<a class="reference internal" href="zreferences.html#id252" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span>.</p>
-<p>Other references include <span id="id5">[<a class="reference internal" href="zreferences.html#id153" title="Angus Deaton. Saving and Liquidity Constraints. Econometrica, 59(5):1221–1248, 1991.">Dea91</a>]</span>, <span id="id6">[<a class="reference internal" href="zreferences.html#id155" title="Wouter J Den Haan. Comparison of solutions to the incomplete markets model with aggregate uncertainty. Journal of Economic Dynamics and Control, 34(1):4–27, 2010.">DH10</a>]</span>,
-<span id="id7">[<a class="reference internal" href="zreferences.html#id178" title="Moritz Kuhn. Recursive Equilibria In An Aiyagari-Style Economy With Permanent Income Shocks. International Economic Review, 54:807–835, 2013.">Kuh13</a>]</span>, <span id="id8">[<a class="reference internal" href="zreferences.html#id202" title="Guillaume Rabault. When do borrowing constraints bind? Some new results on the income fluctuation problem. Journal of Economic Dynamics and Control, 26(2):217–245, 2002.">Rab02</a>]</span>,  <span id="id9">[<a class="reference internal" href="zreferences.html#id204" title="Michael Reiter. Solving heterogeneous-agent models by projection and perturbation. Journal of Economic Dynamics and Control, 33(3):649–665, 2009.">Rei09</a>]</span>  and
-<span id="id10">[<a class="reference internal" href="zreferences.html#id207" title="Jack Schechtman and Vera L S Escudero. Some results on an income fluctuation problem. Journal of Economic Theory, 16(2):151–166, 1977.">SE77</a>]</span>.</p>
+<h3><span class="section-number">48.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<p>Our presentation is a simplified version of <span id="id4">[<a class="reference internal" href="zreferences.html#id253" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span>.</p>
+<p>Other references include <span id="id5">[<a class="reference internal" href="zreferences.html#id154" title="Angus Deaton. Saving and Liquidity Constraints. Econometrica, 59(5):1221–1248, 1991.">Dea91</a>]</span>, <span id="id6">[<a class="reference internal" href="zreferences.html#id156" title="Wouter J Den Haan. Comparison of solutions to the incomplete markets model with aggregate uncertainty. Journal of Economic Dynamics and Control, 34(1):4–27, 2010.">DH10</a>]</span>,
+<span id="id7">[<a class="reference internal" href="zreferences.html#id179" title="Moritz Kuhn. Recursive Equilibria In An Aiyagari-Style Economy With Permanent Income Shocks. International Economic Review, 54:807–835, 2013.">Kuh13</a>]</span>, <span id="id8">[<a class="reference internal" href="zreferences.html#id203" title="Guillaume Rabault. When do borrowing constraints bind? Some new results on the income fluctuation problem. Journal of Economic Dynamics and Control, 26(2):217–245, 2002.">Rab02</a>]</span>,  <span id="id9">[<a class="reference internal" href="zreferences.html#id205" title="Michael Reiter. Solving heterogeneous-agent models by projection and perturbation. Journal of Economic Dynamics and Control, 33(3):649–665, 2009.">Rei09</a>]</span>  and
+<span id="id10">[<a class="reference internal" href="zreferences.html#id208" title="Jack Schechtman and Vera L S Escudero. Some results on an income fluctuation problem. Journal of Economic Theory, 16(2):151–166, 1977.">SE77</a>]</span>.</p>
 </div>
 </div>
 <div class="section" id="the-optimal-savings-problem">
-<h2><a class="toc-backref" href="#id18"><span class="section-number">47.2. </span>The Optimal Savings Problem</a><a class="headerlink" href="#the-optimal-savings-problem" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id18"><span class="section-number">48.2. </span>The Optimal Savings Problem</a><a class="headerlink" href="#the-optimal-savings-problem" title="Permalink to this headline">¶</a></h2>
 <p id="index-1">Let’s write down the model and then discuss how to solve it.</p>
 <div class="section" id="set-up">
-<h3><span class="section-number">47.2.1. </span>Set-Up<a class="headerlink" href="#set-up" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">48.2.1. </span>Set-Up<a class="headerlink" href="#set-up" title="Permalink to this headline">¶</a></h3>
 <p>Consider a household that chooses a state-contingent consumption plan <span class="math notranslate nohighlight">\(\{c_t\}_{t \geq 0}\)</span> to maximize</p>
 <div class="math notranslate nohighlight">
 \[
@@ -383,7 +383,7 @@ the <a class="reference internal" href="optgrowth.html"><span class="doc">stocha
 \]</div>
 <p>subject to</p>
 <div class="math notranslate nohighlight" id="equation-eqst">
-<span class="eqno">(47.1)<a class="headerlink" href="#equation-eqst" title="Permalink to this equation">¶</a></span>\[a_{t+1} \leq  R(a_t - c_t)  + Y_{t+1},
+<span class="eqno">(48.1)<a class="headerlink" href="#equation-eqst" title="Permalink to this equation">¶</a></span>\[a_{t+1} \leq  R(a_t - c_t)  + Y_{t+1},
 \quad c_t \geq 0,
 \quad a_t \geq 0
 \quad t = 0, 1, \ldots\]</div>
@@ -419,7 +419,7 @@ Markov chain taking values in <span class="math notranslate nohighlight">\(\math
 sequence <span class="math notranslate nohighlight">\(\{c_t\}\)</span> such that <span class="math notranslate nohighlight">\(\{c_t\}\)</span> and its induced asset path <span class="math notranslate nohighlight">\(\{a_t\}\)</span> satisfy</p>
 <ol class="simple">
 <li><p><span class="math notranslate nohighlight">\((a_0, z_0) = (a, z)\)</span></p></li>
-<li><p>the feasibility constraints in <a class="reference internal" href="#equation-eqst">(47.1)</a>, and</p></li>
+<li><p>the feasibility constraints in <a class="reference internal" href="#equation-eqst">(48.1)</a>, and</p></li>
 <li><p>measurability, which means that <span class="math notranslate nohighlight">\(c_t\)</span> is a function of random
 outcomes up to date <span class="math notranslate nohighlight">\(t\)</span> but not after.</p></li>
 </ol>
@@ -430,22 +430,22 @@ be contingent only on the current state.</p>
 <p>Optimality is defined below.</p>
 </div>
 <div class="section" id="value-function-and-euler-equation">
-<h3><span class="section-number">47.2.2. </span>Value Function and Euler Equation<a class="headerlink" href="#value-function-and-euler-equation" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">48.2.2. </span>Value Function and Euler Equation<a class="headerlink" href="#value-function-and-euler-equation" title="Permalink to this headline">¶</a></h3>
 <p>The <em>value function</em> <span class="math notranslate nohighlight">\(V \colon \mathsf S \to \mathbb{R}\)</span> is defined by</p>
 <div class="math notranslate nohighlight" id="equation-eqvf">
-<span class="eqno">(47.2)<a class="headerlink" href="#equation-eqvf" title="Permalink to this equation">¶</a></span>\[V(a, z) := \max \, \mathbb{E}
+<span class="eqno">(48.2)<a class="headerlink" href="#equation-eqvf" title="Permalink to this equation">¶</a></span>\[V(a, z) := \max \, \mathbb{E}
 \left\{
 \sum_{t=0}^{\infty} \beta^t u(c_t)
 \right\}\]</div>
 <p>where the maximization is overall feasible consumption paths from <span class="math notranslate nohighlight">\((a,z)\)</span>.</p>
-<p>An <em>optimal consumption path</em> from <span class="math notranslate nohighlight">\((a,z)\)</span> is a feasible consumption path from <span class="math notranslate nohighlight">\((a,z)\)</span> that attains the supremum in <a class="reference internal" href="#equation-eqvf">(47.2)</a>.</p>
+<p>An <em>optimal consumption path</em> from <span class="math notranslate nohighlight">\((a,z)\)</span> is a feasible consumption path from <span class="math notranslate nohighlight">\((a,z)\)</span> that attains the supremum in <a class="reference internal" href="#equation-eqvf">(48.2)</a>.</p>
 <p>To pin down such paths we can use a version of the Euler equation, which in the present setting is</p>
 <div class="math notranslate nohighlight" id="equation-ee00">
-<span class="eqno">(47.3)<a class="headerlink" href="#equation-ee00" title="Permalink to this equation">¶</a></span>\[u' (c_t)
+<span class="eqno">(48.3)<a class="headerlink" href="#equation-ee00" title="Permalink to this equation">¶</a></span>\[u' (c_t)
 \geq \beta R \,  \mathbb{E}_t  u'(c_{t+1})\]</div>
 <p>and</p>
 <div class="math notranslate nohighlight" id="equation-ee01">
-<span class="eqno">(47.4)<a class="headerlink" href="#equation-ee01" title="Permalink to this equation">¶</a></span>\[c_t &lt; a_t
+<span class="eqno">(48.4)<a class="headerlink" href="#equation-ee01" title="Permalink to this equation">¶</a></span>\[c_t &lt; a_t
 \; \implies \;
 u' (c_t) = \beta R \,  \mathbb{E}_t  u'(c_{t+1})\]</div>
 <p>When <span class="math notranslate nohighlight">\(c_t = a_t\)</span> we obviously have <span class="math notranslate nohighlight">\(u'(c_t) = u'(a_t)\)</span>,</p>
@@ -454,24 +454,24 @@ strict inequality <span class="math notranslate nohighlight">\(u' (c_t) &gt; \be
 can occur because <span class="math notranslate nohighlight">\(c_t\)</span> cannot increase sufficiently to attain equality.</p>
 <p>(The lower boundary case <span class="math notranslate nohighlight">\(c_t = 0\)</span> never arises at the optimum because
 <span class="math notranslate nohighlight">\(u'(0) = \infty\)</span>.)</p>
-<p>With some thought, one can show that <a class="reference internal" href="#equation-ee00">(47.3)</a> and <a class="reference internal" href="#equation-ee01">(47.4)</a> are
+<p>With some thought, one can show that <a class="reference internal" href="#equation-ee00">(48.3)</a> and <a class="reference internal" href="#equation-ee01">(48.4)</a> are
 equivalent to</p>
 <div class="math notranslate nohighlight" id="equation-eqeul0">
-<span class="eqno">(47.5)<a class="headerlink" href="#equation-eqeul0" title="Permalink to this equation">¶</a></span>\[u' (c_t)
+<span class="eqno">(48.5)<a class="headerlink" href="#equation-eqeul0" title="Permalink to this equation">¶</a></span>\[u' (c_t)
 = \max \left\{
     \beta R \,  \mathbb{E}_t  u'(c_{t+1})  \,,\;  u'(a_t)
 \right\}\]</div>
 </div>
 <div class="section" id="optimality-results">
-<h3><span class="section-number">47.2.3. </span>Optimality Results<a class="headerlink" href="#optimality-results" title="Permalink to this headline">¶</a></h3>
-<p>As shown in <span id="id11">[<a class="reference internal" href="zreferences.html#id252" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span>,</p>
+<h3><span class="section-number">48.2.3. </span>Optimality Results<a class="headerlink" href="#optimality-results" title="Permalink to this headline">¶</a></h3>
+<p>As shown in <span id="id11">[<a class="reference internal" href="zreferences.html#id253" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span>,</p>
 <ol class="simple">
 <li><p>For each <span class="math notranslate nohighlight">\((a,z) \in \mathsf S\)</span>, a unique optimal consumption path from <span class="math notranslate nohighlight">\((a,z)\)</span> exists</p></li>
 <li><p>This path is the unique feasible path from <span class="math notranslate nohighlight">\((a,z)\)</span> satisfying the
-Euler equality <a class="reference internal" href="#equation-eqeul0">(47.5)</a> and the transversality condition</p></li>
+Euler equality <a class="reference internal" href="#equation-eqeul0">(48.5)</a> and the transversality condition</p></li>
 </ol>
 <div class="math notranslate nohighlight" id="equation-eqtv">
-<span class="eqno">(47.6)<a class="headerlink" href="#equation-eqtv" title="Permalink to this equation">¶</a></span>\[\lim_{t \to \infty} \beta^t \, \mathbb{E} \, [ u'(c_t) a_{t+1} ] = 0\]</div>
+<span class="eqno">(48.6)<a class="headerlink" href="#equation-eqtv" title="Permalink to this equation">¶</a></span>\[\lim_{t \to \infty} \beta^t \, \mathbb{E} \, [ u'(c_t) a_{t+1} ] = 0\]</div>
 <p>Moreover, there exists an <em>optimal consumption function</em>
 <span class="math notranslate nohighlight">\(\sigma^* \colon \mathsf S \to \mathbb R_+\)</span> such that the path
 from <span class="math notranslate nohighlight">\((a,z)\)</span> generated by</p>
@@ -483,13 +483,13 @@ c_t = \sigma^*(a_t, Z_t)
 \quad \text{and} \quad
 a_{t+1} = R (a_t - c_t) + Y_{t+1}
 \]</div>
-<p>satisfies both <a class="reference internal" href="#equation-eqeul0">(47.5)</a> and <a class="reference internal" href="#equation-eqtv">(47.6)</a>, and hence is the unique optimal
+<p>satisfies both <a class="reference internal" href="#equation-eqeul0">(48.5)</a> and <a class="reference internal" href="#equation-eqtv">(48.6)</a>, and hence is the unique optimal
 path from <span class="math notranslate nohighlight">\((a,z)\)</span>.</p>
 <p>Thus, to solve the optimization problem, we need to compute the policy <span class="math notranslate nohighlight">\(\sigma^*\)</span>.</p>
 </div>
 </div>
 <div class="section" id="computation">
-<span id="ifp-computation"></span><h2><a class="toc-backref" href="#id19"><span class="section-number">47.3. </span>Computation</a><a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h2>
+<span id="ifp-computation"></span><h2><a class="toc-backref" href="#id19"><span class="section-number">48.3. </span>Computation</a><a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h2>
 <p id="index-2">There are two standard ways to solve for <span class="math notranslate nohighlight">\(\sigma^*\)</span></p>
 <ol class="simple">
 <li><p>time iteration using the Euler equality and</p></li>
@@ -499,12 +499,12 @@ path from <span class="math notranslate nohighlight">\((a,z)\)</span>.</p>
 model suggests that time iteration will be faster and more accurate.</p>
 <p>This is the approach that we apply below.</p>
 <div class="section" id="time-iteration">
-<h3><span class="section-number">47.3.1. </span>Time Iteration<a class="headerlink" href="#time-iteration" title="Permalink to this headline">¶</a></h3>
-<p>We can rewrite <a class="reference internal" href="#equation-eqeul0">(47.5)</a> to make it a statement about functions rather than
+<h3><span class="section-number">48.3.1. </span>Time Iteration<a class="headerlink" href="#time-iteration" title="Permalink to this headline">¶</a></h3>
+<p>We can rewrite <a class="reference internal" href="#equation-eqeul0">(48.5)</a> to make it a statement about functions rather than
 random variables.</p>
 <p>In particular, consider the functional equation</p>
 <div class="math notranslate nohighlight" id="equation-eqeul1">
-<span class="eqno">(47.7)<a class="headerlink" href="#equation-eqeul1" title="Permalink to this equation">¶</a></span>\[(u' \circ \sigma)  (a, z)
+<span class="eqno">(48.7)<a class="headerlink" href="#equation-eqeul1" title="Permalink to this equation">¶</a></span>\[(u' \circ \sigma)  (a, z)
 = \max \left\{
 \beta R \, \mathbb E_z (u' \circ \sigma)
     [R (a - \sigma(a, z)) + \hat Y, \, \hat Z]
@@ -525,14 +525,14 @@ is likely to have, in order to restrict the search space and ensure that
 iteration is well behaved.</p>
 <p>To this end, let <span class="math notranslate nohighlight">\(\mathscr C\)</span> be the space of continuous functions <span class="math notranslate nohighlight">\(\sigma \colon \mathbf S \to \mathbb R\)</span> such that <span class="math notranslate nohighlight">\(\sigma\)</span> is increasing in the first argument, <span class="math notranslate nohighlight">\(0 &lt; \sigma(a,z) \leq a\)</span> for all <span class="math notranslate nohighlight">\((a,z) \in \mathbf S\)</span>, and</p>
 <div class="math notranslate nohighlight" id="equation-ifpc4">
-<span class="eqno">(47.8)<a class="headerlink" href="#equation-ifpc4" title="Permalink to this equation">¶</a></span>\[\sup_{(a,z) \in \mathbf S}
+<span class="eqno">(48.8)<a class="headerlink" href="#equation-ifpc4" title="Permalink to this equation">¶</a></span>\[\sup_{(a,z) \in \mathbf S}
 \left| (u' \circ \sigma)(a,z) - u'(a) \right| &lt; \infty\]</div>
 <p>This will be our candidate class.</p>
 <p>In addition, let <span class="math notranslate nohighlight">\(K \colon \mathscr{C} \to \mathscr{C}\)</span> be defined as
 follows.</p>
 <p>For given <span class="math notranslate nohighlight">\(\sigma \in \mathscr{C}\)</span>, the value <span class="math notranslate nohighlight">\(K \sigma (a,z)\)</span> is the unique <span class="math notranslate nohighlight">\(c \in [0, a]\)</span> that solves</p>
 <div class="math notranslate nohighlight" id="equation-eqsifc">
-<span class="eqno">(47.9)<a class="headerlink" href="#equation-eqsifc" title="Permalink to this equation">¶</a></span>\[u'(c)
+<span class="eqno">(48.9)<a class="headerlink" href="#equation-eqsifc" title="Permalink to this equation">¶</a></span>\[u'(c)
 = \max \left\{
            \beta R \, \mathbb E_z (u' \circ \sigma) \,
            [R (a - c) + \hat Y, \, \hat Z]
@@ -541,16 +541,16 @@ follows.</p>
      \right\}\]</div>
 <p>We refer to <span class="math notranslate nohighlight">\(K\)</span> as the Coleman–Reffett operator.</p>
 <p>The operator <span class="math notranslate nohighlight">\(K\)</span> is constructed so that fixed points of <span class="math notranslate nohighlight">\(K\)</span>
-coincide with solutions to the functional equation <a class="reference internal" href="#equation-eqeul1">(47.7)</a>.</p>
-<p>It is shown in <span id="id12">[<a class="reference internal" href="zreferences.html#id252" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span> that the unique optimal policy can be
+coincide with solutions to the functional equation <a class="reference internal" href="#equation-eqeul1">(48.7)</a>.</p>
+<p>It is shown in <span id="id12">[<a class="reference internal" href="zreferences.html#id253" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span> that the unique optimal policy can be
 computed by picking any <span class="math notranslate nohighlight">\(\sigma \in \mathscr{C}\)</span> and iterating with the
-operator <span class="math notranslate nohighlight">\(K\)</span> defined in <a class="reference internal" href="#equation-eqsifc">(47.9)</a>.</p>
+operator <span class="math notranslate nohighlight">\(K\)</span> defined in <a class="reference internal" href="#equation-eqsifc">(48.9)</a>.</p>
 </div>
 <div class="section" id="some-technical-details">
-<h3><span class="section-number">47.3.2. </span>Some Technical Details<a class="headerlink" href="#some-technical-details" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">48.3.2. </span>Some Technical Details<a class="headerlink" href="#some-technical-details" title="Permalink to this headline">¶</a></h3>
 <p>The proof of the last statement is somewhat technical but here is a quick
 summary:</p>
-<p>It is shown in <span id="id13">[<a class="reference internal" href="zreferences.html#id252" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span> that <span class="math notranslate nohighlight">\(K\)</span> is a contraction mapping on
+<p>It is shown in <span id="id13">[<a class="reference internal" href="zreferences.html#id253" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span> that <span class="math notranslate nohighlight">\(K\)</span> is a contraction mapping on
 <span class="math notranslate nohighlight">\(\mathscr{C}\)</span> under the metric</p>
 <div class="math notranslate nohighlight">
 \[
@@ -562,14 +562,14 @@ summary:</p>
 <p>(The benefit of this measure of distance is that, while elements of <span class="math notranslate nohighlight">\(\mathscr C\)</span> are not generally bounded, <span class="math notranslate nohighlight">\(\rho\)</span> is always finite under our assumptions.)</p>
 <p>It is also shown that the metric <span class="math notranslate nohighlight">\(\rho\)</span> is complete on <span class="math notranslate nohighlight">\(\mathscr{C}\)</span>.</p>
 <p>In consequence, <span class="math notranslate nohighlight">\(K\)</span> has a unique fixed point <span class="math notranslate nohighlight">\(\sigma^* \in \mathscr{C}\)</span> and <span class="math notranslate nohighlight">\(K^n c \to \sigma^*\)</span> as <span class="math notranslate nohighlight">\(n \to \infty\)</span> for any <span class="math notranslate nohighlight">\(\sigma \in \mathscr{C}\)</span>.</p>
-<p>By the definition of <span class="math notranslate nohighlight">\(K\)</span>, the fixed points of <span class="math notranslate nohighlight">\(K\)</span> in <span class="math notranslate nohighlight">\(\mathscr{C}\)</span> coincide with the solutions to <a class="reference internal" href="#equation-eqeul1">(47.7)</a> in <span class="math notranslate nohighlight">\(\mathscr{C}\)</span>.</p>
+<p>By the definition of <span class="math notranslate nohighlight">\(K\)</span>, the fixed points of <span class="math notranslate nohighlight">\(K\)</span> in <span class="math notranslate nohighlight">\(\mathscr{C}\)</span> coincide with the solutions to <a class="reference internal" href="#equation-eqeul1">(48.7)</a> in <span class="math notranslate nohighlight">\(\mathscr{C}\)</span>.</p>
 <p>As a consequence, the path <span class="math notranslate nohighlight">\(\{c_t\}\)</span> generated from <span class="math notranslate nohighlight">\((a_0,z_0) \in
 S\)</span> using policy function <span class="math notranslate nohighlight">\(\sigma^*\)</span> is the unique optimal path from
 <span class="math notranslate nohighlight">\((a_0,z_0) \in S\)</span>.</p>
 </div>
 </div>
 <div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id20"><span class="section-number">47.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id20"><span class="section-number">48.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <p id="index-3">We use the CRRA utility specification</p>
 <div class="math notranslate nohighlight">
 \[
@@ -618,7 +618,7 @@ with state space <span class="math notranslate nohighlight">\(\{0, 1\}\)</span> 
 </div>
 <p>Next we provide a function to compute the difference</p>
 <div class="math notranslate nohighlight" id="equation-euler-diff-eq">
-<span class="eqno">(47.10)<a class="headerlink" href="#equation-euler-diff-eq" title="Permalink to this equation">¶</a></span>\[u'(c) - \max \left\{
+<span class="eqno">(48.10)<a class="headerlink" href="#equation-euler-diff-eq" title="Permalink to this equation">¶</a></span>\[u'(c) - \max \left\{
            \beta R \, \mathbb E_z (u' \circ \sigma) \,
            [R (a - c) + \hat Y, \, \hat Z]
            \, , \;
@@ -758,7 +758,7 @@ Converged in 60 iterations.
 </div>
 <p>The following exercises walk you through several applications where policy functions are computed.</p>
 <div class="section" id="a-sanity-check">
-<h3><span class="section-number">47.4.1. </span>A Sanity Check<a class="headerlink" href="#a-sanity-check" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">48.4.1. </span>A Sanity Check<a class="headerlink" href="#a-sanity-check" title="Permalink to this headline">¶</a></h3>
 <p>One way to check our results is to</p>
 <ul class="simple">
 <li><p>set labor income to zero in each state and</p></li>
@@ -818,10 +818,10 @@ Converged in 176 iterations.
 </div>
 </div>
 <div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id21"><span class="section-number">47.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id21"><span class="section-number">48.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="exercise admonition" id="ifp_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 47.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 48.1 </span></p>
 <div class="section" id="exercise-content">
 <p>Let’s consider how the interest rate affects consumption.</p>
 <p>Reproduce the following figure, which shows (approximately) optimal consumption policies for different interest rates</p>
@@ -838,7 +838,7 @@ Converged in 176 iterations.
 </div>
 <div class="solution dropdown admonition" id="ifp-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#ifp_ex1"> Exercise 47.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#ifp_ex1"> Exercise 48.1</a></p>
 <div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here’s one solution:</p>
 <div class="cell docutils container">
@@ -865,7 +865,7 @@ Converged in 176 iterations.
 </div>
 <div class="exercise admonition" id="ifp_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 47.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 48.2 </span></p>
 <div class="section" id="exercise-content">
 <p>Now let’s consider the long run asset levels held by households under the
 default parameters.</p>
@@ -904,7 +904,7 @@ a \mapsto R (a - \sigma^*(a, z)) + y(z)
 diverge even in the highest state.</p>
 <p>In fact there is a unique stationary distribution of assets that we can calculate by simulation</p>
 <ul class="simple">
-<li><p>Can be proved via theorem 2 of <span id="id14">[<a class="reference internal" href="zreferences.html#id169" title="Hugo A Hopenhayn and Edward C Prescott. Stochastic Monotonicity and Stationary Distributions for Dynamic Economies. Econometrica, 60(6):1387–1406, 1992.">HP92</a>]</span>.</p></li>
+<li><p>Can be proved via theorem 2 of <span id="id14">[<a class="reference internal" href="zreferences.html#id170" title="Hugo A Hopenhayn and Edward C Prescott. Stochastic Monotonicity and Stationary Distributions for Dynamic Economies. Econometrica, 60(6):1387–1406, 1992.">HP92</a>]</span>.</p></li>
 <li><p>It represents the long run dispersion of assets across households when households have idiosyncratic shocks.</p></li>
 </ul>
 <p>Ergodicity is valid here, so stationary probabilities can be calculated by averaging over a single long time series.</p>
@@ -921,7 +921,7 @@ z_0)\)</span> will not matter.</p></li>
 </div>
 <div class="solution dropdown admonition" id="ifp-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#ifp_ex2"> Exercise 47.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#ifp_ex2"> Exercise 48.2</a></p>
 <div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>First we write a function to compute a long asset series.</p>
 <div class="cell docutils container">
@@ -978,13 +978,13 @@ more realistic features to the model.</p>
 </div>
 <div class="exercise admonition" id="ifp_ex3">
 
-<p class="admonition-title"><span class="caption-number">Exercise 47.3 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 48.3 </span></p>
 <div class="section" id="exercise-content">
 <p>Following on from exercises 1 and 2, let’s look at how savings and aggregate
 asset holdings vary with the interest rate</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><span id="id15">[<a class="reference internal" href="zreferences.html#id182" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span> section 18.6 can be consulted for more background on the topic treated in this exercise.</p>
+<p><span id="id15">[<a class="reference internal" href="zreferences.html#id183" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span> section 18.6 can be consulted for more background on the topic treated in this exercise.</p>
 </div>
 <p>For a given parameterization of the model, the mean of the stationary
 distribution of assets can be interpreted as aggregate capital in an economy
@@ -999,7 +999,7 @@ stationary distribution given the interest rate.</p>
 </div>
 <div class="solution dropdown admonition" id="ifp-solution-5">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#ifp_ex3"> Exercise 47.3</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#ifp_ex3"> Exercise 48.3</a></p>
 <div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here’s one solution</p>
 <div class="cell docutils container">
@@ -1380,6 +1380,11 @@ stationary distribution given the interest rate.</p>
    38. Job Search VI: On-the-Job Search
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_q.html">
+   39. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1389,52 +1394,52 @@ stationary distribution given the interest rate.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   39. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   40. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   41. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   42. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   43. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   44. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   45. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   46. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   47. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   48. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1446,17 +1451,17 @@ stationary distribution given the interest rate.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   49. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   50. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   51. Forecasting  an AR(1) process
+   52. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1468,42 +1473,42 @@ stationary distribution given the interest rate.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   52. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   53. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   54. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   55. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   56. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   57. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   58. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   59. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1515,32 +1520,32 @@ stationary distribution given the interest rate.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   60. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   61. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   62. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   63. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   64. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   65. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1552,37 +1557,37 @@ stationary distribution given the interest rate.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   66. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   67. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   68. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   69. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   70. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   71. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   72. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1594,17 +1599,17 @@ stationary distribution given the interest rate.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   73. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   74. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   75. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1616,17 +1621,17 @@ stationary distribution given the interest rate.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   76. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   77. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   78. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1638,12 +1643,12 @@ stationary distribution given the interest rate.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   79. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   80. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1655,17 +1660,17 @@ stationary distribution given the interest rate.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   81. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   82. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   83. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>

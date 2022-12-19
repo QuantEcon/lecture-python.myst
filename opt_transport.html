@@ -268,8 +268,8 @@ economic theory.</p>
 key tool for solving it, and then provide some examples.</p>
 <p>We will provide other applications in followup lectures.</p>
 <p>The optimal transport problem was studied in early work about linear
-programming, as summarized for example by <span id="id1">[<a class="reference internal" href="zreferences.html#id36" title="Robert Dorfman, Paul A. Samuelson, and Robert M. Solow. Linear Programming and Economic Analysis: Revised Edition. McGraw Hill, New York, 1958.">DSS58</a>]</span>.  A modern reference
-about applications in economics is <span id="id2">[<a class="reference internal" href="zreferences.html#id37" title="Alfred Galichon. Optimal Transport Methods in Economics. Princeton University Press, Princeton, New Jersey, 2016.">Gal16</a>]</span>.</p>
+programming, as summarized for example by <span id="id1">[<a class="reference internal" href="zreferences.html#id37" title="Robert Dorfman, Paul A. Samuelson, and Robert M. Solow. Linear Programming and Economic Analysis: Revised Edition. McGraw Hill, New York, 1958.">DSS58</a>]</span>.  A modern reference
+about applications in economics is <span id="id2">[<a class="reference internal" href="zreferences.html#id38" title="Alfred Galichon. Optimal Transport Methods in Economics. Princeton University Press, Princeton, New Jersey, 2016.">Gal16</a>]</span>.</p>
 <p>Below, we show how to solve the optimal transport problem using
 several implementations of linear programming, including, in order,</p>
 <ol class="simple">
@@ -290,19 +290,19 @@ solver from SciPy,</p></li>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: scipy&gt;=1.0.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
-Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.0.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
 Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
+Requirement already satisfied: numpy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
 Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
 Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -315,18 +315,16 @@ Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lectu
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading POT-0.8.2-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (670 kB)
 ?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/670.2 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ <span class=" -Color -Color-Green">583.7/670.2 kB</span> <span class=" -Color -Color-Red">17.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">670.2/670.2 kB</span> <span class=" -Color -Color-Red">15.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25h
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">665.6/670.2 kB</span> <span class=" -Color -Color-Red">20.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">670.2/670.2 kB</span> <span class=" -Color -Color-Red">16.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hRequirement already satisfied: jax in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.4.1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jax in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.3.25)
-Requirement already satisfied: jaxlib in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.3.25+cuda11.cudnn82)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jaxlib in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.4.1+cuda11.cudnn86)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from POT) (1.9.1)
 Requirement already satisfied: numpy&gt;=1.16 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from POT) (1.23.5)
-Requirement already satisfied: typing-extensions in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax) (4.3.0)
 Requirement already satisfied: opt-einsum in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax) (3.3.0)
 </pre></div>
 </div>
@@ -617,9 +615,9 @@ X: [[15. 35.  0.  0.  0.]
  [ 0. 80.  0.  0. 70.]]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13938/1014317504.py:24: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17934/1014317504.py:24: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
   res = linprog(C_vec, A_eq=A, b_eq=b, method=&#39;Revised simplex&#39;)
-/tmp/ipykernel_13938/1014317504.py:24: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
+/tmp/ipykernel_17934/1014317504.py:24: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
   res = linprog(C_vec, A_eq=A, b_eq=b, method=&#39;Revised simplex&#39;)
 </pre></div>
 </div>
@@ -670,7 +668,7 @@ Galichon</a>.)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13938/1219707093.py:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17934/1219707093.py:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
   linprog(C_vec, A_eq=A[:-1], b_eq=b[:-1], method=&#39;Revised simplex&#39;)
 </pre></div>
 </div>
@@ -694,8 +692,8 @@ Galichon</a>.)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 7.24 ms, sys: 0 ns, total: 7.24 ms
-Wall time: 6.11 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 9.3 ms, sys: 396 µs, total: 9.7 ms
+Wall time: 7.13 ms
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;timed eval&gt;:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
@@ -721,8 +719,8 @@ Wall time: 6.11 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 7.99 ms, sys: 0 ns, total: 7.99 ms
-Wall time: 6.57 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 7.76 ms, sys: 1.17 ms, total: 8.93 ms
+Wall time: 7.07 ms
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;timed eval&gt;:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
@@ -776,9 +774,9 @@ Wall time: 6.57 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13938/2305330369.py:8: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17934/2305330369.py:8: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
   res_shuffle = linprog(C_vec, A_eq=A[arr], b_eq=b[arr], method=&#39;Revised simplex&#39;)
-/tmp/ipykernel_13938/2305330369.py:8: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
+/tmp/ipykernel_17934/2305330369.py:8: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
   res_shuffle = linprog(C_vec, A_eq=A[arr], b_eq=b[arr], method=&#39;Revised simplex&#39;)
 </pre></div>
 </div>
@@ -793,9 +791,9 @@ Wall time: 6.57 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>transportation plan 0:  (15.0, 10.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 0.0, 30.0, 0.0, 0.0, 0.0, 70.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>transportation plan 0:  (0.0, 25.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 15.0, 15.0, 0.0, 0.0, 0.0, 70.0)
      minimized cost 0:  7225.0
-transportation plan 1:  (0.0, 25.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 15.0, 15.0, 0.0, 0.0, 0.0, 70.0)
+transportation plan 1:  (15.0, 10.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 0.0, 30.0, 0.0, 0.0, 0.0, 70.0)
      minimized cost 1:  7225.0
 </pre></div>
 </div>
@@ -811,7 +809,7 @@ transportation plan 1:  (0.0, 25.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 15.0, 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13938/2512147953.py:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17934/2512147953.py:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
   linprog(C_vec, A_eq=A[1:], b_eq=b[1:], method=&#39;Revised simplex&#39;)
 </pre></div>
 </div>
@@ -919,8 +917,8 @@ minimization, we need to put a negative sign before vector <code class="docutils
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 7.59 ms, sys: 0 ns, total: 7.59 ms
-Wall time: 6.54 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.18 ms, sys: 4.28 ms, total: 7.47 ms
+Wall time: 6.12 ms
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;timed exec&gt;:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
@@ -936,8 +934,8 @@ Wall time: 6.54 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 122 µs, sys: 0 ns, total: 122 µs
-Wall time: 129 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 82 µs, sys: 11 µs, total: 93 µs
+Wall time: 99.7 µs
 </pre></div>
 </div>
 </div>
@@ -1003,7 +1001,7 @@ u: [ 5. 15. 25.]
 v: [ 5. 10.  0. 15.  0.]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13938/394279910.py:2: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17934/394279910.py:2: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
   res_dual = linprog(-b, A_ub=A.T, b_ub=C_vec,
 </pre></div>
 </div>
@@ -1050,8 +1048,8 @@ v: [ 5. 10.  0. 15.  0.]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.32 ms, sys: 638 µs, total: 6.95 ms
-Wall time: 5.57 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.21 ms, sys: 3.82 ms, total: 6.02 ms
+Wall time: 5.01 ms
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;timed eval&gt;:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
@@ -1077,8 +1075,8 @@ Wall time: 5.57 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 468 µs, sys: 47 µs, total: 515 µs
-Wall time: 523 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 369 µs, sys: 40 µs, total: 409 µs
+Wall time: 416 µs
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SimplexResult(x=array([ 5., 15., 25.,  5., 10.,  0., 15.,  0.]), lambd=array([ 0., 35.,  0., 15.,  0., 25.,  0., 60., 15.,  0.,  0., 80.,  0.,
@@ -1098,7 +1096,7 @@ Wall time: 523 µs
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13938/57054120.py:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17934/57054120.py:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
   linprog(-b[1:], A_ub=A[1:].T, b_ub=C_vec,
 </pre></div>
 </div>
@@ -1124,7 +1122,7 @@ Wall time: 523 µs
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13938/2450640664.py:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17934/2450640664.py:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
   linprog(-b[:-1], A_ub=A[:-1].T, b_ub=C_vec,
 </pre></div>
 </div>
@@ -1179,7 +1177,7 @@ using linear programming.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_13938/1617639716.py:1: UserWarning: Input histogram consists of integer. The transport plan will be casted accordingly, possibly resulting in a loss of precision. If this behaviour is unwanted, please make sure your input histogram consists of floating point elements.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17934/1617639716.py:1: UserWarning: Input histogram consists of integer. The transport plan will be casted accordingly, possibly resulting in a loss of precision. If this behaviour is unwanted, please make sure your input histogram consists of floating point elements.
   X = ot.emd(p, q, C)
 </pre></div>
 </div>
@@ -1297,8 +1295,8 @@ and location.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 884 µs, sys: 89 µs, total: 973 µs
-Wall time: 596 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 750 µs, sys: 82 µs, total: 832 µs
+Wall time: 554 µs
 </pre></div>
 </div>
 </div>
@@ -1641,6 +1639,11 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
    38. Job Search VI: On-the-Job Search
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_q.html">
+   39. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1650,52 +1653,52 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   39. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   40. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   41. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   42. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   43. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   44. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   45. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   46. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   47. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   48. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1707,17 +1710,17 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   49. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   50. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   51. Forecasting  an AR(1) process
+   52. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1729,42 +1732,42 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   52. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   53. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   54. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   55. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   56. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   57. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   58. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   59. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1776,32 +1779,32 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   60. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   61. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   62. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   63. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   64. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   65. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1813,37 +1816,37 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   66. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   67. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   68. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   69. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   70. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   71. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   72. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1855,17 +1858,17 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   73. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   74. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   75. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1877,17 +1880,17 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   76. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   77. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   78. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1899,12 +1902,12 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   79. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   80. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1916,17 +1919,17 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   81. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   82. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   83. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>

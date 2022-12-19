@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>62. Eliminating Cross Products &#8212; Quantitative Economics with Python</title>
+    <title>63. Eliminating Cross Products &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -101,8 +101,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="63. The Permanent Income Model" href="perm_income.html" />
-    <link rel="prev" title="61. Lagrangian for LQ Control" href="lagrangian_lqdp.html" />
+    <link rel="next" title="64. The Permanent Income Model" href="perm_income.html" />
+    <link rel="prev" title="62. Lagrangian for LQ Control" href="lagrangian_lqdp.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -152,29 +152,29 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   62.1. Overview
+   63.1. Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#undiscounted-dynamic-programming-problem">
-   62.2. Undiscounted Dynamic Programming Problem
+   63.2. Undiscounted Dynamic Programming Problem
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#kalman-filter">
-   62.3. Kalman Filter
+   63.3. Kalman Filter
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#algorithm">
-     62.3.1. Algorithm
+     63.3.1. Algorithm
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#duality-table">
-   62.4. Duality table
+   63.4. Duality table
   </a>
  </li>
 </ul>
@@ -223,9 +223,9 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <div class="tex2jax_ignore mathjax_ignore section" id="eliminating-cross-products">
-<h1><span class="section-number">62. </span>Eliminating Cross Products<a class="headerlink" href="#eliminating-cross-products" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">63. </span>Eliminating Cross Products<a class="headerlink" href="#eliminating-cross-products" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="overview">
-<h2><span class="section-number">62.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">63.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This lecture describes formulas for eliminating</p>
 <ul class="simple">
 <li><p>cross products between states and control in linear-quadratic dynamic programming  problems</p></li>
@@ -239,7 +239,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </div>
 <div class="section" id="undiscounted-dynamic-programming-problem">
-<h2><span class="section-number">62.2. </span>Undiscounted Dynamic Programming Problem<a class="headerlink" href="#undiscounted-dynamic-programming-problem" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">63.2. </span>Undiscounted Dynamic Programming Problem<a class="headerlink" href="#undiscounted-dynamic-programming-problem" title="Permalink to this headline">¶</a></h2>
 <p>Here is a nonstochastic undiscounted LQ dynamic programming with cross products between
 states and controls in the objective function.</p>
 <p>The problem is defined by the 5-tuple of matrices <span class="math notranslate nohighlight">\((A, B, R, Q, H)\)</span>
@@ -280,7 +280,7 @@ F &amp; = F^* + Q^{-1} H.
 \end{align*}\]</div>
 </div>
 <div class="section" id="kalman-filter">
-<h2><span class="section-number">62.3. </span>Kalman Filter<a class="headerlink" href="#kalman-filter" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">63.3. </span>Kalman Filter<a class="headerlink" href="#kalman-filter" title="Permalink to this headline">¶</a></h2>
 <p>The <strong>duality</strong> that prevails  between a linear-quadratic optimal control and a Kalman filtering problem means that there is an analogous transformation that allows us to transform a Kalman filtering problem
 with non-zero covariance matrix  between between shocks to states and shocks to measurements to an equivalent Kalman filtering problem with zero covariance between shocks to states and measurments.</p>
 <p>Let’s look at the appropriate transformations.</p>
@@ -308,7 +308,7 @@ A^* &amp; = A - BF' (FF')^{-1} D, \\
 B^* {B^*}' &amp; = BB' - BF' (FF')^{-1} FB'.
 \end{align*}\]</div>
 <div class="section" id="algorithm">
-<h3><span class="section-number">62.3.1. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">63.3.1. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
 <p>A consequence of  formulas {eq}`eq:Kalman102} is that we can use the following algorithm to solve Kalman filtering problems that involve  non zero covariances between state and signal noises.</p>
 <p>First, compute <span class="math notranslate nohighlight">\(\Sigma, K^*\)</span> using the ordinary Kalman filtering  formula with <span class="math notranslate nohighlight">\(BF' = 0\)</span>, i.e.,
 with zero covariance matrix between random shocks to  states and  random shocks to measurements.</p>
@@ -327,7 +327,7 @@ K = K^* + BF' (FF')^{-1},
 </div>
 </div>
 <div class="section" id="duality-table">
-<h2><span class="section-number">62.4. </span>Duality table<a class="headerlink" href="#duality-table" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">63.4. </span>Duality table<a class="headerlink" href="#duality-table" title="Permalink to this headline">¶</a></h2>
 <p>Here is a handy table to remember how the Kalman filter and dynamic program are related.</p>
 <table class="colwidths-auto table">
 <thead>
@@ -635,6 +635,11 @@ K = K^* + BF' (FF')^{-1},
    38. Job Search VI: On-the-Job Search
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_q.html">
+   39. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -644,52 +649,52 @@ K = K^* + BF' (FF')^{-1},
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   39. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   40. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   41. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   42. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   43. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   44. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   45. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   46. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   47. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   48. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -701,17 +706,17 @@ K = K^* + BF' (FF')^{-1},
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   49. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   50. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   51. Forecasting  an AR(1) process
+   52. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -723,42 +728,42 @@ K = K^* + BF' (FF')^{-1},
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   52. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   53. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   54. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   55. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   56. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   57. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   58. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   59. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -770,32 +775,32 @@ K = K^* + BF' (FF')^{-1},
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   60. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   61. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   62. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   63. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   64. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   65. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -807,37 +812,37 @@ K = K^* + BF' (FF')^{-1},
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   66. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   67. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   68. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   69. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   70. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   71. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   72. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -849,17 +854,17 @@ K = K^* + BF' (FF')^{-1},
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   73. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   74. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   75. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -871,17 +876,17 @@ K = K^* + BF' (FF')^{-1},
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   76. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   77. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   78. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -893,12 +898,12 @@ K = K^* + BF' (FF')^{-1},
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   79. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   80. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -910,17 +915,17 @@ K = K^* + BF' (FF')^{-1},
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   81. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   82. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   83. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>
