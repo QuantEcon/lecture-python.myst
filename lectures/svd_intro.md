@@ -670,7 +670,6 @@ We turn to the **tall and skinny** case  associated with **Dynamic Mode Decompos
 
 Here an $ m \times n $  data matrix $ \tilde X $ contains many more attributes $ m $ than individuals $ n $.
 
-This  
 
 Dynamic mode decomposition was introduced by {cite}`schmid2010`,
 
@@ -684,9 +683,7 @@ X_{t+1} = A X_t + C \epsilon_{t+1}
 $$ (eq:VARfirstorder)
 
 where $\epsilon_{t+1}$ is the time $t+1$ instance of an i.i.d. $m \times 1$ random vector with mean vector
-zero and identity  covariance matrix and
-
-where 
+zero and identity  covariance matrix and where 
 the $ m \times 1 $ vector $ X_t $ is
 
 $$
@@ -741,9 +738,9 @@ Two possible cases are
  *  $ n > > m$, so that we have many more time series  observations $n$ than variables $m$
  *  $m > > n$, so that we have many more variables $m $ than time series observations $n$
 
-At a general level that includes both of these special cases, a common formula describes the least squares estimator $\hat A$ of $A$ for both cases.
+At a general level that includes both of these special cases, a common formula describes the least squares estimator $\hat A$ of $A$.
 
-But some important  details differ.
+But important  details differ.
 
 The common formula is
 
@@ -907,7 +904,7 @@ where $ r <  p $.
 
 Next, we describe alternative representations of our first-order linear dynamic system.
 
-**Guide to three representations:** In practice, we'll be interested in Representation 3.  We present the first 2 in order to set the stage for some intermediate steps that might help us understand what is under the hood of Representation 3.  In applications, we'll use only a small  subset of the DMD to approximate dynamics.  To to that, we'll want to be using the  reduced  SVD's affiliated with representation 3, not the full SVD's affiliated with Representations 1 and 2. 
+**Guide to three representations:** In practice, we'll be interested in Representation 3.  We present the first 2 in order to set the stage for some intermediate steps that might help us understand what is under the hood of Representation 3.  In applications, we'll use only a small  subset of the DMD to approximate dynamics.  To do that, we'll want to use the  reduced  SVD's affiliated with representation 3, not the full SVD's affiliated with representations 1 and 2. 
 
 +++
 
@@ -979,7 +976,7 @@ where we use $\overline X_{t+1}, t \geq 1 $ to denote a forecast.
 
 This representation is related to  one originally proposed by  {cite}`schmid2010`.
 
-It can be regarded as an intermediate step to  a related   representation 3 to be presented later
+It can be regarded as an intermediate step on the way  to obtaining  a related   representation 3 to be presented later
 
 
 As with Representation 1, we continue to
@@ -994,7 +991,7 @@ As we observed and illustrated  earlier in this lecture
  
   * (b)  for  a reduced SVD of $X$, $U^T U $ is not an identity matrix.  
 
-As we shall see later, a full SVD is  too confining for what we ultimately want to do, namely,  situations in which  $U^T U$ is **not** an identity matrix because we  use a reduced SVD of $X$.
+As we shall see later, a full SVD is  too confining for what we ultimately want to do, namely,  cope with situations in which  $U^T U$ is **not** an identity matrix because we  use a reduced SVD of $X$.
 
 But for now, let's proceed under the assumption that we are using a full SVD so that  both of the  preceding two  requirements (a) and (b) are satisfied.
 
@@ -1101,7 +1098,7 @@ We'll say more about this interpretation in a related context when we discuss re
 
 We turn next  to an alternative  representation suggested by  Tu et al. {cite}`tu_Rowley`.
 
-It is more appropriate to use this alternative representation  when, as in practice is typically the case, we use a reduced SVD.
+It is more appropriate to use this alternative representation  when, as is typically the case  in practice, we use a reduced SVD.
 
 
 
@@ -1302,8 +1299,7 @@ is an $m \times n$ matrix of least squares projections of $X$ on $\Phi$.
 
  
 
-By virtue of least-squares projection theory discussed here <https://python-advanced.quantecon.org/orth_proj.html>, 
-we can represent $X$ as the sum of the projection $\check X$ of $X$ on $\Phi$  plus a matrix of errors.
+By virtue of least-squares projection theory discussed in  this quantecon lecture e <https://python-advanced.quantecon.org/orth_proj.html>, we can represent $X$ as the sum of the projection $\check X$ of $X$ on $\Phi$  plus a matrix of errors.
 
 
 To verify this, note that the least squares projection $\check X$ is related to $X$ by
@@ -1411,7 +1407,7 @@ $$ (eq:beqnsmall)
 
 
 
-which is  computationally efficient approximation to  the following instance of  equation {eq}`eq:decoder102` for  the initial vector $\check b_1$:
+which is a computationally efficient approximation to  the following instance of  equation {eq}`eq:decoder102` for  the initial vector $\check b_1$:
 
 $$
   \check b_1= \Phi^{+} X_1
