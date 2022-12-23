@@ -97,27 +97,87 @@ where
 
 * $\Sigma$ is an $m \times n$ matrix in which the first $p$ places on its main diagonal are positive numbers $\sigma_1, \sigma_2, \ldots, \sigma_p$ called **singular values**; remaining entries of $\Sigma$ are all zero
 
-* The $p$ singular values are square roots of the eigenvalues of the $m \times m$ matrix  $X X^T$ and the $n \times n$ matrix $X^T X$
+* The $p$ singular values are positive square roots of the eigenvalues of the $m \times m$ matrix  $X X^T$ and the $n \times n$ matrix $X^T X$
 
 * When $U$ is a complex valued matrix, $U^T$ denotes the **conjugate-transpose** or **Hermitian-transpose** of $U$, meaning that 
 $U_{ij}^T$ is the complex conjugate of $U_{ji}$. 
 
 * Similarly, when $V$ is a complex valued matrix, $V^T$ denotes the **conjugate-transpose** or **Hermitian-transpose** of $V$
 
-In what is called a **full** SVD, the  shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively. 
+What we have described above  is called a **full** SVD.
 
 
 
-There is also an alternative shape convention called an **economy** or **reduced** SVD .
+Here the  shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively. 
+
+Later we'll also describe an **economy** or **reduced** SVD.
+
+But first we'll say a little more about properties of a **full** SVD.
+
+
+## Relationship of Full SVD to Four Fundamental Subspaces
+
+
+Let's start with a reminder about definitions of the four fundamental subspaces of an $m \times n$
+matrix $X$ of rank $p$.
+
+* The **column space** of $X$, denoted ${\mathcal C}(X)$, is the span of the  columns of  $X$, i.e., all vectors $y$ that can be written as a linear combination of columns of $X$. Its dimension is $p$.
+* The **null space** of $X$, denoted ${\mathcal N}(X)$ consists of all vectors $y$ that satisfy 
+$X y = 0$. Its dimension is $m-p$.
+* The **row space** of $X$, denoted ${\mathcal R}(X)$ is the column space of $X^T$. It consists of all
+vectors $z$ that can be written as a linear combination of rows of $X$. Its dimension is $p$.
+* The **left null space** of $X$, denoted ${\mathcal N}(X^T)$, consist of all vectors $z$ such that
+$X^T z =0$.  Its dimension is $n-p$.  
+
+A full SVD of a matrix $X$ contains orthogonal bases for all four subspaces. 
+
+Let's write the full SVD of X as
+
+$$
+X = \begin{bmatrix} U_L & U_R \end{bmatrix} \begin{bmatrix} \Sigma_p & 0 \cr 0 & 0 \end{bmatrix}
+     \begin{bmatrix} V_L & V_R \end{bmatrix}^T
+$$
+
+where 
+
+$$
+\begin{aligned}
+U_L & = \begin{bmatrix}u_1 & \cdots  & u_p \end{bmatrix},  \quad U_R  = \begin{bmatrix}u_{p+1} & \cdots u_m \end{bmatrix}  \cr
+V_L & = \begin{bmatrix}v_1 & \cdots  & v_p \end{bmatrix} , \quad U_R  = \begin{bmatrix}v_{p+1} & \cdots u_n \end{bmatrix} 
+\end{aligned}
+$$
+
+
+These matrices are related to the four fundamental subspaces of $X$ in the following ways:
+
+$$
+\begin{aligned}
+{\mathcal C}(X) & = {\mathcal C}(U_L) \cr 
+{\mathcal N}(X) & = {\mathcal C} (V_R) \cr
+{\mathcal R}(X) & \equiv  {\mathcal C}(X^T) = {\mathcal C} (V_L) \cr
+{\mathcal N}(X^T) & = {\mathcal C}(U_R) 
+\end{aligned}
+$$ (eq:fourspaceSVD)
+
+
+Here ${\mathcal C}$ denotes a column space, ${\mathcal N}$ denotes a null space, and ${\mathcal R}$ denotes a row space.  
+
+Collection {eq}`eq:fourspaceSVD` asserts that
+
+ * $U_L$ is an orthonormal basis for the column space of $X$
+ * $V_R$ is an orthonormal basis for the null space of $X$
+ * $V_L$ is an orthonormal basis for the range space of $X$
+ * $U_R$ is an orthonormal basis for the column space of $X^T$
+
+## Properties of Full and Reduced SVD's
+
+Up to now we have described properties of a **full** SVD in which shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively. 
+
+There is also an alternative shape convention called an **economy** or **reduced** SVD in which the shapes of $U, \Sigma$ and $V$ are different from what they are in a full SVD.
 
 Thus, note that because we assume that $X$ has rank $p$, there are only $p$ nonzero singular values, where $p=\textrm{rank}(X)\leq\min\left(m, n\right)$.  
 
 A **reduced** SVD uses this fact to express $U$, $\Sigma$, and $V$ as matrices with shapes $\left(m, p\right)$, $\left(p, p\right)$, $\left( n, p\right)$.
-
-
-
-## Properties of Full and Reduced SVD's
-
 
 
 You can read about reduced and full SVD here
