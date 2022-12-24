@@ -133,9 +133,9 @@ vectors $z$ that can be written as  linear combinations of rows of $X$. Its dime
 * The **left null space** of $X$, denoted ${\mathcal N}(X^T)$, consist of all vectors $z$ such that
 $X^T z =0$.  Its dimension is $n-p$.  
 
-A full SVD of a matrix $X$ contains orthogonal bases for all four subspaces.
+The $U$ and $V$ factors for a  full SVD of a matrix $X$ contain orthogonal bases for all four subspaces.
 
-And the subspaces are connected in interesting ways, consisting of two pairs of orthogonal subspaces
+The subspaces are connected in interesting ways, consisting of two pairs of orthogonal subspaces
 that we'll describe here.
 
 Let $u_i, i = 1, \ldots, m$ be the $m$ column vectors of $U$ and let
@@ -165,34 +165,79 @@ These matrices are related to the four fundamental subspaces of $X$ in the follo
 $$
 \begin{aligned}
 {\mathcal C}(X) & = {\mathcal C}(U_L) \cr 
-{\mathcal N}(X) & = {\mathcal C} (V_R) \cr
+{\mathcal N}(X^T) & = {\mathcal C}(U_R) \cr
 {\mathcal R}(X) & \equiv  {\mathcal C}(X^T) = {\mathcal C} (V_L) \cr
-{\mathcal N}(X^T) & = {\mathcal C}(U_R) 
+{\mathcal N}(X) & = {\mathcal C} (V_R) \cr
+
 \end{aligned}
 $$ (eq:fourspaceSVD)
 
 
 Here ${\mathcal C}$ denotes a column space, ${\mathcal N}$ denotes a null space, and ${\mathcal R}$ denotes a row space.  
 
-Collection {eq}`eq:fourspaceSVD` asserts that
+Since $U$ and $V$ are both orthonormal matrices, collection {eq}`eq:fourspaceSVD` asserts that
 
  * $U_L$ is an orthonormal basis for the column space of $X$
+ * $U_R$ is an orthonormal basis for the null space of $X^T$
+ * $V_L$ is an orthonormal basis for the row space of $X$
  * $V_R$ is an orthonormal basis for the null space of $X$
- * $V_L$ is an orthonormal basis for the range space of $X$
- * $U_R$ is an orthonormal basis for the column space of $X^T$
+ 
 
 The four claims in {eq}`eq:fourspaceSVD` can be  verified  by performing the multiplications called for by the right side of {eq}`eq:fullSVDpartition` and interpreting them. 
 
 Although we won't go through the details of that verification here, we will note that the claims in {eq}`eq:fourspaceSVD` and the fact that $U$ and $V$ are both unitary (i.e, orthonormal) matrices immediately implies
 that
 
-* the column space of $X$ is orthogonal to the column space of of $X^T$
-* the null space of $X$ is orthogonal to the range space of $X$
+* the column space of $X$ is orthogonal to the null space of of $X^T$
+* the null space of $X$ is orthogonal to the row space of $X$
 
 Sometimes these properties are described with the following two pairs of orthogonal complement subspaces:
 
 * ${\mathcal C}(X)$ is the orthogonal complement of $ {\mathcal N}(X^T)$ 
 * ${\mathcal R}(X)$ is the orthogonal complement  ${\mathcal N}(X)$  
+
+
+
+Let's do an example.
+
+```{code-cell} ipython3
+np.set_printoptions(precision=2)
+
+# Define the matrix
+A = np.array([[1, 2, 3, 4, 5], 
+              [2, 3, 4, 5, 6], 
+              [3, 4, 5, 6, 7],
+              [4, 5, 6, 7, 8],
+              [5, 6, 7, 8, 9]])
+
+# Compute the SVD of the matrix
+U, S, V = np.linalg.svd(A,full_matrices=True)
+
+# Compute the rank of the matrix
+rank = np.linalg.matrix_rank(A)
+
+# Print the rank of the matrix
+print("Rank of matrix:\n", rank)
+print("S: \n", S)
+
+# Compute the four fundamental subspaces
+row_space = U[:, :rank]
+col_space = V[:, :rank]
+null_space = V[:, rank:]
+left_null_space = U[:, rank:]
+
+
+print("U:\n", U)
+print("Column space:\n", col_space)
+print("Left null space:\n", left_null_space)
+print("V.T:\n", V.T)
+print("Row space:\n", row_space.T)
+print("Right null space:\n", null_space.T)
+```
+
+
+
+
 
 
 
