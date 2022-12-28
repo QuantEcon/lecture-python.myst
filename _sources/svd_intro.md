@@ -31,24 +31,28 @@ import pandas as pd
 
 ## Overview
 
-The **singular value decomposition** is a work-horse in applications of least squares projection that
-form  foundations for important machine learning methods.
+The **singular value decomposition** (SVD) is a work-horse in applications of least squares projection that
+form  foundations for important  statistical and  machine learning methods.
 
-This lecture describes the singular value decomposition and two of its uses:
+After defining the SVD, we'll describe how it connects to 
 
- * principal components analysis (PCA)
+* the **four fundamental spaces** of linear algebra
+* underdetermined and over-determined **least squares regressions**  
+* **principal components analysis** (PCA)
+
+We'll also tell  the essential role that the SVD plays in 
 
  * dynamic mode decomposition (DMD)
 
- Each of these can be thought of as a data-reduction procedure  designed to capture salient patterns by projecting data onto a limited set of factors.
+ Like principal components analysis (PCA), DMD can be thought of as a data-reduction procedure  designed to capture salient patterns by projecting data onto a limited set of factors.
 
-##  The Setup
+##  The Setting
 
 Let $X$ be an $m \times n$ matrix of rank $p$.
 
 Necessarily, $p \leq \min(m,n)$.
 
-In this lecture, we'll think of $X$ as a matrix of **data**.
+In  much of this lecture, we'll think of $X$ as a matrix of **data**.
 
   * each column is an **individual** -- a time period or person, depending on the application
   
@@ -89,7 +93,7 @@ VV^T & = I & \quad V^T V = I
 \end{aligned}
 $$
  
-where 
+and
  
 * $U$ is an $m \times m$ matrix whose columns are eigenvectors of $X^T X$
 
@@ -97,27 +101,155 @@ where
 
 * $\Sigma$ is an $m \times n$ matrix in which the first $p$ places on its main diagonal are positive numbers $\sigma_1, \sigma_2, \ldots, \sigma_p$ called **singular values**; remaining entries of $\Sigma$ are all zero
 
-* The $p$ singular values are square roots of the eigenvalues of the $m \times m$ matrix  $X X^T$ and the $n \times n$ matrix $X^T X$
+* The $p$ singular values are positive square roots of the eigenvalues of the $m \times m$ matrix  $X X^T$ and the $n \times n$ matrix $X^T X$
 
-* When $U$ is a complex valued matrix, $U^T$ denotes the **conjugate-transpose** or **Hermitian-transpose** of $U$, meaning that 
+* We adopt a convention that when $U$ is a complex valued matrix, $U^T$ denotes the **conjugate-transpose** or **Hermitian-transpose** of $U$, meaning that 
 $U_{ij}^T$ is the complex conjugate of $U_{ji}$. 
 
 * Similarly, when $V$ is a complex valued matrix, $V^T$ denotes the **conjugate-transpose** or **Hermitian-transpose** of $V$
 
-In what is called a **full** SVD, the  shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively. 
+What we have described above  is called a **full** SVD.
 
 
 
-There is also an alternative shape convention called an **economy** or **reduced** SVD .
+In a **full** SVD, the  shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively. 
 
-Thus, note that because we assume that $X$ has rank $p$, there are only $p$ nonzero singular values, where $p=\textrm{rank}(X)\leq\min\left(m, n\right)$.  
+Later we'll also describe an **economy** or **reduced** SVD.
 
-A **reduced** SVD uses this fact to express $U$, $\Sigma$, and $V$ as matrices with shapes $\left(m, p\right)$, $\left(p, p\right)$, $\left( n, p\right)$.
+But before we study a **reduced** SVD we'll say a little more about properties of a **full** SVD.
+
+
+## SVD and Four Fundamental Subspaces
+
+
+Let's start with a reminder about definitions of the four fundamental subspaces of an $m \times n$
+matrix $X$ of rank $p$.
+
+* The **column space** of $X$, denoted ${\mathcal C}(X)$, is the span of the  columns of  $X$, i.e., all vectors $y$ that can be written as linear combinations of columns of $X$. Its dimension is $p$.
+* The **null space** of $X$, denoted ${\mathcal N}(X)$ consists of all vectors $y$ that satisfy 
+$X y = 0$. Its dimension is $m-p$.
+* The **row space** of $X$, denoted ${\mathcal R}(X)$ is the column space of $X^T$. It consists of all
+vectors $z$ that can be written as  linear combinations of rows of $X$. Its dimension is $p$.
+* The **left null space** of $X$, denoted ${\mathcal N}(X^T)$, consist of all vectors $z$ such that
+$X^T z =0$.  Its dimension is $n-p$.  
+
+The $U$ and $V$ factors for a  full SVD of a matrix $X$ contain orthogonal bases for all four subspaces.
+
+The subspaces are connected in interesting ways, consisting of two pairs of orthogonal subspaces
+that we'll describe here.
+
+Let $u_i, i = 1, \ldots, m$ be the $m$ column vectors of $U$ and let
+$v_i, i = 1, \ldots, n$ be the $n$ column vectors of $V$.  
+
+Let's write the full SVD of X as
+
+$$
+X = \begin{bmatrix} U_L & U_R \end{bmatrix} \begin{bmatrix} \Sigma_p & 0 \cr 0 & 0 \end{bmatrix}
+     \begin{bmatrix} V_L & V_R \end{bmatrix}^T
+$$ (eq:fullSVDpartition)
+
+where 
+
+$$
+\begin{aligned}
+U_L & = \begin{bmatrix}u_1 & \cdots  & u_p \end{bmatrix},  \quad U_R  = \begin{bmatrix}u_{p+1} & \cdots u_m \end{bmatrix}  \cr
+V_L & = \begin{bmatrix}v_1 & \cdots  & v_p \end{bmatrix} , \quad U_R  = \begin{bmatrix}v_{p+1} & \cdots u_n \end{bmatrix} 
+\end{aligned}
+$$
+
+
+
+
+These matrices are related to the four fundamental subspaces of $X$ in the following ways:
+
+$$
+\begin{aligned}
+{\mathcal C}(X) & = {\mathcal C}(U_L) \cr 
+{\mathcal N}(X^T) & = {\mathcal C}(U_R) \cr
+{\mathcal R}(X) & \equiv  {\mathcal C}(X^T) = {\mathcal C} (V_L) \cr
+{\mathcal N}(X) & = {\mathcal C} (V_R) \cr
+
+\end{aligned}
+$$ (eq:fourspaceSVD)
+
+
+Here ${\mathcal C}$ denotes a column space, ${\mathcal N}$ denotes a null space, and ${\mathcal R}$ denotes a row space.  
+
+Since $U$ and $V$ are both orthonormal matrices, collection {eq}`eq:fourspaceSVD` asserts that
+
+ * $U_L$ is an orthonormal basis for the column space of $X$
+ * $U_R$ is an orthonormal basis for the null space of $X^T$
+ * $V_L$ is an orthonormal basis for the row space of $X$
+ * $V_R$ is an orthonormal basis for the null space of $X$
+ 
+
+The four claims in {eq}`eq:fourspaceSVD` can be  verified  by performing the multiplications called for by the right side of {eq}`eq:fullSVDpartition` and interpreting them. 
+
+Although we won't go through the details of that verification here, we will note that the claims in {eq}`eq:fourspaceSVD` and the fact that $U$ and $V$ are both unitary (i.e, orthonormal) matrices immediately implies
+that
+
+* the column space of $X$ is orthogonal to the null space of of $X^T$
+* the null space of $X$ is orthogonal to the row space of $X$
+
+Sometimes these properties are described with the following two pairs of orthogonal complement subspaces:
+
+* ${\mathcal C}(X)$ is the orthogonal complement of $ {\mathcal N}(X^T)$ 
+* ${\mathcal R}(X)$ is the orthogonal complement  ${\mathcal N}(X)$  
+
+
+
+Let's do an example.
+
+```{code-cell} ipython3
+np.set_printoptions(precision=2)
+
+# Define the matrix
+A = np.array([[1, 2, 3, 4, 5], 
+              [2, 3, 4, 5, 6], 
+              [3, 4, 5, 6, 7],
+              [4, 5, 6, 7, 8],
+              [5, 6, 7, 8, 9]])
+
+# Compute the SVD of the matrix
+U, S, V = np.linalg.svd(A,full_matrices=True)
+
+# Compute the rank of the matrix
+rank = np.linalg.matrix_rank(A)
+
+# Print the rank of the matrix
+print("Rank of matrix:\n", rank)
+print("S: \n", S)
+
+# Compute the four fundamental subspaces
+row_space = U[:, :rank]
+col_space = V[:, :rank]
+null_space = V[:, rank:]
+left_null_space = U[:, rank:]
+
+
+print("U:\n", U)
+print("Column space:\n", col_space)
+print("Left null space:\n", left_null_space)
+print("V.T:\n", V.T)
+print("Row space:\n", row_space.T)
+print("Right null space:\n", null_space.T)
+```
+
+
+
+
 
 
 
 ## Properties of Full and Reduced SVD's
 
+Up to now we have described properties of a **full** SVD in which shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively. 
+
+There is also an alternative shape convention called an **economy** or **reduced** SVD in which the shapes of $U, \Sigma$ and $V$ are different from what they are in a full SVD.
+
+Thus, note that because we assume that $X$ has rank $p$, there are only $p$ nonzero singular values, where $p=\textrm{rank}(X)\leq\min\left(m, n\right)$.  
+
+A **reduced** SVD uses this fact to express $U$, $\Sigma$, and $V$ as matrices with shapes $\left(m, p\right)$, $\left(p, p\right)$, $\left( n, p\right)$.
 
 
 You can read about reduced and full SVD here
@@ -662,19 +794,9 @@ For an example  PCA applied to analyzing the structure of intelligence tests see
 
 Look at  parts of that lecture that describe and illustrate the classic factor analysis model.
 
-## Dynamic Mode Decomposition (DMD)
 
 
-
-We turn to the **tall and skinny** case  associated with **Dynamic Mode Decomposition**, the case in  which $ m >>n $.
-
-Here an $ m \times n $  data matrix $ \tilde X $ contains many more attributes $ m $ than individuals $ n $.
-
-This  
-
-Dynamic mode decomposition was introduced by {cite}`schmid2010`,
-
-You can read more about Dynamic Mode Decomposition here {cite}`DMD_book` and here [[BK19](https://python.quantecon.org/zreferences.html#id25)] (section 7.2).
+## Vector Autoregressions 
 
 
 We want to fit a **first-order vector autoregression**
@@ -684,9 +806,7 @@ X_{t+1} = A X_t + C \epsilon_{t+1}
 $$ (eq:VARfirstorder)
 
 where $\epsilon_{t+1}$ is the time $t+1$ instance of an i.i.d. $m \times 1$ random vector with mean vector
-zero and identity  covariance matrix and
-
-where 
+zero and identity  covariance matrix and where 
 the $ m \times 1 $ vector $ X_t $ is
 
 $$
@@ -728,7 +848,9 @@ $$
 X' =  \begin{bmatrix} X_2 \mid X_3 \mid \cdots \mid X_{n+1}\end{bmatrix}
 $$
 
-Here $ ' $ does not indicate matrix transposition but instead is part of the name of the matrix $ X' $.
+Here $ ' $  is part of the name of the matrix $ X' $ and does not indicate matrix transposition.
+
+We continue to use  $\cdot^T$ to denote matrix transposition or its extension to complex matrices. 
 
 In forming $ X $ and $ X' $, we have in each case  dropped a column from $ \tilde X $,  the last column in the case of $ X $, and  the first column in the case of $ X' $.
 
@@ -741,9 +863,9 @@ Two possible cases are
  *  $ n > > m$, so that we have many more time series  observations $n$ than variables $m$
  *  $m > > n$, so that we have many more variables $m $ than time series observations $n$
 
-At a general level that includes both of these special cases, a common formula describes the least squares estimator $\hat A$ of $A$ for both cases.
+At a general level that includes both of these special cases, a common formula describes the least squares estimator $\hat A$ of $A$.
 
-But some important  details differ.
+But important  details differ.
 
 The common formula is
 
@@ -899,15 +1021,31 @@ $$
 \hat A = X' V \Sigma^{-1}  U^T 
 $$ (eq:AhatSVDformula)
 
-We’ll eventually use **dynamic mode decomposition** to compute a rank $ r $ approximation to $ \hat A $,
-where $ r <  p $.
+
+
+## Dynamic Mode Decomposition (DMD)
+
+
+
+We turn to the **tall and skinny** case  associated with **Dynamic Mode Decomposition**, the case in  which $ m >>n $.
+
+Here an $ m \times n $  data matrix $ \tilde X $ contains many more attributes $ m $ than individuals $ n $.
+
+
+Dynamic mode decomposition was introduced by {cite}`schmid2010`,
+
+You can read more about Dynamic Mode Decomposition here {cite}`DMD_book` and here [[BK19](https://python.quantecon.org/zreferences.html#id25)] (section 7.2).
+
+The key idea underlying   **Dynamic Mode Decomposition** (DMD) is  to compute a rank $ r < p > $ approximation to the least square regression coefficients $ \hat A $ that we  described above by formula {eq}`eq:AhatSVDformula`.
+
   
-**Remark:** In our Python code, we'll sometimes use  a reduced SVD.
+We'll  build up gradually  to a formulation that is typically used in applications of DMD.
 
 
-Next, we describe alternative representations of our first-order linear dynamic system.
+We'll do this by describing three  alternative representations of our first-order linear dynamic system, i.e.,
+our vector autoregression. 
 
-**Guide to three representations:** In practice, we'll be interested in Representation 3.  We present the first 2 in order to set the stage for some intermediate steps that might help us understand what is under the hood of Representation 3.  In applications, we'll use only a small  subset of the DMD to approximate dynamics.  To to that, we'll want to be using the  reduced  SVD's affiliated with representation 3, not the full SVD's affiliated with Representations 1 and 2. 
+**Guide to three representations:** In practice, we'll be interested in Representation 3.  We present the first 2 in order to set the stage for some intermediate steps that might help us understand what is under the hood of Representation 3.  In applications, we'll use only a small  subset of the DMD to approximate dynamics.  To do that, we'll want to use the  **reduced**  SVD's affiliated with representation 3, not the **full** SVD's affiliated with representations 1 and 2. 
 
 +++
 
@@ -979,7 +1117,7 @@ where we use $\overline X_{t+1}, t \geq 1 $ to denote a forecast.
 
 This representation is related to  one originally proposed by  {cite}`schmid2010`.
 
-It can be regarded as an intermediate step to  a related   representation 3 to be presented later
+It can be regarded as an intermediate step on the way  to obtaining  a related   representation 3 to be presented later
 
 
 As with Representation 1, we continue to
@@ -994,7 +1132,7 @@ As we observed and illustrated  earlier in this lecture
  
   * (b)  for  a reduced SVD of $X$, $U^T U $ is not an identity matrix.  
 
-As we shall see later, a full SVD is  too confining for what we ultimately want to do, namely,  situations in which  $U^T U$ is **not** an identity matrix because we  use a reduced SVD of $X$.
+As we shall see later, a full SVD is  too confining for what we ultimately want to do, namely,  cope with situations in which  $U^T U$ is **not** an identity matrix because we  use a reduced SVD of $X$.
 
 But for now, let's proceed under the assumption that we are using a full SVD so that  both of the  preceding two  requirements (a) and (b) are satisfied.
 
@@ -1101,7 +1239,7 @@ We'll say more about this interpretation in a related context when we discuss re
 
 We turn next  to an alternative  representation suggested by  Tu et al. {cite}`tu_Rowley`.
 
-It is more appropriate to use this alternative representation  when, as in practice is typically the case, we use a reduced SVD.
+It is more appropriate to use this alternative representation  when, as is typically the case  in practice, we use a reduced SVD.
 
 
 
@@ -1302,8 +1440,7 @@ is an $m \times n$ matrix of least squares projections of $X$ on $\Phi$.
 
  
 
-By virtue of least-squares projection theory discussed here <https://python-advanced.quantecon.org/orth_proj.html>, 
-we can represent $X$ as the sum of the projection $\check X$ of $X$ on $\Phi$  plus a matrix of errors.
+By virtue of least-squares projection theory discussed in  this quantecon lecture e <https://python-advanced.quantecon.org/orth_proj.html>, we can represent $X$ as the sum of the projection $\check X$ of $X$ on $\Phi$  plus a matrix of errors.
 
 
 To verify this, note that the least squares projection $\check X$ is related to $X$ by
@@ -1411,7 +1548,7 @@ $$ (eq:beqnsmall)
 
 
 
-which is  computationally efficient approximation to  the following instance of  equation {eq}`eq:decoder102` for  the initial vector $\check b_1$:
+which is a computationally efficient approximation to  the following instance of  equation {eq}`eq:decoder102` for  the initial vector $\check b_1$:
 
 $$
   \check b_1= \Phi^{+} X_1

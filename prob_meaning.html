@@ -165,6 +165,11 @@ const thebe_selector_output = ".output, .cell_output"
    12.3. Bayesian Interpretation
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#role-of-a-conjugate-prior">
+   12.4. Role of a Conjugate Prior
+  </a>
+ </li>
 </ul>
 
                             <p class="logo">
@@ -407,22 +412,22 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 | 2  | 3.606884752589999e-08  |     0.0     |
 | 3  |  5.04963865362601e-07  |    1e-06    |
 | 4  | 5.007558331512455e-06  |    3e-06    |
-| 5  | 3.7389768875293014e-05 |   3.4e-05   |
-| 6  | 0.00021810698510587546 |   0.000198  |
-| 7  |  0.001017832597160754  |   0.000984  |
-| 8  |  0.003859281930901185  |   0.00386   |
-| 9  |  0.012006654896137007  |   0.012006  |
-| 10 |  0.030817080900085007  |   0.030609  |
-| 11 |   0.065369565545635    |   0.06512   |
-| 12 |  0.11439673970486108   |   0.114887  |
-| 13 |   0.1642619852172365   |   0.164356  |
-| 14 |  0.19163898275344246   |   0.191095  |
-| 15 |  0.17886305056987967   |   0.179158  |
-| 16 |   0.1304209743738704   |   0.130841  |
-| 17 |  0.07160367220526209   |   0.071476  |
-| 18 |  0.027845872524268643  |   0.027758  |
-| 19 |  0.006839337111223871  |   0.006815  |
-| 20 | 0.0007979226629761189  |   0.000799  |
+| 5  | 3.7389768875293014e-05 |   3.3e-05   |
+| 6  | 0.00021810698510587546 |   0.000195  |
+| 7  |  0.001017832597160754  |   0.001001  |
+| 8  |  0.003859281930901185  |   0.003919  |
+| 9  |  0.012006654896137007  |   0.012327  |
+| 10 |  0.030817080900085007  |   0.030688  |
+| 11 |   0.065369565545635    |   0.065343  |
+| 12 |  0.11439673970486108   |   0.114535  |
+| 13 |   0.1642619852172365   |   0.164061  |
+| 14 |  0.19163898275344246   |   0.191075  |
+| 15 |  0.17886305056987967   |   0.178845  |
+| 16 |   0.1304209743738704   |   0.130815  |
+| 17 |  0.07160367220526209   |   0.071785  |
+| 18 |  0.027845872524268643  |   0.027804  |
+| 19 |  0.006839337111223871  |   0.006783  |
+| 20 | 0.0007979226629761189  |   0.000787  |
 +----+------------------------+-------------+
 </pre></div>
 </div>
@@ -787,36 +792,36 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
     <tr>
       <th>upper</th>
       <td>0.001543</td>
-      <td>0.000868</td>
-      <td>0.000603</td>
-      <td>0.000462</td>
-      <td>0.036447</td>
-      <td>0.117329</td>
+      <td>0.097308</td>
+      <td>0.235534</td>
+      <td>0.349293</td>
+      <td>0.437155</td>
+      <td>0.347322</td>
       <td>0.196953</td>
-      <td>0.264015</td>
-      <td>0.329116</td>
-      <td>0.334679</td>
-      <td>0.360361</td>
-      <td>0.331662</td>
-      <td>0.360533</td>
-      <td>0.379692</td>
+      <td>0.179717</td>
+      <td>0.203466</td>
+      <td>0.268394</td>
+      <td>0.284691</td>
+      <td>0.305900</td>
+      <td>0.344870</td>
+      <td>0.362915</td>
     </tr>
     <tr>
       <th>lower</th>
       <td>0.771480</td>
-      <td>0.569259</td>
-      <td>0.444067</td>
-      <td>0.362487</td>
-      <td>0.562845</td>
-      <td>0.558127</td>
+      <td>0.902692</td>
+      <td>0.937587</td>
+      <td>0.953993</td>
+      <td>0.963553</td>
+      <td>0.814884</td>
       <td>0.533165</td>
-      <td>0.549653</td>
-      <td>0.555887</td>
-      <td>0.526749</td>
-      <td>0.522172</td>
-      <td>0.423421</td>
-      <td>0.432354</td>
-      <td>0.430713</td>
+      <td>0.447604</td>
+      <td>0.413204</td>
+      <td>0.454460</td>
+      <td>0.441218</td>
+      <td>0.396228</td>
+      <td>0.416153</td>
+      <td>0.413563</td>
     </tr>
   </tbody>
 </table>
@@ -975,6 +980,24 @@ F(a)=p_1,F(b)=p_2
 <p>Thus, the Bayesian statististian  comes to believe that <span class="math notranslate nohighlight">\(\theta\)</span> is near <span class="math notranslate nohighlight">\(.4\)</span>.</p>
 <p>As shown in the figure above, as the number of observations grows, the Bayesian coverage intervals (BCIs) become narrower and narrower   around  <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
 <p>However, if you take a closer look, you will find that the centers of  the BCIs are not exactly <span class="math notranslate nohighlight">\(0.4\)</span>, due to the persistent influence of the prior distribution and the randomness of the simulation path.</p>
+</div>
+<div class="section" id="role-of-a-conjugate-prior">
+<h2><span class="section-number">12.4. </span>Role of a Conjugate Prior<a class="headerlink" href="#role-of-a-conjugate-prior" title="Permalink to this headline">¶</a></h2>
+<p>We have made  assumptions that link functional forms of  our likelihood function and our prior in a way that has eased our calculations considerably.</p>
+<p>In particular, our assumptions that the likelihood function is <strong>binomial</strong> and that the prior distribution is a <strong>beta distribution</strong> have the consequence that the posterior distribution implied by Bayes’ Law is also a <strong>beta distribution</strong>.</p>
+<p>So posterior and prior are both beta distributions, albeit ones with different parameters.</p>
+<p>When a likelihood function and prior fit together like hand and glove in this way, we can  say that the  prior and posterior are <strong>conjugate distributions</strong>.</p>
+<p>In this situation, we also sometimes  say that we have <strong>conjugate prior</strong> for the likelihood function <span class="math notranslate nohighlight">\(\textrm{Prob}(X | \theta)\)</span>.</p>
+<p>Typically, the functional form of the likelihood function determines the functional form of a <strong>conjugate prior</strong>.</p>
+<p>A natural question to ask is why should a person’s personal prior about a parameter <span class="math notranslate nohighlight">\(\theta\)</span> be restricted to be described by a conjugate prior?</p>
+<p>Why not some other functional form that more sincerely describes the person’s beliefs.</p>
+<p>To be argumentative, one could ask, why should the form of the likelihood function have <em>anything</em> to say about my
+personal beliefs about <span class="math notranslate nohighlight">\(\theta\)</span>?</p>
+<p>A dignified response to that question is, well, it shouldn’t, but if you want to compute a posterior easily you’ll just be happier if your prior is conjugate to your likelihood.</p>
+<p>Otherwise, your posterior won’t have a convenient analytical form and you’ll be in the situation of wanting to
+apply the Markov chain Monte Carlo techniques deployed in <a class="reference internal" href="bayes_nonconj.html"><span class="doc">this quantecon lecture</span></a>.</p>
+<p>We also apply these powerful methods to approximating Bayesian posteriors for non-conjugate priors in
+<a class="reference internal" href="ar1_bayes.html"><span class="doc">this quantecon lecture</span></a> and <a class="reference internal" href="ar1_turningpts.html"><span class="doc">this quantecon lecture</span></a></p>
 </div>
 </div>
 

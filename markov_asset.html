@@ -353,20 +353,18 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.5.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.6.0)
 Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: scipy&gt;=1.0.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
 Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: scipy&gt;=1.5.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
+Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
 Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
 Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
 Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -569,7 +567,8 @@ factor <span class="math notranslate nohighlight">\(g_t = g(X_t)\)</span>.</p></
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">tauchen</span><span class="p">(</span><span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">tauchen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
 <span class="n">sim_length</span> <span class="o">=</span> <span class="mi">80</span>
 
 <span class="n">x_series</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">sim_length</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">state_values</span><span class="p">))</span>
@@ -589,7 +588,11 @@ factor <span class="math notranslate nohighlight">\(g_t = g(X_t)\)</span>.</p></
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/markov_asset_5_0.png" src="_images/markov_asset_5_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_19772/2878916857.py:2: UserWarning: The API of tauchen has changed from `tauchen(rho, sigma_u, b=0., m=3, n=7)` to `tauchen(n, rho, sigma, mu=0., n_std=3)`. To find more details please visit: https://github.com/QuantEcon/QuantEcon.py/issues/663.
+  mc = qe.tauchen(n, 0.96, 0.25)
+</pre></div>
+</div>
+<img alt="_images/markov_asset_5_1.png" src="_images/markov_asset_5_1.png" />
 </div>
 </div>
 <div class="section" id="pricing-formula">
@@ -640,7 +643,7 @@ K(x, y) := g(y) P(x, y)\]</div>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">25</span>  <span class="c1"># Size of state space</span>
 <span class="n">β</span> <span class="o">=</span> <span class="mf">0.9</span>
-<span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">tauchen</span><span class="p">(</span><span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+<span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">tauchen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
 
 <span class="n">K</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">P</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">state_values</span><span class="p">)</span>
 
@@ -660,7 +663,11 @@ K(x, y) := g(y) P(x, y)\]</div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/markov_asset_7_0.png" src="_images/markov_asset_7_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_19772/463224509.py:3: UserWarning: The API of tauchen has changed from `tauchen(rho, sigma_u, b=0., m=3, n=7)` to `tauchen(n, rho, sigma, mu=0., n_std=3)`. To find more details please visit: https://github.com/QuantEcon/QuantEcon.py/issues/663.
+  mc = qe.tauchen(n, 0.96, 0.02)
+</pre></div>
+</div>
+<img alt="_images/markov_asset_7_1.png" src="_images/markov_asset_7_1.png" />
 </div>
 </div>
 <p>Why does the price-dividend ratio increase with the state?</p>
@@ -771,7 +778,7 @@ the class AssetPriceModel</p>
         <span class="k">if</span> <span class="n">mc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ρ</span> <span class="o">=</span> <span class="mf">0.9</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">σ</span> <span class="o">=</span> <span class="mf">0.02</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">tauchen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ρ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">σ</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">tauchen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ρ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">σ</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mc</span> <span class="o">=</span> <span class="n">mc</span>
 
@@ -843,7 +850,11 @@ with a positively correlated Markov process and <span class="math notranslate no
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/markov_asset_11_0.png" src="_images/markov_asset_11_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_19772/1594356851.py:26: UserWarning: The API of tauchen has changed from `tauchen(rho, sigma_u, b=0., m=3, n=7)` to `tauchen(n, rho, sigma, mu=0., n_std=3)`. To find more details please visit: https://github.com/QuantEcon/QuantEcon.py/issues/663.
+  self.mc = qe.tauchen(n, self.ρ, self.σ)
+</pre></div>
+</div>
+<img alt="_images/markov_asset_11_1.png" src="_images/markov_asset_11_1.png" />
 </div>
 </div>
 <p>Notice that <span class="math notranslate nohighlight">\(v\)</span> is decreasing in each case.</p>
@@ -1054,7 +1065,11 @@ T w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/markov_asset_17_0.png" src="_images/markov_asset_17_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_19772/1594356851.py:26: UserWarning: The API of tauchen has changed from `tauchen(rho, sigma_u, b=0., m=3, n=7)` to `tauchen(n, rho, sigma, mu=0., n_std=3)`. To find more details please visit: https://github.com/QuantEcon/QuantEcon.py/issues/663.
+  self.mc = qe.tauchen(n, self.ρ, self.σ)
+</pre></div>
+</div>
+<img alt="_images/markov_asset_17_1.png" src="_images/markov_asset_17_1.png" />
 </div>
 </div>
 <p>In high values of the Markov growth state, the value of the option is close to zero.</p>
@@ -1132,7 +1147,7 @@ p_t = \frac{1}{1 - \beta g} d_t
 <p>Consider the following primitives</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">5</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># Size of State Space</span>
 <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="mf">0.0125</span><span class="p">)</span>
 <span class="n">P</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">P</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="c1"># State values of the Markov chain</span>
