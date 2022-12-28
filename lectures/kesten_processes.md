@@ -680,6 +680,7 @@ First we generate the observations:
 ```{code-cell} ipython3
 import jax.numpy as jnp
 from jax import jit, random
+from jax.lax import scan
 
 @jit
 def generate_draws(μ_a=-0.5,
@@ -693,22 +694,25 @@ def generate_draws(μ_a=-0.5,
                    M=1_000_000,
                    s_init=1.0,
                    seed=123):
+  
     key = random.PRNGKey(seed)
-    # Generate arrays of random numbers
+    
+    # Generate random draws and initialize states
     a_random = μ_a + σ_a * random.normal(key, (M, T))
     b_random = μ_b + σ_b * random.normal(key, (M, T))
     e_random = μ_e + σ_e * random.normal(key, (M, T))
-
-    # Initialize the array of s values with the initial value
     s = jnp.full((M, T+1), s_init)
 
-    # Perform the calculations in a vectorized manner
-    for t in range(T):
-        s = s.at[:, t+1].set(jnp.where(s[:, t] < s_bar, 
-                             jnp.exp(e_random[:, t]), 
-                             jnp.exp(a_random[:, t]) * s[:, t] + jnp.exp(b_random[:, t])))
-    
-    return s[:, -1]
+    # Define the function for each update
+    def update_s(s, a_b_e_draws):
+        a, b, e = a_b_e_draws
+        return s, jnp.where(s < s_bar, 
+                            jnp.exp(e), 
+                            jnp.exp(a) * s + jnp.exp(b))
+     
+    # Use scan to perform the calculations on all states
+    _, s = scan(update_s, s_init, (a_random, b_random, e_random))
+    return s[:,-1]
 
 %time data = generate_draws().block_until_ready()
 ```
@@ -738,7 +742,6 @@ We can also use Numba with `for` loops:
 ```{code-cell} ipython3
 from numba import njit, prange
 from numpy.random import randn
-
 
 @njit(parallel=True)
 def generate_draws_numba(μ_a=-0.5,
