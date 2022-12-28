@@ -701,7 +701,7 @@ def generate_draws(μ_a=-0.5,
     a_random = μ_a + σ_a * random.normal(key, (M, T))
     b_random = μ_b + σ_b * random.normal(key, (M, T))
     e_random = μ_e + σ_e * random.normal(key, (M, T))
-    s = jnp.full((M, T+1), s_init)
+    s = jnp.full(M, s_init)
 
     # Define the function for each update
     def update_s(s, a_b_e_draws):
