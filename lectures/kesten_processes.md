@@ -673,14 +673,15 @@ s_init = 1.0      # initial condition for each firm
 :class: dropdown
 ```
 
-Here's one solution.  First we generate the observations:
+Here's one solution in Jax. 
+
+First we generate the observations:
 
 ```{code-cell} ipython3
-from numba import njit, prange
-from numpy.random import randn
+import jax.numpy as jnp
+from jax import jit, random
 
-
-@njit(parallel=True)
+@jit
 def generate_draws(μ_a=-0.5,
                    σ_a=0.1,
                    μ_b=0.0,
@@ -690,7 +691,66 @@ def generate_draws(μ_a=-0.5,
                    s_bar=1.0,
                    T=500,
                    M=1_000_000,
-                   s_init=1.0):
+                   s_init=1.0,
+                   seed=123):
+    key = random.PRNGKey(seed)
+    # Generate arrays of random numbers
+    a_random = μ_a + σ_a * random.normal(key, (M, T))
+    b_random = μ_b + σ_b * random.normal(key, (M, T))
+    e_random = μ_e + σ_e * random.normal(key, (M, T))
+
+    # Initialize the array of s values with the initial value
+    s = jnp.full((M, T+1), s_init)
+
+    # Perform the calculations in a vectorized manner
+    for t in range(T):
+        s = s.at[:, t+1].set(jnp.where(s[:, t] < s_bar, 
+                             jnp.exp(e_random[:, t]), 
+                             jnp.exp(a_random[:, t]) * s[:, t] + jnp.exp(b_random[:, t])))
+    
+    return s[:, -1]
+
+%time data = generate_draws().block_until_ready()
+```
+
+Now we produce the rank-size plot:
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+rank_data, size_data = qe.rank_size(data, c=0.01)
+ax.loglog(rank_data, size_data, 'o', markersize=3.0, alpha=0.5)
+ax.set_xlabel("log rank")
+ax.set_ylabel("log size")
+
+plt.show()
+```
+The plot produces a straight line, consistent with a Pareto tail.
+
+Since we called `jax.jit` on the function, it runs even faster when we call the function again
+
+```{code-cell} ipython3
+%time data = generate_draws().block_until_ready()
+```
+
+We can also use Numba with `for` loops:
+
+```{code-cell} ipython3
+from numba import njit, prange
+from numpy.random import randn
+
+
+@njit(parallel=True)
+def generate_draws_numba(μ_a=-0.5,
+                         σ_a=0.1,
+                         μ_b=0.0,
+                         σ_b=0.5,
+                         μ_e=0.0,
+                         σ_e=0.5,
+                         s_bar=1.0,
+                         T=500,
+                         M=1_000_000,
+                         s_init=1.0):
 
     draws = np.empty(M)
     for m in prange(M):
@@ -707,7 +767,7 @@ def generate_draws(μ_a=-0.5,
 
     return draws
 
-data = generate_draws()
+%time data = generate_draws_numba()
 ```
 
 Now we produce the rank-size plot:
@@ -722,8 +782,6 @@ ax.set_ylabel("log size")
 
 plt.show()
 ```
-
-The plot produces a straight line, consistent with a Pareto tail.
 
 ```{solution-end}
 ```
