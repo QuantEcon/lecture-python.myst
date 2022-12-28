@@ -119,7 +119,7 @@ Later we'll also describe an **economy** or **reduced** SVD.
 But before we study a **reduced** SVD we'll say a little more about properties of a **full** SVD.
 
 
-## SVD and Four Fundamental Subspaces
+## Four Fundamental Subspaces
 
 
 Let's start with a reminder about definitions of the four fundamental subspaces of an $m \times n$
@@ -241,7 +241,7 @@ print("Right null space:\n", null_space.T)
 
 
 
-## Properties of Full and Reduced SVD's
+## Full and Reduced SVD's
 
 Up to now we have described properties of a **full** SVD in which shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively. 
 
