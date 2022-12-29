@@ -679,8 +679,7 @@ First we generate the observations:
 
 ```{code-cell} ipython3
 import jax.numpy as jnp
-from jax import jit, random
-from jax.lax import scan
+from jax import jit, random, lax
 
 @jit
 def generate_draws(μ_a=-0.5,
@@ -696,23 +695,25 @@ def generate_draws(μ_a=-0.5,
                    seed=123):
   
     key = random.PRNGKey(seed)
+    key, *subkeys = random.split(key, 4)
     
-    # Generate random draws and initialize states
-    a_random = μ_a + σ_a * random.normal(key, (M, T))
-    b_random = μ_b + σ_b * random.normal(key, (M, T))
-    e_random = μ_e + σ_e * random.normal(key, (M, T))
-    s = jnp.full(M, s_init)
+    # Generate random draws and initial values
+    a_random = μ_a + σ_a * random.normal(subkeys[0], (T, M))
+    b_random = μ_b + σ_b * random.normal(subkeys[1], (T, M))
+    e_random = μ_e + σ_e * random.normal(subkeys[2], (T, M))
+    s = jnp.full((M, ), s_init)
 
     # Define the function for each update
     def update_s(s, a_b_e_draws):
         a, b, e = a_b_e_draws
-        return s, jnp.where(s < s_bar, 
-                            jnp.exp(e), 
-                            jnp.exp(a) * s + jnp.exp(b))
-     
-    # Use scan to perform the calculations on all states
-    _, s = scan(update_s, s_init, (a_random, b_random, e_random))
-    return s[:,-1]
+        res = jnp.where(s < s_bar, 
+                        jnp.exp(e), 
+                        jnp.exp(a) * s + jnp.exp(b))
+        return res, res
+    
+    # Use lax.scan to perform the calculations on all states
+    s_final, _ = lax.scan(update_s, s, (a_random, b_random, e_random))
+    return s_final
 
 %time data = generate_draws().block_until_ready()
 ```
@@ -731,7 +732,7 @@ plt.show()
 ```
 The plot produces a straight line, consistent with a Pareto tail.
 
-Since we called `jax.jit` on the function, it runs even faster when we call the function again
+Since we applied `jax.jit` on the function, it runs even faster when we call the function again
 
 ```{code-cell} ipython3
 %time data = generate_draws().block_until_ready()
