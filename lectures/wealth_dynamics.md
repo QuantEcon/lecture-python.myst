@@ -323,7 +323,7 @@ def update_states_jax(arrays, wdy, size, rand_key):
 update_states_jax = jax.jit(update_states_jax, static_argnums=(2,))
 ```
 
-Here’s function to simulate the time series of wealth for in individual households.
+Here’s function to simulate the time series of wealth for individual households.
 
 ```{code-cell} ipython3
 def wealth_time_series_jax(w_0, n, wdy, size, rand_seed=1):
@@ -389,6 +389,30 @@ w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size)
 fig, ax = plt.subplots()
 ax.plot(w_jax_result)
 plt.show()
+```
+
+Now here’s function to simulate a cross section of households forward in time.
+
+```{code-cell} ipython3
+def update_cross_section_jax(w_distribution, shift_length, wdy, size, rand_seed=2):
+    """
+    Shifts a cross-section of household forward in time
+
+    * wdy: NamedTuple Model
+    * w_distribution: array_like, represents current cross-section
+
+    Takes a current distribution of wealth values as w_distribution
+    and updates each w_t in w_distribution to w_{t+j}, where
+    j = shift_length.
+
+    Returns the new distribution.
+    """
+    new_dist = wealth_time_series_jax(w_distribution, shift_length, wdy, size, rand_seed)
+    new_distribution = new_dist[-1, :]
+    return new_distribution
+
+# Create the jit function
+update_cross_section_jax = jax.jit(update_cross_section_jax, static_argnums=(1,3,))
 ```
 ## Implementation using Numba
 
@@ -558,7 +582,26 @@ wdy = WealthDynamics()
 
 ts_length = 200
 w = wealth_time_series(wdy, wdy.y_mean, ts_length)
+```
 
+```{code-cell} ipython3
+%%time
+
+w = wealth_time_series(wdy, wdy.y_mean, ts_length)
+```
+
+```{code-cell} ipython3
+%%time
+
+# Check the time for 2nd execution
+w = wealth_time_series(wdy, wdy.y_mean, ts_length)
+```
+
+Notice the time difference between the `wealth_time_series` and `wealth_time_series_jax`
+
+
+
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 ax.plot(w)
 plt.show()
@@ -575,7 +618,24 @@ Let's look at how inequality varies with returns on financial assets.
 The next function generates a cross section and then computes the Lorenz
 curve and Gini coefficient.
 
+Let's first write the function that uses the jax implementation and for the numba.
+
 ```{code-cell} ipython3
+# Uses jax
+def generate_lorenz_and_gini_jax(wdy, num_households=100_000, T=500):
+    """
+    Generate the Lorenz curve data and gini coefficient corresponding to a
+    WealthDynamics mode by simulating num_households forward to time T.
+    """
+    size = (num_households, )
+    ψ_0 = jnp.full(size, wdy.y_mean)
+    ψ_star = update_cross_section_jax(ψ_0, T, wdy, size)
+    ψ_star = jax.device_get(ψ_star)  # get back to numpy form
+    return qe.gini_coefficient(ψ_star), qe.lorenz_curve(ψ_star)
+```
+
+```{code-cell} ipython3
+# Uses numba
 def generate_lorenz_and_gini(wdy, num_households=100_000, T=500):
     """
     Generate the Lorenz curve data and gini coefficient corresponding to a
@@ -599,6 +659,28 @@ This is unavoidable because we are executing a CPU intensive task.
 In fact the code, which is JIT compiled and parallelized, runs extremely fast relative to the number of computations.
 
 ```{code-cell} ipython3
+%%time
+
+fig, ax = plt.subplots()
+μ_r_vals = (0.0, 0.025, 0.05)
+gini_vals = []
+
+for μ_r in μ_r_vals:
+    wdy = create_wealth_model(μ_r=μ_r)
+    gv, (f_vals, l_vals) = generate_lorenz_and_gini_jax(wdy)
+    ax.plot(f_vals, l_vals, label=f'$\psi^*$ at $\mu_r = {μ_r:0.2}$')
+    gini_vals.append(gv)
+
+ax.plot(f_vals, f_vals, label='equality')
+ax.legend(loc="upper left")
+plt.show()
+```
+
+Now let's try to run the same code snippet but using the numba version.
+
+```{code-cell} ipython3
+%%time
+
 fig, ax = plt.subplots()
 μ_r_vals = (0.0, 0.025, 0.05)
 gini_vals = []
@@ -649,7 +731,31 @@ rise.
 Let's finish this section by investigating what happens when we change the
 volatility term $\sigma_r$ in financial returns.
 
+Firstly, using jax, we have
+
 ```{code-cell} ipython3
+%%time
+
+fig, ax = plt.subplots()
+σ_r_vals = (0.35, 0.45, 0.52)
+gini_vals = []
+
+for σ_r in σ_r_vals:
+    wdy = create_wealth_model(σ_r=σ_r)
+    gv, (f_vals, l_vals) = generate_lorenz_and_gini_jax(wdy)
+    ax.plot(f_vals, l_vals, label=f'$\psi^*$ at $\sigma_r = {σ_r:0.2}$')
+    gini_vals.append(gv)
+
+ax.plot(f_vals, f_vals, label='equality')
+ax.legend(loc="upper left")
+plt.show()
+```
+
+Using numba we get,
+
+```{code-cell} ipython3
+%%time
+
 fig, ax = plt.subplots()
 σ_r_vals = (0.35, 0.45, 0.52)
 gini_vals = []
@@ -764,6 +870,20 @@ z_0 = wdy.z_mean
 ```
 
 First let's generate the distribution:
+Using the jax implementation
+
+```{code-cell} ipython3
+num_households = 250_000
+T = 500  # how far to shift forward in time
+size = (num_households, )
+
+wdy = create_wealth_model()
+ψ_0 = jnp.full(size, wdy.y_mean)
+ψ_star = update_cross_section_jax(ψ_0, T, wdy, size)
+ψ_star = jax.device_get(ψ_star) # get back numpy form
+```
+
+Using the numba implementation
 
 ```{code-cell} ipython3
 num_households = 250_000
