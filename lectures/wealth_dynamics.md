@@ -78,6 +78,9 @@ import numpy as np
 import quantecon as qe
 from numba import njit, float64, prange
 from numba.experimental import jitclass
+import jax
+import jax.numpy as jnp
+from collections import namedtuple
 ```
 
 ## Lorenz Curves and the Gini Coefficient
@@ -250,7 +253,144 @@ their wealth.
 We are using something akin to a fixed savings rate model, while
 acknowledging that low wealth households tend to save very little.
 
-## Implementation
+## Implementation using JAX
+
+Let's define a Model to represent the wealth dynamics.
+
+```{code-cell} ipython3
+# NamedTuple Model
+Model = namedtuple("Model", ("w_hat", "s_0", "c_y", "μ_y",
+                             "σ_y", "c_r", "μ_r", "σ_r", "a",
+                             "b", "σ_z", "z_mean", "z_var", "y_mean"))
+```
+
+Here's a function to create the Model with the given parameters
+
+```{code-cell} ipython3
+def create_wealth_model(w_hat=1.0,
+                        s_0=0.75,
+                        c_y=1.0,
+                        μ_y=1.0,
+                        σ_y=0.2,
+                        c_r=0.05,
+                        μ_r=0.1,
+                        σ_r=0.5,
+                        a=0.5,
+                        b=0.0,
+                        σ_z=0.1):
+    """
+    Create a wealth model with given parameters and return
+    and instance of NamedTuple Model.
+    """
+    z_mean = b / (1 - a)
+    z_var = σ_z**2 / (1 - a**2)
+    exp_z_mean = np.exp(z_mean + z_var / 2)
+    R_mean = c_r * exp_z_mean + np.exp(μ_r + σ_r**2 / 2)
+    y_mean = c_y * exp_z_mean + np.exp(μ_y + σ_y**2 / 2)
+    # Test a stability condition that ensures wealth does not diverge
+    # to infinity.
+    α = R_mean * s_0
+    if α >= 1:
+        raise ValueError("Stability condition failed.")
+    return Model(w_hat=w_hat, s_0=s_0, c_y=c_y, μ_y=μ_y,
+                 σ_y=σ_y, c_r=c_r, μ_r=μ_r, σ_r=σ_r, a=a,
+                 b=b, σ_z=σ_z, z_mean=z_mean, z_var=z_var, y_mean=y_mean)
+```
+
+The following function updates one period with the given current wealth and persistent state.
+
+```{code-cell} ipython3
+def update_states_jax(arrays, wdy, size, rand_key):
+    """
+    Update one period, given current wealth w and persistent
+    state z. They are stored in the form of tuples under the arrays argument
+    """
+    # Unpack w and z
+    w, z = arrays
+
+    rand_key, *subkey = jax.random.split(rand_key, 3)
+    zp = wdy.a * z + wdy.b + wdy.σ_z * jax.random.normal(rand_key, shape=size)
+
+    # Update wealth
+    y = wdy.c_y * jnp.exp(zp) + jnp.exp(wdy.μ_y + wdy.σ_y * jax.random.normal(subkey[0], shape=size))
+    wp = y
+
+    R = wdy.c_r * jnp.exp(zp) + jnp.exp(wdy.μ_r + wdy.σ_r * jax.random.normal(subkey[1], shape=size))
+    wp += (w >= wdy.w_hat) * R * wdy.s_0 * w
+    return wp, zp
+
+# Create the jit function
+update_states_jax = jax.jit(update_states_jax, static_argnums=(2,))
+```
+
+Here’s function to simulate the time series of wealth for in individual households.
+
+```{code-cell} ipython3
+def wealth_time_series_jax(w_0, n, wdy, size, rand_seed=1):
+    """
+    Generate a single time series of length n for wealth given
+    initial value w_0.
+
+    The initial persistent state z_0 for each household is drawn from
+    the stationary distribution of the AR(1) process.
+
+        * wdy: NamedTuple Model
+        * w_0: scalar/vector
+        * n: int
+        * size: size/shape of the w_0
+        * rand_seed: int (Used to generate PRNG key)
+    """
+    rand_key = jax.random.PRNGKey(rand_seed)
+    rand_key, *subkey = jax.random.split(rand_key, n)
+
+    w_0 = jax.device_put(w_0).reshape(size)
+    z_init = wdy.z_mean + jnp.sqrt(wdy.z_var) * jax.random.normal(rand_key, shape=size)
+    arrays = w_0, z_init
+    rand_sub_keys = jnp.array(subkey)
+
+    w_final = jnp.array([w_0])
+
+    # Define the function for each update
+    def update_w_z(arrays, rand_sub_key):
+        wp, zp = update_states_jax(arrays, wdy, size, rand_sub_key)
+        return (wp, zp), wp
+
+    arrays_last, w_values = jax.lax.scan(update_w_z, arrays, rand_sub_keys)
+    return jnp.concatenate((w_final, w_values))
+
+# Create the jit function
+wealth_time_series_jax = jax.jit(wealth_time_series_jax, static_argnums=(1,3,))
+```
+
+Let's try simulating the model at different parameter values and investigate the implications for the wealth distribution.
+
+```{code-cell} ipython3
+wdy = create_wealth_model() # default model
+ts_length = 200
+size = (1,)
+```
+
+```{code-cell} ipython3
+%%time
+
+w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size)
+```
+
+Running the above function again will be even faster because of JAX's JIT.
+
+```{code-cell} ipython3
+%%time
+
+# 2nd time is expected to be very fast because of JIT
+w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size)
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+ax.plot(w_jax_result)
+plt.show()
+```
+## Implementation using Numba
 
 Here's some type information to help Numba.
 
