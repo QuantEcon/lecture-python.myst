@@ -581,7 +581,6 @@ Let's look at the wealth dynamics of an individual household.
 wdy = WealthDynamics()
 
 ts_length = 200
-w = wealth_time_series(wdy, wdy.y_mean, ts_length)
 ```
 
 ```{code-cell} ipython3
@@ -618,7 +617,7 @@ Let's look at how inequality varies with returns on financial assets.
 The next function generates a cross section and then computes the Lorenz
 curve and Gini coefficient.
 
-Let's first write the function that uses the jax implementation and for the numba.
+Let's first write the function that uses the jax implementation and then for the numba.
 
 ```{code-cell} ipython3
 # Uses jax
@@ -751,7 +750,7 @@ ax.legend(loc="upper left")
 plt.show()
 ```
 
-Using numba we get,
+Using numba, we get,
 
 ```{code-cell} ipython3
 %%time
@@ -888,6 +887,7 @@ Using the numba implementation
 ```{code-cell} ipython3
 num_households = 250_000
 T = 500  # how far to shift forward in time
+wdy = WealthDynamics()
 ψ_0 = np.full(num_households, wdy.y_mean)
 z_0 = wdy.z_mean
 
