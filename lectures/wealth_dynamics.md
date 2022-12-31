@@ -83,6 +83,15 @@ import jax.numpy as jnp
 from collections import namedtuple
 ```
 
+Let's check the backend used by jax and the devices available
+
+```{code-cell} ipython3
+# Check if JAX is using GPU
+print("jax backend: {}".format(jax.lib.xla_bridge.get_backend().platform))
+# Check the devices available for JAX
+print(jax.devices())
+```
+
 ## Lorenz Curves and the Gini Coefficient
 
 Before we investigate wealth dynamics, we briefly review some measures of
@@ -869,6 +878,7 @@ z_0 = wdy.z_mean
 ```
 
 First let's generate the distribution:
+
 Using the jax implementation
 
 ```{code-cell} ipython3
