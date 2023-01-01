@@ -673,7 +673,7 @@ s_init = 1.0      # initial condition for each firm
 :class: dropdown
 ```
 
-Here's one solution in Jax. 
+Here's one solution in [JAX](https://python-programming.quantecon.org/jax_intro.html). 
 
 First we generate the observations:
 
@@ -695,12 +695,12 @@ def generate_draws(μ_a=-0.5,
                    seed=123):
   
     key = random.PRNGKey(seed)
-    key, *subkeys = random.split(key, 4)
+    keys = random.split(key, 3)
     
     # Generate random draws and initial values
-    a_random = μ_a + σ_a * random.normal(subkeys[0], (T, M))
-    b_random = μ_b + σ_b * random.normal(subkeys[1], (T, M))
-    e_random = μ_e + σ_e * random.normal(subkeys[2], (T, M))
+    a_random = μ_a + σ_a * random.normal(keys[0], (T, M))
+    b_random = μ_b + σ_b * random.normal(keys[1], (T, M))
+    e_random = μ_e + σ_e * random.normal(keys[2], (T, M))
     s = jnp.full((M, ), s_init)
 
     # Define the function for each update
@@ -738,7 +738,7 @@ Since we applied `jax.jit` on the function, it runs even faster when we call the
 %time data = generate_draws().block_until_ready()
 ```
 
-We can also use Numba with `for` loops:
+We can also use Numba with `for` loops to generate the observations (replicating the results we obtained with JAX):
 
 ```{code-cell} ipython3
 from numba import njit, prange
