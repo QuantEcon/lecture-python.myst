@@ -32,7 +32,7 @@ import pandas as pd
 ## Overview
 
 The **singular value decomposition** (SVD) is a work-horse in applications of least squares projection that
-form  foundations for important  statistical and  machine learning methods.
+form  foundations for many statistical and  machine learning methods.
 
 After defining the SVD, we'll describe how it connects to 
 
@@ -44,7 +44,7 @@ We'll also tell  the essential role that the SVD plays in
 
  * dynamic mode decomposition (DMD)
 
- Like principal components analysis (PCA), DMD can be thought of as a data-reduction procedure  designed to capture salient patterns by projecting data onto a limited set of factors.
+ Like principal components analysis (PCA), DMD can be thought of as a data-reduction procedure that  represents salient patterns by projecting data onto a limited set of factors.
 
 ##  The Setting
 
@@ -52,14 +52,14 @@ Let $X$ be an $m \times n$ matrix of rank $p$.
 
 Necessarily, $p \leq \min(m,n)$.
 
-In  much of this lecture, we'll think of $X$ as a matrix of **data**.
+In  much of this lecture, we'll think of $X$ as a matrix of **data** in which
 
   * each column is an **individual** -- a time period or person, depending on the application
   
   * each row is a **random variable** describing an attribute of a time period or a person, depending on the application
   
   
-We'll be interested in  two  cases
+We'll be interested in  two  situations
 
   * A **short and fat** case in which $m << n$, so that there are many more columns (individuals) than rows (attributes).
 
@@ -68,11 +68,11 @@ We'll be interested in  two  cases
    
 We'll apply a **singular value decomposition** of $X$ in both situations.
 
-In the first case in which there are many more individuals $n$ than attributes $m$, we learn sample moments of  a joint distribution  by taking averages  across observations of functions of the observations. 
+In the $ m < < n$ case  in which there are many more individuals $n$ than attributes $m$, we can calculate sample moments of  a joint distribution  by taking averages  across observations of functions of the observations. 
 
 In this $ m < < n$ case,  we'll look for **patterns** by using a **singular value decomposition** to do a **principal components analysis** (PCA).
 
-In the $m > > n$  case in which there are many more attributes $m$ than individuals $n$, we'll proceed in a different way. 
+In the $m > > n$  case in which there are many more attributes $m$ than individuals $n$ and when we are in a time-series setting in which $n$ equals the number of time periods covered in the data set $X$, we'll proceed in a different way. 
 
 We'll again use a **singular value decomposition**,  but now to construct a **dynamic mode decomposition** (DMD)
 
@@ -95,20 +95,29 @@ $$
  
 and
  
-* $U$ is an $m \times m$ matrix whose columns are eigenvectors of $X^T X$
-
-* $V$ is an $n \times n$ matrix whose columns are eigenvectors of $X X^T$
-
+* $U$ is an $m \times m$ orthogonal  matrix of **left singular vectors** of $X$
+* Columns of $U$ are eigenvectors of $X^T X$
+* $V$ is an $n \times n$ orthogonal matrix of **right singular values** of $X$
+* Columns of $V$  are eigenvectors of $X X^T$
 * $\Sigma$ is an $m \times n$ matrix in which the first $p$ places on its main diagonal are positive numbers $\sigma_1, \sigma_2, \ldots, \sigma_p$ called **singular values**; remaining entries of $\Sigma$ are all zero
 
-* The $p$ singular values are positive square roots of the eigenvalues of the $m \times m$ matrix  $X X^T$ and the $n \times n$ matrix $X^T X$
+* The $p$ singular values are positive square roots of the eigenvalues of the $m \times m$ matrix  $X X^T$ and also of the $n \times n$ matrix $X^T X$
 
 * We adopt a convention that when $U$ is a complex valued matrix, $U^T$ denotes the **conjugate-transpose** or **Hermitian-transpose** of $U$, meaning that 
 $U_{ij}^T$ is the complex conjugate of $U_{ji}$. 
 
 * Similarly, when $V$ is a complex valued matrix, $V^T$ denotes the **conjugate-transpose** or **Hermitian-transpose** of $V$
 
-What we have described above  is called a **full** SVD.
+
+The matrices $U,\Sigma,V$ entail linear transformations that reshape in vectors in the following ways:
+
+* multiplying vectors  by the unitary matrices $U$ and $V$ **rotate** them, but leave **angles between vectors** and **lengths of vectors** unchanged.
+* multiplying vectors by the diagonal  matrix $\Sigma$ leaves **angles between vectors** unchanged but **rescales** vectors.
+
+Taken together the structure that the SVD provides for $X$ opens the door to constructing systems
+of data **encoders** and **decoders**, an idea that we shall  apply later in this lecture.
+
+What we have described here  is called a **full** SVD.
 
 
 
@@ -116,13 +125,13 @@ In a **full** SVD, the  shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$
 
 Later we'll also describe an **economy** or **reduced** SVD.
 
-But before we study a **reduced** SVD we'll say a little more about properties of a **full** SVD.
+Before we study a **reduced** SVD we'll say a little more about properties of a **full** SVD.
 
 
 ## Four Fundamental Subspaces
 
 
-Let's start with a reminder about definitions of the four fundamental subspaces of an $m \times n$
+Let's start by recalling the four fundamental subspaces of an $m \times n$
 matrix $X$ of rank $p$.
 
 * The **column space** of $X$, denoted ${\mathcal C}(X)$, is the span of the  columns of  $X$, i.e., all vectors $y$ that can be written as linear combinations of columns of $X$. Its dimension is $p$.
@@ -133,10 +142,10 @@ vectors $z$ that can be written as  linear combinations of rows of $X$. Its dime
 * The **left null space** of $X$, denoted ${\mathcal N}(X^T)$, consist of all vectors $z$ such that
 $X^T z =0$.  Its dimension is $n-p$.  
 
-The $U$ and $V$ factors for a  full SVD of a matrix $X$ contain orthogonal bases for all four subspaces.
+For a  full SVD of a matrix $X$, the matrix $U$ of left singular vectors  and the matrix $V$ of right singular vectors contain orthogonal bases for all four subspaces.
 
-The subspaces are connected in interesting ways, consisting of two pairs of orthogonal subspaces
-that we'll describe here.
+They form two pairs of orthogonal subspaces
+that we'll describe now.
 
 Let $u_i, i = 1, \ldots, m$ be the $m$ column vectors of $U$ and let
 $v_i, i = 1, \ldots, n$ be the $n$ column vectors of $V$.  
@@ -148,7 +157,7 @@ X = \begin{bmatrix} U_L & U_R \end{bmatrix} \begin{bmatrix} \Sigma_p & 0 \cr 0 &
      \begin{bmatrix} V_L & V_R \end{bmatrix}^T
 $$ (eq:fullSVDpartition)
 
-where 
+where  $ \Sigma_p$ is  a $p \times p$ diagonal matrix with the $p$ singular values on the diagonal and 
 
 $$
 \begin{aligned}
@@ -245,7 +254,7 @@ print("Right null space:\n", null_space.T)
 
 Up to now we have described properties of a **full** SVD in which shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively. 
 
-There is also an alternative shape convention called an **economy** or **reduced** SVD in which the shapes of $U, \Sigma$ and $V$ are different from what they are in a full SVD.
+There is  an alternative bookkeeping convention called an **economy** or **reduced** SVD in which the shapes of $U, \Sigma$ and $V$ are different from what they are in a full SVD.
 
 Thus, note that because we assume that $X$ has rank $p$, there are only $p$ nonzero singular values, where $p=\textrm{rank}(X)\leq\min\left(m, n\right)$.  
 
@@ -264,7 +273,7 @@ VV^T & = I & \quad V^T V = I
 \end{aligned}
 $$
 
-But these properties don't hold for a  **reduced** SVD.
+But not all these properties hold for a  **reduced** SVD.
 
 Which properties hold depend on whether we are in a **tall-skinny** case or a **short-fat** case.
 
@@ -286,7 +295,7 @@ VV^T & = I & \quad V^T V \neq I
 \end{aligned}
 $$
 
-When we study Dynamic Mode Decomposition below, we shall want to remember this caveat because sometimes we'll be using reduced SVD's to compute key objects.
+When we study Dynamic Mode Decomposition below, we shall want to remember these properties when we use a  reduced SVD to compute some DMD representations.
 
 
 Let's do an  exercise  to compare **full** and **reduced** SVD's.
@@ -397,7 +406,7 @@ Uhat, Shat, Vhat
 rr = np.linalg.matrix_rank(X)
 print(f'rank X = {rr}')
 ```
-## Digression:  Polar Decomposition
+## Polar Decomposition
 
 A singular value decomposition (SVD) of $X$ is related to a **polar decomposition** of $X$
 
@@ -414,7 +423,10 @@ Q & = U V^T
 \end{aligned}
 $$
 
-and $S$ is evidently a symmetric matrix and $Q$ is an orthogonal matrix.
+Here 
+
+* $S$ is  a symmetric matrix 
+* $Q$ is an orthogonal matrix
 
 ## Principal Components Analysis (PCA)
 
@@ -875,6 +887,8 @@ $$ (eq:commonA)
 
 where $X^+$ is the pseudo-inverse of $X$.
 
+To read about the **Moore-Penrose pseudo-inverse** please see [Moore-Penrose pseudo-inverse](https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse)
+
 Applicable formulas for the pseudo-inverse differ for our two cases.
 
 **Short-Fat Case:**
@@ -1034,7 +1048,7 @@ Here an $ m \times n $  data matrix $ \tilde X $ contains many more attributes $
 
 Dynamic mode decomposition was introduced by {cite}`schmid2010`,
 
-You can read more about Dynamic Mode Decomposition here {cite}`DMD_book` and here [[BK19](https://python.quantecon.org/zreferences.html#id25)] (section 7.2).
+You can read  about Dynamic Mode Decomposition here {cite}`DMD_book` and here [[BK19](https://python.quantecon.org/zreferences.html#id25)] (section 7.2).
 
 The key idea underlying   **Dynamic Mode Decomposition** (DMD) is  to compute a rank $ r < p > $ approximation to the least square regression coefficients $ \hat A $ that we  described above by formula {eq}`eq:AhatSVDformula`.
 
@@ -1046,6 +1060,10 @@ We'll do this by describing three  alternative representations of our first-orde
 our vector autoregression. 
 
 **Guide to three representations:** In practice, we'll be interested in Representation 3.  We present the first 2 in order to set the stage for some intermediate steps that might help us understand what is under the hood of Representation 3.  In applications, we'll use only a small  subset of the DMD to approximate dynamics.  To do that, we'll want to use the  **reduced**  SVD's affiliated with representation 3, not the **full** SVD's affiliated with representations 1 and 2. 
+
+
+**Guide to impatient reader:** In our applications, we'll be using Representation 3.  You might want to skip
+the stage-setting representations 1 and 2 on first reading.
 
 +++
 
