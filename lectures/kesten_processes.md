@@ -675,15 +675,12 @@ s_init = 1.0      # initial condition for each firm
 
 Here's one solution in [JAX](https://python-programming.quantecon.org/jax_intro.html). 
 
-First let's do a quick setup and check the backend for JAX
+First let's import the necessary modules and check the backend for JAX
 
 ```{code-cell} ipython3
 import jax
 import jax.numpy as jnp
 from jax import random
-
-# Use 64 bit floats with JAX in order to match NumPy/Numba code
-jax.config.update("jax_enable_x64", True)
 
 # Check if JAX is using GPU
 print(f"jax backend: {jax.devices()[0].platform}")
