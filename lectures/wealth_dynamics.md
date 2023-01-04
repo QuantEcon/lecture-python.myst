@@ -495,6 +495,9 @@ update_cross_section_jax = jax.jit(update_cross_section_jax, static_argnums=(1,3
 Here's some type information to help Numba.
 
 ```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 wealth_dynamics_data = [
     ('w_hat',  float64),    # savings parameter
     ('s_0',    float64),    # savings parameter
@@ -518,6 +521,9 @@ Here's a class that stores instance data and implements methods that update
 the aggregate state and household wealth.
 
 ```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 @jitclass(wealth_dynamics_data)
 class WealthDynamics:
 
@@ -613,6 +619,9 @@ Now here's function to simulate a cross section of households forward in time.
 Note the use of parallelization to speed up computation.
 
 ```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 @njit(parallel=True)
 def update_cross_section(wdy, w_distribution, shift_length=500):
     """
@@ -709,7 +718,12 @@ def generate_lorenz_and_gini_jax(wdy, num_households=100_000, T=500):
     return qe.gini_coefficient(ψ_star), qe.lorenz_curve(ψ_star)
 ```
 
+The following function uses the numba implementation
+
 ```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 # Uses numba
 def generate_lorenz_and_gini(wdy, num_households=100_000, T=500):
     """
@@ -754,6 +768,9 @@ plt.show()
 Now let's try to run the same code snippet but using the numba version.
 
 ```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 %%time
 
 fig, ax = plt.subplots()
@@ -829,6 +846,9 @@ plt.show()
 Using numba, we get,
 
 ```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 %%time
 
 fig, ax = plt.subplots()
