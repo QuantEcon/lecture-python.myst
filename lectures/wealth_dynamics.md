@@ -332,13 +332,80 @@ def update_states_jax(arrays, wdy, size, rand_key):
 update_states_jax = jax.jit(update_states_jax, static_argnums=(2,))
 ```
 
-Here’s function to simulate the time series of wealth for individual households.
+Here’s function to simulate the time series of wealth for individual households using `for` loop and JAX.
+
+```{code-cell} ipython3
+# Using JAX and for loop
+def wealth_time_series_for_loop_jax(w_0, n, wdy, size, rand_seed=1):
+    """
+    Generate a single time series of length n for wealth given
+    initial value w_0.
+
+    * This implementation uses for loop.
+
+    The initial persistent state z_0 for each household is drawn from
+    the stationary distribution of the AR(1) process.
+
+        * wdy: NamedTuple Model
+        * w_0: scalar/vector
+        * n: int
+        * size: size/shape of the w_0
+        * rand_seed: int (Used to generate PRNG key)
+    """
+    rand_key = jax.random.PRNGKey(rand_seed)
+    rand_key, *subkey = jax.random.split(rand_key, n)
+
+    w_0 = jax.device_put(w_0).reshape(size)
+
+    z = wdy.z_mean + jnp.sqrt(wdy.z_var) * jax.random.normal(rand_key, shape=size)
+    w = [w_0]
+    for t in range(n-1):
+        w_, z = update_states_jax((w[t], z), wdy, size, subkey[t])
+        w.append(w_)
+    return jnp.array(w)
+
+# Create the jit function
+wealth_time_series_for_loop_jax = jax.jit(wealth_time_series_for_loop_jax, static_argnums=(1,3,))
+```
+
+Let's try simulating the model at different parameter values and investigate the implications for the wealth distribution using the above function.
+
+```{code-cell} ipython3
+wdy = create_wealth_model() # default model
+ts_length = 200
+size = (1,)
+```
+
+```{code-cell} ipython3
+%%time
+
+w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean, ts_length, wdy, size)
+```
+
+Running the above function again will be even faster because of JAX's JIT.
+
+```{code-cell} ipython3
+%%time
+
+# 2nd time is expected to be very fast because of JIT
+w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean, ts_length, wdy, size)
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+ax.plot(w_jax_result)
+plt.show()
+```
+
+We can further try to optimize and speed up the compile time of the above function by replacing `for` loop with [`jax.lax.scan`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html).
 
 ```{code-cell} ipython3
 def wealth_time_series_jax(w_0, n, wdy, size, rand_seed=1):
     """
     Generate a single time series of length n for wealth given
     initial value w_0.
+
+    * This implementation uses for jax.lax.scan
 
     The initial persistent state z_0 for each household is drawn from
     the stationary distribution of the AR(1) process.
@@ -371,7 +438,7 @@ def wealth_time_series_jax(w_0, n, wdy, size, rand_seed=1):
 wealth_time_series_jax = jax.jit(wealth_time_series_jax, static_argnums=(1,3,))
 ```
 
-Let's try simulating the model at different parameter values and investigate the implications for the wealth distribution.
+Let's try simulating the model at different parameter values and investigate the implications for the wealth distribution and also observe the difference in time between `wealth_time_series_jax` and `wealth_time_series_for_loop_jax`.
 
 ```{code-cell} ipython3
 wdy = create_wealth_model() # default model
