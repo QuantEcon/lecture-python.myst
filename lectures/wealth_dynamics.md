@@ -83,11 +83,11 @@ import jax.numpy as jnp
 from collections import namedtuple
 ```
 
-Let's check the backend used by jax and the devices available
+Let's check the backend used by JAX and the devices available
 
 ```{code-cell} ipython3
 # Check if JAX is using GPU
-print("jax backend: {}".format(jax.lib.xla_bridge.get_backend().platform))
+print(f"JAX backend: {jax.devices()[0].platform}")
 # Check the devices available for JAX
 print(jax.devices())
 ```
@@ -626,10 +626,10 @@ Let's look at how inequality varies with returns on financial assets.
 The next function generates a cross section and then computes the Lorenz
 curve and Gini coefficient.
 
-Let's first write the function that uses the jax implementation and then for the numba.
+Let's first write the function that uses the JAX implementation and then for the numba.
 
 ```{code-cell} ipython3
-# Uses jax
+# Uses JAX
 def generate_lorenz_and_gini_jax(wdy, num_households=100_000, T=500):
     """
     Generate the Lorenz curve data and gini coefficient corresponding to a
@@ -739,7 +739,7 @@ rise.
 Let's finish this section by investigating what happens when we change the
 volatility term $\sigma_r$ in financial returns.
 
-Firstly, using jax, we have
+Firstly, using JAX, we have
 
 ```{code-cell} ipython3
 %%time
@@ -879,7 +879,7 @@ z_0 = wdy.z_mean
 
 First let's generate the distribution:
 
-Using the jax implementation
+Using the JAX implementation
 
 ```{code-cell} ipython3
 num_households = 250_000
