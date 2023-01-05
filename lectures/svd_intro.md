@@ -82,7 +82,7 @@ A **singular value decomposition** of an $m \times n$ matrix $X$ of rank $p \leq
 
 $$
 X  = U \Sigma V^T
-$$
+$$ (eq:SVD101)
 
 where 
 
@@ -114,10 +114,17 @@ The matrices $U,\Sigma,V$ entail linear transformations that reshape in vectors 
 * multiplying vectors  by the unitary matrices $U$ and $V$ **rotate** them, but leave **angles between vectors** and **lengths of vectors** unchanged.
 * multiplying vectors by the diagonal  matrix $\Sigma$ leaves **angles between vectors** unchanged but **rescales** vectors.
 
-Taken together the structure that the SVD provides for $X$ opens the door to constructing systems
+Thus, representation {eq}`eq:SVD101` asserts that multiplying an $n \times 1$  vector $y$ by the $m \times n$ matrix $X$
+amounts to performing the following three multiplcations of $y$ sequentially:
+
+* **rotating** $y$ by computing $V^T y$
+* **rescaling** $V^T y$ by multipying it by $\Sigma$
+* **rotating** $\Sigma V^T y$ by multiplying it by $U$
+
+This structure of the $m \times n$ matrix  $X$ opens the door to constructing systems
 of data **encoders** and **decoders**, an idea that we shall  apply later in this lecture.
 
-What we have described here  is called a **full** SVD.
+What we have described above  is called a **full** SVD.
 
 
 
@@ -129,6 +136,9 @@ Before we study a **reduced** SVD we'll say a little more about properties of a 
 
 
 ## Four Fundamental Subspaces
+
+
+Let  ${\mathcal C}$ denote a column space, ${\mathcal N}$ denote a null space, and ${\mathcal R}$ denote a row space.  
 
 
 Let's start by recalling the four fundamental subspaces of an $m \times n$
@@ -167,9 +177,83 @@ V_L & = \begin{bmatrix}v_1 & \cdots  & v_p \end{bmatrix} , \quad U_R  = \begin{b
 $$
 
 
+Representation {eq}`eq:fullSVDpartition` implies that
+
+$$
+X \begin{bmatrix} V_L & V_R \end{bmatrix} = \begin{bmatrix} U_L & U_R \end{bmatrix} \begin{bmatrix} \Sigma_p & 0 \cr 0 & 0 \end{bmatrix}
+$$
+
+or
+
+$$
+\begin{aligned}
+X V_L & = U_L \Sigma_p \cr 
+X V_R & = 0 
+\end{aligned}
+$$ (eq:Xfour1a)
+
+or
+
+$$
+\begin{aligned}
+X v_i & = \sigma_i u_i , \quad i = 1, \ldots, p \cr
+X v_i & = 0 ,  \quad i = p+1, \ldots, n
+\end{aligned}
+$$ (eq:orthoortho1)
+
+Equations {eq}`eq:orthoortho1` tell how the transformation $X$ maps a pair of orthonormal  vectors $v_i, v_j$ for $i$ and $j$ both less than or equal to the rank $p$ of $X$ into a pair of orthonormal vectors $u_i, u_j$.
+
+Equations {eq}`eq:Xfour1a` assert that
+
+$$
+\begin{aligned}
+{\mathcal C}(X) & = {\mathcal C}(U_L) \cr
+{\mathcal N}(X) & = {\mathcal C} (V_R)
+\end{aligned}
+$$
 
 
-These matrices are related to the four fundamental subspaces of $X$ in the following ways:
+Taking transposes on both sides of representation {eq}`eq:fullSVDpartition` implies 
+
+
+$$
+X^T \begin{bmatrix} U_L & U_R \end{bmatrix} = \begin{bmatrix} V_L & V_R \end{bmatrix} \begin{bmatrix} \Sigma_p & 0 \cr 0 & 0 \end{bmatrix}
+$$
+
+or
+
+$$
+\begin{aligned}
+X^T U_L & = V_L \Sigma_p \cr
+X^T U_R & = 0 
+\end{aligned}
+$$  (eq:Xfour1b)
+
+or 
+
+$$ 
+\begin{aligned}
+X^T u_i & = \sigma_i v_i, \quad i=1, \ldots, p \cr
+X^T u_i & = 0 \quad i= p+1, \ldots, m 
+\end{aligned}
+$$ (eq:orthoortho2)
+
+Notice how equations {eq}`eq:orthoortho2` assert that  the transformation $X^T$ maps a pairsof distinct orthonormal  vectors $u_i, u_j$  for $i$ and $j$ both less than or equal to the rank $p$ of $X$ into a pair of distinct orthonormal vectors $v_i, v_j$ .
+
+
+Equations {eq}`eq:Xfour1b` assert that
+
+$$
+\begin{aligned}
+{\mathcal R}(X) & \equiv  {\mathcal C}(X^T) = {\mathcal C} (V_L) \cr
+{\mathcal N}(X^T) & = {\mathcal C}(U_R) 
+\end{aligned}
+$$
+
+
+
+Thus, taken together, the systems of quations {eq}`eq:Xfour1a` and {eq}`eq:Xfour1b`
+describe the  four fundamental subspaces of $X$ in the following ways:
 
 $$
 \begin{aligned}
@@ -182,7 +266,6 @@ $$
 $$ (eq:fourspaceSVD)
 
 
-Here ${\mathcal C}$ denotes a column space, ${\mathcal N}$ denotes a null space, and ${\mathcal R}$ denotes a row space.  
 
 Since $U$ and $V$ are both orthonormal matrices, collection {eq}`eq:fourspaceSVD` asserts that
 
@@ -192,9 +275,9 @@ Since $U$ and $V$ are both orthonormal matrices, collection {eq}`eq:fourspaceSVD
  * $V_R$ is an orthonormal basis for the null space of $X$
  
 
-The four claims in {eq}`eq:fourspaceSVD` can be  verified  by performing the multiplications called for by the right side of {eq}`eq:fullSVDpartition` and interpreting them. 
+We have verified the four claims in {eq}`eq:fourspaceSVD` simply  by performing the multiplications called for by the right side of {eq}`eq:fullSVDpartition` and reading them. 
 
-Although we won't go through the details of that verification here, we will note that the claims in {eq}`eq:fourspaceSVD` and the fact that $U$ and $V$ are both unitary (i.e, orthonormal) matrices immediately implies
+The claims in {eq}`eq:fourspaceSVD` and the fact that $U$ and $V$ are both unitary (i.e, orthonormal) matrices  imply
 that
 
 * the column space of $X$ is orthogonal to the null space of of $X^T$
