@@ -440,7 +440,7 @@ XX = X.T @ X
 Λ_hat = np.diag(𝜆_hat)
 ```
 
-Compare the eigenvalues which are on the diagnoals of $\Lambda$ and $\hat{\Lambda}$.
+Compare the eigenvalues that are on the diagonals of $\Lambda$ and $\hat{\Lambda}$.
 
 ```{code-cell} ipython3
 𝜆, 𝜆_hat
