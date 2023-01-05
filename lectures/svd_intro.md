@@ -491,7 +491,7 @@ print(f'rank X = {rr}')
 ```
 ## Polar Decomposition
 
-A singular value decomposition (SVD) of $X$ is related to a **polar decomposition** of $X$
+A **reduced** singular value decomposition (SVD) of $X$ is related to a **polar decomposition** of $X$
 
 $$
 X  = SQ   
@@ -508,8 +508,14 @@ $$
 
 Here 
 
-* $S$ is  a symmetric matrix 
-* $Q$ is an orthogonal matrix
+* $S$ is  an $m \times m$  **symmetric** matrix 
+* $Q$ is an $m \times n$  **orthogonal** matrix
+
+and in our reduced SVD
+
+* $U$ is an $m \times p$ orthonormal matrix
+* $\Sigma$ is a $p \times p$ diagonal matrix
+* $V$ is an $n \times p$ orthonormal 
 
 ## Principal Components Analysis (PCA)
 
