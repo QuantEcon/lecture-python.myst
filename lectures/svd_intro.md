@@ -37,7 +37,7 @@ form  foundations for many statistical and  machine learning methods.
 After defining the SVD, we'll describe how it connects to 
 
 * the **four fundamental spaces** of linear algebra
-* underdetermined and over-determined **least squares regressions**  
+* under-determined and over-determined **least squares regressions**  
 * **principal components analysis** (PCA)
 
 We'll also tell  the essential role that the SVD plays in 
