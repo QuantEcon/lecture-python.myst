@@ -111,7 +111,7 @@ $U_{ij}^T$ is the complex conjugate of $U_{ji}$.
 
 The matrices $U,\Sigma,V$ entail linear transformations that reshape in vectors in the following ways:
 
-* multiplying vectors  by the unitary matrices $U$ and $V$ **rotate** them, but leave **angles between vectors** and **lengths of vectors** unchanged.
+* multiplying vectors  by the unitary matrices $U$ and $V$ **rotates** them, but leaves **angles between vectors** and **lengths of vectors** unchanged.
 * multiplying vectors by the diagonal  matrix $\Sigma$ leaves **angles between vectors** unchanged but **rescales** vectors.
 
 Thus, representation {eq}`eq:SVD101` asserts that multiplying an $n \times 1$  vector $y$ by the $m \times n$ matrix $X$
@@ -122,7 +122,25 @@ amounts to performing the following three multiplcations of $y$ sequentially:
 * **rotating** $\Sigma V^T y$ by multiplying it by $U$
 
 This structure of the $m \times n$ matrix  $X$ opens the door to constructing systems
-of data **encoders** and **decoders**, an idea that we shall  apply later in this lecture.
+of data **encoders** and **decoders**.  
+
+Thus, 
+
+* $V^T y$ is an encoder
+* $\Sigma$ is an operator to be applied to the encoded data
+* $U$ is a decoder to be applied to the output from applying operator $\Sigma$ to the encoded data
+
+We'll apply this circle of ideas  later in this lecture when we study Dynamic Mode Decomposition.
+
+Three popular **matrix norms**  of an $m \times n$ matrix $X$ can be expressed in terms of the singular values of $X$
+
+* the **spectral** or $l^2$ norm $|| X ||_2 = \max_{y \in \textbf{R}^n} \frac{||X y ||}{||y||} = \sigma_1$
+* the **Frobenius** norm $||X ||_F = \sqrt{\sigma_1^2 + \cdots + \sigma_p^2}$
+* the **nuclear** norm $ || X ||_N = \sigma_1 + \cdots + \sigma_p $
+
+
+
+**Road Ahead**
 
 What we have described above  is called a **full** SVD.
 
