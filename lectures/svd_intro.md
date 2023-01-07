@@ -132,11 +132,7 @@ Thus,
 
 We'll apply this circle of ideas  later in this lecture when we study Dynamic Mode Decomposition.
 
-Three popular **matrix norms**  of an $m \times n$ matrix $X$ can be expressed in terms of the singular values of $X$
 
-* the **spectral** or $l^2$ norm $|| X ||_2 = \max_{y \in \textbf{R}^n} \frac{||X y ||}{||y||} = \sigma_1$
-* the **Frobenius** norm $||X ||_F = \sqrt{\sigma_1^2 + \cdots + \sigma_p^2}$
-* the **nuclear** norm $ || X ||_N = \sigma_1 + \cdots + \sigma_p $
 
 
 
@@ -345,6 +341,36 @@ print("Row space:\n", row_space.T)
 print("Right null space:\n", null_space.T)
 ```
 
+## Eckart-Young Theorem
+
+Suppose that we want to construct  the best rank $r$ approximation of an $m \times n$ matrix $X$.
+
+By best we mean a  matrix $X_r$ of rank $r < p$ that, among all rank $r$ matrices, minimizes
+
+$$ || X - X_r || $$
+
+where $ || \cdot || $ denotes a norm of a matrix $X$ and where $X_r$ belongs to the space of all rank $r$ matrices
+of dimension $m \times n$.
+
+
+
+Three popular **matrix norms**  of an $m \times n$ matrix $X$ can be expressed in terms of the singular values of $X$
+
+* the **spectral** or $l^2$ norm $|| X ||_2 = \max_{y \in \textbf{R}^n} \frac{||X y ||}{||y||} = \sigma_1$
+* the **Frobenius** norm $||X ||_F = \sqrt{\sigma_1^2 + \cdots + \sigma_p^2}$
+* the **nuclear** norm $ || X ||_N = \sigma_1 + \cdots + \sigma_p $
+
+The Eckart-Young theorem states that for each of these three norms, same rank $r$ matrix is best and that it equals 
+
+$$
+\hat X_r = \sigma_1 U_1 V_1^T + \sigma_2 U_2 V_2^T + \cdots + \sigma_r U_r V_r^T
+$$ (eq:Ekart)
+
+
+You can read about the Eckart-Young theorem and some of its uses here <https://en.wikipedia.org/wiki/Low-rank_approximation>.
+
+We'll make use of this theorem when we discuss principal components analysis (PCA) and also dynamic mode decomposition (DMD).
+
 
 
 
@@ -473,11 +499,7 @@ UhatUhatT, UhatTUhat
 The cells above illustrate application of the  `fullmatrices=True` and `full-matrices=False` options.
 Using `full-matrices=False` returns a reduced singular value decomposition.
 
-This option implements an optimal reduced rank approximation of a matrix, in the sense of  minimizing the Frobenius
-norm of the discrepancy between the approximating matrix and the matrix being approximated.
-
-
-Optimality in this sense is  established in the celebrated Eckart–Young theorem. See <https://en.wikipedia.org/wiki/Low-rank_approximation>.
+The **full** and **reduced** SVd's both accurately  decompose an $m \times n$ matrix $X$ 
 
 When we study Dynamic Mode Decompositions below, it  will be important for us to remember the preceding properties of full and reduced SVD's in such tall-skinny cases.  
 
@@ -487,7 +509,7 @@ When we study Dynamic Mode Decompositions below, it  will be important for us to
 
 Now let's turn to a short-fat case.
 
-To illustrate this case,  we'll set $m = 2 < 5 = n $
+To illustrate this case,  we'll set $m = 2 < 5 = n $ and compute both full and reduced SVD's.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -502,11 +524,13 @@ U, S, V
 print('Uhat, Shat, Vhat = ')
 Uhat, Shat, Vhat
 ```
+Let's verify that our reduced SVD accurately represents $X$
 
 ```{code-cell} ipython3
-rr = np.linalg.matrix_rank(X)
-print(f'rank X = {rr}')
+SShat=np.diag(Shat)
+np.allclose(X, Uhat@SShat@Vhat)
 ```
+
 ## Polar Decomposition
 
 A **reduced** singular value decomposition (SVD) of $X$ is related to a **polar decomposition** of $X$
