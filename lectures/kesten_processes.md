@@ -730,7 +730,7 @@ Since we applied `jax.jit` on the function, it runs even faster when we call the
 %time data = generate_draws().block_until_ready()
 ```
 
-Now we produce the rank-size plot to check the distribution:
+Let's produce the rank-size plot and check the distribution:
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -746,7 +746,7 @@ plt.show()
 The plot produces a straight line, consistent with a Pareto tail.
 
 It is possible to further speed up our code by replacing the `for` loop with [`lax.scan`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html) 
-to reduce the loop overhead in the compilation
+to reduce the loop overhead in the compilation of the jitted function
 
 ```{code-cell} ipython3
 from jax import lax
@@ -845,7 +845,9 @@ def generate_draws_numba(μ_a=-0.5,
 %time data = generate_draws_numba()
 ```
 
-Now we produce the rank-size plot:
+We can see that JAX and vectorization of the code have sped up the computation significantly compared to the Numba version.
+
+We produce the rank-size plot again using the data, and it shows the same pattern we saw before:
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
