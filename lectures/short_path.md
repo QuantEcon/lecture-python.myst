@@ -399,19 +399,17 @@ def map_graph_to_distance_matrix(in_file):
     Q = np.full((num_nodes, num_nodes), np.inf)
 
     # Now we read in the data and modify Q
-    infile = open(in_file)
-    for line in infile:
-        elements = line.split(',')
-        node = elements.pop(0)
-        node = int(node[4:])    # convert node description to integer
-        if node != destination_node:
-            for element in elements:
-                destination, cost = element.split()
-                destination = int(destination[4:])
-                Q[node, destination] = float(cost)
-        Q[destination_node, destination_node] = 0
-
-    infile.close()
+    with open(in_file) as infile:
+        for line in infile:
+            elements = line.split(',')
+            node = elements.pop(0)
+            node = int(node[4:])    # convert node description to integer
+            if node != destination_node:
+                for element in elements:
+                    destination, cost = element.split()
+                    destination = int(destination[4:])
+                    Q[node, destination] = float(cost)
+            Q[destination_node, destination_node] = 0
     return Q
 ```
 
