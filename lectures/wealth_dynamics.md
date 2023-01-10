@@ -264,7 +264,7 @@ acknowledging that low wealth households tend to save very little.
 
 ## Implementation using JAX
 
-Let's define a Model to represent the wealth dynamics.
+Let's define a model to represent the wealth dynamics.
 
 ```{code-cell} ipython3
 # NamedTuple Model
@@ -332,7 +332,7 @@ def update_states_jax(arrays, wdy, size, rand_key):
 update_states_jax = jax.jit(update_states_jax, static_argnums=(2,))
 ```
 
-Here’s function to simulate the time series of wealth for individual households using `for` loop and JAX.
+Here’s function to simulate the time series of wealth for individual households using a `for` loop and JAX.
 
 ```{code-cell} ipython3
 # Using JAX and for loop
@@ -341,7 +341,7 @@ def wealth_time_series_for_loop_jax(w_0, n, wdy, size, rand_seed=1):
     Generate a single time series of length n for wealth given
     initial value w_0.
 
-    * This implementation uses for loop.
+    * This implementation uses a for loop.
 
     The initial persistent state z_0 for each household is drawn from
     the stationary distribution of the AR(1) process.
@@ -379,7 +379,7 @@ size = (1,)
 ```{code-cell} ipython3
 %%time
 
-w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean, ts_length, wdy, size)
+w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
 ```
 
 Running the above function again will be even faster because of JAX's JIT.
@@ -388,7 +388,7 @@ Running the above function again will be even faster because of JAX's JIT.
 %%time
 
 # 2nd time is expected to be very fast because of JIT
-w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean, ts_length, wdy, size)
+w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
 ```
 
 ```{code-cell} ipython3
@@ -449,7 +449,7 @@ size = (1,)
 ```{code-cell} ipython3
 %%time
 
-w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size)
+w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
 ```
 
 Running the above function again will be even faster because of JAX's JIT.
@@ -458,7 +458,7 @@ Running the above function again will be even faster because of JAX's JIT.
 %%time
 
 # 2nd time is expected to be very fast because of JIT
-w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size)
+w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
 ```
 
 ```{code-cell} ipython3
@@ -591,6 +591,9 @@ class WealthDynamics:
 Here's function to simulate the time series of wealth for in individual households.
 
 ```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 @njit
 def wealth_time_series(wdy, w_0, n):
     """
@@ -660,21 +663,30 @@ the implications for the wealth distribution.
 
 ### Time Series
 
-Let's look at the wealth dynamics of an individual household.
+Let's look at the wealth dynamics of an individual household using numba.
 
 ```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 wdy = WealthDynamics()
 
 ts_length = 200
 ```
 
 ```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 %%time
 
 w = wealth_time_series(wdy, wdy.y_mean, ts_length)
 ```
 
 ```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 %%time
 
 # Check the time for 2nd execution
@@ -793,15 +805,6 @@ The Lorenz curve shifts downwards as returns on financial income rise, indicatin
 We will look at this again via the Gini coefficient immediately below, but
 first consider the following image of our system resources when the code above
 is executing:
-
-(htop_again)=
-```{figure} /_static/lecture_specific/wealth_dynamics/htop_again.png
-:scale: 80
-```
-
-Notice how effectively Numba has implemented multithreading for this routine:
-all 8 CPUs on our workstation are running at maximum capacity (even though
-four of them are virtual).
 
 Since the code is both efficiently JIT compiled and fully parallelized, it's
 close to impossible to make this sequence of tasks run faster without changing
