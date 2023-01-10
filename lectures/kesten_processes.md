@@ -47,7 +47,7 @@ tags: [hide-output]
 !pip install --upgrade yfinance
 
 !pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-# If you do not have CUDA support, run the line below instead
+# If you do not have CUDA support on your machine, run the line below instead:
 # !pip install --upgrade "jax[CPU]"
 ```
 
