@@ -19,13 +19,16 @@ kernelspec:
 
 # Kesten Processes and Firm Dynamics
 
-```{note}
-This lecture is built using [hardware](status:machine-details) that
-has access to a GPU. This means that 
+````{admonition} GPU Warning
+:class: dropdown, warning
 
-1. the lecture might be significantly slower when running on your machine, and
-2. the code is well-suited to execution with [Google colab](https://colab.research.google.com/github/QuantEcon/lecture-python-programming.notebooks/blob/master/jax_intro.ipynb)
-```
+This lecture is built using [hardware](status:machine-details) that
+has access to a GPU and uses JAX for GPU programming. This means that 
+
+1. this lecture will be significantly slower when running on a machine **without CUDA support**.
+In this case, the code is well-suited to execution with Google Colab with runtime type set to GPU. [Click here](https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/kesten_processes.ipynb) to load this lecture on Colab;
+2. if you have CUDA support for your machine, you should follow the [instructions](https://github.com/google/jax#installation) for JAX with GPU support.
+````
 
 ```{index} single: Linear State Space Models
 ```
@@ -43,11 +46,9 @@ tags: [hide-output]
 !pip install quantecon
 !pip install --upgrade yfinance
 
-# If you are running on a machine without CUDA support, then run the line below:
+!pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+# If you do not have CUDA support, run the line below instead
 # !pip install --upgrade "jax[CPU]"
-
-# If you have CUDA support on your machine, then run the following:
-# !pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 ```
 
 ## Overview
