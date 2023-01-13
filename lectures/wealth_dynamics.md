@@ -81,6 +81,7 @@ from numba.experimental import jitclass
 import jax
 import jax.numpy as jnp
 from collections import namedtuple
+from myst_nb import glue
 ```
 
 Let's check the backend used by JAX and the devices available
@@ -377,18 +378,18 @@ size = (1,)
 ```
 
 ```{code-cell} ipython3
-%%time
-
+qe.tic()
 w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
+qe.toc()
 ```
 
 Running the above function again will be even faster because of JAX's JIT.
 
 ```{code-cell} ipython3
-%%time
-
+qe.tic()
 # 2nd time is expected to be very fast because of JIT
 w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
+qe.toc()
 ```
 
 ```{code-cell} ipython3
@@ -448,17 +449,18 @@ size = (1,)
 
 ```{code-cell} ipython3
 %%time
-
+qe.tic()
 w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
+glue("wealth_time_series_jax_time_1", qe.toc())
 ```
 
 Running the above function again will be even faster because of JAX's JIT.
 
 ```{code-cell} ipython3
-%%time
-
+qe.tic()
 # 2nd time is expected to be very fast because of JIT
 w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
+glue("wealth_time_series_jax_time_2", qe.toc())
 ```
 
 ```{code-cell} ipython3
@@ -495,9 +497,7 @@ update_cross_section_jax = jax.jit(update_cross_section_jax, static_argnums=(1,3
 Here's some type information to help Numba.
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
+
 wealth_dynamics_data = [
     ('w_hat',  float64),    # savings parameter
     ('s_0',    float64),    # savings parameter
@@ -521,9 +521,7 @@ Here's a class that stores instance data and implements methods that update
 the aggregate state and household wealth.
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
+
 @jitclass(wealth_dynamics_data)
 class WealthDynamics:
 
@@ -591,9 +589,7 @@ class WealthDynamics:
 Here's function to simulate the time series of wealth for in individual households.
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
+
 @njit
 def wealth_time_series(wdy, w_0, n):
     """
@@ -622,9 +618,7 @@ Now here's function to simulate a cross section of households forward in time.
 Note the use of parallelization to speed up computation.
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
+
 @njit(parallel=True)
 def update_cross_section(wdy, w_distribution, shift_length=500):
     """
@@ -666,34 +660,25 @@ the implications for the wealth distribution.
 Let's look at the wealth dynamics of an individual household using numba.
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
 wdy = WealthDynamics()
 
 ts_length = 200
 ```
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
-%%time
-
+qe.tic()
 w = wealth_time_series(wdy, wdy.y_mean, ts_length)
+glue("wealth_time_series_time_1", qe.toc())
 ```
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
-%%time
-
+qe.tic()
 # Check the time for 2nd execution
 w = wealth_time_series(wdy, wdy.y_mean, ts_length)
+glue("wealth_time_series_time_2", qe.toc())
 ```
 
-Notice the time difference between the `wealth_time_series` and `wealth_time_series_jax`
+Notice the time difference between the `wealth_time_series`: {glue:}`wealth_time_series_time_1` and `wealth_time_series_jax`: {glue:}`wealth_time_series_jax_time_1`
 
 
 
@@ -733,9 +718,6 @@ def generate_lorenz_and_gini_jax(wdy, num_households=100_000, T=500):
 The following function uses the numba implementation
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
 # Uses numba
 def generate_lorenz_and_gini(wdy, num_households=100_000, T=500):
     """
@@ -780,9 +762,6 @@ plt.show()
 Now let's try to run the same code snippet but using the numba version.
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
 %%time
 
 fig, ax = plt.subplots()
@@ -849,9 +828,6 @@ plt.show()
 Using numba, we get,
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
 %%time
 
 fig, ax = plt.subplots()
