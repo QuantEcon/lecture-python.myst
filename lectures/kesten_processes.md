@@ -19,16 +19,15 @@ kernelspec:
 
 # Kesten Processes and Firm Dynamics
 
-````{admonition} GPU Warning
+```{admonition} GPU Warning
 :class: dropdown, warning
 
-This lecture is built using [hardware](status:machine-details) that
-has access to a GPU and uses JAX for GPU programming. This means that 
+This lecture is built using [hardware](status:machine-details) that has access to a GPU and uses JAX for GPU programming. As a result, the lecture will be slower when running on a machine without a GPU.
 
-1. this lecture will be significantly slower when running on a machine **without CUDA support**.
-In this case, the code is well-suited to execution with Google Colab with runtime type set to GPU. [Click here](https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/kesten_processes.ipynb) to load this lecture on Colab;
-2. if you have CUDA support for your machine, you should follow the [instructions](https://github.com/google/jax#installation) for JAX with GPU support.
-````
+Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
+
+Alternatively, if you have your own GPU, you can follow the [instructions](https://github.com/google/jax#pip-installation-gpu-cuda) for installing JAX with GPU support.
+```
 
 ```{index} single: Linear State Space Models
 ```
