@@ -1589,7 +1589,7 @@ is an $m \times n$ matrix of least squares projections of $X$ on $\Phi$.
 
  
 
-By virtue of least-squares projection theory discussed in  this quantecon lecture e <https://python-advanced.quantecon.org/orth_proj.html>, we can represent $X$ as the sum of the projection $\check X$ of $X$ on $\Phi$  plus a matrix of errors.
+By virtue of least-squares projection theory discussed in  this quantecon lecture  <https://python-advanced.quantecon.org/orth_proj.html>, we can represent $X$ as the sum of the projection $\check X$ of $X$ on $\Phi$  plus a matrix of errors.
 
 
 To verify this, note that the least squares projection $\check X$ is related to $X$ by
@@ -1726,7 +1726,7 @@ We can then use $\check X_{t+j}$ or $\hat X_{t+j}$ to forecast $X_{t+j}$.
 
 ### Using Fewer Modes
 
-In applications, we'll actually want to just a few modes, often three or less.  
+In applications, we'll actually want to use just a few modes, often  three or less.  
 
 Some of the preceding formulas assume that we have retained all $p$ modes associated with the positive
 singular values of $X$.  
