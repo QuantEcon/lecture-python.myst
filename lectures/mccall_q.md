@@ -23,7 +23,7 @@ The Q-learning algorithm combines ideas from
 
 * dynamic programming
 
-* a recursive version of least squares known as **temporal difference learning**
+* a recursive version of least squares known as [temporal difference learning](https://en.wikipedia.org/wiki/Temporal_difference_learning).
 
 This lecture applies a Q-learning algorithm to the situation faced by  a   McCall worker.
 
@@ -100,9 +100,6 @@ The worker's income $y_t$ equals his wage $w$ if he is employed, and unemploymen
 
 An optimal value  $V\left(w\right) $ for a McCall worker who has just received a wage offer $w$ and is deciding whether
 to accept or reject it satisfies the Bellman equation
-
-
-
 
 $$ 
 V\left(w\right)=\max_{\text{accept, reject}}\;\left\{ \frac{w}{1-\beta},c+\beta\int V\left(w'\right)dF\left(w'\right)\right\} 
@@ -281,7 +278,7 @@ These equations are aligned with the Bellman equation for the worker's  optimal 
 Evidently, the optimal value function $V(w)$ described in that lecture is related to our Q-function by
 
 $$
-V(w) = \max_{\textrm{accept},\textrm{reject}} \left\{ Q(w, \text{accept} \right), Q\left(w,\text{reject} \right\}
+V(w) = \max_{\textrm{accept},\textrm{reject}} \left\{ Q(w, \text{accept} \right), Q\left(w,\text{reject} \right)\}
 $$
 
 If we stare at the second equation of system {eq}`eq:impliedq`, we notice that since the wage process is identically and independently distributed over time,
@@ -289,7 +286,7 @@ If we stare at the second equation of system {eq}`eq:impliedq`, we notice that s
  
 So we can denote it as a scalar  
 
-$$ Q_r=Q\left(w,\text{reject}\right),\forall w\in\mathcal{W}. 
+$$ Q_r := Q\left(w,\text{reject}\right) \quad \forall \, w\in\mathcal{W}. 
 $$
 
 This fact provides us with an 
@@ -737,7 +734,7 @@ The above graphs indicates that
 ## Employed Worker Can't Quit
 
 
-The preceding version of temporal difference Q-learning described in  equation system  (4) lets an an employed  worker quit, i.e., reject her wage as an incumbent and instead accept receive unemployment compensation this period
+The preceding version of temporal difference Q-learning described in  equation system  (4) lets an an employed  worker quit, i.e., reject her wage as an incumbent and instead receive unemployment compensation this period
 and draw a new offer next period.
 
 This is an option that the McCall worker described in {doc}`this quantecon lecture <mccall_model>` would not take.  
