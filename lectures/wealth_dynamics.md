@@ -19,6 +19,15 @@ kernelspec:
 
 # Wealth Distribution Dynamics
 
+```{admonition} GPU Warning
+:class: dropdown, warning
+This lecture is built using [hardware](status:machine-details) that has access to a GPU and uses JAX for GPU programming. As a result, the lecture will be slower when running on a machine without a GPU.
+
+Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
+
+Alternatively, if you have your own GPU, you can follow the [instructions](https://github.com/google/jax#pip-installation-gpu-cuda) for installing JAX with GPU support.
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -30,6 +39,9 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 tags: [hide-output]
 ---
 !pip install quantecon
+# If your machine has CUDA support, please follow the guide in GPU Warning.
+# Otherwise, run the line below:
+!pip install --upgrade "jax[CPU]"
 ```
 
 ## Overview
@@ -448,7 +460,6 @@ size = (1,)
 ```
 
 ```{code-cell} ipython3
-%%time
 qe.tic()
 w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
 glue("wealth_time_series_jax_time_1", qe.toc())
