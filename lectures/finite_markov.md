@@ -1278,9 +1278,8 @@ n = 14 # Total number of web pages (nodes)
 #  * Q[i, j] = 1 if there is a link from i to j
 #  * Q[i, j] = 0 otherwise
 Q = np.zeros((n, n), dtype=int)
-f = open(infile, 'r')
-edges = f.readlines()
-f.close()
+with open(infile) as f: 
+    edges = f.readlines()
 for edge in edges:
     from_node, to_node = re.findall('\w', edge)
     i, j = alphabet.index(from_node), alphabet.index(to_node)
