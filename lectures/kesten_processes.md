@@ -19,10 +19,10 @@ kernelspec:
 
 # Kesten Processes and Firm Dynamics
 
-```{admonition} GPU Warning
-:class: dropdown, warning
+```{admonition} GPU in use
+:class: warning
 
-This lecture is built using [hardware](status:machine-details) that has access to a GPU and uses JAX for GPU programming. As a result, the lecture will be slower when running on a machine without a GPU.
+This lecture is accelerated via [hardware](status:machine-details) that has access to a GPU and JAX for GPU programming. 
 
 Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
 
@@ -728,9 +728,12 @@ def generate_draws(μ_a=-0.5,
 
     # Perform the calculations in a vectorized manner for T periods
     for t in range(T):
+        exp_a = jnp.exp(a_random[t, :])
+        exp_b = jnp.exp(b_random[t, :])
+        exp_e = jnp.exp(e_random[t, :])
         s = s.at[:, t+1].set(jnp.where(s[:, t] < s_bar, 
-                             jnp.exp(e_random[t, :]), 
-                             jnp.exp(a_random[t, :]) * s[:, t] + jnp.exp(b_random[t, :])))
+                             exp_e,
+                             exp_a * s[:, t] + exp_b))
     
     return s[:, -1]
 
