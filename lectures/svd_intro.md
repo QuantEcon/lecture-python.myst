@@ -1717,7 +1717,7 @@ $$ (eq:checkXevoln)
 or  use the approximation
 
 $$ 
-  \hat X_{t+j} = \Phi \Lambda^j (W \Lambda)^{-1}  \tilde U^T X_t .
+  \hat X_{t+j} = \Phi \Lambda^j (\tilde W \Lambda)^{-1}  \tilde U^T X_t .
 $$ (eq:checkXevoln2)
 
 We can then use $\check X_{t+j}$ or $\hat X_{t+j}$ to forecast $X_{t+j}$.
