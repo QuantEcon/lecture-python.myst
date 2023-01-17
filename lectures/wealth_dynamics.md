@@ -19,9 +19,10 @@ kernelspec:
 
 # Wealth Distribution Dynamics
 
-```{admonition} GPU Warning
-:class: dropdown, warning
-This lecture is built using [hardware](status:machine-details) that has access to a GPU and uses JAX for GPU programming. As a result, the lecture will be slower when running on a machine without a GPU.
+```{admonition} GPU in use
+:class: warning
+
+This lecture is accelerated via [hardware](status:machine-details) that has access to a GPU and JAX for GPU programming.
 
 Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
 
