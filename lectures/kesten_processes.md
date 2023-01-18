@@ -19,6 +19,16 @@ kernelspec:
 
 # Kesten Processes and Firm Dynamics
 
+```{admonition} GPU in use
+:class: warning
+
+This lecture is accelerated via [hardware](status:machine-details) that has access to a GPU and JAX for GPU programming. 
+
+Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
+
+Alternatively, if you have your own GPU, you can follow the [instructions](https://github.com/google/jax#pip-installation-gpu-cuda) for installing JAX with GPU support.
+```
+
 ```{index} single: Linear State Space Models
 ```
 
@@ -34,6 +44,9 @@ tags: [hide-output]
 ---
 !pip install quantecon
 !pip install --upgrade yfinance
+# If your machine has CUDA support, please follow the guide in GPU Warning. 
+# Otherwise, run the line below:
+!pip install --upgrade "jax[CPU]"
 ```
 
 ## Overview
@@ -673,14 +686,23 @@ s_init = 1.0      # initial condition for each firm
 :class: dropdown
 ```
 
-Here's one solution.  First we generate the observations:
+Here's one solution in [JAX](https://python-programming.quantecon.org/jax_intro.html). 
+
+First let's import the necessary modules and check the backend for JAX
 
 ```{code-cell} ipython3
-from numba import njit, prange
-from numpy.random import randn
+import jax
+import jax.numpy as jnp
+from jax import random
 
+# Check if JAX is using GPU
+print(f"jax backend: {jax.devices()[0].platform}")
+```
 
-@njit(parallel=True)
+Now we can generate the observations:
+
+```{code-cell} ipython3
+@jax.jit
 def generate_draws(μ_a=-0.5,
                    σ_a=0.1,
                    μ_b=0.0,
@@ -690,7 +712,136 @@ def generate_draws(μ_a=-0.5,
                    s_bar=1.0,
                    T=500,
                    M=1_000_000,
-                   s_init=1.0):
+                   s_init=1.0,
+                   seed=123):
+
+    key = random.PRNGKey(seed)
+    keys = random.split(key, 3)
+
+    # Generate arrays of random numbers
+    a_random = μ_a + σ_a * random.normal(keys[0], (T, M))
+    b_random = μ_b + σ_b * random.normal(keys[1], (T, M))
+    e_random = μ_e + σ_e * random.normal(keys[2], (T, M))
+
+    # Initialize the array of s values with the initial value
+    s = jnp.full((M, T+1), s_init)
+
+    # Perform the calculations in a vectorized manner for T periods
+    for t in range(T):
+        exp_a = jnp.exp(a_random[t, :])
+        exp_b = jnp.exp(b_random[t, :])
+        exp_e = jnp.exp(e_random[t, :])
+        s = s.at[:, t+1].set(jnp.where(s[:, t] < s_bar, 
+                             exp_e,
+                             exp_a * s[:, t] + exp_b))
+    
+    return s[:, -1]
+
+%time data = generate_draws().block_until_ready()
+```
+
+Since we applied `jax.jit` on the function, it runs even faster when we call the function again
+
+```{code-cell} ipython3
+%time data = generate_draws().block_until_ready()
+```
+
+Let's produce the rank-size plot and check the distribution:
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+rank_data, size_data = qe.rank_size(data, c=0.01)
+ax.loglog(rank_data, size_data, 'o', markersize=3.0, alpha=0.5)
+ax.set_xlabel("log rank")
+ax.set_ylabel("log size")
+
+plt.show()
+```
+
+The plot produces a straight line, consistent with a Pareto tail.
+
+It is possible to further speed up our code by replacing the `for` loop with [`lax.scan`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html) 
+to reduce the loop overhead in the compilation of the jitted function
+
+```{code-cell} ipython3
+from jax import lax
+
+@jax.jit
+def generate_draws_lax(μ_a=-0.5,
+                       σ_a=0.1,
+                       μ_b=0.0,
+                       σ_b=0.5,
+                       μ_e=0.0,
+                       σ_e=0.5,
+                       s_bar=1.0,
+                       T=500,
+                       M=1_000_000,
+                       s_init=1.0,
+                       seed=123):
+  
+    key = random.PRNGKey(seed)
+    keys = random.split(key, 3)
+    
+    # Generate random draws and initial values
+    a_random = μ_a + σ_a * random.normal(keys[0], (T, M))
+    b_random = μ_b + σ_b * random.normal(keys[1], (T, M))
+    e_random = μ_e + σ_e * random.normal(keys[2], (T, M))
+    s = jnp.full((M, ), s_init)
+
+    # Define the function for each update
+    def update_s(s, a_b_e_draws):
+        a, b, e = a_b_e_draws
+        res = jnp.where(s < s_bar, 
+                        jnp.exp(e), 
+                        jnp.exp(a) * s + jnp.exp(b))
+        return res, res
+    
+    # Use lax.scan to perform the calculations on all states
+    s_final, _ = lax.scan(update_s, s, (a_random, b_random, e_random))
+    return s_final
+
+%time data = generate_draws_lax().block_until_ready()
+```
+
+The compiled function is even faster
+
+```{code-cell} ipython3
+%time data = generate_draws_lax().block_until_ready()
+```
+
+Here we produce the same rank-size plot:
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+
+rank_data, size_data = qe.rank_size(data, c=0.01)
+ax.loglog(rank_data, size_data, 'o', markersize=3.0, alpha=0.5)
+ax.set_xlabel("log rank")
+ax.set_ylabel("log size")
+
+plt.show()
+```
+
+We can also use Numba with `for` loops to generate the observations (replicating the results we obtained with JAX).
+
+The results will be slightly different since the pseudo random number generation is implemented [differently in JAX](https://www.kaggle.com/code/aakashnain/tf-jax-tutorials-part-6-prng-in-jax/notebook)
+
+```{code-cell} ipython3
+from numba import njit, prange
+from numpy.random import randn
+
+@njit(parallel=True)
+def generate_draws_numba(μ_a=-0.5,
+                         σ_a=0.1,
+                         μ_b=0.0,
+                         σ_b=0.5,
+                         μ_e=0.0,
+                         σ_e=0.5,
+                         s_bar=1.0,
+                         T=500,
+                         M=1_000_000,
+                         s_init=1.0):
 
     draws = np.empty(M)
     for m in prange(M):
@@ -707,10 +858,12 @@ def generate_draws(μ_a=-0.5,
 
     return draws
 
-data = generate_draws()
+%time data = generate_draws_numba()
 ```
 
-Now we produce the rank-size plot:
+We can see that JAX and vectorization of the code have sped up the computation significantly compared to the Numba version.
+
+We produce the rank-size plot again using the data, and it shows the same pattern we saw before:
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -722,8 +875,6 @@ ax.set_ylabel("log size")
 
 plt.show()
 ```
-
-The plot produces a straight line, consistent with a Pareto tail.
 
 ```{solution-end}
 ```
