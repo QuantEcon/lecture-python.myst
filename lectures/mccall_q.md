@@ -383,7 +383,7 @@ To set up such an algorithm, we first define some errors or "differences"
 $$
 \begin{aligned}
          w  & + \beta \max_{\textrm{accept, reject}} \left\{ \hat Q_t (w_t, \textrm{accept}), \hat Q_t(w_t, \textrm{reject}) \right\} - \hat Q_t(w_t, \textrm{accept})   = \textrm{diff}_{\textrm{accept},t}  \cr
-         c  & +\beta\int\max_{\text{accept, reject}}\left\{ \hat Q_t(w_{t+1}, \textrm{accept}),\hat Q_t\left(w_{t+1},\text{reject}\right)\right\}  - \hat Q_t\left(w_t,\text{reject}\right)  = \textrm{diff}_{\textrm{reject},t}  \cr 
+         c  & +\beta \max_{\text{accept, reject}}\left\{ \hat Q_t(w_{t+1}, \textrm{accept}),\hat Q_t\left(w_{t+1},\text{reject}\right)\right\}  - \hat Q_t\left(w_t,\text{reject}\right)  = \textrm{diff}_{\textrm{reject},t}  \cr 
 \end{aligned}
 $$ (eq:old105)
 
@@ -734,7 +734,7 @@ The above graphs indicates that
 ## Employed Worker Can't Quit
 
 
-The preceding version of temporal difference Q-learning described in  equation system  (4) lets an an employed  worker quit, i.e., reject her wage as an incumbent and instead receive unemployment compensation this period
+The preceding version of temporal difference Q-learning described in  equation system  {eq}`eq:old4` lets an employed  worker quit, i.e., reject her wage as an incumbent and instead receive unemployment compensation this period
 and draw a new offer next period.
 
 This is an option that the McCall worker described in {doc}`this quantecon lecture <mccall_model>` would not take.  
@@ -756,11 +756,11 @@ $$
 \end{aligned}
 $$ (eq:temp-diff)
 
-It turns out that formulas {eq}`eq:temp-diff` combined with our Q-learning recursion (3) can lead our agent to eventually learn the optimal value function as well as in the case where an option to redraw can be exercised. 
+It turns out that formulas {eq}`eq:temp-diff` combined with our Q-learning recursion {eq}`eq:old3` can lead our agent to eventually learn the optimal value function as well as in the case where an option to redraw can be exercised. 
 
 But learning is slower because  an agent who ends up accepting a wage offer prematurally loses the option to explore new states in the same episode and to adjust the value associated with that state.
 
-This can leads to inferior outcomes when the number of epochs/episods is low.
+This can lead to inferior outcomes when the number of epochs/episods is low.
 
 But if we increase the numb
 
