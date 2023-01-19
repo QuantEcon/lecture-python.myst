@@ -34,7 +34,7 @@ Relative to the dynamic programming formulation of the McCall worker model that 
  
 The Q-learning algorithm  invokes a statistical learning model to learn about these things.
 
-Statistical learning often comes down to some version of least squares, and it will here too.
+Statistical learning often comes down to some version of least squares, and it will be here too.
 
 Any time we say _statistical learning_, we have to say what object is being learned.
 
@@ -484,7 +484,7 @@ pseudo-code for   our McCall worker to do Q-learning:
     
 4. Update the state associated with the chosen action and compute $\widetilde{TD}$ according to {eq}`eq:old4` and update $\widetilde{Q}$ according to {eq}`eq:old3`. 
 
-5.  Either draw a new state  $w'$ if required or else take existing wage if and update the Q-table again again according to {eq}`eq:old3`.
+5.  Either draw a new state  $w'$ if required or else take existing wage if and update the Q-table again according to {eq}`eq:old3`.
 
 6. Stop when the old and new Q-tables are close enough, i.e., $\lVert\tilde{Q}^{new}-\tilde{Q}^{old}\rVert_{\infty}\leq\delta$ for given $\delta$ or if the worker keeps accepting for $T$ periods for a prescribed $T$.
 
@@ -508,7 +508,7 @@ For example, an agent who has accepted a wage offer based on her Q-table will be
 
 By using the $\epsilon$-greedy method and also by increasing the number of episodes, the Q-learning algorithm  balances  gains from exploration and from exploitation.
 
-**Remark:** Notice that    $\widetilde{TD}$ associated with  an optimal Q-table defined in equation (2) automatically above satisfies  $\widetilde{TD}=0$ for all state action pairs.  Whether a limit of our Q-learning algorithm converges to an optimal Q-table depends on whether the algorithm visits all state, action pairs often enough.
+**Remark:** Notice that    $\widetilde{TD}$ associated with  an optimal Q-table defined in equation (2) automatically above satisfies  $\widetilde{TD}=0$ for all state action pairs.  Whether a limit of our Q-learning algorithm converges to an optimal Q-table depends on whether the algorithm visits all state-action pairs often enough.
 
 We implement this pseudo code  in a Python class. 
 
@@ -662,7 +662,7 @@ ax.legend()
 plt.show()
 ```
 
-Now, let us compute the case with a larger state space: $n=20$ instead of $n=10$.
+Now, let us compute the case with a larger state space: $n=30$ instead of $n=10$.
 
 ```{code-cell} ipython3
 n, a, b = 30, 200, 100                        # default parameters
@@ -739,7 +739,7 @@ and draw a new offer next period.
 
 This is an option that the McCall worker described in {doc}`this quantecon lecture <mccall_model>` would not take.  
 
-See {cite}`Ljungqvist2012`, chapter 7 on search, for a proof.
+See {cite}`Ljungqvist2012`, chapter 6 on search, for a proof.
 
 But in the context of Q-learning, giving the worker the option to quit and get unemployment compensation while
 unemployed turns out to accelerate the learning process by promoting experimentation vis a vis premature
