@@ -23,7 +23,7 @@ The Q-learning algorithm combines ideas from
 
 * dynamic programming
 
-* a recursive version of least squares known as **temporal difference learning**
+* a recursive version of least squares known as [temporal difference learning](https://en.wikipedia.org/wiki/Temporal_difference_learning).
 
 This lecture applies a Q-learning algorithm to the situation faced by  a   McCall worker.
 
@@ -34,7 +34,7 @@ Relative to the dynamic programming formulation of the McCall worker model that 
  
 The Q-learning algorithm  invokes a statistical learning model to learn about these things.
 
-Statistical learning often comes down to some version of least squares, and it will here too.
+Statistical learning often comes down to some version of least squares, and it will be here too.
 
 Any time we say _statistical learning_, we have to say what object is being learned.
 
@@ -100,9 +100,6 @@ The worker's income $y_t$ equals his wage $w$ if he is employed, and unemploymen
 
 An optimal value  $V\left(w\right) $ for a McCall worker who has just received a wage offer $w$ and is deciding whether
 to accept or reject it satisfies the Bellman equation
-
-
-
 
 $$ 
 V\left(w\right)=\max_{\text{accept, reject}}\;\left\{ \frac{w}{1-\beta},c+\beta\int V\left(w'\right)dF\left(w'\right)\right\} 
@@ -281,7 +278,7 @@ These equations are aligned with the Bellman equation for the worker's  optimal 
 Evidently, the optimal value function $V(w)$ described in that lecture is related to our Q-function by
 
 $$
-V(w) = \max_{\textrm{accept},\textrm{reject}} \left\{ Q(w, \text{accept} \right), Q\left(w,\text{reject} \right\}
+V(w) = \max_{\textrm{accept},\textrm{reject}} \left\{ Q(w, \text{accept} \right), Q\left(w,\text{reject} \right)\}
 $$
 
 If we stare at the second equation of system {eq}`eq:impliedq`, we notice that since the wage process is identically and independently distributed over time,
@@ -289,7 +286,7 @@ If we stare at the second equation of system {eq}`eq:impliedq`, we notice that s
  
 So we can denote it as a scalar  
 
-$$ Q_r=Q\left(w,\text{reject}\right),\forall w\in\mathcal{W}. 
+$$ Q_r := Q\left(w,\text{reject}\right) \quad \forall \, w\in\mathcal{W}. 
 $$
 
 This fact provides us with an 
@@ -386,7 +383,7 @@ To set up such an algorithm, we first define some errors or "differences"
 $$
 \begin{aligned}
          w  & + \beta \max_{\textrm{accept, reject}} \left\{ \hat Q_t (w_t, \textrm{accept}), \hat Q_t(w_t, \textrm{reject}) \right\} - \hat Q_t(w_t, \textrm{accept})   = \textrm{diff}_{\textrm{accept},t}  \cr
-         c  & +\beta\int\max_{\text{accept, reject}}\left\{ \hat Q_t(w_{t+1}, \textrm{accept}),\hat Q_t\left(w_{t+1},\text{reject}\right)\right\}  - \hat Q_t\left(w_t,\text{reject}\right)  = \textrm{diff}_{\textrm{reject},t}  \cr 
+         c  & +\beta \max_{\text{accept, reject}}\left\{ \hat Q_t(w_{t+1}, \textrm{accept}),\hat Q_t\left(w_{t+1},\text{reject}\right)\right\}  - \hat Q_t\left(w_t,\text{reject}\right)  = \textrm{diff}_{\textrm{reject},t}  \cr 
 \end{aligned}
 $$ (eq:old105)
 
@@ -487,7 +484,7 @@ pseudo-code for   our McCall worker to do Q-learning:
     
 4. Update the state associated with the chosen action and compute $\widetilde{TD}$ according to {eq}`eq:old4` and update $\widetilde{Q}$ according to {eq}`eq:old3`. 
 
-5.  Either draw a new state  $w'$ if required or else take existing wage if and update the Q-table again again according to {eq}`eq:old3`.
+5.  Either draw a new state  $w'$ if required or else take existing wage if and update the Q-table again according to {eq}`eq:old3`.
 
 6. Stop when the old and new Q-tables are close enough, i.e., $\lVert\tilde{Q}^{new}-\tilde{Q}^{old}\rVert_{\infty}\leq\delta$ for given $\delta$ or if the worker keeps accepting for $T$ periods for a prescribed $T$.
 
@@ -511,7 +508,7 @@ For example, an agent who has accepted a wage offer based on her Q-table will be
 
 By using the $\epsilon$-greedy method and also by increasing the number of episodes, the Q-learning algorithm  balances  gains from exploration and from exploitation.
 
-**Remark:** Notice that    $\widetilde{TD}$ associated with  an optimal Q-table defined in equation (2) automatically above satisfies  $\widetilde{TD}=0$ for all state action pairs.  Whether a limit of our Q-learning algorithm converges to an optimal Q-table depends on whether the algorithm visits all state, action pairs often enough.
+**Remark:** Notice that    $\widetilde{TD}$ associated with  an optimal Q-table defined in equation (2) automatically above satisfies  $\widetilde{TD}=0$ for all state action pairs.  Whether a limit of our Q-learning algorithm converges to an optimal Q-table depends on whether the algorithm visits all state-action pairs often enough.
 
 We implement this pseudo code  in a Python class. 
 
@@ -665,7 +662,7 @@ ax.legend()
 plt.show()
 ```
 
-Now, let us compute the case with a larger state space: $n=20$ instead of $n=10$.
+Now, let us compute the case with a larger state space: $n=30$ instead of $n=10$.
 
 ```{code-cell} ipython3
 n, a, b = 30, 200, 100                        # default parameters
@@ -737,12 +734,12 @@ The above graphs indicates that
 ## Employed Worker Can't Quit
 
 
-The preceding version of temporal difference Q-learning described in  equation system  (4) lets an an employed  worker quit, i.e., reject her wage as an incumbent and instead accept receive unemployment compensation this period
+The preceding version of temporal difference Q-learning described in  equation system  {eq}`eq:old4` lets an employed  worker quit, i.e., reject her wage as an incumbent and instead receive unemployment compensation this period
 and draw a new offer next period.
 
 This is an option that the McCall worker described in {doc}`this quantecon lecture <mccall_model>` would not take.  
 
-See {cite}`Ljungqvist2012`, chapter 7 on search, for a proof.
+See {cite}`Ljungqvist2012`, chapter 6 on search, for a proof.
 
 But in the context of Q-learning, giving the worker the option to quit and get unemployment compensation while
 unemployed turns out to accelerate the learning process by promoting experimentation vis a vis premature
@@ -759,11 +756,11 @@ $$
 \end{aligned}
 $$ (eq:temp-diff)
 
-It turns out that formulas {eq}`eq:temp-diff` combined with our Q-learning recursion (3) can lead our agent to eventually learn the optimal value function as well as in the case where an option to redraw can be exercised. 
+It turns out that formulas {eq}`eq:temp-diff` combined with our Q-learning recursion {eq}`eq:old3` can lead our agent to eventually learn the optimal value function as well as in the case where an option to redraw can be exercised. 
 
 But learning is slower because  an agent who ends up accepting a wage offer prematurally loses the option to explore new states in the same episode and to adjust the value associated with that state.
 
-This can leads to inferior outcomes when the number of epochs/episods is low.
+This can lead to inferior outcomes when the number of epochs/episods is low.
 
 But if we increase the numb
 
