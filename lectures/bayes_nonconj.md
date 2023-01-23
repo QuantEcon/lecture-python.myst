@@ -13,7 +13,7 @@ kernelspec:
 
 # Non-Conjugate Priors
 
-This lecture is a sequel to the QuantEcon lecture <https://python.quantecon.org/prob_meaning.html>
+This lecture is a sequel to the {doc}`quantecon lecture <prob_meaning>`.
 
 That lecture offers a Bayesian interpretation of probability in a setting in which the likelihood function and the prior distribution
 over parameters just happened to form a **conjugate** pair in which
@@ -88,7 +88,7 @@ from numpyro.optim import Adam as nAdam
 
 ## Unleashing MCMC on a  Binomial Likelihood
 
-This lecture begins with the binomial example in the QuantEcon lecture <https://python.quantecon.org/prob_meaning.html>
+This lecture begins with the binomial example in the {doc}`quantecon lecture <prob_meaning>`.
 
 That lecture computed a posterior 
 
@@ -103,7 +103,7 @@ We use both the packages `pyro` and `numpyro` with assistance from  `jax` to app
 
 We use several alternative prior distributions
 
-We  compare computed posteriors  with ones associated with a conjugate prior as described in  QuantEcon lecture https://python.quantecon.org/prob_meaning.html 
+We  compare computed posteriors  with ones associated with a conjugate prior as described in  {doc}`the quantecon lecture <prob_meaning>`
 
 
 ### Analytical Posterior

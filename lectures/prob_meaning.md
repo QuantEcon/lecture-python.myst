@@ -693,3 +693,34 @@ Thus, the Bayesian statististian  comes to believe that $\theta$ is near $.4$.
 As shown in the figure above, as the number of observations grows, the Bayesian coverage intervals (BCIs) become narrower and narrower   around  $0.4$. 
 
 However, if you take a closer look, you will find that the centers of  the BCIs are not exactly $0.4$, due to the persistent influence of the prior distribution and the randomness of the simulation path.
+
+
+## Role of a Conjugate Prior
+
+We have made  assumptions that link functional forms of  our likelihood function and our prior in a way that has eased our calculations considerably. 
+
+In particular, our assumptions that the likelihood function is **binomial** and that the prior distribution is a **beta distribution** have the consequence that the posterior distribution implied by Bayes' Law is also a **beta distribution**.
+
+So posterior and prior are both beta distributions, albeit ones with different parameters. 
+
+When a likelihood function and prior fit together like hand and glove in this way, we can  say that the  prior and posterior are **conjugate distributions**.
+
+In this situation, we also sometimes  say that we have **conjugate prior** for the likelihood function $\textrm{Prob}(X | \theta)$.  
+
+Typically, the functional form of the likelihood function determines the functional form of a **conjugate prior**.
+
+A natural question to ask is why should a person's personal prior about a parameter $\theta$ be restricted to be described by a conjugate prior? 
+
+Why not some other functional form that more sincerely describes the person's beliefs.
+
+To be argumentative, one could ask, why should the form of the likelihood function have *anything* to say about my
+personal beliefs about $\theta$?
+
+A dignified response to that question is, well, it shouldn't, but if you want to compute a posterior easily you'll just be happier if your prior is conjugate to your likelihood.
+
+Otherwise, your posterior won't have a convenient analytical form and you'll be in the situation of wanting to 
+apply the Markov chain Monte Carlo techniques deployed in {doc}`this quantecon lecture <bayes_nonconj>`.
+
+We also apply these powerful methods to approximating Bayesian posteriors for non-conjugate priors in
+{doc}`this quantecon lecture <ar1_bayes>` and {doc}`this quantecon lecture <ar1_turningpts>`
+
