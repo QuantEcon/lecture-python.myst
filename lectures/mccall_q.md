@@ -66,7 +66,7 @@ In this lecture, we'll learn a little about
 As usual, let's  import some Python modules.
 
 ```{code-cell} ipython3
-::
+:tags: [hide-output]
 !pip install quantecon
 ```
 
