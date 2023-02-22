@@ -45,7 +45,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import prettytable as pt
 from mpl_toolkits.mplot3d import Axes3D
-from IPython.display import set_matplotlib_formats
+from matplotlib_inline.backend_inline import set_matplotlib_formats
 set_matplotlib_formats('retina')
 %matplotlib inline
 ```

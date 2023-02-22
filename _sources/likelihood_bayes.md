@@ -682,7 +682,7 @@ Evidently, by $t = 199$, $\pi_t$ has converged to either $0$ or $1$.
 
 The fraction of paths that have converged to $1$ is $.5$
 
-The fractions of paths that have converged to $0$ is also $.5.
+The fractions of paths that have converged to $0$ is also $.5$.
 
 Does the fraction $.5$ ring a bell?
 

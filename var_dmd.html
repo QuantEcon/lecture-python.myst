@@ -1,0 +1,1557 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>8. VARs and DMDs &#8212; Quantitative Economics with Python</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://python.quantecon.org/var_dmd.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="9. Using Newton’s Method to Solve Economic Models" href="newton_method.html" />
+    <link rel="prev" title="7. Singular Value Decomposition (SVD)" href="svd_intro.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="VARs and DMDs"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="VARs and DMDs" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/var_dmd.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=var_dmd>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#first-order-vector-autoregressions">
+   8.1. First-Order Vector Autoregressions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dynamic-mode-decomposition-dmd">
+   8.2. Dynamic Mode Decomposition (DMD)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#representation-1">
+   8.3. Representation 1
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#representation-2">
+   8.4. Representation 2
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#representation-3">
+   8.5. Representation 3
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#decoder-of-x-as-a-linear-projection">
+     8.5.1. Decoder of
+     <span class="math notranslate nohighlight">
+      \(X\)
+     </span>
+     as a linear projection
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-useful-approximation">
+     8.5.2. A useful approximation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-fewer-modes">
+     8.5.3. Using Fewer Modes
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#source-for-some-python-code">
+   8.6. Source for Some Python Code
+  </a>
+ </li>
+</ul>
+
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+
+                        <p class="qe-page__header-subheading">VARs and DMDs</p>
+
+                    </div>
+
+                    <p class="qe-page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <div class="tex2jax_ignore mathjax_ignore section" id="vars-and-dmds">
+<h1><span class="section-number">8. </span>VARs and DMDs<a class="headerlink" href="#vars-and-dmds" title="Permalink to this headline">¶</a></h1>
+<p>This lecture applies computational methods  that we learned about in this lecture
+<a class="reference internal" href="svd_intro.html"><span class="doc">Singular Value Decomposition</span></a> to</p>
+<ul class="simple">
+<li><p>first-order vector autoregressions (VARs)</p></li>
+<li><p>dynamic mode decompositions (DMDs)</p></li>
+<li><p>connections between DMDs and first-order VARs</p></li>
+</ul>
+<div class="section" id="first-order-vector-autoregressions">
+<h2><span class="section-number">8.1. </span>First-Order Vector Autoregressions<a class="headerlink" href="#first-order-vector-autoregressions" title="Permalink to this headline">¶</a></h2>
+<p>We want to fit a <strong>first-order vector autoregression</strong></p>
+<div class="math notranslate nohighlight" id="equation-eq-varfirstorder">
+<span class="eqno">(8.1)<a class="headerlink" href="#equation-eq-varfirstorder" title="Permalink to this equation">¶</a></span>\[
+X_{t+1} = A X_t + C \epsilon_{t+1}, \quad \epsilon_{t+1} \perp X_t 
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon_{t+1}\)</span> is the time <span class="math notranslate nohighlight">\(t+1\)</span> component  of a sequence of  i.i.d. <span class="math notranslate nohighlight">\(m \times 1\)</span> random vectors with mean vector
+zero and identity  covariance matrix and where
+the <span class="math notranslate nohighlight">\( m \times 1 \)</span> vector <span class="math notranslate nohighlight">\( X_t \)</span> is</p>
+<div class="math notranslate nohighlight" id="equation-eq-xvector">
+<span class="eqno">(8.2)<a class="headerlink" href="#equation-eq-xvector" title="Permalink to this equation">¶</a></span>\[
+X_t = \begin{bmatrix}  X_{1,t} &amp; X_{2,t} &amp; \cdots &amp; X_{m,t}     \end{bmatrix}^\top 
+\]</div>
+<p>and where <span class="math notranslate nohighlight">\(\cdot ^\top \)</span> again denotes complex transposition and <span class="math notranslate nohighlight">\( X_{i,t} \)</span> is  variable <span class="math notranslate nohighlight">\( i \)</span> at time <span class="math notranslate nohighlight">\( t \)</span>.</p>
+<p>We want to fit equation <a class="reference internal" href="#equation-eq-varfirstorder">(8.1)</a>.</p>
+<p>Our data are organized in   an <span class="math notranslate nohighlight">\( m \times (n+1) \)</span> matrix  <span class="math notranslate nohighlight">\( \tilde X \)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\tilde X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n \mid X_{n+1} \end{bmatrix}
+\]</div>
+<p>where for <span class="math notranslate nohighlight">\( t = 1, \ldots, n +1 \)</span>,  the <span class="math notranslate nohighlight">\( m \times 1 \)</span> vector <span class="math notranslate nohighlight">\( X_t \)</span> is given by <a class="reference internal" href="#equation-eq-xvector">(8.2)</a>.</p>
+<p>Thus, we want to estimate a  system  <a class="reference internal" href="#equation-eq-varfirstorder">(8.1)</a> that consists of <span class="math notranslate nohighlight">\( m \)</span> least squares regressions of <strong>everything</strong> on one lagged value of <strong>everything</strong>.</p>
+<p>The <span class="math notranslate nohighlight">\(i\)</span>’th equation of <a class="reference internal" href="#equation-eq-varfirstorder">(8.1)</a> is a regression of <span class="math notranslate nohighlight">\(X_{i,t+1}\)</span> on the vector <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
+<p>We proceed as follows.</p>
+<p>From <span class="math notranslate nohighlight">\( \tilde X \)</span>,  we  form two <span class="math notranslate nohighlight">\(m \times n\)</span> matrices</p>
+<div class="math notranslate nohighlight">
+\[
+X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_{n}\end{bmatrix}
+\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[
+X' =  \begin{bmatrix} X_2 \mid X_3 \mid \cdots \mid X_{n+1}\end{bmatrix}
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\( ' \)</span>  is part of the name of the matrix <span class="math notranslate nohighlight">\( X' \)</span> and does not indicate matrix transposition.</p>
+<p>We  use  <span class="math notranslate nohighlight">\(\cdot^\top \)</span> to denote matrix transposition or its extension to complex matrices.</p>
+<p>In forming <span class="math notranslate nohighlight">\( X \)</span> and <span class="math notranslate nohighlight">\( X' \)</span>, we have in each case  dropped a column from <span class="math notranslate nohighlight">\( \tilde X \)</span>,  the last column in the case of <span class="math notranslate nohighlight">\( X \)</span>, and  the first column in the case of <span class="math notranslate nohighlight">\( X' \)</span>.</p>
+<p>Evidently, <span class="math notranslate nohighlight">\( X \)</span> and <span class="math notranslate nohighlight">\( X' \)</span> are both <span class="math notranslate nohighlight">\( m \times  n \)</span> matrices.</p>
+<p>We denote the rank of <span class="math notranslate nohighlight">\( X \)</span> as <span class="math notranslate nohighlight">\( p \leq \min(m, n)  \)</span>.</p>
+<p>Two possible cases are</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( n &gt; &gt; m\)</span>, so that we have many more time series  observations <span class="math notranslate nohighlight">\(n\)</span> than variables <span class="math notranslate nohighlight">\(m\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(m &gt; &gt; n\)</span>, so that we have many more variables <span class="math notranslate nohighlight">\(m \)</span> than time series observations <span class="math notranslate nohighlight">\(n\)</span></p></li>
+</ul>
+<p>At a general level that includes both of these special cases, a common formula describes the least squares estimator <span class="math notranslate nohighlight">\(\hat A\)</span> of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>But important  details differ.</p>
+<p>The common formula is</p>
+<div class="math notranslate nohighlight" id="equation-eq-commona">
+<span class="eqno">(8.3)<a class="headerlink" href="#equation-eq-commona" title="Permalink to this equation">¶</a></span>\[ 
+\hat A = X' X^+ 
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(X^+\)</span> is the pseudo-inverse of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>To read about the <strong>Moore-Penrose pseudo-inverse</strong> please see <a class="reference external" href="https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse">Moore-Penrose pseudo-inverse</a></p>
+<p>Applicable formulas for the pseudo-inverse differ for our two cases.</p>
+<p><strong>Short-Fat Case:</strong></p>
+<p>When <span class="math notranslate nohighlight">\( n &gt; &gt; m\)</span>, so that we have many more time series  observations <span class="math notranslate nohighlight">\(n\)</span> than variables <span class="math notranslate nohighlight">\(m\)</span> and when
+<span class="math notranslate nohighlight">\(X\)</span> has linearly independent <strong>rows</strong>, <span class="math notranslate nohighlight">\(X X^\top \)</span> has an inverse and the pseudo-inverse <span class="math notranslate nohighlight">\(X^+\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+X^+ = X^\top  (X X^\top )^{-1} 
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(X^+\)</span> is a <strong>right-inverse</strong> that verifies <span class="math notranslate nohighlight">\( X X^+ = I_{m \times m}\)</span>.</p>
+<p>In this case, our formula <a class="reference internal" href="#equation-eq-commona">(8.3)</a> for the least-squares estimator of the population matrix of regression coefficients  <span class="math notranslate nohighlight">\(A\)</span> becomes</p>
+<div class="math notranslate nohighlight" id="equation-eq-ahatform101">
+<span class="eqno">(8.4)<a class="headerlink" href="#equation-eq-ahatform101" title="Permalink to this equation">¶</a></span>\[ 
+\hat A = X' X^\top  (X X^\top )^{-1}
+\]</div>
+<p>This  formula for least-squares regression coefficients widely used in econometrics.</p>
+<p>For example, it is used  to estimate vector autorgressions.</p>
+<p>The right side of formula <a class="reference internal" href="#equation-eq-ahatform101">(8.4)</a> is proportional to the empirical cross second moment matrix of <span class="math notranslate nohighlight">\(X_{t+1}\)</span> and <span class="math notranslate nohighlight">\(X_t\)</span> times the inverse
+of the second moment matrix of <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
+<p><strong>Tall-Skinny Case:</strong></p>
+<p>When <span class="math notranslate nohighlight">\(m &gt; &gt; n\)</span>, so that we have many more attributes <span class="math notranslate nohighlight">\(m \)</span> than time series observations <span class="math notranslate nohighlight">\(n\)</span> and when <span class="math notranslate nohighlight">\(X\)</span> has linearly independent <strong>columns</strong>,
+<span class="math notranslate nohighlight">\(X^\top  X\)</span> has an inverse and the pseudo-inverse <span class="math notranslate nohighlight">\(X^+\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+X^+ = (X^\top  X)^{-1} X^\top 
+\]</div>
+<p>Here  <span class="math notranslate nohighlight">\(X^+\)</span> is a <strong>left-inverse</strong> that verifies <span class="math notranslate nohighlight">\(X^+ X = I_{n \times n}\)</span>.</p>
+<p>In this case, our formula  <a class="reference internal" href="#equation-eq-commona">(8.3)</a> for a least-squares estimator of <span class="math notranslate nohighlight">\(A\)</span> becomes</p>
+<div class="math notranslate nohighlight" id="equation-eq-hataversion0">
+<span class="eqno">(8.5)<a class="headerlink" href="#equation-eq-hataversion0" title="Permalink to this equation">¶</a></span>\[
+\hat A = X' (X^\top  X)^{-1} X^\top 
+\]</div>
+<p>Please compare formulas <a class="reference internal" href="#equation-eq-ahatform101">(8.4)</a> and <a class="reference internal" href="#equation-eq-hataversion0">(8.5)</a> for <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
+<p>Here we are interested in formula <a class="reference internal" href="#equation-eq-hataversion0">(8.5)</a>.</p>
+<p>The <span class="math notranslate nohighlight">\( i \)</span>th  row of <span class="math notranslate nohighlight">\( \hat A \)</span> is an <span class="math notranslate nohighlight">\( m \times 1 \)</span> vector of regression coefficients of <span class="math notranslate nohighlight">\( X_{i,t+1} \)</span> on <span class="math notranslate nohighlight">\( X_{j,t}, j = 1, \ldots, m \)</span>.</p>
+<p>If we use formula <a class="reference internal" href="#equation-eq-hataversion0">(8.5)</a> to calculate <span class="math notranslate nohighlight">\(\hat A X\)</span> we find that</p>
+<div class="math notranslate nohighlight">
+\[
+\hat A X = X'
+\]</div>
+<p>so that the regression equation <strong>fits perfectly</strong>.</p>
+<p>This is the usual outcome in an <strong>underdetermined least-squares</strong> model.</p>
+<p>To reiterate, in the  <strong>tall-skinny</strong> case (described in <a class="reference internal" href="svd_intro.html"><span class="doc">Singular Value Decomposition</span></a>)  in which we have a number <span class="math notranslate nohighlight">\(n\)</span> of observations   that is small relative to the number <span class="math notranslate nohighlight">\(m\)</span> of
+attributes that appear in the vector <span class="math notranslate nohighlight">\(X_t\)</span>,  we want to fit equation <a class="reference internal" href="#equation-eq-varfirstorder">(8.1)</a>.</p>
+<p>To  offer  ideas about how we can efficiently calculate the pseudo-inverse <span class="math notranslate nohighlight">\(X^+\)</span>, as our  estimator <span class="math notranslate nohighlight">\(\hat A\)</span> of <span class="math notranslate nohighlight">\(A\)</span> we form an  <span class="math notranslate nohighlight">\(m \times m\)</span> matrix that  solves the least-squares best-fit problem</p>
+<div class="math notranslate nohighlight" id="equation-eq-alseqn">
+<span class="eqno">(8.6)<a class="headerlink" href="#equation-eq-alseqn" title="Permalink to this equation">¶</a></span>\[ 
+\hat A = \textrm{argmin}_{\check A} || X' - \check  A X ||_F   
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(|| \cdot ||_F\)</span> denotes the Frobenius (or Euclidean) norm of a matrix.</p>
+<p>The Frobenius norm is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+ ||A||_F = \sqrt{ \sum_{i=1}^m \sum_{j=1}^m |A_{ij}|^2 }
+\]</div>
+<p>The minimizer of the right side of equation <a class="reference internal" href="#equation-eq-alseqn">(8.6)</a> is</p>
+<div class="math notranslate nohighlight" id="equation-eq-hataform">
+<span class="eqno">(8.7)<a class="headerlink" href="#equation-eq-hataform" title="Permalink to this equation">¶</a></span>\[
+\hat A =  X'  X^{+}  
+\]</div>
+<p>where the (possibly huge) <span class="math notranslate nohighlight">\( n \times m \)</span> matrix <span class="math notranslate nohighlight">\( X^{+} = (X^\top  X)^{-1} X^\top \)</span> is again a pseudo-inverse of <span class="math notranslate nohighlight">\( X \)</span>.</p>
+<p>For some situations that we are interested in, <span class="math notranslate nohighlight">\(X^\top  X \)</span> can be close to singular, a situation that can make some numerical algorithms  be error-prone.</p>
+<p>To acknowledge that possibility, we’ll use  efficient algorithms for computing and for constructing reduced rank approximations of  <span class="math notranslate nohighlight">\(\hat A\)</span> in formula <a class="reference internal" href="#equation-eq-hataversion0">(8.5)</a>.</p>
+<p>The <span class="math notranslate nohighlight">\( i \)</span>th  row of <span class="math notranslate nohighlight">\( \hat A \)</span> is an <span class="math notranslate nohighlight">\( m \times 1 \)</span> vector of regression coefficients of <span class="math notranslate nohighlight">\( X_{i,t+1} \)</span> on <span class="math notranslate nohighlight">\( X_{j,t}, j = 1, \ldots, m \)</span>.</p>
+<p>An efficient way to compute the pseudo-inverse <span class="math notranslate nohighlight">\(X^+\)</span> is to start with  a singular value decomposition</p>
+<div class="math notranslate nohighlight" id="equation-eq-svddmd">
+<span class="eqno">(8.8)<a class="headerlink" href="#equation-eq-svddmd" title="Permalink to this equation">¶</a></span>\[
+X =  U \Sigma  V^\top  
+\]</div>
+<p>where we remind ourselves that for a <strong>reduced</strong> SVD, <span class="math notranslate nohighlight">\(X\)</span> is an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of data, <span class="math notranslate nohighlight">\(U\)</span> is an <span class="math notranslate nohighlight">\(m \times p\)</span> matrix, <span class="math notranslate nohighlight">\(\Sigma\)</span>  is a <span class="math notranslate nohighlight">\(p \times p\)</span> matrix, and <span class="math notranslate nohighlight">\(V\)</span> is an <span class="math notranslate nohighlight">\(n \times p\)</span> matrix.</p>
+<p>We can    efficiently  construct the pertinent pseudo-inverse <span class="math notranslate nohighlight">\(X^+\)</span>
+by recognizing the following string of equalities.</p>
+<div class="math notranslate nohighlight" id="equation-eq-efficientpseudoinverse">
+<span class="eqno">(8.9)<a class="headerlink" href="#equation-eq-efficientpseudoinverse" title="Permalink to this equation">¶</a></span>\[\begin{split}
+\begin{aligned}
+X^{+} &amp; = (X^\top  X)^{-1} X^\top  \\
+  &amp; = (V \Sigma U^\top  U \Sigma V^\top )^{-1} V \Sigma U^\top  \\
+  &amp; = (V \Sigma \Sigma V^\top )^{-1} V \Sigma U^\top  \\
+  &amp; = V \Sigma^{-1} \Sigma^{-1} V^\top  V \Sigma U^\top  \\
+  &amp; = V \Sigma^{-1} U^\top  
+\end{aligned}
+\end{split}\]</div>
+<p>(Since we are in the <span class="math notranslate nohighlight">\(m &gt; &gt; n\)</span> case in which <span class="math notranslate nohighlight">\(V^\top  V = I_{p \times p}\)</span> in a reduced SVD, we can use the preceding
+string of equalities for a reduced SVD as well as for a full SVD.)</p>
+<p>Thus, we shall  construct a pseudo-inverse <span class="math notranslate nohighlight">\( X^+ \)</span>  of <span class="math notranslate nohighlight">\( X \)</span> by using
+a singular value decomposition of <span class="math notranslate nohighlight">\(X\)</span> in equation <a class="reference internal" href="#equation-eq-svddmd">(8.8)</a>  to compute</p>
+<div class="math notranslate nohighlight" id="equation-eq-xplusformula">
+<span class="eqno">(8.10)<a class="headerlink" href="#equation-eq-xplusformula" title="Permalink to this equation">¶</a></span>\[
+X^{+} =  V \Sigma^{-1}  U^\top  
+\]</div>
+<p>where the matrix <span class="math notranslate nohighlight">\( \Sigma^{-1} \)</span> is constructed by replacing each non-zero element of <span class="math notranslate nohighlight">\( \Sigma \)</span> with <span class="math notranslate nohighlight">\( \sigma_j^{-1} \)</span>.</p>
+<p>We can  use formula <a class="reference internal" href="#equation-eq-xplusformula">(8.10)</a>   together with formula <a class="reference internal" href="#equation-eq-hataform">(8.7)</a> to compute the matrix  <span class="math notranslate nohighlight">\( \hat A \)</span> of regression coefficients.</p>
+<p>Thus, our  estimator <span class="math notranslate nohighlight">\(\hat A = X' X^+\)</span> of the <span class="math notranslate nohighlight">\(m \times m\)</span> matrix of coefficients <span class="math notranslate nohighlight">\(A\)</span>    is</p>
+<div class="math notranslate nohighlight" id="equation-eq-ahatsvdformula">
+<span class="eqno">(8.11)<a class="headerlink" href="#equation-eq-ahatsvdformula" title="Permalink to this equation">¶</a></span>\[
+\hat A = X' V \Sigma^{-1}  U^\top  
+\]</div>
+</div>
+<div class="section" id="dynamic-mode-decomposition-dmd">
+<h2><span class="section-number">8.2. </span>Dynamic Mode Decomposition (DMD)<a class="headerlink" href="#dynamic-mode-decomposition-dmd" title="Permalink to this headline">¶</a></h2>
+<p>We turn to the <strong>tall and skinny</strong> case  associated with <strong>Dynamic Mode Decomposition</strong>, the case in  which <span class="math notranslate nohighlight">\( m &gt;&gt;n \)</span>.</p>
+<p>Here an <span class="math notranslate nohighlight">\( m \times n \)</span>  data matrix <span class="math notranslate nohighlight">\( \tilde X \)</span> contains many more attributes <span class="math notranslate nohighlight">\( m \)</span> than individuals <span class="math notranslate nohighlight">\( n \)</span>.</p>
+<p>Dynamic mode decomposition was introduced by <span id="id1">[<a class="reference internal" href="zreferences.html#id16" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span>,</p>
+<p>You can read  about Dynamic Mode Decomposition here <span id="id2">[<a class="reference internal" href="zreferences.html#id39" title="J. N. Kutz, S. L. Brunton, Brunton B. W, and J. L. Proctor. Dynamic mode decomposition: data-driven modeling of complex systems. SIAM, 2016.">KBBWP16</a>]</span> and here [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id25">BK19</a>] (section 7.2).</p>
+<p><strong>Dynamic Mode Decomposition</strong> (DMD) computes a rank <span class="math notranslate nohighlight">\( r &lt; p  \)</span> approximation to the least square regression coefficients <span class="math notranslate nohighlight">\( \hat A \)</span> that we  described above by formula <a class="reference internal" href="#equation-eq-ahatsvdformula">(8.11)</a>.</p>
+<p>We’ll  build up gradually  to a formulation that is useful  in applications.</p>
+<p>We’ll do this by describing three  alternative representations of our first-order linear dynamic system, i.e.,
+our vector autoregression.</p>
+<p><strong>Guide to three representations:</strong> In practice, we’ll be interested in Representation 3.</p>
+<p>We present the first 2 in order to set the stage for some intermediate steps that might help us understand what is under the hood of Representation 3.</p>
+<p>In applications, we’ll use only a small  subset of the DMD to approximate dynamics.</p>
+<p>To do that, we’ll want to use the  <strong>reduced</strong>  SVD’s affiliated with representation 3, not the <strong>full</strong> SVD’s affiliated with representations 1 and 2.</p>
+<p><strong>Guide to impatient reader:</strong> In our applications, we’ll be using Representation 3.</p>
+<p>You might want to skip the stage-setting representations 1 and 2 on first reading.</p>
+</div>
+<div class="section" id="representation-1">
+<h2><span class="section-number">8.3. </span>Representation 1<a class="headerlink" href="#representation-1" title="Permalink to this headline">¶</a></h2>
+<p>In this representation, we shall use a <strong>full</strong> SVD of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>We use the <span class="math notranslate nohighlight">\(m\)</span>  <strong>columns</strong> of <span class="math notranslate nohighlight">\(U\)</span>, and thus the <span class="math notranslate nohighlight">\(m\)</span> <strong>rows</strong> of <span class="math notranslate nohighlight">\(U^\top \)</span>,  to define   a <span class="math notranslate nohighlight">\(m \times 1\)</span>  vector <span class="math notranslate nohighlight">\(\tilde b_t\)</span> as</p>
+<div class="math notranslate nohighlight" id="equation-eq-tildexdef2">
+<span class="eqno">(8.12)<a class="headerlink" href="#equation-eq-tildexdef2" title="Permalink to this equation">¶</a></span>\[
+\tilde b_t = U^\top  X_t .
+\]</div>
+<p>The original  data <span class="math notranslate nohighlight">\(X_t\)</span> can be represented as</p>
+<div class="math notranslate nohighlight" id="equation-eq-xdecoder">
+<span class="eqno">(8.13)<a class="headerlink" href="#equation-eq-xdecoder" title="Permalink to this equation">¶</a></span>\[ 
+X_t = U \tilde b_t
+\]</div>
+<p>(Here we use <span class="math notranslate nohighlight">\(b\)</span> to remind ourselves that we are creating a <strong>basis</strong> vector.)</p>
+<p>Since we are now using a <strong>full</strong> SVD, <span class="math notranslate nohighlight">\(U U^\top  = I_{m \times m}\)</span>.</p>
+<p>So it follows from equation <a class="reference internal" href="#equation-eq-tildexdef2">(8.12)</a> that we can reconstruct  <span class="math notranslate nohighlight">\(X_t\)</span> from <span class="math notranslate nohighlight">\(\tilde b_t\)</span>.</p>
+<p>In particular,</p>
+<ul class="simple">
+<li><p>Equation <a class="reference internal" href="#equation-eq-tildexdef2">(8.12)</a> serves as an <strong>encoder</strong> that  <strong>rotates</strong> the <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(X_t\)</span> to become an <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(\tilde b_t\)</span></p></li>
+<li><p>Equation <a class="reference internal" href="#equation-eq-xdecoder">(8.13)</a> serves as a <strong>decoder</strong> that <strong>reconstructs</strong> the <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(X_t\)</span> by rotating  the <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(\tilde b_t\)</span></p></li>
+</ul>
+<p>Define a  transition matrix for an <span class="math notranslate nohighlight">\(m \times 1\)</span> basis vector  <span class="math notranslate nohighlight">\(\tilde b_t\)</span> by</p>
+<div class="math notranslate nohighlight" id="equation-eq-atilde0">
+<span class="eqno">(8.14)<a class="headerlink" href="#equation-eq-atilde0" title="Permalink to this equation">¶</a></span>\[ 
+\tilde A = U^\top  \hat A U 
+\]</div>
+<p>We can  recover <span class="math notranslate nohighlight">\(\hat A\)</span> from</p>
+<div class="math notranslate nohighlight">
+\[
+\hat A = U \tilde A U^\top  
+\]</div>
+<p>Dynamics of the  <span class="math notranslate nohighlight">\(m \times 1\)</span> basis vector <span class="math notranslate nohighlight">\(\tilde b_t\)</span> are governed by</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde b_{t+1} = \tilde A \tilde b_t 
+\]</div>
+<p>To construct forecasts <span class="math notranslate nohighlight">\(\overline X_t\)</span> of  future values of <span class="math notranslate nohighlight">\(X_t\)</span> conditional on <span class="math notranslate nohighlight">\(X_1\)</span>, we can apply  decoders
+(i.e., rotators) to both sides of this
+equation and deduce</p>
+<div class="math notranslate nohighlight">
+\[
+\overline X_{t+1} = U \tilde A^t U^\top  X_1
+\]</div>
+<p>where we use <span class="math notranslate nohighlight">\(\overline X_{t+1}, t \geq 1 \)</span> to denote a forecast.</p>
+</div>
+<div class="section" id="representation-2">
+<h2><span class="section-number">8.4. </span>Representation 2<a class="headerlink" href="#representation-2" title="Permalink to this headline">¶</a></h2>
+<p>This representation is related to  one originally proposed by  <span id="id3">[<a class="reference internal" href="zreferences.html#id16" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span>.</p>
+<p>It can be regarded as an intermediate step on the way  to obtaining  a related   representation 3 to be presented later</p>
+<p>As with Representation 1, we continue to</p>
+<ul class="simple">
+<li><p>use a <strong>full</strong> SVD and <strong>not</strong> a reduced SVD</p></li>
+</ul>
+<p>As we observed and illustrated  earlier in this lecture</p>
+<ul class="simple">
+<li><p>(a) for a full SVD <span class="math notranslate nohighlight">\(U U^\top  = I_{m \times m} \)</span> and <span class="math notranslate nohighlight">\(U^\top  U = I_{p \times p}\)</span> are both identity matrices</p></li>
+<li><p>(b)  for  a reduced SVD of <span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\(U^\top  U \)</span> is not an identity matrix.</p></li>
+</ul>
+<p>As we shall see later, a full SVD is  too confining for what we ultimately want to do, namely,  cope with situations in which  <span class="math notranslate nohighlight">\(U^\top  U\)</span> is <strong>not</strong> an identity matrix because we  use a reduced SVD of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>But for now, let’s proceed under the assumption that we are using a full SVD so that  both of the  preceding two  requirements (a) and (b) are satisfied.</p>
+<p>Form an eigendecomposition of the <span class="math notranslate nohighlight">\(m \times m\)</span> matrix <span class="math notranslate nohighlight">\(\tilde A = U^\top  \hat A U\)</span> defined in equation <a class="reference internal" href="#equation-eq-atilde0">(8.14)</a>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-tildeaeigen">
+<span class="eqno">(8.15)<a class="headerlink" href="#equation-eq-tildeaeigen" title="Permalink to this equation">¶</a></span>\[
+\tilde A = W \Lambda W^{-1} 
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Lambda\)</span> is a diagonal matrix of eigenvalues and <span class="math notranslate nohighlight">\(W\)</span> is an <span class="math notranslate nohighlight">\(m \times m\)</span>
+matrix whose columns are eigenvectors  corresponding to rows (eigenvalues) in
+<span class="math notranslate nohighlight">\(\Lambda\)</span>.</p>
+<p>When <span class="math notranslate nohighlight">\(U U^\top  = I_{m \times m}\)</span>, as is true with a full SVD of <span class="math notranslate nohighlight">\(X\)</span>, it follows that</p>
+<div class="math notranslate nohighlight" id="equation-eq-eqeigahat">
+<span class="eqno">(8.16)<a class="headerlink" href="#equation-eq-eqeigahat" title="Permalink to this equation">¶</a></span>\[ 
+\hat A = U \tilde A U^\top  = U W \Lambda W^{-1} U^\top  
+\]</div>
+<p>According to equation <a class="reference internal" href="#equation-eq-eqeigahat">(8.16)</a>, the diagonal matrix <span class="math notranslate nohighlight">\(\Lambda\)</span> contains eigenvalues of
+<span class="math notranslate nohighlight">\(\hat A\)</span> and corresponding eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span> are columns of the matrix <span class="math notranslate nohighlight">\(UW\)</span>.</p>
+<p>It follows that the systematic (i.e., not random) parts of the <span class="math notranslate nohighlight">\(X_t\)</span> dynamics captured by our first-order vector autoregressions   are described by</p>
+<div class="math notranslate nohighlight">
+\[
+X_{t+1} = U W \Lambda W^{-1} U^\top   X_t 
+\]</div>
+<p>Multiplying both sides of the above equation by <span class="math notranslate nohighlight">\(W^{-1} U^\top \)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[ 
+W^{-1} U^\top  X_{t+1} = \Lambda W^{-1} U^\top  X_t 
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[
+\hat b_{t+1} = \Lambda \hat b_t
+\]</div>
+<p>where our <strong>encoder</strong>  is</p>
+<div class="math notranslate nohighlight">
+\[ 
+\hat b_t = W^{-1} U^\top  X_t
+\]</div>
+<p>and our <strong>decoder</strong> is</p>
+<div class="math notranslate nohighlight">
+\[
+X_t = U W \hat b_t
+\]</div>
+<p>We can use this representation to construct a predictor <span class="math notranslate nohighlight">\(\overline X_{t+1}\)</span> of <span class="math notranslate nohighlight">\(X_{t+1}\)</span> conditional on <span class="math notranslate nohighlight">\(X_1\)</span>  via:</p>
+<div class="math notranslate nohighlight" id="equation-eq-dssebookrepr">
+<span class="eqno">(8.17)<a class="headerlink" href="#equation-eq-dssebookrepr" title="Permalink to this equation">¶</a></span>\[
+\overline X_{t+1} = U W \Lambda^t W^{-1} U^\top  X_1 
+\]</div>
+<p>In effect,
+<span id="id4">[<a class="reference internal" href="zreferences.html#id16" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span> defined an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix <span class="math notranslate nohighlight">\(\Phi_s\)</span> as</p>
+<div class="math notranslate nohighlight" id="equation-eq-phisfull">
+<span class="eqno">(8.18)<a class="headerlink" href="#equation-eq-phisfull" title="Permalink to this equation">¶</a></span>\[ 
+\Phi_s = UW 
+\]</div>
+<p>and a generalized inverse</p>
+<div class="math notranslate nohighlight" id="equation-eq-phisfullinv">
+<span class="eqno">(8.19)<a class="headerlink" href="#equation-eq-phisfullinv" title="Permalink to this equation">¶</a></span>\[
+\Phi_s^+ = W^{-1}U^\top  
+\]</div>
+<p><span id="id5">[<a class="reference internal" href="zreferences.html#id16" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span> then  represented equation <a class="reference internal" href="#equation-eq-dssebookrepr">(8.17)</a> as</p>
+<div class="math notranslate nohighlight" id="equation-eq-schmidrep">
+<span class="eqno">(8.20)<a class="headerlink" href="#equation-eq-schmidrep" title="Permalink to this equation">¶</a></span>\[
+\overline X_{t+1} = \Phi_s \Lambda^t \Phi_s^+ X_1 
+\]</div>
+<p>Components of the  basis vector <span class="math notranslate nohighlight">\( \hat b_t = W^{-1} U^\top  X_t \equiv \Phi_s^+ X_t\)</span> are<br />
+DMD <strong>projected modes</strong>.</p>
+<p>To understand why they are called <strong>projected modes</strong>, notice that</p>
+<div class="math notranslate nohighlight">
+\[ 
+\Phi_s^+ = ( \Phi_s^\top  \Phi_s)^{-1} \Phi_s^\top 
+\]</div>
+<p>so that the <span class="math notranslate nohighlight">\(m \times p\)</span> matrix</p>
+<div class="math notranslate nohighlight">
+\[
+\hat b =  \Phi_s^+ X
+\]</div>
+<p>is a matrix of regression coefficients of the <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span> on the <span class="math notranslate nohighlight">\(m \times p\)</span> matrix <span class="math notranslate nohighlight">\(\Phi_s\)</span>.</p>
+<p>We’ll say more about this interpretation in a related context when we discuss representation 3.</p>
+<p>We turn next  to an alternative  representation suggested by  Tu et al. <span id="id6">[<a class="reference internal" href="zreferences.html#id25" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">TRL+14</a>]</span>.</p>
+<p>It is more appropriate to use this alternative representation  when, as is typically the case  in practice, we use a reduced SVD.</p>
+</div>
+<div class="section" id="representation-3">
+<h2><span class="section-number">8.5. </span>Representation 3<a class="headerlink" href="#representation-3" title="Permalink to this headline">¶</a></h2>
+<p>Departing from the procedures used to construct  Representations 1 and 2, each of which deployed a <strong>full</strong> SVD, we now use a <strong>reduced</strong> SVD.</p>
+<p>Again, we let  <span class="math notranslate nohighlight">\(p \leq \textrm{min}(m,n)\)</span> be the rank of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>Construct a <strong>reduced</strong> SVD</p>
+<div class="math notranslate nohighlight">
+\[
+X = \tilde U \tilde \Sigma \tilde V^\top , 
+\]</div>
+<p>where now <span class="math notranslate nohighlight">\(\tilde U\)</span> is <span class="math notranslate nohighlight">\(m \times p\)</span>, <span class="math notranslate nohighlight">\(\tilde \Sigma\)</span> is <span class="math notranslate nohighlight">\( p \times p\)</span>, and <span class="math notranslate nohighlight">\(\tilde V^\top \)</span> is <span class="math notranslate nohighlight">\(p \times n\)</span>.</p>
+<p>Our minimum-norm least-squares approximator of  <span class="math notranslate nohighlight">\(A\)</span> now has representation</p>
+<div class="math notranslate nohighlight" id="equation-eq-ahatwithtildes">
+<span class="eqno">(8.21)<a class="headerlink" href="#equation-eq-ahatwithtildes" title="Permalink to this equation">¶</a></span>\[
+\hat A = X' \tilde V \tilde \Sigma^{-1} \tilde U^\top 
+\]</div>
+<p>Paralleling a step used to construct  Representation 1, define a  transition matrix for a rotated <span class="math notranslate nohighlight">\(p \times 1\)</span> state <span class="math notranslate nohighlight">\(\tilde b_t\)</span> by</p>
+<div class="math notranslate nohighlight" id="equation-eq-atildered">
+<span class="eqno">(8.22)<a class="headerlink" href="#equation-eq-atildered" title="Permalink to this equation">¶</a></span>\[ 
+\tilde A =\tilde  U^\top  \hat A \tilde U 
+\]</div>
+<p><strong>Interpretation as projection coefficients</strong></p>
+<p><span id="id7">[<a class="reference internal" href="zreferences.html#id40" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">BK22</a>]</span> remark that <span class="math notranslate nohighlight">\(\tilde A\)</span>  can be interpreted in terms of a projection of <span class="math notranslate nohighlight">\(\hat A\)</span> onto the <span class="math notranslate nohighlight">\(p\)</span> modes in <span class="math notranslate nohighlight">\(\tilde U\)</span>.</p>
+<p>To verify this, first note that, because  <span class="math notranslate nohighlight">\( \tilde U^\top  \tilde U = I\)</span>, it follows that</p>
+<div class="math notranslate nohighlight" id="equation-eq-tildeaverify">
+<span class="eqno">(8.23)<a class="headerlink" href="#equation-eq-tildeaverify" title="Permalink to this equation">¶</a></span>\[
+\tilde A = \tilde U^\top  \hat A \tilde U = \tilde U^\top  X' \tilde V \tilde \Sigma^{-1} \tilde U^\top  \tilde U 
+= \tilde U^\top  X' \tilde V \tilde \Sigma^{-1} \tilde U^\top 
+\]</div>
+<p>Next, we’ll just  compute the regression coefficients in a projection of <span class="math notranslate nohighlight">\(\hat A\)</span> on <span class="math notranslate nohighlight">\(\tilde U\)</span> using the
+standard least-square formula</p>
+<div class="math notranslate nohighlight">
+\[
+(\tilde U^\top  \tilde U)^{-1} \tilde U^\top  \hat A = (\tilde U^\top  \tilde U)^{-1} \tilde U^\top  X' \tilde V \tilde \Sigma^{-1} \tilde U^\top  = 
+\tilde U^\top  X' \tilde V \tilde \Sigma^{-1} \tilde U^\top   = \tilde A .
+\]</div>
+<p>Note that because we are now working with a reduced SVD,  <span class="math notranslate nohighlight">\(\tilde U \tilde U^\top  \neq I\)</span>.</p>
+<p>Consequently,</p>
+<div class="math notranslate nohighlight">
+\[
+\hat A \neq \tilde U \tilde A \tilde U^\top ,
+\]</div>
+<p>so we can’t simply  recover <span class="math notranslate nohighlight">\(\hat A\)</span> from  <span class="math notranslate nohighlight">\(\tilde A\)</span> and <span class="math notranslate nohighlight">\(\tilde U\)</span>.</p>
+<p>Nevertheless, we  hope for the best and proceed to construct an eigendecomposition of the
+<span class="math notranslate nohighlight">\(p \times p\)</span> matrix <span class="math notranslate nohighlight">\(\tilde A\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-tildeaeigenred">
+<span class="eqno">(8.24)<a class="headerlink" href="#equation-eq-tildeaeigenred" title="Permalink to this equation">¶</a></span>\[
+ \tilde A =  \tilde  W  \Lambda \tilde  W^{-1} .
+\]</div>
+<p>Mimicking our procedure in Representation 2, we cross our fingers and compute an <span class="math notranslate nohighlight">\(m \times p\)</span> matrix</p>
+<div class="math notranslate nohighlight" id="equation-eq-phisred">
+<span class="eqno">(8.25)<a class="headerlink" href="#equation-eq-phisred" title="Permalink to this equation">¶</a></span>\[
+\tilde \Phi_s = \tilde U \tilde W
+\]</div>
+<p>that  corresponds to <a class="reference internal" href="#equation-eq-phisfull">(8.18)</a> for a full SVD.</p>
+<p>At this point, where <span class="math notranslate nohighlight">\(\hat A\)</span> is given by formula <a class="reference internal" href="#equation-eq-ahatwithtildes">(8.21)</a> it is interesting to compute <span class="math notranslate nohighlight">\(\hat A \tilde  \Phi_s\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+\hat A \tilde \Phi_s &amp; = (X' \tilde V \tilde \Sigma^{-1} \tilde U^\top ) (\tilde U \tilde W) \\
+  &amp; = X' \tilde V \tilde \Sigma^{-1} \tilde  W \\
+  &amp; \neq (\tilde U \tilde  W) \Lambda \\
+  &amp; = \tilde \Phi_s \Lambda
+  \end{aligned}
+\end{split}\]</div>
+<p>That
+<span class="math notranslate nohighlight">\( \hat A \tilde \Phi_s \neq \tilde \Phi_s \Lambda \)</span> means that, unlike the  corresponding situation in Representation 2, columns of <span class="math notranslate nohighlight">\(\tilde \Phi_s = \tilde U \tilde  W\)</span>
+are <strong>not</strong> eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span> corresponding to eigenvalues  on the diagonal of matix <span class="math notranslate nohighlight">\(\Lambda\)</span>.</p>
+<p>But in a quest for eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span> that we <strong>can</strong> compute with a reduced SVD,  let’s define  the <span class="math notranslate nohighlight">\(m \times p\)</span> matrix
+<span class="math notranslate nohighlight">\(\Phi\)</span> as</p>
+<div class="math notranslate nohighlight" id="equation-eq-phiformula">
+<span class="eqno">(8.26)<a class="headerlink" href="#equation-eq-phiformula" title="Permalink to this equation">¶</a></span>\[
+\Phi \equiv \hat A \tilde \Phi_s = X' \tilde V \tilde \Sigma^{-1}  \tilde  W
+\]</div>
+<p>It turns out that columns of <span class="math notranslate nohighlight">\(\Phi\)</span> <strong>are</strong> eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
+<p>This is
+a consequence of a  result established by Tu et al. <span id="id8">[<a class="reference internal" href="zreferences.html#id25" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">TRL+14</a>]</span>, which we now present.</p>
+<p><strong>Proposition</strong> The <span class="math notranslate nohighlight">\(p\)</span> columns of <span class="math notranslate nohighlight">\(\Phi\)</span> are eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
+<p><strong>Proof:</strong> From formula <a class="reference internal" href="#equation-eq-phiformula">(8.26)</a> we have</p>
+<div class="math notranslate nohighlight">
+\[  
+\begin{aligned}
+  \hat A \Phi &amp; =  (X' \tilde  V \tilde  \Sigma^{-1} \tilde  U^\top ) (X' \tilde  V \Sigma^{-1} \tilde  W) \cr
+  &amp; = X' \tilde V \tilde  \Sigma^{-1} \tilde A \tilde  W \cr
+  &amp; = X' \tilde  V \tilde  \Sigma^{-1}\tilde  W \Lambda \cr
+  &amp; = \Phi \Lambda 
+  \end{aligned}
+\]</div>
+<p>Thus, we  have deduced  that</p>
+<div class="math notranslate nohighlight" id="equation-eq-aphilambda">
+<span class="eqno">(8.27)<a class="headerlink" href="#equation-eq-aphilambda" title="Permalink to this equation">¶</a></span>\[  
+\hat A \Phi = \Phi \Lambda
+\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\phi_i\)</span> be the <span class="math notranslate nohighlight">\(i\)</span>th  column of <span class="math notranslate nohighlight">\(\Phi\)</span> and <span class="math notranslate nohighlight">\(\lambda_i\)</span> be the corresponding <span class="math notranslate nohighlight">\(i\)</span> eigenvalue of <span class="math notranslate nohighlight">\(\tilde A\)</span> from decomposition <a class="reference internal" href="#equation-eq-tildeaeigenred">(8.24)</a>.</p>
+<p>Equating the <span class="math notranslate nohighlight">\(m \times 1\)</span> vectors that appear on the two  sides of  equation <a class="reference internal" href="#equation-eq-aphilambda">(8.27)</a>  gives</p>
+<div class="math notranslate nohighlight">
+\[
+\hat A \phi_i = \lambda_i \phi_i .
+\]</div>
+<p>This equation confirms that  <span class="math notranslate nohighlight">\(\phi_i\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(\hat A\)</span> that corresponds to eigenvalue  <span class="math notranslate nohighlight">\(\lambda_i\)</span> of both  <span class="math notranslate nohighlight">\(\tilde A\)</span> and <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
+<p>This concludes the proof.</p>
+<p>Also see <span id="id9">[<a class="reference internal" href="zreferences.html#id40" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">BK22</a>]</span> (p. 238)</p>
+<div class="section" id="decoder-of-x-as-a-linear-projection">
+<h3><span class="section-number">8.5.1. </span>Decoder of  <span class="math notranslate nohighlight">\(X\)</span> as a linear projection<a class="headerlink" href="#decoder-of-x-as-a-linear-projection" title="Permalink to this headline">¶</a></h3>
+<p>From  eigendecomposition <a class="reference internal" href="#equation-eq-aphilambda">(8.27)</a> we can represent <span class="math notranslate nohighlight">\(\hat A\)</span> as</p>
+<div class="math notranslate nohighlight" id="equation-eq-aform12">
+<span class="eqno">(8.28)<a class="headerlink" href="#equation-eq-aform12" title="Permalink to this equation">¶</a></span>\[ 
+\hat A = \Phi \Lambda \Phi^+ .
+\]</div>
+<p>From formula <a class="reference internal" href="#equation-eq-aform12">(8.28)</a> we can deduce the reduced dimension dynamics</p>
+<div class="math notranslate nohighlight">
+\[ 
+\check b_{t+1} = \Lambda \check b_t 
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight" id="equation-eq-decoder102">
+<span class="eqno">(8.29)<a class="headerlink" href="#equation-eq-decoder102" title="Permalink to this equation">¶</a></span>\[
+\check b_t  = \Phi^+ X_t  
+\]</div>
+<p>Since the <span class="math notranslate nohighlight">\(m \times p\)</span> matrix <span class="math notranslate nohighlight">\(\Phi\)</span> has <span class="math notranslate nohighlight">\(p\)</span> linearly independent columns, the generalized inverse of <span class="math notranslate nohighlight">\(\Phi\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+\Phi^{+} = (\Phi^\top  \Phi)^{-1} \Phi^\top 
+\]</div>
+<p>and so</p>
+<div class="math notranslate nohighlight" id="equation-eq-checkbform">
+<span class="eqno">(8.30)<a class="headerlink" href="#equation-eq-checkbform" title="Permalink to this equation">¶</a></span>\[ 
+\check b = (\Phi^\top  \Phi)^{-1} \Phi^\top  X
+\]</div>
+<p>The <span class="math notranslate nohighlight">\(p \times n\)</span>  matrix <span class="math notranslate nohighlight">\(\check b\)</span>  is recognizable as a  matrix of least squares regression coefficients of the <span class="math notranslate nohighlight">\(m \times n\)</span>  matrix
+<span class="math notranslate nohighlight">\(X\)</span> on the <span class="math notranslate nohighlight">\(m \times p\)</span> matrix <span class="math notranslate nohighlight">\(\Phi\)</span> and consequently</p>
+<div class="math notranslate nohighlight" id="equation-eq-xcheck">
+<span class="eqno">(8.31)<a class="headerlink" href="#equation-eq-xcheck" title="Permalink to this equation">¶</a></span>\[
+\check X = \Phi \check b
+\]</div>
+<p>is an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of least squares projections of <span class="math notranslate nohighlight">\(X\)</span> on <span class="math notranslate nohighlight">\(\Phi\)</span>.</p>
+<p>By virtue of the least-squares projection theory discussed in  this quantecon lecture  <a class="reference external" href="https://python-advanced.quantecon.org/orth_proj.html">https://python-advanced.quantecon.org/orth_proj.html</a>, we can represent <span class="math notranslate nohighlight">\(X\)</span> as the sum of the projection <span class="math notranslate nohighlight">\(\check X\)</span> of <span class="math notranslate nohighlight">\(X\)</span> on <span class="math notranslate nohighlight">\(\Phi\)</span>  plus a matrix of errors.</p>
+<p>To verify this, note that the least squares projection <span class="math notranslate nohighlight">\(\check X\)</span> is related to <span class="math notranslate nohighlight">\(X\)</span> by</p>
+<div class="math notranslate nohighlight">
+\[ 
+X = \check X + \epsilon 
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight" id="equation-eq-xbcheck">
+<span class="eqno">(8.32)<a class="headerlink" href="#equation-eq-xbcheck" title="Permalink to this equation">¶</a></span>\[
+X = \Phi \check b + \epsilon
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon\)</span> is an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of least squares errors satisfying the least squares
+orthogonality conditions <span class="math notranslate nohighlight">\(\epsilon^\top  \Phi =0 \)</span> or</p>
+<div class="math notranslate nohighlight" id="equation-eq-orthls">
+<span class="eqno">(8.33)<a class="headerlink" href="#equation-eq-orthls" title="Permalink to this equation">¶</a></span>\[ 
+(X - \Phi \check b)^\top  \Phi = 0_{m \times p}
+\]</div>
+<p>Rearranging  the orthogonality conditions <a class="reference internal" href="#equation-eq-orthls">(8.33)</a> gives <span class="math notranslate nohighlight">\(X^\top  \Phi = \check b \Phi^\top  \Phi\)</span>,
+which implies formula <a class="reference internal" href="#equation-eq-checkbform">(8.30)</a>.</p>
+</div>
+<div class="section" id="a-useful-approximation">
+<h3><span class="section-number">8.5.2. </span>A useful approximation<a class="headerlink" href="#a-useful-approximation" title="Permalink to this headline">¶</a></h3>
+<p>There is a useful  way to approximate  the <span class="math notranslate nohighlight">\(p \times 1\)</span> vector <span class="math notranslate nohighlight">\(\check b_t\)</span> instead of using  formula
+<a class="reference internal" href="#equation-eq-decoder102">(8.29)</a>.</p>
+<p>In particular, the following argument adapted from <span id="id10">[<a class="reference internal" href="zreferences.html#id40" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">BK22</a>]</span> (page 240) provides a computationally efficient way
+to approximate <span class="math notranslate nohighlight">\(\check b_t\)</span>.</p>
+<p>For convenience, we’ll do this first for time <span class="math notranslate nohighlight">\(t=1\)</span>.</p>
+<p>For <span class="math notranslate nohighlight">\(t=1\)</span>, from equation <a class="reference internal" href="#equation-eq-xbcheck">(8.32)</a> we have</p>
+<div class="math notranslate nohighlight" id="equation-eq-x1proj">
+<span class="eqno">(8.34)<a class="headerlink" href="#equation-eq-x1proj" title="Permalink to this equation">¶</a></span>\[ 
+   \check X_1 = \Phi \check b_1
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\check b_1\)</span> is a <span class="math notranslate nohighlight">\(p \times 1\)</span> vector.</p>
+<p>Recall from representation 1 above that  <span class="math notranslate nohighlight">\(X_1 =  U \tilde b_1\)</span>, where <span class="math notranslate nohighlight">\(\tilde b_1\)</span> is a time <span class="math notranslate nohighlight">\(1\)</span>  basis vector for representation 1 and <span class="math notranslate nohighlight">\(U\)</span> is from a full SVD of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>It  then follows from equation <a class="reference internal" href="#equation-eq-xbcheck">(8.32)</a> that</p>
+<div class="math notranslate nohighlight">
+\[ 
+  U \tilde b_1 = X' \tilde V \tilde \Sigma^{-1} \tilde  W \check b_1 + \epsilon_1
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon_1\)</span> is a least-squares error vector from equation <a class="reference internal" href="#equation-eq-xbcheck">(8.32)</a>.</p>
+<p>It follows that</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde b_1 = U^\top  X' V \tilde \Sigma^{-1} \tilde W \check b_1 + U^\top  \epsilon_1
+\]</div>
+<p>Replacing the error term <span class="math notranslate nohighlight">\(U^\top  \epsilon_1\)</span> by zero, and replacing <span class="math notranslate nohighlight">\(U\)</span> from a full SVD of <span class="math notranslate nohighlight">\(X\)</span> with
+<span class="math notranslate nohighlight">\(\tilde U\)</span> from a reduced SVD,  we obtain  an approximation <span class="math notranslate nohighlight">\(\hat b_1\)</span> to <span class="math notranslate nohighlight">\(\tilde b_1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ 
+  \hat b_1 = \tilde U^\top  X' \tilde V \tilde \Sigma^{-1} \tilde  W \check b_1
+\]</div>
+<p>Recall that  from equation <a class="reference internal" href="#equation-eq-tildeaverify">(8.23)</a>,  <span class="math notranslate nohighlight">\( \tilde A = \tilde U^\top  X' \tilde V \tilde \Sigma^{-1}\)</span>.</p>
+<p>It then follows  that</p>
+<div class="math notranslate nohighlight">
+\[ 
+  \hat  b_1 = \tilde   A \tilde W \check b_1
+\]</div>
+<p>and therefore, by the  eigendecomposition  <a class="reference internal" href="#equation-eq-tildeaeigenred">(8.24)</a> of <span class="math notranslate nohighlight">\(\tilde A\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[ 
+  \hat b_1 = \tilde W \Lambda \check b_1
+\]</div>
+<p>Consequently,</p>
+<div class="math notranslate nohighlight">
+\[ 
+  \hat b_1 = ( \tilde W \Lambda)^{-1} \tilde b_1
+\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight" id="equation-eq-beqnsmall">
+<span class="eqno">(8.35)<a class="headerlink" href="#equation-eq-beqnsmall" title="Permalink to this equation">¶</a></span>\[ 
+   \hat b_1 = ( \tilde W \Lambda)^{-1} \tilde U^\top  X_1 ,
+\]</div>
+<p>which is a computationally efficient approximation to  the following instance of  equation <a class="reference internal" href="#equation-eq-decoder102">(8.29)</a> for  the initial vector <span class="math notranslate nohighlight">\(\check b_1\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-bphieqn">
+<span class="eqno">(8.36)<a class="headerlink" href="#equation-eq-bphieqn" title="Permalink to this equation">¶</a></span>\[
+  \check b_1= \Phi^{+} X_1
+\]</div>
+<p>(To highlight that <a class="reference internal" href="#equation-eq-beqnsmall">(8.35)</a> is an approximation, users of  DMD sometimes call  components of the  basis vector <span class="math notranslate nohighlight">\(\check b_t  = \Phi^+ X_t \)</span>  the  <strong>exact</strong> DMD modes.)</p>
+<p>Conditional on <span class="math notranslate nohighlight">\(X_t\)</span>, we can compute our decoded <span class="math notranslate nohighlight">\(\check X_{t+j},   j = 1, 2, \ldots \)</span>  from
+either</p>
+<div class="math notranslate nohighlight" id="equation-eq-checkxevoln">
+<span class="eqno">(8.37)<a class="headerlink" href="#equation-eq-checkxevoln" title="Permalink to this equation">¶</a></span>\[
+\check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
+\]</div>
+<p>or  use the approximation</p>
+<div class="math notranslate nohighlight" id="equation-eq-checkxevoln2">
+<span class="eqno">(8.38)<a class="headerlink" href="#equation-eq-checkxevoln2" title="Permalink to this equation">¶</a></span>\[ 
+  \hat X_{t+j} = \Phi \Lambda^j (\tilde W \Lambda)^{-1}  \tilde U^\top  X_t .
+\]</div>
+<p>We can then use <span class="math notranslate nohighlight">\(\check X_{t+j}\)</span> or <span class="math notranslate nohighlight">\(\hat X_{t+j}\)</span> to forecast <span class="math notranslate nohighlight">\(X_{t+j}\)</span>.</p>
+</div>
+<div class="section" id="using-fewer-modes">
+<h3><span class="section-number">8.5.3. </span>Using Fewer Modes<a class="headerlink" href="#using-fewer-modes" title="Permalink to this headline">¶</a></h3>
+<p>In applications, we’ll actually  use only  a few modes, often  three or less.</p>
+<p>Some of the preceding formulas assume that we have retained all <span class="math notranslate nohighlight">\(p\)</span> modes associated with the positive
+singular values of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>We can  adjust our  formulas to describe a situation in which we instead retain only
+the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singular values.</p>
+<p>In that case, we simply replace <span class="math notranslate nohighlight">\(\tilde \Sigma\)</span> with the appropriate <span class="math notranslate nohighlight">\(r\times r\)</span> matrix of singular values,
+<span class="math notranslate nohighlight">\(\tilde U\)</span> with the <span class="math notranslate nohighlight">\(m \times r\)</span> matrix  whose columns correspond to the <span class="math notranslate nohighlight">\(r\)</span> largest singular values,
+and <span class="math notranslate nohighlight">\(\tilde V\)</span> with the <span class="math notranslate nohighlight">\(n \times r\)</span> matrix whose columns correspond to the <span class="math notranslate nohighlight">\(r\)</span> largest  singular values.</p>
+<p>Counterparts of all of the salient formulas above then apply.</p>
+</div>
+</div>
+<div class="section" id="source-for-some-python-code">
+<h2><span class="section-number">8.6. </span>Source for Some Python Code<a class="headerlink" href="#source-for-some-python-code" title="Permalink to this headline">¶</a></h2>
+<p>You can find a Python implementation of DMD here:</p>
+<p><a class="reference external" href="https://mathlab.github.io/PyDMD/">https://mathlab.github.io/PyDMD/</a></p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="geom_series.html">
+   1. Geometric Series for Elementary Economics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   2. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   3. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   4. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="complex_and_trig.html">
+   5. Complex Numbers and Trigonometry
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   6. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   7. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   8. VARs and DMDs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   9. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Elementary Statistics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_matrix.html">
+   10. Elementary Probability with Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="time_series_with_matrices.html">
+   11. Univariate Time Series with Matrix Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   12. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   13. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   14. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   15. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="heavy_tails.html">
+   16. Heavy-Tailed Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   17. Fault Tree Uncertainties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   18. Introduction to Artificial Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rand_resp.html">
+   19. Randomized Response Surveys
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="util_rand_resp.html">
+   20. Expected Utilities of Random Responses
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lp_intro.html">
+   21. Linear Programming
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   22. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   23. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="scalar_dynam.html">
+   24. Dynamics in One Dimension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_processes.html">
+   25. AR1 Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   26. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   27. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   28. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   29. Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   30. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   31. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   32. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   33. Shortest Paths
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   34. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   35. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   36. Job Search III: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_correlated.html">
+   37. Job Search IV: Correlated Wage Offers
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   38. Job Search V: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   39. Job Search VI: On-the-Job Search
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_q.html">
+   40. Job Search VII: A McCall Worker Q-Learns
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Consumption, Savings and Capital
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   41. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   42. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_problem.html">
+   43. Cake Eating I: Introduction to Optimal Saving
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   44. Cake Eating II: Numerical Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth.html">
+   45. Optimal Growth I: The Stochastic Optimal Growth Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="optgrowth_fast.html">
+   46. Optimal Growth II: Accelerating the Code with Numba
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="coleman_policy_iter.html">
+   47. Optimal Growth III: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="egm_policy_iter.html">
+   48. Optimal Growth IV: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp.html">
+   49. The Income Fluctuation Problem I: Basic Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   51. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   52. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   53. Forecasting  an AR(1) process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   54. Job Search VII: Search with Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   55. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   56. Computing Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   57. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   58. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   59. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mix_model.html">
+   60. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   61. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   62. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   63. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   64. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   65. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   66. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   67. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   68. Schelling’s Segregation Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   69. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   70. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   71. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   72. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   73. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   74. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   75. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   76. Competitive Equilibria with Arrow Securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   77. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   78. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   79. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   80. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   81. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   82. Multiple Good Allocation Mechanisms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   83. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   84. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   85. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                    <!-- <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <i data-feather="search"></i>
+                        </form>
+                    </li> -->
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/var_dmd.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/var_dmd.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/var_dmd.ipynb">BinderHub</option>
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/var_dmd.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/var_dmd.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/var_dmd.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "var_dmd";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/var_dmd.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-54984338-10', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </body>
+</html>

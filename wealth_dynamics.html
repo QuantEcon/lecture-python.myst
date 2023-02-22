@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>30. Wealth Distribution Dynamics &#8212; Quantitative Economics with Python</title>
+    <title>31. Wealth Distribution Dynamics &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -101,8 +101,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="31. A First Look at the Kalman Filter" href="kalman.html" />
-    <link rel="prev" title="29. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
+    <link rel="next" title="32. A First Look at the Kalman Filter" href="kalman.html" />
+    <link rel="prev" title="30. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -152,63 +152,68 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
-   30.1. Overview
+   31.1. Overview
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#a-note-on-assumptions">
-     30.1.1. A Note on Assumptions
+     31.1.1. A Note on Assumptions
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#lorenz-curves-and-the-gini-coefficient">
-   30.2. Lorenz Curves and the Gini Coefficient
+   31.2. Lorenz Curves and the Gini Coefficient
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#lorenz-curves">
-     30.2.1. Lorenz Curves
+     31.2.1. Lorenz Curves
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-gini-coefficient">
-     30.2.2. The Gini Coefficient
+     31.2.2. The Gini Coefficient
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-model-of-wealth-dynamics">
-   30.3. A Model of Wealth Dynamics
+   31.3. A Model of Wealth Dynamics
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implementation">
-   30.4. Implementation
+  <a class="reference internal nav-link" href="#implementation-using-jax">
+   31.4. Implementation using JAX
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implementation-using-numba">
+   31.5. Implementation using Numba
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#applications">
-   30.5. Applications
+   31.6. Applications
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#time-series">
-     30.5.1. Time Series
+     31.6.1. Time Series
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#inequality-measures">
-     30.5.2. Inequality Measures
+     31.6.2. Inequality Measures
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#exercises">
-   30.6. Exercises
+   31.7. Exercises
   </a>
  </li>
 </ul>
@@ -261,7 +266,13 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><div class="tex2jax_ignore mathjax_ignore section" id="wealth-distribution-dynamics">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">30. </span>Wealth Distribution Dynamics</a><a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id2"><span class="section-number">31. </span>Wealth Distribution Dynamics</a><a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this headline">¶</a></h1>
+<div class="warning admonition">
+<p class="admonition-title">GPU in use</p>
+<p>This lecture is accelerated via <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU and JAX for GPU programming.</p>
+<p>Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.</p>
+<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax#pip-installation-gpu-cuda">instructions</a> for installing JAX with GPU support.</p>
+</div>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -270,9 +281,10 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p><a class="reference internal" href="#overview" id="id3">Overview</a></p></li>
 <li><p><a class="reference internal" href="#lorenz-curves-and-the-gini-coefficient" id="id4">Lorenz Curves and the Gini Coefficient</a></p></li>
 <li><p><a class="reference internal" href="#a-model-of-wealth-dynamics" id="id5">A Model of Wealth Dynamics</a></p></li>
-<li><p><a class="reference internal" href="#implementation" id="id6">Implementation</a></p></li>
-<li><p><a class="reference internal" href="#applications" id="id7">Applications</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id8">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#implementation-using-jax" id="id6">Implementation using JAX</a></p></li>
+<li><p><a class="reference internal" href="#implementation-using-numba" id="id7">Implementation using Numba</a></p></li>
+<li><p><a class="reference internal" href="#applications" id="id8">Applications</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id9">Exercises</a></p></li>
 </ul>
 </li>
 </ul>
@@ -281,24 +293,25 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
+<span class="c1"># If your machine has CUDA support, please follow the guide in GPU Warning.</span>
+<span class="c1"># Otherwise, run the line below:</span>
+<span class="o">!</span>pip install --upgrade <span class="s2">&quot;jax[CPU]&quot;</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.6.0)
-Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
 Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
 Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
 Requirement already satisfied: scipy&gt;=1.5.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
 Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
 Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
 Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
 Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -306,10 +319,154 @@ Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lectu
 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jax[CPU] in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.4.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting jax[CPU]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading jax-0.4.4.tar.gz (1.2 MB)
+?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.2 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ <span class=" -Color -Color-Green">1.2/1.2 MB</span> <span class=" -Color -Color-Red">34.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.2/1.2 MB</span> <span class=" -Color -Color-Red">27.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Preparing metadata (setup.py) ... ?25l-
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
+?25hRequirement already satisfied: numpy&gt;=1.20 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (1.23.5)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: opt_einsum in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (3.3.0)
+Requirement already satisfied: scipy&gt;=1.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (1.9.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting jaxlib==0.4.4
+  Downloading jaxlib-0.4.4-cp39-cp39-manylinux2014_x86_64.whl (72.6 MB)
+?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/72.6 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4.2/72.6 MB</span> <span class=" -Color -Color-Red">127.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">8.5/72.6 MB</span> <span class=" -Color -Color-Red">124.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+     ━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">12.9/72.6 MB</span> <span class=" -Color -Color-Red">123.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">17.3/72.6 MB</span> <span class=" -Color -Color-Red">123.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">21.6/72.6 MB</span> <span class=" -Color -Color-Red">123.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">26.0/72.6 MB</span> <span class=" -Color -Color-Red">123.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+     ━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">30.4/72.6 MB</span> <span class=" -Color -Color-Red">123.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">34.7/72.6 MB</span> <span class=" -Color -Color-Red">123.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">39.0/72.6 MB</span> <span class=" -Color -Color-Red">122.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">43.5/72.6 MB</span> <span class=" -Color -Color-Red">125.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">48.0/72.6 MB</span> <span class=" -Color -Color-Red">125.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━ <span class=" -Color -Color-Green">52.4/72.6 MB</span> <span class=" -Color -Color-Red">126.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━ <span class=" -Color -Color-Green">56.8/72.6 MB</span> <span class=" -Color -Color-Red">125.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━ <span class=" -Color -Color-Green">61.3/72.6 MB</span> <span class=" -Color -Color-Red">125.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━ <span class=" -Color -Color-Green">65.7/72.6 MB</span> <span class=" -Color -Color-Red">125.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━ <span class=" -Color -Color-Green">70.2/72.6 MB</span> <span class=" -Color -Color-Red">126.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">72.6/72.6 MB</span> <span class=" -Color -Color-Red">127.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">72.6/72.6 MB</span> <span class=" -Color -Color-Red">127.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">72.6/72.6 MB</span> <span class=" -Color -Color-Red">127.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">72.6/72.6 MB</span> <span class=" -Color -Color-Red">127.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">72.6/72.6 MB</span> <span class=" -Color -Color-Red">127.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">72.6/72.6 MB</span> <span class=" -Color -Color-Red">127.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">72.6/72.6 MB</span> <span class=" -Color -Color-Red">127.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">72.6/72.6 MB</span> <span class=" -Color -Color-Red">127.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">72.6/72.6 MB</span> <span class=" -Color -Color-Red">24.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building wheels for collected packages: jax
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for jax (setup.py) ... ?25l-
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
+?25h  Created wheel for jax: filename=jax-0.4.4-py3-none-any.whl size=1403831 sha256=c0e124f6ebd6ff0b140b788a02e746d9b17fd706faf95f5e54b176f2f95470b0
+  Stored in directory: /github/home/.cache/pip/wheels/12/85/72/8b6d48cd0df9ee52f902943e465c81a315a2584314459f6d1d
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully built jax
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: jaxlib, jax
+  Attempting uninstall: jaxlib
+    Found existing installation: jaxlib 0.4.2+cuda11.cudnn86
+    Uninstalling jaxlib-0.4.2+cuda11.cudnn86:
+      Successfully uninstalled jaxlib-0.4.2+cuda11.cudnn86
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: jax
+    Found existing installation: jax 0.4.2
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Uninstalling jax-0.4.2:
+      Successfully uninstalled jax-0.4.2
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed jax-0.4.4 jaxlib-0.4.4
+<span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
+
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">30.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">31.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This notebook gives an introduction to wealth distribution dynamics, with a
 focus on</p>
 <ul class="simple">
@@ -328,7 +485,7 @@ tails.</p>
 <p>It also gives us a way to quantify such concentration, in terms of the tail index.</p>
 <p>One question of interest is whether or not we can replicate Pareto tails from a relatively simple model.</p>
 <div class="section" id="a-note-on-assumptions">
-<h3><span class="section-number">30.1.1. </span>A Note on Assumptions<a class="headerlink" href="#a-note-on-assumptions" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.1.1. </span>A Note on Assumptions<a class="headerlink" href="#a-note-on-assumptions" title="Permalink to this headline">¶</a></h3>
 <p>The evolution of wealth for any given household depends on their
 savings behavior.</p>
 <p>Modeling such behavior will form an important part of this lecture series.</p>
@@ -345,6 +502,30 @@ savings behavior.</p>
 <span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">prange</span>
 <span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s check the backend used by JAX and the devices available</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if JAX is using GPU</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JAX backend: </span><span class="si">{</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">platform</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Check the devices available for JAX</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX backend: cpu
+[CpuDevice(id=0)]
 </pre></div>
 </div>
 </div>
@@ -352,11 +533,11 @@ savings behavior.</p>
 </div>
 </div>
 <div class="section" id="lorenz-curves-and-the-gini-coefficient">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">30.2. </span>Lorenz Curves and the Gini Coefficient</a><a class="headerlink" href="#lorenz-curves-and-the-gini-coefficient" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">31.2. </span>Lorenz Curves and the Gini Coefficient</a><a class="headerlink" href="#lorenz-curves-and-the-gini-coefficient" title="Permalink to this headline">¶</a></h2>
 <p>Before we investigate wealth dynamics, we briefly review some measures of
 inequality.</p>
 <div class="section" id="lorenz-curves">
-<h3><span class="section-number">30.2.1. </span>Lorenz Curves<a class="headerlink" href="#lorenz-curves" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.2.1. </span>Lorenz Curves<a class="headerlink" href="#lorenz-curves" title="Permalink to this headline">¶</a></h3>
 <p>One popular graphical measure of inequality is the <a class="reference external" href="https://en.wikipedia.org/wiki/Lorenz_curve">Lorenz curve</a>.</p>
 <p>The package <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py">QuantEcon.py</a>, already imported above, contains a function to compute Lorenz curves.</p>
 <p>To illustrate, suppose that</p>
@@ -383,7 +564,7 @@ inequality.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_7_0.png" src="_images/wealth_dynamics_7_0.png" />
+<img alt="_images/wealth_dynamics_9_0.png" src="_images/wealth_dynamics_9_0.png" />
 </div>
 </div>
 <p>This curve can be understood as follows: if point <span class="math notranslate nohighlight">\((x,y)\)</span> lies on the curve, it means that, collectively, the bottom <span class="math notranslate nohighlight">\((100x)\%\)</span> of the population holds <span class="math notranslate nohighlight">\((100y)\%\)</span> of the wealth.</p>
@@ -414,14 +595,14 @@ observations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_9_0.png" src="_images/wealth_dynamics_9_0.png" />
+<img alt="_images/wealth_dynamics_11_0.png" src="_images/wealth_dynamics_11_0.png" />
 </div>
 </div>
 <p>You can see that, as the tail parameter of the Pareto distribution increases, inequality decreases.</p>
 <p>This is to be expected, because a higher tail index implies less weight in the tail of the Pareto distribution.</p>
 </div>
 <div class="section" id="the-gini-coefficient">
-<h3><span class="section-number">30.2.2. </span>The Gini Coefficient<a class="headerlink" href="#the-gini-coefficient" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.2.2. </span>The Gini Coefficient<a class="headerlink" href="#the-gini-coefficient" title="Permalink to this headline">¶</a></h3>
 <p>The definition and interpretation of the Gini coefficient can be found on the corresponding <a class="reference external" href="https://en.wikipedia.org/wiki/Gini_coefficient">Wikipedia page</a>.</p>
 <p>A value of 0 indicates perfect equality (corresponding the case where the
 Lorenz curve matches the 45 degree line) and a value of 1 indicates complete
@@ -456,18 +637,18 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_11_0.png" src="_images/wealth_dynamics_11_0.png" />
+<img alt="_images/wealth_dynamics_13_0.png" src="_images/wealth_dynamics_13_0.png" />
 </div>
 </div>
 <p>The simulation shows that the fit is good.</p>
 </div>
 </div>
 <div class="section" id="a-model-of-wealth-dynamics">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">30.3. </span>A Model of Wealth Dynamics</a><a class="headerlink" href="#a-model-of-wealth-dynamics" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">31.3. </span>A Model of Wealth Dynamics</a><a class="headerlink" href="#a-model-of-wealth-dynamics" title="Permalink to this headline">¶</a></h2>
 <p>Having discussed inequality measures, let us now turn to wealth dynamics.</p>
 <p>The model we will study is</p>
 <div class="math notranslate nohighlight" id="equation-wealth-dynam-ah">
-<span class="eqno">(30.1)<a class="headerlink" href="#equation-wealth-dynam-ah" title="Permalink to this equation">¶</a></span>\[w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
+<span class="eqno">(31.1)<a class="headerlink" href="#equation-wealth-dynam-ah" title="Permalink to this equation">¶</a></span>\[w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(w_t\)</span> is wealth at time <span class="math notranslate nohighlight">\(t\)</span> for a given household,</p></li>
@@ -497,7 +678,7 @@ on assets do not exhibit large trends.</p>
 <p>When we simulate a population of households, we will assume all shocks are idiosyncratic (i.e.,  specific to individual households and independent across them).</p>
 <p>Regarding the savings function <span class="math notranslate nohighlight">\(s\)</span>, our default model will be</p>
 <div class="math notranslate nohighlight" id="equation-sav-ah">
-<span class="eqno">(30.2)<a class="headerlink" href="#equation-sav-ah" title="Permalink to this equation">¶</a></span>\[s(w) = s_0 w \cdot \mathbb 1\{w \geq \hat w\}\]</div>
+<span class="eqno">(31.2)<a class="headerlink" href="#equation-sav-ah" title="Permalink to this equation">¶</a></span>\[s(w) = s_0 w \cdot \mathbb 1\{w \geq \hat w\}\]</div>
 <p>where <span class="math notranslate nohighlight">\(s_0\)</span> is a positive constant.</p>
 <p>Thus, for <span class="math notranslate nohighlight">\(w &lt; \hat w\)</span>, the household saves nothing. For
 <span class="math notranslate nohighlight">\(w \geq \bar w\)</span>, the household saves a fraction <span class="math notranslate nohighlight">\(s_0\)</span> of
@@ -505,8 +686,321 @@ their wealth.</p>
 <p>We are using something akin to a fixed savings rate model, while
 acknowledging that low wealth households tend to save very little.</p>
 </div>
-<div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">30.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="implementation-using-jax">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">31.4. </span>Implementation using JAX</a><a class="headerlink" href="#implementation-using-jax" title="Permalink to this headline">¶</a></h2>
+<p>Let’s define a model to represent the wealth dynamics.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NamedTuple Model</span>
+<span class="n">Model</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Model&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;w_hat&quot;</span><span class="p">,</span> <span class="s2">&quot;s_0&quot;</span><span class="p">,</span> <span class="s2">&quot;c_y&quot;</span><span class="p">,</span> <span class="s2">&quot;μ_y&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;σ_y&quot;</span><span class="p">,</span> <span class="s2">&quot;c_r&quot;</span><span class="p">,</span> <span class="s2">&quot;μ_r&quot;</span><span class="p">,</span> <span class="s2">&quot;σ_r&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;σ_z&quot;</span><span class="p">,</span> <span class="s2">&quot;z_mean&quot;</span><span class="p">,</span> <span class="s2">&quot;z_var&quot;</span><span class="p">,</span> <span class="s2">&quot;y_mean&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a function to create the Model with the given parameters</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_wealth_model</span><span class="p">(</span><span class="n">w_hat</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                        <span class="n">s_0</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+                        <span class="n">c_y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                        <span class="n">μ_y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                        <span class="n">σ_y</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                        <span class="n">c_r</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+                        <span class="n">μ_r</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                        <span class="n">σ_r</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                        <span class="n">a</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                        <span class="n">b</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                        <span class="n">σ_z</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a wealth model with given parameters and return</span>
+<span class="sd">    and instance of NamedTuple Model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">z_mean</span> <span class="o">=</span> <span class="n">b</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">z_var</span> <span class="o">=</span> <span class="n">σ_z</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">exp_z_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">z_mean</span> <span class="o">+</span> <span class="n">z_var</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">R_mean</span> <span class="o">=</span> <span class="n">c_r</span> <span class="o">*</span> <span class="n">exp_z_mean</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">μ_r</span> <span class="o">+</span> <span class="n">σ_r</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">y_mean</span> <span class="o">=</span> <span class="n">c_y</span> <span class="o">*</span> <span class="n">exp_z_mean</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">μ_y</span> <span class="o">+</span> <span class="n">σ_y</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># Test a stability condition that ensures wealth does not diverge</span>
+    <span class="c1"># to infinity.</span>
+    <span class="n">α</span> <span class="o">=</span> <span class="n">R_mean</span> <span class="o">*</span> <span class="n">s_0</span>
+    <span class="k">if</span> <span class="n">α</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Stability condition failed.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">w_hat</span><span class="o">=</span><span class="n">w_hat</span><span class="p">,</span> <span class="n">s_0</span><span class="o">=</span><span class="n">s_0</span><span class="p">,</span> <span class="n">c_y</span><span class="o">=</span><span class="n">c_y</span><span class="p">,</span> <span class="n">μ_y</span><span class="o">=</span><span class="n">μ_y</span><span class="p">,</span>
+                 <span class="n">σ_y</span><span class="o">=</span><span class="n">σ_y</span><span class="p">,</span> <span class="n">c_r</span><span class="o">=</span><span class="n">c_r</span><span class="p">,</span> <span class="n">μ_r</span><span class="o">=</span><span class="n">μ_r</span><span class="p">,</span> <span class="n">σ_r</span><span class="o">=</span><span class="n">σ_r</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span>
+                 <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">σ_z</span><span class="o">=</span><span class="n">σ_z</span><span class="p">,</span> <span class="n">z_mean</span><span class="o">=</span><span class="n">z_mean</span><span class="p">,</span> <span class="n">z_var</span><span class="o">=</span><span class="n">z_var</span><span class="p">,</span> <span class="n">y_mean</span><span class="o">=</span><span class="n">y_mean</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following function updates one period with the given current wealth and persistent state.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_states_jax</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">wdy</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">rand_key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update one period, given current wealth w and persistent</span>
+<span class="sd">    state z. They are stored in the form of tuples under the arrays argument</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack w and z</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">arrays</span>
+
+    <span class="n">rand_key</span><span class="p">,</span> <span class="o">*</span><span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">rand_key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">zp</span> <span class="o">=</span> <span class="n">wdy</span><span class="o">.</span><span class="n">a</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="n">wdy</span><span class="o">.</span><span class="n">b</span> <span class="o">+</span> <span class="n">wdy</span><span class="o">.</span><span class="n">σ_z</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">rand_key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="c1"># Update wealth</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">wdy</span><span class="o">.</span><span class="n">c_y</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">zp</span><span class="p">)</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">wdy</span><span class="o">.</span><span class="n">μ_y</span> <span class="o">+</span> <span class="n">wdy</span><span class="o">.</span><span class="n">σ_y</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="n">size</span><span class="p">))</span>
+    <span class="n">wp</span> <span class="o">=</span> <span class="n">y</span>
+
+    <span class="n">R</span> <span class="o">=</span> <span class="n">wdy</span><span class="o">.</span><span class="n">c_r</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">zp</span><span class="p">)</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">wdy</span><span class="o">.</span><span class="n">μ_r</span> <span class="o">+</span> <span class="n">wdy</span><span class="o">.</span><span class="n">σ_r</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="n">size</span><span class="p">))</span>
+    <span class="n">wp</span> <span class="o">+=</span> <span class="p">(</span><span class="n">w</span> <span class="o">&gt;=</span> <span class="n">wdy</span><span class="o">.</span><span class="n">w_hat</span><span class="p">)</span> <span class="o">*</span> <span class="n">R</span> <span class="o">*</span> <span class="n">wdy</span><span class="o">.</span><span class="n">s_0</span> <span class="o">*</span> <span class="n">w</span>
+    <span class="k">return</span> <span class="n">wp</span><span class="p">,</span> <span class="n">zp</span>
+
+<span class="c1"># Create the jit function</span>
+<span class="n">update_states_jax</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">update_states_jax</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s function to simulate the time series of wealth for individual households using a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop and JAX.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using JAX and for loop</span>
+<span class="k">def</span> <span class="nf">wealth_time_series_for_loop_jax</span><span class="p">(</span><span class="n">w_0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">wdy</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">rand_seed</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a single time series of length n for wealth given</span>
+<span class="sd">    initial value w_0.</span>
+
+<span class="sd">    * This implementation uses a for loop.</span>
+
+<span class="sd">    The initial persistent state z_0 for each household is drawn from</span>
+<span class="sd">    the stationary distribution of the AR(1) process.</span>
+
+<span class="sd">        * wdy: NamedTuple Model</span>
+<span class="sd">        * w_0: scalar/vector</span>
+<span class="sd">        * n: int</span>
+<span class="sd">        * size: size/shape of the w_0</span>
+<span class="sd">        * rand_seed: int (Used to generate PRNG key)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rand_key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">rand_seed</span><span class="p">)</span>
+    <span class="n">rand_key</span><span class="p">,</span> <span class="o">*</span><span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">rand_key</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="n">w_0</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">device_put</span><span class="p">(</span><span class="n">w_0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="n">z</span> <span class="o">=</span> <span class="n">wdy</span><span class="o">.</span><span class="n">z_mean</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">wdy</span><span class="o">.</span><span class="n">z_var</span><span class="p">)</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">rand_key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="p">[</span><span class="n">w_0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">w_</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">update_states_jax</span><span class="p">((</span><span class="n">w</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">z</span><span class="p">),</span> <span class="n">wdy</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">subkey</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+<span class="c1"># Create the jit function</span>
+<span class="n">wealth_time_series_for_loop_jax</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">wealth_time_series_for_loop_jax</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s try simulating the model at different parameter values and investigate the implications for the wealth distribution using the above function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wdy</span> <span class="o">=</span> <span class="n">create_wealth_model</span><span class="p">()</span> <span class="c1"># default model</span>
+<span class="n">ts_length</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<span class="n">w_jax_result</span> <span class="o">=</span> <span class="n">wealth_time_series_for_loop_jax</span><span class="p">(</span><span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span><span class="p">,</span> <span class="n">ts_length</span><span class="p">,</span> <span class="n">wdy</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2023-02-22 03:36:21.137289: E external/org_tensorflow/tensorflow/compiler/xla/service/slow_operation_alarm.cc:65] 
+********************************
+[Compiling module jit_wealth_time_series_for_loop_jax] Very slow compile?  If you want to file a bug, run with envvar XLA_FLAGS=--xla_dump_to=/tmp/foo and attach the results.
+********************************
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:25:46.79
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2023-02-22 03:55:04.177102: E external/org_tensorflow/tensorflow/compiler/xla/service/slow_operation_alarm.cc:133] The operation took 20m43.03993043s
+
+********************************
+[Compiling module jit_wealth_time_series_for_loop_jax] Very slow compile?  If you want to file a bug, run with envvar XLA_FLAGS=--xla_dump_to=/tmp/foo and attach the results.
+********************************
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1546.7909824848175
+</pre></div>
+</div>
+</div>
+</div>
+<p>Running the above function again will be even faster because of JAX’s JIT.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<span class="c1"># 2nd time is expected to be very fast because of JIT</span>
+<span class="n">w_jax_result</span> <span class="o">=</span> <span class="n">wealth_time_series_for_loop_jax</span><span class="p">(</span><span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span><span class="p">,</span> <span class="n">ts_length</span><span class="p">,</span> <span class="n">wdy</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.00
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0032625198364257812
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_jax_result</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/wealth_dynamics_27_0.png" src="_images/wealth_dynamics_27_0.png" />
+</div>
+</div>
+<p>We can further try to optimize and speed up the compile time of the above function by replacing <code class="docutils literal notranslate"><span class="pre">for</span></code> loop with <a class="reference external" href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html"><code class="docutils literal notranslate"><span class="pre">jax.lax.scan</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">wealth_time_series_jax</span><span class="p">(</span><span class="n">w_0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">wdy</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">rand_seed</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a single time series of length n for wealth given</span>
+<span class="sd">    initial value w_0.</span>
+
+<span class="sd">    * This implementation uses for jax.lax.scan</span>
+
+<span class="sd">    The initial persistent state z_0 for each household is drawn from</span>
+<span class="sd">    the stationary distribution of the AR(1) process.</span>
+
+<span class="sd">        * wdy: NamedTuple Model</span>
+<span class="sd">        * w_0: scalar/vector</span>
+<span class="sd">        * n: int</span>
+<span class="sd">        * size: size/shape of the w_0</span>
+<span class="sd">        * rand_seed: int (Used to generate PRNG key)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rand_key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">rand_seed</span><span class="p">)</span>
+    <span class="n">rand_key</span><span class="p">,</span> <span class="o">*</span><span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">rand_key</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="n">w_0</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">device_put</span><span class="p">(</span><span class="n">w_0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">z_init</span> <span class="o">=</span> <span class="n">wdy</span><span class="o">.</span><span class="n">z_mean</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">wdy</span><span class="o">.</span><span class="n">z_var</span><span class="p">)</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">rand_key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="n">w_0</span><span class="p">,</span> <span class="n">z_init</span>
+    <span class="n">rand_sub_keys</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">subkey</span><span class="p">)</span>
+
+    <span class="n">w_final</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">w_0</span><span class="p">])</span>
+
+    <span class="c1"># Define the function for each update</span>
+    <span class="k">def</span> <span class="nf">update_w_z</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">rand_sub_key</span><span class="p">):</span>
+        <span class="n">wp</span><span class="p">,</span> <span class="n">zp</span> <span class="o">=</span> <span class="n">update_states_jax</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">wdy</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">rand_sub_key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">wp</span><span class="p">,</span> <span class="n">zp</span><span class="p">),</span> <span class="n">wp</span>
+
+    <span class="n">arrays_last</span><span class="p">,</span> <span class="n">w_values</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">update_w_z</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">rand_sub_keys</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">w_final</span><span class="p">,</span> <span class="n">w_values</span><span class="p">))</span>
+
+<span class="c1"># Create the jit function</span>
+<span class="n">wealth_time_series_jax</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">wealth_time_series_jax</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s try simulating the model at different parameter values and investigate the implications for the wealth distribution and also observe the difference in time between <code class="docutils literal notranslate"><span class="pre">wealth_time_series_jax</span></code> and <code class="docutils literal notranslate"><span class="pre">wealth_time_series_for_loop_jax</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wdy</span> <span class="o">=</span> <span class="n">create_wealth_model</span><span class="p">()</span> <span class="c1"># default model</span>
+<span class="n">ts_length</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<span class="n">w_jax_result</span> <span class="o">=</span> <span class="n">wealth_time_series_jax</span><span class="p">(</span><span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span><span class="p">,</span> <span class="n">ts_length</span><span class="p">,</span> <span class="n">wdy</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;wealth_time_series_jax_time_1&quot;</span><span class="p">,</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.90
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9044885635375977
+</pre></div>
+</div>
+</div>
+</div>
+<p>Running the above function again will be even faster because of JAX’s JIT.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<span class="c1"># 2nd time is expected to be very fast because of JIT</span>
+<span class="n">w_jax_result</span> <span class="o">=</span> <span class="n">wealth_time_series_jax</span><span class="p">(</span><span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span><span class="p">,</span> <span class="n">ts_length</span><span class="p">,</span> <span class="n">wdy</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;wealth_time_series_jax_time_2&quot;</span><span class="p">,</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.00
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0005314350128173828
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_jax_result</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/wealth_dynamics_35_0.png" src="_images/wealth_dynamics_35_0.png" />
+</div>
+</div>
+<p>Now here’s function to simulate a cross section of households forward in time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_cross_section_jax</span><span class="p">(</span><span class="n">w_distribution</span><span class="p">,</span> <span class="n">shift_length</span><span class="p">,</span> <span class="n">wdy</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">rand_seed</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shifts a cross-section of household forward in time</span>
+
+<span class="sd">    * wdy: NamedTuple Model</span>
+<span class="sd">    * w_distribution: array_like, represents current cross-section</span>
+
+<span class="sd">    Takes a current distribution of wealth values as w_distribution</span>
+<span class="sd">    and updates each w_t in w_distribution to w_{t+j}, where</span>
+<span class="sd">    j = shift_length.</span>
+
+<span class="sd">    Returns the new distribution.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_dist</span> <span class="o">=</span> <span class="n">wealth_time_series_jax</span><span class="p">(</span><span class="n">w_distribution</span><span class="p">,</span> <span class="n">shift_length</span><span class="p">,</span> <span class="n">wdy</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">rand_seed</span><span class="p">)</span>
+    <span class="n">new_distribution</span> <span class="o">=</span> <span class="n">new_dist</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="k">return</span> <span class="n">new_distribution</span>
+
+<span class="c1"># Create the jit function</span>
+<span class="n">update_cross_section_jax</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">update_cross_section_jax</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="implementation-using-numba">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">31.5. </span>Implementation using Numba</a><a class="headerlink" href="#implementation-using-numba" title="Permalink to this headline">¶</a></h2>
 <p>Here’s some type information to help Numba.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -667,40 +1161,100 @@ of each household can be calculated independently once the path for the
 aggregate state is known.</p>
 </div>
 <div class="section" id="applications">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">30.5. </span>Applications</a><a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">31.6. </span>Applications</a><a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
 <p>Let’s try simulating the model at different parameter values and investigate
 the implications for the wealth distribution.</p>
 <div class="section" id="time-series">
-<h3><span class="section-number">30.5.1. </span>Time Series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h3>
-<p>Let’s look at the wealth dynamics of an individual household.</p>
+<h3><span class="section-number">31.6.1. </span>Time Series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h3>
+<p>Let’s look at the wealth dynamics of an individual household using numba.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wdy</span> <span class="o">=</span> <span class="n">WealthDynamics</span><span class="p">()</span>
 
 <span class="n">ts_length</span> <span class="o">=</span> <span class="mi">200</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
 <span class="n">w</span> <span class="o">=</span> <span class="n">wealth_time_series</span><span class="p">(</span><span class="n">wdy</span><span class="p">,</span> <span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span><span class="p">,</span> <span class="n">ts_length</span><span class="p">)</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;wealth_time_series_time_1&quot;</span><span class="p">,</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.72
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.726926326751709
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<span class="c1"># Check the time for 2nd execution</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">wealth_time_series</span><span class="p">(</span><span class="n">wdy</span><span class="p">,</span> <span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span><span class="p">,</span> <span class="n">ts_length</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;wealth_time_series_time_2&quot;</span><span class="p">,</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.00
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0001506805419921875
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice the time difference between the <code class="docutils literal notranslate"><span class="pre">wealth_time_series</span></code>: <span class="pasted-inline"><code class="output text_plain docutils literal notranslate"><span class="pre">0.726926326751709</span></code></span> and <code class="docutils literal notranslate"><span class="pre">wealth_time_series_jax</span></code>: <span class="pasted-inline"><code class="output text_plain docutils literal notranslate"><span class="pre">0.9044885635375977</span></code></span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_21_0.png" src="_images/wealth_dynamics_21_0.png" />
+<img alt="_images/wealth_dynamics_51_0.png" src="_images/wealth_dynamics_51_0.png" />
 </div>
 </div>
 <p>Notice the large spikes in wealth over time.</p>
 <p>Such spikes are similar to what we observed in time series when <a class="reference internal" href="kesten_processes.html"><span class="doc">we studied Kesten processes</span></a>.</p>
 </div>
 <div class="section" id="inequality-measures">
-<h3><span class="section-number">30.5.2. </span>Inequality Measures<a class="headerlink" href="#inequality-measures" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">31.6.2. </span>Inequality Measures<a class="headerlink" href="#inequality-measures" title="Permalink to this headline">¶</a></h3>
 <p>Let’s look at how inequality varies with returns on financial assets.</p>
 <p>The next function generates a cross section and then computes the Lorenz
 curve and Gini coefficient.</p>
+<p>Let’s first write the function that uses the JAX implementation and then for the numba.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_lorenz_and_gini</span><span class="p">(</span><span class="n">wdy</span><span class="p">,</span> <span class="n">num_households</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uses JAX</span>
+<span class="k">def</span> <span class="nf">generate_lorenz_and_gini_jax</span><span class="p">(</span><span class="n">wdy</span><span class="p">,</span> <span class="n">num_households</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate the Lorenz curve data and gini coefficient corresponding to a</span>
+<span class="sd">    WealthDynamics mode by simulating num_households forward to time T.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">num_households</span><span class="p">,</span> <span class="p">)</span>
+    <span class="n">ψ_0</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span><span class="p">)</span>
+    <span class="n">ψ_star</span> <span class="o">=</span> <span class="n">update_cross_section_jax</span><span class="p">(</span><span class="n">ψ_0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">wdy</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">ψ_star</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">device_get</span><span class="p">(</span><span class="n">ψ_star</span><span class="p">)</span>  <span class="c1"># get back to numpy form</span>
+    <span class="k">return</span> <span class="n">qe</span><span class="o">.</span><span class="n">gini_coefficient</span><span class="p">(</span><span class="n">ψ_star</span><span class="p">),</span> <span class="n">qe</span><span class="o">.</span><span class="n">lorenz_curve</span><span class="p">(</span><span class="n">ψ_star</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following function uses the numba implementation</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uses numba</span>
+<span class="k">def</span> <span class="nf">generate_lorenz_and_gini</span><span class="p">(</span><span class="n">wdy</span><span class="p">,</span> <span class="n">num_households</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate the Lorenz curve data and gini coefficient corresponding to a</span>
 <span class="sd">    WealthDynamics mode by simulating num_households forward to time T.</span>
@@ -721,7 +1275,38 @@ curve and Gini coefficient.</p>
 <p>In fact the code, which is JIT compiled and parallelized, runs extremely fast relative to the number of computations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">μ_r_vals</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+<span class="n">gini_vals</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">μ_r</span> <span class="ow">in</span> <span class="n">μ_r_vals</span><span class="p">:</span>
+    <span class="n">wdy</span> <span class="o">=</span> <span class="n">create_wealth_model</span><span class="p">(</span><span class="n">μ_r</span><span class="o">=</span><span class="n">μ_r</span><span class="p">)</span>
+    <span class="n">gv</span><span class="p">,</span> <span class="p">(</span><span class="n">f_vals</span><span class="p">,</span> <span class="n">l_vals</span><span class="p">)</span> <span class="o">=</span> <span class="n">generate_lorenz_and_gini_jax</span><span class="p">(</span><span class="n">wdy</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">f_vals</span><span class="p">,</span> <span class="n">l_vals</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$\psi^*$ at $\mu_r = </span><span class="si">{</span><span class="n">μ_r</span><span class="si">:</span><span class="s1">0.2</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
+    <span class="n">gini_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gv</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">f_vals</span><span class="p">,</span> <span class="n">f_vals</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;equality&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/wealth_dynamics_57_0.png" src="_images/wealth_dynamics_57_0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 22s, sys: 2.78 s, total: 1min 25s
+Wall time: 17.7 s
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s try to run the same code snippet but using the numba version.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">μ_r_vals</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
 <span class="n">gini_vals</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -738,19 +1323,17 @@ curve and Gini coefficient.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_25_0.png" src="_images/wealth_dynamics_25_0.png" />
+<img alt="_images/wealth_dynamics_59_0.png" src="_images/wealth_dynamics_59_0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 32s, sys: 133 ms, total: 1min 33s
+Wall time: 12.8 s
+</pre></div>
+</div>
 </div>
 </div>
 <p>The Lorenz curve shifts downwards as returns on financial income rise, indicating a rise in inequality.</p>
 <p>We will look at this again via the Gini coefficient immediately below, but
 first consider the following image of our system resources when the code above
 is executing:</p>
-<div class="figure align-default" id="htop-again">
-<a class="reference internal image-reference" href="_images/htop_again.png"><img alt="_images/htop_again.png" src="_images/htop_again.png" style="width: 493.6px; height: 325.6px;" /></a>
-</div>
-<p>Notice how effectively Numba has implemented multithreading for this routine:
-all 8 CPUs on our workstation are running at maximum capacity (even though
-four of them are virtual).</p>
 <p>Since the code is both efficiently JIT compiled and fully parallelized, it’s
 close to impossible to make this sequence of tasks run faster without changing
 hardware.</p>
@@ -766,16 +1349,48 @@ hardware.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_27_0.png" src="_images/wealth_dynamics_27_0.png" />
+<img alt="_images/wealth_dynamics_61_0.png" src="_images/wealth_dynamics_61_0.png" />
 </div>
 </div>
 <p>Once again, we see that inequality increases as returns on financial income
 rise.</p>
 <p>Let’s finish this section by investigating what happens when we change the
 volatility term <span class="math notranslate nohighlight">\(\sigma_r\)</span> in financial returns.</p>
+<p>Firstly, using JAX, we have</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">σ_r_vals</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.52</span><span class="p">)</span>
+<span class="n">gini_vals</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">σ_r</span> <span class="ow">in</span> <span class="n">σ_r_vals</span><span class="p">:</span>
+    <span class="n">wdy</span> <span class="o">=</span> <span class="n">create_wealth_model</span><span class="p">(</span><span class="n">σ_r</span><span class="o">=</span><span class="n">σ_r</span><span class="p">)</span>
+    <span class="n">gv</span><span class="p">,</span> <span class="p">(</span><span class="n">f_vals</span><span class="p">,</span> <span class="n">l_vals</span><span class="p">)</span> <span class="o">=</span> <span class="n">generate_lorenz_and_gini_jax</span><span class="p">(</span><span class="n">wdy</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">f_vals</span><span class="p">,</span> <span class="n">l_vals</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$\psi^*$ at $\sigma_r = </span><span class="si">{</span><span class="n">σ_r</span><span class="si">:</span><span class="s1">0.2</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
+    <span class="n">gini_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gv</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">f_vals</span><span class="p">,</span> <span class="n">f_vals</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;equality&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/wealth_dynamics_63_0.png" src="_images/wealth_dynamics_63_0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 17s, sys: 2.87 s, total: 1min 20s
+Wall time: 13 s
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using numba, we get,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">σ_r_vals</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.52</span><span class="p">)</span>
 <span class="n">gini_vals</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -792,17 +1407,21 @@ volatility term <span class="math notranslate nohighlight">\(\sigma_r\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_29_0.png" src="_images/wealth_dynamics_29_0.png" />
+<img alt="_images/wealth_dynamics_65_0.png" src="_images/wealth_dynamics_65_0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 31s, sys: 149 ms, total: 1min 32s
+Wall time: 11.8 s
+</pre></div>
+</div>
 </div>
 </div>
 <p>We see that greater volatility has the effect of increasing inequality in this model.</p>
 </div>
 </div>
 <div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">30.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">31.7. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
 <div class="exercise admonition" id="wd_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 30.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 31.1 </span></p>
 <div class="section" id="exercise-content">
 <p>For a wealth or income distribution with Pareto tail, a higher tail index suggests lower inequality.</p>
 <p>Indeed, it is possible to prove that the Gini coefficient of the Pareto
@@ -818,7 +1437,7 @@ Gini index and <span class="math notranslate nohighlight">\(a\)</span>.</p>
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex1"> Exercise 30.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex1"> Exercise 31.1</a></p>
 <div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution, which produces a good match between theory and
 simulation.</p>
@@ -840,7 +1459,7 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_31_0.png" src="_images/wealth_dynamics_31_0.png" />
+<img alt="_images/wealth_dynamics_67_0.png" src="_images/wealth_dynamics_67_0.png" />
 </div>
 </div>
 <p>In general, for a Pareto distribution, a higher tail index implies less weight
@@ -851,14 +1470,14 @@ in the right hand tail.</p>
 </div>
 <div class="exercise admonition" id="wd_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 30.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 31.2 </span></p>
 <div class="section" id="exercise-content">
-<p>The wealth process <a class="reference internal" href="#equation-wealth-dynam-ah">(30.1)</a> is similar to a <a class="reference internal" href="kesten_processes.html"><span class="doc">Kesten process</span></a>.</p>
-<p>This is because, according to <a class="reference internal" href="#equation-sav-ah">(30.2)</a>, savings is constant for all wealth levels above <span class="math notranslate nohighlight">\(\hat w\)</span>.</p>
+<p>The wealth process <a class="reference internal" href="#equation-wealth-dynam-ah">(31.1)</a> is similar to a <a class="reference internal" href="kesten_processes.html"><span class="doc">Kesten process</span></a>.</p>
+<p>This is because, according to <a class="reference internal" href="#equation-sav-ah">(31.2)</a>, savings is constant for all wealth levels above <span class="math notranslate nohighlight">\(\hat w\)</span>.</p>
 <p>When savings is constant, the wealth process has the same quasi-linear
 structure as a Kesten process, with multiplicative and additive shocks.</p>
 <p>The Kesten–Goldie theorem tells us that Kesten processes have Pareto tails under a range of parameterizations.</p>
-<p>The theorem does not directly apply here, since savings is not always constant and since the multiplicative and additive terms in <a class="reference internal" href="#equation-wealth-dynam-ah">(30.1)</a> are not IID.</p>
+<p>The theorem does not directly apply here, since savings is not always constant and since the multiplicative and additive terms in <a class="reference internal" href="#equation-wealth-dynam-ah">(31.1)</a> are not IID.</p>
 <p>At the same time, given the similarities, perhaps Pareto tails will arise.</p>
 <p>To test this, run a simulation that generates a cross-section of wealth and
 generate a rank-size plot.</p>
@@ -880,13 +1499,30 @@ this what you see?</p>
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex2"> Exercise 30.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex2"> Exercise 31.2</a></p>
 <div class="section" id="s">
 <span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>First let’s generate the distribution:</p>
+<p>Using the JAX implementation</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_households</span> <span class="o">=</span> <span class="mi">250_000</span>
 <span class="n">T</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># how far to shift forward in time</span>
+<span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">num_households</span><span class="p">,</span> <span class="p">)</span>
+
+<span class="n">wdy</span> <span class="o">=</span> <span class="n">create_wealth_model</span><span class="p">()</span>
+<span class="n">ψ_0</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span><span class="p">)</span>
+<span class="n">ψ_star</span> <span class="o">=</span> <span class="n">update_cross_section_jax</span><span class="p">(</span><span class="n">ψ_0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">wdy</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+<span class="n">ψ_star</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">device_get</span><span class="p">(</span><span class="n">ψ_star</span><span class="p">)</span> <span class="c1"># get back numpy form</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using the numba implementation</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_households</span> <span class="o">=</span> <span class="mi">250_000</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># how far to shift forward in time</span>
+<span class="n">wdy</span> <span class="o">=</span> <span class="n">WealthDynamics</span><span class="p">()</span>
 <span class="n">ψ_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">num_households</span><span class="p">,</span> <span class="n">wdy</span><span class="o">.</span><span class="n">y_mean</span><span class="p">)</span>
 <span class="n">z_0</span> <span class="o">=</span> <span class="n">wdy</span><span class="o">.</span><span class="n">z_mean</span>
 
@@ -910,7 +1546,7 @@ this what you see?</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_37_0.png" src="_images/wealth_dynamics_37_0.png" />
+<img alt="_images/wealth_dynamics_75_0.png" src="_images/wealth_dynamics_75_0.png" />
 </div>
 </div>
 </div>
@@ -1009,8 +1645,13 @@ this what you see?</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="var_dmd.html">
+   8. VARs and DMDs
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="newton_method.html">
-   8. Using Newton’s Method to Solve Economic Models
+   9. Using Newton’s Method to Solve Economic Models
   </a>
  </li>
 </ul>
@@ -1022,57 +1663,57 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="prob_matrix.html">
-   9. Elementary Probability with Matrices
+   10. Elementary Probability with Matrices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="time_series_with_matrices.html">
-   10. Univariate Time Series with Matrix Algebra
+   11. Univariate Time Series with Matrix Algebra
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   11. LLN and CLT
+   12. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   12. Two Meanings of Probability
+   13. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   13. Multivariate Hypergeometric Distribution
+   14. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   14. Multivariate Normal Distribution
+   15. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   15. Heavy-Tailed Distributions
+   16. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   16. Fault Tree Uncertainties
+   17. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   17. Introduction to Artificial Neural Networks
+   18. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   18. Randomized Response Surveys
+   19. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   19. Expected Utilities of Random Responses
+   20. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1084,17 +1725,17 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   20. Linear Programming
+   21. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   21. Optimal Transport
+   22. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   22. Von Neumann Growth Model (and a Generalization)
+   23. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1106,52 +1747,52 @@ this what you see?</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   23. Dynamics in One Dimension
+   24. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   24. AR1 Processes
+   25. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   25. Finite Markov Chains
+   26. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   26. Inventory Dynamics
+   27. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   27. Linear State Space Models
+   28. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   28. Samuelson Multiplier-Accelerator
+   29. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   29. Kesten Processes and Firm Dynamics
+   30. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   30. Wealth Distribution Dynamics
+   31. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   31. A First Look at the Kalman Filter
+   32. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   32. Shortest Paths
+   33. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1163,37 +1804,37 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   33. Job Search I: The McCall Search Model
+   34. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   34. Job Search II: Search and Separation
+   35. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   35. Job Search III: Fitted Value Function Iteration
+   36. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   36. Job Search IV: Correlated Wage Offers
+   37. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   37. Job Search V: Modeling Career Choice
+   38. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   38. Job Search VI: On-the-Job Search
+   39. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   39. Job Search VII: A McCall Worker Q-Learns
+   40. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1205,52 +1846,52 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   40. Cass-Koopmans Model
+   41. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   41. Cass-Koopmans Competitive Equilibrium
+   42. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   42. Cake Eating I: Introduction to Optimal Saving
+   43. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   43. Cake Eating II: Numerical Methods
+   44. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   44. Optimal Growth I: The Stochastic Optimal Growth Model
+   45. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   45. Optimal Growth II: Accelerating the Code with Numba
+   46. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   46. Optimal Growth III: Time Iteration
+   47. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   47. Optimal Growth IV: The Endogenous Grid Method
+   48. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   48. The Income Fluctuation Problem I: Basic Model
+   49. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1262,17 +1903,17 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   50. Non-Conjugate Priors
+   51. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   51. Posterior Distributions for  AR(1) Parameters
+   52. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   52. Forecasting  an AR(1) process
+   53. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1284,42 +1925,42 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   53. Job Search VII: Search with Learning
+   54. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   54. Likelihood Ratio Processes
+   55. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   55. Computing Mean of a Likelihood Ratio Process
+   56. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   56. A Problem that Stumped Milton Friedman
+   57. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   57. Exchangeability and Bayesian Updating
+   58. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   58. Likelihood Ratio Processes and Bayesian Learning
+   59. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   59. Incorrect Models
+   60. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   60. Bayesian versus Frequentist Decision Rules
+   61. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1331,32 +1972,32 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   61. LQ Control: Foundations
+   62. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   62. Lagrangian for LQ Control
+   63. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   63. Eliminating Cross Products
+   64. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   64. The Permanent Income Model
+   65. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   65. Permanent Income II: LQ Techniques
+   66. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   66. Production Smoothing via Inventories
+   67. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1368,37 +2009,37 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   67. Schelling’s Segregation Model
+   68. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   68. A Lake Model of Employment and Unemployment
+   69. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   69. Rational Expectations Equilibrium
+   70. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   70. Stability in Linear Rational Expectations Models
+   71. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   71. Markov Perfect Equilibrium
+   72. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   72. Uncertainty Traps
+   73. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   73. The Aiyagari Model
+   74. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1410,17 +2051,17 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   74. Asset Pricing: Finite State Models
+   75. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   75. Competitive Equilibria with Arrow Securities
+   76. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   76. Heterogeneous Beliefs and Bubbles
+   77. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1432,17 +2073,17 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   77. Pandas for Panel Data
+   78. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   78. Linear Regression in Python
+   79. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   79. Maximum Likelihood Estimation
+   80. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1454,12 +2095,12 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   80. First-Price and Second-Price Auctions
+   81. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   81. Multiple Good Allocation Mechanisms
+   82. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1471,17 +2112,17 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   82. Troubleshooting
+   83. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   83. References
+   84. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   84. Execution Statistics
+   85. Execution Statistics
   </a>
  </li>
 </ul>
