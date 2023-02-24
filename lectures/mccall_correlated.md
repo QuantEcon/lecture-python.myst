@@ -207,7 +207,7 @@ class JobSearch:
 
         # Set up grid
         z_mean = d / (1 - ρ)
-        z_sd = np.sqrt(σ / (1 - ρ**2))
+        z_sd = σ / np.sqrt(1 - ρ**2)
         k = 3  # std devs from mean
         a, b = z_mean - k * z_sd, z_mean + k * z_sd
         self.z_grid = np.linspace(a, b, grid_size)

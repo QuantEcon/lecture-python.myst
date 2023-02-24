@@ -35,7 +35,7 @@ involves specifying a class of distributions, indexed by unknown parameters, and
 
 The benefit relative to linear regression is that it allows more flexibility in the probabilistic relationships between variables.
 
-Here we illustrate maximum likelihood by replicating Daniel Treisman's (2016) paper, [Russia's Billionaires](https://pubs.aeaweb.org/doi/pdfplus/10.1257/aer.p20161068), which connects the number of billionaires in a country to its economic characteristics.
+Here we illustrate maximum likelihood by replicating Daniel Treisman's (2016) paper, [Russia's Billionaires](https://www.aeaweb.org/articles?id=10.1257/aer.p20161068), which connects the number of billionaires in a country to its economic characteristics.
 
 The paper concludes that Russia has a higher number of billionaires than
 economic factors such as market size and tax rate predict.
