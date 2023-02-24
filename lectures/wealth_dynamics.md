@@ -43,7 +43,7 @@ tags: [hide-output]
 !pip install myst-nb
 
 # If your machine has CUDA support, run the follwing line:
-!pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+#!pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 
 # Otherwise, run the line below:
 # !pip install --upgrade "jax[CPU]"
