@@ -60,11 +60,10 @@ jobs:
       - name: Install Jax and Upgrade CUDA
         shell: bash -l {0}
         run: |
-          pip install "jax[cuda11_cudnn82]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+          pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
           pip install --upgrade "numpyro[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
           nvidia-smi
           nvcc --version
-          pip list
       - name: Install latex dependencies
         shell: bash -l {0}
         run: |
