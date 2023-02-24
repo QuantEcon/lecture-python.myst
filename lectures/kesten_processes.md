@@ -22,7 +22,7 @@ kernelspec:
 ```{admonition} GPU in use
 :class: warning
 
-This lecture is accelerated via [hardware](status:machine-details) that has access to a GPU and JAX for GPU programming. 
+This lecture is accelerated via [hardware](status:machine-details) that has access to a GPU and JAX for GPU programming.
 
 Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
 
@@ -44,9 +44,12 @@ tags: [hide-output]
 ---
 !pip install quantecon
 !pip install --upgrade yfinance
-# If your machine has CUDA support, please follow the guide in GPU Warning. 
+
+# If your machine has CUDA support, run the follwing line:
+!pip install --upgrade "jax[cuda11_cudnn82]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+
 # Otherwise, run the line below:
-!pip install --upgrade "jax[CPU]"
+# !pip install --upgrade "jax[CPU]"
 ```
 
 ## Overview
@@ -686,7 +689,7 @@ s_init = 1.0      # initial condition for each firm
 :class: dropdown
 ```
 
-Here's one solution in [JAX](https://python-programming.quantecon.org/jax_intro.html). 
+Here's one solution in [JAX](https://python-programming.quantecon.org/jax_intro.html).
 
 First let's import the necessary modules and check the backend for JAX
 
@@ -731,10 +734,10 @@ def generate_draws(μ_a=-0.5,
         exp_a = jnp.exp(a_random[t, :])
         exp_b = jnp.exp(b_random[t, :])
         exp_e = jnp.exp(e_random[t, :])
-        s = s.at[:, t+1].set(jnp.where(s[:, t] < s_bar, 
+        s = s.at[:, t+1].set(jnp.where(s[:, t] < s_bar,
                              exp_e,
                              exp_a * s[:, t] + exp_b))
-    
+
     return s[:, -1]
 
 %time data = generate_draws().block_until_ready()
@@ -761,7 +764,7 @@ plt.show()
 
 The plot produces a straight line, consistent with a Pareto tail.
 
-It is possible to further speed up our code by replacing the `for` loop with [`lax.scan`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html) 
+It is possible to further speed up our code by replacing the `for` loop with [`lax.scan`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html)
 to reduce the loop overhead in the compilation of the jitted function
 
 ```{code-cell} ipython3
@@ -779,10 +782,10 @@ def generate_draws_lax(μ_a=-0.5,
                        M=1_000_000,
                        s_init=1.0,
                        seed=123):
-  
+
     key = random.PRNGKey(seed)
     keys = random.split(key, 3)
-    
+
     # Generate random draws and initial values
     a_random = μ_a + σ_a * random.normal(keys[0], (T, M))
     b_random = μ_b + σ_b * random.normal(keys[1], (T, M))
@@ -792,11 +795,11 @@ def generate_draws_lax(μ_a=-0.5,
     # Define the function for each update
     def update_s(s, a_b_e_draws):
         a, b, e = a_b_e_draws
-        res = jnp.where(s < s_bar, 
-                        jnp.exp(e), 
+        res = jnp.where(s < s_bar,
+                        jnp.exp(e),
                         jnp.exp(a) * s + jnp.exp(b))
         return res, res
-    
+
     # Use lax.scan to perform the calculations on all states
     s_final, _ = lax.scan(update_s, s, (a_random, b_random, e_random))
     return s_final

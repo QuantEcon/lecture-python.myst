@@ -40,9 +40,13 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 tags: [hide-output]
 ---
 !pip install quantecon
-# If your machine has CUDA support, please follow the guide in GPU Warning.
+!pip install myst-nb
+
+# If your machine has CUDA support, run the follwing line:
+!pip install --upgrade "jax[cuda11_cudnn82]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+
 # Otherwise, run the line below:
-!pip install --upgrade "jax[CPU]"
+# !pip install --upgrade "jax[CPU]"
 ```
 
 ## Overview
