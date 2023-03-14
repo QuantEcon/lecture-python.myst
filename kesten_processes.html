@@ -281,7 +281,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p class="admonition-title">GPU in use</p>
 <p>This lecture is accelerated via <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU and JAX for GPU programming.</p>
 <p>Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.</p>
-<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax#pip-installation-gpu-cuda">instructions</a> for installing JAX with GPU support.</p>
+<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax">instructions</a> for installing JAX with GPU support.</p>
 </div>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
@@ -311,18 +311,16 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.6.0)
 Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
 Requirement already satisfied: scipy&gt;=1.5.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
 Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
 Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
 Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
 Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
 Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
 Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -333,29 +331,29 @@ Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lectu
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: yfinance in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.2.12)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: html5lib&gt;=1.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.1)
-Requirement already satisfied: numpy&gt;=1.16.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.23.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas&gt;=1.3.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.4.4)
 Requirement already satisfied: pytz&gt;=2022.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (2022.7.1)
 Requirement already satisfied: multitasking&gt;=0.0.7 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (0.0.11)
-Requirement already satisfied: lxml&gt;=4.9.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (4.9.1)
+Requirement already satisfied: html5lib&gt;=1.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.1)
+Requirement already satisfied: appdirs&gt;=1.4.4 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.4.4)
+Requirement already satisfied: cryptography&gt;=3.3.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (37.0.1)
 Requirement already satisfied: beautifulsoup4&gt;=4.11.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (4.11.1)
 Requirement already satisfied: frozendict&gt;=2.3.4 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (2.3.5)
-Requirement already satisfied: cryptography&gt;=3.3.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (37.0.1)
+Requirement already satisfied: lxml&gt;=4.9.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (4.9.1)
+Requirement already satisfied: requests&gt;=2.26 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (2.28.1)
+Requirement already satisfied: numpy&gt;=1.16.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.23.5)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas&gt;=1.3.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.4.4)
-Requirement already satisfied: requests&gt;=2.26 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (2.28.1)
-Requirement already satisfied: appdirs&gt;=1.4.4 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.4.4)
-Requirement already satisfied: soupsieve&gt;1.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from beautifulsoup4&gt;=4.11.1-&gt;yfinance) (2.3.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: soupsieve&gt;1.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from beautifulsoup4&gt;=4.11.1-&gt;yfinance) (2.3.1)
 Requirement already satisfied: cffi&gt;=1.12 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from cryptography&gt;=3.3.2-&gt;yfinance) (1.15.1)
-Requirement already satisfied: webencodings in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from html5lib&gt;=1.1-&gt;yfinance) (0.5.1)
 Requirement already satisfied: six&gt;=1.9 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from html5lib&gt;=1.1-&gt;yfinance) (1.16.0)
+Requirement already satisfied: webencodings in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from html5lib&gt;=1.1-&gt;yfinance) (0.5.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: python-dateutil&gt;=2.8.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from pandas&gt;=1.3.0-&gt;yfinance) (2.8.2)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (2022.9.14)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (1.26.11)
 Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (2.0.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (2022.9.14)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (3.3)
 Requirement already satisfied: pycparser in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from cffi&gt;=1.12-&gt;cryptography&gt;=3.3.2-&gt;yfinance) (2.21)
 </pre></div>
@@ -364,13 +362,13 @@ Requirement already satisfied: pycparser in /__w/lecture-python.myst/lecture-pyt
 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jax[CPU] in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.4.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jax[CPU] in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.4.6)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (1.9.1)
-Requirement already satisfied: opt-einsum in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (3.3.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: opt-einsum in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (3.3.0)
+Requirement already satisfied: scipy&gt;=1.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (1.9.1)
 Requirement already satisfied: numpy&gt;=1.20 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (1.23.5)
-Requirement already satisfied: jaxlib==0.4.4 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (0.4.4)
+Requirement already satisfied: jaxlib==0.4.6 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (0.4.6)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -958,8 +956,8 @@ when <span class="math notranslate nohighlight">\(T\)</span> is large.)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4min 45s, sys: 13.9 s, total: 4min 59s
-Wall time: 4min 5s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4min 48s, sys: 13.4 s, total: 5min 2s
+Wall time: 4min 7s
 </pre></div>
 </div>
 </div>
@@ -972,8 +970,8 @@ Wall time: 4min 5s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3min 12s, sys: 12.6 s, total: 3min 25s
-Wall time: 2min 31s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3min 10s, sys: 12.9 s, total: 3min 23s
+Wall time: 2min 30s
 </pre></div>
 </div>
 </div>
@@ -1042,8 +1040,8 @@ to reduce the loop overhead in the compilation of the jitted function</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 43.7 s, sys: 3.94 s, total: 47.6 s
-Wall time: 12.2 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 44 s, sys: 4.05 s, total: 48 s
+Wall time: 12.5 s
 </pre></div>
 </div>
 </div>
@@ -1056,8 +1054,8 @@ Wall time: 12.2 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 43.3 s, sys: 3.81 s, total: 47.1 s
-Wall time: 11.7 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 42.9 s, sys: 4.01 s, total: 46.9 s
+Wall time: 11.6 s
 </pre></div>
 </div>
 </div>
@@ -1119,8 +1117,8 @@ Wall time: 11.7 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 38s, sys: 0 ns, total: 1min 38s
-Wall time: 13.5 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 32s, sys: 4.91 ms, total: 1min 32s
+Wall time: 13.2 s
 </pre></div>
 </div>
 </div>

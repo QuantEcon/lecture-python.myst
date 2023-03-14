@@ -42,7 +42,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 
 ## Overview
 
-This lecture describes a statistical decision problem encountered  by Milton
+This lecture describes a statistical decision problem presented to Milton
 Friedman and W. Allen Wallis during World War II when they were analysts at
 the U.S. Government's  Statistical Research Group at Columbia University.
 

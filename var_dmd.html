@@ -176,17 +176,17 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#decoder-of-x-as-a-linear-projection">
+    <a class="reference internal nav-link" href="#decoder-of-check-b-as-a-linear-projection">
      8.5.1. Decoder of
      <span class="math notranslate nohighlight">
-      \(X\)
+      \(\check b\)
      </span>
      as a linear projection
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#a-useful-approximation">
-     8.5.2. A useful approximation
+    <a class="reference internal nav-link" href="#an-approximation">
+     8.5.2. An Approximation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -295,7 +295,7 @@ X' =  \begin{bmatrix} X_2 \mid X_3 \mid \cdots \mid X_{n+1}\end{bmatrix}
 <p>In forming <span class="math notranslate nohighlight">\( X \)</span> and <span class="math notranslate nohighlight">\( X' \)</span>, we have in each case  dropped a column from <span class="math notranslate nohighlight">\( \tilde X \)</span>,  the last column in the case of <span class="math notranslate nohighlight">\( X \)</span>, and  the first column in the case of <span class="math notranslate nohighlight">\( X' \)</span>.</p>
 <p>Evidently, <span class="math notranslate nohighlight">\( X \)</span> and <span class="math notranslate nohighlight">\( X' \)</span> are both <span class="math notranslate nohighlight">\( m \times  n \)</span> matrices.</p>
 <p>We denote the rank of <span class="math notranslate nohighlight">\( X \)</span> as <span class="math notranslate nohighlight">\( p \leq \min(m, n)  \)</span>.</p>
-<p>Two possible cases are</p>
+<p>Two  cases that interest us are</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\( n &gt; &gt; m\)</span>, so that we have many more time series  observations <span class="math notranslate nohighlight">\(n\)</span> than variables <span class="math notranslate nohighlight">\(m\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(m &gt; &gt; n\)</span>, so that we have many more variables <span class="math notranslate nohighlight">\(m \)</span> than time series observations <span class="math notranslate nohighlight">\(n\)</span></p></li>
@@ -323,8 +323,8 @@ X^+ = X^\top  (X X^\top )^{-1}
 <span class="eqno">(8.4)<a class="headerlink" href="#equation-eq-ahatform101" title="Permalink to this equation">¶</a></span>\[ 
 \hat A = X' X^\top  (X X^\top )^{-1}
 \]</div>
-<p>This  formula for least-squares regression coefficients widely used in econometrics.</p>
-<p>For example, it is used  to estimate vector autorgressions.</p>
+<p>This  formula for least-squares regression coefficients is widely used in econometrics.</p>
+<p>It is used  to estimate vector autorgressions.</p>
 <p>The right side of formula <a class="reference internal" href="#equation-eq-ahatform101">(8.4)</a> is proportional to the empirical cross second moment matrix of <span class="math notranslate nohighlight">\(X_{t+1}\)</span> and <span class="math notranslate nohighlight">\(X_t\)</span> times the inverse
 of the second moment matrix of <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
 <p><strong>Tall-Skinny Case:</strong></p>
@@ -341,7 +341,7 @@ X^+ = (X^\top  X)^{-1} X^\top
 \hat A = X' (X^\top  X)^{-1} X^\top 
 \]</div>
 <p>Please compare formulas <a class="reference internal" href="#equation-eq-ahatform101">(8.4)</a> and <a class="reference internal" href="#equation-eq-hataversion0">(8.5)</a> for <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
-<p>Here we are interested in formula <a class="reference internal" href="#equation-eq-hataversion0">(8.5)</a>.</p>
+<p>Here we are especially interested in formula <a class="reference internal" href="#equation-eq-hataversion0">(8.5)</a>.</p>
 <p>The <span class="math notranslate nohighlight">\( i \)</span>th  row of <span class="math notranslate nohighlight">\( \hat A \)</span> is an <span class="math notranslate nohighlight">\( m \times 1 \)</span> vector of regression coefficients of <span class="math notranslate nohighlight">\( X_{i,t+1} \)</span> on <span class="math notranslate nohighlight">\( X_{j,t}, j = 1, \ldots, m \)</span>.</p>
 <p>If we use formula <a class="reference internal" href="#equation-eq-hataversion0">(8.5)</a> to calculate <span class="math notranslate nohighlight">\(\hat A X\)</span> we find that</p>
 <div class="math notranslate nohighlight">
@@ -349,10 +349,13 @@ X^+ = (X^\top  X)^{-1} X^\top
 \hat A X = X'
 \]</div>
 <p>so that the regression equation <strong>fits perfectly</strong>.</p>
-<p>This is the usual outcome in an <strong>underdetermined least-squares</strong> model.</p>
+<p>This is a typical outcome in an <strong>underdetermined least-squares</strong> model.</p>
 <p>To reiterate, in the  <strong>tall-skinny</strong> case (described in <a class="reference internal" href="svd_intro.html"><span class="doc">Singular Value Decomposition</span></a>)  in which we have a number <span class="math notranslate nohighlight">\(n\)</span> of observations   that is small relative to the number <span class="math notranslate nohighlight">\(m\)</span> of
 attributes that appear in the vector <span class="math notranslate nohighlight">\(X_t\)</span>,  we want to fit equation <a class="reference internal" href="#equation-eq-varfirstorder">(8.1)</a>.</p>
-<p>To  offer  ideas about how we can efficiently calculate the pseudo-inverse <span class="math notranslate nohighlight">\(X^+\)</span>, as our  estimator <span class="math notranslate nohighlight">\(\hat A\)</span> of <span class="math notranslate nohighlight">\(A\)</span> we form an  <span class="math notranslate nohighlight">\(m \times m\)</span> matrix that  solves the least-squares best-fit problem</p>
+<p>We  confront the facts that the least squares estimator is underdetermined and that the regression equation fits perfectly.</p>
+<p>To proceed, we’ll want efficiently to calculate the pseudo-inverse <span class="math notranslate nohighlight">\(X^+\)</span>.</p>
+<p>The pseudo-inverse <span class="math notranslate nohighlight">\(X^+\)</span> will be a component of our estimator of <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p>As our  estimator <span class="math notranslate nohighlight">\(\hat A\)</span> of <span class="math notranslate nohighlight">\(A\)</span> we want to form an  <span class="math notranslate nohighlight">\(m \times m\)</span> matrix that  solves the least-squares best-fit problem</p>
 <div class="math notranslate nohighlight" id="equation-eq-alseqn">
 <span class="eqno">(8.6)<a class="headerlink" href="#equation-eq-alseqn" title="Permalink to this equation">¶</a></span>\[ 
 \hat A = \textrm{argmin}_{\check A} || X' - \check  A X ||_F   
@@ -369,8 +372,10 @@ attributes that appear in the vector <span class="math notranslate nohighlight">
 \hat A =  X'  X^{+}  
 \]</div>
 <p>where the (possibly huge) <span class="math notranslate nohighlight">\( n \times m \)</span> matrix <span class="math notranslate nohighlight">\( X^{+} = (X^\top  X)^{-1} X^\top \)</span> is again a pseudo-inverse of <span class="math notranslate nohighlight">\( X \)</span>.</p>
-<p>For some situations that we are interested in, <span class="math notranslate nohighlight">\(X^\top  X \)</span> can be close to singular, a situation that can make some numerical algorithms  be error-prone.</p>
-<p>To acknowledge that possibility, we’ll use  efficient algorithms for computing and for constructing reduced rank approximations of  <span class="math notranslate nohighlight">\(\hat A\)</span> in formula <a class="reference internal" href="#equation-eq-hataversion0">(8.5)</a>.</p>
+<p>For some situations that we are interested in, <span class="math notranslate nohighlight">\(X^\top  X \)</span> can be close to singular, a situation that  makes some numerical algorithms  be inaccurate.</p>
+<p>To acknowledge that possibility, we’ll use  efficient algorithms to  constructing
+a <strong>reduced-rank approximation</strong> of  <span class="math notranslate nohighlight">\(\hat A\)</span> in formula <a class="reference internal" href="#equation-eq-hataversion0">(8.5)</a>.</p>
+<p>Such an approximation to our vector autoregression will no longer fit perfectly.</p>
 <p>The <span class="math notranslate nohighlight">\( i \)</span>th  row of <span class="math notranslate nohighlight">\( \hat A \)</span> is an <span class="math notranslate nohighlight">\( m \times 1 \)</span> vector of regression coefficients of <span class="math notranslate nohighlight">\( X_{i,t+1} \)</span> on <span class="math notranslate nohighlight">\( X_{j,t}, j = 1, \ldots, m \)</span>.</p>
 <p>An efficient way to compute the pseudo-inverse <span class="math notranslate nohighlight">\(X^+\)</span> is to start with  a singular value decomposition</p>
 <div class="math notranslate nohighlight" id="equation-eq-svddmd">
@@ -408,17 +413,17 @@ X^{+} =  V \Sigma^{-1}  U^\top
 </div>
 <div class="section" id="dynamic-mode-decomposition-dmd">
 <h2><span class="section-number">8.2. </span>Dynamic Mode Decomposition (DMD)<a class="headerlink" href="#dynamic-mode-decomposition-dmd" title="Permalink to this headline">¶</a></h2>
-<p>We turn to the <strong>tall and skinny</strong> case  associated with <strong>Dynamic Mode Decomposition</strong>, the case in  which <span class="math notranslate nohighlight">\( m &gt;&gt;n \)</span>.</p>
-<p>Here an <span class="math notranslate nohighlight">\( m \times n \)</span>  data matrix <span class="math notranslate nohighlight">\( \tilde X \)</span> contains many more attributes <span class="math notranslate nohighlight">\( m \)</span> than individuals <span class="math notranslate nohighlight">\( n \)</span>.</p>
+<p>We turn to the <span class="math notranslate nohighlight">\( m &gt;&gt;n \)</span> <strong>tall and skinny</strong> case  associated with <strong>Dynamic Mode Decomposition</strong>.</p>
+<p>Here an <span class="math notranslate nohighlight">\( m \times n+1 \)</span>  data matrix <span class="math notranslate nohighlight">\( \tilde X \)</span> contains many more attributes (or variables) <span class="math notranslate nohighlight">\( m \)</span> than time periods  <span class="math notranslate nohighlight">\( n+1 \)</span>.</p>
 <p>Dynamic mode decomposition was introduced by <span id="id1">[<a class="reference internal" href="zreferences.html#id16" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Sch10</a>]</span>,</p>
 <p>You can read  about Dynamic Mode Decomposition here <span id="id2">[<a class="reference internal" href="zreferences.html#id39" title="J. N. Kutz, S. L. Brunton, Brunton B. W, and J. L. Proctor. Dynamic mode decomposition: data-driven modeling of complex systems. SIAM, 2016.">KBBWP16</a>]</span> and here [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id25">BK19</a>] (section 7.2).</p>
-<p><strong>Dynamic Mode Decomposition</strong> (DMD) computes a rank <span class="math notranslate nohighlight">\( r &lt; p  \)</span> approximation to the least square regression coefficients <span class="math notranslate nohighlight">\( \hat A \)</span> that we  described above by formula <a class="reference internal" href="#equation-eq-ahatsvdformula">(8.11)</a>.</p>
+<p><strong>Dynamic Mode Decomposition</strong> (DMD) computes a rank <span class="math notranslate nohighlight">\( r &lt; p  \)</span> approximation to the least squares regression coefficients <span class="math notranslate nohighlight">\( \hat A \)</span>  described by formula <a class="reference internal" href="#equation-eq-ahatsvdformula">(8.11)</a>.</p>
 <p>We’ll  build up gradually  to a formulation that is useful  in applications.</p>
-<p>We’ll do this by describing three  alternative representations of our first-order linear dynamic system, i.e.,
-our vector autoregression.</p>
-<p><strong>Guide to three representations:</strong> In practice, we’ll be interested in Representation 3.</p>
-<p>We present the first 2 in order to set the stage for some intermediate steps that might help us understand what is under the hood of Representation 3.</p>
-<p>In applications, we’ll use only a small  subset of the DMD to approximate dynamics.</p>
+<p>We’ll do this by describing three  alternative representations of our first-order linear dynamic system, i.e., our vector autoregression.</p>
+<p><strong>Guide to three representations:</strong> In practice, we’ll mainly be interested in Representation 3.</p>
+<p>We use the first two representations  to present some useful  intermediate steps that  help us to appreciate what is under the hood of Representation 3.</p>
+<p>In applications, we’ll use only a small  subset of <strong>DMD modes</strong> to approximate dynamics.</p>
+<p>We use  such a small subset of DMD modes to  construct a reduced-rank approximation to <span class="math notranslate nohighlight">\(A\)</span>.</p>
 <p>To do that, we’ll want to use the  <strong>reduced</strong>  SVD’s affiliated with representation 3, not the <strong>full</strong> SVD’s affiliated with representations 1 and 2.</p>
 <p><strong>Guide to impatient reader:</strong> In our applications, we’ll be using Representation 3.</p>
 <p>You might want to skip the stage-setting representations 1 and 2 on first reading.</p>
@@ -459,9 +464,7 @@ X_t = U \tilde b_t
 \[
 \tilde b_{t+1} = \tilde A \tilde b_t 
 \]</div>
-<p>To construct forecasts <span class="math notranslate nohighlight">\(\overline X_t\)</span> of  future values of <span class="math notranslate nohighlight">\(X_t\)</span> conditional on <span class="math notranslate nohighlight">\(X_1\)</span>, we can apply  decoders
-(i.e., rotators) to both sides of this
-equation and deduce</p>
+<p>To construct forecasts <span class="math notranslate nohighlight">\(\overline X_t\)</span> of  future values of <span class="math notranslate nohighlight">\(X_t\)</span> conditional on <span class="math notranslate nohighlight">\(X_1\)</span>, we can apply  decoders (i.e., rotators) to both sides of this equation and deduce</p>
 <div class="math notranslate nohighlight">
 \[
 \overline X_{t+1} = U \tilde A^t U^\top  X_1
@@ -476,13 +479,13 @@ equation and deduce</p>
 <ul class="simple">
 <li><p>use a <strong>full</strong> SVD and <strong>not</strong> a reduced SVD</p></li>
 </ul>
-<p>As we observed and illustrated  earlier in this lecture</p>
+<p>As we observed and illustrated   in a lecture about the <a class="reference internal" href="svd_intro.html"><span class="doc">Singular Value Decomposition</span></a></p>
 <ul class="simple">
 <li><p>(a) for a full SVD <span class="math notranslate nohighlight">\(U U^\top  = I_{m \times m} \)</span> and <span class="math notranslate nohighlight">\(U^\top  U = I_{p \times p}\)</span> are both identity matrices</p></li>
 <li><p>(b)  for  a reduced SVD of <span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\(U^\top  U \)</span> is not an identity matrix.</p></li>
 </ul>
 <p>As we shall see later, a full SVD is  too confining for what we ultimately want to do, namely,  cope with situations in which  <span class="math notranslate nohighlight">\(U^\top  U\)</span> is <strong>not</strong> an identity matrix because we  use a reduced SVD of <span class="math notranslate nohighlight">\(X\)</span>.</p>
-<p>But for now, let’s proceed under the assumption that we are using a full SVD so that  both of the  preceding two  requirements (a) and (b) are satisfied.</p>
+<p>But for now, let’s proceed under the assumption that we are using a full SVD so that  requirements (a) and (b) are both satisfied.</p>
 <p>Form an eigendecomposition of the <span class="math notranslate nohighlight">\(m \times m\)</span> matrix <span class="math notranslate nohighlight">\(\tilde A = U^\top  \hat A U\)</span> defined in equation <a class="reference internal" href="#equation-eq-atilde0">(8.14)</a>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-tildeaeigen">
 <span class="eqno">(8.15)<a class="headerlink" href="#equation-eq-tildeaeigen" title="Permalink to this equation">¶</a></span>\[
@@ -496,8 +499,7 @@ matrix whose columns are eigenvectors  corresponding to rows (eigenvalues) in
 <span class="eqno">(8.16)<a class="headerlink" href="#equation-eq-eqeigahat" title="Permalink to this equation">¶</a></span>\[ 
 \hat A = U \tilde A U^\top  = U W \Lambda W^{-1} U^\top  
 \]</div>
-<p>According to equation <a class="reference internal" href="#equation-eq-eqeigahat">(8.16)</a>, the diagonal matrix <span class="math notranslate nohighlight">\(\Lambda\)</span> contains eigenvalues of
-<span class="math notranslate nohighlight">\(\hat A\)</span> and corresponding eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span> are columns of the matrix <span class="math notranslate nohighlight">\(UW\)</span>.</p>
+<p>According to equation <a class="reference internal" href="#equation-eq-eqeigahat">(8.16)</a>, the diagonal matrix <span class="math notranslate nohighlight">\(\Lambda\)</span> contains eigenvalues of <span class="math notranslate nohighlight">\(\hat A\)</span> and corresponding eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span> are columns of the matrix <span class="math notranslate nohighlight">\(UW\)</span>.</p>
 <p>It follows that the systematic (i.e., not random) parts of the <span class="math notranslate nohighlight">\(X_t\)</span> dynamics captured by our first-order vector autoregressions   are described by</p>
 <div class="math notranslate nohighlight">
 \[
@@ -557,9 +559,8 @@ DMD <strong>projected modes</strong>.</p>
 \hat b =  \Phi_s^+ X
 \]</div>
 <p>is a matrix of regression coefficients of the <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span> on the <span class="math notranslate nohighlight">\(m \times p\)</span> matrix <span class="math notranslate nohighlight">\(\Phi_s\)</span>.</p>
-<p>We’ll say more about this interpretation in a related context when we discuss representation 3.</p>
-<p>We turn next  to an alternative  representation suggested by  Tu et al. <span id="id6">[<a class="reference internal" href="zreferences.html#id25" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">TRL+14</a>]</span>.</p>
-<p>It is more appropriate to use this alternative representation  when, as is typically the case  in practice, we use a reduced SVD.</p>
+<p>We’ll say more about this interpretation in a related context when we discuss representation 3, which was suggested by  Tu et al. <span id="id6">[<a class="reference internal" href="zreferences.html#id25" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">TRL+14</a>]</span>.</p>
+<p>It is more appropriate to use  representation 3  when, as is often the case  in practice, we want to use a reduced SVD.</p>
 </div>
 <div class="section" id="representation-3">
 <h2><span class="section-number">8.5. </span>Representation 3<a class="headerlink" href="#representation-3" title="Permalink to this headline">¶</a></h2>
@@ -576,7 +577,8 @@ X = \tilde U \tilde \Sigma \tilde V^\top ,
 <span class="eqno">(8.21)<a class="headerlink" href="#equation-eq-ahatwithtildes" title="Permalink to this equation">¶</a></span>\[
 \hat A = X' \tilde V \tilde \Sigma^{-1} \tilde U^\top 
 \]</div>
-<p>Paralleling a step used to construct  Representation 1, define a  transition matrix for a rotated <span class="math notranslate nohighlight">\(p \times 1\)</span> state <span class="math notranslate nohighlight">\(\tilde b_t\)</span> by</p>
+<p><strong>Computing Dominant Eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span></strong></p>
+<p>We begin by paralleling a step used to construct  Representation 1, define a  transition matrix for a rotated <span class="math notranslate nohighlight">\(p \times 1\)</span> state <span class="math notranslate nohighlight">\(\tilde b_t\)</span> by</p>
 <div class="math notranslate nohighlight" id="equation-eq-atildered">
 <span class="eqno">(8.22)<a class="headerlink" href="#equation-eq-atildered" title="Permalink to this equation">¶</a></span>\[ 
 \tilde A =\tilde  U^\top  \hat A \tilde U 
@@ -589,26 +591,29 @@ X = \tilde U \tilde \Sigma \tilde V^\top ,
 \tilde A = \tilde U^\top  \hat A \tilde U = \tilde U^\top  X' \tilde V \tilde \Sigma^{-1} \tilde U^\top  \tilde U 
 = \tilde U^\top  X' \tilde V \tilde \Sigma^{-1} \tilde U^\top 
 \]</div>
-<p>Next, we’ll just  compute the regression coefficients in a projection of <span class="math notranslate nohighlight">\(\hat A\)</span> on <span class="math notranslate nohighlight">\(\tilde U\)</span> using the
-standard least-square formula</p>
+<p>Next, we’ll just  compute the regression coefficients in a projection of <span class="math notranslate nohighlight">\(\hat A\)</span> on <span class="math notranslate nohighlight">\(\tilde U\)</span> using a standard least-squares formula</p>
 <div class="math notranslate nohighlight">
 \[
 (\tilde U^\top  \tilde U)^{-1} \tilde U^\top  \hat A = (\tilde U^\top  \tilde U)^{-1} \tilde U^\top  X' \tilde V \tilde \Sigma^{-1} \tilde U^\top  = 
 \tilde U^\top  X' \tilde V \tilde \Sigma^{-1} \tilde U^\top   = \tilde A .
 \]</div>
-<p>Note that because we are now working with a reduced SVD,  <span class="math notranslate nohighlight">\(\tilde U \tilde U^\top  \neq I\)</span>.</p>
+<p>Thus, we have verified that <span class="math notranslate nohighlight">\(\tilde A\)</span> is a least-squares projection of <span class="math notranslate nohighlight">\(\hat A\)</span> onto <span class="math notranslate nohighlight">\(\tilde U\)</span>.</p>
+<p><strong>An Inverse Challenge</strong></p>
+<p>Because we are using  a reduced SVD,  <span class="math notranslate nohighlight">\(\tilde U \tilde U^\top  \neq I\)</span>.</p>
 <p>Consequently,</p>
 <div class="math notranslate nohighlight">
 \[
 \hat A \neq \tilde U \tilde A \tilde U^\top ,
 \]</div>
 <p>so we can’t simply  recover <span class="math notranslate nohighlight">\(\hat A\)</span> from  <span class="math notranslate nohighlight">\(\tilde A\)</span> and <span class="math notranslate nohighlight">\(\tilde U\)</span>.</p>
-<p>Nevertheless, we  hope for the best and proceed to construct an eigendecomposition of the
-<span class="math notranslate nohighlight">\(p \times p\)</span> matrix <span class="math notranslate nohighlight">\(\tilde A\)</span>:</p>
+<p><strong>A Blind Alley</strong></p>
+<p>We can start by   hoping for the best and proceeding to construct an eigendecomposition of the <span class="math notranslate nohighlight">\(p \times p\)</span> matrix <span class="math notranslate nohighlight">\(\tilde A\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-tildeaeigenred">
 <span class="eqno">(8.24)<a class="headerlink" href="#equation-eq-tildeaeigenred" title="Permalink to this equation">¶</a></span>\[
- \tilde A =  \tilde  W  \Lambda \tilde  W^{-1} .
+ \tilde A =  \tilde  W  \Lambda \tilde  W^{-1} 
 \]</div>
+<p>where <span class="math notranslate nohighlight">\(\Lambda\)</span> is a diagonal matrix of <span class="math notranslate nohighlight">\(p\)</span> eigenvalues and the columns of <span class="math notranslate nohighlight">\(\tilde W\)</span>
+are corresponding eigenvectors.</p>
 <p>Mimicking our procedure in Representation 2, we cross our fingers and compute an <span class="math notranslate nohighlight">\(m \times p\)</span> matrix</p>
 <div class="math notranslate nohighlight" id="equation-eq-phisred">
 <span class="eqno">(8.25)<a class="headerlink" href="#equation-eq-phisred" title="Permalink to this equation">¶</a></span>\[
@@ -628,15 +633,15 @@ standard least-square formula</p>
 <p>That
 <span class="math notranslate nohighlight">\( \hat A \tilde \Phi_s \neq \tilde \Phi_s \Lambda \)</span> means that, unlike the  corresponding situation in Representation 2, columns of <span class="math notranslate nohighlight">\(\tilde \Phi_s = \tilde U \tilde  W\)</span>
 are <strong>not</strong> eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span> corresponding to eigenvalues  on the diagonal of matix <span class="math notranslate nohighlight">\(\Lambda\)</span>.</p>
-<p>But in a quest for eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span> that we <strong>can</strong> compute with a reduced SVD,  let’s define  the <span class="math notranslate nohighlight">\(m \times p\)</span> matrix
+<p><strong>An Approach That Works</strong></p>
+<p>Continuing our quest for eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span> that we <strong>can</strong> compute with a reduced SVD,  let’s define  an <span class="math notranslate nohighlight">\(m \times p\)</span> matrix
 <span class="math notranslate nohighlight">\(\Phi\)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-eq-phiformula">
 <span class="eqno">(8.26)<a class="headerlink" href="#equation-eq-phiformula" title="Permalink to this equation">¶</a></span>\[
 \Phi \equiv \hat A \tilde \Phi_s = X' \tilde V \tilde \Sigma^{-1}  \tilde  W
 \]</div>
 <p>It turns out that columns of <span class="math notranslate nohighlight">\(\Phi\)</span> <strong>are</strong> eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
-<p>This is
-a consequence of a  result established by Tu et al. <span id="id8">[<a class="reference internal" href="zreferences.html#id25" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">TRL+14</a>]</span>, which we now present.</p>
+<p>This is  a consequence of a  result established by Tu et al. <span id="id8">[<a class="reference internal" href="zreferences.html#id25" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">TRL+14</a>]</span> that we now present.</p>
 <p><strong>Proposition</strong> The <span class="math notranslate nohighlight">\(p\)</span> columns of <span class="math notranslate nohighlight">\(\Phi\)</span> are eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
 <p><strong>Proof:</strong> From formula <a class="reference internal" href="#equation-eq-phiformula">(8.26)</a> we have</p>
 <div class="math notranslate nohighlight">
@@ -648,10 +653,10 @@ a consequence of a  result established by Tu et al. <span id="id8">[<a class="re
   &amp; = \Phi \Lambda 
   \end{aligned}
 \]</div>
-<p>Thus, we  have deduced  that</p>
+<p>so that</p>
 <div class="math notranslate nohighlight" id="equation-eq-aphilambda">
 <span class="eqno">(8.27)<a class="headerlink" href="#equation-eq-aphilambda" title="Permalink to this equation">¶</a></span>\[  
-\hat A \Phi = \Phi \Lambda
+\hat A \Phi = \Phi \Lambda .
 \]</div>
 <p>Let <span class="math notranslate nohighlight">\(\phi_i\)</span> be the <span class="math notranslate nohighlight">\(i\)</span>th  column of <span class="math notranslate nohighlight">\(\Phi\)</span> and <span class="math notranslate nohighlight">\(\lambda_i\)</span> be the corresponding <span class="math notranslate nohighlight">\(i\)</span> eigenvalue of <span class="math notranslate nohighlight">\(\tilde A\)</span> from decomposition <a class="reference internal" href="#equation-eq-tildeaeigenred">(8.24)</a>.</p>
 <p>Equating the <span class="math notranslate nohighlight">\(m \times 1\)</span> vectors that appear on the two  sides of  equation <a class="reference internal" href="#equation-eq-aphilambda">(8.27)</a>  gives</p>
@@ -662,14 +667,14 @@ a consequence of a  result established by Tu et al. <span id="id8">[<a class="re
 <p>This equation confirms that  <span class="math notranslate nohighlight">\(\phi_i\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(\hat A\)</span> that corresponds to eigenvalue  <span class="math notranslate nohighlight">\(\lambda_i\)</span> of both  <span class="math notranslate nohighlight">\(\tilde A\)</span> and <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
 <p>This concludes the proof.</p>
 <p>Also see <span id="id9">[<a class="reference internal" href="zreferences.html#id40" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">BK22</a>]</span> (p. 238)</p>
-<div class="section" id="decoder-of-x-as-a-linear-projection">
-<h3><span class="section-number">8.5.1. </span>Decoder of  <span class="math notranslate nohighlight">\(X\)</span> as a linear projection<a class="headerlink" href="#decoder-of-x-as-a-linear-projection" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="decoder-of-check-b-as-a-linear-projection">
+<h3><span class="section-number">8.5.1. </span>Decoder of  <span class="math notranslate nohighlight">\(\check b\)</span> as a linear projection<a class="headerlink" href="#decoder-of-check-b-as-a-linear-projection" title="Permalink to this headline">¶</a></h3>
 <p>From  eigendecomposition <a class="reference internal" href="#equation-eq-aphilambda">(8.27)</a> we can represent <span class="math notranslate nohighlight">\(\hat A\)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-eq-aform12">
 <span class="eqno">(8.28)<a class="headerlink" href="#equation-eq-aform12" title="Permalink to this equation">¶</a></span>\[ 
 \hat A = \Phi \Lambda \Phi^+ .
 \]</div>
-<p>From formula <a class="reference internal" href="#equation-eq-aform12">(8.28)</a> we can deduce the reduced dimension dynamics</p>
+<p>From formula <a class="reference internal" href="#equation-eq-aform12">(8.28)</a> we can deduce  dynamics of the <span class="math notranslate nohighlight">\(p \times 1\)</span> vector <span class="math notranslate nohighlight">\(\check b_t\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[ 
 \check b_{t+1} = \Lambda \check b_t 
@@ -696,6 +701,7 @@ a consequence of a  result established by Tu et al. <span id="id8">[<a class="re
 \check X = \Phi \check b
 \]</div>
 <p>is an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of least squares projections of <span class="math notranslate nohighlight">\(X\)</span> on <span class="math notranslate nohighlight">\(\Phi\)</span>.</p>
+<p><strong>Variance Decomposition of <span class="math notranslate nohighlight">\(X\)</span></strong></p>
 <p>By virtue of the least-squares projection theory discussed in  this quantecon lecture  <a class="reference external" href="https://python-advanced.quantecon.org/orth_proj.html">https://python-advanced.quantecon.org/orth_proj.html</a>, we can represent <span class="math notranslate nohighlight">\(X\)</span> as the sum of the projection <span class="math notranslate nohighlight">\(\check X\)</span> of <span class="math notranslate nohighlight">\(X\)</span> on <span class="math notranslate nohighlight">\(\Phi\)</span>  plus a matrix of errors.</p>
 <p>To verify this, note that the least squares projection <span class="math notranslate nohighlight">\(\check X\)</span> is related to <span class="math notranslate nohighlight">\(X\)</span> by</p>
 <div class="math notranslate nohighlight">
@@ -707,29 +713,25 @@ X = \check X + \epsilon
 <span class="eqno">(8.32)<a class="headerlink" href="#equation-eq-xbcheck" title="Permalink to this equation">¶</a></span>\[
 X = \Phi \check b + \epsilon
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\epsilon\)</span> is an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of least squares errors satisfying the least squares
-orthogonality conditions <span class="math notranslate nohighlight">\(\epsilon^\top  \Phi =0 \)</span> or</p>
+<p>where <span class="math notranslate nohighlight">\(\epsilon\)</span> is an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of least squares errors satisfying the least squares orthogonality conditions <span class="math notranslate nohighlight">\(\epsilon^\top  \Phi =0 \)</span> or</p>
 <div class="math notranslate nohighlight" id="equation-eq-orthls">
 <span class="eqno">(8.33)<a class="headerlink" href="#equation-eq-orthls" title="Permalink to this equation">¶</a></span>\[ 
 (X - \Phi \check b)^\top  \Phi = 0_{m \times p}
 \]</div>
-<p>Rearranging  the orthogonality conditions <a class="reference internal" href="#equation-eq-orthls">(8.33)</a> gives <span class="math notranslate nohighlight">\(X^\top  \Phi = \check b \Phi^\top  \Phi\)</span>,
-which implies formula <a class="reference internal" href="#equation-eq-checkbform">(8.30)</a>.</p>
+<p>Rearranging  the orthogonality conditions <a class="reference internal" href="#equation-eq-orthls">(8.33)</a> gives <span class="math notranslate nohighlight">\(X^\top  \Phi = \check b \Phi^\top  \Phi\)</span>, which implies formula <a class="reference internal" href="#equation-eq-checkbform">(8.30)</a>.</p>
 </div>
-<div class="section" id="a-useful-approximation">
-<h3><span class="section-number">8.5.2. </span>A useful approximation<a class="headerlink" href="#a-useful-approximation" title="Permalink to this headline">¶</a></h3>
-<p>There is a useful  way to approximate  the <span class="math notranslate nohighlight">\(p \times 1\)</span> vector <span class="math notranslate nohighlight">\(\check b_t\)</span> instead of using  formula
-<a class="reference internal" href="#equation-eq-decoder102">(8.29)</a>.</p>
-<p>In particular, the following argument adapted from <span id="id10">[<a class="reference internal" href="zreferences.html#id40" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">BK22</a>]</span> (page 240) provides a computationally efficient way
-to approximate <span class="math notranslate nohighlight">\(\check b_t\)</span>.</p>
-<p>For convenience, we’ll do this first for time <span class="math notranslate nohighlight">\(t=1\)</span>.</p>
+<div class="section" id="an-approximation">
+<h3><span class="section-number">8.5.2. </span>An Approximation<a class="headerlink" href="#an-approximation" title="Permalink to this headline">¶</a></h3>
+<p>We now describe a way to approximate  the <span class="math notranslate nohighlight">\(p \times 1\)</span> vector <span class="math notranslate nohighlight">\(\check b_t\)</span> instead of using  formula <a class="reference internal" href="#equation-eq-decoder102">(8.29)</a>.</p>
+<p>In particular, the following argument adapted from <span id="id10">[<a class="reference internal" href="zreferences.html#id40" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">BK22</a>]</span> (page 240) provides a computationally efficient way to approximate <span class="math notranslate nohighlight">\(\check b_t\)</span>.</p>
+<p>For convenience, we’ll apply the method at  time <span class="math notranslate nohighlight">\(t=1\)</span>.</p>
 <p>For <span class="math notranslate nohighlight">\(t=1\)</span>, from equation <a class="reference internal" href="#equation-eq-xbcheck">(8.32)</a> we have</p>
 <div class="math notranslate nohighlight" id="equation-eq-x1proj">
 <span class="eqno">(8.34)<a class="headerlink" href="#equation-eq-x1proj" title="Permalink to this equation">¶</a></span>\[ 
    \check X_1 = \Phi \check b_1
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\check b_1\)</span> is a <span class="math notranslate nohighlight">\(p \times 1\)</span> vector.</p>
-<p>Recall from representation 1 above that  <span class="math notranslate nohighlight">\(X_1 =  U \tilde b_1\)</span>, where <span class="math notranslate nohighlight">\(\tilde b_1\)</span> is a time <span class="math notranslate nohighlight">\(1\)</span>  basis vector for representation 1 and <span class="math notranslate nohighlight">\(U\)</span> is from a full SVD of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>Recall from representation 1 above that  <span class="math notranslate nohighlight">\(X_1 =  U \tilde b_1\)</span>, where <span class="math notranslate nohighlight">\(\tilde b_1\)</span> is a time <span class="math notranslate nohighlight">\(1\)</span>  basis vector for representation 1 and <span class="math notranslate nohighlight">\(U\)</span> is from the full SVD  <span class="math notranslate nohighlight">\(X = U \Sigma V^\top\)</span>.</p>
 <p>It  then follows from equation <a class="reference internal" href="#equation-eq-xbcheck">(8.32)</a> that</p>
 <div class="math notranslate nohighlight">
 \[ 
@@ -741,8 +743,7 @@ to approximate <span class="math notranslate nohighlight">\(\check b_t\)</span>.
 \[
 \tilde b_1 = U^\top  X' V \tilde \Sigma^{-1} \tilde W \check b_1 + U^\top  \epsilon_1
 \]</div>
-<p>Replacing the error term <span class="math notranslate nohighlight">\(U^\top  \epsilon_1\)</span> by zero, and replacing <span class="math notranslate nohighlight">\(U\)</span> from a full SVD of <span class="math notranslate nohighlight">\(X\)</span> with
-<span class="math notranslate nohighlight">\(\tilde U\)</span> from a reduced SVD,  we obtain  an approximation <span class="math notranslate nohighlight">\(\hat b_1\)</span> to <span class="math notranslate nohighlight">\(\tilde b_1\)</span>:</p>
+<p>Replacing the error term <span class="math notranslate nohighlight">\(U^\top  \epsilon_1\)</span> by zero, and replacing <span class="math notranslate nohighlight">\(U\)</span> from a <strong>full</strong> SVD of <span class="math notranslate nohighlight">\(X\)</span> with <span class="math notranslate nohighlight">\(\tilde U\)</span> from a <strong>reduced</strong> SVD,  we obtain  an approximation <span class="math notranslate nohighlight">\(\hat b_1\)</span> to <span class="math notranslate nohighlight">\(\tilde b_1\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[ 
   \hat b_1 = \tilde U^\top  X' \tilde V \tilde \Sigma^{-1} \tilde  W \check b_1
@@ -773,30 +774,26 @@ to approximate <span class="math notranslate nohighlight">\(\check b_t\)</span>.
 <span class="eqno">(8.36)<a class="headerlink" href="#equation-eq-bphieqn" title="Permalink to this equation">¶</a></span>\[
   \check b_1= \Phi^{+} X_1
 \]</div>
-<p>(To highlight that <a class="reference internal" href="#equation-eq-beqnsmall">(8.35)</a> is an approximation, users of  DMD sometimes call  components of the  basis vector <span class="math notranslate nohighlight">\(\check b_t  = \Phi^+ X_t \)</span>  the  <strong>exact</strong> DMD modes.)</p>
-<p>Conditional on <span class="math notranslate nohighlight">\(X_t\)</span>, we can compute our decoded <span class="math notranslate nohighlight">\(\check X_{t+j},   j = 1, 2, \ldots \)</span>  from
-either</p>
+<p>(To highlight that <a class="reference internal" href="#equation-eq-beqnsmall">(8.35)</a> is an approximation, users of  DMD sometimes call  components of   basis vector <span class="math notranslate nohighlight">\(\check b_t  = \Phi^+ X_t \)</span>  the  <strong>exact</strong> DMD modes and components of <span class="math notranslate nohighlight">\(\hat b_t = ( \tilde W \Lambda)^{-1} \tilde U^\top  X_t\)</span> the <strong>approximate</strong> modes.)</p>
+<p>Conditional on <span class="math notranslate nohighlight">\(X_t\)</span>, we can compute a decoded <span class="math notranslate nohighlight">\(\check X_{t+j},   j = 1, 2, \ldots \)</span>  from the exact modes via</p>
 <div class="math notranslate nohighlight" id="equation-eq-checkxevoln">
 <span class="eqno">(8.37)<a class="headerlink" href="#equation-eq-checkxevoln" title="Permalink to this equation">¶</a></span>\[
 \check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
 \]</div>
-<p>or  use the approximation</p>
+<p>or  use compute a decoded <span class="math notranslate nohighlight">\(\hat X_{t+j}\)</span> from  approximate modes via</p>
 <div class="math notranslate nohighlight" id="equation-eq-checkxevoln2">
 <span class="eqno">(8.38)<a class="headerlink" href="#equation-eq-checkxevoln2" title="Permalink to this equation">¶</a></span>\[ 
   \hat X_{t+j} = \Phi \Lambda^j (\tilde W \Lambda)^{-1}  \tilde U^\top  X_t .
 \]</div>
-<p>We can then use <span class="math notranslate nohighlight">\(\check X_{t+j}\)</span> or <span class="math notranslate nohighlight">\(\hat X_{t+j}\)</span> to forecast <span class="math notranslate nohighlight">\(X_{t+j}\)</span>.</p>
+<p>We can then use  a decoded <span class="math notranslate nohighlight">\(\check X_{t+j}\)</span> or <span class="math notranslate nohighlight">\(\hat X_{t+j}\)</span> to forecast <span class="math notranslate nohighlight">\(X_{t+j}\)</span>.</p>
 </div>
 <div class="section" id="using-fewer-modes">
 <h3><span class="section-number">8.5.3. </span>Using Fewer Modes<a class="headerlink" href="#using-fewer-modes" title="Permalink to this headline">¶</a></h3>
 <p>In applications, we’ll actually  use only  a few modes, often  three or less.</p>
-<p>Some of the preceding formulas assume that we have retained all <span class="math notranslate nohighlight">\(p\)</span> modes associated with the positive
-singular values of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>Some of the preceding formulas assume that we have retained all <span class="math notranslate nohighlight">\(p\)</span> modes associated with  singular values of <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <p>We can  adjust our  formulas to describe a situation in which we instead retain only
 the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singular values.</p>
-<p>In that case, we simply replace <span class="math notranslate nohighlight">\(\tilde \Sigma\)</span> with the appropriate <span class="math notranslate nohighlight">\(r\times r\)</span> matrix of singular values,
-<span class="math notranslate nohighlight">\(\tilde U\)</span> with the <span class="math notranslate nohighlight">\(m \times r\)</span> matrix  whose columns correspond to the <span class="math notranslate nohighlight">\(r\)</span> largest singular values,
-and <span class="math notranslate nohighlight">\(\tilde V\)</span> with the <span class="math notranslate nohighlight">\(n \times r\)</span> matrix whose columns correspond to the <span class="math notranslate nohighlight">\(r\)</span> largest  singular values.</p>
+<p>In that case, we simply replace <span class="math notranslate nohighlight">\(\tilde \Sigma\)</span> with the appropriate <span class="math notranslate nohighlight">\(r\times r\)</span> matrix of singular values, <span class="math notranslate nohighlight">\(\tilde U\)</span> with the <span class="math notranslate nohighlight">\(m \times r\)</span> matrix  whose columns correspond to the <span class="math notranslate nohighlight">\(r\)</span> largest singular values, and <span class="math notranslate nohighlight">\(\tilde V\)</span> with the <span class="math notranslate nohighlight">\(n \times r\)</span> matrix whose columns correspond to the <span class="math notranslate nohighlight">\(r\)</span> largest  singular values.</p>
 <p>Counterparts of all of the salient formulas above then apply.</p>
 </div>
 </div>
