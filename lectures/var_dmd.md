@@ -262,9 +262,9 @@ $$ (eq:AhatSVDformula)
 
 
 
-We turn to the **tall and skinny** case  associated with **Dynamic Mode Decomposition**, the case in  which $ m >>n $.
+We turn to the $ m >>n $ **tall and skinny** case  associated with **Dynamic Mode Decomposition**.
 
-Here an $ m \times n $  data matrix $ \tilde X $ contains many more attributes $ m $ than individuals $ n $.
+Here an $ m \times n+1 $  data matrix $ \tilde X $ contains many more attributes (or variables) $ m $ than time periods  $ n+1 $.
 
 
 Dynamic mode decomposition was introduced by {cite}`schmid2010`,
@@ -502,7 +502,9 @@ $$
 $$ (eq:Ahatwithtildes)
 
 
-Paralleling a step used to construct  Representation 1, define a  transition matrix for a rotated $p \times 1$ state $\tilde b_t$ by
+**Computing Dominant Eigenvectors of $\hat A$**
+
+We begin by paralleling a step used to construct  Representation 1, define a  transition matrix for a rotated $p \times 1$ state $\tilde b_t$ by
 
 $$ 
 \tilde A =\tilde  U^\top  \hat A \tilde U 
@@ -521,6 +523,7 @@ $$
 = \tilde U^\top  X' \tilde V \tilde \Sigma^{-1} \tilde U^\top 
 $$ (eq:tildeAverify)
 
+
  
 
 Next, we'll just  compute the regression coefficients in a projection of $\hat A$ on $\tilde U$ using a standard least-squares formula
@@ -530,10 +533,12 @@ $$
 \tilde U^\top  X' \tilde V \tilde \Sigma^{-1} \tilde U^\top   = \tilde A .
 $$
 
+Thus, we have verified that $\tilde A$ is a least-squares projection of $\hat A$ onto $\tilde U$.
+
+**An Inverse Challenge**
 
 
-
-Note that because we are using  a reduced SVD,  $\tilde U \tilde U^\top  \neq I$.
+Because we are using  a reduced SVD,  $\tilde U \tilde U^\top  \neq I$.
 
 Consequently, 
 
@@ -543,13 +548,16 @@ $$
 
 so we can't simply  recover $\hat A$ from  $\tilde A$ and $\tilde U$. 
 
+**A Blind Alley**
 
-Nevertheless, we  hope for the best and proceed to construct an eigendecomposition of the 
-$p \times p$ matrix $\tilde A$:
+We can start by   hoping for the best and proceeding to construct an eigendecomposition of the $p \times p$ matrix $\tilde A$:
 
 $$
- \tilde A =  \tilde  W  \Lambda \tilde  W^{-1} .
+ \tilde A =  \tilde  W  \Lambda \tilde  W^{-1} 
 $$ (eq:tildeAeigenred)
+
+where $\Lambda$ is a diagonal matrix of $p$ eigenvalues and the columns of $\tilde W$
+are corresponding eigenvectors. 
 
 
 Mimicking our procedure in Representation 2, we cross our fingers and compute an $m \times p$ matrix
@@ -575,7 +583,9 @@ That
 $ \hat A \tilde \Phi_s \neq \tilde \Phi_s \Lambda $ means that, unlike the  corresponding situation in Representation 2, columns of $\tilde \Phi_s = \tilde U \tilde  W$
 are **not** eigenvectors of $\hat A$ corresponding to eigenvalues  on the diagonal of matix $\Lambda$.
 
-But in a quest for eigenvectors of $\hat A$ that we **can** compute with a reduced SVD,  let's define  the $m \times p$ matrix
+**An Approach That Works**
+
+Continuing our quest for eigenvectors of $\hat A$ that we **can** compute with a reduced SVD,  let's define  an $m \times p$ matrix
 $\Phi$ as
 
 $$
@@ -584,7 +594,7 @@ $$ (eq:Phiformula)
 
 It turns out that columns of $\Phi$ **are** eigenvectors of $\hat A$.
 
-This is  a consequence of a  result established by Tu et al. {cite}`tu_Rowley`, which we now present.
+This is  a consequence of a  result established by Tu et al. {cite}`tu_Rowley` that we now present.
 
 
 
@@ -603,11 +613,13 @@ $$
   \end{aligned}
 $$ 
 
-Thus, we  have deduced  that
+so that
 
 $$  
-\hat A \Phi = \Phi \Lambda
+\hat A \Phi = \Phi \Lambda .
 $$ (eq:APhiLambda)
+
+  
 
 Let $\phi_i$ be the $i$th  column of $\Phi$ and $\lambda_i$ be the corresponding $i$ eigenvalue of $\tilde A$ from decomposition {eq}`eq:tildeAeigenred`. 
 
@@ -625,7 +637,7 @@ This concludes the proof.
 Also see {cite}`DDSE_book` (p. 238)
 
 
-### Decoder of  $X$ as a linear projection
+### Decoder of  $\check b$ as a linear projection
 
 
 
@@ -639,7 +651,7 @@ $$
 $$ (eq:Aform12)
 
 
-From formula {eq}`eq:Aform12` we can deduce the reduced dimension dynamics
+From formula {eq}`eq:Aform12` we can deduce  dynamics of the $p \times 1$ vector $\check b_t$:
 
 $$ 
 \check b_{t+1} = \Lambda \check b_t 
@@ -673,7 +685,7 @@ $$ (eq:Xcheck_)
 
 is an $m \times n$ matrix of least squares projections of $X$ on $\Phi$.
 
- 
+ **Variance Decomposition of $X$**
 
 By virtue of the least-squares projection theory discussed in  this quantecon lecture  <https://python-advanced.quantecon.org/orth_proj.html>, we can represent $X$ as the sum of the projection $\check X$ of $X$ on $\Phi$  plus a matrix of errors.
 
@@ -703,15 +715,15 @@ Rearranging  the orthogonality conditions {eq}`eq:orthls` gives $X^\top  \Phi = 
 
 
 
-### A useful approximation
+### An Approximation
 
 
 
-There is a useful  way to approximate  the $p \times 1$ vector $\check b_t$ instead of using  formula {eq}`eq:decoder102`.
+We now describe a way to approximate  the $p \times 1$ vector $\check b_t$ instead of using  formula {eq}`eq:decoder102`.
 
 In particular, the following argument adapted from {cite}`DDSE_book` (page 240) provides a computationally efficient way to approximate $\check b_t$.  
 
-For convenience, we'll do this first for time $t=1$.
+For convenience, we'll apply the method at  time $t=1$.
 
 
 
@@ -723,7 +735,7 @@ $$ (eq:X1proj)
 
 where $\check b_1$ is a $p \times 1$ vector. 
 
-Recall from representation 1 above that  $X_1 =  U \tilde b_1$, where $\tilde b_1$ is a time $1$  basis vector for representation 1 and $U$ is from a full SVD of $X$.  
+Recall from representation 1 above that  $X_1 =  U \tilde b_1$, where $\tilde b_1$ is a time $1$  basis vector for representation 1 and $U$ is from the full SVD  $X = U \Sigma V^\top$.  
 
 It  then follows from equation {eq}`eq:Xbcheck` that 
 
@@ -741,7 +753,7 @@ $$
 $$
 
 
-Replacing the error term $U^\top  \epsilon_1$ by zero, and replacing $U$ from a full SVD of $X$ with $\tilde U$ from a reduced SVD,  we obtain  an approximation $\hat b_1$ to $\tilde b_1$:
+Replacing the error term $U^\top  \epsilon_1$ by zero, and replacing $U$ from a **full** SVD of $X$ with $\tilde U$ from a **reduced** SVD,  we obtain  an approximation $\hat b_1$ to $\tilde b_1$:
 
 
 
@@ -785,22 +797,22 @@ $$
 $$ (eq:bphieqn)
 
 
-(To highlight that {eq}`eq:beqnsmall` is an approximation, users of  DMD sometimes call  components of the  basis vector $\check b_t  = \Phi^+ X_t $  the  **exact** DMD modes.)  
+(To highlight that {eq}`eq:beqnsmall` is an approximation, users of  DMD sometimes call  components of   basis vector $\check b_t  = \Phi^+ X_t $  the  **exact** DMD modes and components of $\hat b_t = ( \tilde W \Lambda)^{-1} \tilde U^\top  X_t$ the **approximate** modes.)  
 
-Conditional on $X_t$, we can compute our decoded $\check X_{t+j},   j = 1, 2, \ldots $  from either 
+Conditional on $X_t$, we can compute a decoded $\check X_{t+j},   j = 1, 2, \ldots $  from the exact modes via
 
 $$
 \check X_{t+j} = \Phi \Lambda^j \Phi^{+} X_t
 $$ (eq:checkXevoln)
 
 
-or  use the approximation
+or  use compute a decoded $\hat X_{t+j}$ from  approximate modes via
 
 $$ 
   \hat X_{t+j} = \Phi \Lambda^j (\tilde W \Lambda)^{-1}  \tilde U^\top  X_t .
 $$ (eq:checkXevoln2)
 
-We can then use $\check X_{t+j}$ or $\hat X_{t+j}$ to forecast $X_{t+j}$.
+We can then use  a decoded $\check X_{t+j}$ or $\hat X_{t+j}$ to forecast $X_{t+j}$.
 
 
 
