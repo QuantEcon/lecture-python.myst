@@ -676,8 +676,8 @@ def Q_factory(sp, parallel_flag=True):
 In the next exercise, you are asked to compute an approximation to
 $\bar w$.
 
-<!-- Your result should coincide closely with the figure for the optimal
-policy [shown above](#Take-1:-Solution-by-VFI). -->
+Your result should coincide closely with the figure for the optimal
+policy [shown above](take-1-solution-by-vfi).
 
 ## Exercises
 
