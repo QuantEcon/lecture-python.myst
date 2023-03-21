@@ -116,7 +116,7 @@ If a sequence is random variables is IID, past information provides no informati
 Therefore, there is **nothing to learn** from the past  about the future.
 
 To understand these statements, let the joint distribution of a sequence of random variables $\{W_t\}_{t=0}^T$
-that is not necessarily IID, be
+that is not necessarily IID be
 
 $$
 p(W_T, W_{T-1}, \ldots, W_1, W_0)
@@ -149,9 +149,9 @@ and partial history $W_{t-1}, \ldots, W_0$ contains no information about the pro
 
 So in the IID case, there is **nothing to learn** about the densities of future random variables from past random variables.
 
-In the general case, there is something to learn from observations of past random variables.
+But when the sequence is not IID, there is something to learn about the future from observations of past random variables.
 
-We turn next to an instance of this general case.
+We turn next to an instance of the general case in which the sequence is not IID.
 
 Please watch for what can be  learned from the past and when.
 
@@ -174,18 +174,18 @@ distribution.
 So  the data are permanently generated as independently and identically distributed (IID) draws from **either** $F$ **or**
 $G$.
 
-We could say that *objectively* the probability that the data are generated as draws from $F$ is either $0$
+We could say that *objectively*, meaning *after* nature has chosen either $F$ or $G$, the probability that the data are generated as draws from $F$ is either $0$
 or $1$.
 
 We now drop into this setting a partially informed decision maker who knows
 
-- both $F$ and $G$, and
+- both $F$ and $G$, but
 
-- but not the $F$ or $G$ that nature drew once-and-for-all at $t = -1$ 
+- not the $F$ or $G$ that nature drew once-and-for-all at $t = -1$ 
 
 So our decision maker does not know which of the two distributions nature selected.
 
-The decision maker summarizes his ignorance with a **subjective probability**
+The decision maker describes his ignorance with a **subjective probability**
 $\tilde \pi$ and reasons as if  nature had selected $F$ with probability
 $\tilde \pi \in (0,1)$ and
 $G$ with probability $1 - \tilde \pi$.
@@ -194,7 +194,7 @@ Thus, we  assume that the decision maker
 
 - **knows** both $F$ and $G$
 - **doesn't know** which of these two distributions that nature has drawn
-- expresses  his ignorance by acting  as if or **thinking** that nature chose distribution $F$ with probability $\tilde \pi \in (0,1)$ and distribution
+- expresses  his ignorance by **acting as if** or **thinking that** nature chose distribution $F$ with probability $\tilde \pi \in (0,1)$ and distribution
   $G$ with probability $1 - \tilde \pi$
 - at date $t \geq 0$ knows  the partial history $w_t, w_{t-1}, \ldots, w_0$
 
@@ -258,7 +258,7 @@ $$
 
 This means that  random variable  $W_0$ contains information about random variable  $W_1$.
 
-So there is something to learn.
+So there is something to learn from the past about the future.
 
 But what and how?
 
@@ -282,7 +282,7 @@ Equation {eq}`eq_definetti` represents our instance of an exchangeable joint den
 variables  as a **mixture**  of  two IID joint densities over a sequence of random variables.
 
 For a Bayesian statistician, the mixing parameter $\tilde \pi \in (0,1)$ has a special interpretation
-as a **prior probability** that nature selected probability distribution $F$.
+as a subjective **prior probability** that nature selected probability distribution $F$.
 
 DeFinetti {cite}`definetti` established a related representation of an exchangeable process created by mixing
 sequences of IID Bernoulli random variables with parameter $\theta \in (0,1)$ and mixing probability density $\pi(\theta)$
@@ -306,7 +306,7 @@ Another way to say *use Bayes' Law* is to say *from a (subjective) joint distrib
 
 Let's dive into Bayes' Law in this context.
 
-Let $q$ represent the distribution that nature actually draws $w$ from
+Let $q$ represent the distribution that nature actually draws $w$ 
  from and let
 
 $$
