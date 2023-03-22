@@ -28,41 +28,14 @@ jobs:
     needs: deploy-runner
     runs-on: [self-hosted, cml-gpu]
     container:
-      image: docker://nvidia/cuda:11.2.1-devel-ubuntu20.04
+      image: docker://mmcky/quantecon-lecture-python:py39-anaconda-2022-10-jb-0.15.1
       options: --gpus all
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      # Install LaTeX (Support for matplotlib and PDF builds)
-      - name: Install latex dependencies
-        shell: bash -l {0}
-        run: |
-          apt-get -qq update
-          export DEBIAN_FRONTEND=noninteractive
-          apt-get install -y tzdata
-          apt-get install -y     \
-            texlive-latex-recommended \
-            texlive-latex-extra       \
-            texlive-fonts-recommended \
-            texlive-fonts-extra       \
-            texlive-xetex             \
-            latexmk                   \
-            xindy                     \
-            dvipng                    \
-            ghostscript               \
-            cm-super
-      - name: Install Git
+      - name: Install Git (required to commit notebooks)
         shell: bash -l {0}
         run: apt-get install -y git
-      - name: Setup Anaconda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          auto-update-conda: true
-          auto-activate-base: true
-          miniconda-version: 'latest'
-          python-version: 3.9
-          environment-file: environment.yml
-          activate-environment: quantecon
       - name: Install Jax and Upgrade CUDA
         shell: bash -l {0}
         run: |
