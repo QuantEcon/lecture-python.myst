@@ -24,7 +24,7 @@ jobs:
     needs: deploy-runner
     runs-on: [self-hosted, cml-gpu]
     container:
-      image: docker://mmcky/quantecon-lecture-python:nvidia-cuda-12.1.0-devel-ubuntu18.04-py39-anaconda-2023-03-jb-0.15.1
+      image: docker://mmcky/quantecon-lecture-python:py39-anaconda-2022-10-jb-0.15.1
       options: --gpus all
     steps:
       - uses: actions/checkout@v3
@@ -34,7 +34,7 @@ jobs:
       - name: Install Jax and Upgrade CUDA
         shell: bash -l {0}
         run: |
-          pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+          pip install --upgrade "jax[cuda]==0.4.2" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
           pip install --upgrade "numpyro[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
           nvidia-smi
       - name: Display Conda Environment Versions
@@ -43,13 +43,13 @@ jobs:
       - name: Display Pip Versions
         shell: bash -l {0}
         run: pip list
-      # - name: Download "build" folder (cache)
-      #   uses: dawidd6/action-download-artifact@v2
-      #   with:
-      #     workflow: cache.yml
-      #     branch: main
-      #     name: build-cache
-      #     path: _build
+      - name: Download "build" folder (cache)
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: cache.yml
+          branch: main
+          name: build-cache
+          path: _build
       # Build Assets (Download Notebooks and PDF via LaTeX)
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
