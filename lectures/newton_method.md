@@ -470,7 +470,7 @@ Let's start by computing the market equilibrium of a two-good problem.
 We consider a market for two related products, good 0 and good 1, with
 price vector $p = (p_0, p_1)$
 
-Supply of good $i$ at price $p$,
+Supply of good $i$ at price $p$ is,
 
 $$ 
 q^s_i (p) = b_i \sqrt{p_i} 
@@ -549,13 +549,13 @@ A = \begin{pmatrix}
         \end{pmatrix},
             \qquad 
     b = \begin{pmatrix}
-            0 \\
-            0
+            1 \\
+            1
         \end{pmatrix}
     \qquad \text{and} \qquad
     c = \begin{pmatrix}
-            0 \\
-            0
+            1 \\
+            1
         \end{pmatrix}
 $$
 
