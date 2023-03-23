@@ -91,6 +91,7 @@ model](https://en.wikipedia.org/wiki/Solow%E2%80%93Swan_model).
 We will inspect the fixed point visually, solve it by successive
 approximation, and then apply Newton's method to achieve faster convergence.
 
+
 (solow)=
 ### The Solow Model
 
@@ -462,7 +463,7 @@ performance of the two methods again.
 
 We will see a significant performance gain when using Netwon's method.
 
-
+(two_goods_market)=
 ### A Two Goods Market Equilibrium
 
 Let's start by computing the market equilibrium of a two-good problem.
