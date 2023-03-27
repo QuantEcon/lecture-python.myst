@@ -58,13 +58,19 @@ jobs:
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
         run: |
-          jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -n -W --keep-going
+          jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -W --keep-going
           mkdir -p _build/html/_notebooks
           cp -u _build/jupyter/*.ipynb _build/html/_notebooks
+      - name: Upload Execution Reports (Download Notebooks)
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: execution-reports
+          path: _build/jupyter/reports
       - name: Build PDF from LaTeX
         shell: bash -l {0}
         run: |
-          jb build lectures --builder pdflatex --path-output ./ -n -W --keep-going
+          jb build lectures --builder pdflatex --path-output ./ -W --keep-going
           mkdir _build/html/_pdf
           cp -u _build/latex/*.pdf _build/html/_pdf
       - name: Upload Execution Reports (LaTeX)
