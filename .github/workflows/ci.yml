@@ -58,7 +58,7 @@ jobs:
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
         run: |
-          jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -W --keep-going
+          jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -n -W --keep-going
           mkdir -p _build/html/_notebooks
           cp -u _build/jupyter/*.ipynb _build/html/_notebooks
       - name: Upload Execution Reports (Download Notebooks)
