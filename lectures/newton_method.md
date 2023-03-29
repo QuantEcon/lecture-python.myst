@@ -480,7 +480,7 @@ $$
 Demand of good $i$ at price $p$ is,
 
 $$ 
-q^d_i (p) = e^{-a_{i0} p_0 - a_{i1} p_1} + c_i
+q^d_i (p) = \exp(-(a_{i0} p_0 + a_{i1} p_1)) + c_i
 $$
 
 Here $c_i$, $b_i$ and $a_{ij}$ are parameters.
