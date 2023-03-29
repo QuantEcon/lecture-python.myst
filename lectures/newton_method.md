@@ -463,6 +463,7 @@ performance of the two methods again.
 We will see a significant performance gain when using Netwon's method.
 
 
+(two_goods_market)=
 ### A Two Goods Market Equilibrium
 
 Let's start by computing the market equilibrium of a two-good problem.
@@ -479,7 +480,7 @@ $$
 Demand of good $i$ at price $p$ is,
 
 $$ 
-q^d_i (p) = \exp(-a_{i0} p_0) + \exp(-a_{i1} p_1) + c_i
+q^d_i (p) = e^{-a_{i0} p_0 - a_{i1} p_1} + c_i
 $$
 
 Here $c_i$, $b_i$ and $a_{ij}$ are parameters.
@@ -549,13 +550,13 @@ A = \begin{pmatrix}
         \end{pmatrix},
             \qquad 
     b = \begin{pmatrix}
-            0 \\
-            0
+            1 \\
+            1
         \end{pmatrix}
     \qquad \text{and} \qquad
     c = \begin{pmatrix}
-            0 \\
-            0
+            1 \\
+            1
         \end{pmatrix}
 $$
 
