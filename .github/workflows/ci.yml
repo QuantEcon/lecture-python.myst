@@ -24,19 +24,19 @@ jobs:
     needs: deploy-runner
     runs-on: [self-hosted, cml-gpu]
     container:
-      image: docker://mmcky/quantecon-lecture-python:py39-anaconda-2023-03-jb-0.15.1
+      image: docker://mmcky/quantecon-lecture-python:py39-anaconda-2022-10-jb-0.15.1
       options: --gpus all
     steps:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       # Install Hardware Dependant Libraries
-      # - name: Install Jax and Upgrade CUDA
-      #   shell: bash -l {0}
-      #   run: |
-      #     pip install --upgrade "jax[cuda]==0.4.2" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-      #     pip install --upgrade "numpyro[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-      #     nvidia-smi
+      - name: Install Jax and Upgrade CUDA
+        shell: bash -l {0}
+        run: |
+          pip install --upgrade "jax[cuda]==0.4.2" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+          pip install --upgrade "numpyro[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+          nvidia-smi
       # Check nvidia drivers
       - name: nvidia Drivers
         shell: bash -l {0}
@@ -58,7 +58,7 @@ jobs:
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
         run: |
-          jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -n -W --keep-going
+          jb build lectures -n -W --keep-going --path-output ./ --builder=custom --custom-builder=jupyter
           mkdir -p _build/html/_notebooks
           cp -u _build/jupyter/*.ipynb _build/html/_notebooks
       - name: Upload Execution Reports (Download Notebooks)
@@ -71,7 +71,7 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --builder pdflatex --path-output ./ -W --keep-going
-          mkdir _build/html/_pdf
+          mkdir -p _build/html/_pdf
           cp -u _build/latex/*.pdf _build/html/_pdf
       - name: Upload Execution Reports (LaTeX)
         uses: actions/upload-artifact@v2
