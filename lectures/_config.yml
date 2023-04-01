@@ -2,6 +2,8 @@ title: Quantitative Economics with Python
 author: Thomas J. Sargent & John Stachurski
 logo: _static/qe-logo-large.png
 description: This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.
+analytics:
+  google_analytics_id: UA-54984338-10
 
 parse:
   myst_enable_extensions:
@@ -34,34 +36,37 @@ latex:
 sphinx:
   extra_extensions: [sphinx_multitoc_numbering, sphinxext.rediraffe, sphinx_tojupyter, sphinxcontrib.youtube, sphinx.ext.todo, sphinx_exercise, sphinx_togglebutton]
   config:
-    nb_render_priority:
-      html:
-      - "application/vnd.jupyter.widget-view+json"
-      - "application/javascript"
-      - "text/html"
-      - "text/latex"
-      - "image/svg+xml"
-      - "image/png"
-      - "image/jpeg"
-      - "text/markdown"
-      - "text/plain"
-      jupyter:
-      - "application/vnd.jupyter.widget-view+json"
-      - "application/javascript"
-      - "text/html"
-      - "text/latex"
-      - "image/svg+xml"
-      - "image/png"
-      - "image/jpeg"
-      - "text/markdown"
-      - "text/plain"
-      latex:
-      - "text/latex"
-      - "application/pdf"
-      - "image/png"
-      - "image/jpeg"
-      - "text/markdown"
-      - "text/plain"
+    nb_mime_priority_overrides: [
+       # HTML
+       ['html', 'application/vnd.jupyter.widget-view+json', 10],
+       ['html', 'application/javascript', 20],
+       ['html', 'text/html', 30],
+       ['html', 'text/latex', 40],
+       ['html', 'image/svg+xml', 50],
+       ['html', 'image/png', 60],
+       ['html', 'image/jpeg', 70],
+       ['html', 'text/markdown', 80],
+       ['html', 'text/plain', 90],
+       # Jupyter Notebooks
+       ['jupyter', 'application/vnd.jupyter.widget-view+json', 10],
+       ['jupyter', 'application/javascript', 20],
+       ['jupyter', 'text/html', 30],
+       ['jupyter', 'text/latex', 40],
+       ['jupyter', 'image/svg+xml', 50],
+       ['jupyter', 'image/png', 60],
+       ['jupyter', 'image/jpeg', 70],
+       ['jupyter', 'text/markdown', 80],
+       ['jupyter', 'text/plain', 90],
+       # LaTeX
+       ['latex', 'text/latex', 10],
+       ['latex', 'application/pdf', 20],
+       ['latex', 'image/png', 30],
+       ['latex', 'image/jpeg', 40],
+       ['latex', 'text/markdown', 50],
+       ['latex', 'text/plain', 60],
+       # Link Checker
+       ['linkcheck', 'text/plain', 10],
+     ]
     html_favicon: _static/lectures-favicon.ico
     html_theme: quantecon_book_theme
     html_static_path: ['_static']
@@ -75,7 +80,6 @@ sphinx:
       og_logo_url: https://assets.quantecon.org/img/qe-og-logo.png
       description: This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.
       keywords: Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski
-      google_analytics_id: UA-54984338-10
       launch_buttons:
         colab_url                 : https://colab.research.google.com
     mathjax3_config:
