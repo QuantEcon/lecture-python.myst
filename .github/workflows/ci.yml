@@ -24,7 +24,7 @@ jobs:
     needs: deploy-runner
     runs-on: [self-hosted, cml-gpu]
     container:
-      image: docker://mmcky/quantecon-lecture-python:py310-anaconda-2023-03-jb-0.15.1
+      image: docker://mmcky/quantecon-lecture-python:cuda-12.1.0-anaconda-2023-03-py310
       options: --gpus all
     steps:
       - uses: actions/checkout@v3
