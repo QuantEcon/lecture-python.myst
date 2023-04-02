@@ -773,7 +773,7 @@ def generate_draws_lax(μ_a=-0.5,
                        σ_e=0.5,
                        s_bar=1.0,
                        T=500,
-                       M=1_000_000,
+                       M=100_000,
                        s_init=1.0,
                        seed=123):
 
@@ -837,7 +837,7 @@ def generate_draws_numba(μ_a=-0.5,
                          σ_e=0.5,
                          s_bar=1.0,
                          T=500,
-                         M=1_000_000,
+                         M=100_000,
                          s_init=1.0):
 
     draws = np.empty(M)
