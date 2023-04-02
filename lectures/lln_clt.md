@@ -478,8 +478,7 @@ S = Z.cumsum(axis=1)
 Y = (1 / np.sqrt(ns)) * S
 
 # Plot
-fig = plt.figure(figsize = (10, 6), projection='3d')
-ax = fig.gca()
+ax = plt.figure(figsize = (10, 6)).add_subplot(projection='3d')
 
 a, b = -3, 3
 gs = 100
