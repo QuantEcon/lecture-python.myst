@@ -699,7 +699,6 @@ print(f"jax backend: {jax.devices()[0].platform}")
 Now we can generate the observations:
 
 ```{code-cell} ipython3
-%env XLA_PYTHON_CLIENT_PREALLOCATE=false
 
 @jax.jit
 def generate_draws(μ_a=-0.5,
@@ -756,7 +755,6 @@ ax.set_xlabel("log rank")
 ax.set_ylabel("log size")
 
 plt.show()
-del data
 ```
 
 The plot produces a straight line, consistent with a Pareto tail.
@@ -792,10 +790,10 @@ def generate_draws_lax(μ_a=-0.5,
     # Define the function for each update
     def update_s(s, a_b_e_draws):
         a, b, e = a_b_e_draws
-        res = jnp.where(s < s_bar,
-                        jnp.exp(e),
-                        jnp.exp(a) * s + jnp.exp(b))
-        return res, res
+        s = jnp.where(s < s_bar,
+                      jnp.exp(e),
+                      jnp.exp(a) * s + jnp.exp(b))
+        return s, s
 
     # Use lax.scan to perform the calculations on all states
     s_final, _ = lax.scan(update_s, s, (a_random, b_random, e_random))
@@ -821,7 +819,6 @@ ax.set_xlabel("log rank")
 ax.set_ylabel("log size")
 
 plt.show()
-del data
 ```
 
 We can also use Numba with `for` loops to generate the observations (replicating the results we obtained with JAX).
