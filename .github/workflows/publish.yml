@@ -28,7 +28,7 @@ jobs:
     needs: deploy-runner
     runs-on: [self-hosted, cml-gpu]
     container:
-      image: docker://mmcky/quantecon-lecture-python:py39-anaconda-2022-10-jb-0.15.1
+      image: docker://mmcky/quantecon-lecture-python:cuda-12.1.0-anaconda-2023-03-py310
       options: --gpus all
     steps:
       - name: Checkout
@@ -36,11 +36,9 @@ jobs:
       - name: Install Git (required to commit notebooks)
         shell: bash -l {0}
         run: apt-get install -y git
-      - name: Install Jax and Upgrade CUDA
+      - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
-          pip install --upgrade "jax[cuda]==0.4.2" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-          pip install --upgrade "numpyro[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
           nvidia-smi
       - name: Display Conda Environment Versions
         shell: bash -l {0}
