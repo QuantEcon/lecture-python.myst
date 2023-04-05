@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>14. Multivariate Hypergeometric Distribution &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'multi_hyper';</script>
     <link rel="canonical" href="https://python.quantecon.org/multi_hyper.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,52 +161,19 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   14.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-administrators-problem">
-   14.2. The Administrator’s Problem
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#details-of-the-awards-procedure-under-study">
-     14.2.1. Details of the Awards Procedure Under Study
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     14.2.2. Multivariate Hypergeometric Distribution
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#usage">
-   14.3. Usage
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#first-example">
-     14.3.1. First example
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#back-to-the-administrators-problem">
-     14.3.2. Back to The Administrator’s Problem
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#quality-of-normal-approximation">
-     14.3.3. Quality of Normal Approximation
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">14.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-administrators-problem">14.2. The Administrator’s Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#details-of-the-awards-procedure-under-study">14.2.1. Details of the Awards Procedure Under Study</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">14.2.2. Multivariate Hypergeometric Distribution</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">14.3. Usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-example">14.3.1. First example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#back-to-the-administrators-problem">14.3.2. Back to The Administrator’s Problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quality-of-normal-approximation">14.3.3. Quality of Normal Approximation</a></li>
+</ul>
+</li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -243,8 +221,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="multivariate-hypergeometric-distribution">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">14. </span>Multivariate Hypergeometric Distribution</a><a class="headerlink" href="#multivariate-hypergeometric-distribution" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="multivariate-hypergeometric-distribution">
+<h1><a class="toc-backref" href="#id2"><span class="section-number">14. </span>Multivariate Hypergeometric Distribution</a><a class="headerlink" href="#multivariate-hypergeometric-distribution" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -257,8 +235,8 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">14.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">14.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes how an  administrator deployed a <strong>multivariate hypergeometric distribution</strong> in order to access the fairness of a procedure for awarding research grants.</p>
 <p>In the lecture we’ll learn about</p>
 <ul class="simple">
@@ -267,9 +245,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p>using a Monte Carlo simulation of a multivariate normal distribution to evaluate the quality of a normal approximation</p></li>
 <li><p>the administrator’s problem and why the multivariate hypergeometric distribution is the right tool</p></li>
 </ul>
-</div>
-<div class="section" id="the-administrators-problem">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">14.2. </span>The Administrator’s Problem</a><a class="headerlink" href="#the-administrators-problem" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="the-administrators-problem">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">14.2. </span>The Administrator’s Problem</a><a class="headerlink" href="#the-administrators-problem" title="Permalink to this heading">#</a></h2>
 <p>An administrator in charge of allocating research grants is in the following situation.</p>
 <p>To help us forget details that are none of our business here and to protect the anonymity of the administrator and the subjects, we call
 research proposals <strong>balls</strong> and continents of residence of authors of a proposal a <strong>color</strong>.</p>
@@ -283,8 +261,8 @@ research proposals <strong>balls</strong> and continents of residence of authors
 <p>Thus, the selection procedure is supposed randomly to draw <span class="math notranslate nohighlight">\(n\)</span>  balls from the urn.</p>
 <p>The <span class="math notranslate nohighlight">\(n\)</span> balls drawn represent  successful proposals and are  awarded research funds.</p>
 <p>The remaining <span class="math notranslate nohighlight">\(N-n\)</span> balls receive no research funds.</p>
-<div class="section" id="details-of-the-awards-procedure-under-study">
-<h3><span class="section-number">14.2.1. </span>Details of the Awards Procedure Under Study<a class="headerlink" href="#details-of-the-awards-procedure-under-study" title="Permalink to this headline">¶</a></h3>
+<section id="details-of-the-awards-procedure-under-study">
+<h3><span class="section-number">14.2.1. </span>Details of the Awards Procedure Under Study<a class="headerlink" href="#details-of-the-awards-procedure-under-study" title="Permalink to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(k_i\)</span> be the number of balls of color <span class="math notranslate nohighlight">\(i\)</span> that are drawn.</p>
 <p>Things have to add up so <span class="math notranslate nohighlight">\(\sum_{i=1}^c k_i = n\)</span>.</p>
 <p>Under the hypothesis that the selection process judges proposals on their quality and that quality is independent of continent of the author’s continent of residence, the administrator views the outcome of the selection procedure as a random vector</p>
@@ -313,9 +291,9 @@ evidence against the hypothesis that the selection process is <em>fair</em>, whi
 here means  <em>color blind</em> and truly are random draws without replacement from
 the population of <span class="math notranslate nohighlight">\(N\)</span> balls.</p>
 <p>The right tool for the administrator’s job is the <strong>multivariate hypergeometric distribution</strong>.</p>
-</div>
-<div class="section" id="id1">
-<h3><span class="section-number">14.2.2. </span>Multivariate Hypergeometric Distribution<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id1">
+<h3><span class="section-number">14.2.2. </span>Multivariate Hypergeometric Distribution<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
 <p>Let’s start with some imports.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -456,12 +434,12 @@ the total number of objects in the urn and <span class="math notranslate nohighl
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="usage">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">14.3. </span>Usage</a><a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="first-example">
-<h3><span class="section-number">14.3.1. </span>First example<a class="headerlink" href="#first-example" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="usage">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">14.3. </span>Usage</a><a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h2>
+<section id="first-example">
+<h3><span class="section-number">14.3.1. </span>First example<a class="headerlink" href="#first-example" title="Permalink to this heading">#</a></h3>
 <p>Apply this to an example from
 <a class="reference external" href="https://en.wikipedia.org/wiki/Hypergeometric_distribution#Multivariate_hypergeometric_distribution">wiki</a>:</p>
 <p>Suppose there are 5 black, 10 white, and 15 red marbles in an urn. If
@@ -546,9 +524,9 @@ observing each case.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="back-to-the-administrators-problem">
-<h3><span class="section-number">14.3.2. </span>Back to The Administrator’s Problem<a class="headerlink" href="#back-to-the-administrators-problem" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="back-to-the-administrators-problem">
+<h3><span class="section-number">14.3.2. </span>Back to The Administrator’s Problem<a class="headerlink" href="#back-to-the-administrators-problem" title="Permalink to this heading">#</a></h3>
 <p>Now let’s turn to the grant administrator’s problem.</p>
 <p>Here the array of
 numbers of <span class="math notranslate nohighlight">\(i\)</span> objects in the urn is
@@ -645,7 +623,7 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3.9581901, 0.2776325, 1.1594035, 0.6047739])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3.9578268, 0.2772585, 1.1596268, 0.6052879])
 </pre></div>
 </div>
 </div>
@@ -658,18 +636,18 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.31755656, -0.17899743, -0.74828263, -0.3902765 ],
-       [-0.17899743,  0.25904532, -0.0525687 , -0.02747919],
-       [-0.74828263, -0.0525687 ,  0.91553412, -0.11468279],
-       [-0.3902765 , -0.02747919, -0.11468279,  0.53243848]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.31937235, -0.17891054, -0.7492386 , -0.39122321],
+       [-0.17891054,  0.25884385, -0.05237259, -0.02756072],
+       [-0.7492386 , -0.05237259,  0.91635458, -0.11474338],
+       [-0.39122321, -0.02756072, -0.11474338,  0.53352731]])
 </pre></div>
 </div>
 </div>
 </div>
 <p>Evidently, the sample means and covariances approximate their population counterparts well.</p>
-</div>
-<div class="section" id="quality-of-normal-approximation">
-<h3><span class="section-number">14.3.3. </span>Quality of Normal Approximation<a class="headerlink" href="#quality-of-normal-approximation" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="quality-of-normal-approximation">
+<h3><span class="section-number">14.3.3. </span>Quality of Normal Approximation<a class="headerlink" href="#quality-of-normal-approximation" title="Permalink to this heading">#</a></h3>
 <p>To judge the quality of a multivariate normal approximation to the multivariate hypergeometric distribution, we draw a large sample from a multivariate normal distribution with the mean vector  and covariance matrix for the corresponding multivariate hypergeometric distribution and compare the simulated distribution with the population multivariate hypergeometric distribution.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -747,7 +725,7 @@ arrays <code class="docutils literal notranslate"><span class="pre">k_arr</span>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/multi_hyper_32_0.png" src="_images/multi_hyper_32_0.png" />
+<img alt="_images/6579e7321f3b941820d675d4810275344d396742f8220185b5a5a363c9f5f62a.png" src="_images/6579e7321f3b941820d675d4810275344d396742f8220185b5a5a363c9f5f62a.png" />
 </div>
 </div>
 <p>The diagonal graphs plot the marginal distributions of <span class="math notranslate nohighlight">\(k_i\)</span> for
@@ -786,15 +764,15 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.23105625, 0.27769537, 0.43458888, 0.57447959])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.69551922, 0.54268077, 0.86154994, 0.14390034])
 </pre></div>
 </div>
 </div>
 </div>
 <p>The lesson to take away from this is that the normal approximation is imperfect.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -808,7 +786,7 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1389,7 +1367,7 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1531,16 +1509,5 @@ test that combines skew and kurtosis to form an omnibus test of normality.</p>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

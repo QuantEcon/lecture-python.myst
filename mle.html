@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>80. Maximum Likelihood Estimation &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'mle';</script>
     <link rel="canonical" href="https://python.quantecon.org/mle.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,72 +161,22 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   80.1. Overview
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#prerequisites">
-     80.1.1. Prerequisites
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#set-up-and-assumptions">
-   80.2. Set Up and Assumptions
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#flow-of-ideas">
-     80.2.1. Flow of Ideas
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#counting-billionaires">
-     80.2.2. Counting Billionaires
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#conditional-distributions">
-   80.3. Conditional Distributions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#id2">
-   80.4. Maximum Likelihood Estimation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#mle-with-numerical-methods">
-   80.5. MLE with Numerical Methods
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#maximum-likelihood-estimation-with-statsmodels">
-   80.6. Maximum Likelihood Estimation with
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     statsmodels
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#summary">
-   80.7. Summary
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises">
-   80.8. Exercises
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">80.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">80.1.1. Prerequisites</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-and-assumptions">80.2. Set Up and Assumptions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flow-of-ideas">80.2.1. Flow of Ideas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#counting-billionaires">80.2.2. Counting Billionaires</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditional-distributions">80.3. Conditional Distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">80.4. Maximum Likelihood Estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-with-numerical-methods">80.5. MLE with Numerical Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-likelihood-estimation-with-statsmodels">80.6. Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">80.7. Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">80.8. Exercises</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -263,8 +224,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="maximum-likelihood-estimation">
-<h1><a class="toc-backref" href="#id3"><span class="section-number">80. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#maximum-likelihood-estimation" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="maximum-likelihood-estimation">
+<h1><a class="toc-backref" href="#id3"><span class="section-number">80. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#maximum-likelihood-estimation" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -282,8 +243,8 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">80.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">80.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In a <a class="reference internal" href="ols.html"><span class="doc">previous lecture</span></a>, we estimated the relationship between
 dependent and explanatory variables using linear regression.</p>
 <p>But what if a linear relationship is not an appropriate assumption for our model?</p>
@@ -313,16 +274,16 @@ economic factors such as market size and tax rate predict.</p>
 </div>
 </div>
 </div>
-<div class="section" id="prerequisites">
-<h3><span class="section-number">80.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h3>
+<section id="prerequisites">
+<h3><span class="section-number">80.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h3>
 <p>We assume familiarity with basic probability and multivariate calculus.</p>
-</div>
-</div>
-<div class="section" id="set-up-and-assumptions">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">80.2. </span>Set Up and Assumptions</a><a class="headerlink" href="#set-up-and-assumptions" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="set-up-and-assumptions">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">80.2. </span>Set Up and Assumptions</a><a class="headerlink" href="#set-up-and-assumptions" title="Permalink to this heading">#</a></h2>
 <p>Let’s consider the steps we need to go through in maximum likelihood estimation and how they pertain to this study.</p>
-<div class="section" id="flow-of-ideas">
-<h3><span class="section-number">80.2.1. </span>Flow of Ideas<a class="headerlink" href="#flow-of-ideas" title="Permalink to this headline">¶</a></h3>
+<section id="flow-of-ideas">
+<h3><span class="section-number">80.2.1. </span>Flow of Ideas<a class="headerlink" href="#flow-of-ideas" title="Permalink to this heading">#</a></h3>
 <p>The first step with maximum likelihood estimation is to choose the probability distribution believed to be generating the data.</p>
 <p>More precisely, we need to make an assumption as to which <em>parametric class</em> of distributions is generating the data.</p>
 <ul class="simple">
@@ -335,9 +296,9 @@ indexed by its mean <span class="math notranslate nohighlight">\(\mu \in (-\inft
 </ul>
 <p>We’ll let the data pick out a particular element of the class by pinning down the parameters.</p>
 <p>The parameter estimates so produced will be called <strong>maximum likelihood estimates</strong>.</p>
-</div>
-<div class="section" id="counting-billionaires">
-<h3><span class="section-number">80.2.2. </span>Counting Billionaires<a class="headerlink" href="#counting-billionaires" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="counting-billionaires">
+<h3><span class="section-number">80.2.2. </span>Counting Billionaires<a class="headerlink" href="#counting-billionaires" title="Permalink to this heading">#</a></h3>
 <p>Treisman <span id="id1">[<a class="reference internal" href="zreferences.html#id92" title="Daniel Treisman. Russia's billionaires. The American Economic Review, 106(5):236–241, 2016.">Tre16</a>]</span> is interested in estimating the number of billionaires in different countries.</p>
 <p>The number of billionaires is integer-valued.</p>
 <p>Hence we consider distributions that take values only in the nonnegative integers.</p>
@@ -379,7 +340,7 @@ f(y) = \frac{\mu^{y}}{y!} e^{-\mu},
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mle_3_0.png" src="_images/mle_3_0.png" />
+<img alt="_images/a801ffc7a7aff1bd50e1ed77dd8aab67004b2246d18d39c315fb198f2778bf7b.png" src="_images/a801ffc7a7aff1bd50e1ed77dd8aab67004b2246d18d39c315fb198f2778bf7b.png" />
 </div>
 </div>
 <p>Notice that the Poisson distribution begins to resemble a normal distribution as the mean of <span class="math notranslate nohighlight">\(y\)</span> increases.</p>
@@ -524,19 +485,19 @@ dropped for plotting purposes)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mle_7_0.png" src="_images/mle_7_0.png" />
+<img alt="_images/d5cc0483aaa1957d27c63448b4efd836f2de35114026f0aad6bcc634b5c77e49.png" src="_images/d5cc0483aaa1957d27c63448b4efd836f2de35114026f0aad6bcc634b5c77e49.png" />
 </div>
 </div>
 <p>From the histogram, it appears that the Poisson assumption is not unreasonable (albeit with a very low <span class="math notranslate nohighlight">\(\mu\)</span> and some outliers).</p>
-</div>
-</div>
-<div class="section" id="conditional-distributions">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">80.3. </span>Conditional Distributions</a><a class="headerlink" href="#conditional-distributions" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="conditional-distributions">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">80.3. </span>Conditional Distributions</a><a class="headerlink" href="#conditional-distributions" title="Permalink to this heading">#</a></h2>
 <p>In Treisman’s paper, the dependent variable — the number of billionaires <span class="math notranslate nohighlight">\(y_i\)</span> in country <span class="math notranslate nohighlight">\(i\)</span> — is modeled as a function of GDP per capita, population size, and years membership in GATT and WTO.</p>
 <p>Hence, the distribution of <span class="math notranslate nohighlight">\(y_i\)</span> needs to be conditioned on the vector of explanatory variables <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span>.</p>
 <p>The standard formulation — the so-called <em>poisson regression</em> model — is as follows:</p>
 <div class="math notranslate nohighlight" id="equation-poissonreg">
-<span class="eqno">(80.1)<a class="headerlink" href="#equation-poissonreg" title="Permalink to this equation">¶</a></span>\[f(y_i \mid \mathbf{x}_i) = \frac{\mu_i^{y_i}}{y_i!} e^{-\mu_i}; \qquad y_i = 0, 1, 2, \ldots , \infty .\]</div>
+<span class="eqno">(80.1)<a class="headerlink" href="#equation-poissonreg" title="Permalink to this equation">#</a></span>\[f(y_i \mid \mathbf{x}_i) = \frac{\mu_i^{y_i}}{y_i!} e^{-\mu_i}; \qquad y_i = 0, 1, 2, \ldots , \infty .\]</div>
 <div class="math notranslate nohighlight">
 \[
 \text{where}\ \mu_i
@@ -585,14 +546,14 @@ dropped for plotting purposes)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mle_9_0.png" src="_images/mle_9_0.png" />
+<img alt="_images/7049fb652dbbebee210195fdada1f61c2cdd29e426aeda14831a9963e84baaeb.png" src="_images/7049fb652dbbebee210195fdada1f61c2cdd29e426aeda14831a9963e84baaeb.png" />
 </div>
 </div>
 <p>We can see that the distribution of <span class="math notranslate nohighlight">\(y_i\)</span> is conditional on
 <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> (<span class="math notranslate nohighlight">\(\mu_i\)</span> is no longer constant).</p>
-</div>
-<div class="section" id="id2">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">80.4. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="id2">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">80.4. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
 <p>In our model for number of billionaires, the conditional distribution
 contains 4 (<span class="math notranslate nohighlight">\(k = 4\)</span>) parameters that we need to estimate.</p>
 <p>We will label our entire parameter vector as <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> where</p>
@@ -639,7 +600,7 @@ we can visualize the joint pmf like so</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mle_11_0.png" src="_images/mle_11_0.png" />
+<img alt="_images/015ba707ef6ba7ae9685b0a26aeff82c13a7a86dcaf4ac44ca1e689a29297ab4.png" src="_images/015ba707ef6ba7ae9685b0a26aeff82c13a7a86dcaf4ac44ca1e689a29297ab4.png" />
 </div>
 </div>
 <p>Similarly, the joint pmf of our data (which is distributed as a
@@ -703,9 +664,9 @@ differentiating <span class="math notranslate nohighlight">\(f(x) = x \exp(x)\)<
 \]</div>
 <p>However, no analytical solution exists to the above problem – to find the MLE
 we need to use numerical methods.</p>
-</div>
-<div class="section" id="mle-with-numerical-methods">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">80.5. </span>MLE with Numerical Methods</a><a class="headerlink" href="#mle-with-numerical-methods" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="mle-with-numerical-methods">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">80.5. </span>MLE with Numerical Methods</a><a class="headerlink" href="#mle-with-numerical-methods" title="Permalink to this heading">#</a></h2>
 <p>Many distributions do not have nice, analytical solutions and therefore require
 numerical methods to solve for parameter estimates.</p>
 <p>One such numerical method is the Newton-Raphson algorithm.</p>
@@ -744,7 +705,7 @@ function will be equal to 0.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mle_13_0.png" src="_images/mle_13_0.png" />
+<img alt="_images/732d72d65a1f802dd6049af674e685948bca9785852a4b78860317a5a7e428cd.png" src="_images/732d72d65a1f802dd6049af674e685948bca9785852a4b78860317a5a7e428cd.png" />
 </div>
 </div>
 <p>The plot shows that the maximum likelihood value (the top plot) occurs
@@ -759,7 +720,7 @@ plot) is negative.</p>
 <p>To use the algorithm, we take an initial guess at the maximum value,
 <span class="math notranslate nohighlight">\(\beta_0\)</span> (the OLS parameter estimates might be a reasonable
 guess), then</p>
-<ol>
+<ol class="arabic">
 <li><p>Use the updating rule to iterate the algorithm</p>
 <div class="math notranslate nohighlight">
 \[
@@ -930,9 +891,9 @@ and therefore the numerator in our updating equation is becoming smaller.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-3.95169231e-07],
-       [-1.00114806e-06],
-       [-7.73114574e-07]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-3.95169228e-07],
+       [-1.00114805e-06],
+       [-7.73114562e-07]])
 </pre></div>
 </div>
 </div>
@@ -975,15 +936,15 @@ the maximum is found at <span class="math notranslate nohighlight">\(\beta = 10\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mle_23_0.png" src="_images/mle_23_0.png" />
+<img alt="_images/27a26b67578823ea443b1978cc65417eb705e4780bb210c2746f591b5d8bb49e.png" src="_images/27a26b67578823ea443b1978cc65417eb705e4780bb210c2746f591b5d8bb49e.png" />
 </div>
 </div>
 <p>Note that our implementation of the Newton-Raphson algorithm is rather
 basic — for more robust implementations see,
 for example, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html">scipy.optimize</a>.</p>
-</div>
-<div class="section" id="maximum-likelihood-estimation-with-statsmodels">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">80.6. </span>Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a><a class="headerlink" href="#maximum-likelihood-estimation-with-statsmodels" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="maximum-likelihood-estimation-with-statsmodels">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">80.6. </span>Maximum Likelihood Estimation with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a><a class="headerlink" href="#maximum-likelihood-estimation-with-statsmodels" title="Permalink to this heading">#</a></h2>
 <p>Now that we know what’s going on under the hood, we can apply MLE to an interesting application.</p>
 <p>We’ll use the Poisson regression model in <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> to obtain
 a richer output with standard errors, test values, and more.</p>
@@ -1015,8 +976,8 @@ to confirm we obtain the same coefficients and log-likelihood value.</p>
 Dep. Variable:                      y   No. Observations:                    5
 Model:                        Poisson   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Tue, 14 Mar 2023   Pseudo R-squ.:                  0.2546
-Time:                        08:12:10   Log-Likelihood:                -3.3784
+Date:                Wed, 05 Apr 2023   Pseudo R-squ.:                  0.2546
+Time:                        05:56:23   Log-Likelihood:                -3.3784
 converged:                       True   LL-Null:                       -4.5325
 Covariance Type:            nonrobust   LLR p-value:                    0.3153
 ==============================================================================
@@ -1082,8 +1043,8 @@ model.</p>
 Dep. Variable:                numbil0   No. Observations:                  197
 Model:                        Poisson   Df Residuals:                      193
 Method:                           MLE   Df Model:                            3
-Date:                Tue, 14 Mar 2023   Pseudo R-squ.:                  0.8574
-Time:                        08:12:10   Log-Likelihood:                -438.54
+Date:                Wed, 05 Apr 2023   Pseudo R-squ.:                  0.8574
+Time:                        05:56:23   Log-Likelihood:                -438.54
 converged:                       True   LL-Null:                       -3074.7
 Covariance Type:                  HC0   LLR p-value:                     0.000
 ==============================================================================
@@ -1204,7 +1165,7 @@ plot the first 15</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mle_33_0.png" src="_images/mle_33_0.png" />
+<img alt="_images/f49c1c1113370e86a77c835cc1b5bbc7a733a49af632b9294254112cd4736a24.png" src="_images/f49c1c1113370e86a77c835cc1b5bbc7a733a49af632b9294254112cd4736a24.png" />
 </div>
 </div>
 <p>As we can see, Russia has by far the highest number of billionaires in
@@ -1213,9 +1174,9 @@ excess of what is predicted by the model (around 50 more than expected).</p>
 Russia’s excess of billionaires, including the origination of wealth in
 Russia, the political climate, and the history of privatization in the
 years after the USSR.</p>
-</div>
-<div class="section" id="summary">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">80.7. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="summary">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">80.7. </span>Summary</a><a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h2>
 <p>In this lecture, we used Maximum Likelihood Estimation to estimate the
 parameters of a Poisson model.</p>
 <p><code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> contains other built-in likelihood models such as
@@ -1226,13 +1187,13 @@ and
 distribution manually using the <code class="docutils literal notranslate"><span class="pre">GenericLikelihoodModel</span></code> class - an
 example notebook can be found
 <a class="reference external" href="https://www.statsmodels.org/dev/examples/notebooks/generated/generic_mle.html">here</a>.</p>
-</div>
-<div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">80.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id11"><span class="section-number">80.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="mle_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 80.1 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Suppose we wanted to estimate the probability of an event <span class="math notranslate nohighlight">\(y_i\)</span>
 occurring, given some observations.</p>
 <p>We could use a probit regression model, where the pmf of <span class="math notranslate nohighlight">\(y_i\)</span> is</p>
@@ -1253,13 +1214,13 @@ Probit model.</p>
 Hessian.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">scipy</span></code> module <code class="docutils literal notranslate"><span class="pre">stats.norm</span></code> contains the functions needed to
 compute the cmf and pmf of the normal distribution.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="mle-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex1"> Exercise 80.1</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>The log-likelihood can be written as</p>
+<section id="solution-content">
+<p>The log-likelihood can be written as</p>
 <div class="math notranslate nohighlight">
 \[
 \log \mathcal{L} = \sum_{i=1}^n
@@ -1332,12 +1293,12 @@ follows</p>
 </div>
 </div>
 </div>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="mle_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 80.2 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Use the following dataset and initial values of <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> to
 estimate the MLE with the Newton-Raphson algorithm developed earlier in
 the lecture</p>
@@ -1380,13 +1341,13 @@ function with the following import statement</p>
 <p>Note that the simple Newton-Raphson algorithm developed in this lecture
 is very sensitive to initial values, and therefore you may fail to
 achieve convergence with different starting values.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="mle-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#mle_ex2"> Exercise 80.2</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution</p>
+<section id="solution-content">
+<p>Here is one solution</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
@@ -1441,8 +1402,8 @@ Number of iterations: 4
 Dep. Variable:                      y   No. Observations:                    5
 Model:                         Probit   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Tue, 14 Mar 2023   Pseudo R-squ.:                  0.2961
-Time:                        08:12:11   Log-Likelihood:                -2.3687
+Date:                Wed, 05 Apr 2023   Pseudo R-squ.:                  0.2961
+Time:                        05:56:23   Log-Likelihood:                -2.3687
 converged:                       True   LL-Null:                       -3.3651
 Covariance Type:            nonrobust   LLR p-value:                    0.3692
 ==============================================================================
@@ -1456,10 +1417,10 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
 </div>
 </div>
 </div>
+</section>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1473,7 +1434,7 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -2054,7 +2015,7 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -2196,16 +2157,5 @@ x2            -0.0971      0.590     -0.165      0.869      -1.254       1.060
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

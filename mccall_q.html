@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>40. Job Search VII: A McCall Worker Q-Learns &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'mccall_q';</script>
     <link rel="canonical" href="https://python.quantecon.org/mccall_q.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,46 +161,14 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   40.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#review-of-mccall-model">
-   40.2. Review of McCall Model
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implied-quality-function-q">
-   40.3. Implied Quality Function
-   <span class="math notranslate nohighlight">
-    \(Q\)
-   </span>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#from-probabilities-to-samples">
-   40.4. From Probabilities  to Samples
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#q-learning">
-   40.5. Q-Learning
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#employed-worker-cant-quit">
-   40.6. Employed Worker Can’t Quit
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#possible-extensions">
-   40.7. Possible Extensions
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">40.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-of-mccall-model">40.2. Review of McCall Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implied-quality-function-q">40.3. Implied Quality Function  <span class="math notranslate nohighlight">\(Q\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-probabilities-to-samples">40.4. From Probabilities  to Samples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q-learning">40.5. Q-Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#employed-worker-cant-quit">40.6. Employed Worker Can’t Quit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-extensions">40.7. Possible Extensions</a></li>
 </ul>
-
                             <p class="logo">
                                 
                                     
@@ -233,10 +212,10 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <div class="tex2jax_ignore mathjax_ignore section" id="job-search-vii-a-mccall-worker-q-learns">
-<h1><span class="section-number">40. </span>Job Search VII: A McCall Worker Q-Learns<a class="headerlink" href="#job-search-vii-a-mccall-worker-q-learns" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="overview">
-<h2><span class="section-number">40.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="job-search-vii-a-mccall-worker-q-learns">
+<h1><span class="section-number">40. </span>Job Search VII: A McCall Worker Q-Learns<a class="headerlink" href="#job-search-vii-a-mccall-worker-q-learns" title="Permalink to this heading">#</a></h1>
+<section id="overview">
+<h2><span class="section-number">40.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture illustrates a powerful machine learning technique called Q-learning.</p>
 <p><span id="id1">[<a class="reference internal" href="zreferences.html#id29" title="Richard S Sutton and Andrew G Barto. Reinforcement learning: An introduction. MIT press, 2018.">SB18</a>]</span> presents Q-learning and a variety of other statistical learning procedures.</p>
 <p>The Q-learning algorithm combines ideas from</p>
@@ -270,27 +249,32 @@ actions that he can take in each state.</p>
 </ul>
 <p>As usual, let’s  import some Python modules.</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.6.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: scipy&gt;=1.5.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
-Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.6.0)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: numba in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (65.6.3)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -298,6 +282,7 @@ Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -315,9 +300,9 @@ Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="review-of-mccall-model">
-<h2><span class="section-number">40.2. </span>Review of McCall Model<a class="headerlink" href="#review-of-mccall-model" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="review-of-mccall-model">
+<h2><span class="section-number">40.2. </span>Review of McCall Model<a class="headerlink" href="#review-of-mccall-model" title="Permalink to this heading">#</a></h2>
 <p>We begin by reviewing the McCall model described in <a class="reference internal" href="mccall_model.html"><span class="doc">this quantecon lecture</span></a>.</p>
 <p>We’ll  compute an optimal value function and a policy that attains it.</p>
 <p>We’ll eventually compare that optimal policy to what the Q-learning McCall worker learns.</p>
@@ -331,7 +316,7 @@ Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst
 <p>An optimal value  <span class="math notranslate nohighlight">\(V\left(w\right) \)</span> for a McCall worker who has just received a wage offer <span class="math notranslate nohighlight">\(w\)</span> and is deciding whether
 to accept or reject it satisfies the Bellman equation</p>
 <div class="math notranslate nohighlight" id="equation-eq-mccallbellman">
-<span class="eqno">(40.1)<a class="headerlink" href="#equation-eq-mccallbellman" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(40.1)<a class="headerlink" href="#equation-eq-mccallbellman" title="Permalink to this equation">#</a></span>\[
 V\left(w\right)=\max_{\text{accept, reject}}\;\left\{ \frac{w}{1-\beta},c+\beta\int V\left(w'\right)dF\left(w'\right)\right\}
 \]</div>
 <p>To form a benchmark to compare with results from Q-learning, we  first approximate the optimal value function.</p>
@@ -362,7 +347,7 @@ v^{\prime}(i)=\max \left\{\frac{w(i)}{1-\beta}, c+\beta \sum_{1 \leq j \leq n} v
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mccall_q_4_0.png" src="_images/mccall_q_4_0.png" />
+<img alt="_images/ea9335e2e5e31e789226be376efe243a4b70e5b6e365bea8f0cb6d219f2faee5.png" src="_images/ea9335e2e5e31e789226be376efe243a4b70e5b6e365bea8f0cb6d219f2faee5.png" />
 </div>
 </div>
 <p>Next we’ll compute the worker’s optimal value function by iterating to convergence on the Bellman equation.</p>
@@ -457,7 +442,7 @@ v^{\prime}(i)=\max \left\{\frac{w(i)}{1-\beta}, c+\beta \sum_{1 \leq j \leq n} v
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mccall_q_7_0.png" src="_images/mccall_q_7_0.png" />
+<img alt="_images/f41075aa9d88035059e5b3b3c522b6ab872bb5c3f33c4872015911ed04cd3e58.png" src="_images/f41075aa9d88035059e5b3b3c522b6ab872bb5c3f33c4872015911ed04cd3e58.png" />
 </div>
 </div>
 <p>Next we’ll print out the limit of the sequence of iterates.</p>
@@ -477,9 +462,9 @@ v^{\prime}(i)=\max \left\{\frac{w(i)}{1-\beta}, c+\beta \sum_{1 \leq j \leq n} v
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="implied-quality-function-q">
-<h2><span class="section-number">40.3. </span>Implied Quality Function  <span class="math notranslate nohighlight">\(Q\)</span><a class="headerlink" href="#implied-quality-function-q" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="implied-quality-function-q">
+<h2><span class="section-number">40.3. </span>Implied Quality Function  <span class="math notranslate nohighlight">\(Q\)</span><a class="headerlink" href="#implied-quality-function-q" title="Permalink to this heading">#</a></h2>
 <p>A <strong>quality function</strong> <span class="math notranslate nohighlight">\(Q\)</span> map  state-action pairs into optimal values.</p>
 <p>They are tightly linked to optimal  value functions.</p>
 <p>But value functions  are functions just of states, and not actions.</p>
@@ -495,7 +480,7 @@ state, with each component of the list indicating one of the possible actions th
 <p>This definition of <span class="math notranslate nohighlight">\(Q(w,a)\)</span> presumes that in subsequent periods the worker  takes  optimal actions.</p>
 <p>An optimal   Q-function for our McCall worker satisfies</p>
 <div class="math notranslate nohighlight" id="equation-eq-impliedq">
-<span class="eqno">(40.2)<a class="headerlink" href="#equation-eq-impliedq" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(40.2)<a class="headerlink" href="#equation-eq-impliedq" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 Q\left(w,\text{accept}\right) &amp; =\frac{w}{1-\beta} \\
 Q\left(w,\text{reject}\right) &amp; =c+\beta\int\max_{\text{accept, reject}}\left\{ \frac{w'}{1-\beta},Q\left(w',\text{reject}\right)\right\} dF\left(w'\right)
@@ -526,12 +511,12 @@ Q_{r}^\prime=c+\beta\int\max_{\text{}}\left\{ \frac{w'}{1-\beta},Q_{r}\right\} d
 \[
 V\left(w\right)=\max\left\{ \frac{w}{1-\beta},Q_{r}\right\}
 \]</div>
-</div>
-<div class="section" id="from-probabilities-to-samples">
-<h2><span class="section-number">40.4. </span>From Probabilities  to Samples<a class="headerlink" href="#from-probabilities-to-samples" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="from-probabilities-to-samples">
+<h2><span class="section-number">40.4. </span>From Probabilities  to Samples<a class="headerlink" href="#from-probabilities-to-samples" title="Permalink to this heading">#</a></h2>
 <p>We noted  above that  the optimal Q function for our McCall worker satisfies the Bellman equations</p>
 <div class="math notranslate nohighlight" id="equation-eq-probtosample1">
-<span class="eqno">(40.3)<a class="headerlink" href="#equation-eq-probtosample1" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(40.3)<a class="headerlink" href="#equation-eq-probtosample1" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
          w  &amp; + \beta \max_{\textrm{accept, reject}} \left\{ Q (w, \textrm{accept}), Q(w, \textrm{reject}) \right\} - Q (w, \textrm{accept})   = 0  \cr
          c  &amp; +\beta\int\max_{\text{accept, reject}}\left\{ Q(w', \textrm{accept}),Q\left(w',\text{reject}\right)\right\} dF\left(w'\right) - Q\left(w,\text{reject}\right)  = 0  \cr
@@ -542,7 +527,7 @@ V\left(w\right)=\max\left\{ \frac{w}{1-\beta},Q_{r}\right\}
 <p>Thus, construct a difference  equation system that keeps the first equation of <a class="reference internal" href="#equation-eq-probtosample1">(40.3)</a>
 but replaces the second by removing integration over <span class="math notranslate nohighlight">\(F (w')\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-probtosample2">
-<span class="eqno">(40.4)<a class="headerlink" href="#equation-eq-probtosample2" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(40.4)<a class="headerlink" href="#equation-eq-probtosample2" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
          w  &amp; + \beta \max_{\textrm{accept, reject}} \left\{ Q (w, \textrm{accept}), Q(w, \textrm{reject}) \right\} - Q (w, \textrm{accept})   = 0  \cr
          c  &amp; +\beta \max_{\text{accept, reject}}\left\{ Q(w', \textrm{accept}),Q\left(w',\text{reject}\right)\right\}  - Q\left(w,\text{reject}\right)  \approx 0  \cr
@@ -558,7 +543,7 @@ that maps an estimate <span class="math notranslate nohighlight">\(\hat Q_t\)</s
 <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
 <p>To set up such an algorithm, we first define some errors or “differences”</p>
 <div class="math notranslate nohighlight" id="equation-eq-old105">
-<span class="eqno">(40.5)<a class="headerlink" href="#equation-eq-old105" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(40.5)<a class="headerlink" href="#equation-eq-old105" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
          w  &amp; + \beta \max_{\textrm{accept, reject}} \left\{ \hat Q_t (w_t, \textrm{accept}), \hat Q_t(w_t, \textrm{reject}) \right\} - \hat Q_t(w_t, \textrm{accept})   = \textrm{diff}_{\textrm{accept},t}  \cr
          c  &amp; +\beta \max_{\text{accept, reject}}\left\{ \hat Q_t(w_{t+1}, \textrm{accept}),\hat Q_t\left(w_{t+1},\text{reject}\right)\right\}  - \hat Q_t\left(w_t,\text{reject}\right)  = \textrm{diff}_{\textrm{reject},t}  \cr
@@ -566,15 +551,15 @@ that maps an estimate <span class="math notranslate nohighlight">\(\hat Q_t\)</s
 \]</div>
 <p>The adaptive learning scheme would then be some version of</p>
 <div class="math notranslate nohighlight" id="equation-eq-old106">
-<span class="eqno">(40.6)<a class="headerlink" href="#equation-eq-old106" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(40.6)<a class="headerlink" href="#equation-eq-old106" title="Permalink to this equation">#</a></span>\[
 \hat Q_{t+1} = \hat Q_t + \alpha \ \textrm{diff}_t
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span> is a small <strong>gain</strong> parameter that governs the rate of learning and  <span class="math notranslate nohighlight">\(\hat Q_t\)</span> and <span class="math notranslate nohighlight">\(\textrm{diff}_t\)</span> are <span class="math notranslate nohighlight">\(2 \times 1\)</span> vectors corresponding
 to  objects in equation system <a class="reference internal" href="#equation-eq-old105">(40.5)</a>.</p>
 <p>This informal argument takes us to the threshold of Q-learning.</p>
-</div>
-<div class="section" id="q-learning">
-<h2><span class="section-number">40.5. </span>Q-Learning<a class="headerlink" href="#q-learning" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="q-learning">
+<h2><span class="section-number">40.5. </span>Q-Learning<a class="headerlink" href="#q-learning" title="Permalink to this heading">#</a></h2>
 <p>Let’s first describe  a <span class="math notranslate nohighlight">\(Q\)</span>-learning algorithm precisely.</p>
 <p>Then we’ll  implement it.</p>
 <p>The algorithm works by using a Monte Carlo method to  update estimates of a Q-function.</p>
@@ -588,12 +573,12 @@ experiences rewards that are consequences of those actions.</p>
 in this case the unemployment compensation <span class="math notranslate nohighlight">\(c\)</span> and the present value of wages.</p>
 <p>The updating algorithm is based on a slight modification (to be described soon) of  a  recursion  like</p>
 <div class="math notranslate nohighlight" id="equation-eq-old3">
-<span class="eqno">(40.7)<a class="headerlink" href="#equation-eq-old3" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(40.7)<a class="headerlink" href="#equation-eq-old3" title="Permalink to this equation">#</a></span>\[
 \widetilde{Q}^{new}\left(w,a\right)=\widetilde{Q}^{old}\left(w,a\right)+\alpha \widetilde{TD}\left(w,a\right)
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-eq-old4">
-<span class="eqno">(40.8)<a class="headerlink" href="#equation-eq-old4" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(40.8)<a class="headerlink" href="#equation-eq-old4" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 \widetilde{TD}\left(w,\text{accept}\right) &amp; = \left[ w+\beta\max_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w,a'\right) \right]-\widetilde{Q}^{old}\left(w,\text{accept}\right) \\
 \widetilde{TD}\left(w,\text{reject}\right) &amp; = \left[ c+\beta\max_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w',a'\right) \right]-\widetilde{Q}^{old}\left(w,\text{reject}\right),\;w'\sim F
@@ -626,7 +611,7 @@ occasionally replacing</p>
 \]</div>
 <p>We activate such experimentation with probability <span class="math notranslate nohighlight">\(\epsilon\)</span> in step 3 of the following
 pseudo-code for   our McCall worker to do Q-learning:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Set  an arbitrary initial Q-table.</p></li>
 <li><p>Draw an initial wage offer <span class="math notranslate nohighlight">\(w\)</span> from <span class="math notranslate nohighlight">\(F\)</span>.</p></li>
 <li><p>From the appropriate row in the Q-table, choose an action using the following <span class="math notranslate nohighlight">\(\epsilon\)</span>-greedy algorithm:</p>
@@ -789,10 +774,10 @@ Progress: EPOCHs = 8000
 Progress: EPOCHs = 10000
 Progress: EPOCHs = 12000
 Progress: EPOCHs = 14000
+Progress: EPOCHs = 16000
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 16000
-Progress: EPOCHs = 18000
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 18000
 </pre></div>
 </div>
 </div>
@@ -804,17 +789,17 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[4985.10580746 2320.43581415]
- [5307.2548737  5245.18169845]
- [5391.75885963 5378.21749278]
- [5361.05125834 5280.88078186]
- [5268.89886547 5216.71801914]
- [5256.11455932 5263.68093178]
- [5377.45142621 5254.61526479]
- [5285.32912365 5313.18304902]
- [5289.49416669 5265.00473097]
- [5394.39322764 5500.00002694]
- [5472.39191269 6000.        ]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[5246.30445575    0.        ]
+ [5292.82105217 5232.33796612]
+ [5344.28319615 5248.38040891]
+ [5320.36802412 5295.00934298]
+ [5441.97951143 5310.49628875]
+ [5333.56078634 5269.67322995]
+ [5361.60009601 5290.44389911]
+ [5382.21516793 5293.04302908]
+ [5423.49839312 5363.86113024]
+ [5356.56799377 5500.        ]
+ [5408.80661809 6000.        ]]
 </pre></div>
 </div>
 </div>
@@ -829,8 +814,8 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[4985.10580746 5307.2548737  5391.75885963 5361.05125834 5268.89886547
- 5263.68093178 5377.45142621 5313.18304902 5289.49416669 5500.00002694
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[5246.30445575 5292.82105217 5344.28319615 5320.36802412 5441.97951143
+ 5333.56078634 5361.60009601 5382.21516793 5423.49839312 5500.
  6000.        ]
 </pre></div>
 </div>
@@ -851,7 +836,7 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mccall_q_16_0.png" src="_images/mccall_q_16_0.png" />
+<img alt="_images/ecb3c881e175492c56aea000355d60337b59dc84a81efec527668ef619dca197.png" src="_images/ecb3c881e175492c56aea000355d60337b59dc84a81efec527668ef619dca197.png" />
 </div>
 </div>
 <p>Now, let us compute the case with a larger state space: <span class="math notranslate nohighlight">\(n=30\)</span> instead of <span class="math notranslate nohighlight">\(n=10\)</span>.</p>
@@ -879,7 +864,7 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mccall_q_18_0.png" src="_images/mccall_q_18_0.png" />
+<img alt="_images/f638b8464078cdbfa3cd964aa9fd89545e60eb6572e637cc0ef71ed00a098e8a.png" src="_images/f638b8464078cdbfa3cd964aa9fd89545e60eb6572e637cc0ef71ed00a098e8a.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -977,7 +962,7 @@ Progress: EPOCHs = 18000
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 200000
 </pre></div>
 </div>
-<img alt="_images/mccall_q_21_11.png" src="_images/mccall_q_21_11.png" />
+<img alt="_images/5b11fc191d7dfa7396ef232bb7063e9d9c71c3d042d81bf39b4d098030ea59b8.png" src="_images/5b11fc191d7dfa7396ef232bb7063e9d9c71c3d042d81bf39b4d098030ea59b8.png" />
 </div>
 </div>
 <p>The above graphs indicates that</p>
@@ -985,9 +970,9 @@ Progress: EPOCHs = 18000
 <li><p>the Q-learning algorithm has trouble  learning  the Q-table well for wages that are rarely drawn</p></li>
 <li><p>the quality of approximation to the “true” value function computed by value function iteration improves for longer epochs</p></li>
 </ul>
-</div>
-<div class="section" id="employed-worker-cant-quit">
-<h2><span class="section-number">40.6. </span>Employed Worker Can’t Quit<a class="headerlink" href="#employed-worker-cant-quit" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="employed-worker-cant-quit">
+<h2><span class="section-number">40.6. </span>Employed Worker Can’t Quit<a class="headerlink" href="#employed-worker-cant-quit" title="Permalink to this heading">#</a></h2>
 <p>The preceding version of temporal difference Q-learning described in  equation system  <a class="reference internal" href="#equation-eq-old4">(40.8)</a> lets an employed  worker quit, i.e., reject her wage as an incumbent and instead receive unemployment compensation this period
 and draw a new offer next period.</p>
 <p>This is an option that the McCall worker described in <a class="reference internal" href="mccall_model.html"><span class="doc">this quantecon lecture</span></a> would not take.</p>
@@ -998,7 +983,7 @@ exploitation only.</p>
 <p>To illustrate this, we’ll amend our formulas for temporal differences to forbid an employed worker from quitting a job she had accepted earlier.</p>
 <p>With this understanding about available choices, we obtain the following temporal difference values:</p>
 <div class="math notranslate nohighlight" id="equation-eq-temp-diff">
-<span class="eqno">(40.9)<a class="headerlink" href="#equation-eq-temp-diff" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(40.9)<a class="headerlink" href="#equation-eq-temp-diff" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 \widetilde{TD}\left(w,\text{accept}\right) &amp; = \left[ w+\beta\widetilde{Q}^{old}\left(w,\text{accept}\right) \right]-\widetilde{Q}^{old}\left(w,\text{accept}\right) \\
 \widetilde{TD}\left(w,\text{reject}\right) &amp; = \left[ c+\beta\max_{a'\in\mathcal{A}}\widetilde{Q}^{old}\left(w',a'\right) \right]-\widetilde{Q}^{old}\left(w,\text{reject}\right),\;w'\sim F
@@ -1049,20 +1034,20 @@ exploitation only.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 200000
 </pre></div>
 </div>
-<img alt="_images/mccall_q_23_11.png" src="_images/mccall_q_23_11.png" />
+<img alt="_images/c6c9d7272b94cf3286a0e6a59454924350b9e870d30a7ea131ace2258370f98e.png" src="_images/c6c9d7272b94cf3286a0e6a59454924350b9e870d30a7ea131ace2258370f98e.png" />
 </div>
 </div>
-</div>
-<div class="section" id="possible-extensions">
-<h2><span class="section-number">40.7. </span>Possible Extensions<a class="headerlink" href="#possible-extensions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="possible-extensions">
+<h2><span class="section-number">40.7. </span>Possible Extensions<a class="headerlink" href="#possible-extensions" title="Permalink to this heading">#</a></h2>
 <p>To extend the algorthm to handle problems with continuous state spaces,
 a typical approach is to restrict Q-functions and policy functions to take particular
 functional forms.</p>
 <p>This is the approach in <strong>deep Q-learning</strong> where the idea is to use a multilayer neural
 network as a good function approximator.</p>
 <p>We will take up this topic in a subsequent quantecon lecture.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1076,7 +1061,7 @@ network as a good function approximator.</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1657,7 +1642,7 @@ network as a good function approximator.</p>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1799,16 +1784,5 @@ network as a good function approximator.</p>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

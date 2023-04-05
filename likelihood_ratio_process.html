@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>55. Likelihood Ratio Processes &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'likelihood_ratio_process';</script>
     <link rel="canonical" href="https://python.quantecon.org/likelihood_ratio_process.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,48 +161,15 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   55.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#id1">
-   55.2. Likelihood Ratio Process
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#nature-permanently-draws-from-density-g">
-   55.3. Nature Permanently Draws from Density g
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#peculiar-property">
-   55.4. Peculiar Property
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#nature-permanently-draws-from-density-f">
-   55.5. Nature Permanently Draws from Density f
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#likelihood-ratio-test">
-   55.6. Likelihood Ratio Test
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#kullbackleibler-divergence">
-   55.7. Kullback–Leibler Divergence
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sequels">
-   55.8. Sequels
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">55.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">55.2. Likelihood Ratio Process</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nature-permanently-draws-from-density-g">55.3. Nature Permanently Draws from Density g</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#peculiar-property">55.4. Peculiar Property</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nature-permanently-draws-from-density-f">55.5. Nature Permanently Draws from Density f</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-test">55.6. Likelihood Ratio Test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kullbackleibler-divergence">55.7. Kullback–Leibler Divergence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequels">55.8. Sequels</a></li>
 </ul>
-
                             <p class="logo">
                                 
                                     
@@ -239,8 +217,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="likelihood-ratio-processes">
-<h1><a class="toc-backref" href="#id4"><span class="section-number">55. </span>Likelihood Ratio Processes</a><a class="headerlink" href="#likelihood-ratio-processes" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="likelihood-ratio-processes">
+<h1><a class="toc-backref" href="#id4"><span class="section-number">55. </span>Likelihood Ratio Processes</a><a class="headerlink" href="#likelihood-ratio-processes" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -258,8 +236,8 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">55.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">55.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes likelihood ratio processes and some of their uses.</p>
 <p>We’ll use a setting described in <a class="reference internal" href="exchangeable.html"><span class="doc">this lecture</span></a>.</p>
 <p>Among  things that we’ll learn  are</p>
@@ -283,9 +261,9 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="id1">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">55.2. </span>Likelihood Ratio Process</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="id1">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">55.2. </span>Likelihood Ratio Process</a><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <p>A nonnegative random variable <span class="math notranslate nohighlight">\(W\)</span> has one of two probability density functions, either
 <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p>Before the beginning of time, nature once and for all decides whether she will draw a sequence of IID draws from either
@@ -375,9 +353,9 @@ probability distributionss, for example, a sequence of  IID draws from <span cla
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="nature-permanently-draws-from-density-g">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">55.3. </span>Nature Permanently Draws from Density g</a><a class="headerlink" href="#nature-permanently-draws-from-density-g" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="nature-permanently-draws-from-density-g">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">55.3. </span>Nature Permanently Draws from Density g</a><a class="headerlink" href="#nature-permanently-draws-from-density-g" title="Permalink to this heading">#</a></h2>
 <p>We first simulate the likelihood ratio process when nature permanently
 draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <div class="cell docutils container">
@@ -402,7 +380,7 @@ draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/likelihood_ratio_process_7_0.png" src="_images/likelihood_ratio_process_7_0.png" />
+<img alt="_images/8b8bee45948e8dea1d84a8691490e20cf55124f8118f410acfcf8d81364310bf.png" src="_images/8b8bee45948e8dea1d84a8691490e20cf55124f8118f410acfcf8d81364310bf.png" />
 </div>
 </div>
 <p>Evidently, as sample length <span class="math notranslate nohighlight">\(T\)</span> grows, most probability mass
@@ -417,10 +395,10 @@ paths <span class="math notranslate nohighlight">\(L\left(w^{t}\right)\)</span> 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f41af237cd0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fbba0c73760&gt;]
 </pre></div>
 </div>
-<img alt="_images/likelihood_ratio_process_9_1.png" src="_images/likelihood_ratio_process_9_1.png" />
+<img alt="_images/7140dd32737e75021431d3a94049e95c29be5b462cabbdc90e26bb807e096959.png" src="_images/7140dd32737e75021431d3a94049e95c29be5b462cabbdc90e26bb807e096959.png" />
 </div>
 </div>
 <p>Despite the evident convergence of most probability mass to a
@@ -461,9 +439,9 @@ E\left[L\left(w^{t}\right)\bigm|q=g\right]  &amp;=E\left[L\left(w^{t-1}\right)\e
 <p>Mathematical induction implies
 <span class="math notranslate nohighlight">\(E\left[L\left(w^{t}\right)\bigm|q=g\right]=1\)</span> for all
 <span class="math notranslate nohighlight">\(t \geq 1\)</span>.</p>
-</div>
-<div class="section" id="peculiar-property">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">55.4. </span>Peculiar Property</a><a class="headerlink" href="#peculiar-property" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="peculiar-property">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">55.4. </span>Peculiar Property</a><a class="headerlink" href="#peculiar-property" title="Permalink to this heading">#</a></h2>
 <p>How can <span class="math notranslate nohighlight">\(E\left[L\left(w^{t}\right)\bigm|q=g\right]=1\)</span> possibly be true when most  probability mass of the likelihood
 ratio process is piling up near <span class="math notranslate nohighlight">\(0\)</span> as
 <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>?</p>
@@ -491,9 +469,9 @@ paths.</p>
 <p>Because the probability density in the right tail is close to <span class="math notranslate nohighlight">\(0\)</span>,  it just takes too much computer time to sample enough points from the right tail.</p>
 <p>We explain the problem in more detail  in <a class="reference internal" href="imp_sample.html"><span class="doc">this lecture</span></a>.</p>
 <p>There we describe a way to an alternative way to compute the mean of a likelihood ratio by computing the mean of a <em>different</em> random variable by sampling from  a <em>different</em> probability distribution.</p>
-</div>
-<div class="section" id="nature-permanently-draws-from-density-f">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">55.5. </span>Nature Permanently Draws from Density f</a><a class="headerlink" href="#nature-permanently-draws-from-density-f" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="nature-permanently-draws-from-density-f">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">55.5. </span>Nature Permanently Draws from Density f</a><a class="headerlink" href="#nature-permanently-draws-from-density-f" title="Permalink to this heading">#</a></h2>
 <p>Now suppose that before time <span class="math notranslate nohighlight">\(0\)</span> nature permanently decided to draw repeatedly from density <span class="math notranslate nohighlight">\(f\)</span>.</p>
 <p>While the mean of the likelihood ratio <span class="math notranslate nohighlight">\(\ell \left(w_{t}\right)\)</span> under density
 <span class="math notranslate nohighlight">\(g\)</span> is <span class="math notranslate nohighlight">\(1\)</span>, its mean under the density <span class="math notranslate nohighlight">\(f\)</span> exceeds one.</p>
@@ -529,10 +507,10 @@ diverges toward <span class="math notranslate nohighlight">\(+ \infty\)</span>.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f41af3b98b0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fbba0e07a30&gt;]
 </pre></div>
 </div>
-<img alt="_images/likelihood_ratio_process_14_1.png" src="_images/likelihood_ratio_process_14_1.png" />
+<img alt="_images/deefd2bacd9b83982e19f04929d3de4030f76c74ce509f5f29d887adcbbddc41.png" src="_images/deefd2bacd9b83982e19f04929d3de4030f76c74ce509f5f29d887adcbbddc41.png" />
 </div>
 </div>
 <p>We also plot the probability that <span class="math notranslate nohighlight">\(L\left(w^t\right)\)</span> falls into
@@ -545,15 +523,15 @@ fast probability mass diverges  to <span class="math notranslate nohighlight">\(
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f41af841ee0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fbba0e41ab0&gt;]
 </pre></div>
 </div>
-<img alt="_images/likelihood_ratio_process_16_1.png" src="_images/likelihood_ratio_process_16_1.png" />
+<img alt="_images/3d085140f0e39da52c45c21d0823bb2b8e84e5c4e11f953a9869bb6ecfbce5c6.png" src="_images/3d085140f0e39da52c45c21d0823bb2b8e84e5c4e11f953a9869bb6ecfbce5c6.png" />
 </div>
 </div>
-</div>
-<div class="section" id="likelihood-ratio-test">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">55.6. </span>Likelihood Ratio Test</a><a class="headerlink" href="#likelihood-ratio-test" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="likelihood-ratio-test">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">55.6. </span>Likelihood Ratio Test</a><a class="headerlink" href="#likelihood-ratio-test" title="Permalink to this heading">#</a></h2>
 <p>We now describe how to employ the machinery
 of Neyman and Pearson <span id="id3">[<a class="reference internal" href="zreferences.html#id252" title="J. Neyman and E. S Pearson. On the problem of the most efficient tests of statistical hypotheses. Phil. Trans. R. Soc. Lond. A. 231 (694–706), pages 289–337, 1933.">NP33</a>]</span> to test the hypothesis that  history <span class="math notranslate nohighlight">\(w^t\)</span> is generated by repeated
 IID draws from density <span class="math notranslate nohighlight">\(g\)</span>.</p>
@@ -667,7 +645,7 @@ is what makes it possible to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/likelihood_ratio_process_20_0.png" src="_images/likelihood_ratio_process_20_0.png" />
+<img alt="_images/c0a5616a4546ef555baa53866eb0bdd10f5917bb71aee5ddc6fa43cffcd77faa.png" src="_images/c0a5616a4546ef555baa53866eb0bdd10f5917bb71aee5ddc6fa43cffcd77faa.png" />
 </div>
 </div>
 <p>The graph below shows more clearly that, when we hold the threshold
@@ -692,7 +670,7 @@ is what makes it possible to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/likelihood_ratio_process_22_0.png" src="_images/likelihood_ratio_process_22_0.png" />
+<img alt="_images/1217ec0fc3af79e037f3d3bc8b27fc4e75d459842399ce951d1da181e7fdea3d.png" src="_images/1217ec0fc3af79e037f3d3bc8b27fc4e75d459842399ce951d1da181e7fdea3d.png" />
 </div>
 </div>
 <p>For a given sample size <span class="math notranslate nohighlight">\(t\)</span>,  the threshold <span class="math notranslate nohighlight">\(c\)</span> uniquely pins down  probabilities
@@ -727,7 +705,7 @@ sample sizes <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/likelihood_ratio_process_24_0.png" src="_images/likelihood_ratio_process_24_0.png" />
+<img alt="_images/191f863053c21c0846cfc2f63826f0181790b300374c824cf1118f41bbc7cae2.png" src="_images/191f863053c21c0846cfc2f63826f0181790b300374c824cf1118f41bbc7cae2.png" />
 </div>
 </div>
 <p>Notice that as <span class="math notranslate nohighlight">\(t\)</span> increases, we are assured a larger probability
@@ -768,16 +746,16 @@ target probability of detection, for example, <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/likelihood_ratio_process_26_0.png" src="_images/likelihood_ratio_process_26_0.png" />
+<img alt="_images/2d293d629f3f96827c23a8b12ce18f797bdd3038d9446da7d442dc1dab58e158.png" src="_images/2d293d629f3f96827c23a8b12ce18f797bdd3038d9446da7d442dc1dab58e158.png" />
 </div>
 </div>
 <p>The United States Navy evidently used a procedure like this to select a sample size <span class="math notranslate nohighlight">\(t\)</span> for doing quality
 control tests during World War II.</p>
 <p>A Navy Captain who had been ordered to perform tests of this kind had doubts about it that he
 presented to Milton Friedman, as we describe in  <a class="reference internal" href="wald_friedman.html"><span class="doc">this lecture</span></a>.</p>
-</div>
-<div class="section" id="kullbackleibler-divergence">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">55.7. </span>Kullback–Leibler Divergence</a><a class="headerlink" href="#kullbackleibler-divergence" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="kullbackleibler-divergence">
+<h2><a class="toc-backref" href="#id11"><span class="section-number">55.7. </span>Kullback–Leibler Divergence</a><a class="headerlink" href="#kullbackleibler-divergence" title="Permalink to this heading">#</a></h2>
 <p>Now let’s consider a case in which neither <span class="math notranslate nohighlight">\(g\)</span> nor <span class="math notranslate nohighlight">\(f\)</span>
 generates the data.</p>
 <p>Instead, a third distribution <span class="math notranslate nohighlight">\(h\)</span> does.</p>
@@ -842,7 +820,7 @@ is.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/likelihood_ratio_process_29_0.png" src="_images/likelihood_ratio_process_29_0.png" />
+<img alt="_images/75837188360ef11f3b8f4065045af01fad3abf23a66e3d1cccc056a359241726.png" src="_images/75837188360ef11f3b8f4065045af01fad3abf23a66e3d1cccc056a359241726.png" />
 </div>
 </div>
 <p>Let’s compute the Kullback–Leibler discrepancies by quadrature
@@ -906,10 +884,10 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f41afa79a90&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fbba02ff790&gt;]
 </pre></div>
 </div>
-<img alt="_images/likelihood_ratio_process_37_1.png" src="_images/likelihood_ratio_process_37_1.png" />
+<img alt="_images/bc4c05391394e2f03d0011fc96f48fb8dea6b5e44960e436da1563bbede236de.png" src="_images/bc4c05391394e2f03d0011fc96f48fb8dea6b5e44960e436da1563bbede236de.png" />
 </div>
 </div>
 <p>We can also try an <span class="math notranslate nohighlight">\(h\)</span> that is closer to <span class="math notranslate nohighlight">\(f\)</span> than is
@@ -953,21 +931,21 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f41afbaef40&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fbba1e1a650&gt;]
 </pre></div>
 </div>
-<img alt="_images/likelihood_ratio_process_43_1.png" src="_images/likelihood_ratio_process_43_1.png" />
+<img alt="_images/2745e7b9a085070396d166ca5acf4c0e86ce906880c63108fbddae78d2bbc9db.png" src="_images/2745e7b9a085070396d166ca5acf4c0e86ce906880c63108fbddae78d2bbc9db.png" />
 </div>
 </div>
-</div>
-<div class="section" id="sequels">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">55.8. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="sequels">
+<h2><a class="toc-backref" href="#id12"><span class="section-number">55.8. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this heading">#</a></h2>
 <p>Likelihood processes play an important role in Bayesian learning, as described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this lecture</span></a>
 and as applied in <a class="reference internal" href="odu.html"><span class="doc">this lecture</span></a>.</p>
 <p>Likelihood ratio processes appear again in <a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html">this lecture</a>, which contains another illustration
 of the <strong>peculiar property</strong> of likelihood ratio processes described above.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -981,7 +959,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1562,7 +1540,7 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1704,16 +1682,5 @@ of the <strong>peculiar property</strong> of likelihood ratio processes describe
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

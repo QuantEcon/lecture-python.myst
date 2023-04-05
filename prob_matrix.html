@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>10. Elementary Probability with Matrices &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'prob_matrix';</script>
     <link rel="canonical" href="https://python.quantecon.org/prob_matrix.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,149 +161,40 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sketch-of-basic-concepts">
-   10.1. Sketch of Basic Concepts
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#digression-what-does-probability-mean">
-   10.2. Digression: What Does Probability Mean?
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#representing-probability-distributions">
-   10.3. Representing  Probability Distributions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#univariate-probability-distributions">
-   10.4. Univariate Probability Distributions
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#discrete-random-variable">
-     10.4.1. Discrete random variable
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#continuous-random-variable">
-     10.4.2. Continuous random variable
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bivariate-probability-distributions">
-   10.5. Bivariate Probability Distributions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#marginal-probability-distributions">
-   10.6. Marginal Probability Distributions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#conditional-probability-distributions">
-   10.7. Conditional Probability  Distributions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#statistical-independence">
-   10.8. Statistical Independence
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#means-and-variances">
-   10.9. Means and Variances
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#classic-trick-for-generating-random-numbers">
-   10.10. Classic Trick for Generating Random Numbers
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#some-discrete-probability-distributions">
-   10.11. Some Discrete Probability Distributions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#geometric-distribution">
-   10.12. Geometric distribution
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#newcombbenford-distribution">
-     10.12.1. Newcomb–Benford distribution
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pascal-negative-binomial-distribution">
-     10.12.2. Pascal (negative binomial) distribution
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#continuous-random-variables">
-   10.13. Continuous Random Variables
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#univariate-gaussian-distribution">
-     10.13.1. Univariate Gaussian distribution
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#uniform-distribution">
-     10.13.2. Uniform Distribution
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#a-mixed-discrete-continuous-distribution">
-   10.14. A Mixed Discrete-Continuous Distribution
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#matrix-representation-of-some-bivariate-distributions">
-   10.15. Matrix Representation of Some Bivariate Distributions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#a-continuous-bivariate-random-vector">
-   10.16. A Continuous Bivariate Random Vector
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sum-of-two-independently-distributed-random-variables">
-   10.17. Sum of Two Independently Distributed Random Variables
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#transition-probability-matrix">
-   10.18. Transition Probability Matrix
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#coupling">
-   10.19. Coupling
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#copula-functions">
-   10.20. Copula Functions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#time-series">
-   10.21. Time Series
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sketch-of-basic-concepts">10.1. Sketch of Basic Concepts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#digression-what-does-probability-mean">10.2. Digression: What Does Probability Mean?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#representing-probability-distributions">10.3. Representing  Probability Distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-probability-distributions">10.4. Univariate Probability Distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-random-variable">10.4.1. Discrete random variable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-random-variable">10.4.2. Continuous random variable</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bivariate-probability-distributions">10.5. Bivariate Probability Distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marginal-probability-distributions">10.6. Marginal Probability Distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditional-probability-distributions">10.7. Conditional Probability  Distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-independence">10.8. Statistical Independence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#means-and-variances">10.9. Means and Variances</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classic-trick-for-generating-random-numbers">10.10. Classic Trick for Generating Random Numbers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-discrete-probability-distributions">10.11. Some Discrete Probability Distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometric-distribution">10.12. Geometric distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#newcombbenford-distribution">10.12.1. Newcomb–Benford distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pascal-negative-binomial-distribution">10.12.2. Pascal (negative binomial) distribution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-random-variables">10.13. Continuous Random Variables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-gaussian-distribution">10.13.1. Univariate Gaussian distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniform-distribution">10.13.2. Uniform Distribution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-mixed-discrete-continuous-distribution">10.14. A Mixed Discrete-Continuous Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-representation-of-some-bivariate-distributions">10.15. Matrix Representation of Some Bivariate Distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-continuous-bivariate-random-vector">10.16. A Continuous Bivariate Random Vector</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sum-of-two-independently-distributed-random-variables">10.17. Sum of Two Independently Distributed Random Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transition-probability-matrix">10.18. Transition Probability Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coupling">10.19. Coupling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copula-functions">10.20. Copula Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series">10.21. Time Series</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -336,8 +238,8 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <div class="tex2jax_ignore mathjax_ignore section" id="elementary-probability-with-matrices">
-<h1><span class="section-number">10. </span>Elementary Probability with Matrices<a class="headerlink" href="#elementary-probability-with-matrices" title="Permalink to this headline">¶</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="elementary-probability-with-matrices">
+<h1><span class="section-number">10. </span>Elementary Probability with Matrices<a class="headerlink" href="#elementary-probability-with-matrices" title="Permalink to this heading">#</a></h1>
 <p>This lecture uses matrix algebra to illustrate some basic ideas about probability theory.</p>
 <p>After providing somewhat informal definitions of the underlying objects, we’ll use matrices and vectors to describe probability distributions.</p>
 <p>Among concepts that we’ll be studying include</p>
@@ -382,8 +284,8 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-<div class="section" id="sketch-of-basic-concepts">
-<h2><span class="section-number">10.1. </span>Sketch of Basic Concepts<a class="headerlink" href="#sketch-of-basic-concepts" title="Permalink to this headline">¶</a></h2>
+<section id="sketch-of-basic-concepts">
+<h2><span class="section-number">10.1. </span>Sketch of Basic Concepts<a class="headerlink" href="#sketch-of-basic-concepts" title="Permalink to this heading">#</a></h2>
 <p>We’ll briefly define what we mean by a <strong>probability space</strong>, a <strong>probability measure</strong>, and a <strong>random variable</strong>.</p>
 <p>For most of this lecture, we sweep these objects into the background, but they are there underlying the other objects that we’ll mainly focus on.</p>
 <p>Let <span class="math notranslate nohighlight">\(\Omega\)</span> be a set of possible underlying outcomes and let <span class="math notranslate nohighlight">\(\omega \in \Omega\)</span> be a particular underlying outcomes.</p>
@@ -398,14 +300,14 @@ const thebe_selector_output = ".output, .cell_output"
 <p>The random variable <span class="math notranslate nohighlight">\(X(\omega)\)</span>  has a <strong>probability distribution</strong> that is induced by the underlying probability measure <span class="math notranslate nohighlight">\(\mu\)</span> and the function
 <span class="math notranslate nohighlight">\(X(\omega)\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-cdffromdensity">
-<span class="eqno">(10.1)<a class="headerlink" href="#equation-eq-cdffromdensity" title="Permalink to this equation">¶</a></span>\[ 
+<span class="eqno">(10.1)<a class="headerlink" href="#equation-eq-cdffromdensity" title="Permalink to this equation">#</a></span>\[ 
 \textrm{Prob} (X \in A ) = \int_{\mathcal{G}} \mu(\omega) d \omega 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\({\mathcal G}\)</span> is the subset of <span class="math notranslate nohighlight">\(\Omega\)</span> for which <span class="math notranslate nohighlight">\(X(\omega) \in A\)</span>.</p>
 <p>We call this the induced probability distribution of random variable <span class="math notranslate nohighlight">\(X\)</span>.</p>
-</div>
-<div class="section" id="digression-what-does-probability-mean">
-<h2><span class="section-number">10.2. </span>Digression: What Does Probability Mean?<a class="headerlink" href="#digression-what-does-probability-mean" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="digression-what-does-probability-mean">
+<h2><span class="section-number">10.2. </span>Digression: What Does Probability Mean?<a class="headerlink" href="#digression-what-does-probability-mean" title="Permalink to this heading">#</a></h2>
 <p>Before diving in, we’ll say a few words about what probability theory means and how it connects to statistics.</p>
 <p>These are topics that are also touched on in the quantecon lectures  <a class="reference external" href="https://python.quantecon.org/prob_meaning.html">https://python.quantecon.org/prob_meaning.html</a> and <a class="reference external" href="https://python.quantecon.org/navy_captain.html">https://python.quantecon.org/navy_captain.html</a>.</p>
 <p>For much of this lecture we’ll be discussing  fixed “population” probabilities.</p>
@@ -466,9 +368,9 @@ N &amp; = \sum^{I-1}_{i=0} N_i \quad \text{total number of draws},\\
 <li><p>For “frequentist” statisticians, <strong>anticipated relative frequency</strong>  is <strong>all</strong> that a probability distribution means.</p></li>
 <li><p>But for a Bayesian it means something more or different.</p></li>
 </ul>
-</div>
-<div class="section" id="representing-probability-distributions">
-<h2><span class="section-number">10.3. </span>Representing  Probability Distributions<a class="headerlink" href="#representing-probability-distributions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="representing-probability-distributions">
+<h2><span class="section-number">10.3. </span>Representing  Probability Distributions<a class="headerlink" href="#representing-probability-distributions" title="Permalink to this heading">#</a></h2>
 <p>A  probability distribution <span class="math notranslate nohighlight">\(\textrm{Prob} (X \in A)\)</span> can  be described by its <strong>cumulative distribution function (CDF)</strong></p>
 <div class="math notranslate nohighlight">
 \[
@@ -495,19 +397,19 @@ F(x) = \int_{-\infty}^{x}f(t)dt
 <p>In this lecture, we mostly discuss discrete random variables.</p>
 <p>Doing this enables us to confine our tool set basically to linear algebra.</p>
 <p>Later we’ll briefly discuss how to approximate a continuous random variable with a discrete random variable.</p>
-</div>
-<div class="section" id="univariate-probability-distributions">
-<h2><span class="section-number">10.4. </span>Univariate Probability Distributions<a class="headerlink" href="#univariate-probability-distributions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="univariate-probability-distributions">
+<h2><span class="section-number">10.4. </span>Univariate Probability Distributions<a class="headerlink" href="#univariate-probability-distributions" title="Permalink to this heading">#</a></h2>
 <p>We’ll devote most of this lecture to discrete-valued random variables, but we’ll say a few things
 about continuous-valued random variables.</p>
-<div class="section" id="discrete-random-variable">
-<h3><span class="section-number">10.4.1. </span>Discrete random variable<a class="headerlink" href="#discrete-random-variable" title="Permalink to this headline">¶</a></h3>
+<section id="discrete-random-variable">
+<h3><span class="section-number">10.4.1. </span>Discrete random variable<a class="headerlink" href="#discrete-random-variable" title="Permalink to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> be a discrete random variable that takes possible values: <span class="math notranslate nohighlight">\(i=0,1,\ldots,I-1 = \bar{X}\)</span>.</p>
 <p>Here, we choose  the maximum index <span class="math notranslate nohighlight">\(I-1\)</span> because of how this aligns nicely with Python’s index convention.</p>
 <p>Define <span class="math notranslate nohighlight">\(f_i \equiv \textrm{Prob}\{X=i\}\)</span>
 and assemble  the non-negative vector</p>
 <div class="math notranslate nohighlight" id="equation-eq-discretedist">
-<span class="eqno">(10.2)<a class="headerlink" href="#equation-eq-discretedist" title="Permalink to this equation">¶</a></span>\[\begin{split} 
+<span class="eqno">(10.2)<a class="headerlink" href="#equation-eq-discretedist" title="Permalink to this equation">#</a></span>\[\begin{split} 
 f=\left[\begin{array}{c}
 f_{0}\\
 f_{1}\\
@@ -549,9 +451,9 @@ f_{i} = \textrm{Prob}\{X=i\} = (1-\lambda)\lambda^{i},\quad \lambda \in [0,1], \
 \[ 
 f_i( \theta)\ge0, \sum_{i=0}^{\infty}f_i(\theta)=1
 \]</div>
-</div>
-<div class="section" id="continuous-random-variable">
-<h3><span class="section-number">10.4.2. </span>Continuous random variable<a class="headerlink" href="#continuous-random-variable" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="continuous-random-variable">
+<h3><span class="section-number">10.4.2. </span>Continuous random variable<a class="headerlink" href="#continuous-random-variable" title="Permalink to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> be a continous random variable that takes values <span class="math notranslate nohighlight">\(X \in \tilde{X}\equiv[X_U,X_L]\)</span> whose distributions have parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -562,10 +464,10 @@ f_i( \theta)\ge0, \sum_{i=0}^{\infty}f_i(\theta)=1
 \[ 
 \textrm{Prob}\{X\in \tilde{X}\} =1 
 \]</div>
-</div>
-</div>
-<div class="section" id="bivariate-probability-distributions">
-<h2><span class="section-number">10.5. </span>Bivariate Probability Distributions<a class="headerlink" href="#bivariate-probability-distributions" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="bivariate-probability-distributions">
+<h2><span class="section-number">10.5. </span>Bivariate Probability Distributions<a class="headerlink" href="#bivariate-probability-distributions" title="Permalink to this heading">#</a></h2>
 <p>We’ll now discuss a bivariate <strong>joint distribution</strong>.</p>
 <p>To begin, we restrict ourselves to two discrete random variables.</p>
 <p>Let <span class="math notranslate nohighlight">\(X,Y\)</span> be two discrete random variables that take values:</p>
@@ -592,9 +494,9 @@ f_{ij}=\textrm{Prob}\{X=i,Y=j\} \geq 0
 \[
 \sum_{i}\sum_{j}f_{ij}=1
 \]</div>
-</div>
-<div class="section" id="marginal-probability-distributions">
-<h2><span class="section-number">10.6. </span>Marginal Probability Distributions<a class="headerlink" href="#marginal-probability-distributions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="marginal-probability-distributions">
+<h2><span class="section-number">10.6. </span>Marginal Probability Distributions<a class="headerlink" href="#marginal-probability-distributions" title="Permalink to this heading">#</a></h2>
 <p>The joint distribution induce marginal distributions</p>
 <div class="math notranslate nohighlight">
 \[
@@ -606,7 +508,7 @@ f_{ij}=\textrm{Prob}\{X=i,Y=j\} \geq 0
 \]</div>
 <p>For example, let the joint distribution over <span class="math notranslate nohighlight">\((X,Y)\)</span> be</p>
 <div class="math notranslate nohighlight" id="equation-eq-example101discrete">
-<span class="eqno">(10.3)<a class="headerlink" href="#equation-eq-example101discrete" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(10.3)<a class="headerlink" href="#equation-eq-example101discrete" title="Permalink to this equation">#</a></span>\[\begin{split}
 F = \left[
    \begin{matrix}
    .25 &amp; .1\\
@@ -632,9 +534,9 @@ f(x)&amp; = \int_{\mathbb{R}} f(x,y) dy\\
 f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 \end{aligned}
 \end{split}\]</div>
-</div>
-<div class="section" id="conditional-probability-distributions">
-<h2><span class="section-number">10.7. </span>Conditional Probability  Distributions<a class="headerlink" href="#conditional-probability-distributions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="conditional-probability-distributions">
+<h2><span class="section-number">10.7. </span>Conditional Probability  Distributions<a class="headerlink" href="#conditional-probability-distributions" title="Permalink to this heading">#</a></h2>
 <p>Conditional probabilities are defined according to</p>
 <div class="math notranslate nohighlight">
 \[
@@ -664,9 +566,9 @@ f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 \[
 \textrm{Prob}\{X=0|Y=1\} =\frac{ .1}{.1+.5}=\frac{.1}{.6}
 \]</div>
-</div>
-<div class="section" id="statistical-independence">
-<h2><span class="section-number">10.8. </span>Statistical Independence<a class="headerlink" href="#statistical-independence" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="statistical-independence">
+<h2><span class="section-number">10.8. </span>Statistical Independence<a class="headerlink" href="#statistical-independence" title="Permalink to this heading">#</a></h2>
 <p>Random variables X and Y are statistically <strong>independent</strong> if</p>
 <div class="math notranslate nohighlight">
 \[ 
@@ -688,9 +590,9 @@ f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 \textrm{Prob}\{Y=j|X=i\} &amp; =\frac{f_ig_i}{\sum_{j}f_ig_j}=\frac{f_ig_i}{f_i}=g_i
 \end{aligned}
 \end{split}\]</div>
-</div>
-<div class="section" id="means-and-variances">
-<h2><span class="section-number">10.9. </span>Means and Variances<a class="headerlink" href="#means-and-variances" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="means-and-variances">
+<h2><span class="section-number">10.9. </span>Means and Variances<a class="headerlink" href="#means-and-variances" title="Permalink to this heading">#</a></h2>
 <p>The  mean and variance of a discrete random variable <span class="math notranslate nohighlight">\(X\)</span>  are</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -708,9 +610,9 @@ f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 \sigma_{X}^{2}\equiv\mathbb{D}\left[X\right] &amp; =\mathrm{E}\left[\left(X-\mu_{X}\right)^{2}\right]=\int_{-\infty}^{\infty}\left(x-\mu_{X}\right)^{2}f_{X}(x)dx
 \end{aligned}
 \end{split}\]</div>
-</div>
-<div class="section" id="classic-trick-for-generating-random-numbers">
-<h2><span class="section-number">10.10. </span>Classic Trick for Generating Random Numbers<a class="headerlink" href="#classic-trick-for-generating-random-numbers" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="classic-trick-for-generating-random-numbers">
+<h2><span class="section-number">10.10. </span>Classic Trick for Generating Random Numbers<a class="headerlink" href="#classic-trick-for-generating-random-numbers" title="Permalink to this heading">#</a></h2>
 <p>Suppose we have at our disposal a pseudo random number that draws a uniform random variable, i.e., one with probability distribution</p>
 <div class="math notranslate nohighlight">
 \[
@@ -809,7 +711,7 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_matrix_4_0.png" src="_images/prob_matrix_4_0.png" />
+<img alt="_images/8ea41dfbe134f3200419c1c44ad6ff96cfec56135bd73859ab87d359582e5e8d.png" src="_images/8ea41dfbe134f3200419c1c44ad6ff96cfec56135bd73859ab87d359582e5e8d.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -820,7 +722,7 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_matrix_5_0.png" src="_images/prob_matrix_5_0.png" />
+<img alt="_images/199697e12ded56ce930b0dec36a82fa56e1ce7893c6a1dce827cb6d00b29c866.png" src="_images/199697e12ded56ce930b0dec36a82fa56e1ce7893c6a1dce827cb6d00b29c866.png" />
 </div>
 </div>
 <p><strong>Geometric distribution</strong></p>
@@ -887,7 +789,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_matrix_7_0.png" src="_images/prob_matrix_7_0.png" />
+<img alt="_images/241301367968f51d205808ec8967773affba621dfe30cc1dc6d49410c0dd326c.png" src="_images/241301367968f51d205808ec8967773affba621dfe30cc1dc6d49410c0dd326c.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -897,7 +799,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>61
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>68
 </pre></div>
 </div>
 </div>
@@ -922,12 +824,12 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_matrix_10_0.png" src="_images/prob_matrix_10_0.png" />
+<img alt="_images/03a33fce404fee9c0a009269b3014d86635d57af7f0709a2ebefbd4003430c8f.png" src="_images/03a33fce404fee9c0a009269b3014d86635d57af7f0709a2ebefbd4003430c8f.png" />
 </div>
 </div>
-</div>
-<div class="section" id="some-discrete-probability-distributions">
-<h2><span class="section-number">10.11. </span>Some Discrete Probability Distributions<a class="headerlink" href="#some-discrete-probability-distributions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="some-discrete-probability-distributions">
+<h2><span class="section-number">10.11. </span>Some Discrete Probability Distributions<a class="headerlink" href="#some-discrete-probability-distributions" title="Permalink to this heading">#</a></h2>
 <p>Let’s write some Python code to compute   means and variances of some  univariate random variables.</p>
 <p>We’ll use our code to</p>
 <ul class="simple">
@@ -935,9 +837,9 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 <li><p>generate  a sample  of <span class="math notranslate nohighlight">\(N\)</span> independently and identically distributed draws and compute sample means and variances</p></li>
 <li><p>compare population and sample means and variances</p></li>
 </ul>
-</div>
-<div class="section" id="geometric-distribution">
-<h2><span class="section-number">10.12. </span>Geometric distribution<a class="headerlink" href="#geometric-distribution" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="geometric-distribution">
+<h2><span class="section-number">10.12. </span>Geometric distribution<a class="headerlink" href="#geometric-distribution" title="Permalink to this heading">#</a></h2>
 <div class="math notranslate nohighlight">
 \[
 \textrm{Prob}(X=k)=(1-p)^{k-1}p,k=1,2, \ldots 
@@ -971,8 +873,8 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.329021 
-The sample variance is:  7.7531101815589984
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.328125 
+The sample variance is:  7.746552984375
 
 The population mean is:  3.3333333333333335
 The population variance is:  7.777777777777778
@@ -980,11 +882,11 @@ The population variance is:  7.777777777777778
 </div>
 </div>
 </div>
-<div class="section" id="newcombbenford-distribution">
-<h3><span class="section-number">10.12.1. </span>Newcomb–Benford distribution<a class="headerlink" href="#newcombbenford-distribution" title="Permalink to this headline">¶</a></h3>
+<section id="newcombbenford-distribution">
+<h3><span class="section-number">10.12.1. </span>Newcomb–Benford distribution<a class="headerlink" href="#newcombbenford-distribution" title="Permalink to this heading">#</a></h3>
 <p>The <strong>Newcomb–Benford law</strong> fits  many data sets, e.g., reports of incomes to tax authorities, in which
 the leading digit is more likely to be small than large.</p>
-<p>See <a class="reference external" href="https://en.wikipedia.org/wiki/Benford%27s_law">https://en.wikipedia.org/wiki/Benford%27s_law</a></p>
+<p>See <a class="reference external" href="https://en.wikipedia.org/wiki/Benford%27s_law">https://en.wikipedia.org/wiki/Benford’s_law</a></p>
 <p>A Benford probability distribution is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1041,12 +943,12 @@ the leading digit is more likely to be small than large.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_matrix_15_0.png" src="_images/prob_matrix_15_0.png" />
+<img alt="_images/cd54a8db0bd11ed45ba969c300dd36917e3121dc1f79e4f968b778f147e6634e.png" src="_images/cd54a8db0bd11ed45ba969c300dd36917e3121dc1f79e4f968b778f147e6634e.png" />
 </div>
 </div>
-</div>
-<div class="section" id="pascal-negative-binomial-distribution">
-<h3><span class="section-number">10.12.2. </span>Pascal (negative binomial) distribution<a class="headerlink" href="#pascal-negative-binomial-distribution" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="pascal-negative-binomial-distribution">
+<h3><span class="section-number">10.12.2. </span>Pascal (negative binomial) distribution<a class="headerlink" href="#pascal-negative-binomial-distribution" title="Permalink to this heading">#</a></h3>
 <p>Consider a sequence of independent Bernoulli trials.</p>
 <p>Let <span class="math notranslate nohighlight">\(p\)</span> be the probability of success.</p>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> be a random variable that represents the number of failures before we get <span class="math notranslate nohighlight">\(r\)</span> success.</p>
@@ -1086,8 +988,8 @@ X  &amp; \sim NB(r,p) \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.336732 
-The sample variance is:  77.906989560176
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.332605 
+The sample variance is:  77.78828491397503
 
 The population mean is:  23.333333333333336
 The population variance is:  77.77777777777779
@@ -1095,12 +997,12 @@ The population variance is:  77.77777777777779
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="continuous-random-variables">
-<h2><span class="section-number">10.13. </span>Continuous Random Variables<a class="headerlink" href="#continuous-random-variables" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="univariate-gaussian-distribution">
-<h3><span class="section-number">10.13.1. </span>Univariate Gaussian distribution<a class="headerlink" href="#univariate-gaussian-distribution" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="continuous-random-variables">
+<h2><span class="section-number">10.13. </span>Continuous Random Variables<a class="headerlink" href="#continuous-random-variables" title="Permalink to this heading">#</a></h2>
+<section id="univariate-gaussian-distribution">
+<h3><span class="section-number">10.13.1. </span>Univariate Gaussian distribution<a class="headerlink" href="#univariate-gaussian-distribution" title="Permalink to this heading">#</a></h3>
 <p>We write</p>
 <div class="math notranslate nohighlight">
 \[ 
@@ -1131,8 +1033,8 @@ X \sim N(\mu,\sigma^2)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  0.0001575068283008307
-The sample standard deviation is:  0.1000348974326691
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  -7.46385600407202e-05
+The sample standard deviation is:  0.10010082537057459
 </pre></div>
 </div>
 </div>
@@ -1152,9 +1054,9 @@ True
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="uniform-distribution">
-<h3><span class="section-number">10.13.2. </span>Uniform Distribution<a class="headerlink" href="#uniform-distribution" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="uniform-distribution">
+<h3><span class="section-number">10.13.2. </span>Uniform Distribution<a class="headerlink" href="#uniform-distribution" title="Permalink to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
@@ -1192,8 +1094,8 @@ f(x)&amp; = \begin{cases} \frac{1}{b-a}, &amp; a \leq x \leq b \\ \quad0, &amp; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  14.997286287305746 
-The sample variance is:  8.330519542053601
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  14.999913328912129 
+The sample variance is:  8.332491443347227
 
 The population mean is:  15.0
 The population variance is:  8.333333333333334
@@ -1201,10 +1103,10 @@ The population variance is:  8.333333333333334
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="a-mixed-discrete-continuous-distribution">
-<h2><span class="section-number">10.14. </span>A Mixed Discrete-Continuous Distribution<a class="headerlink" href="#a-mixed-discrete-continuous-distribution" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="a-mixed-discrete-continuous-distribution">
+<h2><span class="section-number">10.14. </span>A Mixed Discrete-Continuous Distribution<a class="headerlink" href="#a-mixed-discrete-continuous-distribution" title="Permalink to this heading">#</a></h2>
 <p>We’ll motivate this example with  a little story.</p>
 <p>Suppose that  to apply for a job  you take an interview and either pass or fail it.</p>
 <p>You have <span class="math notranslate nohighlight">\(5\%\)</span> chance to pass an interview and you know your salary will uniformly distributed in the interval 300~400 a day only if you pass.</p>
@@ -1237,8 +1139,8 @@ f(x) = 0.0005
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.41394701932209 
-The sample variance is:  5834.466745074545
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.31477248960363 
+The sample variance is:  5803.336461553323
 </pre></div>
 </div>
 </div>
@@ -1276,9 +1178,9 @@ variance:  5860.416666666666
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="matrix-representation-of-some-bivariate-distributions">
-<h2><span class="section-number">10.15. </span>Matrix Representation of Some Bivariate Distributions<a class="headerlink" href="#matrix-representation-of-some-bivariate-distributions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="matrix-representation-of-some-bivariate-distributions">
+<h2><span class="section-number">10.15. </span>Matrix Representation of Some Bivariate Distributions<a class="headerlink" href="#matrix-representation-of-some-bivariate-distributions" title="Permalink to this heading">#</a></h2>
 <p>Let’s use matrices to represent a joint distribution, conditional distribution, marginal distribution, and the mean and variance of a  bivariate random variable.</p>
 <p>The table below illustrates a  probability distribution  for a bivariate random variable.</p>
 <div class="math notranslate nohighlight">
@@ -1321,8 +1223,8 @@ F=[f_{ij}]=\left[\begin{array}{cc}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.  1.  0. ...  1.  1.  1.]
- [10. 20. 10. ... 20. 20. 20.]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.  0.  0. ...  0.  1.  1.]
+ [10. 20. 10. ... 20. 10. 10.]]
 </pre></div>
 </div>
 </div>
@@ -1353,20 +1255,20 @@ F=[f_{ij}]=\left[\begin{array}{cc}
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>marginal distribution for x
-+---------+--------+
-| x_value | x_prob |
-+---------+--------+
-|    0    |  0.5   |
-|    1    |  0.5   |
-+---------+--------+
++---------+----------+
+| x_value |  x_prob  |
++---------+----------+
+|    0    | 0.500621 |
+|    1    | 0.499379 |
++---------+----------+
 
 marginal distribution for y
-+---------+----------+
-| y_value |  y_prob  |
-+---------+----------+
-|    10   | 0.399805 |
-|    20   | 0.600195 |
-+---------+----------+
++---------+--------------------+
+| y_value |       y_prob       |
++---------+--------------------+
+|    10   |      0.40092       |
+|    20   | 0.5990800000000001 |
++---------+--------------------+
 </pre></div>
 </div>
 </div>
@@ -1403,20 +1305,20 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
-+---------+--------------------+---------------------+
-| y_value |     prob(x=0)      |      prob(x=1)      |
-+---------+--------------------+---------------------+
-|    10   | 0.7507910106176762 | 0.24920898938232383 |
-|    20   | 0.332941793916977  |  0.667058206083023  |
-+---------+--------------------+---------------------+
++---------+--------------------+--------------------+
+| y_value |     prob(x=0)      |     prob(x=1)      |
++---------+--------------------+--------------------+
+|    10   | 0.7500149655791679 | 0.2499850344208321 |
+|    20   | 0.3337200373906657 | 0.6662799626093343 |
++---------+--------------------+--------------------+
 
 conditional distribution for y
-+---------+------------+--------------------+
-| x_value | prob(y=10) |     prob(y=20)     |
-+---------+------------+--------------------+
-|    0    |  0.60034   |      0.39966       |
-|    1    |  0.19927   | 0.8007299999999999 |
-+---------+------------+--------------------+
++---------+---------------------+--------------------+
+| x_value |      prob(y=10)     |     prob(y=20)     |
++---------+---------------------+--------------------+
+|    0    |  0.6006459976708928 | 0.3993540023291072 |
+|    1    | 0.20069726600437743 | 0.7993027339956226 |
++---------+---------------------+--------------------+
 </pre></div>
 </div>
 </div>
@@ -1620,8 +1522,8 @@ x=x_2 &amp; \vdots &amp; \frac{0.1}{0.5}=0.2 &amp; \frac{0.4}{0.5}=0.8 \\
  +---------+---------+
 | x_value |  x_prob |
 +---------+---------+
-|    0    | 0.49964 |
-|    1    | 0.50036 |
+|    0    | 0.50026 |
+|    1    | 0.49974 |
 |   sum   |   1.0   |
 +---------+---------+
 
@@ -1629,8 +1531,8 @@ marginal distribution for y
  +---------+----------+
 | y_value |  y_prob  |
 +---------+----------+
-|    10   | 0.400363 |
-|    20   | 0.599637 |
+|    10   | 0.399781 |
+|    20   | 0.600219 |
 |   sum   |   1.0    |
 +---------+----------+
 </pre></div>
@@ -1646,20 +1548,20 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
- +---------+--------------------+---------------------+-----+
-| x_value |         0          |          1          | sum |
-+---------+--------------------+---------------------+-----+
-|    10   | 0.7499394299673047 | 0.25006057003269533 | 1.0 |
-|    20   | 0.3325211753110632 |  0.6674788246889368 | 1.0 |
-+---------+--------------------+---------------------+-----+
+ +---------+---------------------+---------------------+-----+
+| x_value |          0          |          1          | sum |
++---------+---------------------+---------------------+-----+
+|    10   |  0.7495628856799097 | 0.25043711432009025 | 1.0 |
+|    20   | 0.33420968013341795 |  0.665790319866582  | 1.0 |
++---------+---------------------+---------------------+-----+
 
 conditional distribution for y
- +---------+---------------------+--------------------+-----+
-| y_value |          10         |         20         | sum |
-+---------+---------------------+--------------------+-----+
-|    0    |  0.6009286686414218 | 0.3990713313585782 | 1.0 |
-|    1    | 0.20008593812455033 | 0.7999140618754497 | 1.0 |
-+---------+---------------------+--------------------+-----+
+ +---------+--------------------+---------------------+-----+
+| y_value |         10         |          20         | sum |
++---------+--------------------+---------------------+-----+
+|    0    | 0.5990105145324431 | 0.40098948546755686 | 1.0 |
+|    1    | 0.200344178973066  |  0.799655821026934  | 1.0 |
++---------+--------------------+---------------------+-----+
 </pre></div>
 </div>
 </div>
@@ -1701,9 +1603,9 @@ conditional distribution for y
  +---------+----------+
 | x_value |  x_prob  |
 +---------+----------+
-|    10   | 0.29998  |
-|    20   | 0.399999 |
-|    30   | 0.300021 |
+|    10   | 0.299985 |
+|    20   | 0.400129 |
+|    30   | 0.299886 |
 |   sum   |   1.0    |
 +---------+----------+
 
@@ -1711,8 +1613,8 @@ marginal distribution for y
  +---------+----------+
 | y_value |  y_prob  |
 +---------+----------+
-|    1    | 0.449834 |
-|    2    | 0.550166 |
+|    1    | 0.449964 |
+|    2    | 0.550036 |
 |   sum   |   1.0    |
 +---------+----------+
 </pre></div>
@@ -1727,28 +1629,28 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
- +---------+--------------------+---------------------+---------------------+-----+
-| x_value |         10         |          20         |          30         | sum |
-+---------+--------------------+---------------------+---------------------+-----+
-|    1    | 0.4443594748284923 | 0.22162842292934726 | 0.33401210224216044 | 1.0 |
-|    2    | 0.1819305445992664 |  0.5458407098948317 | 0.27222874550590187 | 1.0 |
-+---------+--------------------+---------------------+---------------------+-----+
+ +---------+---------------------+--------------------+--------------------+-----+
+| x_value |          10         |         20         |         30         | sum |
++---------+---------------------+--------------------+--------------------+-----+
+|    1    |  0.4445155612448996 | 0.2221333262216533 | 0.3333511125334471 | 1.0 |
+|    2    | 0.18174992182329883 | 0.5457406424306772 | 0.2725094357460239 | 1.0 |
++---------+---------------------+--------------------+--------------------+-----+
 
 conditional distribution for y
  +---------+---------------------+---------------------+-----+
 | y_value |          1          |          2          | sum |
 +---------+---------------------+---------------------+-----+
-|    10   |   0.66633775585039  |   0.33366224414961  | 1.0 |
-|    20   | 0.24924062310155776 |  0.7507593768984423 | 1.0 |
-|    30   |  0.5007982774539116 | 0.49920172254608847 | 1.0 |
+|    10   |  0.6667533376668834 | 0.33324666233311667 | 1.0 |
+|    20   | 0.24979943968070298 |  0.750200560319297  | 1.0 |
+|    30   |  0.5001767338255204 | 0.49982326617447964 | 1.0 |
 +---------+---------------------+---------------------+-----+
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="a-continuous-bivariate-random-vector">
-<h2><span class="section-number">10.16. </span>A Continuous Bivariate Random Vector<a class="headerlink" href="#a-continuous-bivariate-random-vector" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="a-continuous-bivariate-random-vector">
+<h2><span class="section-number">10.16. </span>A Continuous Bivariate Random Vector<a class="headerlink" href="#a-continuous-bivariate-random-vector" title="Permalink to this heading">#</a></h2>
 <p>A two-dimensional Gaussian distribution has  joint density</p>
 <div class="math notranslate nohighlight">
 \[ 
@@ -1818,7 +1720,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_matrix_47_0.png" src="_images/prob_matrix_47_0.png" />
+<img alt="_images/cee71efb961c553736012e985ea7d9aa8c7b84cde26e658c76be678f409dfbcd.png" src="_images/cee71efb961c553736012e985ea7d9aa8c7b84cde26e658c76be678f409dfbcd.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1837,7 +1739,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_matrix_48_0.png" src="_images/prob_matrix_48_0.png" />
+<img alt="_images/c422fa74fb9e5456b22d20eb9fd1bf4b5c79a8e2045577f7c03036f5805341a1.png" src="_images/c422fa74fb9e5456b22d20eb9fd1bf4b5c79a8e2045577f7c03036f5805341a1.png" />
 </div>
 </div>
 <p>Next  we can simulate from  a built-in <code class="docutils literal notranslate"><span class="pre">numpy</span></code> function  and calculate a <strong>sample</strong> marginal distribution from the sample mean and variance.</p>
@@ -1866,10 +1768,10 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.0032482876899721787 2.2364102764247273
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0021881960178192785 2.2356367427562316
 </pre></div>
 </div>
-<img alt="_images/prob_matrix_52_1.png" src="_images/prob_matrix_52_1.png" />
+<img alt="_images/16068b7b16a3b3f07d243b5553c5077e481c2cf369a0bbf15126a3cd9b78ed4b.png" src="_images/16068b7b16a3b3f07d243b5553c5077e481c2cf369a0bbf15126a3cd9b78ed4b.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1884,10 +1786,10 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.9999400924367485 1.0000380602413261
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.000641660255452 1.0001485457185217
 </pre></div>
 </div>
-<img alt="_images/prob_matrix_53_1.png" src="_images/prob_matrix_53_1.png" />
+<img alt="_images/2fc0efcc4f5b77bae9d30aa29a4ce540c430df37a9c74c96a72226fd81767354.png" src="_images/2fc0efcc4f5b77bae9d30aa29a4ce540c430df37a9c74c96a72226fd81767354.png" />
 </div>
 </div>
 <p><strong>Conditional distribution</strong></p>
@@ -1917,7 +1819,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_matrix_55_0.png" src="_images/prob_matrix_55_0.png" />
+<img alt="_images/1672cada9a961c81af8bcaebd10970b9a18a4781a5be1a92d652ea3b4a225f25.png" src="_images/1672cada9a961c81af8bcaebd10970b9a18a4781a5be1a92d652ea3b4a225f25.png" />
 </div>
 </div>
 <p>The mean and variance are computed by</p>
@@ -1945,7 +1847,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_matrix_57_0.png" src="_images/prob_matrix_57_0.png" />
+<img alt="_images/4e8dcb246658725e5d6da4f77d26edd37016fd1750470d7375117a105c751a02.png" src="_images/4e8dcb246658725e5d6da4f77d26edd37016fd1750470d7375117a105c751a02.png" />
 </div>
 </div>
 <p>Fix <span class="math notranslate nohighlight">\(x=1\)</span>.</p>
@@ -1959,7 +1861,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_matrix_59_0.png" src="_images/prob_matrix_59_0.png" />
+<img alt="_images/a2a5c48eb1b3be1aa9a8c903a9499e4ee63fb94cc72774a348d15049933558ad.png" src="_images/a2a5c48eb1b3be1aa9a8c903a9499e4ee63fb94cc72774a348d15049933558ad.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1976,7 +1878,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/prob_matrix_60_0.png" src="_images/prob_matrix_60_0.png" />
+<img alt="_images/6604f42ddb9658bc9e708d46eeb6de80cfa3a6169d5e6db1fe5a140dbedd80f3.png" src="_images/6604f42ddb9658bc9e708d46eeb6de80cfa3a6169d5e6db1fe5a140dbedd80f3.png" />
 </div>
 </div>
 <p>We compare  with the analytically computed parameters and note that they are close.</p>
@@ -1991,17 +1893,17 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.9997518414498433 2.2265841331697698
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.9997518414498433 2.22658413316977
 -1.0 2.227105745132009
-5.039999456960766 0.9959851265795596
+5.039999456960768 0.9959851265795597
 5.04 0.9959919678390986
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="sum-of-two-independently-distributed-random-variables">
-<h2><span class="section-number">10.17. </span>Sum of Two Independently Distributed Random Variables<a class="headerlink" href="#sum-of-two-independently-distributed-random-variables" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="sum-of-two-independently-distributed-random-variables">
+<h2><span class="section-number">10.17. </span>Sum of Two Independently Distributed Random Variables<a class="headerlink" href="#sum-of-two-independently-distributed-random-variables" title="Permalink to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(X, Y\)</span> be two independent discrete random variables that take values in <span class="math notranslate nohighlight">\(\bar{X}, \bar{Y}\)</span>, respectively.</p>
 <p>Define a new random variable <span class="math notranslate nohighlight">\(Z=X+Y\)</span>.</p>
 <p>Evidently, <span class="math notranslate nohighlight">\(Z\)</span> takes values from <span class="math notranslate nohighlight">\(\bar{Z}\)</span> defined as follows:</p>
@@ -2033,9 +1935,9 @@ h_k=\sum_{i=0}^{k} f_ig_{k-i} \equiv f*g
 f_{Z}(z)=\int_{-\infty}^{\infty} f_{X}(x) f_{Y}(z-x) dx \equiv f_{X}*g_{Y}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\( f_{X}*g_{Y} \)</span> denotes the <strong>convolution</strong> of the <span class="math notranslate nohighlight">\(f_X\)</span> and <span class="math notranslate nohighlight">\(g_Y\)</span> functions.</p>
-</div>
-<div class="section" id="transition-probability-matrix">
-<h2><span class="section-number">10.18. </span>Transition Probability Matrix<a class="headerlink" href="#transition-probability-matrix" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="transition-probability-matrix">
+<h2><span class="section-number">10.18. </span>Transition Probability Matrix<a class="headerlink" href="#transition-probability-matrix" title="Permalink to this heading">#</a></h2>
 <p>Consider the following joint probability distribution of  two random variables.</p>
 <p>Let <span class="math notranslate nohighlight">\(X,Y\)</span> be discrete random variables with joint distribution</p>
 <div class="math notranslate nohighlight">
@@ -2074,9 +1976,9 @@ p_{ij}=\textrm{Prob}\{Y=j|X=i\}= \frac{\rho_{ij}}{ \sum_{j}\rho_{ij}}
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\sum_{j}\rho_{ij}= \frac{ \sum_{j}\rho_{ij}}{ \sum_{j}\rho_{ij}}=1\)</span>, so each row of <span class="math notranslate nohighlight">\(\rho\)</span> is a probability distribution (not so for each column.</p></li>
 </ul>
-</div>
-<div class="section" id="coupling">
-<h2><span class="section-number">10.19. </span>Coupling<a class="headerlink" href="#coupling" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="coupling">
+<h2><span class="section-number">10.19. </span>Coupling<a class="headerlink" href="#coupling" title="Permalink to this heading">#</a></h2>
 <p>Start with a joint distribution</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -2174,9 +2076,9 @@ f_{ij}=
 <ul class="simple">
 <li><p>Couplings  are important in optimal transport problems and in Markov processes.</p></li>
 </ul>
-</div>
-<div class="section" id="copula-functions">
-<h2><span class="section-number">10.20. </span>Copula Functions<a class="headerlink" href="#copula-functions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="copula-functions">
+<h2><span class="section-number">10.20. </span>Copula Functions<a class="headerlink" href="#copula-functions" title="Permalink to this heading">#</a></h2>
 <p>Suppose that <span class="math notranslate nohighlight">\(X_1, X_2, \dots, X_n\)</span> are <span class="math notranslate nohighlight">\(N\)</span> random variables  and that</p>
 <ul class="simple">
 <li><p>their marginal distributions are <span class="math notranslate nohighlight">\(F_1(x_1), F_2(x_2),\dots, F_N(x_N)\)</span>,  and</p></li>
@@ -2261,15 +2163,15 @@ C(u_1,u_2,\dots,u_n) = H[F^{-1}_1(u_1),F^{-1}_2(u_2),\dots,F^{-1}_N(u_N)]
 +---------+--------------------+
 | x_value |       x_prob       |
 +---------+--------------------+
-|    0    | 0.6000650000000001 |
-|    1    |      0.399935      |
+|    0    | 0.5994349999999999 |
+|    1    |      0.400565      |
 +---------+--------------------+
 distribution for y
 +---------+----------+
 | y_value |  y_prob  |
 +---------+----------+
-|    0    | 0.299894 |
-|    1    | 0.700106 |
+|    0    | 0.300164 |
+|    1    | 0.699836 |
 +---------+----------+
 </pre></div>
 </div>
@@ -2345,10 +2247,10 @@ distribution for y
 +------------+------------+----------+
 | c1_x_value | c1_y_value | c1_prob  |
 +------------+------------+----------+
-|     0      |     0      | 0.180202 |
-|     0      |     1      | 0.41936  |
-|     1      |     0      | 0.120318 |
-|     1      |     1      | 0.28012  |
+|     0      |     0      | 0.180132 |
+|     0      |     1      | 0.419742 |
+|     1      |     0      | 0.120296 |
+|     1      |     1      | 0.27983  |
 +------------+------------+----------+
 </pre></div>
 </div>
@@ -2379,19 +2281,19 @@ distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>marginal distribution for x
-+------------+--------------------+
-| c1_x_value |     c1_x_prob      |
-+------------+--------------------+
-|     0      | 0.5995619999999999 |
-|     1      |      0.400438      |
-+------------+--------------------+
++------------+-----------+
+| c1_x_value | c1_x_prob |
++------------+-----------+
+|     0      |  0.599874 |
+|     1      |  0.400126 |
++------------+-----------+
 marginal distribution for y
-+------------+-----------+
-| c1_y_value | c1_y_prob |
-+------------+-----------+
-|     0      |  0.30052  |
-|     1      |  0.69948  |
-+------------+-----------+
++------------+---------------------+
+| c1_y_value |      c1_y_prob      |
++------------+---------------------+
+|     0      | 0.30042800000000003 |
+|     1      |       0.699572      |
++------------+---------------------+
 </pre></div>
 </div>
 </div>
@@ -2459,10 +2361,10 @@ marginal distribution for y
 +------------+------------+----------+
 | c2_x_value | c2_y_value | c2_prob  |
 +------------+------------+----------+
-|     0      |     0      | 0.299781 |
-|     0      |     1      | 0.300689 |
+|     0      |     0      |  0.2998  |
+|     0      |     1      | 0.300267 |
 |     1      |     0      |   0.0    |
-|     1      |     1      | 0.39953  |
+|     1      |     1      | 0.399933 |
 +------------+------------+----------+
 </pre></div>
 </div>
@@ -2493,18 +2395,18 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>marginal distribution for x
-+------------+--------------------+
-| c2_x_value |     c2_x_prob      |
-+------------+--------------------+
-|     0      | 0.6004700000000001 |
-|     1      |      0.39953       |
-+------------+--------------------+
++------------+-----------+
+| c2_x_value | c2_x_prob |
++------------+-----------+
+|     0      |  0.600067 |
+|     1      |  0.399933 |
++------------+-----------+
 marginal distribution for y
 +------------+---------------------+
 | c2_y_value |      c2_y_prob      |
 +------------+---------------------+
-|     0      | 0.29978099999999996 |
-|     1      |       0.700219      |
+|     0      | 0.29979999999999996 |
+|     1      |        0.7002       |
 +------------+---------------------+
 </pre></div>
 </div>
@@ -2512,9 +2414,9 @@ marginal distribution for y
 </div>
 <p>We have verified that both joint distributions, <span class="math notranslate nohighlight">\(c_1\)</span> and <span class="math notranslate nohighlight">\(c_2\)</span>, have identical marginal distributions of <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>, respectively.</p>
 <p>So they are both couplings of <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>.</p>
-</div>
-<div class="section" id="time-series">
-<h2><span class="section-number">10.21. </span>Time Series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="time-series">
+<h2><span class="section-number">10.21. </span>Time Series<a class="headerlink" href="#time-series" title="Permalink to this heading">#</a></h2>
 <p>Suppose that there are two time periods.</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(t=0\)</span>  “today”</p></li>
@@ -2537,8 +2439,8 @@ marginal distribution for y
 <ul class="simple">
 <li><p>This is a key formula for  a theory of optimally predicting a time series.</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -2552,7 +2454,7 @@ marginal distribution for y
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -3133,7 +3035,7 @@ marginal distribution for y
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -3275,16 +3177,5 @@ marginal distribution for y
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>37. Job Search IV: Correlated Wage Offers &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'mccall_correlated';</script>
     <link rel="canonical" href="https://python.quantecon.org/mccall_correlated.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,40 +161,15 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   37.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-model">
-   37.2. The Model
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#a-simplification">
-     37.2.1. A Simplification
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implementation">
-   37.3. Implementation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#unemployment-duration">
-   37.4. Unemployment Duration
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises">
-   37.5. Exercises
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">37.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">37.2. The Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simplification">37.2.1. A Simplification</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">37.3. Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unemployment-duration">37.4. Unemployment Duration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">37.5. Exercises</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -231,8 +217,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="job-search-iv-correlated-wage-offers">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">37. </span>Job Search IV: Correlated Wage Offers</a><a class="headerlink" href="#job-search-iv-correlated-wage-offers" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="job-search-iv-correlated-wage-offers">
+<h1><a class="toc-backref" href="#id1"><span class="section-number">37. </span>Job Search IV: Correlated Wage Offers</a><a class="headerlink" href="#job-search-iv-correlated-wage-offers" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -249,41 +235,50 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
 <span class="o">!</span>pip install interpolation
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.6.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: scipy&gt;=1.5.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
-Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
-Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.6.0)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: numba in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (65.6.3)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (2.2.4)
-Requirement already satisfied: numba&gt;=0.47 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.56.4)
-Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.9.1)
-Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.5.2)
-Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.23.5)
-Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (21.3)
-Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (63.4.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
-Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /opt/conda/envs/quantecon/lib/python3.10/site-packages (2.2.4)
+Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (1.23.5)
+Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (0.5.2)
+Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (21.3)
+Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (1.10.0)
+Requirement already satisfied: numba&gt;=0.47 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (0.56.4)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.47-&gt;interpolation) (65.6.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -291,9 +286,10 @@ Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /__w/lecture-pytho
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">37.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id2"><span class="section-number">37.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In this lecture we solve a <a class="reference internal" href="mccall_model.html"><span class="doc">McCall style job search model</span></a> with persistent and
 transitory components to wages.</p>
 <p>In other words, we relax the unrealistic assumption that randomness in wages is independent over time.</p>
@@ -315,9 +311,9 @@ transitory components to wages.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="the-model">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">37.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="the-model">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">37.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this heading">#</a></h2>
 <p>Wages at each point in time are given by</p>
 <div class="math notranslate nohighlight">
 \[
@@ -333,7 +329,7 @@ z_{t+1} = d + \rho z_t + \sigma \epsilon_{t+1}
 <p>Here <span class="math notranslate nohighlight">\(\{ \zeta_t \}\)</span> and <span class="math notranslate nohighlight">\(\{ \epsilon_t \}\)</span> are both IID and standard normal.</p>
 <p>Here <span class="math notranslate nohighlight">\(\{y_t\}\)</span> is a transitory component and <span class="math notranslate nohighlight">\(\{z_t\}\)</span> is persistent.</p>
 <p>As before, the worker can either</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>accept an offer and work permanently at that wage, or</p></li>
 <li><p>take unemployment compensation <span class="math notranslate nohighlight">\(c\)</span> and wait till next period.</p></li>
 </ol>
@@ -348,8 +344,8 @@ v^*(w, z) =
 \]</div>
 <p>In this express, <span class="math notranslate nohighlight">\(u\)</span> is a utility function and <span class="math notranslate nohighlight">\(\mathbb E_z\)</span> is expectation of next period variables given current <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <p>The variable <span class="math notranslate nohighlight">\(z\)</span> enters as a state in the Bellman equation because its current value helps predict future wages.</p>
-<div class="section" id="a-simplification">
-<h3><span class="section-number">37.2.1. </span>A Simplification<a class="headerlink" href="#a-simplification" title="Permalink to this headline">¶</a></h3>
+<section id="a-simplification">
+<h3><span class="section-number">37.2.1. </span>A Simplification<a class="headerlink" href="#a-simplification" title="Permalink to this heading">#</a></h3>
 <p>There is a way that we can reduce dimensionality in this problem, which greatly accelerates computation.</p>
 <p>To start, let <span class="math notranslate nohighlight">\(f^*\)</span> be the continuation value function, defined
 by</p>
@@ -387,12 +383,12 @@ Qf(z) = u(c) + \beta \, \mathbb E_z \max \left\{ \frac{u(w')}{1-\beta}, f(z') \r
 <p>The reservation wage is the wage where equality holds in the last expression.</p>
 <p>That is,</p>
 <div class="math notranslate nohighlight" id="equation-corr-mcm-barw">
-<span class="eqno">(37.1)<a class="headerlink" href="#equation-corr-mcm-barw" title="Permalink to this equation">¶</a></span>\[\bar w (z) := \exp(f^*(z) (1-\beta))\]</div>
+<span class="eqno">(37.1)<a class="headerlink" href="#equation-corr-mcm-barw" title="Permalink to this equation">#</a></span>\[\bar w (z) := \exp(f^*(z) (1-\beta))\]</div>
 <p>Our main aim is to solve for the reservation rule and study its properties and implications.</p>
-</div>
-</div>
-<div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">37.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="implementation">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">37.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(f\)</span> be our initial guess of <span class="math notranslate nohighlight">\(f^*\)</span>.</p>
 <p>When we iterate, we use the <a class="reference internal" href="mccall_fitted_vfi.html"><span class="doc">fitted value function iteration</span></a> algorithm.</p>
 <p>In particular, <span class="math notranslate nohighlight">\(f\)</span> and all subsequent iterates are stored as a vector of values on a grid.</p>
@@ -550,10 +546,10 @@ Error at iteration 125 is 0.0018027870994501427.
 Error at iteration 175 is 0.00011479050300522431.
 
 Converged in 178 iterations.
-TOC: Elapsed: 0:00:2.19
+TOC: Elapsed: 0:00:1.91
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.1933724880218506
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.9180068969726562
 </pre></div>
 </div>
 </div>
@@ -572,7 +568,7 @@ TOC: Elapsed: 0:00:2.19
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mccall_correlated_15_0.png" src="_images/mccall_correlated_15_0.png" />
+<img alt="_images/c4d95e1621cdfe003e0983dcec79cb71b31f26607d7fc86ab478888b880f94db.png" src="_images/c4d95e1621cdfe003e0983dcec79cb71b31f26607d7fc86ab478888b880f94db.png" />
 </div>
 </div>
 <p>Notice that the reservation wage is increasing in the current state <span class="math notranslate nohighlight">\(z\)</span>.</p>
@@ -599,14 +595,14 @@ reservation wage:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mccall_correlated_17_0.png" src="_images/mccall_correlated_17_0.png" />
+<img alt="_images/abafc6465038b788c45a9fde266a4146c946103e1d2b5cd686f57dbf0fad71c1.png" src="_images/abafc6465038b788c45a9fde266a4146c946103e1d2b5cd686f57dbf0fad71c1.png" />
 </div>
 </div>
 <p>As expected, higher unemployment compensation shifts the reservation wage up
 at all state values.</p>
-</div>
-<div class="section" id="unemployment-duration">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">37.4. </span>Unemployment Duration</a><a class="headerlink" href="#unemployment-duration" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="unemployment-duration">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">37.4. </span>Unemployment Duration</a><a class="headerlink" href="#unemployment-duration" title="Permalink to this heading">#</a></h2>
 <p>Next we study how mean unemployment duration varies with unemployment compensation.</p>
 <p>For simplicity we’ll fix the initial state at <span class="math notranslate nohighlight">\(z_t = 0\)</span>.</p>
 <div class="cell docutils container">
@@ -680,30 +676,30 @@ at all state values.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mccall_correlated_23_0.png" src="_images/mccall_correlated_23_0.png" />
+<img alt="_images/8cab22d8d71d64745e8a31874bff11af3333c7ce2344c771598b67859f45d912.png" src="_images/8cab22d8d71d64745e8a31874bff11af3333c7ce2344c771598b67859f45d912.png" />
 </div>
 </div>
 <p>Not surprisingly, unemployment duration increases when unemployment compensation is higher.</p>
 <p>This is because the value of waiting increases with unemployment compensation.</p>
-</div>
-<div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">37.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">37.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="mc_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 37.1 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Investigate how mean unemployment duration varies with the discount factor <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
 <ul class="simple">
 <li><p>What is your prior expectation?</p></li>
 <li><p>Do your results match up?</p></li>
 </ul>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="mccall_correlated-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#mc_ex1"> Exercise 37.1</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution</p>
+<section id="solution-content">
+<p>Here is one solution</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beta_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.94</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
@@ -727,14 +723,14 @@ at all state values.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mccall_correlated_26_0.png" src="_images/mccall_correlated_26_0.png" />
+<img alt="_images/0556361f6944887dc1e8854dbcbeb2ddb9ce390f170cee9ecb24b9155fb9e7b7.png" src="_images/0556361f6944887dc1e8854dbcbeb2ddb9ce390f170cee9ecb24b9155fb9e7b7.png" />
 </div>
 </div>
 <p>The figure shows that more patient individuals tend to wait longer before accepting an offer.</p>
+</section>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -748,7 +744,7 @@ at all state values.</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1329,7 +1325,7 @@ at all state values.</p>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1471,16 +1467,5 @@ at all state values.</p>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

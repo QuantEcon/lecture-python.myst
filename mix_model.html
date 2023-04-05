@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>60. Incorrect Models &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'mix_model';</script>
     <link rel="canonical" href="https://python.quantecon.org/mix_model.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,53 +161,14 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   60.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sampling-from-compound-lottery-h">
-   60.2. Sampling from  Compound Lottery
-   <span class="math notranslate nohighlight">
-    \(H\)
-   </span>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#type-1-agent">
-   60.3. Type 1 Agent
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data">
-   60.4. What a type 1 Agent Learns when Mixture
-   <span class="math notranslate nohighlight">
-    \(H\)
-   </span>
-   Generates Data
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#kullback-leibler-divergence-governs-limit-of-pi-t">
-   60.5. Kullback-Leibler Divergence Governs Limit of
-   <span class="math notranslate nohighlight">
-    \(\pi_t\)
-   </span>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#type-2-agent">
-   60.6. Type 2 Agent
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#concluding-remarks">
-   60.7. Concluding Remarks
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">60.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-from-compound-lottery-h">60.2. Sampling from  Compound Lottery <span class="math notranslate nohighlight">\(H\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-1-agent">60.3. Type 1 Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data">60.4. What a type 1 Agent Learns when Mixture <span class="math notranslate nohighlight">\(H\)</span> Generates Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kullback-leibler-divergence-governs-limit-of-pi-t">60.5. Kullback-Leibler Divergence Governs Limit of <span class="math notranslate nohighlight">\(\pi_t\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#type-2-agent">60.6. Type 2 Agent</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">60.7. Concluding Remarks</a></li>
 </ul>
-
                             <p class="logo">
                                 
                                     
@@ -240,10 +212,10 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <div class="tex2jax_ignore mathjax_ignore section" id="incorrect-models">
-<span id="likelihood-ratio-process"></span><h1><span class="section-number">60. </span>Incorrect Models<a class="headerlink" href="#incorrect-models" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="overview">
-<h2><span class="section-number">60.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="incorrect-models">
+<span id="likelihood-ratio-process"></span><h1><span class="section-number">60. </span>Incorrect Models<a class="headerlink" href="#incorrect-models" title="Permalink to this heading">#</a></h1>
+<section id="overview">
+<h2><span class="section-number">60.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This  is a sequel to <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this  quantecon lecture</span></a>.</p>
 <p>We discuss  two ways to create compound lottery and their consequences.</p>
 <p>A compound lottery can be said to create a <em>mixture distribution</em>.</p>
@@ -301,7 +273,7 @@ it includes the actual data generating process <span class="math notranslate noh
 <p>In this lecture, we’ll learn about</p>
 <ul class="simple">
 <li><p>how nature can <em>mix</em> between two distributions <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> to create a new distribution <span class="math notranslate nohighlight">\(h\)</span>.</p></li>
-<li><p>The Kullback-Leibler statistical divergence <a class="reference external" href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence</a> that governs statistical learning under an incorrect statistical model</p></li>
+<li><p>The Kullback-Leibler statistical divergence <a class="reference external" href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">https://en.wikipedia.org/wiki/Kullback–Leibler_divergence</a> that governs statistical learning under an incorrect statistical model</p></li>
 <li><p>A useful Python function <code class="docutils literal notranslate"><span class="pre">numpy.searchsorted</span></code> that,  in conjunction with a uniform random number generator, can be used to sample from an arbitrary distribution</p></li>
 </ul>
 <p>As usual, we’ll start by importing some Python tools.</p>
@@ -396,9 +368,9 @@ it includes the actual data generating process <span class="math notranslate noh
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="sampling-from-compound-lottery-h">
-<h2><span class="section-number">60.2. </span>Sampling from  Compound Lottery <span class="math notranslate nohighlight">\(H\)</span><a class="headerlink" href="#sampling-from-compound-lottery-h" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="sampling-from-compound-lottery-h">
+<h2><span class="section-number">60.2. </span>Sampling from  Compound Lottery <span class="math notranslate nohighlight">\(H\)</span><a class="headerlink" href="#sampling-from-compound-lottery-h" title="Permalink to this heading">#</a></h2>
 <p>We implement two methods  to draw samples from
 our mixture model <span class="math notranslate nohighlight">\(\alpha F + (1-\alpha) G\)</span>.</p>
 <p>We’ll generate samples using each of them and verify that they match well.</p>
@@ -484,7 +456,7 @@ from our target mixture distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mix_model_10_0.png" src="_images/mix_model_10_0.png" />
+<img alt="_images/fd42f6c3fa2b1b575b9f912fc15cf3ba2657856cbddcd0ef67402875606bb2bc.png" src="_images/fd42f6c3fa2b1b575b9f912fc15cf3ba2657856cbddcd0ef67402875606bb2bc.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -504,9 +476,9 @@ from our target mixture distribution.</p>
 </div>
 </div>
 <p><strong>Note:</strong> With numba acceleration the first method is actually only slightly slower than the second when we generated 1,000,000 samples.</p>
-</div>
-<div class="section" id="type-1-agent">
-<h2><span class="section-number">60.3. </span>Type 1 Agent<a class="headerlink" href="#type-1-agent" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="type-1-agent">
+<h2><span class="section-number">60.3. </span>Type 1 Agent<a class="headerlink" href="#type-1-agent" title="Permalink to this heading">#</a></h2>
 <p>We’ll now study what our type 1 agent learns</p>
 <p>Remember that our type 1 agent uses the wrong statistical model, thinking that nature mixed between <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> once and for all at time <span class="math notranslate nohighlight">\(-1\)</span>.</p>
 <p>The type 1 agent thus uses the learning algorithm studied in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">this  quantecon lecture</span></a>.</p>
@@ -520,7 +492,7 @@ from our target mixture distribution.</p>
 of the posterior probability <span class="math notranslate nohighlight">\( \pi_t \)</span>, an instance of <strong>Bayes’ Law</strong>.</p>
 <p>Bayes’ law implies that <span class="math notranslate nohighlight">\( \{\pi_t\} \)</span> obeys the recursion</p>
 <div class="math notranslate nohighlight" id="equation-equation-eq-recur1">
-<span class="eqno">(60.1)<a class="headerlink" href="#equation-equation-eq-recur1" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(60.1)<a class="headerlink" href="#equation-equation-eq-recur1" title="Permalink to this equation">#</a></span>\[
 \pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
 \]</div>
 <p>with <span class="math notranslate nohighlight">\( \pi_{0} \)</span> being a Bayesian prior probability that <span class="math notranslate nohighlight">\( q = f \)</span>,
@@ -586,15 +558,15 @@ of the time <span class="math notranslate nohighlight">\( 0 \)</span> prior <spa
 function of  <span class="math notranslate nohighlight">\( L\left(w^{t+1}\right) \)</span>, the  likelihood ratio process at <span class="math notranslate nohighlight">\( t+1 \)</span>,
 and the initial prior <span class="math notranslate nohighlight">\( \pi_{0} \)</span></p>
 <div class="math notranslate nohighlight" id="equation-equation-eq-bayeslaw103">
-<span class="eqno">(60.2)<a class="headerlink" href="#equation-equation-eq-bayeslaw103" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(60.2)<a class="headerlink" href="#equation-equation-eq-bayeslaw103" title="Permalink to this equation">#</a></span>\[
 \pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}}.
 \]</div>
 <p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(60.2)</a> generalizes formula <a class="reference internal" href="#equation-equation-eq-recur1">(60.1)</a>.</p>
 <p>Formula <a class="reference internal" href="#equation-equation-eq-bayeslaw103">(60.2)</a>  can be regarded as a one step  revision of prior probability <span class="math notranslate nohighlight">\( \pi_0 \)</span> after seeing
 the batch of data <span class="math notranslate nohighlight">\( \left\{ w_{i}\right\} _{i=1}^{t+1} \)</span>.</p>
-</div>
-<div class="section" id="what-a-type-1-agent-learns-when-mixture-h-generates-data">
-<h2><span class="section-number">60.4. </span>What a type 1 Agent Learns when Mixture <span class="math notranslate nohighlight">\(H\)</span> Generates Data<a class="headerlink" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="what-a-type-1-agent-learns-when-mixture-h-generates-data">
+<h2><span class="section-number">60.4. </span>What a type 1 Agent Learns when Mixture <span class="math notranslate nohighlight">\(H\)</span> Generates Data<a class="headerlink" href="#what-a-type-1-agent-learns-when-mixture-h-generates-data" title="Permalink to this heading">#</a></h2>
 <p>We now study what happens when the mixture distribution <span class="math notranslate nohighlight">\(h;\alpha\)</span>  truly generated the data each period.</p>
 <p>A submartingale or supermartingale continues to describe <span class="math notranslate nohighlight">\(\pi_t\)</span></p>
 <p>It raises its ugly head and causes <span class="math notranslate nohighlight">\(\pi_t\)</span> to converge either to <span class="math notranslate nohighlight">\(0\)</span> or to <span class="math notranslate nohighlight">\(1\)</span>.</p>
@@ -659,7 +631,7 @@ what fundamental force determines the limiting value of <span class="math notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mix_model_17_0.png" src="_images/mix_model_17_0.png" />
+<img alt="_images/99756d2fe695ebf1bdbc08fb6d94ac188b514928c7e769985e008d5100d053d6.png" src="_images/99756d2fe695ebf1bdbc08fb6d94ac188b514928c7e769985e008d5100d053d6.png" />
 </div>
 </div>
 <p>The above graph shows a sample path of the log likelihood ratio process as the blue dotted line, together with
@@ -672,13 +644,13 @@ sample paths of <span class="math notranslate nohighlight">\(\pi_t\)</span> that
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mix_model_19_0.png" src="_images/mix_model_19_0.png" />
+<img alt="_images/aa6d7d56ff6ed309e076266b2e406db405b8ad4b835d3bc98743c180cd69703d.png" src="_images/aa6d7d56ff6ed309e076266b2e406db405b8ad4b835d3bc98743c180cd69703d.png" />
 </div>
 </div>
 <p>Evidently, <span class="math notranslate nohighlight">\(\alpha\)</span> is having a big effect on the destination of <span class="math notranslate nohighlight">\(\pi_t\)</span> as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span></p>
-</div>
-<div class="section" id="kullback-leibler-divergence-governs-limit-of-pi-t">
-<h2><span class="section-number">60.5. </span>Kullback-Leibler Divergence Governs Limit of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#kullback-leibler-divergence-governs-limit-of-pi-t" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="kullback-leibler-divergence-governs-limit-of-pi-t">
+<h2><span class="section-number">60.5. </span>Kullback-Leibler Divergence Governs Limit of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#kullback-leibler-divergence-governs-limit-of-pi-t" title="Permalink to this heading">#</a></h2>
 <p>To understand what determines whether the limit point of  <span class="math notranslate nohighlight">\(\pi_t\)</span> is  <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>  and how the answer depends on the true value of the mixing probability  <span class="math notranslate nohighlight">\(\alpha \in (0,1) \)</span> that generates</p>
 <div class="math notranslate nohighlight">
 \[ h(w) \equiv h(w | \alpha) = \alpha f(w) + (1-\alpha) g(w) \]</div>
@@ -772,7 +744,7 @@ KL_f (\alpha) = \int \log\left(\frac{f(w)}{h(w)}\right) h(w) d w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mix_model_23_0.png" src="_images/mix_model_23_0.png" />
+<img alt="_images/337c1a6af7e0e5c1a8ae59b1e028c9e4aca219dd319abc4c476d16e2237a0cd3.png" src="_images/337c1a6af7e0e5c1a8ae59b1e028c9e4aca219dd319abc4c476d16e2237a0cd3.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -839,14 +811,14 @@ recorded on the <span class="math notranslate nohighlight">\(x\)</span> axis.</p
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/mix_model_28_0.png" src="_images/mix_model_28_0.png" />
+<img alt="_images/b25a8653e354968e7a8c8f04d8568995807d82236379396c4b33167e216bb48e.png" src="_images/b25a8653e354968e7a8c8f04d8568995807d82236379396c4b33167e216bb48e.png" />
 </div>
 </div>
 <p>Evidently, our type 1 learner who applies Bayes’ law to his misspecified set of statistical models eventually learns an approximating model that is as close as possible to the true model, as measured by its
 Kullback-Leibler divergence.</p>
-</div>
-<div class="section" id="type-2-agent">
-<h2><span class="section-number">60.6. </span>Type 2 Agent<a class="headerlink" href="#type-2-agent" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="type-2-agent">
+<h2><span class="section-number">60.6. </span>Type 2 Agent<a class="headerlink" href="#type-2-agent" title="Permalink to this heading">#</a></h2>
 <p>We now describe how our type 2 agent formulates his learning problem and what he eventually learns.</p>
 <p>Our type 2 agent understands the correct statistical  model but acknowledges does not know <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 <p>We apply Bayes law to deduce an algorithm for  learning <span class="math notranslate nohighlight">\(\alpha\)</span> under the assumption
@@ -918,16 +890,13 @@ h(w) = h(w| \alpha)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
-</pre></div>
-</div>
-<img alt="_images/mix_model_32_1.png" src="_images/mix_model_32_1.png" />
+<img alt="_images/099d4520d9bc0fd093639644ef5b97fe71861e746eaf19dc6f574792dba4619c.png" src="_images/099d4520d9bc0fd093639644ef5b97fe71861e746eaf19dc6f574792dba4619c.png" />
 </div>
 </div>
 <p>Evidently,  the Bayesian posterior  narrows in on the true value  <span class="math notranslate nohighlight">\(\alpha = .8\)</span> of the mixing parameter as the length of a history of observations grows.</p>
-</div>
-<div class="section" id="concluding-remarks">
-<h2><span class="section-number">60.7. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="concluding-remarks">
+<h2><span class="section-number">60.7. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this heading">#</a></h2>
 <p>Our type 1 person  deploys an incorrect statistical  model.</p>
 <p>He believes
 that either <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span> generated the <span class="math notranslate nohighlight">\(w\)</span> process, but just doesn’t know which one.</p>
@@ -945,8 +914,8 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
 <span class="math notranslate nohighlight">\(s(x | \theta)\)</span> to infer <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(x\)</span>.</p>
 <p>But the scientist’s model is misspecified, being only an approximation to an unknown  model <span class="math notranslate nohighlight">\(h\)</span> that nature uses to generate <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <p>If the scientist uses Bayes’ law or a related  likelihood-based  method to infer <span class="math notranslate nohighlight">\(\theta\)</span>, it occurs quite generally that for large sample sizes the inverse problem infers a  <span class="math notranslate nohighlight">\(\theta\)</span> that minimizes  the KL divergence of the scientist’s model <span class="math notranslate nohighlight">\(s\)</span> relative to nature’s   model <span class="math notranslate nohighlight">\(h\)</span>.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -960,7 +929,7 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1541,7 +1510,7 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1683,16 +1652,5 @@ is a vector of parameters, and <span class="math notranslate nohighlight">\(\The
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

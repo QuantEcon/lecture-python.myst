@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>46. Optimal Growth II: Accelerating the Code with Numba &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'optgrowth_fast';</script>
     <link rel="canonical" href="https://python.quantecon.org/optgrowth_fast.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,35 +161,14 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   46.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-model">
-   46.2. The Model
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#computation">
-   46.3. Computation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#the-bellman-operator">
-     46.3.1. The Bellman Operator
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises">
-   46.4. Exercises
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">46.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">46.2. The Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">46.3. Computation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-bellman-operator">46.3.1. The Bellman Operator</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">46.4. Exercises</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -226,8 +216,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="optimal-growth-ii-accelerating-the-code-with-numba">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">46. </span><span class="target" id="index-0"></span>Optimal Growth II: Accelerating the Code with Numba</a><a class="headerlink" href="#optimal-growth-ii-accelerating-the-code-with-numba" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="optimal-growth-ii-accelerating-the-code-with-numba">
+<h1><a class="toc-backref" href="#id1"><span class="section-number">46. </span><span class="target" id="index-0"></span>Optimal Growth II: Accelerating the Code with Numba</a><a class="headerlink" href="#optimal-growth-ii-accelerating-the-code-with-numba" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -243,53 +233,61 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
 <span class="o">!</span>pip install interpolation
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.6.0)
-Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: scipy&gt;=1.5.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
-Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.6.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
-
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (2.2.4)
-Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.5.2)
-Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.23.5)
-Requirement already satisfied: numba&gt;=0.47 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.56.4)
-Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (21.3)
-Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.9.1)
-Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (63.4.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
-Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: numba in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (65.6.3)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /opt/conda/envs/quantecon/lib/python3.10/site-packages (2.2.4)
+Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (0.5.2)
+Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (1.10.0)
+Requirement already satisfied: numba&gt;=0.47 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (0.56.4)
+Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (21.3)
+Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (1.23.5)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.47-&gt;interpolation) (65.6.3)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
+
+</pre></div>
 </div>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">46.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+</details>
+</div>
+<section id="overview">
+<h2><a class="toc-backref" href="#id2"><span class="section-number">46.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p><a class="reference internal" href="optgrowth.html"><span class="doc">Previously</span></a>, we studied a stochastic optimal
 growth model with one representative agent.</p>
 <p>We solved the model using dynamic programming.</p>
@@ -324,9 +322,9 @@ accelerate our code.</p>
 helps us JIT-compile our code.</p>
 <p>The function <code class="docutils literal notranslate"><span class="pre">brent_max</span></code> is also designed for embedding in JIT-compiled code.</p>
 <p>These are alternatives to similar functions in SciPy (which, unfortunately, are not JIT-aware).</p>
-</div>
-<div class="section" id="the-model">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">46.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="the-model">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">46.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this heading">#</a></h2>
 <p id="index-1">The model is the same as discussed in our <a class="reference internal" href="optgrowth.html"><span class="doc">previous lecture</span></a>
 on optimal growth.</p>
 <p>We will start with log utility:</p>
@@ -363,9 +361,9 @@ u(c) = \ln(c)
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="computation">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">46.3. </span>Computation</a><a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="computation">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">46.3. </span>Computation</a><a class="headerlink" href="#computation" title="Permalink to this heading">#</a></h2>
 <p id="index-2">We will again store the primitives of the optimal growth model in a class.</p>
 <p>But now we are going to use <a class="reference external" href="https://python-programming.quantecon.org/numba.html">Numba’s</a> <code class="docutils literal notranslate"><span class="pre">&#64;jitclass</span></code> decorator to target our class for JIT compilation.</p>
 <p>Because we are going to use Numba to compile our class, we need to specify the data types.</p>
@@ -435,8 +433,8 @@ class.</p>
 </div>
 <p>The class includes some methods such as <code class="docutils literal notranslate"><span class="pre">u_prime</span></code> that we do not need now
 but will use in later lectures.</p>
-<div class="section" id="the-bellman-operator">
-<h3><span class="section-number">46.3.1. </span>The Bellman Operator<a class="headerlink" href="#the-bellman-operator" title="Permalink to this headline">¶</a></h3>
+<section id="the-bellman-operator">
+<h3><span class="section-number">46.3.1. </span>The Bellman Operator<a class="headerlink" href="#the-bellman-operator" title="Permalink to this heading">#</a></h3>
 <p>We will use JIT compilation to accelerate the Bellman operator.</p>
 <p>First, here’s a function that returns the value of a particular consumption choice <code class="docutils literal notranslate"><span class="pre">c</span></code>, given state <code class="docutils literal notranslate"><span class="pre">y</span></code>, as per the Bellman equation <a class="reference internal" href="optgrowth.html#equation-fpb30">(45.9)</a>.</p>
 <div class="cell docutils container">
@@ -568,8 +566,8 @@ Error at iteration 225 is 0.00011662021095304453.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 229 iterations.
-CPU times: user 5.01 s, sys: 52.6 ms, total: 5.06 s
-Wall time: 5.05 s
+CPU times: user 4.76 s, sys: 40.8 ms, total: 4.8 s
+Wall time: 4.79 s
 </pre></div>
 </div>
 </div>
@@ -592,7 +590,7 @@ Wall time: 5.05 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/optgrowth_fast_19_0.png" src="_images/optgrowth_fast_19_0.png" />
+<img alt="_images/8c1533fe4b1b53fb8a8e7535f6319facf9eaf9ba9b35dfda3cc3304a95c34333.png" src="_images/8c1533fe4b1b53fb8a8e7535f6319facf9eaf9ba9b35dfda3cc3304a95c34333.png" />
 </div>
 </div>
 <p>Again, the fit is excellent — this is as expected since we have not changed
@@ -610,24 +608,24 @@ the algorithm.</p>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">46.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">46.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="ogfast_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 46.1 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Time how long it takes to iterate with the Bellman operator
 20 times, starting from initial condition <span class="math notranslate nohighlight">\(v(y) = u(y)\)</span>.</p>
 <p>Use the default parameterization.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="optgrowth_fast-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#ogfast_ex1"> Exercise 46.1</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Let’s set up the initial condition.</p>
+<section id="solution-content">
+<p>Let’s set up the initial condition.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="n">og</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
@@ -647,7 +645,7 @@ the algorithm.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 180 ms, sys: 0 ns, total: 180 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 180 ms, sys: 98 µs, total: 180 ms
 Wall time: 179 ms
 </pre></div>
 </div>
@@ -655,12 +653,12 @@ Wall time: 179 ms
 </div>
 <p>Compared with our <a class="reference internal" href="optgrowth.html#og_ex2"><span class="std std-ref">timing</span></a> for the non-compiled version of
 value function iteration, the JIT-compiled code is usually an order of magnitude faster.</p>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="ogfast_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 46.2 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Modify the optimal growth model to use the CRRA utility specification.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -673,13 +671,13 @@ have to copy the class and change the relevant parameters and methods.)</p>
 the same plot from the <a class="reference internal" href="optgrowth.html#og_ex1"><span class="std std-ref">analogous exercise</span></a> in the first optimal
 growth lecture.</p>
 <p>Compare execution time as well.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="optgrowth_fast-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#ogfast_ex2"> Exercise 46.2</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here’s our CRRA version of <code class="docutils literal notranslate"><span class="pre">OptimalGrowthModel</span></code>:</p>
+<section id="solution-content">
+<p>Here’s our CRRA version of <code class="docutils literal notranslate"><span class="pre">OptimalGrowthModel</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">opt_growth_data</span> <span class="o">=</span> <span class="p">[</span>
@@ -763,7 +761,9 @@ takes.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 75 is 0.165423522162655.
-Error at iteration 100 is 0.05961808343499797.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 100 is 0.05961808343499797.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 125 is 0.021486161531569792.
@@ -779,12 +779,13 @@ Error at iteration 100 is 0.05961808343499797.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 225 is 0.0003624784085332067.
-Error at iteration 250 is 0.00013063602793295104.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 257 iterations.
-CPU times: user 4.21 s, sys: 5.69 ms, total: 4.22 s
-Wall time: 4.21 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 250 is 0.00013063602793295104.
+
+Converged in 257 iterations.
+CPU times: user 4 s, sys: 43.4 ms, total: 4.04 s
+Wall time: 4.04 s
 </pre></div>
 </div>
 </div>
@@ -803,18 +804,18 @@ Wall time: 4.21 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/optgrowth_fast_33_0.png" src="_images/optgrowth_fast_33_0.png" />
+<img alt="_images/626bca50ba51e5633e84f7fb294850adf2797b1ca60a0164fd67b6476636eeb9.png" src="_images/626bca50ba51e5633e84f7fb294850adf2797b1ca60a0164fd67b6476636eeb9.png" />
 </div>
 </div>
 <p>This matches the solution that we obtained in our non-jitted code,
 <a class="reference internal" href="optgrowth.html#og_ex1"><span class="std std-ref">in the exercises</span></a>.</p>
 <p>Execution time is an order of magnitude faster.</p>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="ogfast_ex3">
 
 <p class="admonition-title"><span class="caption-number">Exercise 46.3 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>In this exercise we return to the original log utility specification.</p>
 <p>Once an optimal consumption policy <span class="math notranslate nohighlight">\(\sigma\)</span> is given, income follows</p>
 <div class="math notranslate nohighlight">
@@ -823,22 +824,22 @@ y_{t+1} = f(y_t - \sigma(y_t)) \xi_{t+1}
 \]</div>
 <p>The next figure shows a simulation of 100 elements of this sequence for three
 different discount factors (and hence three different policies).</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/solution_og_ex2.png" src="_images/solution_og_ex2.png" />
-</div>
+</figure>
 <p>In each sequence, the initial condition is <span class="math notranslate nohighlight">\(y_0 = 0.1\)</span>.</p>
 <p>The discount factors are <code class="docutils literal notranslate"><span class="pre">discount_factors</span> <span class="pre">=</span> <span class="pre">(0.8,</span> <span class="pre">0.9,</span> <span class="pre">0.98)</span></code>.</p>
 <p>We have also dialed down the shocks a bit with <code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">=</span> <span class="pre">0.05</span></code>.</p>
 <p>Otherwise, the parameters and primitives are the same as the log-linear model discussed earlier in the lecture.</p>
 <p>Notice that more patient agents typically have higher wealth.</p>
 <p>Replicate the figure modulo randomness.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="optgrowth_fast-solution-5">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#ogfast_ex3"> Exercise 46.3</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here’s one solution:</p>
+<section id="solution-content">
+<p>Here’s one solution:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simulate_og</span><span class="p">(</span><span class="n">σ_func</span><span class="p">,</span> <span class="n">og</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">ts_length</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
@@ -876,13 +877,13 @@ different discount factors (and hence three different policies).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/optgrowth_fast_36_0.png" src="_images/optgrowth_fast_36_0.png" />
+<img alt="_images/cc4e29d9b341b20be840bd5f6b2a7216e8066a255dcad228624ac8a13be0f8d8.png" src="_images/cc4e29d9b341b20be840bd5f6b2a7216e8066a255dcad228624ac8a13be0f8d8.png" />
 </div>
 </div>
+</section>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -896,7 +897,7 @@ different discount factors (and hence three different policies).</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1477,7 +1478,7 @@ different discount factors (and hence three different policies).</p>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1619,16 +1620,5 @@ different discount factors (and hence three different policies).</p>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>23. Von Neumann Growth Model (and a Generalization) &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'von_neumann_model';</script>
     <link rel="canonical" href="https://python.quantecon.org/von_neumann_model.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,74 +161,25 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#notation">
-   23.1. Notation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#model-ingredients-and-assumptions">
-   23.2. Model Ingredients and Assumptions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dynamic-interpretation">
-   23.3. Dynamic Interpretation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#balanced-growth">
-     23.3.1. Balanced Growth
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#duality">
-   23.4. Duality
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#interpretation-as-two-player-zero-sum-game">
-   23.5. Interpretation as Two-player Zero-sum Game
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#connection-with-linear-programming-lp">
-     23.5.1. Connection with Linear Programming (LP)
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#algorithm">
-     23.5.2. Algorithm
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#step-1">
-       23.5.2.1. Step 1
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#step-2">
-       23.5.2.2. Step 2
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#uniqueness-and-irreducibility">
-     23.5.3. Uniqueness and Irreducibility
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#a-special-case">
-     23.5.4. A Special Case
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notation">23.1. Notation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-ingredients-and-assumptions">23.2. Model Ingredients and Assumptions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-interpretation">23.3. Dynamic Interpretation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#balanced-growth">23.3.1. Balanced Growth</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duality">23.4. Duality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-as-two-player-zero-sum-game">23.5. Interpretation as Two-player Zero-sum Game</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-with-linear-programming-lp">23.5.1. Connection with Linear Programming (LP)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">23.5.2. Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1">23.5.2.1. Step 1</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2">23.5.2.2. Step 2</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniqueness-and-irreducibility">23.5.3. Uniqueness and Irreducibility</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-special-case">23.5.4. A Special Case</a></li>
+</ul>
+</li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -265,8 +227,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="von-neumann-growth-model-and-a-generalization">
-<span id="index-0"></span><h1><a class="toc-backref" href="#id14"><span class="section-number">23. </span>Von Neumann Growth Model (and a Generalization)</a><a class="headerlink" href="#von-neumann-growth-model-and-a-generalization" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="von-neumann-growth-model-and-a-generalization">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id14"><span class="section-number">23. </span>Von Neumann Growth Model (and a Generalization)</a><a class="headerlink" href="#von-neumann-growth-model-and-a-generalization" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -574,8 +536,8 @@ following important tools:</p>
 </div>
 </div>
 </div>
-<div class="section" id="notation">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">23.1. </span>Notation</a><a class="headerlink" href="#notation" title="Permalink to this headline">¶</a></h2>
+<section id="notation">
+<h2><a class="toc-backref" href="#id15"><span class="section-number">23.1. </span>Notation</a><a class="headerlink" href="#notation" title="Permalink to this heading">#</a></h2>
 <p>We use the following notation.</p>
 <p><span class="math notranslate nohighlight">\(\mathbf{0}\)</span> denotes
 a vector of zeros.</p>
@@ -602,9 +564,9 @@ row and <span class="math notranslate nohighlight">\(j\)</span> th column.</p>
 <p><span class="math notranslate nohighlight">\(a_{\cdot j}\)</span> and <span class="math notranslate nohighlight">\(a_{i\cdot}\)</span>
 denote the <span class="math notranslate nohighlight">\(j\)</span> th column and <span class="math notranslate nohighlight">\(i\)</span> th row of <span class="math notranslate nohighlight">\(A\)</span>,
 respectively.</p>
-</div>
-<div class="section" id="model-ingredients-and-assumptions">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">23.2. </span>Model Ingredients and Assumptions</a><a class="headerlink" href="#model-ingredients-and-assumptions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="model-ingredients-and-assumptions">
+<h2><a class="toc-backref" href="#id16"><span class="section-number">23.2. </span>Model Ingredients and Assumptions</a><a class="headerlink" href="#model-ingredients-and-assumptions" title="Permalink to this heading">#</a></h2>
 <p>A pair <span class="math notranslate nohighlight">\((A,B)\)</span> of <span class="math notranslate nohighlight">\(m\times n\)</span> non-negative matrices defines
 an economy.</p>
 <ul class="simple">
@@ -729,9 +691,9 @@ Assumptions:
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="dynamic-interpretation">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">23.3. </span>Dynamic Interpretation</a><a class="headerlink" href="#dynamic-interpretation" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="dynamic-interpretation">
+<h2><a class="toc-backref" href="#id17"><span class="section-number">23.3. </span>Dynamic Interpretation</a><a class="headerlink" href="#dynamic-interpretation" title="Permalink to this heading">#</a></h2>
 <p>Attach a time index <span class="math notranslate nohighlight">\(t\)</span> to the preceding objects, regard an economy
 as a dynamic system, and study sequences</p>
 <div class="math notranslate nohighlight">
@@ -759,8 +721,8 @@ x^T_{t}B \geq x^T_{t+1} A \hspace{1cm}\forall t\geq 1
 yesterday.</p>
 <p>Accordingly, <span class="math notranslate nohighlight">\(Ap_t\)</span> tells the costs of production in period
 <span class="math notranslate nohighlight">\(t\)</span> and <span class="math notranslate nohighlight">\(Bp_t\)</span> tells revenues in period <span class="math notranslate nohighlight">\(t+1\)</span>.</p>
-<div class="section" id="balanced-growth">
-<h3><span class="section-number">23.3.1. </span>Balanced Growth<a class="headerlink" href="#balanced-growth" title="Permalink to this headline">¶</a></h3>
+<section id="balanced-growth">
+<h3><span class="section-number">23.3.1. </span>Balanced Growth<a class="headerlink" href="#balanced-growth" title="Permalink to this heading">#</a></h3>
 <p>We follow John von Neumann in studying “balanced growth”.</p>
 <p>Let <span class="math notranslate nohighlight">\(./\)</span> denote an elementwise division of one vector by another and let
 <span class="math notranslate nohighlight">\(\alpha &gt;0\)</span> be a scalar.</p>
@@ -792,10 +754,10 @@ period <span class="math notranslate nohighlight">\(t+1\)</span>).</p>
 <p>The balanced growth assumption allows us to drop time subscripts and
 conduct an analysis purely in terms of a time-invariant growth rate
 <span class="math notranslate nohighlight">\(\alpha\)</span> and interest factor <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
-</div>
-</div>
-<div class="section" id="duality">
-<h2><a class="toc-backref" href="#id18"><span class="section-number">23.4. </span>Duality</a><a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="duality">
+<h2><a class="toc-backref" href="#id18"><span class="section-number">23.4. </span>Duality</a><a class="headerlink" href="#duality" title="Permalink to this heading">#</a></h2>
 <p>Two problems are connected by a remarkable dual
 relationship between  technological and valuation characteristics of
 the economy:</p>
@@ -894,9 +856,9 @@ x^T_0 B p_0 &gt; 0
 <p>They show that
 this extra condition does not affect the existence result, while it
 significantly reduces the number of (relevant) solutions.</p>
-</div>
-<div class="section" id="interpretation-as-two-player-zero-sum-game">
-<h2><a class="toc-backref" href="#id19"><span class="section-number">23.5. </span>Interpretation as Two-player Zero-sum Game</a><a class="headerlink" href="#interpretation-as-two-player-zero-sum-game" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="interpretation-as-two-player-zero-sum-game">
+<h2><a class="toc-backref" href="#id19"><span class="section-number">23.5. </span>Interpretation as Two-player Zero-sum Game</a><a class="headerlink" href="#interpretation-as-two-player-zero-sum-game" title="Permalink to this heading">#</a></h2>
 <p>To compute the equilibrium <span class="math notranslate nohighlight">\((\gamma^{*}, x_0, p_0)\)</span>, we follow the
 algorithm proposed by Hamburger, Thompson and Weil (1967), building on
 the key insight that an equilibrium (with balanced growth) can be
@@ -939,8 +901,8 @@ zero-sum game.</p>
 \[
 V(C) = \max_x \min_p \hspace{2mm} x^T C p = \min_p \max_x \hspace{2mm} x^T C p = (x^*)^T C p^*
 \]</div>
-<div class="section" id="connection-with-linear-programming-lp">
-<h3><span class="section-number">23.5.1. </span>Connection with Linear Programming (LP)<a class="headerlink" href="#connection-with-linear-programming-lp" title="Permalink to this headline">¶</a></h3>
+<section id="connection-with-linear-programming-lp">
+<h3><span class="section-number">23.5.1. </span>Connection with Linear Programming (LP)<a class="headerlink" href="#connection-with-linear-programming-lp" title="Permalink to this heading">#</a></h3>
 <p>Nash equilibria of a finite two-player zero-sum game solve  a linear programming problem.</p>
 <p>To see this, we introduce
 the following notation</p>
@@ -1053,14 +1015,14 @@ nonincreasing in <span class="math notranslate nohighlight">\(\gamma\)</span>.</
 <p>This suggests an algorithm to compute
 <span class="math notranslate nohighlight">\((\alpha_0, x_0)\)</span> and <span class="math notranslate nohighlight">\((\beta_0, p_0)\)</span> for a given
 input-output pair <span class="math notranslate nohighlight">\((A, B)\)</span>.</p>
-</div>
-<div class="section" id="algorithm">
-<h3><span class="section-number">23.5.2. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="algorithm">
+<h3><span class="section-number">23.5.2. </span>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this heading">#</a></h3>
 <p>Hamburger, Thompson and Weil <span id="id11">[<a class="reference internal" href="zreferences.html#id77" title="Michael J Hamburger, Gerald L Thompson, and Roman L Weil. Computation of expansion rates for the generalized von neumann model of an expanding economy. Econometrica, Journal of the Econometric Society, pages 542–547, 1967.">HTW67</a>]</span> propose a simple bisection algorithm
 to find the minimal and maximal roots (i.e. <span class="math notranslate nohighlight">\(\beta_0\)</span> and
 <span class="math notranslate nohighlight">\(\alpha_0\)</span>) of the function <span class="math notranslate nohighlight">\(\gamma \mapsto V(M(\gamma))\)</span>.</p>
-<div class="section" id="step-1">
-<h4><span class="section-number">23.5.2.1. </span>Step 1<a class="headerlink" href="#step-1" title="Permalink to this headline">¶</a></h4>
+<section id="step-1">
+<h4><span class="section-number">23.5.2.1. </span>Step 1<a class="headerlink" href="#step-1" title="Permalink to this heading">#</a></h4>
 <p>First, notice that we can easily find trivial upper and lower bounds for
 <span class="math notranslate nohighlight">\(\alpha_0\)</span> and <span class="math notranslate nohighlight">\(\beta_0\)</span>.</p>
 <ul class="simple">
@@ -1092,13 +1054,13 @@ solves <span class="math notranslate nohighlight">\(\min_j\{[\iota^T_m(B-\beta^{
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="step-2">
-<h4><span class="section-number">23.5.2.2. </span>Step 2<a class="headerlink" href="#step-2" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="step-2">
+<h4><span class="section-number">23.5.2.2. </span>Step 2<a class="headerlink" href="#step-2" title="Permalink to this heading">#</a></h4>
 <p>Compute <span class="math notranslate nohighlight">\(\alpha_0\)</span> and <span class="math notranslate nohighlight">\(\beta_0\)</span></p>
 <ul class="simple">
 <li><p>Finding <span class="math notranslate nohighlight">\(\alpha_0\)</span></p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Fix <span class="math notranslate nohighlight">\(\gamma = \frac{UB + LB}{2}\)</span> and compute the solution
 of the two-player zero-sum game associated
 with <span class="math notranslate nohighlight">\(M(\gamma)\)</span>. We can use either the primal or the dual
@@ -1109,7 +1071,7 @@ otherwise let <span class="math notranslate nohighlight">\(UB = \gamma\)</span>.
 </ol>
 </li>
 <li><p>Finding <span class="math notranslate nohighlight">\(\beta_0\)</span></p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Fix <span class="math notranslate nohighlight">\(\gamma = \frac{UB + LB}{2}\)</span> and compute the solution
 of the two-player zero-sum game associated.
 with <span class="math notranslate nohighlight">\(M(\gamma)\)</span>. We can use either the primal or the dual
@@ -1175,7 +1137,7 @@ Price vector (from the dual)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/von_neumann_model_14_0.png" src="_images/von_neumann_model_14_0.png" />
+<img alt="_images/b7c25500f96537201698cfbaa2ffe86f079648f140c19daa43cd00c33c93fb16.png" src="_images/b7c25500f96537201698cfbaa2ffe86f079648f140c19daa43cd00c33c93fb16.png" />
 </div>
 </div>
 <p>The <em>expansion</em> method implements the bisection algorithm for
@@ -1221,10 +1183,10 @@ The corresponding x from the primal = [0.33 0.26 0.41]
 case of an irreducible <span class="math notranslate nohighlight">\((A,B)\)</span> (like in Example 1), the maximal
 and minimal roots of <span class="math notranslate nohighlight">\(V(M(\gamma))\)</span> necessarily coincide implying
 a ‘‘full duality’’ result, i.e. <span class="math notranslate nohighlight">\(\alpha_0 = \beta_0 = \gamma^*\)</span> so that the expansion (and interest) rate <span class="math notranslate nohighlight">\(\gamma^*\)</span> is unique.</p>
-</div>
-</div>
-<div class="section" id="uniqueness-and-irreducibility">
-<h3><span class="section-number">23.5.3. </span>Uniqueness and Irreducibility<a class="headerlink" href="#uniqueness-and-irreducibility" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="uniqueness-and-irreducibility">
+<h3><span class="section-number">23.5.3. </span>Uniqueness and Irreducibility<a class="headerlink" href="#uniqueness-and-irreducibility" title="Permalink to this heading">#</a></h3>
 <p>As an illustration, compute first the maximal and minimal roots of
 <span class="math notranslate nohighlight">\(V(M(\cdot))\)</span> for our Example 2 that has a reducible
 input-output pair <span class="math notranslate nohighlight">\((A, B)\)</span></p>
@@ -1280,9 +1242,9 @@ imposing irreducibility is sufficient for uniqueness of
 <span class="math notranslate nohighlight">\((\gamma^*, x_0, p_0)\)</span>.</p>
 <p><strong>Theorem II:</strong> Adopt the conditions of Theorem 1. If the economy
 <span class="math notranslate nohighlight">\((A,B)\)</span> is irreducible, then <span class="math notranslate nohighlight">\(\gamma^*=\alpha_0=\beta_0\)</span>.</p>
-</div>
-<div class="section" id="a-special-case">
-<h3><span class="section-number">23.5.4. </span>A Special Case<a class="headerlink" href="#a-special-case" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="a-special-case">
+<h3><span class="section-number">23.5.4. </span>A Special Case<a class="headerlink" href="#a-special-case" title="Permalink to this heading">#</a></h3>
 <p>There is a special <span class="math notranslate nohighlight">\((A,B)\)</span> that allows us to simplify the solution
 method significantly by invoking the powerful Perron-Frobenius theorem
 for non-negative matrices.</p>
@@ -1319,9 +1281,9 @@ associated expansion and interest factors, respectively. Then we have</p>
 \[
 \alpha_0 = \max_i \{\alpha_i\}\hspace{1cm}\text{and}\hspace{1cm}\beta_0 = \min_i \{\beta_i\}
 \]</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1335,7 +1297,7 @@ associated expansion and interest factors, respectively. Then we have</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1916,7 +1878,7 @@ associated expansion and interest factors, respectively. Then we have</p>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -2058,16 +2020,5 @@ associated expansion and interest factors, respectively. Then we have</p>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

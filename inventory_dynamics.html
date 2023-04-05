@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>27. Inventory Dynamics &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'inventory_dynamics';</script>
     <link rel="canonical" href="https://python.quantecon.org/inventory_dynamics.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,28 +161,11 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   27.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sample-paths">
-   27.2. Sample Paths
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#marginal-distributions">
-   27.3. Marginal Distributions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises">
-   27.4. Exercises
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">27.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-paths">27.2. Sample Paths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marginal-distributions">27.3. Marginal Distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">27.4. Exercises</a></li>
 </ul>
-
                             <p class="logo">
                                 
                                     
@@ -219,8 +213,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="inventory-dynamics">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">27. </span>Inventory Dynamics</a><a class="headerlink" href="#inventory-dynamics" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="inventory-dynamics">
+<h1><a class="toc-backref" href="#id2"><span class="section-number">27. </span>Inventory Dynamics</a><a class="headerlink" href="#inventory-dynamics" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -234,12 +228,12 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">27.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">27.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In this lecture we will study the time path of inventories for firms that
 follow so-called s-S inventory dynamics.</p>
 <p>Such firms</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>wait until inventory falls below some level <span class="math notranslate nohighlight">\(s\)</span> and then</p></li>
 <li><p>order sufficient quantities to bring their inventory back up to capacity <span class="math notranslate nohighlight">\(S\)</span>.</p></li>
 </ol>
@@ -260,9 +254,9 @@ follow so-called s-S inventory dynamics.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="sample-paths">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">27.2. </span>Sample Paths</a><a class="headerlink" href="#sample-paths" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="sample-paths">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">27.2. </span>Sample Paths</a><a class="headerlink" href="#sample-paths" title="Permalink to this heading">#</a></h2>
 <p>Consider a firm with inventory <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
 <p>The firm waits until <span class="math notranslate nohighlight">\(X_t \leq s\)</span> and then restocks up to <span class="math notranslate nohighlight">\(S\)</span> units.</p>
 <p>It faces stochastic demand <span class="math notranslate nohighlight">\(\{ D_t \}\)</span>, which we assume is IID.</p>
@@ -353,7 +347,7 @@ and standard normal.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/inventory_dynamics_5_0.png" src="_images/inventory_dynamics_5_0.png" />
+<img alt="_images/6f954df1e3061aef0726865e3c53466f47d62cb1b81c8fad432e6b8ba5e1222c.png" src="_images/6f954df1e3061aef0726865e3c53466f47d62cb1b81c8fad432e6b8ba5e1222c.png" />
 </div>
 </div>
 <p>Now let’s simulate multiple paths in order to build a more complete picture of
@@ -377,12 +371,12 @@ the probabilities of different outcomes:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/inventory_dynamics_7_0.png" src="_images/inventory_dynamics_7_0.png" />
+<img alt="_images/a99649496186339885d8cf6620f2b4f10abfd9ddff31139cb1293f5873719357.png" src="_images/a99649496186339885d8cf6620f2b4f10abfd9ddff31139cb1293f5873719357.png" />
 </div>
 </div>
-</div>
-<div class="section" id="marginal-distributions">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">27.3. </span>Marginal Distributions</a><a class="headerlink" href="#marginal-distributions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="marginal-distributions">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">27.3. </span>Marginal Distributions</a><a class="headerlink" href="#marginal-distributions" title="Permalink to this heading">#</a></h2>
 <p>Now let’s look at the marginal distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> of <span class="math notranslate nohighlight">\(X_T\)</span> for some
 fixed <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>We will do this by generating many draws of <span class="math notranslate nohighlight">\(X_T\)</span> given initial
@@ -431,7 +425,7 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/inventory_dynamics_9_0.png" src="_images/inventory_dynamics_9_0.png" />
+<img alt="_images/5cd099de9416fbb302cb6763902b0828aa79f339cc2fc66d860a496902fc8cb5.png" src="_images/5cd099de9416fbb302cb6763902b0828aa79f339cc2fc66d860a496902fc8cb5.png" />
 </div>
 </div>
 <p>We can build up a clearer picture by drawing more samples</p>
@@ -458,7 +452,7 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/inventory_dynamics_11_0.png" src="_images/inventory_dynamics_11_0.png" />
+<img alt="_images/0feaa06aec13be1d227457cb1fb6b35ecfb3001fdc86447e4341e0564516a1d4.png" src="_images/0feaa06aec13be1d227457cb1fb6b35ecfb3001fdc86447e4341e0564516a1d4.png" />
 </div>
 </div>
 <p>Note that the distribution is bimodal</p>
@@ -495,18 +489,18 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/inventory_dynamics_14_0.png" src="_images/inventory_dynamics_14_0.png" />
+<img alt="_images/24552d98d69f7d95465a97e9679be94decf632fcd50daa34c8ae08f191b03ae1.png" src="_images/24552d98d69f7d95465a97e9679be94decf632fcd50daa34c8ae08f191b03ae1.png" />
 </div>
 </div>
 <p>The allocation of probability mass is similar to what was shown by the
 histogram just above.</p>
-</div>
-<div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">27.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">27.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="id_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 27.1 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>This model is asymptotically stationary, with a unique stationary
 distribution.</p>
 <p>(See the discussion of stationarity in <a class="reference internal" href="ar1_processes.html"><span class="doc">our lecture on AR(1) processes</span></a> for background — the fundamental concepts are the same.)</p>
@@ -520,13 +514,13 @@ initial conditions.</p>
 distribution.)</p>
 <p>You should see convergence, in the sense that differences between successive distributions are getting smaller.</p>
 <p>Try different initial conditions to verify that, in the long run, the distribution is invariant across initial conditions.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="inventory_dynamics-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#id_ex1"> Exercise 27.1</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Below is one possible solution:</p>
+<section id="solution-content">
+<p>Below is one possible solution:</p>
 <p>The computations involve a lot of CPU cycles so we have tried to write the
 code efficiently.</p>
 <p>This meant writing a specialized function rather than using the class above.</p>
@@ -583,7 +577,7 @@ code efficiently.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/inventory_dynamics_17_0.png" src="_images/inventory_dynamics_17_0.png" />
+<img alt="_images/a3d0ca598ffff6ba588c2711e416dc3f4f15182a283b3628380628c95d246877.png" src="_images/a3d0ca598ffff6ba588c2711e416dc3f4f15182a283b3628380628c95d246877.png" />
 </div>
 </div>
 <p>Notice that by <span class="math notranslate nohighlight">\(t=500\)</span> or <span class="math notranslate nohighlight">\(t=750\)</span> the densities are barely
@@ -591,24 +585,24 @@ changing.</p>
 <p>We have reached a reasonable approximation of the stationary density.</p>
 <p>You can convince yourself that initial conditions don’t matter by
 testing a few of them.</p>
-<p>For example, try rerunning the code above will all firms starting at
+<p>For example, try rerunning the code above with all firms starting at
 <span class="math notranslate nohighlight">\(X_0 = 20\)</span> or <span class="math notranslate nohighlight">\(X_0 = 80\)</span>.</p>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="id_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 27.2 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Using simulation, calculate the probability that firms that start with
 <span class="math notranslate nohighlight">\(X_0 = 70\)</span> need to order twice or more in the first 50 periods.</p>
 <p>You will need a large sample size to get an accurate reading.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="inventory_dynamics-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#id_ex2"> Exercise 27.2</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution.</p>
+<section id="solution-content">
+<p>Here is one solution.</p>
 <p>Again, the computations are relatively intensive so we have written a a
 specialized function rather than using the class above.</p>
 <p>We will also use parallelization across firms.</p>
@@ -650,9 +644,9 @@ specialized function rather than using the class above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Frequency of at least two stock outs = 0.446776
-CPU times: user 4.16 s, sys: 12.1 ms, total: 4.17 s
-Wall time: 1.16 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Frequency of at least two stock outs = 0.446705
+CPU times: user 4.1 s, sys: 3.77 ms, total: 4.1 s
+Wall time: 1.13 s
 </pre></div>
 </div>
 </div>
@@ -661,10 +655,10 @@ Wall time: 1.16 s
 above.</p>
 <p>Depending on your system, the difference can be substantial.</p>
 <p>(On our desktop machine, the speed up is by a factor of 5.)</p>
+</section>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -678,7 +672,7 @@ above.</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1259,7 +1253,7 @@ above.</p>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1401,16 +1395,5 @@ above.</p>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

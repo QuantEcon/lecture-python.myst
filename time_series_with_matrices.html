@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>11. Univariate Time Series with Matrix Algebra &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'time_series_with_matrices';</script>
     <link rel="canonical" href="https://python.quantecon.org/time_series_with_matrices.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,38 +161,13 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   11.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#samuelsons-model">
-   11.2. Samuelson’s model
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#adding-a-random-term">
-   11.3. Adding a Random Term
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#computing-population-moments">
-   11.4. Computing Population Moments
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#moving-average-representation">
-   11.5. Moving Average Representation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#a-forward-looking-model">
-   11.6. A Forward Looking Model
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">11.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#samuelsons-model">11.2. Samuelson’s model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-a-random-term">11.3. Adding a Random Term</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-population-moments">11.4. Computing Population Moments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-average-representation">11.5. Moving Average Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-forward-looking-model">11.6. A Forward Looking Model</a></li>
 </ul>
-
                             <p class="logo">
                                 
                                     
@@ -229,8 +215,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="univariate-time-series-with-matrix-algebra">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">11. </span>Univariate Time Series with Matrix Algebra</a><a class="headerlink" href="#univariate-time-series-with-matrix-algebra" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="univariate-time-series-with-matrix-algebra">
+<h1><a class="toc-backref" href="#id2"><span class="section-number">11. </span>Univariate Time Series with Matrix Algebra</a><a class="headerlink" href="#univariate-time-series-with-matrix-algebra" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -246,8 +232,8 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">11.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">11.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture uses matrices to solve some linear difference equations.</p>
 <p>As a running example, we’ll study a <strong>second-order linear difference
 equation</strong> that was the key technical tool in Paul Samuelson’s 1939
@@ -273,13 +259,13 @@ a “forward-looking” linear difference equation.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="samuelsons-model">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">11.2. </span>Samuelson’s model</a><a class="headerlink" href="#samuelsons-model" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="samuelsons-model">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">11.2. </span>Samuelson’s model</a><a class="headerlink" href="#samuelsons-model" title="Permalink to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(t = 0, \pm 1, \pm 2, \ldots\)</span> index time.</p>
 <p>For <span class="math notranslate nohighlight">\(t = 1, 2, 3, \ldots, T\)</span> suppose that</p>
 <div class="math notranslate nohighlight" id="equation-tswm-1">
-<span class="eqno">(11.1)<a class="headerlink" href="#equation-tswm-1" title="Permalink to this equation">¶</a></span>\[y_{t} = \alpha_{0} + \alpha_{1} y_{t-1} + \alpha_{2} y_{t-2}\]</div>
+<span class="eqno">(11.1)<a class="headerlink" href="#equation-tswm-1" title="Permalink to this equation">#</a></span>\[y_{t} = \alpha_{0} + \alpha_{1} y_{t-1} + \alpha_{2} y_{t-2}\]</div>
 <p>where we assume that <span class="math notranslate nohighlight">\(y_0\)</span> and <span class="math notranslate nohighlight">\(y_{-1}\)</span> are given numbers
 that we take as <strong>initial conditions</strong>.</p>
 <p>In Samuelson’s model, <span class="math notranslate nohighlight">\(y_t\)</span> stood for <strong>national income</strong> or perhaps a different
@@ -459,7 +445,7 @@ it directly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_15_0.png" src="_images/time_series_with_matrices_15_0.png" />
+<img alt="_images/7db9eaaa083a17bea914f57762da683ab2fad73111016a3e4a731e3f911fb926.png" src="_images/7db9eaaa083a17bea914f57762da683ab2fad73111016a3e4a731e3f911fb926.png" />
 </div>
 </div>
 <p>The <strong>steady state</strong> value <span class="math notranslate nohighlight">\(y^*\)</span> of <span class="math notranslate nohighlight">\(y_t\)</span> is obtained by setting <span class="math notranslate nohighlight">\(y_t = y_{t-1} =
@@ -501,18 +487,18 @@ constant:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_19_0.png" src="_images/time_series_with_matrices_19_0.png" />
+<img alt="_images/3d41ce7c84bb347ef49afe8d7029743828e885802b4c5a817c59949c6a13107b.png" src="_images/3d41ce7c84bb347ef49afe8d7029743828e885802b4c5a817c59949c6a13107b.png" />
 </div>
 </div>
-</div>
-<div class="section" id="adding-a-random-term">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">11.3. </span>Adding a Random Term</a><a class="headerlink" href="#adding-a-random-term" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="adding-a-random-term">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">11.3. </span>Adding a Random Term</a><a class="headerlink" href="#adding-a-random-term" title="Permalink to this heading">#</a></h2>
 <p>To generate some excitement, we’ll follow in the spirit of the great economists
 Eugen Slutsky and Ragnar Frisch and replace our original second-order difference
 equation with the following <strong>second-order stochastic linear difference
 equation</strong>:</p>
 <div class="math notranslate nohighlight" id="equation-tswm-2">
-<span class="eqno">(11.2)<a class="headerlink" href="#equation-tswm-2" title="Permalink to this equation">¶</a></span>\[y_{t} = \alpha_{0} + \alpha_{1} y_{t-1} + \alpha_{2} y_{t-2} + u_t\]</div>
+<span class="eqno">(11.2)<a class="headerlink" href="#equation-tswm-2" title="Permalink to this equation">#</a></span>\[y_{t} = \alpha_{0} + \alpha_{1} y_{t-1} + \alpha_{2} y_{t-2} + u_t\]</div>
 <p>where <span class="math notranslate nohighlight">\(u_{t} \sim N\left(0, \sigma_{u}^{2}\right)\)</span> and is IID,
 meaning <strong>independent</strong> and <strong>identically</strong> distributed.</p>
 <p>We’ll stack these <span class="math notranslate nohighlight">\(T\)</span> equations into a system cast in terms of
@@ -530,12 +516,12 @@ u_{T}
 <p>Where <span class="math notranslate nohighlight">\(A, b, y\)</span> are defined as above, now assume that <span class="math notranslate nohighlight">\(y\)</span> is
 governed by the system</p>
 <div class="math notranslate nohighlight" id="equation-eq-eqar">
-<span class="eqno">(11.3)<a class="headerlink" href="#equation-eq-eqar" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(11.3)<a class="headerlink" href="#equation-eq-eqar" title="Permalink to this equation">#</a></span>\[
 A y = b + u
 \]</div>
 <p>The solution for <span class="math notranslate nohighlight">\(y\)</span> becomes</p>
 <div class="math notranslate nohighlight" id="equation-eq-eqma">
-<span class="eqno">(11.4)<a class="headerlink" href="#equation-eq-eqma" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(11.4)<a class="headerlink" href="#equation-eq-eqma" title="Permalink to this equation">#</a></span>\[
 y = A^{-1} \left(b + u\right)
 \]</div>
 <p>Let’s try it out in Python.</p>
@@ -565,7 +551,7 @@ y = A^{-1} \left(b + u\right)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_23_0.png" src="_images/time_series_with_matrices_23_0.png" />
+<img alt="_images/4b6d9d600511c40f04ee37055897e449d6889f10e0a02900d671f9f9cbb2ab78.png" src="_images/4b6d9d600511c40f04ee37055897e449d6889f10e0a02900d671f9f9cbb2ab78.png" />
 </div>
 </div>
 <p>The above time series looks a lot like (detrended) GDP series for a
@@ -589,7 +575,7 @@ number of advanced countries in recent decades.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_25_0.png" src="_images/time_series_with_matrices_25_0.png" />
+<img alt="_images/db30c26dc28e241004f25cd005615d2f641fd2107ee6090808d0fdbcc3dc706e.png" src="_images/db30c26dc28e241004f25cd005615d2f641fd2107ee6090808d0fdbcc3dc706e.png" />
 </div>
 </div>
 <p>Also consider the case when <span class="math notranslate nohighlight">\(y_{0}\)</span> and <span class="math notranslate nohighlight">\(y_{-1}\)</span> are at
@@ -612,12 +598,12 @@ steady state.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_27_0.png" src="_images/time_series_with_matrices_27_0.png" />
+<img alt="_images/7139d62244639c91094f55a4bb715dacb4590e4e9eb6829350ce67b94360e2ee.png" src="_images/7139d62244639c91094f55a4bb715dacb4590e4e9eb6829350ce67b94360e2ee.png" />
 </div>
 </div>
-</div>
-<div class="section" id="computing-population-moments">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">11.4. </span>Computing Population Moments</a><a class="headerlink" href="#computing-population-moments" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="computing-population-moments">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">11.4. </span>Computing Population Moments</a><a class="headerlink" href="#computing-population-moments" title="Permalink to this heading">#</a></h2>
 <p>We can apply standard formulas for multivariate normal distributions to compute the mean vector and covariance matrix
 for our time series model</p>
 <div class="math notranslate nohighlight">
@@ -732,7 +718,7 @@ y \sim {\mathcal N}(\mu_y, \Sigma_y)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_31_0.png" src="_images/time_series_with_matrices_31_0.png" />
+<img alt="_images/b0942b34bdb3aa5e1efe77d40481a50c95a86ff390d0b110ed92751dc02f7588.png" src="_images/b0942b34bdb3aa5e1efe77d40481a50c95a86ff390d0b110ed92751dc02f7588.png" />
 </div>
 </div>
 <p>Visually, notice how the  variance across realizations of <span class="math notranslate nohighlight">\(y_t\)</span> decreases as <span class="math notranslate nohighlight">\(t\)</span> increases.</p>
@@ -746,7 +732,7 @@ y \sim {\mathcal N}(\mu_y, \Sigma_y)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_33_0.png" src="_images/time_series_with_matrices_33_0.png" />
+<img alt="_images/d0634ceacb28f87df03e7d7f0bc6dfe4ed17d154840c3d66d16a555c8d12556f.png" src="_images/d0634ceacb28f87df03e7d7f0bc6dfe4ed17d154840c3d66d16a555c8d12556f.png" />
 </div>
 </div>
 <p>Notice how the population variance increases and asymptotes</p>
@@ -796,9 +782,9 @@ Sigma_y =  [[1.         0.8        0.64       0.512      0.4096     0.32768   ]
 <p>This is an indication that our process is asymptotically stationary.</p>
 <p>You can read  about stationarity of more general linear time series models in this lecture <a class="reference internal" href="linear_models.html"><span class="doc">Linear State Space Models</span></a>.</p>
 <p>There is a lot to be learned about the process by staring at the off diagonal elements of <span class="math notranslate nohighlight">\(\Sigma_y\)</span> corresponding to different time periods <span class="math notranslate nohighlight">\(t\)</span>, but we resist the temptation to do so here.</p>
-</div>
-<div class="section" id="moving-average-representation">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">11.5. </span>Moving Average Representation</a><a class="headerlink" href="#moving-average-representation" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="moving-average-representation">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">11.5. </span>Moving Average Representation</a><a class="headerlink" href="#moving-average-representation" title="Permalink to this heading">#</a></h2>
 <p>Let’s print out  <span class="math notranslate nohighlight">\(A^{-1}\)</span> and stare at  its structure</p>
 <ul class="simple">
 <li><p>is it triangular or almost triangular or <span class="math notranslate nohighlight">\(\ldots\)</span> ?</p></li>
@@ -813,11 +799,11 @@ Sigma_y =  [[1.         0.8        0.64       0.512      0.4096     0.32768   ]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.    -0.    -0.    -0.    -0.    -0.    -0.   ]
- [ 1.53   1.    -0.    -0.    -0.    -0.    -0.   ]
- [ 1.441  1.53   1.     0.    -0.     0.     0.   ]
- [ 0.828  1.441  1.53   1.    -0.     0.     0.   ]
- [-0.031  0.828  1.441  1.53   1.    -0.    -0.   ]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.    -0.     0.    -0.    -0.     0.    -0.   ]
+ [ 1.53   1.     0.    -0.    -0.     0.    -0.   ]
+ [ 1.441  1.53   1.     0.     0.     0.     0.   ]
+ [ 0.828  1.441  1.53   1.     0.     0.     0.   ]
+ [-0.031  0.828  1.441  1.53   1.     0.    -0.   ]
  [-0.792 -0.031  0.828  1.441  1.53   1.     0.   ]
  [-1.184 -0.792 -0.031  0.828  1.441  1.53   1.   ]]
 </pre></div>
@@ -834,11 +820,11 @@ Sigma_y =  [[1.         0.8        0.64       0.512      0.4096     0.32768   ]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.    -0.     0.     0.     0.     0.     0.     0.   ]
- [ 1.53   1.    -0.    -0.     0.    -0.    -0.    -0.   ]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.     0.     0.     0.     0.     0.     0.     0.   ]
+ [ 1.53   1.     0.    -0.    -0.     0.    -0.    -0.   ]
  [ 1.441  1.53   1.     0.     0.     0.     0.     0.   ]
  [ 0.828  1.441  1.53   1.     0.     0.     0.     0.   ]
- [-0.031  0.828  1.441  1.53   1.    -0.    -0.    -0.   ]
+ [-0.031  0.828  1.441  1.53   1.     0.    -0.    -0.   ]
  [-0.792 -0.031  0.828  1.441  1.53   1.     0.     0.   ]
  [-1.184 -0.792 -0.031  0.828  1.441  1.53   1.     0.   ]
  [-1.099 -1.184 -0.792 -0.031  0.828  1.441  1.53   1.   ]]
@@ -861,9 +847,9 @@ y_{t+1}=\sum_{i=1}^{t+1}\tilde{A}_{t+1,i}b_{i}+\sum_{i=1}^{t}\tilde{A}_{t+1,i}u_
 <p>This is  a <strong>moving average</strong> representation with time-varying coefficients.</p>
 <p>Just as system <a class="reference internal" href="#equation-eq-eqma">(11.4)</a> constitutes  a
 <strong>moving average</strong> representation for <span class="math notranslate nohighlight">\(y\)</span>, system  <a class="reference internal" href="#equation-eq-eqar">(11.3)</a> constitutes  an <strong>autoregressive</strong> representation for <span class="math notranslate nohighlight">\(y\)</span>.</p>
-</div>
-<div class="section" id="a-forward-looking-model">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">11.6. </span>A Forward Looking Model</a><a class="headerlink" href="#a-forward-looking-model" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="a-forward-looking-model">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">11.6. </span>A Forward Looking Model</a><a class="headerlink" href="#a-forward-looking-model" title="Permalink to this heading">#</a></h2>
 <p>Samuelson’s model is <strong>backwards looking</strong> in the sense that we give it <strong>initial conditions</strong> and let it
 run.</p>
 <p>Let’s now turn to model  that is <strong>forward looking</strong>.</p>
@@ -981,7 +967,7 @@ y_{T}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_50_0.png" src="_images/time_series_with_matrices_50_0.png" />
+<img alt="_images/ca41188caa3e0ab42515ad240018bcaf4bf02c213edbc9f437280ad979ddf7ef.png" src="_images/ca41188caa3e0ab42515ad240018bcaf4bf02c213edbc9f437280ad979ddf7ef.png" />
 </div>
 </div>
 <p>Can you explain why the trend of the price is downward over time?</p>
@@ -1002,11 +988,11 @@ steady state.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/time_series_with_matrices_52_0.png" src="_images/time_series_with_matrices_52_0.png" />
+<img alt="_images/e3aff62812f170fdbabdcd1e27a49522773ce747b3427f7702ffab2bd08faaa7.png" src="_images/e3aff62812f170fdbabdcd1e27a49522773ce747b3427f7702ffab2bd08faaa7.png" />
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1020,7 +1006,7 @@ steady state.</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1601,7 +1587,7 @@ steady state.</p>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1743,16 +1729,5 @@ steady state.</p>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

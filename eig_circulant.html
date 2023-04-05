@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>6. Circulant Matrices &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'eig_circulant';</script>
     <link rel="canonical" href="https://python.quantecon.org/eig_circulant.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,45 +161,16 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   6.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#constructing-a-circulant-matrix">
-   6.2. Constructing a Circulant Matrix
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#some-properties-of-circulant-matrices">
-     6.2.1. Some Properties of Circulant Matrices
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#connection-to-permutation-matrix">
-   6.3. Connection to Permutation Matrix
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#examples-with-python">
-   6.4. Examples with Python
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#associated-permutation-matrix">
-   6.5. Associated Permutation Matrix
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#discrete-fourier-transform">
-   6.6. Discrete Fourier Transform
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">6.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-a-circulant-matrix">6.2. Constructing a Circulant Matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-properties-of-circulant-matrices">6.2.1. Some Properties of Circulant Matrices</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-to-permutation-matrix">6.3. Connection to Permutation Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-with-python">6.4. Examples with Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#associated-permutation-matrix">6.5. Associated Permutation Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-fourier-transform">6.6. Discrete Fourier Transform</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -232,10 +214,10 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <div class="tex2jax_ignore mathjax_ignore section" id="circulant-matrices">
-<h1><span class="section-number">6. </span>Circulant Matrices<a class="headerlink" href="#circulant-matrices" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="overview">
-<h2><span class="section-number">6.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="circulant-matrices">
+<h1><span class="section-number">6. </span>Circulant Matrices<a class="headerlink" href="#circulant-matrices" title="Permalink to this heading">#</a></h1>
+<section id="overview">
+<h2><span class="section-number">6.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes circulant matrices and some of their properties.</p>
 <p>Circulant matrices have a special structure that connects them to  useful concepts
 including</p>
@@ -263,16 +245,16 @@ including</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="constructing-a-circulant-matrix">
-<h2><span class="section-number">6.2. </span>Constructing a Circulant Matrix<a class="headerlink" href="#constructing-a-circulant-matrix" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="constructing-a-circulant-matrix">
+<h2><span class="section-number">6.2. </span>Constructing a Circulant Matrix<a class="headerlink" href="#constructing-a-circulant-matrix" title="Permalink to this heading">#</a></h2>
 <p>To construct an <span class="math notranslate nohighlight">\(N \times N\)</span> circulant matrix, we  need only the first row, say,</p>
 <div class="math notranslate nohighlight">
 \[ \begin{bmatrix} c_{0} &amp; c_{1} &amp; c_{2} &amp; c_{3} &amp; c_{4} &amp; \cdots &amp; c_{N-1} \end{bmatrix} .\]</div>
 <p>After setting entries in the first row, the remaining rows of a circulant matrix are determined as
 follows:</p>
 <div class="math notranslate nohighlight" id="equation-eqn-circulant">
-<span class="eqno">(6.1)<a class="headerlink" href="#equation-eqn-circulant" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(6.1)<a class="headerlink" href="#equation-eqn-circulant" title="Permalink to this equation">#</a></span>\[\begin{split}
 C=\left[\begin{array}{ccccccc}
 c_{0} &amp; c_{1} &amp; c_{2} &amp; c_{3} &amp; c_{4} &amp; \cdots &amp; c_{N-1}\\
 c_{N-1} &amp; c_{0} &amp; c_{1} &amp; c_{2} &amp; c_{3} &amp; \cdots &amp; c_{N-2}\\
@@ -320,8 +302,8 @@ first column needs to be specified.</p>
 </div>
 </div>
 </div>
-<div class="section" id="some-properties-of-circulant-matrices">
-<h3><span class="section-number">6.2.1. </span>Some Properties of Circulant Matrices<a class="headerlink" href="#some-properties-of-circulant-matrices" title="Permalink to this headline">¶</a></h3>
+<section id="some-properties-of-circulant-matrices">
+<h3><span class="section-number">6.2.1. </span>Some Properties of Circulant Matrices<a class="headerlink" href="#some-properties-of-circulant-matrices" title="Permalink to this heading">#</a></h3>
 <p>Here are some useful properties:</p>
 <p>Suppose that <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> are both circulant matrices. Then it can be verified that</p>
 <ul class="simple">
@@ -338,7 +320,7 @@ first column needs to be specified.</p>
 \[ a = \begin{bmatrix} a_0 &amp; a_1 &amp; \cdots  &amp;  a_{N-1} \end{bmatrix} \]</div>
 <p>The <strong>convolution</strong> of  vectors <span class="math notranslate nohighlight">\(c\)</span> and <span class="math notranslate nohighlight">\(a\)</span> is defined   as the vector <span class="math notranslate nohighlight">\(b = c * a \)</span>  with components</p>
 <div class="math notranslate nohighlight" id="equation-eqn-conv">
-<span class="eqno">(6.2)<a class="headerlink" href="#equation-eqn-conv" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(6.2)<a class="headerlink" href="#equation-eqn-conv" title="Permalink to this equation">#</a></span>\[
  b_k = \sum_{i=0}^{n-1} c_{k-i} a_i  
 \]</div>
 <p>We use <span class="math notranslate nohighlight">\(*\)</span> to denote <strong>convolution</strong> via the calculation described in equation <a class="reference internal" href="#equation-eqn-conv">(6.2)</a>.</p>
@@ -346,10 +328,10 @@ first column needs to be specified.</p>
 <div class="math notranslate nohighlight">
 \[ b = C^T a  \]</div>
 <p>where <span class="math notranslate nohighlight">\(C^T\)</span> is the transpose of the circulant matrix  defined in equation <a class="reference internal" href="#equation-eqn-circulant">(6.1)</a>.</p>
-</div>
-</div>
-<div class="section" id="connection-to-permutation-matrix">
-<h2><span class="section-number">6.3. </span>Connection to Permutation Matrix<a class="headerlink" href="#connection-to-permutation-matrix" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="connection-to-permutation-matrix">
+<h2><span class="section-number">6.3. </span>Connection to Permutation Matrix<a class="headerlink" href="#connection-to-permutation-matrix" title="Permalink to this heading">#</a></h2>
 <p>A good way to construct a circulant matrix is to use a <strong>permutation matrix</strong>.</p>
 <p>Before defining a permutation <strong>matrix</strong>, we’ll define a <strong>permutation</strong>.</p>
 <p>A <strong>permutation</strong> of a set of the set of non-negative integers <span class="math notranslate nohighlight">\(\{0, 1, 2, \ldots \}\)</span> is a one-to-one mapping of the set into itself.</p>
@@ -359,7 +341,7 @@ first column needs to be specified.</p>
 <p>Every permutation corresponds to a unique permutation matrix.</p>
 <p>For example, the <span class="math notranslate nohighlight">\(N \times N\)</span> matrix</p>
 <div class="math notranslate nohighlight" id="equation-eqn-examplep">
-<span class="eqno">(6.3)<a class="headerlink" href="#equation-eqn-examplep" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(6.3)<a class="headerlink" href="#equation-eqn-examplep" title="Permalink to this equation">#</a></span>\[\begin{split}
 P=\left[\begin{array}{cccccc}
 0 &amp; 1 &amp; 0 &amp; 0 &amp; \cdots &amp; 0\\
 0 &amp; 0 &amp; 1 &amp; 0 &amp; \cdots &amp; 0\\
@@ -395,9 +377,9 @@ P-\lambda I=\left[\begin{array}{cccccc}
 \[
 P P' = I 
 \]</div>
-</div>
-<div class="section" id="examples-with-python">
-<h2><span class="section-number">6.4. </span>Examples with Python<a class="headerlink" href="#examples-with-python" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="examples-with-python">
+<h2><span class="section-number">6.4. </span>Examples with Python<a class="headerlink" href="#examples-with-python" title="Permalink to this heading">#</a></h2>
 <p>Let’s write some Python code to illustrate these ideas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -448,16 +430,16 @@ P P' = I
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>𝜆0 = -1.0+0.0j 
-vec0 = [-0.5+0.j   0. -0.5j  0. +0.5j -0.5+0.j ]
+vec0 = [-0.5+0.j   0. +0.5j  0. -0.5j -0.5+0.j ]
 
 𝜆1 = 0.0+1.0j 
-vec1 = [ 0.5+0.j  0.5+0.j  0.5-0.j -0.5+0.j]
+vec1 = [ 0.5+0.j -0.5+0.j -0.5-0.j -0.5+0.j]
 
 𝜆2 = 0.0-1.0j 
-vec2 = [-0.5+0.j  -0. +0.5j -0. -0.5j -0.5+0.j ]
+vec2 = [-0.5+0.j   0. -0.5j  0. +0.5j -0.5+0.j ]
 
 𝜆3 = 1.0+0.0j 
-vec3 = [ 0.5+0.j -0.5+0.j -0.5-0.j -0.5+0.j]
+vec3 = [ 0.5+0.j  0.5-0.j  0.5+0.j -0.5+0.j]
 </pre></div>
 </div>
 </div>
@@ -498,7 +480,7 @@ z = \exp\left(\frac{2 \pi j k }{N} \right) , \quad k = 0, \ldots, N-1
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eig_circulant_12_0.png" src="_images/eig_circulant_12_0.png" />
+<img alt="_images/afa3814c06c0b1b20905898294816759fc34cd1b8c5c853549100374dbabe3fd.png" src="_images/afa3814c06c0b1b20905898294816759fc34cd1b8c5c853549100374dbabe3fd.png" />
 </div>
 </div>
 <p>For a vector of  coefficients <span class="math notranslate nohighlight">\(\{c_i\}_{i=0}^{n-1}\)</span>, eigenvectors of <span class="math notranslate nohighlight">\(P\)</span> are also  eigenvectors of</p>
@@ -606,15 +588,15 @@ F_{8}=\left[\begin{array}{ccccc}
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.+0.j, -0.+0.j, -0.+0.j, -0.+0.j, -0.+0.j,  0.+0.j,  0.+0.j,
          0.+0.j],
-       [-0.-0.j,  1.-0.j, -0.+0.j, -0.+0.j, -0.+0.j, -0.+0.j,  0.+0.j,
+       [-0.-0.j,  1.+0.j, -0.+0.j, -0.+0.j, -0.+0.j, -0.+0.j,  0.+0.j,
          0.+0.j],
-       [-0.-0.j, -0.-0.j,  1.+0.j, -0.+0.j, -0.+0.j, -0.+0.j, -0.+0.j,
+       [-0.-0.j, -0.-0.j,  1.+0.j, -0.+0.j, -0.+0.j, -0.+0.j,  0.+0.j,
          0.+0.j],
        [-0.-0.j, -0.-0.j, -0.-0.j,  1.+0.j, -0.+0.j, -0.+0.j, -0.+0.j,
         -0.+0.j],
-       [-0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j,  1.-0.j, -0.+0.j, -0.+0.j,
+       [-0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j,  1.+0.j, -0.+0.j, -0.+0.j,
         -0.+0.j],
-       [ 0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j,  1.-0.j, -0.+0.j,
+       [ 0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j,  1.+0.j, -0.+0.j,
         -0.+0.j],
        [ 0.-0.j,  0.-0.j,  0.-0.j, -0.-0.j, -0.-0.j, -0.-0.j,  1.+0.j,
         -0.+0.j],
@@ -655,9 +637,9 @@ F_{8}=\left[\begin{array}{ccccc}
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="associated-permutation-matrix">
-<h2><span class="section-number">6.5. </span>Associated Permutation Matrix<a class="headerlink" href="#associated-permutation-matrix" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="associated-permutation-matrix">
+<h2><span class="section-number">6.5. </span>Associated Permutation Matrix<a class="headerlink" href="#associated-permutation-matrix" title="Permalink to this heading">#</a></h2>
 <p>Next, we execute calculations to verify that the circulant matrix <span class="math notranslate nohighlight">\(C\)</span> defined  in equation <a class="reference internal" href="#equation-eqn-circulant">(6.1)</a> can be written as</p>
 <div class="math notranslate nohighlight">
 \[
@@ -679,7 +661,7 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.254, 0.485, 0.623, 0.233, 0.167, 0.431, 0.437, 0.577])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.402, 0.022, 0.178, 0.843, 0.488, 0.94 , 0.647, 0.845])
 </pre></div>
 </div>
 </div>
@@ -713,14 +695,14 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.254, 0.485, 0.623, 0.233, 0.167, 0.431, 0.437, 0.577],
-       [0.577, 0.254, 0.485, 0.623, 0.233, 0.167, 0.431, 0.437],
-       [0.437, 0.577, 0.254, 0.485, 0.623, 0.233, 0.167, 0.431],
-       [0.431, 0.437, 0.577, 0.254, 0.485, 0.623, 0.233, 0.167],
-       [0.167, 0.431, 0.437, 0.577, 0.254, 0.485, 0.623, 0.233],
-       [0.233, 0.167, 0.431, 0.437, 0.577, 0.254, 0.485, 0.623],
-       [0.623, 0.233, 0.167, 0.431, 0.437, 0.577, 0.254, 0.485],
-       [0.485, 0.623, 0.233, 0.167, 0.431, 0.437, 0.577, 0.254]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.402, 0.022, 0.178, 0.843, 0.488, 0.94 , 0.647, 0.845],
+       [0.845, 0.402, 0.022, 0.178, 0.843, 0.488, 0.94 , 0.647],
+       [0.647, 0.845, 0.402, 0.022, 0.178, 0.843, 0.488, 0.94 ],
+       [0.94 , 0.647, 0.845, 0.402, 0.022, 0.178, 0.843, 0.488],
+       [0.488, 0.94 , 0.647, 0.845, 0.402, 0.022, 0.178, 0.843],
+       [0.843, 0.488, 0.94 , 0.647, 0.845, 0.402, 0.022, 0.178],
+       [0.178, 0.843, 0.488, 0.94 , 0.647, 0.845, 0.402, 0.022],
+       [0.022, 0.178, 0.843, 0.488, 0.94 , 0.647, 0.845, 0.402]])
 </pre></div>
 </div>
 </div>
@@ -732,14 +714,14 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.254, 0.485, 0.623, 0.233, 0.167, 0.431, 0.437, 0.577],
-       [0.577, 0.254, 0.485, 0.623, 0.233, 0.167, 0.431, 0.437],
-       [0.437, 0.577, 0.254, 0.485, 0.623, 0.233, 0.167, 0.431],
-       [0.431, 0.437, 0.577, 0.254, 0.485, 0.623, 0.233, 0.167],
-       [0.167, 0.431, 0.437, 0.577, 0.254, 0.485, 0.623, 0.233],
-       [0.233, 0.167, 0.431, 0.437, 0.577, 0.254, 0.485, 0.623],
-       [0.623, 0.233, 0.167, 0.431, 0.437, 0.577, 0.254, 0.485],
-       [0.485, 0.623, 0.233, 0.167, 0.431, 0.437, 0.577, 0.254]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.402, 0.022, 0.178, 0.843, 0.488, 0.94 , 0.647, 0.845],
+       [0.845, 0.402, 0.022, 0.178, 0.843, 0.488, 0.94 , 0.647],
+       [0.647, 0.845, 0.402, 0.022, 0.178, 0.843, 0.488, 0.94 ],
+       [0.94 , 0.647, 0.845, 0.402, 0.022, 0.178, 0.843, 0.488],
+       [0.488, 0.94 , 0.647, 0.845, 0.402, 0.022, 0.178, 0.843],
+       [0.843, 0.488, 0.94 , 0.647, 0.845, 0.402, 0.022, 0.178],
+       [0.178, 0.843, 0.488, 0.94 , 0.647, 0.845, 0.402, 0.022],
+       [0.022, 0.178, 0.843, 0.488, 0.94 , 0.647, 0.845, 0.402]])
 </pre></div>
 </div>
 </div>
@@ -776,8 +758,8 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 3.206+0.j   ,  0.367+0.019j, -0.639-0.106j, -0.194+0.391j,
-       -0.245-0.j   , -0.194-0.391j, -0.639+0.106j,  0.367-0.019j])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 4.365+0.j   , -0.734+1.12j ,  0.065+0.726j,  0.562+0.182j,
+       -0.935-0.j   ,  0.562-0.182j,  0.065-0.726j, -0.734-1.12j ])
 </pre></div>
 </div>
 </div>
@@ -793,21 +775,21 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j]
-[ 0.+0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.+0.j -0.+0.j  0.-0.j]
-[ 0.-0.j -0.-0.j -0.-0.j -0.+0.j  0.+0.j  0.-0.j -0.-0.j -0.-0.j]
-[ 0.-0.j -0.-0.j -0.+0.j  0.-0.j -0.-0.j  0.+0.j  0.-0.j -0.+0.j]
-[-0.+0.j -0.-0.j  0.+0.j -0.-0.j  0.+0.j -0.-0.j  0.+0.j  0.-0.j]
-[ 0.-0.j  0.-0.j  0.-0.j -0.-0.j  0.-0.j  0.+0.j -0.-0.j  0.-0.j]
-[ 0.-0.j  0.-0.j  0.-0.j  0.+0.j -0.+0.j -0.-0.j  0.-0.j  0.-0.j]
-[ 0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.+0.j  0.+0.j -0.-0.j]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-0.+0.j -0.+0.j -0.+0.j -0.+0.j -0.+0.j -0.+0.j -0.+0.j -0.+0.j]
+[-0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.+0.j -0.+0.j -0.+0.j]
+[ 0.+0.j  0.-0.j -0.-0.j -0.-0.j -0.+0.j  0.-0.j -0.-0.j -0.+0.j]
+[-0.-0.j  0.-0.j -0.-0.j  0.-0.j -0.-0.j  0.-0.j -0.-0.j  0.+0.j]
+[ 0.+0.j -0.-0.j  0.+0.j  0.-0.j -0.+0.j  0.-0.j -0.+0.j -0.-0.j]
+[ 0.+0.j -0.-0.j  0.-0.j -0.-0.j  0.-0.j -0.-0.j  0.-0.j  0.+0.j]
+[-0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.+0.j -0.-0.j  0.-0.j  0.+0.j]
+[0.+0.j 0.-0.j 0.-0.j 0.-0.j 0.-0.j 0.+0.j 0.+0.j 0.+0.j]
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="discrete-fourier-transform">
-<h2><span class="section-number">6.6. </span>Discrete Fourier Transform<a class="headerlink" href="#discrete-fourier-transform" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="discrete-fourier-transform">
+<h2><span class="section-number">6.6. </span>Discrete Fourier Transform<a class="headerlink" href="#discrete-fourier-transform" title="Permalink to this heading">#</a></h2>
 <p>The <strong>Discrete Fourier Transform</strong> (DFT) allows us to  represent a  discrete time sequence as a weighted sum of complex sinusoids.</p>
 <p>Consider a sequence of <span class="math notranslate nohighlight">\(N\)</span> real number <span class="math notranslate nohighlight">\(\{x_j\}_{j=0}^{N-1}\)</span>.</p>
 <p>The <strong>Discrete Fourier Transform</strong> maps <span class="math notranslate nohighlight">\(\{x_j\}_{j=0}^{N-1}\)</span> into a sequence of complex numbers <span class="math notranslate nohighlight">\(\{X_k\}_{k=0}^{N-1}\)</span></p>
@@ -923,8 +905,8 @@ x_{n}=\begin{cases}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eig_circulant_51_0.png" src="_images/eig_circulant_51_0.png" />
-<img alt="_images/eig_circulant_51_1.png" src="_images/eig_circulant_51_1.png" />
+<img alt="_images/a4fc47eea094c78affc131609df9cbf46b6ce968f3851c98dbec648fea68c8e6.png" src="_images/a4fc47eea094c78affc131609df9cbf46b6ce968f3851c98dbec648fea68c8e6.png" />
+<img alt="_images/5604d024543c59c7479eadacfd2342a2dfd8ca8d78ff7827afeda9541475baaf.png" src="_images/5604d024543c59c7479eadacfd2342a2dfd8ca8d78ff7827afeda9541475baaf.png" />
 </div>
 </div>
 <p>The <strong>inverse Fourier transform</strong>  transforms a Fourier transform  <span class="math notranslate nohighlight">\(X\)</span> of <span class="math notranslate nohighlight">\(x\)</span>  back to <span class="math notranslate nohighlight">\(x\)</span>.</p>
@@ -996,8 +978,8 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eig_circulant_58_0.png" src="_images/eig_circulant_58_0.png" />
-<img alt="_images/eig_circulant_58_1.png" src="_images/eig_circulant_58_1.png" />
+<img alt="_images/c7ecd00095b64cd6972e47f591dde8983db17c2846c0e2a214e53d755b4f118f.png" src="_images/c7ecd00095b64cd6972e47f591dde8983db17c2846c0e2a214e53d755b4f118f.png" />
+<img alt="_images/f590caeb5ed66e4065a520f8873bcc85019852c2d54e57dbb49beea3b679023f.png" src="_images/f590caeb5ed66e4065a520f8873bcc85019852c2d54e57dbb49beea3b679023f.png" />
 </div>
 </div>
 <p>What happens if we change the last example to <span class="math notranslate nohighlight">\(x_{n}=2\cos\left(2\pi\frac{10}{40}n\right)\)</span>?</p>
@@ -1027,8 +1009,8 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eig_circulant_62_0.png" src="_images/eig_circulant_62_0.png" />
-<img alt="_images/eig_circulant_62_1.png" src="_images/eig_circulant_62_1.png" />
+<img alt="_images/eaabf5bcf365eaa8260b296ca7de91c4ed123391925fe167331a8804787a12d9.png" src="_images/eaabf5bcf365eaa8260b296ca7de91c4ed123391925fe167331a8804787a12d9.png" />
+<img alt="_images/8d4d0347fa2a77a67dd64a26b655c783b66ee1c8f325dce01b1e783fb540c1a5.png" src="_images/8d4d0347fa2a77a67dd64a26b655c783b66ee1c8f325dce01b1e783fb540c1a5.png" />
 </div>
 </div>
 <p>If we represent the discrete Fourier transform as a matrix, we discover that it equals the  matrix <span class="math notranslate nohighlight">\(F_{N}\)</span> of eigenvectors  of the permutation matrix <span class="math notranslate nohighlight">\(P_{N}\)</span>.</p>
@@ -1108,15 +1090,15 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 2.   +0.j, -0.313+0.j, -1.902-0.j,  0.908+0.j,  1.618+0.j,
-       -1.414+0.j, -1.176-0.j,  1.782-0.j,  0.618+0.j, -1.975+0.j,
+       -1.414-0.j, -1.176-0.j,  1.782-0.j,  0.618+0.j, -1.975+0.j,
        -0.   -0.j,  1.975+0.j, -0.618+0.j, -1.782-0.j,  1.176-0.j,
         1.414+0.j, -1.618+0.j, -0.908-0.j,  1.902-0.j,  0.313+0.j])
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1130,7 +1112,7 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1711,7 +1693,7 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1853,16 +1835,5 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

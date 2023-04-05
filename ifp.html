@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>49. The Income Fluctuation Problem I: Basic Model &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ifp';</script>
     <link rel="canonical" href="https://python.quantecon.org/ifp.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,76 +161,27 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   49.1. Overview
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#references">
-     49.1.1. References
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-optimal-savings-problem">
-   49.2. The Optimal Savings Problem
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#set-up">
-     49.2.1. Set-Up
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#value-function-and-euler-equation">
-     49.2.2. Value Function and Euler Equation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#optimality-results">
-     49.2.3. Optimality Results
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#computation">
-   49.3. Computation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#time-iteration">
-     49.3.1. Time Iteration
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#some-technical-details">
-     49.3.2. Some Technical Details
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implementation">
-   49.4. Implementation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#a-sanity-check">
-     49.4.1. A Sanity Check
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises">
-   49.5. Exercises
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">49.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references">49.1.1. References</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-optimal-savings-problem">49.2. The Optimal Savings Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">49.2.1. Set-Up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-and-euler-equation">49.2.2. Value Function and Euler Equation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimality-results">49.2.3. Optimality Results</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">49.3. Computation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-iteration">49.3.1. Time Iteration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-technical-details">49.3.2. Some Technical Details</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">49.4. Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sanity-check">49.4.1. A Sanity Check</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">49.5. Exercises</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -267,8 +229,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="the-income-fluctuation-problem-i-basic-model">
-<h1><a class="toc-backref" href="#id16"><span class="section-number">49. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem I: Basic Model</a><a class="headerlink" href="#the-income-fluctuation-problem-i-basic-model" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="the-income-fluctuation-problem-i-basic-model">
+<h1><a class="toc-backref" href="#id16"><span class="section-number">49. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem I: Basic Model</a><a class="headerlink" href="#the-income-fluctuation-problem-i-basic-model" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -285,41 +247,50 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
 <span class="o">!</span>pip install interpolation
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.6.0)
-Requirement already satisfied: scipy&gt;=1.5.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
-Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
-Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.6.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: numba in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (65.6.3)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (2.2.4)
-Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.9.1)
-Requirement already satisfied: numba&gt;=0.47 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.56.4)
-Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.5.2)
-Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (21.3)
-Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.23.5)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
-Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (63.4.1)
-Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /opt/conda/envs/quantecon/lib/python3.10/site-packages (2.2.4)
+Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (0.5.2)
+Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (1.23.5)
+Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (21.3)
+Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (1.10.0)
+Requirement already satisfied: numba&gt;=0.47 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (0.56.4)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.47-&gt;interpolation) (65.6.3)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -327,9 +298,10 @@ Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /__w/lecture-pytho
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">49.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id17"><span class="section-number">49.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In this lecture, we study an optimal savings problem for an infinitely lived consumer—the “common ancestor” described in <span id="id1">[<a class="reference internal" href="zreferences.html#id183" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">LS18</a>]</span>, section 1.3.</p>
 <p>This is an essential sub-problem for many representative macroeconomic models</p>
 <ul class="simple">
@@ -361,19 +333,19 @@ the <a class="reference internal" href="optgrowth.html"><span class="doc">stocha
 </div>
 </div>
 </div>
-<div class="section" id="references">
-<h3><span class="section-number">49.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<section id="references">
+<h3><span class="section-number">49.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h3>
 <p>Our presentation is a simplified version of <span id="id4">[<a class="reference internal" href="zreferences.html#id253" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span>.</p>
 <p>Other references include <span id="id5">[<a class="reference internal" href="zreferences.html#id154" title="Angus Deaton. Saving and Liquidity Constraints. Econometrica, 59(5):1221–1248, 1991.">Dea91</a>]</span>, <span id="id6">[<a class="reference internal" href="zreferences.html#id156" title="Wouter J Den Haan. Comparison of solutions to the incomplete markets model with aggregate uncertainty. Journal of Economic Dynamics and Control, 34(1):4–27, 2010.">DH10</a>]</span>,
 <span id="id7">[<a class="reference internal" href="zreferences.html#id179" title="Moritz Kuhn. Recursive Equilibria In An Aiyagari-Style Economy With Permanent Income Shocks. International Economic Review, 54:807–835, 2013.">Kuh13</a>]</span>, <span id="id8">[<a class="reference internal" href="zreferences.html#id203" title="Guillaume Rabault. When do borrowing constraints bind? Some new results on the income fluctuation problem. Journal of Economic Dynamics and Control, 26(2):217–245, 2002.">Rab02</a>]</span>,  <span id="id9">[<a class="reference internal" href="zreferences.html#id205" title="Michael Reiter. Solving heterogeneous-agent models by projection and perturbation. Journal of Economic Dynamics and Control, 33(3):649–665, 2009.">Rei09</a>]</span>  and
 <span id="id10">[<a class="reference internal" href="zreferences.html#id208" title="Jack Schechtman and Vera L S Escudero. Some results on an income fluctuation problem. Journal of Economic Theory, 16(2):151–166, 1977.">SE77</a>]</span>.</p>
-</div>
-</div>
-<div class="section" id="the-optimal-savings-problem">
-<h2><a class="toc-backref" href="#id18"><span class="section-number">49.2. </span>The Optimal Savings Problem</a><a class="headerlink" href="#the-optimal-savings-problem" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="the-optimal-savings-problem">
+<h2><a class="toc-backref" href="#id18"><span class="section-number">49.2. </span>The Optimal Savings Problem</a><a class="headerlink" href="#the-optimal-savings-problem" title="Permalink to this heading">#</a></h2>
 <p id="index-1">Let’s write down the model and then discuss how to solve it.</p>
-<div class="section" id="set-up">
-<h3><span class="section-number">49.2.1. </span>Set-Up<a class="headerlink" href="#set-up" title="Permalink to this headline">¶</a></h3>
+<section id="set-up">
+<h3><span class="section-number">49.2.1. </span>Set-Up<a class="headerlink" href="#set-up" title="Permalink to this heading">#</a></h3>
 <p>Consider a household that chooses a state-contingent consumption plan <span class="math notranslate nohighlight">\(\{c_t\}_{t \geq 0}\)</span> to maximize</p>
 <div class="math notranslate nohighlight">
 \[
@@ -381,7 +353,7 @@ the <a class="reference internal" href="optgrowth.html"><span class="doc">stocha
 \]</div>
 <p>subject to</p>
 <div class="math notranslate nohighlight" id="equation-eqst">
-<span class="eqno">(49.1)<a class="headerlink" href="#equation-eqst" title="Permalink to this equation">¶</a></span>\[a_{t+1} \leq  R(a_t - c_t)  + Y_{t+1},
+<span class="eqno">(49.1)<a class="headerlink" href="#equation-eqst" title="Permalink to this equation">#</a></span>\[a_{t+1} \leq  R(a_t - c_t)  + Y_{t+1},
 \quad c_t \geq 0,
 \quad a_t \geq 0
 \quad t = 0, 1, \ldots\]</div>
@@ -394,7 +366,7 @@ the <a class="reference internal" href="optgrowth.html"><span class="doc">stocha
 <li><p><span class="math notranslate nohighlight">\(R := 1 + r\)</span>, where <span class="math notranslate nohighlight">\(r &gt; 0\)</span> is the interest rate on savings</p></li>
 </ul>
 <p>The timing here is as follows:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>At the start of period <span class="math notranslate nohighlight">\(t\)</span>, the household chooses consumption
 <span class="math notranslate nohighlight">\(c_t\)</span>.</p></li>
 <li><p>Labor is supplied by the household throughout the period and labor income
@@ -407,7 +379,7 @@ the <a class="reference internal" href="optgrowth.html"><span class="doc">stocha
 <p>As is common in the literature, we take <span class="math notranslate nohighlight">\(\{Z_t\}\)</span> to be a finite state
 Markov chain taking values in <span class="math notranslate nohighlight">\(\mathsf Z\)</span> with Markov matrix <span class="math notranslate nohighlight">\(P\)</span>.</p>
 <p>We further assume that</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\(\beta R &lt; 1\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(u\)</span> is smooth, strictly increasing and strictly concave with <span class="math notranslate nohighlight">\(\lim_{c \to 0} u'(c) = \infty\)</span> and <span class="math notranslate nohighlight">\(\lim_{c \to \infty} u'(c) = 0\)</span></p></li>
 </ol>
@@ -415,7 +387,7 @@ Markov chain taking values in <span class="math notranslate nohighlight">\(\math
 \in \mathsf S := \mathbb R_+ \times \mathsf Z\)</span>.</p>
 <p>A <em>feasible consumption path</em> from <span class="math notranslate nohighlight">\((a,z) \in \mathsf S\)</span> is a consumption
 sequence <span class="math notranslate nohighlight">\(\{c_t\}\)</span> such that <span class="math notranslate nohighlight">\(\{c_t\}\)</span> and its induced asset path <span class="math notranslate nohighlight">\(\{a_t\}\)</span> satisfy</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\((a_0, z_0) = (a, z)\)</span></p></li>
 <li><p>the feasibility constraints in <a class="reference internal" href="#equation-eqst">(49.1)</a>, and</p></li>
 <li><p>measurability, which means that <span class="math notranslate nohighlight">\(c_t\)</span> is a function of random
@@ -426,12 +398,12 @@ cannot be a function of outcomes are yet to be observed.</p>
 <p>In fact, for this problem, consumption can be chosen optimally by taking it to
 be contingent only on the current state.</p>
 <p>Optimality is defined below.</p>
-</div>
-<div class="section" id="value-function-and-euler-equation">
-<h3><span class="section-number">49.2.2. </span>Value Function and Euler Equation<a class="headerlink" href="#value-function-and-euler-equation" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="value-function-and-euler-equation">
+<h3><span class="section-number">49.2.2. </span>Value Function and Euler Equation<a class="headerlink" href="#value-function-and-euler-equation" title="Permalink to this heading">#</a></h3>
 <p>The <em>value function</em> <span class="math notranslate nohighlight">\(V \colon \mathsf S \to \mathbb{R}\)</span> is defined by</p>
 <div class="math notranslate nohighlight" id="equation-eqvf">
-<span class="eqno">(49.2)<a class="headerlink" href="#equation-eqvf" title="Permalink to this equation">¶</a></span>\[V(a, z) := \max \, \mathbb{E}
+<span class="eqno">(49.2)<a class="headerlink" href="#equation-eqvf" title="Permalink to this equation">#</a></span>\[V(a, z) := \max \, \mathbb{E}
 \left\{
 \sum_{t=0}^{\infty} \beta^t u(c_t)
 \right\}\]</div>
@@ -439,11 +411,11 @@ be contingent only on the current state.</p>
 <p>An <em>optimal consumption path</em> from <span class="math notranslate nohighlight">\((a,z)\)</span> is a feasible consumption path from <span class="math notranslate nohighlight">\((a,z)\)</span> that attains the supremum in <a class="reference internal" href="#equation-eqvf">(49.2)</a>.</p>
 <p>To pin down such paths we can use a version of the Euler equation, which in the present setting is</p>
 <div class="math notranslate nohighlight" id="equation-ee00">
-<span class="eqno">(49.3)<a class="headerlink" href="#equation-ee00" title="Permalink to this equation">¶</a></span>\[u' (c_t)
+<span class="eqno">(49.3)<a class="headerlink" href="#equation-ee00" title="Permalink to this equation">#</a></span>\[u' (c_t)
 \geq \beta R \,  \mathbb{E}_t  u'(c_{t+1})\]</div>
 <p>and</p>
 <div class="math notranslate nohighlight" id="equation-ee01">
-<span class="eqno">(49.4)<a class="headerlink" href="#equation-ee01" title="Permalink to this equation">¶</a></span>\[c_t &lt; a_t
+<span class="eqno">(49.4)<a class="headerlink" href="#equation-ee01" title="Permalink to this equation">#</a></span>\[c_t &lt; a_t
 \; \implies \;
 u' (c_t) = \beta R \,  \mathbb{E}_t  u'(c_{t+1})\]</div>
 <p>When <span class="math notranslate nohighlight">\(c_t = a_t\)</span> we obviously have <span class="math notranslate nohighlight">\(u'(c_t) = u'(a_t)\)</span>,</p>
@@ -455,21 +427,21 @@ can occur because <span class="math notranslate nohighlight">\(c_t\)</span> cann
 <p>With some thought, one can show that <a class="reference internal" href="#equation-ee00">(49.3)</a> and <a class="reference internal" href="#equation-ee01">(49.4)</a> are
 equivalent to</p>
 <div class="math notranslate nohighlight" id="equation-eqeul0">
-<span class="eqno">(49.5)<a class="headerlink" href="#equation-eqeul0" title="Permalink to this equation">¶</a></span>\[u' (c_t)
+<span class="eqno">(49.5)<a class="headerlink" href="#equation-eqeul0" title="Permalink to this equation">#</a></span>\[u' (c_t)
 = \max \left\{
     \beta R \,  \mathbb{E}_t  u'(c_{t+1})  \,,\;  u'(a_t)
 \right\}\]</div>
-</div>
-<div class="section" id="optimality-results">
-<h3><span class="section-number">49.2.3. </span>Optimality Results<a class="headerlink" href="#optimality-results" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="optimality-results">
+<h3><span class="section-number">49.2.3. </span>Optimality Results<a class="headerlink" href="#optimality-results" title="Permalink to this heading">#</a></h3>
 <p>As shown in <span id="id11">[<a class="reference internal" href="zreferences.html#id253" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span>,</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>For each <span class="math notranslate nohighlight">\((a,z) \in \mathsf S\)</span>, a unique optimal consumption path from <span class="math notranslate nohighlight">\((a,z)\)</span> exists</p></li>
 <li><p>This path is the unique feasible path from <span class="math notranslate nohighlight">\((a,z)\)</span> satisfying the
 Euler equality <a class="reference internal" href="#equation-eqeul0">(49.5)</a> and the transversality condition</p></li>
 </ol>
 <div class="math notranslate nohighlight" id="equation-eqtv">
-<span class="eqno">(49.6)<a class="headerlink" href="#equation-eqtv" title="Permalink to this equation">¶</a></span>\[\lim_{t \to \infty} \beta^t \, \mathbb{E} \, [ u'(c_t) a_{t+1} ] = 0\]</div>
+<span class="eqno">(49.6)<a class="headerlink" href="#equation-eqtv" title="Permalink to this equation">#</a></span>\[\lim_{t \to \infty} \beta^t \, \mathbb{E} \, [ u'(c_t) a_{t+1} ] = 0\]</div>
 <p>Moreover, there exists an <em>optimal consumption function</em>
 <span class="math notranslate nohighlight">\(\sigma^* \colon \mathsf S \to \mathbb R_+\)</span> such that the path
 from <span class="math notranslate nohighlight">\((a,z)\)</span> generated by</p>
@@ -484,25 +456,25 @@ a_{t+1} = R (a_t - c_t) + Y_{t+1}
 <p>satisfies both <a class="reference internal" href="#equation-eqeul0">(49.5)</a> and <a class="reference internal" href="#equation-eqtv">(49.6)</a>, and hence is the unique optimal
 path from <span class="math notranslate nohighlight">\((a,z)\)</span>.</p>
 <p>Thus, to solve the optimization problem, we need to compute the policy <span class="math notranslate nohighlight">\(\sigma^*\)</span>.</p>
-</div>
-</div>
-<div class="section" id="computation">
-<span id="ifp-computation"></span><h2><a class="toc-backref" href="#id19"><span class="section-number">49.3. </span>Computation</a><a class="headerlink" href="#computation" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="computation">
+<span id="ifp-computation"></span><h2><a class="toc-backref" href="#id19"><span class="section-number">49.3. </span>Computation</a><a class="headerlink" href="#computation" title="Permalink to this heading">#</a></h2>
 <p id="index-2">There are two standard ways to solve for <span class="math notranslate nohighlight">\(\sigma^*\)</span></p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>time iteration using the Euler equality and</p></li>
 <li><p>value function iteration.</p></li>
 </ol>
 <p>Our investigation of the cake eating problem and stochastic optimal growth
 model suggests that time iteration will be faster and more accurate.</p>
 <p>This is the approach that we apply below.</p>
-<div class="section" id="time-iteration">
-<h3><span class="section-number">49.3.1. </span>Time Iteration<a class="headerlink" href="#time-iteration" title="Permalink to this headline">¶</a></h3>
+<section id="time-iteration">
+<h3><span class="section-number">49.3.1. </span>Time Iteration<a class="headerlink" href="#time-iteration" title="Permalink to this heading">#</a></h3>
 <p>We can rewrite <a class="reference internal" href="#equation-eqeul0">(49.5)</a> to make it a statement about functions rather than
 random variables.</p>
 <p>In particular, consider the functional equation</p>
 <div class="math notranslate nohighlight" id="equation-eqeul1">
-<span class="eqno">(49.7)<a class="headerlink" href="#equation-eqeul1" title="Permalink to this equation">¶</a></span>\[(u' \circ \sigma)  (a, z)
+<span class="eqno">(49.7)<a class="headerlink" href="#equation-eqeul1" title="Permalink to this equation">#</a></span>\[(u' \circ \sigma)  (a, z)
 = \max \left\{
 \beta R \, \mathbb E_z (u' \circ \sigma)
     [R (a - \sigma(a, z)) + \hat Y, \, \hat Z]
@@ -523,14 +495,14 @@ is likely to have, in order to restrict the search space and ensure that
 iteration is well behaved.</p>
 <p>To this end, let <span class="math notranslate nohighlight">\(\mathscr C\)</span> be the space of continuous functions <span class="math notranslate nohighlight">\(\sigma \colon \mathbf S \to \mathbb R\)</span> such that <span class="math notranslate nohighlight">\(\sigma\)</span> is increasing in the first argument, <span class="math notranslate nohighlight">\(0 &lt; \sigma(a,z) \leq a\)</span> for all <span class="math notranslate nohighlight">\((a,z) \in \mathbf S\)</span>, and</p>
 <div class="math notranslate nohighlight" id="equation-ifpc4">
-<span class="eqno">(49.8)<a class="headerlink" href="#equation-ifpc4" title="Permalink to this equation">¶</a></span>\[\sup_{(a,z) \in \mathbf S}
+<span class="eqno">(49.8)<a class="headerlink" href="#equation-ifpc4" title="Permalink to this equation">#</a></span>\[\sup_{(a,z) \in \mathbf S}
 \left| (u' \circ \sigma)(a,z) - u'(a) \right| &lt; \infty\]</div>
 <p>This will be our candidate class.</p>
 <p>In addition, let <span class="math notranslate nohighlight">\(K \colon \mathscr{C} \to \mathscr{C}\)</span> be defined as
 follows.</p>
 <p>For given <span class="math notranslate nohighlight">\(\sigma \in \mathscr{C}\)</span>, the value <span class="math notranslate nohighlight">\(K \sigma (a,z)\)</span> is the unique <span class="math notranslate nohighlight">\(c \in [0, a]\)</span> that solves</p>
 <div class="math notranslate nohighlight" id="equation-eqsifc">
-<span class="eqno">(49.9)<a class="headerlink" href="#equation-eqsifc" title="Permalink to this equation">¶</a></span>\[u'(c)
+<span class="eqno">(49.9)<a class="headerlink" href="#equation-eqsifc" title="Permalink to this equation">#</a></span>\[u'(c)
 = \max \left\{
            \beta R \, \mathbb E_z (u' \circ \sigma) \,
            [R (a - c) + \hat Y, \, \hat Z]
@@ -543,9 +515,9 @@ coincide with solutions to the functional equation <a class="reference internal"
 <p>It is shown in <span id="id12">[<a class="reference internal" href="zreferences.html#id253" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span> that the unique optimal policy can be
 computed by picking any <span class="math notranslate nohighlight">\(\sigma \in \mathscr{C}\)</span> and iterating with the
 operator <span class="math notranslate nohighlight">\(K\)</span> defined in <a class="reference internal" href="#equation-eqsifc">(49.9)</a>.</p>
-</div>
-<div class="section" id="some-technical-details">
-<h3><span class="section-number">49.3.2. </span>Some Technical Details<a class="headerlink" href="#some-technical-details" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="some-technical-details">
+<h3><span class="section-number">49.3.2. </span>Some Technical Details<a class="headerlink" href="#some-technical-details" title="Permalink to this heading">#</a></h3>
 <p>The proof of the last statement is somewhat technical but here is a quick
 summary:</p>
 <p>It is shown in <span id="id13">[<a class="reference internal" href="zreferences.html#id253" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span> that <span class="math notranslate nohighlight">\(K\)</span> is a contraction mapping on
@@ -564,10 +536,10 @@ summary:</p>
 <p>As a consequence, the path <span class="math notranslate nohighlight">\(\{c_t\}\)</span> generated from <span class="math notranslate nohighlight">\((a_0,z_0) \in
 S\)</span> using policy function <span class="math notranslate nohighlight">\(\sigma^*\)</span> is the unique optimal path from
 <span class="math notranslate nohighlight">\((a_0,z_0) \in S\)</span>.</p>
-</div>
-</div>
-<div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id20"><span class="section-number">49.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="implementation">
+<h2><a class="toc-backref" href="#id20"><span class="section-number">49.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <p id="index-3">We use the CRRA utility specification</p>
 <div class="math notranslate nohighlight">
 \[
@@ -616,7 +588,7 @@ with state space <span class="math notranslate nohighlight">\(\{0, 1\}\)</span> 
 </div>
 <p>Next we provide a function to compute the difference</p>
 <div class="math notranslate nohighlight" id="equation-euler-diff-eq">
-<span class="eqno">(49.10)<a class="headerlink" href="#equation-euler-diff-eq" title="Permalink to this equation">¶</a></span>\[u'(c) - \max \left\{
+<span class="eqno">(49.10)<a class="headerlink" href="#equation-euler-diff-eq" title="Permalink to this equation">#</a></span>\[u'(c) - \max \left\{
            \beta R \, \mathbb E_z (u' \circ \sigma) \,
            [R (a - c) + \hat Y, \, \hat Z]
            \, , \;
@@ -751,12 +723,12 @@ Converged in 60 iterations.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ifp_15_0.png" src="_images/ifp_15_0.png" />
+<img alt="_images/75574ff318bd82e358a4ae681ba05ec1af08ebc30184ba20917e6e97fe718a12.png" src="_images/75574ff318bd82e358a4ae681ba05ec1af08ebc30184ba20917e6e97fe718a12.png" />
 </div>
 </div>
 <p>The following exercises walk you through several applications where policy functions are computed.</p>
-<div class="section" id="a-sanity-check">
-<h3><span class="section-number">49.4.1. </span>A Sanity Check<a class="headerlink" href="#a-sanity-check" title="Permalink to this headline">¶</a></h3>
+<section id="a-sanity-check">
+<h3><span class="section-number">49.4.1. </span>A Sanity Check<a class="headerlink" href="#a-sanity-check" title="Permalink to this heading">#</a></h3>
 <p>One way to check our results is to</p>
 <ul class="simple">
 <li><p>set labor income to zero in each state and</p></li>
@@ -809,36 +781,36 @@ Error at iteration 175 is 0.00010021430795081887.
 Converged in 176 iterations.
 </pre></div>
 </div>
-<img alt="_images/ifp_19_1.png" src="_images/ifp_19_1.png" />
+<img alt="_images/8dd8e722a87831bf5a5d6d17438accc575fb3fc4ac98acddd2e616328bf2c1a0.png" src="_images/8dd8e722a87831bf5a5d6d17438accc575fb3fc4ac98acddd2e616328bf2c1a0.png" />
 </div>
 </div>
 <p>Success!</p>
-</div>
-</div>
-<div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id21"><span class="section-number">49.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id21"><span class="section-number">49.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="ifp_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 49.1 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Let’s consider how the interest rate affects consumption.</p>
 <p>Reproduce the following figure, which shows (approximately) optimal consumption policies for different interest rates</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/ifp_policies.png" src="_images/ifp_policies.png" />
-</div>
+</figure>
 <ul class="simple">
 <li><p>Other than <code class="docutils literal notranslate"><span class="pre">r</span></code>, all parameters are at their default values.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">r</span></code> steps through <code class="docutils literal notranslate"><span class="pre">np.linspace(0,</span> <span class="pre">0.04,</span> <span class="pre">4)</span></code>.</p></li>
 <li><p>Consumption is plotted against assets for income shock fixed at the smallest value.</p></li>
 </ul>
 <p>The figure shows that higher interest rates boost savings and hence suppress consumption.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="ifp-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#ifp_ex1"> Exercise 49.1</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here’s one solution:</p>
+<section id="solution-content">
+<p>Here’s one solution:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
@@ -856,15 +828,15 @@ Converged in 176 iterations.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ifp_21_0.png" src="_images/ifp_21_0.png" />
+<img alt="_images/4b7acc48b6bed46ea35eb007460eba4a48a05ee1c9213c1d391d60c0fd580f36.png" src="_images/4b7acc48b6bed46ea35eb007460eba4a48a05ee1c9213c1d391d60c0fd580f36.png" />
 </div>
 </div>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="ifp_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 49.2 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Now let’s consider the long run asset levels held by households under the
 default parameters.</p>
 <p>The following figure is a 45 degree diagram showing the law of motion for assets when consumption is optimal</p>
@@ -889,7 +861,7 @@ default parameters.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ifp_23_0.png" src="_images/ifp_23_0.png" />
+<img alt="_images/90ca3e5fa012b391291e96014c6fa7d3074f62f5458f902538f5e7b664bb380b.png" src="_images/90ca3e5fa012b391291e96014c6fa7d3074f62f5458f902538f5e7b664bb380b.png" />
 </div>
 </div>
 <p>The unbroken lines show the update function for assets at each <span class="math notranslate nohighlight">\(z\)</span>, which is</p>
@@ -915,13 +887,13 @@ series for assets and histogram it.</p>
 z_0)\)</span> will not matter.</p></li>
 <li><p>You might find it helpful to use the <code class="docutils literal notranslate"><span class="pre">MarkovChain</span></code> class from <code class="docutils literal notranslate"><span class="pre">quantecon</span></code>.</p></li>
 </ul>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="ifp-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#ifp_ex2"> Exercise 49.2</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>First we write a function to compute a long asset series.</p>
+<section id="solution-content">
+<p>First we write a function to compute a long asset series.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_asset_series</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500_000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
@@ -965,19 +937,19 @@ z_0)\)</span> will not matter.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ifp_27_0.png" src="_images/ifp_27_0.png" />
+<img alt="_images/6542cd7c85087477726a55e0fd1a375986a23d8bc3f21b1ecc59dc8aa7066e2c.png" src="_images/6542cd7c85087477726a55e0fd1a375986a23d8bc3f21b1ecc59dc8aa7066e2c.png" />
 </div>
 </div>
 <p>The shape of the asset distribution is unrealistic.</p>
 <p>Here it is left skewed when in reality it has a long right tail.</p>
 <p>In a <a class="reference internal" href="ifp_advanced.html"><span class="doc">subsequent lecture</span></a> we will rectify this by adding
 more realistic features to the model.</p>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="ifp_ex3">
 
 <p class="admonition-title"><span class="caption-number">Exercise 49.3 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Following on from exercises 1 and 2, let’s look at how savings and aggregate
 asset holdings vary with the interest rate</p>
 <div class="admonition note">
@@ -993,13 +965,13 @@ the interest rate.</p>
 <p>Following tradition, put the price (i.e., interest rate) on the vertical axis.</p>
 <p>On the horizontal axis put aggregate capital, computed as the mean of the
 stationary distribution given the interest rate.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="ifp-solution-5">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#ifp_ex3"> Exercise 49.3</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here’s one solution</p>
+<section id="solution-content">
+<p>Here’s one solution</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="mi">25</span>
@@ -1096,14 +1068,14 @@ stationary distribution given the interest rate.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.02
 </pre></div>
 </div>
-<img alt="_images/ifp_29_25.png" src="_images/ifp_29_25.png" />
+<img alt="_images/011a800cc2e10875d5bcdf35856fcabf1454390969179ed3a8718d468ae7601d.png" src="_images/011a800cc2e10875d5bcdf35856fcabf1454390969179ed3a8718d468ae7601d.png" />
 </div>
 </div>
 <p>As expected, aggregate savings increases with the interest rate.</p>
+</section>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1117,7 +1089,7 @@ stationary distribution given the interest rate.</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1698,7 +1670,7 @@ stationary distribution given the interest rate.</p>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1840,16 +1812,5 @@ stationary distribution given the interest rate.</p>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

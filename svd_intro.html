@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>7. Singular Value Decomposition (SVD) &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'svd_intro';</script>
     <link rel="canonical" href="https://python.quantecon.org/svd_intro.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,63 +161,18 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   7.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-setting">
-   7.2. The Setting
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#singular-value-decomposition">
-   7.3. Singular Value Decomposition
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#four-fundamental-subspaces">
-   7.4. Four Fundamental Subspaces
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#eckart-young-theorem">
-   7.5. Eckart-Young Theorem
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#full-and-reduced-svds">
-   7.6. Full and Reduced SVD’s
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#polar-decomposition">
-   7.7. Polar Decomposition
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#application-principal-components-analysis-pca">
-   7.8. Application: Principal Components Analysis (PCA)
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#relationship-of-pca-to-svd">
-   7.9. Relationship of PCA to SVD
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pca-with-eigenvalues-and-eigenvectors">
-   7.10. PCA with Eigenvalues and Eigenvectors
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#connections">
-   7.11. Connections
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">7.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-setting">7.2. The Setting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#singular-value-decomposition">7.3. Singular Value Decomposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#four-fundamental-subspaces">7.4. Four Fundamental Subspaces</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eckart-young-theorem">7.5. Eckart-Young Theorem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-and-reduced-svds">7.6. Full and Reduced SVD’s</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polar-decomposition">7.7. Polar Decomposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-principal-components-analysis-pca">7.8. Application: Principal Components Analysis (PCA)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relationship-of-pca-to-svd">7.9. Relationship of PCA to SVD</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-with-eigenvalues-and-eigenvectors">7.10. PCA with Eigenvalues and Eigenvectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connections">7.11. Connections</a></li>
 </ul>
-
                             <p class="logo">
                                 
                                     
@@ -250,10 +216,10 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <div class="tex2jax_ignore mathjax_ignore section" id="singular-value-decomposition-svd">
-<h1><span class="section-number">7. </span>Singular Value Decomposition (SVD)<a class="headerlink" href="#singular-value-decomposition-svd" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="overview">
-<h2><span class="section-number">7.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="singular-value-decomposition-svd">
+<h1><span class="section-number">7. </span>Singular Value Decomposition (SVD)<a class="headerlink" href="#singular-value-decomposition-svd" title="Permalink to this heading">#</a></h1>
+<section id="overview">
+<h2><span class="section-number">7.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>The <strong>singular value decomposition</strong> (SVD) is a work-horse in applications of least squares projection that
 form  foundations for many statistical and  machine learning methods.</p>
 <p>After defining the SVD, we’ll describe how it connects to</p>
@@ -264,9 +230,9 @@ form  foundations for many statistical and  machine learning methods.</p>
 </ul>
 <p>Like principal components analysis (PCA), DMD can be thought of as a data-reduction procedure that  represents salient patterns by projecting data onto a limited set of factors.</p>
 <p>In a sequel to this lecture about  <a class="reference internal" href="var_dmd.html"><span class="doc">Dynamic Mode Decompositions</span></a>, we’ll describe how SVD’s provide ways rapidly to compute reduced-order approximations to first-order Vector Autoregressions (VARs).</p>
-</div>
-<div class="section" id="the-setting">
-<h2><span class="section-number">7.2. </span>The Setting<a class="headerlink" href="#the-setting" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="the-setting">
+<h2><span class="section-number">7.2. </span>The Setting<a class="headerlink" href="#the-setting" title="Permalink to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> be an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of rank <span class="math notranslate nohighlight">\(p\)</span>.</p>
 <p>Necessarily, <span class="math notranslate nohighlight">\(p \leq \min(m,n)\)</span>.</p>
 <p>In  much of this lecture, we’ll think of <span class="math notranslate nohighlight">\(X\)</span> as a matrix of <strong>data</strong> in which</p>
@@ -284,12 +250,12 @@ form  foundations for many statistical and  machine learning methods.</p>
 <p>In this <span class="math notranslate nohighlight">\( m &lt; &lt; n\)</span> case,  we’ll look for <strong>patterns</strong> by using a <strong>singular value decomposition</strong> to do a <strong>principal components analysis</strong> (PCA).</p>
 <p>In the <span class="math notranslate nohighlight">\(m &gt; &gt; n\)</span>  case in which there are many more attributes <span class="math notranslate nohighlight">\(m\)</span> than individuals <span class="math notranslate nohighlight">\(n\)</span> and when we are in a time-series setting in which <span class="math notranslate nohighlight">\(n\)</span> equals the number of time periods covered in the data set <span class="math notranslate nohighlight">\(X\)</span>, we’ll proceed in a different way.</p>
 <p>We’ll again use a <strong>singular value decomposition</strong>,  but now to construct a <strong>dynamic mode decomposition</strong> (DMD)</p>
-</div>
-<div class="section" id="singular-value-decomposition">
-<h2><span class="section-number">7.3. </span>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="singular-value-decomposition">
+<h2><span class="section-number">7.3. </span>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this heading">#</a></h2>
 <p>A <strong>singular value decomposition</strong> of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span> of rank <span class="math notranslate nohighlight">\(p \leq \min(m,n)\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-eq-svd101">
-<span class="eqno">(7.1)<a class="headerlink" href="#equation-eq-svd101" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(7.1)<a class="headerlink" href="#equation-eq-svd101" title="Permalink to this equation">#</a></span>\[
 X  = U \Sigma V^\top 
 \]</div>
 <p>where</p>
@@ -338,9 +304,9 @@ of data <strong>encoders</strong> and <strong>decoders</strong>.</p>
 <p>In a <strong>full</strong> SVD, the  shapes of <span class="math notranslate nohighlight">\(U\)</span>, <span class="math notranslate nohighlight">\(\Sigma\)</span>, and <span class="math notranslate nohighlight">\(V\)</span> are <span class="math notranslate nohighlight">\(\left(m, m\right)\)</span>, <span class="math notranslate nohighlight">\(\left(m, n\right)\)</span>, <span class="math notranslate nohighlight">\(\left(n, n\right)\)</span>, respectively.</p>
 <p>Later we’ll also describe an <strong>economy</strong> or <strong>reduced</strong> SVD.</p>
 <p>Before we study a <strong>reduced</strong> SVD we’ll say a little more about properties of a <strong>full</strong> SVD.</p>
-</div>
-<div class="section" id="four-fundamental-subspaces">
-<h2><span class="section-number">7.4. </span>Four Fundamental Subspaces<a class="headerlink" href="#four-fundamental-subspaces" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="four-fundamental-subspaces">
+<h2><span class="section-number">7.4. </span>Four Fundamental Subspaces<a class="headerlink" href="#four-fundamental-subspaces" title="Permalink to this heading">#</a></h2>
 <p>Let  <span class="math notranslate nohighlight">\({\mathcal C}\)</span> denote a column space, <span class="math notranslate nohighlight">\({\mathcal N}\)</span> denote a null space, and <span class="math notranslate nohighlight">\({\mathcal R}\)</span> denote a row space.</p>
 <p>Let’s start by recalling the four fundamental subspaces of an <span class="math notranslate nohighlight">\(m \times n\)</span>
 matrix <span class="math notranslate nohighlight">\(X\)</span> of rank <span class="math notranslate nohighlight">\(p\)</span>.</p>
@@ -360,7 +326,7 @@ that we’ll describe now.</p>
 <span class="math notranslate nohighlight">\(v_i, i = 1, \ldots, n\)</span> be the <span class="math notranslate nohighlight">\(n\)</span> column vectors of <span class="math notranslate nohighlight">\(V\)</span>.</p>
 <p>Let’s write the full SVD of X as</p>
 <div class="math notranslate nohighlight" id="equation-eq-fullsvdpartition">
-<span class="eqno">(7.2)<a class="headerlink" href="#equation-eq-fullsvdpartition" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(7.2)<a class="headerlink" href="#equation-eq-fullsvdpartition" title="Permalink to this equation">#</a></span>\[
 X = \begin{bmatrix} U_L &amp; U_R \end{bmatrix} \begin{bmatrix} \Sigma_p &amp; 0 \cr 0 &amp; 0 \end{bmatrix}
      \begin{bmatrix} V_L &amp; V_R \end{bmatrix}^\top 
 \]</div>
@@ -379,7 +345,7 @@ X \begin{bmatrix} V_L &amp; V_R \end{bmatrix} = \begin{bmatrix} U_L &amp; U_R \e
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-xfour1a">
-<span class="eqno">(7.3)<a class="headerlink" href="#equation-eq-xfour1a" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(7.3)<a class="headerlink" href="#equation-eq-xfour1a" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
 X V_L &amp; = U_L \Sigma_p \cr 
 X V_R &amp; = 0 
@@ -387,7 +353,7 @@ X V_R &amp; = 0
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-orthoortho1">
-<span class="eqno">(7.4)<a class="headerlink" href="#equation-eq-orthoortho1" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(7.4)<a class="headerlink" href="#equation-eq-orthoortho1" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
 X v_i &amp; = \sigma_i u_i , \quad i = 1, \ldots, p \cr
 X v_i &amp; = 0 ,  \quad i = p+1, \ldots, n
@@ -409,7 +375,7 @@ X^\top  \begin{bmatrix} U_L &amp; U_R \end{bmatrix} = \begin{bmatrix} V_L &amp; 
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-xfour1b">
-<span class="eqno">(7.5)<a class="headerlink" href="#equation-eq-xfour1b" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(7.5)<a class="headerlink" href="#equation-eq-xfour1b" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
 X^\top  U_L &amp; = V_L \Sigma_p \cr
 X^\top  U_R &amp; = 0 
@@ -417,7 +383,7 @@ X^\top  U_R &amp; = 0
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-orthoortho2">
-<span class="eqno">(7.6)<a class="headerlink" href="#equation-eq-orthoortho2" title="Permalink to this equation">¶</a></span>\[ 
+<span class="eqno">(7.6)<a class="headerlink" href="#equation-eq-orthoortho2" title="Permalink to this equation">#</a></span>\[ 
 \begin{aligned}
 X^\top  u_i &amp; = \sigma_i v_i, \quad i=1, \ldots, p \cr
 X^\top  u_i &amp; = 0 \quad i= p+1, \ldots, m 
@@ -435,7 +401,7 @@ X^\top  u_i &amp; = 0 \quad i= p+1, \ldots, m
 <p>Thus, taken together, the systems of quations <a class="reference internal" href="#equation-eq-xfour1a">(7.3)</a> and <a class="reference internal" href="#equation-eq-xfour1b">(7.5)</a>
 describe the  four fundamental subspaces of <span class="math notranslate nohighlight">\(X\)</span> in the following ways:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fourspacesvd">
-<span class="eqno">(7.7)<a class="headerlink" href="#equation-eq-fourspacesvd" title="Permalink to this equation">¶</a></span>\[ \begin{align}\begin{aligned}
+<span class="eqno">(7.7)<a class="headerlink" href="#equation-eq-fourspacesvd" title="Permalink to this equation">#</a></span>\[ \begin{align}\begin{aligned}
 \begin{aligned}
 {\mathcal C}(X) &amp; = {\mathcal C}(U_L) \cr 
 {\mathcal N}(X^\top ) &amp; = {\mathcal C}(U_R) \cr
@@ -464,35 +430,40 @@ that</p>
 <p>Let’s do an example.</p>
 <p>In addition to regular packages contained in Anaconda by default, this example and some other parts of  lecture also requires:</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quandl
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quandl
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading Quandl-3.7.0-py2.py3-none-any.whl (26 kB)
-Requirement already satisfied: pandas&gt;=0.14 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quandl) (1.4.4)
-Requirement already satisfied: python-dateutil in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quandl) (2.8.2)
-Requirement already satisfied: numpy&gt;=1.8 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quandl) (1.23.5)
-Requirement already satisfied: six in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quandl) (1.16.0)
-Requirement already satisfied: requests&gt;=2.7.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quandl) (2.28.1)
-Requirement already satisfied: inflection&gt;=0.3.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quandl) (0.5.1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting more-itertools
-  Downloading more_itertools-9.1.0-py3-none-any.whl (54 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quandl) (1.16.0)
+Requirement already satisfied: numpy&gt;=1.8 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quandl) (1.23.5)
+Requirement already satisfied: requests&gt;=2.7.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quandl) (2.28.1)
+Requirement already satisfied: python-dateutil in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quandl) (2.8.2)
+Collecting more-itertools
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading more_itertools-9.1.0-py3-none-any.whl (54 kB)
 ?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/54.2 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">54.2/54.2 kB</span> <span class=" -Color -Color-Red">10.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hRequirement already satisfied: pytz&gt;=2020.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from pandas&gt;=0.14-&gt;quandl) (2022.1)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.3)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.7.0-&gt;quandl) (1.26.11)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2022.9.14)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.0.4)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">54.2/54.2 kB</span> <span class=" -Color -Color-Red">9.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hRequirement already satisfied: inflection&gt;=0.3.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quandl) (0.5.1)
+Requirement already satisfied: pandas&gt;=0.14 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quandl) (1.5.3)
+Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pandas&gt;=0.14-&gt;quandl) (2023.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2022.12.7)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.4)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.7.0-&gt;quandl) (1.26.14)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: more-itertools, quandl
@@ -504,6 +475,7 @@ Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-py
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -559,45 +531,45 @@ Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-py
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rank of matrix:
  2
 S: 
- [2.69e+01 1.86e+00 7.83e-16 3.27e-16 4.69e-17]
+ [2.69e+01 1.86e+00 1.20e-15 2.24e-16 5.82e-17]
 U:
- [[-0.27 -0.73 -0.47  0.06 -0.42]
- [-0.35 -0.42  0.1  -0.18  0.81]
- [-0.43 -0.11  0.75 -0.27 -0.4 ]
- [-0.51  0.19  0.06  0.83  0.05]
- [-0.59  0.5  -0.45 -0.45 -0.04]]
+ [[-0.27 -0.73  0.63 -0.06  0.06]
+ [-0.35 -0.42 -0.69 -0.45  0.12]
+ [-0.43 -0.11 -0.24  0.85  0.12]
+ [-0.51  0.19  0.06 -0.1  -0.83]
+ [-0.59  0.5   0.25 -0.24  0.53]]
 Column space:
  [[-0.27 -0.35]
  [ 0.73  0.42]
- [ 0.02  0.06]
- [ 0.52 -0.83]
- [-0.37 -0.08]]
+ [ 0.32 -0.65]
+ [ 0.54 -0.39]
+ [-0.06 -0.35]]
 Left null space:
- [[-0.47  0.06 -0.42]
- [ 0.1  -0.18  0.81]
- [ 0.75 -0.27 -0.4 ]
- [ 0.06  0.83  0.05]
- [-0.45 -0.45 -0.04]]
+ [[ 0.63 -0.06  0.06]
+ [-0.69 -0.45  0.12]
+ [-0.24  0.85  0.12]
+ [ 0.06 -0.1  -0.83]
+ [ 0.25 -0.24  0.53]]
 V.T:
- [[-0.27  0.73  0.02  0.52 -0.37]
- [-0.35  0.42  0.06 -0.83 -0.08]
- [-0.43  0.11  0.29  0.18  0.82]
- [-0.51 -0.19 -0.83  0.06  0.04]
- [-0.59 -0.5   0.46  0.07 -0.42]]
+ [[-0.27  0.73  0.32  0.54 -0.06]
+ [-0.35  0.42 -0.65 -0.39 -0.35]
+ [-0.43  0.11  0.02 -0.29  0.85]
+ [-0.51 -0.19  0.61 -0.41 -0.4 ]
+ [-0.59 -0.5  -0.31  0.55 -0.04]]
 Row space:
  [[-0.27 -0.35 -0.43 -0.51 -0.59]
  [-0.73 -0.42 -0.11  0.19  0.5 ]]
 Right null space:
- [[-0.43  0.11  0.29  0.18  0.82]
- [-0.51 -0.19 -0.83  0.06  0.04]
- [-0.59 -0.5   0.46  0.07 -0.42]]
+ [[-0.43  0.11  0.02 -0.29  0.85]
+ [-0.51 -0.19  0.61 -0.41 -0.4 ]
+ [-0.59 -0.5  -0.31  0.55 -0.04]]
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="eckart-young-theorem">
-<h2><span class="section-number">7.5. </span>Eckart-Young Theorem<a class="headerlink" href="#eckart-young-theorem" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="eckart-young-theorem">
+<h2><span class="section-number">7.5. </span>Eckart-Young Theorem<a class="headerlink" href="#eckart-young-theorem" title="Permalink to this heading">#</a></h2>
 <p>Suppose that we want to construct  the best rank <span class="math notranslate nohighlight">\(r\)</span> approximation of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <p>By best we mean a  matrix <span class="math notranslate nohighlight">\(X_r\)</span> of rank <span class="math notranslate nohighlight">\(r &lt; p\)</span> that, among all rank <span class="math notranslate nohighlight">\(r\)</span> matrices, minimizes</p>
 <div class="math notranslate nohighlight">
@@ -612,14 +584,14 @@ of dimension <span class="math notranslate nohighlight">\(m \times n\)</span>.</
 </ul>
 <p>The Eckart-Young theorem states that for each of these three norms, same rank <span class="math notranslate nohighlight">\(r\)</span> matrix is best and that it equals</p>
 <div class="math notranslate nohighlight" id="equation-eq-ekart">
-<span class="eqno">(7.8)<a class="headerlink" href="#equation-eq-ekart" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(7.8)<a class="headerlink" href="#equation-eq-ekart" title="Permalink to this equation">#</a></span>\[
 \hat X_r = \sigma_1 U_1 V_1^\top  + \sigma_2 U_2 V_2^\top  + \cdots + \sigma_r U_r V_r^\top 
 \]</div>
 <p>You can read about the Eckart-Young theorem and some of its uses here <a class="reference external" href="https://en.wikipedia.org/wiki/Low-rank_approximation">https://en.wikipedia.org/wiki/Low-rank_approximation</a>.</p>
 <p>We’ll make use of this theorem when we discuss principal components analysis (PCA) and also dynamic mode decomposition (DMD).</p>
-</div>
-<div class="section" id="full-and-reduced-svds">
-<h2><span class="section-number">7.6. </span>Full and Reduced SVD’s<a class="headerlink" href="#full-and-reduced-svds" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="full-and-reduced-svds">
+<h2><span class="section-number">7.6. </span>Full and Reduced SVD’s<a class="headerlink" href="#full-and-reduced-svds" title="Permalink to this heading">#</a></h2>
 <p>Up to now we have described properties of a <strong>full</strong> SVD in which shapes of <span class="math notranslate nohighlight">\(U\)</span>, <span class="math notranslate nohighlight">\(\Sigma\)</span>, and <span class="math notranslate nohighlight">\(V\)</span> are <span class="math notranslate nohighlight">\(\left(m, m\right)\)</span>, <span class="math notranslate nohighlight">\(\left(m, n\right)\)</span>, <span class="math notranslate nohighlight">\(\left(n, n\right)\)</span>, respectively.</p>
 <p>There is  an alternative bookkeeping convention called an <strong>economy</strong> or <strong>reduced</strong> SVD in which the shapes of <span class="math notranslate nohighlight">\(U, \Sigma\)</span> and <span class="math notranslate nohighlight">\(V\)</span> are different from what they are in a full SVD.</p>
 <p>Thus, note that because we assume that <span class="math notranslate nohighlight">\(X\)</span> has rank <span class="math notranslate nohighlight">\(p\)</span>, there are only <span class="math notranslate nohighlight">\(p\)</span> nonzero singular values, where <span class="math notranslate nohighlight">\(p=\textrm{rank}(X)\leq\min\left(m, n\right)\)</span>.</p>
@@ -692,14 +664,14 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U, S, V =
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.63,  0.54, -0.43,  0.17, -0.29],
-        [-0.13, -0.39, -0.54, -0.73, -0.07],
-        [-0.66, -0.25,  0.66, -0.22, -0.13],
-        [-0.22, -0.7 , -0.29,  0.62, -0.04],
-        [-0.31,  0.07, -0.1 , -0.01,  0.94]]),
- array([1.63, 0.45]),
- array([[-0.77, -0.64],
-        [ 0.64, -0.77]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.37,  0.6 , -0.63, -0.28, -0.14],
+        [-0.78, -0.59, -0.1 ,  0.06, -0.16],
+        [-0.45,  0.46,  0.76, -0.12, -0.03],
+        [-0.13,  0.27, -0.08,  0.95, -0.  ],
+        [-0.2 ,  0.  , -0.09, -0.03,  0.98]]),
+ array([1.72, 0.2 ]),
+ array([[-0.63, -0.78],
+        [-0.78,  0.63]]))
 </pre></div>
 </div>
 </div>
@@ -715,14 +687,14 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uhat, Shat, Vhat = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.63,  0.54],
-        [-0.13, -0.39],
-        [-0.66, -0.25],
-        [-0.22, -0.7 ],
-        [-0.31,  0.07]]),
- array([1.63, 0.45]),
- array([[-0.77, -0.64],
-        [ 0.64, -0.77]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.37,  0.6 ],
+        [-0.78, -0.59],
+        [-0.45,  0.46],
+        [-0.13,  0.27],
+        [-0.2 ,  0.  ]]),
+ array([1.72, 0.2 ]),
+ array([[-0.63, -0.78],
+        [-0.78,  0.63]]))
 </pre></div>
 </div>
 </div>
@@ -759,16 +731,16 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UUT, UTU = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 1.00e+00, -4.24e-18,  5.60e-17,  2.11e-17,  4.44e-17],
-        [-4.24e-18,  1.00e+00, -3.77e-17, -7.89e-17, -2.22e-18],
-        [ 5.60e-17, -3.77e-17,  1.00e+00,  2.91e-17,  4.71e-17],
-        [ 2.11e-17, -7.89e-17,  2.91e-17,  1.00e+00,  1.41e-17],
-        [ 4.44e-17, -2.22e-18,  4.71e-17,  1.41e-17,  1.00e+00]]),
- array([[ 1.00e+00,  1.87e-17,  4.70e-18, -7.32e-17, -8.30e-17],
-        [ 1.87e-17,  1.00e+00, -9.17e-17, -1.06e-16, -6.60e-18],
-        [ 4.70e-18, -9.17e-17,  1.00e+00, -9.20e-17, -2.65e-17],
-        [-7.32e-17, -1.06e-16, -9.20e-17,  1.00e+00, -2.62e-18],
-        [-8.30e-17, -6.60e-18, -2.65e-17, -2.62e-18,  1.00e+00]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 1.00e+00,  1.73e-16, -7.97e-17,  2.27e-17,  1.08e-17],
+        [ 1.73e-16,  1.00e+00,  5.42e-17,  4.50e-17,  1.48e-17],
+        [-7.97e-17,  5.42e-17,  1.00e+00, -2.30e-17, -1.74e-17],
+        [ 2.27e-17,  4.50e-17, -2.30e-17,  1.00e+00,  5.59e-18],
+        [ 1.08e-17,  1.48e-17, -1.74e-17,  5.59e-18,  1.00e+00]]),
+ array([[ 1.00e+00,  4.63e-18,  1.52e-16,  1.80e-17, -1.08e-17],
+        [ 4.63e-18,  1.00e+00, -5.22e-17,  2.55e-17, -1.06e-17],
+        [ 1.52e-16, -5.22e-17,  1.00e+00, -5.65e-18,  2.80e-17],
+        [ 1.80e-17,  2.55e-17, -5.65e-18,  1.00e+00,  3.99e-18],
+        [-1.08e-17, -1.06e-17,  2.80e-17,  3.99e-18,  1.00e+00]]))
 </pre></div>
 </div>
 </div>
@@ -786,13 +758,13 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UhatUhatT, UhatTUhat= 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.7 , -0.13,  0.28, -0.24,  0.23],
-        [-0.13,  0.17,  0.18,  0.3 ,  0.01],
-        [ 0.28,  0.18,  0.5 ,  0.32,  0.19],
-        [-0.24,  0.3 ,  0.32,  0.53,  0.02],
-        [ 0.23,  0.01,  0.19,  0.02,  0.1 ]]),
- array([[1.00e+00, 1.87e-17],
-        [1.87e-17, 1.00e+00]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.5 , -0.07,  0.44,  0.21,  0.08],
+        [-0.07,  0.96,  0.08, -0.06,  0.15],
+        [ 0.44,  0.08,  0.41,  0.18,  0.09],
+        [ 0.21, -0.06,  0.18,  0.09,  0.03],
+        [ 0.08,  0.15,  0.09,  0.03,  0.04]]),
+ array([[ 1.00e+00, -7.63e-18],
+        [-7.63e-18,  1.00e+00]]))
 </pre></div>
 </div>
 </div>
@@ -819,14 +791,14 @@ Using <code class="docutils literal notranslate"><span class="pre">full-matrices
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U, S, V = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.31,  0.95],
-        [ 0.95, -0.31]]),
- array([1.45, 0.8 ]),
- array([[ 0.56,  0.12,  0.19,  0.61,  0.51],
-        [-0.21, -0.01,  0.94, -0.21,  0.14],
-        [-0.51,  0.78, -0.02,  0.36, -0.06],
-        [-0.41, -0.59,  0.09,  0.65, -0.23],
-        [-0.46, -0.19, -0.26, -0.14,  0.82]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.62, -0.79],
+        [ 0.79,  0.62]]),
+ array([1.9 , 0.59]),
+ array([[ 0.42,  0.08,  0.47,  0.56,  0.53],
+        [ 0.72,  0.13,  0.06, -0.67,  0.06],
+        [-0.36,  0.07,  0.86, -0.31, -0.16],
+        [-0.07,  0.98, -0.09,  0.09, -0.11],
+        [-0.41,  0.08, -0.15, -0.36,  0.82]]))
 </pre></div>
 </div>
 </div>
@@ -842,11 +814,11 @@ Using <code class="docutils literal notranslate"><span class="pre">full-matrices
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uhat, Shat, Vhat = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.31,  0.95],
-        [ 0.95, -0.31]]),
- array([1.45, 0.8 ]),
- array([[ 0.56,  0.12,  0.19,  0.61,  0.51],
-        [-0.21, -0.01,  0.94, -0.21,  0.14]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.62, -0.79],
+        [ 0.79,  0.62]]),
+ array([1.9 , 0.59]),
+ array([[ 0.42,  0.08,  0.47,  0.56,  0.53],
+        [ 0.72,  0.13,  0.06, -0.67,  0.06]]))
 </pre></div>
 </div>
 </div>
@@ -865,9 +837,9 @@ Using <code class="docutils literal notranslate"><span class="pre">full-matrices
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="polar-decomposition">
-<h2><span class="section-number">7.7. </span>Polar Decomposition<a class="headerlink" href="#polar-decomposition" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="polar-decomposition">
+<h2><span class="section-number">7.7. </span>Polar Decomposition<a class="headerlink" href="#polar-decomposition" title="Permalink to this heading">#</a></h2>
 <p>A <strong>reduced</strong> singular value decomposition (SVD) of <span class="math notranslate nohighlight">\(X\)</span> is related to a <strong>polar decomposition</strong> of <span class="math notranslate nohighlight">\(X\)</span></p>
 <div class="math notranslate nohighlight">
 \[
@@ -892,9 +864,9 @@ Q &amp; = U V^\top
 <li><p><span class="math notranslate nohighlight">\(\Sigma\)</span> is a <span class="math notranslate nohighlight">\(p \times p\)</span> diagonal matrix</p></li>
 <li><p><span class="math notranslate nohighlight">\(V\)</span> is an <span class="math notranslate nohighlight">\(n \times p\)</span> orthonormal</p></li>
 </ul>
-</div>
-<div class="section" id="application-principal-components-analysis-pca">
-<h2><span class="section-number">7.8. </span>Application: Principal Components Analysis (PCA)<a class="headerlink" href="#application-principal-components-analysis-pca" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="application-principal-components-analysis-pca">
+<h2><span class="section-number">7.8. </span>Application: Principal Components Analysis (PCA)<a class="headerlink" href="#application-principal-components-analysis-pca" title="Permalink to this heading">#</a></h2>
 <p>Let’s begin with a case in which <span class="math notranslate nohighlight">\(n &gt;&gt; m\)</span>, so that we have many  more individuals <span class="math notranslate nohighlight">\(n\)</span> than attributes <span class="math notranslate nohighlight">\(m\)</span>.</p>
 <p>The  matrix <span class="math notranslate nohighlight">\(X\)</span> is <strong>short and fat</strong>  in an  <span class="math notranslate nohighlight">\(n &gt;&gt; m\)</span> case as opposed to a <strong>tall and skinny</strong> case with <span class="math notranslate nohighlight">\(m &gt; &gt; n \)</span> to be discussed later.</p>
 <p>We regard  <span class="math notranslate nohighlight">\(X\)</span> as an  <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of <strong>data</strong>:</p>
@@ -909,12 +881,12 @@ X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n\end{bmatrix}
 <p>Arrange the singular values  in decreasing order.</p>
 <p>Arrange   the positive singular values on the main diagonal of the matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> of into a vector <span class="math notranslate nohighlight">\(\sigma_R\)</span>.</p>
 <p>Set all other entries of <span class="math notranslate nohighlight">\(\Sigma\)</span> to zero.</p>
-</div>
-<div class="section" id="relationship-of-pca-to-svd">
-<h2><span class="section-number">7.9. </span>Relationship of PCA to SVD<a class="headerlink" href="#relationship-of-pca-to-svd" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="relationship-of-pca-to-svd">
+<h2><span class="section-number">7.9. </span>Relationship of PCA to SVD<a class="headerlink" href="#relationship-of-pca-to-svd" title="Permalink to this heading">#</a></h2>
 <p>To relate a SVD to a PCA (principal component analysis) of data set <span class="math notranslate nohighlight">\(X\)</span>, first construct  the  SVD of the data matrix <span class="math notranslate nohighlight">\(X\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-pca1">
-<span class="eqno">(7.9)<a class="headerlink" href="#equation-eq-pca1" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(7.9)<a class="headerlink" href="#equation-eq-pca1" title="Permalink to this equation">#</a></span>\[
 X = U \Sigma V^\top  = \sigma_1 U_1 V_1^\top  + \sigma_2 U_2 V_2^\top  + \cdots + \sigma_p U_p V_p^\top 
 \]</div>
 <p>where</p>
@@ -930,7 +902,7 @@ V^\top  = \begin{bmatrix}V_1^\top \\V_2^\top \\\ldots\\V_n^\top \end{bmatrix}
 of rank <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <p>Thus, we have</p>
 <div class="math notranslate nohighlight" id="equation-eq-pca2">
-<span class="eqno">(7.10)<a class="headerlink" href="#equation-eq-pca2" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(7.10)<a class="headerlink" href="#equation-eq-pca2" title="Permalink to this equation">#</a></span>\[\begin{split}
 X = \sigma_1 \begin{pmatrix}U_{11}V_{1}^\top \\U_{21}V_{1}^\top \\\cdots\\U_{m1}V_{1}^\top \\\end{pmatrix} + \sigma_2\begin{pmatrix}U_{12}V_{2}^\top \\U_{22}V_{2}^\top \\\cdots\\U_{m2}V_{2}^\top \\\end{pmatrix}+\ldots + \sigma_p\begin{pmatrix}U_{1p}V_{p}^\top \\U_{2p}V_{p}^\top \\\cdots\\U_{mp}V_{p}^\top \\\end{pmatrix}
 \end{split}\]</div>
 <p>Here is how we would interpret the objects in the  matrix equation <a class="reference internal" href="#equation-eq-pca2">(7.10)</a> in
@@ -941,9 +913,9 @@ a time series context:</p>
 is a vector of <strong>loadings</strong> of variables <span class="math notranslate nohighlight">\(X_i\)</span> on the <span class="math notranslate nohighlight">\(k\)</span>th principal component,  <span class="math notranslate nohighlight">\(i=1, \ldots, m\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\sigma_k \)</span> for each <span class="math notranslate nohighlight">\(k=1, \ldots, p\)</span> is the strength of <span class="math notranslate nohighlight">\(k\)</span>th <strong>principal component</strong>, where strength means contribution to the overall covariance of <span class="math notranslate nohighlight">\(X\)</span>.</p></li>
 </ul>
-</div>
-<div class="section" id="pca-with-eigenvalues-and-eigenvectors">
-<h2><span class="section-number">7.10. </span>PCA with Eigenvalues and Eigenvectors<a class="headerlink" href="#pca-with-eigenvalues-and-eigenvectors" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="pca-with-eigenvalues-and-eigenvectors">
+<h2><span class="section-number">7.10. </span>PCA with Eigenvalues and Eigenvectors<a class="headerlink" href="#pca-with-eigenvalues-and-eigenvectors" title="Permalink to this heading">#</a></h2>
 <p>We now  use an eigen decomposition of a sample covariance matrix to do PCA.</p>
 <p>Let <span class="math notranslate nohighlight">\(X_{m \times n}\)</span> be our <span class="math notranslate nohighlight">\(m \times n\)</span> data matrix.</p>
 <p>Let’s assume that sample means of all variables are zero.</p>
@@ -980,7 +952,7 @@ X=P\epsilon
 \]</div>
 <p>We can verify that</p>
 <div class="math notranslate nohighlight" id="equation-eq-xxo">
-<span class="eqno">(7.11)<a class="headerlink" href="#equation-eq-xxo" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(7.11)<a class="headerlink" href="#equation-eq-xxo" title="Permalink to this equation">#</a></span>\[
 XX^\top =P\Lambda P^\top  .
 \]</div>
 <p>It follows that we can represent the data matrix <span class="math notranslate nohighlight">\(X\)</span>  as</p>
@@ -1013,13 +985,13 @@ X=\sigma_1U_1{V_1}^{T}+\sigma_2 U_2{V_2}^{T}+\ldots+\sigma_{r} U_{r}{V_{r}}^{T}
 </ul>
 <p>Because  there are alternative algorithms for  computing  <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(U\)</span> for  given a data matrix <span class="math notranslate nohighlight">\(X\)</span>, depending on  algorithms used, we might have sign differences or different orders between eigenvectors.</p>
 <p>We can resolve such ambiguities about  <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(P\)</span> by</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>sorting eigenvalues and singular values in descending order</p></li>
 <li><p>imposing positive diagonals on <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(U\)</span> and adjusting signs in <span class="math notranslate nohighlight">\(V^\top \)</span> accordingly</p></li>
 </ol>
-</div>
-<div class="section" id="connections">
-<h2><span class="section-number">7.11. </span>Connections<a class="headerlink" href="#connections" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="connections">
+<h2><span class="section-number">7.11. </span>Connections<a class="headerlink" href="#connections" title="Permalink to this heading">#</a></h2>
 <p>To pull things together, it is useful to assemble and compare some formulas presented above.</p>
 <p>First, consider an  SVD of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix:</p>
 <div class="math notranslate nohighlight">
@@ -1028,7 +1000,7 @@ X = U\Sigma V^\top
 \]</div>
 <p>Compute:</p>
 <div class="math notranslate nohighlight" id="equation-eq-xxcompare">
-<span class="eqno">(7.12)<a class="headerlink" href="#equation-eq-xxcompare" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(7.12)<a class="headerlink" href="#equation-eq-xxcompare" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
 XX^\top &amp;=U\Sigma V^\top V\Sigma^\top  U^\top \cr
 &amp;\equiv U\Sigma\Sigma^\top U^\top \cr
@@ -1224,8 +1196,8 @@ obtained by different algorithms.</p>
 <p>For an example  PCA applied to analyzing the structure of intelligence tests see this lecture <a class="reference internal" href="multivariate_normal.html"><span class="doc">Multivariable Normal Distribution</span></a>.</p>
 <p>Look at  parts of that lecture that describe and illustrate the classic factor analysis model.</p>
 <p>As mentioned earlier, in a sequel to this lecture about  <a class="reference internal" href="var_dmd.html"><span class="doc">Dynamic Mode Decompositions</span></a>, we’ll describe how SVD’s provide ways rapidly to compute reduced-order approximations to first-order Vector Autoregressions (VARs).</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1239,7 +1211,7 @@ obtained by different algorithms.</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1820,7 +1792,7 @@ obtained by different algorithms.</p>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1962,16 +1934,5 @@ obtained by different algorithms.</p>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

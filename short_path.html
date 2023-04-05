@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>33. Shortest Paths &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'short_path';</script>
     <link rel="canonical" href="https://python.quantecon.org/short_path.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,45 +161,16 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   33.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#outline-of-the-problem">
-   33.2. Outline of the Problem
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#finding-least-cost-paths">
-   33.3. Finding Least-Cost Paths
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#solving-for-minimum-cost-to-go">
-   33.4. Solving for Minimum Cost-to-Go
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#the-algorithm">
-     33.4.1. The Algorithm
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#implementation">
-     33.4.2. Implementation
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises">
-   33.5. Exercises
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">33.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outline-of-the-problem">33.2. Outline of the Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-least-cost-paths">33.3. Finding Least-Cost Paths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-for-minimum-cost-to-go">33.4. Solving for Minimum Cost-to-Go</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-algorithm">33.4.1. The Algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">33.4.2. Implementation</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">33.5. Exercises</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -236,8 +218,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="shortest-paths">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">33. </span>Shortest Paths</a><a class="headerlink" href="#shortest-paths" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="shortest-paths">
+<h1><a class="toc-backref" href="#id1"><span class="section-number">33. </span>Shortest Paths</a><a class="headerlink" href="#shortest-paths" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -252,8 +234,8 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">33.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id2"><span class="section-number">33.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>The shortest path problem is a <a class="reference external" href="https://en.wikipedia.org/wiki/Shortest_path">classic problem</a> in mathematics and computer science with applications in</p>
 <ul class="simple">
 <li><p>Economics (sequential decision making, analysis of social networks, etc.)</p></li>
@@ -277,14 +259,14 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="outline-of-the-problem">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">33.2. </span>Outline of the Problem</a><a class="headerlink" href="#outline-of-the-problem" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="outline-of-the-problem">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">33.2. </span>Outline of the Problem</a><a class="headerlink" href="#outline-of-the-problem" title="Permalink to this heading">#</a></h2>
 <p>The shortest path problem is one of finding how to traverse a <a class="reference external" href="https://en.wikipedia.org/wiki/Graph_%28mathematics%29">graph</a> from one specified node to another at minimum cost.</p>
 <p>Consider the following graph</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/graph.png" src="_images/graph.png" />
-</div>
+</figure>
 <p>We wish to travel from node (vertex) A to node G at minimum cost</p>
 <ul class="simple">
 <li><p>Arrows (edges) indicate the movements we can take.</p></li>
@@ -301,32 +283,32 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="simple">
 <li><p>A, C, F, G at cost 8</p></li>
 </ul>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/graph4.png" src="_images/graph4.png" />
-</div>
+</figure>
 <ul class="simple">
 <li><p>A, D, F, G at cost 8</p></li>
 </ul>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/graph3.png" src="_images/graph3.png" />
-</div>
-</div>
-<div class="section" id="finding-least-cost-paths">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">33.3. </span>Finding Least-Cost Paths</a><a class="headerlink" href="#finding-least-cost-paths" title="Permalink to this headline">¶</a></h2>
+</figure>
+</section>
+<section id="finding-least-cost-paths">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">33.3. </span>Finding Least-Cost Paths</a><a class="headerlink" href="#finding-least-cost-paths" title="Permalink to this heading">#</a></h2>
 <p>For large graphs, we need a systematic solution.</p>
 <p>Let <span class="math notranslate nohighlight">\(J(v)\)</span> denote the minimum cost-to-go from node <span class="math notranslate nohighlight">\(v\)</span>, understood as the total cost from <span class="math notranslate nohighlight">\(v\)</span> if we take the best route.</p>
 <p>Suppose that we know <span class="math notranslate nohighlight">\(J(v)\)</span> for each node <span class="math notranslate nohighlight">\(v\)</span>, as shown below for the graph from the preceding example</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/graph2.png" src="_images/graph2.png" />
-</div>
+</figure>
 <p>Note that <span class="math notranslate nohighlight">\(J(G) = 0\)</span>.</p>
 <p>The best path can now be found as follows</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Start at node <span class="math notranslate nohighlight">\(v = A\)</span></p></li>
 <li><p>From current node <span class="math notranslate nohighlight">\(v\)</span>, move to any node that solves</p></li>
 </ol>
 <div class="math notranslate nohighlight" id="equation-spprebell">
-<span class="eqno">(33.1)<a class="headerlink" href="#equation-spprebell" title="Permalink to this equation">¶</a></span>\[\min_{w \in F_v} \{ c(v, w) + J(w) \}\]</div>
+<span class="eqno">(33.1)<a class="headerlink" href="#equation-spprebell" title="Permalink to this equation">#</a></span>\[\min_{w \in F_v} \{ c(v, w) + J(w) \}\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(F_v\)</span> is the set of nodes that can be reached from <span class="math notranslate nohighlight">\(v\)</span> in one step.</p></li>
@@ -337,26 +319,26 @@ const thebe_selector_output = ".output, .cell_output"
 <p>Some thought will convince you that, for every node <span class="math notranslate nohighlight">\(v\)</span>,
 the function <span class="math notranslate nohighlight">\(J\)</span> satisfies</p>
 <div class="math notranslate nohighlight" id="equation-spbell">
-<span class="eqno">(33.2)<a class="headerlink" href="#equation-spbell" title="Permalink to this equation">¶</a></span>\[J(v) = \min_{w \in F_v} \{ c(v, w) + J(w) \}\]</div>
+<span class="eqno">(33.2)<a class="headerlink" href="#equation-spbell" title="Permalink to this equation">#</a></span>\[J(v) = \min_{w \in F_v} \{ c(v, w) + J(w) \}\]</div>
 <p>This is known as the <em>Bellman equation</em>, after the mathematician Richard Bellman.</p>
 <p>The Bellman equation can be thought of as a restriction that <span class="math notranslate nohighlight">\(J\)</span> must
 satisfy.</p>
 <p>What we want to do now is use this restriction to compute <span class="math notranslate nohighlight">\(J\)</span>.</p>
-</div>
-<div class="section" id="solving-for-minimum-cost-to-go">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">33.4. </span>Solving for Minimum Cost-to-Go</a><a class="headerlink" href="#solving-for-minimum-cost-to-go" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="solving-for-minimum-cost-to-go">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">33.4. </span>Solving for Minimum Cost-to-Go</a><a class="headerlink" href="#solving-for-minimum-cost-to-go" title="Permalink to this heading">#</a></h2>
 <p>Let’s look at an algorithm for computing <span class="math notranslate nohighlight">\(J\)</span> and then think about how to
 implement it.</p>
-<div class="section" id="the-algorithm">
-<h3><span class="section-number">33.4.1. </span>The Algorithm<a class="headerlink" href="#the-algorithm" title="Permalink to this headline">¶</a></h3>
+<section id="the-algorithm">
+<h3><span class="section-number">33.4.1. </span>The Algorithm<a class="headerlink" href="#the-algorithm" title="Permalink to this heading">#</a></h3>
 <p>The standard algorithm for finding <span class="math notranslate nohighlight">\(J\)</span> is to start an initial guess and then iterate.</p>
 <p>This is a standard approach to solving nonlinear equations, often called
 the method of <strong>successive approximations</strong>.</p>
 <p>Our initial guess will be</p>
 <div class="math notranslate nohighlight" id="equation-spguess">
-<span class="eqno">(33.3)<a class="headerlink" href="#equation-spguess" title="Permalink to this equation">¶</a></span>\[J_0(v) = 0 \text{ for all } v\]</div>
+<span class="eqno">(33.3)<a class="headerlink" href="#equation-spguess" title="Permalink to this equation">#</a></span>\[J_0(v) = 0 \text{ for all } v\]</div>
 <p>Now</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Set <span class="math notranslate nohighlight">\(n = 0\)</span></p></li>
 <li><p>Set <span class="math notranslate nohighlight">\(J_{n+1} (v) = \min_{w \in F_v} \{ c(v, w) + J_n(w) \}\)</span> for all <span class="math notranslate nohighlight">\(v\)</span></p></li>
 <li><p>If <span class="math notranslate nohighlight">\(J_{n+1}\)</span> and <span class="math notranslate nohighlight">\(J_n\)</span> are not equal then increment <span class="math notranslate nohighlight">\(n\)</span>, go to 2</p></li>
@@ -364,9 +346,9 @@ the method of <strong>successive approximations</strong>.</p>
 <p>This sequence converges to <span class="math notranslate nohighlight">\(J\)</span>.</p>
 <p>Although we omit the proof, we’ll prove similar claims in our other lectures
 on dynamic programming.</p>
-</div>
-<div class="section" id="implementation">
-<h3><span class="section-number">33.4.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="implementation">
+<h3><span class="section-number">33.4.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h3>
 <p>Having an algorithm is a good start, but we also need to think about how to
 implement it on a computer.</p>
 <p>First, for the cost function <span class="math notranslate nohighlight">\(c\)</span>, we’ll implement it as a matrix
@@ -447,14 +429,14 @@ Q(1, 2)
 </div>
 <p>This matches with the numbers we obtained by inspection above.</p>
 <p>But, importantly, we now have a methodology for tackling large graphs.</p>
-</div>
-</div>
-<div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">33.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">33.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="short_path_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 33.1 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>The text below describes a weighted directed graph.</p>
 <p>The line <code class="docutils literal notranslate"><span class="pre">node0,</span> <span class="pre">node1</span> <span class="pre">0.04,</span> <span class="pre">node8</span> <span class="pre">11.11,</span> <span class="pre">node14</span> <span class="pre">72.21</span></code> means that from node0 we can go to</p>
 <ul class="simple">
@@ -582,13 +564,13 @@ integers, so consider replacing <code class="docutils literal notranslate"><span
 </div>
 </div>
 </div>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="short_path-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#short_path_ex1"> Exercise 33.1</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>First let’s write a function that reads in the graph data above and builds a distance matrix.</p>
+<section id="solution-content">
+<p>First let’s write a function that reads in the graph data above and builds a distance matrix.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_nodes</span> <span class="o">=</span> <span class="mi">100</span>
@@ -617,7 +599,7 @@ integers, so consider replacing <code class="docutils literal notranslate"><span
 </div>
 </div>
 <p>In addition, let’s write</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>a “Bellman operator” function that takes a distance matrix and current guess of J and returns an updated guess of J, and</p></li>
 <li><p>a function that takes a distance matrix and returns a cost-to-go function.</p></li>
 </ol>
@@ -726,10 +708,10 @@ Cost:  160.55000000000007
 </div>
 </div>
 </div>
+</section>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -743,7 +725,7 @@ Cost:  160.55000000000007
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1324,7 +1306,7 @@ Cost:  160.55000000000007
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1466,16 +1448,5 @@ Cost:  160.55000000000007
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

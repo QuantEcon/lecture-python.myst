@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>4. QR Decomposition &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'qr_decomp';</script>
     <link rel="canonical" href="https://python.quantecon.org/qr_decomp.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,66 +161,18 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   4.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#matrix-factorization">
-   4.2. Matrix Factorization
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#gram-schmidt-process">
-   4.3. Gram-Schmidt process
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#gram-schmidt-process-for-square-a">
-     4.3.1. Gram-Schmidt process for square
-     <span class="math notranslate nohighlight">
-      \(A\)
-     </span>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#a-not-square">
-     4.3.2.
-     <span class="math notranslate nohighlight">
-      \(A\)
-     </span>
-     not square
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#some-code">
-   4.4. Some Code
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example">
-   4.5. Example
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#using-qr-decomposition-to-compute-eigenvalues">
-   4.6. Using QR Decomposition to Compute Eigenvalues
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#qr-and-pca">
-   4.7.
-   <span class="math notranslate nohighlight">
-    \(QR\)
-   </span>
-   and PCA
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">4.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-factorization">4.2. Matrix Factorization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gram-schmidt-process">4.3. Gram-Schmidt process</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gram-schmidt-process-for-square-a">4.3.1. Gram-Schmidt process for square <span class="math notranslate nohighlight">\(A\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-not-square">4.3.2. <span class="math notranslate nohighlight">\(A\)</span> not square</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-code">4.4. Some Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">4.5. Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-qr-decomposition-to-compute-eigenvalues">4.6. Using QR Decomposition to Compute Eigenvalues</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qr-and-pca">4.7. <span class="math notranslate nohighlight">\(QR\)</span> and PCA</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -253,10 +216,10 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <div class="tex2jax_ignore mathjax_ignore section" id="qr-decomposition">
-<h1><span class="section-number">4. </span>QR Decomposition<a class="headerlink" href="#qr-decomposition" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="overview">
-<h2><span class="section-number">4.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="qr-decomposition">
+<h1><span class="section-number">4. </span>QR Decomposition<a class="headerlink" href="#qr-decomposition" title="Permalink to this heading">#</a></h1>
+<section id="overview">
+<h2><span class="section-number">4.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes the QR decomposition and how it relates to</p>
 <ul class="simple">
 <li><p>Orthogonal projection and least squares</p></li>
@@ -264,9 +227,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p>Eigenvalues and eigenvectors</p></li>
 </ul>
 <p>We’ll write some Python code to help consolidate our understandings.</p>
-</div>
-<div class="section" id="matrix-factorization">
-<h2><span class="section-number">4.2. </span>Matrix Factorization<a class="headerlink" href="#matrix-factorization" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="matrix-factorization">
+<h2><span class="section-number">4.2. </span>Matrix Factorization<a class="headerlink" href="#matrix-factorization" title="Permalink to this heading">#</a></h2>
 <p>The QR decomposition (also called the QR factorization) of a matrix is a decomposition of a matrix into the product of  an orthogonal matrix and a triangular matrix.</p>
 <p>A QR decomposition of a real  matrix <span class="math notranslate nohighlight">\(A\)</span>
 takes the form</p>
@@ -281,15 +244,15 @@ A=QR
 </ul>
 <p>We’ll use a <strong>Gram-Schmidt process</strong> to compute a  QR decomposition</p>
 <p>Because doing so is so educational, we’ll  write our own Python code to do the job</p>
-</div>
-<div class="section" id="gram-schmidt-process">
-<h2><span class="section-number">4.3. </span>Gram-Schmidt process<a class="headerlink" href="#gram-schmidt-process" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="gram-schmidt-process">
+<h2><span class="section-number">4.3. </span>Gram-Schmidt process<a class="headerlink" href="#gram-schmidt-process" title="Permalink to this heading">#</a></h2>
 <p>We’ll start with a <strong>square</strong> matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
 <p>If a square matrix <span class="math notranslate nohighlight">\(A\)</span> is nonsingular, then a <span class="math notranslate nohighlight">\(QR\)</span> factorization is unique.</p>
 <p>We’ll deal with a rectangular matrix <span class="math notranslate nohighlight">\(A\)</span> later.</p>
 <p>Actually, our algorithm will work with a rectangular <span class="math notranslate nohighlight">\(A\)</span> that is not square.</p>
-<div class="section" id="gram-schmidt-process-for-square-a">
-<h3><span class="section-number">4.3.1. </span>Gram-Schmidt process for square <span class="math notranslate nohighlight">\(A\)</span><a class="headerlink" href="#gram-schmidt-process-for-square-a" title="Permalink to this headline">¶</a></h3>
+<section id="gram-schmidt-process-for-square-a">
+<h3><span class="section-number">4.3.1. </span>Gram-Schmidt process for square <span class="math notranslate nohighlight">\(A\)</span><a class="headerlink" href="#gram-schmidt-process-for-square-a" title="Permalink to this heading">#</a></h3>
 <p>Here we apply a Gram-Schmidt  process to the  <strong>columns</strong>  of matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
 <p>In particular, let</p>
 <div class="math notranslate nohighlight">
@@ -351,9 +314,9 @@ Q = \left[ \begin{array}{c|c|c|c} a_1 &amp; a_2 &amp; \cdots &amp; a_n \end{arra
 R = \left[ \begin{matrix} a_1·e_1 &amp; a_2·e_1 &amp; \cdots &amp; a_n·e_1\\ 0 &amp; a_2·e_2 &amp; \cdots &amp; a_n·e_2 
 \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ 0 &amp; 0 &amp; \cdots &amp; a_n·e_n \end{matrix} \right]
 \end{split}\]</div>
-</div>
-<div class="section" id="a-not-square">
-<h3><span class="section-number">4.3.2. </span><span class="math notranslate nohighlight">\(A\)</span> not square<a class="headerlink" href="#a-not-square" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="a-not-square">
+<h3><span class="section-number">4.3.2. </span><span class="math notranslate nohighlight">\(A\)</span> not square<a class="headerlink" href="#a-not-square" title="Permalink to this heading">#</a></h3>
 <p>Now suppose that <span class="math notranslate nohighlight">\(A\)</span> is an <span class="math notranslate nohighlight">\(n \times m\)</span> matrix where <span class="math notranslate nohighlight">\(m &gt; n\)</span>.</p>
 <p>Then a <span class="math notranslate nohighlight">\(QR\)</span> decomposition is</p>
 <div class="math notranslate nohighlight">
@@ -374,10 +337,10 @@ a_{n+1} &amp; = (a_{n+1}\cdot e_1) e_1 + (a_{n+1}\cdot e_2) e_2 + \cdots + (a_{n
 \vdots &amp; \quad \vdots \cr
 a_m &amp; = (a_m\cdot e_1) e_1 + (a_m\cdot e_2) e_2 + \cdots + (a_m \cdot e_n) e_n  \cr
 \end{align*}\]</div>
-</div>
-</div>
-<div class="section" id="some-code">
-<h2><span class="section-number">4.4. </span>Some Code<a class="headerlink" href="#some-code" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="some-code">
+<h2><span class="section-number">4.4. </span>Some Code<a class="headerlink" href="#some-code" title="Permalink to this heading">#</a></h2>
 <p>Now let’s write some homemade Python code to implement a QR decomposition by deploying the  Gram-Schmidt process described above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -448,9 +411,9 @@ a_m &amp; = (a_m\cdot e_1) e_1 + (a_m\cdot e_2) e_2 + \cdots + (a_m \cdot e_n) e
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="example">
-<h2><span class="section-number">4.5. </span>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example">
+<h2><span class="section-number">4.5. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">#</a></h2>
 <p>Now let’s do an example.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -602,14 +565,14 @@ scipy produces.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="using-qr-decomposition-to-compute-eigenvalues">
-<h2><span class="section-number">4.6. </span>Using QR Decomposition to Compute Eigenvalues<a class="headerlink" href="#using-qr-decomposition-to-compute-eigenvalues" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="using-qr-decomposition-to-compute-eigenvalues">
+<h2><span class="section-number">4.6. </span>Using QR Decomposition to Compute Eigenvalues<a class="headerlink" href="#using-qr-decomposition-to-compute-eigenvalues" title="Permalink to this heading">#</a></h2>
 <p>Now for a useful  fact about the QR algorithm.</p>
 <p>The following iterations on the QR decomposition can be used to compute <strong>eigenvalues</strong>
 of a <strong>square</strong> matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
 <p>Here is the algorithm:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Set <span class="math notranslate nohighlight">\(A_0 = A\)</span> and form <span class="math notranslate nohighlight">\(A_0 = Q_0 R_0\)</span></p></li>
 <li><p>Form <span class="math notranslate nohighlight">\(A_1 = R_0 Q_0 \)</span> . Note that <span class="math notranslate nohighlight">\(A_1\)</span> is similar to <span class="math notranslate nohighlight">\(A_0\)</span> (easy to verify) and so has the same eigenvalues.</p></li>
 <li><p>Form <span class="math notranslate nohighlight">\(A_1 = Q_1 R_1\)</span> (i.e., form the <span class="math notranslate nohighlight">\(QR\)</span> decomposition of <span class="math notranslate nohighlight">\(A_1\)</span>).</p></li>
@@ -662,7 +625,7 @@ of a <strong>square</strong> matrix <span class="math notranslate nohighlight">\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.059553183753736465, 0.28894637294467573, 1.9315628409535806]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-0.6307636990805257, -0.03595236322918209, 0.8306543686945956]
 </pre></div>
 </div>
 </div>
@@ -675,19 +638,17 @@ of a <strong>square</strong> matrix <span class="math notranslate nohighlight">\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(0.17424977834920602-0.4757262313991703j),
- (0.17424977834920602+0.4757262313991703j),
- (1.9315628409535779+0j)]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-0.6307636990805252, -0.035952363229188995, 0.8306543686945955]
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="qr-and-pca">
-<h2><span class="section-number">4.7. </span><span class="math notranslate nohighlight">\(QR\)</span> and PCA<a class="headerlink" href="#qr-and-pca" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="qr-and-pca">
+<h2><span class="section-number">4.7. </span><span class="math notranslate nohighlight">\(QR\)</span> and PCA<a class="headerlink" href="#qr-and-pca" title="Permalink to this heading">#</a></h2>
 <p>There are interesting connections between the <span class="math notranslate nohighlight">\(QR\)</span> decomposition and principal components analysis (PCA).</p>
 <p>Here are  some.</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Let <span class="math notranslate nohighlight">\(X'\)</span> be a <span class="math notranslate nohighlight">\(k \times n\)</span> random matrix where the <span class="math notranslate nohighlight">\(j\)</span>th column is a random draw
 from <span class="math notranslate nohighlight">\({\mathcal N}(\mu, \Sigma)\)</span> where <span class="math notranslate nohighlight">\(\mu\)</span> is <span class="math notranslate nohighlight">\(k \times 1\)</span> vector of means and <span class="math notranslate nohighlight">\(\Sigma\)</span> is a <span class="math notranslate nohighlight">\(k \times k\)</span>
 covariance matrix.  We want <span class="math notranslate nohighlight">\(n &gt; &gt; k\)</span> – this is an “econometrics example”.</p></li>
@@ -783,10 +744,10 @@ covariance matrix.  We want <span class="math notranslate nohighlight">\(n &gt; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([  47.78106393,  196.96929021,  795.14619738, 1012.57057108,
-        6171.26321452]),
- array([  47.78106393,  196.96929021,  795.14619738, 1012.57057108,
-        6171.26321452]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([  68.55391346,  254.99619842,  297.37596501,  556.54175284,
+        7728.24155046]),
+ array([  68.55391346,  254.99619842,  297.37596501,  556.54175284,
+        7728.24155046]))
 </pre></div>
 </div>
 </div>
@@ -802,7 +763,7 @@ covariance matrix.  We want <span class="math notranslate nohighlight">\(n &gt; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.3861802251067274e-15
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.497202527569243e-15
 </pre></div>
 </div>
 </div>
@@ -822,13 +783,13 @@ covariance matrix.  We want <span class="math notranslate nohighlight">\(n &gt; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.092726157978177e-12
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.8189894035458565e-11
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -842,7 +803,7 @@ covariance matrix.  We want <span class="math notranslate nohighlight">\(n &gt; 
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1423,7 +1384,7 @@ covariance matrix.  We want <span class="math notranslate nohighlight">\(n &gt; 
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1565,16 +1526,5 @@ covariance matrix.  We want <span class="math notranslate nohighlight">\(n &gt; 
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

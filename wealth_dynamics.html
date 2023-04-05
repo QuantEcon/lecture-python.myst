@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>31. Wealth Distribution Dynamics &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'wealth_dynamics';</script>
     <link rel="canonical" href="https://python.quantecon.org/wealth_dynamics.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,74 +161,25 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   31.1. Overview
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#a-note-on-assumptions">
-     31.1.1. A Note on Assumptions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#lorenz-curves-and-the-gini-coefficient">
-   31.2. Lorenz Curves and the Gini Coefficient
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#lorenz-curves">
-     31.2.1. Lorenz Curves
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#the-gini-coefficient">
-     31.2.2. The Gini Coefficient
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#a-model-of-wealth-dynamics">
-   31.3. A Model of Wealth Dynamics
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implementation-using-jax">
-   31.4. Implementation using JAX
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implementation-using-numba">
-   31.5. Implementation using Numba
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#applications">
-   31.6. Applications
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#time-series">
-     31.6.1. Time Series
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#inequality-measures">
-     31.6.2. Inequality Measures
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises">
-   31.7. Exercises
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">31.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-note-on-assumptions">31.1.1. A Note on Assumptions</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves-and-the-gini-coefficient">31.2. Lorenz Curves and the Gini Coefficient</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves">31.2.1. Lorenz Curves</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gini-coefficient">31.2.2. The Gini Coefficient</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-model-of-wealth-dynamics">31.3. A Model of Wealth Dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-using-jax">31.4. Implementation using JAX</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-using-numba">31.5. Implementation using Numba</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications">31.6. Applications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series">31.6.1. Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inequality-measures">31.6.2. Inequality Measures</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">31.7. Exercises</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -265,13 +227,13 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="wealth-distribution-dynamics">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">31. </span>Wealth Distribution Dynamics</a><a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="wealth-distribution-dynamics">
+<h1><a class="toc-backref" href="#id2"><span class="section-number">31. </span>Wealth Distribution Dynamics</a><a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
-<p class="admonition-title">GPU in use</p>
+<p class="admonition-title">GPU</p>
 <p>This lecture is accelerated via <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU and JAX for GPU programming.</p>
 <p>Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.</p>
-<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax#pip-installation-gpu-cuda">instructions</a> for installing JAX with GPU support.</p>
+<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax">instructions</a> for installing JAX with GPU support. If you would like to install jax running on the <code class="docutils literal notranslate"><span class="pre">cpu</span></code> only you can use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jax[cpu]</span></code></p>
 </div>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
@@ -291,41 +253,137 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
-<span class="c1"># If your machine has CUDA support, please follow the guide in GPU Warning.</span>
-<span class="c1"># Otherwise, run the line below:</span>
-<span class="o">!</span>pip install --upgrade <span class="s2">&quot;jax[CPU]&quot;</span>
+<span class="o">!</span>pip install myst-nb
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.6.0)
-Requirement already satisfied: scipy&gt;=1.5.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
-Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.6.0)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: numba in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (65.6.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jax[CPU] in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.4.6)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: myst-nb in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.17.1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.20 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (1.23.5)
-Requirement already satisfied: scipy&gt;=1.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (1.9.1)
-Requirement already satisfied: opt-einsum in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (3.3.0)
-Requirement already satisfied: jaxlib==0.4.6 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (0.4.6)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jupyter-cache~=0.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-nb) (0.5.0)
+Requirement already satisfied: typing-extensions in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-nb) (4.4.0)
+Requirement already satisfied: nbclient in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-nb) (0.5.13)
+Requirement already satisfied: nbformat~=5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-nb) (5.7.0)
+Requirement already satisfied: pyyaml in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-nb) (6.0)
+Requirement already satisfied: importlib_metadata in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-nb) (4.11.3)
+Requirement already satisfied: myst-parser~=0.18.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-nb) (0.18.1)
+Requirement already satisfied: ipython in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-nb) (8.10.0)
+Requirement already satisfied: sphinx&lt;6,&gt;=4 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-nb) (5.0.2)
+Requirement already satisfied: ipykernel in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-nb) (6.19.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: click in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jupyter-cache~=0.5.0-&gt;myst-nb) (8.0.4)
+Requirement already satisfied: sqlalchemy&lt;1.5,&gt;=1.3.12 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jupyter-cache~=0.5.0-&gt;myst-nb) (1.4.39)
+Requirement already satisfied: tabulate in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jupyter-cache~=0.5.0-&gt;myst-nb) (0.8.10)
+Requirement already satisfied: attrs in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jupyter-cache~=0.5.0-&gt;myst-nb) (22.1.0)
+Requirement already satisfied: docutils&lt;0.20,&gt;=0.15 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-parser~=0.18.0-&gt;myst-nb) (0.17.1)
+Requirement already satisfied: jinja2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-parser~=0.18.0-&gt;myst-nb) (3.0.3)
+Requirement already satisfied: mdit-py-plugins~=0.3.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-parser~=0.18.0-&gt;myst-nb) (0.3.5)
+Requirement already satisfied: markdown-it-py&lt;3.0.0,&gt;=1.0.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from myst-parser~=0.18.0-&gt;myst-nb) (2.2.0)
+Requirement already satisfied: traitlets&gt;=5.0.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from nbclient-&gt;myst-nb) (5.7.1)
+Requirement already satisfied: jupyter-client&gt;=6.1.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from nbclient-&gt;myst-nb) (7.3.4)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: nest-asyncio in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from nbclient-&gt;myst-nb) (1.5.6)
+Requirement already satisfied: jupyter-core in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from nbformat~=5.0-&gt;myst-nb) (5.2.0)
+Requirement already satisfied: fastjsonschema in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from nbformat~=5.0-&gt;myst-nb) (2.16.2)
+Requirement already satisfied: jsonschema&gt;=2.6 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from nbformat~=5.0-&gt;myst-nb) (4.17.3)
+Requirement already satisfied: requests&gt;=2.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sphinx&lt;6,&gt;=4-&gt;myst-nb) (2.28.1)
+Requirement already satisfied: sphinxcontrib-htmlhelp&gt;=2.0.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sphinx&lt;6,&gt;=4-&gt;myst-nb) (2.0.0)
+Requirement already satisfied: sphinxcontrib-qthelp in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sphinx&lt;6,&gt;=4-&gt;myst-nb) (1.0.3)
+Requirement already satisfied: Pygments&gt;=2.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sphinx&lt;6,&gt;=4-&gt;myst-nb) (2.11.2)
+Requirement already satisfied: snowballstemmer&gt;=1.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sphinx&lt;6,&gt;=4-&gt;myst-nb) (2.2.0)
+Requirement already satisfied: sphinxcontrib-devhelp in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sphinx&lt;6,&gt;=4-&gt;myst-nb) (1.0.2)
+Requirement already satisfied: babel&gt;=1.3 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sphinx&lt;6,&gt;=4-&gt;myst-nb) (2.11.0)
+Requirement already satisfied: sphinxcontrib-jsmath in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sphinx&lt;6,&gt;=4-&gt;myst-nb) (1.0.1)
+Requirement already satisfied: alabaster&lt;0.8,&gt;=0.7 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sphinx&lt;6,&gt;=4-&gt;myst-nb) (0.7.12)
+Requirement already satisfied: sphinxcontrib-serializinghtml&gt;=1.1.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sphinx&lt;6,&gt;=4-&gt;myst-nb) (1.1.5)
+Requirement already satisfied: imagesize in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sphinx&lt;6,&gt;=4-&gt;myst-nb) (1.4.1)
+Requirement already satisfied: sphinxcontrib-applehelp in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sphinx&lt;6,&gt;=4-&gt;myst-nb) (1.0.2)
+Requirement already satisfied: packaging in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sphinx&lt;6,&gt;=4-&gt;myst-nb) (21.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: zipp&gt;=0.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from importlib_metadata-&gt;myst-nb) (3.11.0)
+Requirement already satisfied: psutil in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from ipykernel-&gt;myst-nb) (5.9.0)
+Requirement already satisfied: debugpy&gt;=1.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from ipykernel-&gt;myst-nb) (1.5.1)
+Requirement already satisfied: matplotlib-inline&gt;=0.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from ipykernel-&gt;myst-nb) (0.1.6)
+Requirement already satisfied: pyzmq&gt;=17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from ipykernel-&gt;myst-nb) (23.2.0)
+Requirement already satisfied: tornado&gt;=6.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from ipykernel-&gt;myst-nb) (6.1)
+Requirement already satisfied: comm&gt;=0.1.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from ipykernel-&gt;myst-nb) (0.1.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: decorator in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from ipython-&gt;myst-nb) (5.1.1)
+Requirement already satisfied: prompt-toolkit&lt;3.1.0,&gt;=3.0.30 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from ipython-&gt;myst-nb) (3.0.36)
+Requirement already satisfied: backcall in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from ipython-&gt;myst-nb) (0.2.0)
+Requirement already satisfied: stack-data in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from ipython-&gt;myst-nb) (0.2.0)
+Requirement already satisfied: pexpect&gt;4.3 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from ipython-&gt;myst-nb) (4.8.0)
+Requirement already satisfied: pickleshare in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from ipython-&gt;myst-nb) (0.7.5)
+Requirement already satisfied: jedi&gt;=0.16 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from ipython-&gt;myst-nb) (0.18.1)
+Requirement already satisfied: pytz&gt;=2015.7 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from babel&gt;=1.3-&gt;sphinx&lt;6,&gt;=4-&gt;myst-nb) (2023.3)
+Requirement already satisfied: parso&lt;0.9.0,&gt;=0.8.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jedi&gt;=0.16-&gt;ipython-&gt;myst-nb) (0.8.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: MarkupSafe&gt;=2.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jinja2-&gt;myst-parser~=0.18.0-&gt;myst-nb) (2.1.1)
+Requirement already satisfied: pyrsistent!=0.17.0,!=0.17.1,!=0.17.2,&gt;=0.14.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jsonschema&gt;=2.6-&gt;nbformat~=5.0-&gt;myst-nb) (0.18.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: python-dateutil&gt;=2.8.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jupyter-client&gt;=6.1.5-&gt;nbclient-&gt;myst-nb) (2.8.2)
+Requirement already satisfied: entrypoints in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jupyter-client&gt;=6.1.5-&gt;nbclient-&gt;myst-nb) (0.4)
+Requirement already satisfied: platformdirs&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jupyter-core-&gt;nbformat~=5.0-&gt;myst-nb) (2.5.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mdurl~=0.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from markdown-it-py&lt;3.0.0,&gt;=1.0.0-&gt;myst-parser~=0.18.0-&gt;myst-nb) (0.1.2)
+Requirement already satisfied: ptyprocess&gt;=0.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pexpect&gt;4.3-&gt;ipython-&gt;myst-nb) (0.7.0)
+Requirement already satisfied: wcwidth in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from prompt-toolkit&lt;3.1.0,&gt;=3.0.30-&gt;ipython-&gt;myst-nb) (0.2.5)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.5.0-&gt;sphinx&lt;6,&gt;=4-&gt;myst-nb) (3.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.5.0-&gt;sphinx&lt;6,&gt;=4-&gt;myst-nb) (2022.12.7)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.5.0-&gt;sphinx&lt;6,&gt;=4-&gt;myst-nb) (1.26.14)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.5.0-&gt;sphinx&lt;6,&gt;=4-&gt;myst-nb) (2.0.4)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: greenlet!=0.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from sqlalchemy&lt;1.5,&gt;=1.3.12-&gt;jupyter-cache~=0.5.0-&gt;myst-nb) (2.0.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from packaging-&gt;sphinx&lt;6,&gt;=4-&gt;myst-nb) (3.0.9)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pure-eval in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from stack-data-&gt;ipython-&gt;myst-nb) (0.2.2)
+Requirement already satisfied: asttokens in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from stack-data-&gt;ipython-&gt;myst-nb) (2.0.5)
+Requirement already satisfied: executing in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from stack-data-&gt;ipython-&gt;myst-nb) (0.8.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six&gt;=1.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from python-dateutil&gt;=2.8.2-&gt;jupyter-client&gt;=6.1.5-&gt;nbclient-&gt;myst-nb) (1.16.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -333,9 +391,10 @@ Requirement already satisfied: jaxlib==0.4.6 in /__w/lecture-python.myst/lecture
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">31.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">31.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This notebook gives an introduction to wealth distribution dynamics, with a
 focus on</p>
 <ul class="simple">
@@ -353,8 +412,8 @@ tails.</p>
 <p>This is consistent with high concentration of wealth amongst the richest households.</p>
 <p>It also gives us a way to quantify such concentration, in terms of the tail index.</p>
 <p>One question of interest is whether or not we can replicate Pareto tails from a relatively simple model.</p>
-<div class="section" id="a-note-on-assumptions">
-<h3><span class="section-number">31.1.1. </span>A Note on Assumptions<a class="headerlink" href="#a-note-on-assumptions" title="Permalink to this headline">¶</a></h3>
+<section id="a-note-on-assumptions">
+<h3><span class="section-number">31.1.1. </span>A Note on Assumptions<a class="headerlink" href="#a-note-on-assumptions" title="Permalink to this heading">#</a></h3>
 <p>The evolution of wealth for any given household depends on their
 savings behavior.</p>
 <p>Modeling such behavior will form an important part of this lecture series.</p>
@@ -390,23 +449,20 @@ savings behavior.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX backend: cpu
-[CpuDevice(id=0)]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX backend: gpu
+[StreamExecutorGpuDevice(id=0, process_index=0, slice_index=0)]
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="lorenz-curves-and-the-gini-coefficient">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">31.2. </span>Lorenz Curves and the Gini Coefficient</a><a class="headerlink" href="#lorenz-curves-and-the-gini-coefficient" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="lorenz-curves-and-the-gini-coefficient">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">31.2. </span>Lorenz Curves and the Gini Coefficient</a><a class="headerlink" href="#lorenz-curves-and-the-gini-coefficient" title="Permalink to this heading">#</a></h2>
 <p>Before we investigate wealth dynamics, we briefly review some measures of
 inequality.</p>
-<div class="section" id="lorenz-curves">
-<h3><span class="section-number">31.2.1. </span>Lorenz Curves<a class="headerlink" href="#lorenz-curves" title="Permalink to this headline">¶</a></h3>
+<section id="lorenz-curves">
+<h3><span class="section-number">31.2.1. </span>Lorenz Curves<a class="headerlink" href="#lorenz-curves" title="Permalink to this heading">#</a></h3>
 <p>One popular graphical measure of inequality is the <a class="reference external" href="https://en.wikipedia.org/wiki/Lorenz_curve">Lorenz curve</a>.</p>
 <p>The package <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py">QuantEcon.py</a>, already imported above, contains a function to compute Lorenz curves.</p>
 <p>To illustrate, suppose that</p>
@@ -433,7 +489,7 @@ inequality.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_9_0.png" src="_images/wealth_dynamics_9_0.png" />
+<img alt="_images/0552fe5d032d6d129b23b675fca58e165a9725afdcf5af928d2071abdbd91fc8.png" src="_images/0552fe5d032d6d129b23b675fca58e165a9725afdcf5af928d2071abdbd91fc8.png" />
 </div>
 </div>
 <p>This curve can be understood as follows: if point <span class="math notranslate nohighlight">\((x,y)\)</span> lies on the curve, it means that, collectively, the bottom <span class="math notranslate nohighlight">\((100x)\%\)</span> of the population holds <span class="math notranslate nohighlight">\((100y)\%\)</span> of the wealth.</p>
@@ -464,14 +520,14 @@ observations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_11_0.png" src="_images/wealth_dynamics_11_0.png" />
+<img alt="_images/d2737ff92267a3c1b21fc59bab598b0a1f2dfed792e833366d1b40ff4c32deeb.png" src="_images/d2737ff92267a3c1b21fc59bab598b0a1f2dfed792e833366d1b40ff4c32deeb.png" />
 </div>
 </div>
 <p>You can see that, as the tail parameter of the Pareto distribution increases, inequality decreases.</p>
 <p>This is to be expected, because a higher tail index implies less weight in the tail of the Pareto distribution.</p>
-</div>
-<div class="section" id="the-gini-coefficient">
-<h3><span class="section-number">31.2.2. </span>The Gini Coefficient<a class="headerlink" href="#the-gini-coefficient" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="the-gini-coefficient">
+<h3><span class="section-number">31.2.2. </span>The Gini Coefficient<a class="headerlink" href="#the-gini-coefficient" title="Permalink to this heading">#</a></h3>
 <p>The definition and interpretation of the Gini coefficient can be found on the corresponding <a class="reference external" href="https://en.wikipedia.org/wiki/Gini_coefficient">Wikipedia page</a>.</p>
 <p>A value of 0 indicates perfect equality (corresponding the case where the
 Lorenz curve matches the 45 degree line) and a value of 1 indicates complete
@@ -506,18 +562,18 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_13_0.png" src="_images/wealth_dynamics_13_0.png" />
+<img alt="_images/4b1f3d3cec67fe69dce18c8079fa2cb5bb6e4648659d485ef523891ff884c71d.png" src="_images/4b1f3d3cec67fe69dce18c8079fa2cb5bb6e4648659d485ef523891ff884c71d.png" />
 </div>
 </div>
 <p>The simulation shows that the fit is good.</p>
-</div>
-</div>
-<div class="section" id="a-model-of-wealth-dynamics">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">31.3. </span>A Model of Wealth Dynamics</a><a class="headerlink" href="#a-model-of-wealth-dynamics" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="a-model-of-wealth-dynamics">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">31.3. </span>A Model of Wealth Dynamics</a><a class="headerlink" href="#a-model-of-wealth-dynamics" title="Permalink to this heading">#</a></h2>
 <p>Having discussed inequality measures, let us now turn to wealth dynamics.</p>
 <p>The model we will study is</p>
 <div class="math notranslate nohighlight" id="equation-wealth-dynam-ah">
-<span class="eqno">(31.1)<a class="headerlink" href="#equation-wealth-dynam-ah" title="Permalink to this equation">¶</a></span>\[w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
+<span class="eqno">(31.1)<a class="headerlink" href="#equation-wealth-dynam-ah" title="Permalink to this equation">#</a></span>\[w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(w_t\)</span> is wealth at time <span class="math notranslate nohighlight">\(t\)</span> for a given household,</p></li>
@@ -547,16 +603,16 @@ on assets do not exhibit large trends.</p>
 <p>When we simulate a population of households, we will assume all shocks are idiosyncratic (i.e.,  specific to individual households and independent across them).</p>
 <p>Regarding the savings function <span class="math notranslate nohighlight">\(s\)</span>, our default model will be</p>
 <div class="math notranslate nohighlight" id="equation-sav-ah">
-<span class="eqno">(31.2)<a class="headerlink" href="#equation-sav-ah" title="Permalink to this equation">¶</a></span>\[s(w) = s_0 w \cdot \mathbb 1\{w \geq \hat w\}\]</div>
+<span class="eqno">(31.2)<a class="headerlink" href="#equation-sav-ah" title="Permalink to this equation">#</a></span>\[s(w) = s_0 w \cdot \mathbb 1\{w \geq \hat w\}\]</div>
 <p>where <span class="math notranslate nohighlight">\(s_0\)</span> is a positive constant.</p>
 <p>Thus, for <span class="math notranslate nohighlight">\(w &lt; \hat w\)</span>, the household saves nothing. For
 <span class="math notranslate nohighlight">\(w \geq \bar w\)</span>, the household saves a fraction <span class="math notranslate nohighlight">\(s_0\)</span> of
 their wealth.</p>
 <p>We are using something akin to a fixed savings rate model, while
 acknowledging that low wealth households tend to save very little.</p>
-</div>
-<div class="section" id="implementation-using-jax">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">31.4. </span>Implementation using JAX</a><a class="headerlink" href="#implementation-using-jax" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="implementation-using-jax">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">31.4. </span>Implementation using JAX</a><a class="headerlink" href="#implementation-using-jax" title="Permalink to this heading">#</a></h2>
 <p>Let’s define a model to represent the wealth dynamics.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -688,23 +744,10 @@ acknowledging that low wealth households tend to save very little.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2023-03-14 08:34:21.049329: E external/org_tensorflow/tensorflow/compiler/xla/service/slow_operation_alarm.cc:65] 
-********************************
-[Compiling module jit_wealth_time_series_for_loop_jax] Very slow compile?  If you want to file a bug, run with envvar XLA_FLAGS=--xla_dump_to=/tmp/foo and attach the results.
-********************************
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:54.78
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:24:59.91
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2023-03-14 08:52:22.662781: E external/org_tensorflow/tensorflow/compiler/xla/service/slow_operation_alarm.cc:133] The operation took 20m1.613599787s
-
-********************************
-[Compiling module jit_wealth_time_series_for_loop_jax] Very slow compile?  If you want to file a bug, run with envvar XLA_FLAGS=--xla_dump_to=/tmp/foo and attach the results.
-********************************
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1499.9157376289368
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>54.78042554855347
 </pre></div>
 </div>
 </div>
@@ -723,7 +766,7 @@ acknowledging that low wealth households tend to save very little.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.00
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.002941131591796875
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0058689117431640625
 </pre></div>
 </div>
 </div>
@@ -737,7 +780,7 @@ acknowledging that low wealth households tend to save very little.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_27_0.png" src="_images/wealth_dynamics_27_0.png" />
+<img alt="_images/f05dd0fb98552f8f883d3e48f2ddb1a7563d21f28a388e9286e17404f11cb2a3.png" src="_images/f05dd0fb98552f8f883d3e48f2ddb1a7563d21f28a388e9286e17404f11cb2a3.png" />
 </div>
 </div>
 <p>We can further try to optimize and speed up the compile time of the above function by replacing <code class="docutils literal notranslate"><span class="pre">for</span></code> loop with <a class="reference external" href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html"><code class="docutils literal notranslate"><span class="pre">jax.lax.scan</span></code></a>.</p>
@@ -802,10 +845,10 @@ acknowledging that low wealth households tend to save very little.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.85
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.74
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8552896976470947
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7404663562774658
 </pre></div>
 </div>
 </div>
@@ -821,10 +864,10 @@ acknowledging that low wealth households tend to save very little.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.00
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.01
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0006108283996582031
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.011322259902954102
 </pre></div>
 </div>
 </div>
@@ -838,7 +881,7 @@ acknowledging that low wealth households tend to save very little.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_35_0.png" src="_images/wealth_dynamics_35_0.png" />
+<img alt="_images/f05dd0fb98552f8f883d3e48f2ddb1a7563d21f28a388e9286e17404f11cb2a3.png" src="_images/f05dd0fb98552f8f883d3e48f2ddb1a7563d21f28a388e9286e17404f11cb2a3.png" />
 </div>
 </div>
 <p>Now here’s function to simulate a cross section of households forward in time.</p>
@@ -867,9 +910,9 @@ acknowledging that low wealth households tend to save very little.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="implementation-using-numba">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">31.5. </span>Implementation using Numba</a><a class="headerlink" href="#implementation-using-numba" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="implementation-using-numba">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">31.5. </span>Implementation using Numba</a><a class="headerlink" href="#implementation-using-numba" title="Permalink to this heading">#</a></h2>
 <p>Here’s some type information to help Numba.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1028,13 +1071,13 @@ the aggregate state and household wealth.</p>
 <p>Parallelization is very effective in the function above because the time path
 of each household can be calculated independently once the path for the
 aggregate state is known.</p>
-</div>
-<div class="section" id="applications">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">31.6. </span>Applications</a><a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="applications">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">31.6. </span>Applications</a><a class="headerlink" href="#applications" title="Permalink to this heading">#</a></h2>
 <p>Let’s try simulating the model at different parameter values and investigate
 the implications for the wealth distribution.</p>
-<div class="section" id="time-series">
-<h3><span class="section-number">31.6.1. </span>Time Series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h3>
+<section id="time-series">
+<h3><span class="section-number">31.6.1. </span>Time Series<a class="headerlink" href="#time-series" title="Permalink to this heading">#</a></h3>
 <p>Let’s look at the wealth dynamics of an individual household using numba.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1054,10 +1097,10 @@ the implications for the wealth distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.74
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.64
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7433085441589355
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6483588218688965
 </pre></div>
 </div>
 </div>
@@ -1075,12 +1118,12 @@ the implications for the wealth distribution.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.00
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0001442432403564453
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00013637542724609375
 </pre></div>
 </div>
 </div>
 </div>
-<p>Notice the time difference between the <code class="docutils literal notranslate"><span class="pre">wealth_time_series</span></code>: <span class="pasted-inline"><code class="output text_plain docutils literal notranslate"><span class="pre">0.7433085441589355</span></code></span> and <code class="docutils literal notranslate"><span class="pre">wealth_time_series_jax</span></code>: <span class="pasted-inline"><code class="output text_plain docutils literal notranslate"><span class="pre">0.8552896976470947</span></code></span></p>
+<p>Notice the time difference between the <code class="docutils literal notranslate"><span class="pre">wealth_time_series</span></code>: <span class="output text_plain">0.6483588218688965</span> and <code class="docutils literal notranslate"><span class="pre">wealth_time_series_jax</span></code>: <span class="output text_plain">0.7404663562774658</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
@@ -1090,14 +1133,14 @@ the implications for the wealth distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_51_0.png" src="_images/wealth_dynamics_51_0.png" />
+<img alt="_images/758f5cd6bc153a83a72b372ca9e1fe8d41822d204c27976185d6d789598986d4.png" src="_images/758f5cd6bc153a83a72b372ca9e1fe8d41822d204c27976185d6d789598986d4.png" />
 </div>
 </div>
 <p>Notice the large spikes in wealth over time.</p>
 <p>Such spikes are similar to what we observed in time series when <a class="reference internal" href="kesten_processes.html"><span class="doc">we studied Kesten processes</span></a>.</p>
-</div>
-<div class="section" id="inequality-measures">
-<h3><span class="section-number">31.6.2. </span>Inequality Measures<a class="headerlink" href="#inequality-measures" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="inequality-measures">
+<h3><span class="section-number">31.6.2. </span>Inequality Measures<a class="headerlink" href="#inequality-measures" title="Permalink to this heading">#</a></h3>
 <p>Let’s look at how inequality varies with returns on financial assets.</p>
 <p>The next function generates a cross section and then computes the Lorenz
 curve and Gini coefficient.</p>
@@ -1163,9 +1206,9 @@ curve and Gini coefficient.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_57_0.png" src="_images/wealth_dynamics_57_0.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 21s, sys: 2.36 s, total: 1min 23s
-Wall time: 17.4 s
+<img alt="_images/cf8bec0f1d9c216eaad7810a744810e28d0b143a8916485043259e65e4c9e101.png" src="_images/cf8bec0f1d9c216eaad7810a744810e28d0b143a8916485043259e65e4c9e101.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 3s, sys: 34.7 ms, total: 1min 3s
+Wall time: 11.9 s
 </pre></div>
 </div>
 </div>
@@ -1192,9 +1235,9 @@ Wall time: 17.4 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_59_0.png" src="_images/wealth_dynamics_59_0.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 31s, sys: 148 ms, total: 1min 31s
-Wall time: 12.8 s
+<img alt="_images/0d82c12751a0ca71861b742456223ac7702bd3dd351f4dcf13a2d96b74542e3f.png" src="_images/0d82c12751a0ca71861b742456223ac7702bd3dd351f4dcf13a2d96b74542e3f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 30s, sys: 15 ms, total: 1min 30s
+Wall time: 12.6 s
 </pre></div>
 </div>
 </div>
@@ -1218,7 +1261,7 @@ hardware.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_61_0.png" src="_images/wealth_dynamics_61_0.png" />
+<img alt="_images/23524436681faeb14d61efe74eda30d0ed493760c0431ec8ba470cb16376ec47.png" src="_images/23524436681faeb14d61efe74eda30d0ed493760c0431ec8ba470cb16376ec47.png" />
 </div>
 </div>
 <p>Once again, we see that inequality increases as returns on financial income
@@ -1247,9 +1290,9 @@ volatility term <span class="math notranslate nohighlight">\(\sigma_r\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_63_0.png" src="_images/wealth_dynamics_63_0.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 16s, sys: 2.31 s, total: 1min 18s
-Wall time: 12.6 s
+<img alt="_images/bba645db63ff95fbaac810057a8206b8d95142812b807d44f16f768fc1021481.png" src="_images/bba645db63ff95fbaac810057a8206b8d95142812b807d44f16f768fc1021481.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 59.1 s, sys: 14 ms, total: 59.1 s
+Wall time: 7.75 s
 </pre></div>
 </div>
 </div>
@@ -1276,22 +1319,22 @@ Wall time: 12.6 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_65_0.png" src="_images/wealth_dynamics_65_0.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 30s, sys: 145 ms, total: 1min 30s
+<img alt="_images/139fd944c8d5d1471042e7f2f8c3f39af9cf1a68c5a480751e217c1aea63f2be.png" src="_images/139fd944c8d5d1471042e7f2f8c3f39af9cf1a68c5a480751e217c1aea63f2be.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 30s, sys: 2.58 ms, total: 1min 30s
 Wall time: 11.8 s
 </pre></div>
 </div>
 </div>
 </div>
 <p>We see that greater volatility has the effect of increasing inequality in this model.</p>
-</div>
-</div>
-<div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">31.7. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">31.7. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="wd_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 31.1 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>For a wealth or income distribution with Pareto tail, a higher tail index suggests lower inequality.</p>
 <p>Indeed, it is possible to prove that the Gini coefficient of the Pareto
 distribution with tail index <span class="math notranslate nohighlight">\(a\)</span> is <span class="math notranslate nohighlight">\(1/(2a - 1)\)</span>.</p>
@@ -1302,13 +1345,13 @@ using both the theoretical value just given and the value computed from a sample
 <p>Use sample of size 1,000 for each <span class="math notranslate nohighlight">\(a\)</span> and the sampling method for generating Pareto draws employed in the discussion of Lorenz curves for the Pareto distribution.</p>
 <p>To the extent that you can, interpret the monotone relationship between the
 Gini index and <span class="math notranslate nohighlight">\(a\)</span>.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex1"> Exercise 31.1</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution, which produces a good match between theory and
+<section id="solution-content">
+<p>Here is one solution, which produces a good match between theory and
 simulation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1328,19 +1371,19 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_67_0.png" src="_images/wealth_dynamics_67_0.png" />
+<img alt="_images/2ee91a072e5b8f4b666b786b4e22128f64930f85ebd61e28ca5936c9abc37257.png" src="_images/2ee91a072e5b8f4b666b786b4e22128f64930f85ebd61e28ca5936c9abc37257.png" />
 </div>
 </div>
 <p>In general, for a Pareto distribution, a higher tail index implies less weight
 in the right hand tail.</p>
 <p>This means less extreme values for wealth and hence more equality.</p>
 <p>More equality translates to a lower Gini index.</p>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="wd_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 31.2 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>The wealth process <a class="reference internal" href="#equation-wealth-dynam-ah">(31.1)</a> is similar to a <a class="reference internal" href="kesten_processes.html"><span class="doc">Kesten process</span></a>.</p>
 <p>This is because, according to <a class="reference internal" href="#equation-sav-ah">(31.2)</a>, savings is constant for all wealth levels above <span class="math notranslate nohighlight">\(\hat w\)</span>.</p>
 <p>When savings is constant, the wealth process has the same quasi-linear
@@ -1364,13 +1407,13 @@ this what you see?</p>
 </div>
 </div>
 </div>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex2"> Exercise 31.2</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>First let’s generate the distribution:</p>
+<section id="solution-content">
+<p>First let’s generate the distribution:</p>
 <p>Using the JAX implementation</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1415,13 +1458,13 @@ this what you see?</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/wealth_dynamics_75_0.png" src="_images/wealth_dynamics_75_0.png" />
+<img alt="_images/3c1ee90b10006a755ea223b01625901dc4dbb0332d4f991d351f300445445217.png" src="_images/3c1ee90b10006a755ea223b01625901dc4dbb0332d4f991d351f300445445217.png" />
 </div>
 </div>
+</section>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1435,7 +1478,7 @@ this what you see?</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -2016,7 +2059,7 @@ this what you see?</p>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -2158,16 +2201,5 @@ this what you see?</p>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

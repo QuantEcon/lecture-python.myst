@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>30. Kesten Processes and Firm Dynamics &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'kesten_processes';</script>
     <link rel="canonical" href="https://python.quantecon.org/kesten_processes.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,84 +161,27 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   30.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#kesten-processes">
-   30.2. Kesten Processes
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example-garch-volatility">
-     30.2.1. Example: GARCH Volatility
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example-wealth-dynamics">
-     30.2.2. Example: Wealth Dynamics
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#stationarity">
-     30.2.3. Stationarity
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#cross-sectional-interpretation">
-     30.2.4. Cross-Sectional Interpretation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#conditions-for-stationarity">
-     30.2.5. Conditions for Stationarity
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#heavy-tails">
-   30.3. Heavy Tails
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#the-kestengoldie-theorem">
-     30.3.1. The Kesten–Goldie Theorem
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#intuition">
-     30.3.2. Intuition
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#application-firm-dynamics">
-   30.4. Application: Firm Dynamics
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#gibrats-law">
-     30.4.1. Gibrat’s Law
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id11">
-     30.4.2. Heavy Tails
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises">
-   30.5. Exercises
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">30.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesten-processes">30.2. Kesten Processes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-garch-volatility">30.2.1. Example: GARCH Volatility</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-wealth-dynamics">30.2.2. Example: Wealth Dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stationarity">30.2.3. Stationarity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-interpretation">30.2.4. Cross-Sectional Interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conditions-for-stationarity">30.2.5. Conditions for Stationarity</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heavy-tails">30.3. Heavy Tails</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-kestengoldie-theorem">30.3.1. The Kesten–Goldie Theorem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#intuition">30.3.2. Intuition</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-firm-dynamics">30.4. Application: Firm Dynamics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gibrats-law">30.4.1. Gibrat’s Law</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">30.4.2. Heavy Tails</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">30.5. Exercises</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -275,13 +229,13 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="kesten-processes-and-firm-dynamics">
-<h1><a class="toc-backref" href="#id13"><span class="section-number">30. </span>Kesten Processes and Firm Dynamics</a><a class="headerlink" href="#kesten-processes-and-firm-dynamics" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="kesten-processes-and-firm-dynamics">
+<h1><a class="toc-backref" href="#id13"><span class="section-number">30. </span>Kesten Processes and Firm Dynamics</a><a class="headerlink" href="#kesten-processes-and-firm-dynamics" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
-<p class="admonition-title">GPU in use</p>
+<p class="admonition-title">GPU</p>
 <p>This lecture is accelerated via <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU and JAX for GPU programming.</p>
 <p>Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.</p>
-<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax">instructions</a> for installing JAX with GPU support.</p>
+<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax">instructions</a> for installing JAX with GPU support. If you would like to install jax running on the <code class="docutils literal notranslate"><span class="pre">cpu</span></code> only you can use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jax[cpu]</span></code></p>
 </div>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
@@ -299,76 +253,65 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
 <span class="o">!</span>pip install --upgrade yfinance
-<span class="c1"># If your machine has CUDA support, please follow the guide in GPU Warning. </span>
-<span class="c1"># Otherwise, run the line below:</span>
-<span class="o">!</span>pip install --upgrade <span class="s2">&quot;jax[CPU]&quot;</span>
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.6.0)
-Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: scipy&gt;=1.5.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.6.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: numba in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (65.6.3)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: yfinance in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.2.12)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: yfinance in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.2.14)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas&gt;=1.3.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.4.4)
-Requirement already satisfied: pytz&gt;=2022.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (2022.7.1)
-Requirement already satisfied: multitasking&gt;=0.0.7 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (0.0.11)
-Requirement already satisfied: html5lib&gt;=1.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.1)
-Requirement already satisfied: appdirs&gt;=1.4.4 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.4.4)
-Requirement already satisfied: cryptography&gt;=3.3.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (37.0.1)
-Requirement already satisfied: beautifulsoup4&gt;=4.11.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (4.11.1)
-Requirement already satisfied: frozendict&gt;=2.3.4 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (2.3.5)
-Requirement already satisfied: lxml&gt;=4.9.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (4.9.1)
-Requirement already satisfied: requests&gt;=2.26 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (2.28.1)
-Requirement already satisfied: numpy&gt;=1.16.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from yfinance) (1.23.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: frozendict&gt;=2.3.4 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from yfinance) (2.3.6)
+Requirement already satisfied: pandas&gt;=1.3.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from yfinance) (1.5.3)
+Requirement already satisfied: requests&gt;=2.26 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from yfinance) (2.28.1)
+Requirement already satisfied: lxml&gt;=4.9.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from yfinance) (4.9.1)
+Requirement already satisfied: beautifulsoup4&gt;=4.11.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from yfinance) (4.11.1)
+Requirement already satisfied: numpy&gt;=1.16.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from yfinance) (1.23.5)
+Requirement already satisfied: cryptography&gt;=3.3.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from yfinance) (39.0.1)
+Requirement already satisfied: html5lib&gt;=1.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from yfinance) (1.1)
+Requirement already satisfied: appdirs&gt;=1.4.4 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from yfinance) (1.4.4)
+Requirement already satisfied: multitasking&gt;=0.0.7 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from yfinance) (0.0.11)
+Requirement already satisfied: pytz&gt;=2022.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from yfinance) (2023.3)
+Requirement already satisfied: soupsieve&gt;1.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from beautifulsoup4&gt;=4.11.1-&gt;yfinance) (2.3.2.post1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: soupsieve&gt;1.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from beautifulsoup4&gt;=4.11.1-&gt;yfinance) (2.3.1)
-Requirement already satisfied: cffi&gt;=1.12 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from cryptography&gt;=3.3.2-&gt;yfinance) (1.15.1)
-Requirement already satisfied: six&gt;=1.9 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from html5lib&gt;=1.1-&gt;yfinance) (1.16.0)
-Requirement already satisfied: webencodings in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from html5lib&gt;=1.1-&gt;yfinance) (0.5.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: python-dateutil&gt;=2.8.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from pandas&gt;=1.3.0-&gt;yfinance) (2.8.2)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (1.26.11)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (2.0.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (2022.9.14)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests&gt;=2.26-&gt;yfinance) (3.3)
-Requirement already satisfied: pycparser in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from cffi&gt;=1.12-&gt;cryptography&gt;=3.3.2-&gt;yfinance) (2.21)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
-
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jax[CPU] in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.4.6)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: opt-einsum in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (3.3.0)
-Requirement already satisfied: scipy&gt;=1.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (1.9.1)
-Requirement already satisfied: numpy&gt;=1.20 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (1.23.5)
-Requirement already satisfied: jaxlib==0.4.6 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from jax[CPU]) (0.4.6)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: cffi&gt;=1.12 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from cryptography&gt;=3.3.2-&gt;yfinance) (1.15.1)
+Requirement already satisfied: webencodings in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from html5lib&gt;=1.1-&gt;yfinance) (0.5.1)
+Requirement already satisfied: six&gt;=1.9 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from html5lib&gt;=1.1-&gt;yfinance) (1.16.0)
+Requirement already satisfied: python-dateutil&gt;=2.8.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pandas&gt;=1.3.0-&gt;yfinance) (2.8.2)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.26-&gt;yfinance) (2.0.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.26-&gt;yfinance) (2022.12.7)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.26-&gt;yfinance) (3.4)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.26-&gt;yfinance) (1.26.14)
+Requirement already satisfied: pycparser in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from cffi&gt;=1.12-&gt;cryptography&gt;=3.3.2-&gt;yfinance) (2.21)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -376,14 +319,15 @@ Requirement already satisfied: jaxlib==0.4.6 in /__w/lecture-python.myst/lecture
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">30.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id14"><span class="section-number">30.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p><a class="reference internal" href="ar1_processes.html"><span class="doc">Previously</span></a> we learned about linear scalar-valued stochastic processes (AR(1) models).</p>
 <p>Now we generalize these linear models slightly by allowing the multiplicative coefficient to be stochastic.</p>
 <p>Such processes are known as Kesten processes after German–American mathematician Harry Kesten (1931–2019)</p>
 <p>Although simple to write down, Kesten processes are interesting for at least two reasons:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>A number of significant economic processes are or can be described as Kesten processes.</p></li>
 <li><p>Kesten processes generate interesting dynamics, including, in some cases, heavy-tailed cross-sectional distributions.</p></li>
 </ol>
@@ -412,12 +356,12 @@ compatibility issues between pandas and matplotlib.</p>
 </div>
 <p>Additional technical background related to this lecture can be found in the
 monograph of <span id="id1">[<a class="reference internal" href="zreferences.html#id56" title="Dariusz Buraczewski, Ewa Damek, Thomas Mikosch, and others. Stochastic models with power-law tails. Springer, 2016.">BDM+16</a>]</span>.</p>
-</div>
-<div class="section" id="kesten-processes">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">30.2. </span>Kesten Processes</a><a class="headerlink" href="#kesten-processes" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="kesten-processes">
+<h2><a class="toc-backref" href="#id15"><span class="section-number">30.2. </span>Kesten Processes</a><a class="headerlink" href="#kesten-processes" title="Permalink to this heading">#</a></h2>
 <p id="index-1">A <strong>Kesten process</strong> is a stochastic process of the form</p>
 <div class="math notranslate nohighlight" id="equation-kesproc">
-<span class="eqno">(30.1)<a class="headerlink" href="#equation-kesproc" title="Permalink to this equation">¶</a></span>\[X_{t+1} = a_{t+1} X_t + \eta_{t+1}\]</div>
+<span class="eqno">(30.1)<a class="headerlink" href="#equation-kesproc" title="Permalink to this equation">#</a></span>\[X_{t+1} = a_{t+1} X_t + \eta_{t+1}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{a_t\}_{t \geq 1}\)</span> and <span class="math notranslate nohighlight">\(\{\eta_t\}_{t \geq 1}\)</span> are IID
 sequences.</p>
 <p>We are interested in the dynamics of <span class="math notranslate nohighlight">\(\{X_t\}_{t \geq 0}\)</span> when <span class="math notranslate nohighlight">\(X_0\)</span> is given.</p>
@@ -428,8 +372,8 @@ sequences.</p>
 <li><p><span class="math notranslate nohighlight">\(\{a_t\}_{t \geq 1}\)</span> is a nonnegative IID stochastic process and</p></li>
 <li><p><span class="math notranslate nohighlight">\(\{\eta_t\}_{t \geq 1}\)</span> is another nonnegative IID stochastic process, independent of the first.</p></li>
 </ul>
-<div class="section" id="example-garch-volatility">
-<h3><span class="section-number">30.2.1. </span>Example: GARCH Volatility<a class="headerlink" href="#example-garch-volatility" title="Permalink to this headline">¶</a></h3>
+<section id="example-garch-volatility">
+<h3><span class="section-number">30.2.1. </span>Example: GARCH Volatility<a class="headerlink" href="#example-garch-volatility" title="Permalink to this heading">#</a></h3>
 <p>The GARCH model is common in financial applications, where time series such as asset returns exhibit time varying volatility.</p>
 <p>For example, consider the following plot of daily returns on the Nasdaq
 Composite Index for the period 1st January 2006 to 1st November 2019.</p>
@@ -460,7 +404,7 @@ Composite Index for the period 1st January 2006 to 1st November 2019.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<img alt="_images/kesten_processes_7_2.png" src="_images/kesten_processes_7_2.png" />
+<img alt="_images/2cdf55c92d942562750aa25c8c37dee02d4afb961cbb56106a908e7166a81905.png" src="_images/2cdf55c92d942562750aa25c8c37dee02d4afb961cbb56106a908e7166a81905.png" />
 </div>
 </div>
 <p>Notice how the series exhibits bursts of volatility (high variance) and then
@@ -468,47 +412,47 @@ settles down again.</p>
 <p>GARCH models can replicate this feature.</p>
 <p>The GARCH(1, 1) volatility process takes the form</p>
 <div class="math notranslate nohighlight" id="equation-garch11v">
-<span class="eqno">(30.2)<a class="headerlink" href="#equation-garch11v" title="Permalink to this equation">¶</a></span>\[\sigma_{t+1}^2 = \alpha_0 + \sigma_t^2 (\alpha_1 \xi_{t+1}^2 + \beta)\]</div>
+<span class="eqno">(30.2)<a class="headerlink" href="#equation-garch11v" title="Permalink to this equation">#</a></span>\[\sigma_{t+1}^2 = \alpha_0 + \sigma_t^2 (\alpha_1 \xi_{t+1}^2 + \beta)\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{\xi_t\}\)</span> is IID with <span class="math notranslate nohighlight">\(\mathbb E \xi_t^2 = 1\)</span> and all parameters are positive.</p>
 <p>Returns on a given asset are then modeled as</p>
 <div class="math notranslate nohighlight" id="equation-garch11r">
-<span class="eqno">(30.3)<a class="headerlink" href="#equation-garch11r" title="Permalink to this equation">¶</a></span>\[r_t = \sigma_t \zeta_t\]</div>
+<span class="eqno">(30.3)<a class="headerlink" href="#equation-garch11r" title="Permalink to this equation">#</a></span>\[r_t = \sigma_t \zeta_t\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{\zeta_t\}\)</span> is again IID and independent of <span class="math notranslate nohighlight">\(\{\xi_t\}\)</span>.</p>
 <p>The volatility sequence <span class="math notranslate nohighlight">\(\{\sigma_t^2 \}\)</span>, which drives the dynamics of returns, is a Kesten process.</p>
-</div>
-<div class="section" id="example-wealth-dynamics">
-<h3><span class="section-number">30.2.2. </span>Example: Wealth Dynamics<a class="headerlink" href="#example-wealth-dynamics" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="example-wealth-dynamics">
+<h3><span class="section-number">30.2.2. </span>Example: Wealth Dynamics<a class="headerlink" href="#example-wealth-dynamics" title="Permalink to this heading">#</a></h3>
 <p>Suppose that a given household saves a fixed fraction <span class="math notranslate nohighlight">\(s\)</span> of its current wealth in every period.</p>
 <p>The household earns labor income <span class="math notranslate nohighlight">\(y_t\)</span> at the start of time <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>Wealth then evolves according to</p>
 <div class="math notranslate nohighlight" id="equation-wealth-dynam">
-<span class="eqno">(30.4)<a class="headerlink" href="#equation-wealth-dynam" title="Permalink to this equation">¶</a></span>\[w_{t+1} = R_{t+1} s w_t  + y_{t+1}\]</div>
+<span class="eqno">(30.4)<a class="headerlink" href="#equation-wealth-dynam" title="Permalink to this equation">#</a></span>\[w_{t+1} = R_{t+1} s w_t  + y_{t+1}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{R_t\}\)</span> is the gross rate of return on assets.</p>
 <p>If <span class="math notranslate nohighlight">\(\{R_t\}\)</span> and <span class="math notranslate nohighlight">\(\{y_t\}\)</span> are both IID, then <a class="reference internal" href="#equation-wealth-dynam">(30.4)</a>
 is a Kesten process.</p>
-</div>
-<div class="section" id="stationarity">
-<h3><span class="section-number">30.2.3. </span>Stationarity<a class="headerlink" href="#stationarity" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="stationarity">
+<h3><span class="section-number">30.2.3. </span>Stationarity<a class="headerlink" href="#stationarity" title="Permalink to this heading">#</a></h3>
 <p>In earlier lectures, such as the one on <a class="reference internal" href="ar1_processes.html"><span class="doc">AR(1) processes</span></a>, we introduced the notion of a stationary distribution.</p>
 <p>In the present context, we can define a stationary distribution as follows:</p>
 <p>The distribution <span class="math notranslate nohighlight">\(F^*\)</span> on <span class="math notranslate nohighlight">\(\mathbb R\)</span> is called <strong>stationary</strong> for the
 Kesten process <a class="reference internal" href="#equation-kesproc">(30.1)</a> if</p>
 <div class="math notranslate nohighlight" id="equation-kp-stationary0">
-<span class="eqno">(30.5)<a class="headerlink" href="#equation-kp-stationary0" title="Permalink to this equation">¶</a></span>\[X_t \sim F^*
+<span class="eqno">(30.5)<a class="headerlink" href="#equation-kp-stationary0" title="Permalink to this equation">#</a></span>\[X_t \sim F^*
 \quad \implies \quad
 a_{t+1} X_t + \eta_{t+1} \sim F^*\]</div>
 <p>In other words, if the current state <span class="math notranslate nohighlight">\(X_t\)</span> has distribution <span class="math notranslate nohighlight">\(F^*\)</span>,
 then so does the next period state <span class="math notranslate nohighlight">\(X_{t+1}\)</span>.</p>
 <p>We can write this alternatively as</p>
 <div class="math notranslate nohighlight" id="equation-kp-stationary">
-<span class="eqno">(30.6)<a class="headerlink" href="#equation-kp-stationary" title="Permalink to this equation">¶</a></span>\[F^*(y) = \int \mathbb P\{ a_{t+1} x + \eta_{t+1} \leq y\} F^*(dx)
+<span class="eqno">(30.6)<a class="headerlink" href="#equation-kp-stationary" title="Permalink to this equation">#</a></span>\[F^*(y) = \int \mathbb P\{ a_{t+1} x + \eta_{t+1} \leq y\} F^*(dx)
 \quad \text{for all } y \geq 0.\]</div>
 <p>The left hand side is the distribution of the next period state when the
 current state is drawn from <span class="math notranslate nohighlight">\(F^*\)</span>.</p>
 <p>The equality in <a class="reference internal" href="#equation-kp-stationary">(30.6)</a> states that this distribution is unchanged.</p>
-</div>
-<div class="section" id="cross-sectional-interpretation">
-<h3><span class="section-number">30.2.4. </span>Cross-Sectional Interpretation<a class="headerlink" href="#cross-sectional-interpretation" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="cross-sectional-interpretation">
+<h3><span class="section-number">30.2.4. </span>Cross-Sectional Interpretation<a class="headerlink" href="#cross-sectional-interpretation" title="Permalink to this heading">#</a></h3>
 <p>There is an important cross-sectional interpretation of stationary distributions, discussed previously but worth repeating here.</p>
 <p>Suppose, for example, that we are interested in the wealth distribution — that is, the current distribution of wealth across households in a given country.</p>
 <p>Suppose further that</p>
@@ -534,9 +478,9 @@ period?</p>
 <p>Hence the fraction of households with wealth in <span class="math notranslate nohighlight">\([0, y]\)</span> is the same
 next period as it is this period.</p>
 <p>Since <span class="math notranslate nohighlight">\(y\)</span> was chosen arbitrarily, the distribution is unchanged.</p>
-</div>
-<div class="section" id="conditions-for-stationarity">
-<h3><span class="section-number">30.2.5. </span>Conditions for Stationarity<a class="headerlink" href="#conditions-for-stationarity" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="conditions-for-stationarity">
+<h3><span class="section-number">30.2.5. </span>Conditions for Stationarity<a class="headerlink" href="#conditions-for-stationarity" title="Permalink to this heading">#</a></h3>
 <p>The Kesten process <span class="math notranslate nohighlight">\(X_{t+1} = a_{t+1} X_t + \eta_{t+1}\)</span> does not always
 have a stationary distribution.</p>
 <p>For example, if <span class="math notranslate nohighlight">\(a_t \equiv \eta_t \equiv 1\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>, then
@@ -545,7 +489,7 @@ have a stationary distribution.</p>
 strictly less than 1 most of the time.</p>
 <p>In particular, if</p>
 <div class="math notranslate nohighlight" id="equation-kp-stat-cond">
-<span class="eqno">(30.7)<a class="headerlink" href="#equation-kp-stat-cond" title="Permalink to this equation">¶</a></span>\[\mathbb E \ln a_t &lt; 0
+<span class="eqno">(30.7)<a class="headerlink" href="#equation-kp-stat-cond" title="Permalink to this equation">#</a></span>\[\mathbb E \ln a_t &lt; 0
 \quad \text{and} \quad
 \mathbb E \eta_t &lt; \infty\]</div>
 <p>then a unique stationary distribution exists on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span>.</p>
@@ -555,20 +499,20 @@ strictly less than 1 most of the time.</p>
 <p>As one application of this result, we see that the wealth process
 <a class="reference internal" href="#equation-wealth-dynam">(30.4)</a> will have a unique stationary distribution whenever
 labor income has finite mean and <span class="math notranslate nohighlight">\(\mathbb E \ln R_t  + \ln s &lt; 0\)</span>.</p>
-</div>
-</div>
-<div class="section" id="heavy-tails">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">30.3. </span>Heavy Tails</a><a class="headerlink" href="#heavy-tails" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="heavy-tails">
+<h2><a class="toc-backref" href="#id16"><span class="section-number">30.3. </span>Heavy Tails</a><a class="headerlink" href="#heavy-tails" title="Permalink to this heading">#</a></h2>
 <p>Under certain conditions, the stationary distribution of a Kesten process has
 a Pareto tail.</p>
 <p>(See our <a class="reference internal" href="heavy_tails.html"><span class="doc">earlier lecture</span></a>  on heavy-tailed distributions for background.)</p>
 <p>This fact is significant for economics because of the prevalence of Pareto-tailed distributions.</p>
-<div class="section" id="the-kestengoldie-theorem">
-<h3><span class="section-number">30.3.1. </span>The Kesten–Goldie Theorem<a class="headerlink" href="#the-kestengoldie-theorem" title="Permalink to this headline">¶</a></h3>
+<section id="the-kestengoldie-theorem">
+<h3><span class="section-number">30.3.1. </span>The Kesten–Goldie Theorem<a class="headerlink" href="#the-kestengoldie-theorem" title="Permalink to this heading">#</a></h3>
 <p>To state the conditions under which the stationary distribution of a Kesten process has a Pareto tail, we first recall that a random variable is called <strong>nonarithmetic</strong> if its distribution is not concentrated on <span class="math notranslate nohighlight">\(\{\dots, -2t, -t, 0, t, 2t, \ldots \}\)</span> for any <span class="math notranslate nohighlight">\(t \geq 0\)</span>.</p>
 <p>For example, any random variable with a density is nonarithmetic.</p>
 <p>The famous Kesten–Goldie Theorem (see, e.g., <span id="id3">[<a class="reference internal" href="zreferences.html#id56" title="Dariusz Buraczewski, Ewa Damek, Thomas Mikosch, and others. Stochastic models with power-law tails. Springer, 2016.">BDM+16</a>]</span>, theorem 2.4.4) states that if</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>the stationarity conditions in <a class="reference internal" href="#equation-kp-stat-cond">(30.7)</a> hold,</p></li>
 <li><p>the random variable <span class="math notranslate nohighlight">\(a_t\)</span> is positive with probability one and nonarithmetic,</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathbb P\{a_t x + \eta_t = x\} &lt; 1\)</span> for all <span class="math notranslate nohighlight">\(x \in \mathbb R_+\)</span> and</p></li>
@@ -590,9 +534,9 @@ tail index <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 \lim_{x \to \infty} x^\alpha \mathbb P\{X^* &gt; x\} = c
 \]</div>
 <p>for some positive constant <span class="math notranslate nohighlight">\(c\)</span>.</p>
-</div>
-<div class="section" id="intuition">
-<h3><span class="section-number">30.3.2. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="intuition">
+<h3><span class="section-number">30.3.2. </span>Intuition<a class="headerlink" href="#intuition" title="Permalink to this heading">#</a></h3>
 <p>Later we will illustrate the Kesten–Goldie Theorem using rank-size plots.</p>
 <p>Prior to doing so, we can give the following intuition for the conditions.</p>
 <p>Two important conditions are that <span class="math notranslate nohighlight">\(\mathbb E \ln a_t &lt; 0\)</span>, so the model
@@ -632,30 +576,30 @@ is stationary, and <span class="math notranslate nohighlight">\(\mathbb E a_t^\a
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/kesten_processes_9_0.png" src="_images/kesten_processes_9_0.png" />
+<img alt="_images/a4c784bc3017582fbb42323062260853991f04a616f55762b734c0834e7765ff.png" src="_images/a4c784bc3017582fbb42323062260853991f04a616f55762b734c0834e7765ff.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="application-firm-dynamics">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">30.4. </span>Application: Firm Dynamics</a><a class="headerlink" href="#application-firm-dynamics" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="application-firm-dynamics">
+<h2><a class="toc-backref" href="#id17"><span class="section-number">30.4. </span>Application: Firm Dynamics</a><a class="headerlink" href="#application-firm-dynamics" title="Permalink to this heading">#</a></h2>
 <p>As noted in our <a class="reference internal" href="heavy_tails.html"><span class="doc">lecture on heavy tails</span></a>, for common measures of firm size such as revenue or employment, the US firm size distribution exhibits a Pareto tail (see, e.g., <span id="id4">[<a class="reference internal" href="zreferences.html#id66" title="Robert L Axtell. Zipf distribution of us firm sizes. science, 293(5536):1818–1820, 2001.">Axt01</a>]</span>, <span id="id5">[<a class="reference internal" href="zreferences.html#id65" title="Xavier Gabaix. Power laws in economics: an introduction. Journal of Economic Perspectives, 30(1):185–206, 2016.">Gab16</a>]</span>).</p>
 <p>Let us try to explain this rather striking fact using the Kesten–Goldie Theorem.</p>
-<div class="section" id="gibrats-law">
-<h3><span class="section-number">30.4.1. </span>Gibrat’s Law<a class="headerlink" href="#gibrats-law" title="Permalink to this headline">¶</a></h3>
+<section id="gibrats-law">
+<h3><span class="section-number">30.4.1. </span>Gibrat’s Law<a class="headerlink" href="#gibrats-law" title="Permalink to this heading">#</a></h3>
 <p>It was postulated many years ago by Robert Gibrat <span id="id6">[<a class="reference internal" href="zreferences.html#id55" title="Robert Gibrat. Les inégalités économiques: Applications d'une loi nouvelle, la loi de l'effet proportionnel. PhD thesis, Recueil Sirey, 1931.">Gib31</a>]</span> that firm size evolves according to a simple rule whereby size next period is proportional to current size.</p>
 <p>This is now known as <a class="reference external" href="https://en.wikipedia.org/wiki/Gibrat%27s_law">Gibrat’s law of proportional growth</a>.</p>
 <p>We can express this idea by stating that a suitably defined measure
 <span class="math notranslate nohighlight">\(s_t\)</span> of firm size obeys</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam-gb">
-<span class="eqno">(30.8)<a class="headerlink" href="#equation-firm-dynam-gb" title="Permalink to this equation">¶</a></span>\[\frac{s_{t+1}}{s_t} = a_{t+1}\]</div>
+<span class="eqno">(30.8)<a class="headerlink" href="#equation-firm-dynam-gb" title="Permalink to this equation">#</a></span>\[\frac{s_{t+1}}{s_t} = a_{t+1}\]</div>
 <p>for some positive IID sequence <span class="math notranslate nohighlight">\(\{a_t\}\)</span>.</p>
 <p>One implication of Gibrat’s law is that the growth rate of individual firms
 does not depend on their size.</p>
 <p>However, over the last few decades, research contradicting Gibrat’s law has
 accumulated in the literature.</p>
 <p>For example, it is commonly found that, on average,</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>small firms grow faster than large firms (see, e.g., <span id="id7">[<a class="reference internal" href="zreferences.html#id54" title="David S Evans. The relationship between firm growth, size, and age: estimates for 100 manufacturing industries. The Journal of Industrial Economics, pages 567–581, 1987.">Eva87</a>]</span> and <span id="id8">[<a class="reference internal" href="zreferences.html#id53" title="Bronwyn H Hall. The relationship between firm size and firm growth in the us manufacturing sector. The Journal of Industrial Economics, pages 583–606, 1987.">Hal87</a>]</span>) and</p></li>
 <li><p>the growth rate of small firms is more volatile than that of large firms <span id="id9">[<a class="reference internal" href="zreferences.html#id52" title="Timothy Dunne, Mark J Roberts, and Larry Samuelson. The growth and failure of us manufacturing plants. The Quarterly Journal of Economics, 104(4):671–698, 1989.">DRS89</a>]</span>.</p></li>
 </ol>
@@ -664,15 +608,15 @@ approximation for large firms <span id="id10">[<a class="reference internal" hre
 <p>We can accommodate these empirical findings by modifying <a class="reference internal" href="#equation-firm-dynam-gb">(30.8)</a>
 to</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam">
-<span class="eqno">(30.9)<a class="headerlink" href="#equation-firm-dynam" title="Permalink to this equation">¶</a></span>\[s_{t+1} = a_{t+1} s_t + b_{t+1}\]</div>
+<span class="eqno">(30.9)<a class="headerlink" href="#equation-firm-dynam" title="Permalink to this equation">#</a></span>\[s_{t+1} = a_{t+1} s_t + b_{t+1}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{a_t\}\)</span> and <span class="math notranslate nohighlight">\(\{b_t\}\)</span> are both IID and independent of each
 other.</p>
 <p>In the exercises you are asked to show that <a class="reference internal" href="#equation-firm-dynam">(30.9)</a> is more
 consistent with the empirical findings presented above than Gibrat’s law in
 <a class="reference internal" href="#equation-firm-dynam-gb">(30.8)</a>.</p>
-</div>
-<div class="section" id="id11">
-<h3><span class="section-number">30.4.2. </span>Heavy Tails<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id11">
+<h3><span class="section-number">30.4.2. </span>Heavy Tails<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h3>
 <p>So what has this to do with Pareto tails?</p>
 <p>The answer is that <a class="reference internal" href="#equation-firm-dynam">(30.9)</a> is a Kesten process.</p>
 <p>If the conditions of the Kesten–Goldie Theorem are satisfied, then the firm
@@ -682,27 +626,27 @@ we see in the data.</p>
 size dynamics and examining the corresponding rank-size plots.</p>
 <p>We also try to illustrate why the Pareto tail finding is significant for
 quantitative analysis.</p>
-</div>
-</div>
-<div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id18"><span class="section-number">30.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id18"><span class="section-number">30.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="kp_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 30.1 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Simulate and plot 15 years of daily returns (consider each year as having 250
 working days) using the GARCH(1, 1) process in <a class="reference internal" href="#equation-garch11v">(30.2)</a>–<a class="reference internal" href="#equation-garch11r">(30.3)</a>.</p>
 <p>Take <span class="math notranslate nohighlight">\(\xi_t\)</span> and <span class="math notranslate nohighlight">\(\zeta_t\)</span> to be independent and standard normal.</p>
 <p>Set <span class="math notranslate nohighlight">\(\alpha_0 = 0.00001, \alpha_1 = 0.1, \beta = 0.9\)</span> and <span class="math notranslate nohighlight">\(\sigma_0 = 0\)</span>.</p>
 <p>Compare visually with the Nasdaq Composite Index returns <a class="reference internal" href="#ndcode"><span class="std std-ref">shown above</span></a>.</p>
 <p>While the time path differs, you should see bursts of high volatility.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="kesten_processes-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#kp_ex1"> Exercise 30.1</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution:</p>
+<section id="solution-content">
+<p>Here is one solution:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">α_0</span> <span class="o">=</span> <span class="mf">1e-5</span>
@@ -733,26 +677,26 @@ working days) using the GARCH(1, 1) process in <a class="reference internal" hre
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/kesten_processes_11_0.png" src="_images/kesten_processes_11_0.png" />
+<img alt="_images/362c99b7a9dbdd286148f87790fa760d86164c039f9642ddfda0050907fe0f35.png" src="_images/362c99b7a9dbdd286148f87790fa760d86164c039f9642ddfda0050907fe0f35.png" />
 </div>
 </div>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="kp_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 30.2 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>In our discussion of firm dynamics, it was claimed that <a class="reference internal" href="#equation-firm-dynam">(30.9)</a> is more consistent with the empirical literature than Gibrat’s law in <a class="reference internal" href="#equation-firm-dynam-gb">(30.8)</a>.</p>
 <p>(The empirical literature was reviewed immediately above <a class="reference internal" href="#equation-firm-dynam">(30.9)</a>.)</p>
 <p>In what sense is this true (or false)?</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="kesten_processes-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#kp_ex2"> Exercise 30.2</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>The empirical findings are that</p>
-<ol class="simple">
+<section id="solution-content">
+<p>The empirical findings are that</p>
+<ol class="arabic simple">
 <li><p>small firms grow faster than large firms  and</p></li>
 <li><p>the growth rate of small firms is more volatile than that of large firms.</p></li>
 </ol>
@@ -762,7 +706,7 @@ large firms than for small firms</p>
 points 1-2 than Gibrat’s law.</p>
 <p>To see why, we rewrite <a class="reference internal" href="#equation-firm-dynam">(30.9)</a> in terms of growth dynamics:</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam-2">
-<span class="eqno">(30.10)<a class="headerlink" href="#equation-firm-dynam-2" title="Permalink to this equation">¶</a></span>\[\frac{s_{t+1}}{s_t} = a_{t+1} + \frac{b_{t+1}}{s_t}\]</div>
+<span class="eqno">(30.10)<a class="headerlink" href="#equation-firm-dynam-2" title="Permalink to this equation">#</a></span>\[\frac{s_{t+1}}{s_t} = a_{t+1} + \frac{b_{t+1}}{s_t}\]</div>
 <p>Taking <span class="math notranslate nohighlight">\(s_t = s\)</span> as given, the mean and variance of firm growth are</p>
 <div class="math notranslate nohighlight">
 \[
@@ -775,12 +719,12 @@ points 1-2 than Gibrat’s law.</p>
 <p>Both of these decline with firm size <span class="math notranslate nohighlight">\(s\)</span>, consistent with the data.</p>
 <p>Moreover, the law of motion <a class="reference internal" href="#equation-firm-dynam-2">(30.10)</a> clearly approaches Gibrat’s law
 <a class="reference internal" href="#equation-firm-dynam-gb">(30.8)</a> as <span class="math notranslate nohighlight">\(s_t\)</span> gets large.</p>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="kp_ex3">
 
 <p class="admonition-title"><span class="caption-number">Exercise 30.3 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Consider an arbitrary Kesten process as given in <a class="reference internal" href="#equation-kesproc">(30.1)</a>.</p>
 <p>Suppose that <span class="math notranslate nohighlight">\(\{a_t\}\)</span> is lognormal with parameters <span class="math notranslate nohighlight">\((\mu,
 \sigma)\)</span>.</p>
@@ -791,13 +735,13 @@ would be the case if, say, <span class="math notranslate nohighlight">\(\eta_t\)
 only if <span class="math notranslate nohighlight">\(\mu &lt; 0\)</span>.</p>
 <p>Obtain the value of <span class="math notranslate nohighlight">\(\alpha\)</span> that makes the Kesten–Goldie conditions
 hold.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="kesten_processes-solution-5">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#kp_ex3"> Exercise 30.3</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Since <span class="math notranslate nohighlight">\(a_t\)</span> has a density it is nonarithmetic.</p>
+<section id="solution-content">
+<p>Since <span class="math notranslate nohighlight">\(a_t\)</span> has a density it is nonarithmetic.</p>
 <p>Since <span class="math notranslate nohighlight">\(a_t\)</span> has the same density as <span class="math notranslate nohighlight">\(a = \exp(\mu + \sigma Z)\)</span> when <span class="math notranslate nohighlight">\(Z\)</span> is standard normal, we have</p>
 <div class="math notranslate nohighlight">
 \[
@@ -814,12 +758,12 @@ of all orders), the only other condition in doubt is existence of a positive con
 \exp \left( \alpha \mu + \frac{\alpha^2 \sigma^2}{2} \right) = 1.
 \]</div>
 <p>Solving for <span class="math notranslate nohighlight">\(\alpha\)</span> gives <span class="math notranslate nohighlight">\(\alpha = -2\mu / \sigma^2\)</span>.</p>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="kp_ex4">
 
 <p class="admonition-title"><span class="caption-number">Exercise 30.4 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>One unrealistic aspect of the firm dynamics specified in <a class="reference internal" href="#equation-firm-dynam">(30.9)</a> is
 that it ignores entry and exit.</p>
 <p>In any given period and in any given market, we observe significant numbers of firms entering and exiting the market.</p>
@@ -830,7 +774,7 @@ incorporates profit maximization by firms and market clearing quantities, wages 
 equals the number of exiting firms.</p>
 <p>In this setting, firm dynamics can be expressed as</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam-ee">
-<span class="eqno">(30.11)<a class="headerlink" href="#equation-firm-dynam-ee" title="Permalink to this equation">¶</a></span>\[s_{t+1} = e_{t+1} \mathbb{1}\{s_t &lt; \bar s\} +
+<span class="eqno">(30.11)<a class="headerlink" href="#equation-firm-dynam-ee" title="Permalink to this equation">#</a></span>\[s_{t+1} = e_{t+1} \mathbb{1}\{s_t &lt; \bar s\} +
 (a_{t+1} s_t + b_{t+1}) \mathbb{1}\{s_t \geq \bar s\}\]</div>
 <p>Here</p>
 <ul class="simple">
@@ -857,7 +801,7 @@ same way as a Kesten process when <span class="math notranslate nohighlight">\(s
 <p>So perhaps its stationary distribution still has Pareto tails?</p>
 <p>Your task is to investigate this question via simulation and rank-size plots.</p>
 <p>The approach will be to</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>generate <span class="math notranslate nohighlight">\(M\)</span> draws of <span class="math notranslate nohighlight">\(s_T\)</span> when <span class="math notranslate nohighlight">\(M\)</span> and <span class="math notranslate nohighlight">\(T\)</span> are
 large and</p></li>
 <li><p>plot the largest 1,000 of the resulting draws in a rank-size plot.</p></li>
@@ -885,13 +829,13 @@ when <span class="math notranslate nohighlight">\(T\)</span> is large.)</p>
 </div>
 </div>
 </div>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="kesten_processes-solution-7">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#kp_ex4"> Exercise 30.4</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here’s one solution in <a class="reference external" href="https://python-programming.quantecon.org/jax_intro.html">JAX</a>.</p>
+<section id="solution-content">
+<p>Here’s one solution in <a class="reference external" href="https://python-programming.quantecon.org/jax_intro.html">JAX</a>.</p>
 <p>First let’s import the necessary modules and check the backend for JAX</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -905,10 +849,7 @@ when <span class="math notranslate nohighlight">\(T\)</span> is large.)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>jax backend: cpu
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>jax backend: gpu
 </pre></div>
 </div>
 </div>
@@ -945,10 +886,10 @@ when <span class="math notranslate nohighlight">\(T\)</span> is large.)</p>
         <span class="n">exp_a</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a_random</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="p">:])</span>
         <span class="n">exp_b</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b_random</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="p">:])</span>
         <span class="n">exp_e</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">e_random</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="p">:])</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">at</span><span class="p">[:,</span> <span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">s_bar</span><span class="p">,</span> 
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">at</span><span class="p">[:,</span> <span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">s_bar</span><span class="p">,</span>
                              <span class="n">exp_e</span><span class="p">,</span>
                              <span class="n">exp_a</span> <span class="o">*</span> <span class="n">s</span><span class="p">[:,</span> <span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">exp_b</span><span class="p">))</span>
-    
+
     <span class="k">return</span> <span class="n">s</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="o">%</span><span class="k">time</span> data = generate_draws().block_until_ready()
@@ -956,8 +897,8 @@ when <span class="math notranslate nohighlight">\(T\)</span> is large.)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4min 48s, sys: 13.4 s, total: 5min 2s
-Wall time: 4min 7s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 48.4 s, sys: 1.22 s, total: 49.6 s
+Wall time: 34.2 s
 </pre></div>
 </div>
 </div>
@@ -970,8 +911,8 @@ Wall time: 4min 7s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3min 10s, sys: 12.9 s, total: 3min 23s
-Wall time: 2min 30s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 432 µs, sys: 3.98 ms, total: 4.41 ms
+Wall time: 2.17 s
 </pre></div>
 </div>
 </div>
@@ -991,7 +932,7 @@ Wall time: 2min 30s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/kesten_processes_21_0.png" src="_images/kesten_processes_21_0.png" />
+<img alt="_images/37db797f9469b81da38b373c4a2f9d95db29ebb6c0160d953b9a9620d9d7926b.png" src="_images/37db797f9469b81da38b373c4a2f9d95db29ebb6c0160d953b9a9620d9d7926b.png" />
 </div>
 </div>
 <p>The plot produces a straight line, consistent with a Pareto tail.</p>
@@ -1013,10 +954,10 @@ to reduce the loop overhead in the compilation of the jitted function</p>
                        <span class="n">M</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span>
                        <span class="n">s_init</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
                        <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
-  
+
     <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">keys</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-    
+
     <span class="c1"># Generate random draws and initial values</span>
     <span class="n">a_random</span> <span class="o">=</span> <span class="n">μ_a</span> <span class="o">+</span> <span class="n">σ_a</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">M</span><span class="p">))</span>
     <span class="n">b_random</span> <span class="o">=</span> <span class="n">μ_b</span> <span class="o">+</span> <span class="n">σ_b</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">M</span><span class="p">))</span>
@@ -1026,11 +967,11 @@ to reduce the loop overhead in the compilation of the jitted function</p>
     <span class="c1"># Define the function for each update</span>
     <span class="k">def</span> <span class="nf">update_s</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">a_b_e_draws</span><span class="p">):</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">a_b_e_draws</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="n">s_bar</span><span class="p">,</span> 
-                        <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> 
+        <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="n">s_bar</span><span class="p">,</span>
+                        <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
                         <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="n">res</span>
-    
+
     <span class="c1"># Use lax.scan to perform the calculations on all states</span>
     <span class="n">s_final</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">update_s</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="p">(</span><span class="n">a_random</span><span class="p">,</span> <span class="n">b_random</span><span class="p">,</span> <span class="n">e_random</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">s_final</span>
@@ -1040,8 +981,8 @@ to reduce the loop overhead in the compilation of the jitted function</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 44 s, sys: 4.05 s, total: 48 s
-Wall time: 12.5 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.08 s, sys: 1.1 ms, total: 1.08 s
+Wall time: 534 ms
 </pre></div>
 </div>
 </div>
@@ -1054,8 +995,8 @@ Wall time: 12.5 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 42.9 s, sys: 4.01 s, total: 46.9 s
-Wall time: 11.6 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.62 ms, sys: 0 ns, total: 3.62 ms
+Wall time: 67.9 ms
 </pre></div>
 </div>
 </div>
@@ -1075,7 +1016,7 @@ Wall time: 11.6 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/kesten_processes_27_0.png" src="_images/kesten_processes_27_0.png" />
+<img alt="_images/37db797f9469b81da38b373c4a2f9d95db29ebb6c0160d953b9a9620d9d7926b.png" src="_images/37db797f9469b81da38b373c4a2f9d95db29ebb6c0160d953b9a9620d9d7926b.png" />
 </div>
 </div>
 <p>We can also use Numba with <code class="docutils literal notranslate"><span class="pre">for</span></code> loops to generate the observations (replicating the results we obtained with JAX).</p>
@@ -1117,7 +1058,7 @@ Wall time: 11.6 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 32s, sys: 4.91 ms, total: 1min 32s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 32s, sys: 109 µs, total: 1min 32s
 Wall time: 13.2 s
 </pre></div>
 </div>
@@ -1139,13 +1080,13 @@ Wall time: 13.2 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/kesten_processes_31_0.png" src="_images/kesten_processes_31_0.png" />
+<img alt="_images/f16524e2ccb5583beb81f5a511355a4a6fad6df6743c98b1c38d5a5ce0398302.png" src="_images/f16524e2ccb5583beb81f5a511355a4a6fad6df6743c98b1c38d5a5ce0398302.png" />
 </div>
 </div>
+</section>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1159,7 +1100,7 @@ Wall time: 13.2 s
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1740,7 +1681,7 @@ Wall time: 13.2 s
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1882,16 +1823,5 @@ Wall time: 13.2 s
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

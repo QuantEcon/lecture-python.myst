@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>78. Pandas for Panel Data &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -95,6 +105,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pandas_panel';</script>
     <link rel="canonical" href="https://python.quantecon.org/pandas_panel.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -148,38 +159,13 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   78.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#slicing-and-reshaping-data">
-   78.2. Slicing and Reshaping Data
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#merging-dataframes-and-filling-nans">
-   78.3. Merging Dataframes and Filling NaNs
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#grouping-and-summarizing-data">
-   78.4. Grouping and Summarizing Data
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#final-remarks">
-   78.5. Final Remarks
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises">
-   78.6. Exercises
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">78.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#slicing-and-reshaping-data">78.2. Slicing and Reshaping Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-dataframes-and-filling-nans">78.3. Merging Dataframes and Filling NaNs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grouping-and-summarizing-data">78.4. Grouping and Summarizing Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-remarks">78.5. Final Remarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">78.6. Exercises</a></li>
 </ul>
-
                             <p class="logo">
                                 
                                     
@@ -227,8 +213,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="pandas-for-panel-data">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">78. </span><span class="target" id="index-0"></span>Pandas for Panel Data</a><a class="headerlink" href="#pandas-for-panel-data" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="pandas-for-panel-data">
+<h1><a class="toc-backref" href="#id1"><span class="section-number">78. </span><span class="target" id="index-0"></span>Pandas for Panel Data</a><a class="headerlink" href="#pandas-for-panel-data" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-1"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -244,8 +230,8 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">78.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id2"><span class="section-number">78.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In an <a class="reference external" href="https://python-programming.quantecon.org/pandas.html">earlier lecture on pandas</a>, we looked at working with simple data sets.</p>
 <p>Econometricians often need to work with more complex data sets, such as panels.</p>
 <p>Common tasks include</p>
@@ -267,9 +253,9 @@ reshaping the resulting <code class="docutils literal notranslate"><span class="
 <p>Additional detail will be added to our <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> using pandas’
 <code class="docutils literal notranslate"><span class="pre">merge</span></code> function, and data will be summarized with the <code class="docutils literal notranslate"><span class="pre">groupby</span></code>
 function.</p>
-</div>
-<div class="section" id="slicing-and-reshaping-data">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">78.2. </span>Slicing and Reshaping Data</a><a class="headerlink" href="#slicing-and-reshaping-data" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="slicing-and-reshaping-data">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">78.2. </span>Slicing and Reshaping Data</a><a class="headerlink" href="#slicing-and-reshaping-data" title="Permalink to this heading">#</a></h2>
 <p>We will read in a dataset from the OECD of real minimum wages in 32
 countries and assign it to <code class="docutils literal notranslate"><span class="pre">realwage</span></code>.</p>
 <p>The dataset can be accessed with the following link:</p>
@@ -1055,9 +1041,9 @@ the higher levels (countries in this case)</p>
 <p>5 rows × 32 columns</p>
 </div></div></div>
 </div>
-</div>
-<div class="section" id="merging-dataframes-and-filling-nans">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">78.3. </span>Merging Dataframes and Filling NaNs</a><a class="headerlink" href="#merging-dataframes-and-filling-nans" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="merging-dataframes-and-filling-nans">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">78.3. </span>Merging Dataframes and Filling NaNs</a><a class="headerlink" href="#merging-dataframes-and-filling-nans" title="Permalink to this heading">#</a></h2>
 <p>Similar to relational databases like SQL, pandas has built in methods to
 merge datasets together.</p>
 <p>Using country information from
@@ -1345,9 +1331,9 @@ datasets:</p>
 <code class="docutils literal notranslate"><span class="pre">realwage_f</span></code>, but discard countries in <code class="docutils literal notranslate"><span class="pre">worlddata</span></code> that do not have
 a corresponding data entry <code class="docutils literal notranslate"><span class="pre">realwage_f</span></code>.</p>
 <p>This is illustrated by the red shading in the following diagram</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/venn_diag.png" src="_images/venn_diag.png" />
-</div>
+</figure>
 <p>We will also need to specify where the country name is located in each
 dataframe, which will be the <code class="docutils literal notranslate"><span class="pre">key</span></code> that is used to merge the
 dataframes ‘on’.</p>
@@ -1905,9 +1891,9 @@ will go ahead and transpose <code class="docutils literal notranslate"><span cla
 <p>5 rows × 32 columns</p>
 </div></div></div>
 </div>
-</div>
-<div class="section" id="grouping-and-summarizing-data">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">78.4. </span>Grouping and Summarizing Data</a><a class="headerlink" href="#grouping-and-summarizing-data" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="grouping-and-summarizing-data">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">78.4. </span>Grouping and Summarizing Data</a><a class="headerlink" href="#grouping-and-summarizing-data" title="Permalink to this heading">#</a></h2>
 <p>Grouping and summarizing data can be particularly useful for
 understanding large panel datasets.</p>
 <p>A simple way to summarize data is to call an <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/getting_started/intro_tutorials/06_calculate_statistics.html">aggregation
@@ -1961,7 +1947,11 @@ past decade for each country in our data set</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/pandas_panel_50_0.png" src="_images/pandas_panel_50_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_9372/1612084180.py:5: MatplotlibDeprecationWarning: The seaborn styles shipped by Matplotlib are deprecated since 3.6, as they no longer correspond to the styles shipped by seaborn. However, they will remain available as &#39;seaborn-v0_8-&lt;style&gt;&#39;. Alternatively, directly use the seaborn API instead.
+  matplotlib.style.use(&#39;seaborn&#39;)
+</pre></div>
+</div>
+<img alt="_images/f42fb05b6e88355816500b1efccf174feb1ad50faa06da9d5a34efb401e5297a.png" src="_images/f42fb05b6e88355816500b1efccf174feb1ad50faa06da9d5a34efb401e5297a.png" />
 </div>
 </div>
 <p>Passing in <code class="docutils literal notranslate"><span class="pre">axis=1</span></code> to <code class="docutils literal notranslate"><span class="pre">.mean()</span></code> will aggregate over columns (giving
@@ -1996,7 +1986,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/pandas_panel_54_0.png" src="_images/pandas_panel_54_0.png" />
+<img alt="_images/aa1c20ee3837dad8f40386c67f682c7576cd898003e40e5b82dd3674c458f338.png" src="_images/aa1c20ee3837dad8f40386c67f682c7576cd898003e40e5b82dd3674c458f338.png" />
 </div>
 </div>
 <p>We can also specify a level of the <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> (in the column axis)
@@ -2091,7 +2081,7 @@ to aggregate over</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/pandas_panel_58_0.png" src="_images/pandas_panel_58_0.png" />
+<img alt="_images/de4e74888a02097a02460280f8a06d015c55524d974573a14ca3aa8956427997.png" src="_images/de4e74888a02097a02460280f8a06d015c55524d974573a14ca3aa8956427997.png" />
 </div>
 </div>
 <p>We will drop Australia as a continent for plotting purposes</p>
@@ -2107,7 +2097,7 @@ to aggregate over</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/pandas_panel_60_0.png" src="_images/pandas_panel_60_0.png" />
+<img alt="_images/7032a7286df58380beea2bb13fdf0368c6caaa9a68220322f178c13a612c0a0c.png" src="_images/7032a7286df58380beea2bb13fdf0368c6caaa9a68220322f178c13a612c0a0c.png" />
 </div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">.describe()</span></code> is useful for quickly retrieving a number of common
@@ -2214,7 +2204,7 @@ a new <code class="docutils literal notranslate"><span class="pre">DataFrameGrou
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f3d2cacb940&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f0cb375fbe0&gt;
 </pre></div>
 </div>
 </div>
@@ -2262,24 +2252,44 @@ object</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/pandas_panel_68_0.png" src="_images/pandas_panel_68_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_9372/13690229.py:6: FutureWarning: 
+
+`shade` is now deprecated in favor of `fill`; setting `fill=True`.
+This will become an error in seaborn v0.14.0; please update your code.
+
+  sns.kdeplot(grouped.get_group(continent).loc[&#39;2015&#39;].unstack(), label=continent, shade=True)
+/tmp/ipykernel_9372/13690229.py:6: FutureWarning: 
+
+`shade` is now deprecated in favor of `fill`; setting `fill=True`.
+This will become an error in seaborn v0.14.0; please update your code.
+
+  sns.kdeplot(grouped.get_group(continent).loc[&#39;2015&#39;].unstack(), label=continent, shade=True)
+/tmp/ipykernel_9372/13690229.py:6: FutureWarning: 
+
+`shade` is now deprecated in favor of `fill`; setting `fill=True`.
+This will become an error in seaborn v0.14.0; please update your code.
+
+  sns.kdeplot(grouped.get_group(continent).loc[&#39;2015&#39;].unstack(), label=continent, shade=True)
+</pre></div>
+</div>
+<img alt="_images/81ea77d684c909f67abda0d96abdc5eccbd3ed277416bae6bdeb3414045348da.png" src="_images/81ea77d684c909f67abda0d96abdc5eccbd3ed277416bae6bdeb3414045348da.png" />
 </div>
 </div>
-</div>
-<div class="section" id="final-remarks">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">78.5. </span>Final Remarks</a><a class="headerlink" href="#final-remarks" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="final-remarks">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">78.5. </span>Final Remarks</a><a class="headerlink" href="#final-remarks" title="Permalink to this heading">#</a></h2>
 <p>This lecture has provided an introduction to some of pandas’ more
 advanced features, including multiindices, merging, grouping and
 plotting.</p>
 <p>Other tools that may be useful in panel data analysis include <a class="reference external" href="https://docs.xarray.dev/en/stable/">xarray</a>, a python package that
 extends pandas to N-dimensional data structures.</p>
-</div>
-<div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">78.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">78.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="pp_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 78.1 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>In these exercises, you’ll work with a dataset of employment rates
 in Europe by age and sex from <a class="reference external" href="https://ec.europa.eu/eurostat/data/database">Eurostat</a>.</p>
 <p>The dataset can be accessed with the following link:</p>
@@ -2295,13 +2305,13 @@ a wide format dataframe with a <code class="docutils literal notranslate"><span 
 <p>Start off by exploring the dataframe and the variables available in the
 <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> levels.</p>
 <p>Write a program that quickly returns all values in the <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code>.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="pandas_panel-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#pp_ex1"> Exercise 78.1</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
+<section id="solution-content">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">employ</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url3</span><span class="p">)</span>
 <span class="n">employ</span> <span class="o">=</span> <span class="n">employ</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="s1">&#39;Value&#39;</span><span class="p">,</span>
@@ -2478,12 +2488,12 @@ GEO Index([&#39;Austria&#39;, &#39;Belgium&#39;, &#39;Bulgaria&#39;, &#39;Croati
 </div>
 </div>
 </div>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="pp_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 78.2 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Filter the above dataframe to only include employment as a percentage of
 ‘active population’.</p>
 <p>Create a grouped boxplot using <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> of employment rates in 2015
@@ -2492,13 +2502,13 @@ by age group and sex.</p>
 <p class="admonition-title">Hint</p>
 <p><code class="docutils literal notranslate"><span class="pre">GEO</span></code> includes both areas and countries.</p>
 </div>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="pandas_panel-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#pp_ex2"> Exercise 78.2</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>To easily filter by country, swap <code class="docutils literal notranslate"><span class="pre">GEO</span></code> to the top level and sort the
+<section id="solution-content">
+<p>To easily filter by country, swap <code class="docutils literal notranslate"><span class="pre">GEO</span></code> to the top level and sort the
 <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2678,13 +2688,13 @@ dataframe</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/pandas_panel_85_0.png" src="_images/pandas_panel_85_0.png" />
+<img alt="_images/2867976e609a4b1c85b09e1b9c1211e1e6fa1f833258d80fbe1f14e386593b6b.png" src="_images/2867976e609a4b1c85b09e1b9c1211e1e6fa1f833258d80fbe1f14e386593b6b.png" />
 </div>
 </div>
+</section>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -2698,7 +2708,7 @@ dataframe</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -3279,7 +3289,7 @@ dataframe</p>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -3421,16 +3431,5 @@ dataframe</p>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>19. Randomized Response Surveys &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'rand_resp';</script>
     <link rel="canonical" href="https://python.quantecon.org/rand_resp.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,28 +161,11 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   19.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#warners-strategy">
-   19.2. Warner’s Strategy
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#comparing-two-survey-designs">
-   19.3. Comparing Two Survey Designs
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#concluding-remarks">
-   19.4. Concluding Remarks
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">19.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#warners-strategy">19.2. Warner’s Strategy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-two-survey-designs">19.3. Comparing Two Survey Designs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">19.4. Concluding Remarks</a></li>
 </ul>
-
                             <p class="logo">
                                 
                                     
@@ -215,10 +209,10 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <div class="tex2jax_ignore mathjax_ignore section" id="randomized-response-surveys">
-<h1><span class="section-number">19. </span>Randomized Response Surveys<a class="headerlink" href="#randomized-response-surveys" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="overview">
-<h2><span class="section-number">19.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="randomized-response-surveys">
+<h1><span class="section-number">19. </span>Randomized Response Surveys<a class="headerlink" href="#randomized-response-surveys" title="Permalink to this heading">#</a></h1>
+<section id="overview">
+<h2><span class="section-number">19.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>Social stigmas can inhibit people from confessing potentially embarrassing activities or opinions.</p>
 <p>When people are reluctant to participate a sample survey about personally  sensitive issues, they  might decline  to participate, and even if they do participate, they might choose to provide incorrect answers to  sensitive questions.</p>
 <p>These problems induce  <strong>selection</strong>  biases that present challenges to interpreting and designing surveys.</p>
@@ -229,9 +223,9 @@ const thebe_selector_output = ".output, .cell_output"
 <p>Statistical properties of the  noise injection procedure provide the respondent  <strong>plausible deniability</strong>.</p>
 <p>Related ideas underlie  modern <strong>differential privacy</strong> systems.</p>
 <p>(See <a class="reference external" href="https://en.wikipedia.org/wiki/Differential_privacy">https://en.wikipedia.org/wiki/Differential_privacy</a>)</p>
-</div>
-<div class="section" id="warners-strategy">
-<h2><span class="section-number">19.2. </span>Warner’s Strategy<a class="headerlink" href="#warners-strategy" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="warners-strategy">
+<h2><span class="section-number">19.2. </span>Warner’s Strategy<a class="headerlink" href="#warners-strategy" title="Permalink to this heading">#</a></h2>
 <p>As usual, let’s bring in the Python modules we’ll be using.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -263,12 +257,12 @@ const thebe_selector_output = ".output, .cell_output"
 <p>Index the sample set so that  the first <span class="math notranslate nohighlight">\(n_1\)</span> report “yes”, while the second <span class="math notranslate nohighlight">\(n-n_1\)</span> report “no”.</p>
 <p>The likelihood function of a sample set is</p>
 <div class="math notranslate nohighlight" id="equation-eq-one">
-<span class="eqno">(19.1)<a class="headerlink" href="#equation-eq-one" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(19.1)<a class="headerlink" href="#equation-eq-one" title="Permalink to this equation">#</a></span>\[
 L=\left[\pi p + (1-\pi)(1-p)\right]^{n_{1}}\left[(1-\pi) p +\pi (1-p)\right]^{n-n_{1}} 
 \]</div>
 <p>The log of the likelihood function is:</p>
 <div class="math notranslate nohighlight" id="equation-eq-two">
-<span class="eqno">(19.2)<a class="headerlink" href="#equation-eq-two" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(19.2)<a class="headerlink" href="#equation-eq-two" title="Permalink to this equation">#</a></span>\[
 \log(L)= n_1 \log \left[\pi p + (1-\pi)(1-p)\right] + (n-n_{1}) \log \left[(1-\pi) p +\pi (1-p)\right]
 \]</div>
 <p>The first-order necessary condition for maximizing the log likelihood function with respect to  <span class="math notranslate nohighlight">\(\pi\)</span> is:</p>
@@ -278,17 +272,17 @@ L=\left[\pi p + (1-\pi)(1-p)\right]^{n_{1}}\left[(1-\pi) p +\pi (1-p)\right]^{n-
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-3">
-<span class="eqno">(19.3)<a class="headerlink" href="#equation-eq-3" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(19.3)<a class="headerlink" href="#equation-eq-3" title="Permalink to this equation">#</a></span>\[
 \pi p + (1-\pi)(1-p)=\frac{n_1}{n}
 \]</div>
 <p>If  <span class="math notranslate nohighlight">\(p \neq \frac{1}{2}\)</span>, then the maximum likelihood estimator (MLE) of <span class="math notranslate nohighlight">\(\pi\)</span> is:</p>
 <div class="math notranslate nohighlight" id="equation-eq-four">
-<span class="eqno">(19.4)<a class="headerlink" href="#equation-eq-four" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(19.4)<a class="headerlink" href="#equation-eq-four" title="Permalink to this equation">#</a></span>\[
 \hat{\pi}=\frac{p-1}{2p-1}+\frac{n_1}{(2p-1)n}
 \]</div>
 <p>We compute the mean and variance of the MLE estimator <span class="math notranslate nohighlight">\(\hat \pi\)</span> to be:</p>
 <div class="math notranslate nohighlight" id="equation-eq-five">
-<span class="eqno">(19.5)<a class="headerlink" href="#equation-eq-five" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(19.5)<a class="headerlink" href="#equation-eq-five" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 \mathbb{E}(\hat{\pi})&amp;= \frac{1}{2 p-1}\left[p-1+\frac{1}{n} \sum_{i=1}^{n} \mathbb{E} X_i \right] \\
 &amp;=\frac{1}{2 p-1} \left[ p -1 + \pi p + (1-\pi)(1-p)\right] \\
@@ -297,7 +291,7 @@ L=\left[\pi p + (1-\pi)(1-p)\right]^{n_{1}}\left[(1-\pi) p +\pi (1-p)\right]^{n-
 \end{split}\]</div>
 <p>and</p>
 <div class="math notranslate nohighlight" id="equation-eq-six">
-<span class="eqno">(19.6)<a class="headerlink" href="#equation-eq-six" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(19.6)<a class="headerlink" href="#equation-eq-six" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 Var(\hat{\pi})&amp;=\frac{n Var(X_i)}{(2p - 1 )^2 n^2} \\
 &amp;= \frac{\left[\pi p + (1-\pi)(1-p)\right]\left[(1-\pi) p +\pi (1-p)\right]}{(2p - 1 )^2 n^2}\\
@@ -308,7 +302,7 @@ Var(\hat{\pi})&amp;=\frac{n Var(X_i)}{(2p - 1 )^2 n^2} \\
 <p>Equation <a class="reference internal" href="#equation-eq-five">(19.5)</a> indicates  that <span class="math notranslate nohighlight">\(\hat{\pi}\)</span> is an <strong>unbiased estimator</strong> of <span class="math notranslate nohighlight">\(\pi\)</span> while equation <a class="reference internal" href="#equation-eq-six">(19.6)</a> tell us the variance of the estimator.</p>
 <p>To compute a  confidence interval, first  rewrite <a class="reference internal" href="#equation-eq-six">(19.6)</a> as:</p>
 <div class="math notranslate nohighlight" id="equation-eq-seven">
-<span class="eqno">(19.7)<a class="headerlink" href="#equation-eq-seven" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(19.7)<a class="headerlink" href="#equation-eq-seven" title="Permalink to this equation">#</a></span>\[
 Var(\hat{\pi})=\frac{\frac{1}{4}-(\pi-\frac{1}{2})^2}{n}+\frac{\frac{1}{16(p-\frac{1}{2})^2}-\frac{1}{4}}{n}
 \]</div>
 <p>This equation indicates that the variance of <span class="math notranslate nohighlight">\(\hat{\pi}\)</span> can be represented as a sum of the variance due to sampling plus the variance due to the random device.</p>
@@ -323,9 +317,9 @@ Var(\hat{\pi})=\frac{\frac{1}{4}-(\pi-\frac{1}{2})^2}{n}+\frac{\frac{1}{16(p-\fr
 <ul class="simple">
 <li><p>The MSE of <span class="math notranslate nohighlight">\(\hat{\pi}\)</span>  decreases as <span class="math notranslate nohighlight">\(p\)</span> increases.</p></li>
 </ul>
-</div>
-<div class="section" id="comparing-two-survey-designs">
-<h2><span class="section-number">19.3. </span>Comparing Two Survey Designs<a class="headerlink" href="#comparing-two-survey-designs" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="comparing-two-survey-designs">
+<h2><span class="section-number">19.3. </span>Comparing Two Survey Designs<a class="headerlink" href="#comparing-two-survey-designs" title="Permalink to this heading">#</a></h2>
 <p>Let’s compare the preceding randomized-response method with a stylized non-randomized response method.</p>
 <p>In our non-randomized response method, we suppose that:</p>
 <ul class="simple">
@@ -334,25 +328,25 @@ Var(\hat{\pi})=\frac{\frac{1}{4}-(\pi-\frac{1}{2})^2}{n}+\frac{\frac{1}{16(p-\fr
 </ul>
 <p>Then we can estimate <span class="math notranslate nohighlight">\(\pi\)</span> as:</p>
 <div class="math notranslate nohighlight" id="equation-eq-eight">
-<span class="eqno">(19.8)<a class="headerlink" href="#equation-eq-eight" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(19.8)<a class="headerlink" href="#equation-eq-eight" title="Permalink to this equation">#</a></span>\[
 \hat{\pi}=\frac{\sum_{i=1}^{n}Y_i}{n}
 \]</div>
 <p>We calculate the expectation, bias, and variance of the estimator to be:</p>
 <div class="math notranslate nohighlight" id="equation-eq-nine">
-<span class="eqno">(19.9)<a class="headerlink" href="#equation-eq-nine" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(19.9)<a class="headerlink" href="#equation-eq-nine" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 \mathbb{E}(\hat{\pi})&amp;=\pi T_a + \left[ (1-\pi)(1-T_b)\right]\\
 \end{aligned}
 \end{split}\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-ten">
-<span class="eqno">(19.10)<a class="headerlink" href="#equation-eq-ten" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(19.10)<a class="headerlink" href="#equation-eq-ten" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 Bias(\hat{\pi})&amp;=\mathbb{E}(\hat{\pi}-\pi)\\
 &amp;=\pi [T_a + T_b -2 ] + [1- T_b] \\
 \end{aligned}
 \end{split}\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-eleven">
-<span class="eqno">(19.11)<a class="headerlink" href="#equation-eq-eleven" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(19.11)<a class="headerlink" href="#equation-eq-eleven" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
 Var(\hat{\pi})&amp;=\frac{ \left[ \pi T_a + (1-\pi)(1-T_b)\right]  \left[1- \pi T_a -(1-\pi)(1-T_b)\right] }{n}
 \end{aligned}
@@ -1367,14 +1361,14 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
 </div></div></div>
 </div>
 <p>Evidently, as <span class="math notranslate nohighlight">\(n\)</span> increases, the randomized response method does  better performance in more situations.</p>
-</div>
-<div class="section" id="concluding-remarks">
-<h2><span class="section-number">19.4. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="concluding-remarks">
+<h2><span class="section-number">19.4. </span>Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this heading">#</a></h2>
 <p><a class="reference internal" href="util_rand_resp.html"><span class="doc">This QuantEcon lecture</span></a>  describes some alternative randomized response surveys.</p>
 <p>That lecture presents a utilitarian analysis of those alternatives conducted by Lars Ljungqvist
 <span id="id5">[<a class="reference internal" href="zreferences.html#id8" title="Lars Ljungqvist. A unified approach to measures of privacy in randomized response models: a utilitarian perspective. Journal of the American Statistical Association, 88(421):97–103, 1993.">Lju93</a>]</span>.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1388,7 +1382,7 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1969,7 +1963,7 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -2111,16 +2105,5 @@ under  different values of <span class="math notranslate nohighlight">\(\pi_A\)<
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

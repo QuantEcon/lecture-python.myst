@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>67. Production Smoothing via Inventories &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lq_inventories';</script>
     <link rel="canonical" href="https://python.quantecon.org/lq_inventories.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,58 +161,17 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   67.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-1">
-   67.2. Example 1
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#inventories-not-useful">
-   67.3. Inventories Not Useful
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#inventories-useful-but-are-hardwired-to-be-zero-always">
-   67.4. Inventories Useful but are Hardwired to be Zero Always
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-2">
-   67.5. Example 2
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-3">
-   67.6. Example 3
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-4">
-   67.7. Example 4
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-5">
-   67.8. Example 5
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-6">
-   67.9. Example 6
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises">
-   67.10. Exercises
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">67.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1">67.2. Example 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inventories-not-useful">67.3. Inventories Not Useful</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inventories-useful-but-are-hardwired-to-be-zero-always">67.4. Inventories Useful but are Hardwired to be Zero Always</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">67.5. Example 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">67.6. Example 3</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-4">67.7. Example 4</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-5">67.8. Example 5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-6">67.9. Example 6</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">67.10. Exercises</a></li>
 </ul>
-
                             <p class="logo">
                                 
                                     
@@ -249,8 +219,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="production-smoothing-via-inventories">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">67. </span>Production Smoothing via Inventories</a><a class="headerlink" href="#production-smoothing-via-inventories" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="production-smoothing-via-inventories">
+<h1><a class="toc-backref" href="#id2"><span class="section-number">67. </span>Production Smoothing via Inventories</a><a class="headerlink" href="#production-smoothing-via-inventories" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -272,27 +242,32 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <p>In addition to what’s in Anaconda, this lecture employs the following library:</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.6.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.6.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.5.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
-Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: numba in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (65.6.3)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -300,9 +275,10 @@ Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lectu
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">67.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">67.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture can be viewed as an application of this <a class="reference internal" href="lqcontrol.html"><span class="doc">quantecon lecture</span></a> about linear quadratic control
 theory.</p>
 <p>It formulates a discounted dynamic program for a firm that
@@ -608,9 +584,9 @@ values</p>
 <li><p>costs of holding inventories <span class="math notranslate nohighlight">\(d1=1, d2=1\)</span></p></li>
 </ul>
 <p>In the examples below, we alter some or all of these parameter values.</p>
-</div>
-<div class="section" id="example-1">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">67.2. </span>Example 1</a><a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-1">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">67.2. </span>Example 1</a><a class="headerlink" href="#example-1" title="Permalink to this heading">#</a></h2>
 <p>In this example, the demand shock follows AR(1) process:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -646,7 +622,7 @@ pertinent figures.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_6_0.png" src="_images/lq_inventories_6_0.png" />
+<img alt="_images/ad00a6d299284f278e588d0e9df65719801de91a9902f9a93377d93deed778f0.png" src="_images/ad00a6d299284f278e588d0e9df65719801de91a9902f9a93377d93deed778f0.png" />
 </div>
 </div>
 <p>The figures above illustrate various features of an optimal production
@@ -669,9 +645,9 @@ firm from holding inventories by forcing it to set <span class="math notranslate
 always</p></li>
 </ul>
 <p>We use these two alternative production concepts in order to shed light on the baseline model.</p>
-</div>
-<div class="section" id="inventories-not-useful">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">67.3. </span>Inventories Not Useful</a><a class="headerlink" href="#inventories-not-useful" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="inventories-not-useful">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">67.3. </span>Inventories Not Useful</a><a class="headerlink" href="#inventories-not-useful" title="Permalink to this heading">#</a></h2>
 <p>Let’s turn first to the setting in which inventories aren’t needed.</p>
 <p>In this problem, the firm forms an output plan that maximizes the expected
 value of</p>
@@ -695,9 +671,9 @@ maximizes the expected value of</p>
 \[
 Q_{t}^{ni}=\frac{a_{0}+\nu_{t}-c_{1}}{c_{2}+a_{1}}.
 \]</div>
-</div>
-<div class="section" id="inventories-useful-but-are-hardwired-to-be-zero-always">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">67.4. </span>Inventories Useful but are Hardwired to be Zero Always</a><a class="headerlink" href="#inventories-useful-but-are-hardwired-to-be-zero-always" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="inventories-useful-but-are-hardwired-to-be-zero-always">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">67.4. </span>Inventories Useful but are Hardwired to be Zero Always</a><a class="headerlink" href="#inventories-useful-but-are-hardwired-to-be-zero-always" title="Permalink to this heading">#</a></h2>
 <p>Next, we turn to a distinct problem in which inventories are useful –
 meaning that there are costs of <span class="math notranslate nohighlight">\(d_2 (I_t - S_t)^2\)</span> associated
 with having sales not equal to inventories – but we arbitrarily impose on the firm
@@ -754,12 +730,12 @@ confine the graphs to the first 10 periods:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_8_0.png" src="_images/lq_inventories_8_0.png" />
+<img alt="_images/eeb7e86fa0703c5becf0890de0598f595de3943cf11e30034660c8afa8188518.png" src="_images/eeb7e86fa0703c5becf0890de0598f595de3943cf11e30034660c8afa8188518.png" />
 </div>
 </div>
-</div>
-<div class="section" id="example-2">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">67.5. </span>Example 2</a><a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-2">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">67.5. </span>Example 2</a><a class="headerlink" href="#example-2" title="Permalink to this heading">#</a></h2>
 <p>Next, we shut down randomness in demand and assume that the demand shock
 <span class="math notranslate nohighlight">\(\nu_t\)</span> follows a deterministic path:</p>
 <div class="math notranslate nohighlight">
@@ -777,12 +753,12 @@ confine the graphs to the first 10 periods:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_10_0.png" src="_images/lq_inventories_10_0.png" />
+<img alt="_images/5e90d1aec57f37ca384ccd7b079651cfc2e28e258ddf2ce21528add745d566b7.png" src="_images/5e90d1aec57f37ca384ccd7b079651cfc2e28e258ddf2ce21528add745d566b7.png" />
 </div>
 </div>
-</div>
-<div class="section" id="example-3">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">67.6. </span>Example 3</a><a class="headerlink" href="#example-3" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-3">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">67.6. </span>Example 3</a><a class="headerlink" href="#example-3" title="Permalink to this heading">#</a></h2>
 <p>Now we’ll put randomness back into the demand shock process and also
 assume that there are zero costs of holding inventories.</p>
 <p>In particular, we’ll look at a situation in which <span class="math notranslate nohighlight">\(d_1=0\)</span> but
@@ -800,12 +776,12 @@ the following figures confirm</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_12_0.png" src="_images/lq_inventories_12_0.png" />
+<img alt="_images/77ac1d82b9ed9e638e516e9081161c3f3c5437b55eca583cf0ccdbd631b4bc01.png" src="_images/77ac1d82b9ed9e638e516e9081161c3f3c5437b55eca583cf0ccdbd631b4bc01.png" />
 </div>
 </div>
-</div>
-<div class="section" id="example-4">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">67.7. </span>Example 4</a><a class="headerlink" href="#example-4" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-4">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">67.7. </span>Example 4</a><a class="headerlink" href="#example-4" title="Permalink to this heading">#</a></h2>
 <p>To bring out some features of the optimal policy that are related to
 some technical issues in linear control theory, we’ll now temporarily
 assume that it is costless to hold inventories.</p>
@@ -847,7 +823,7 @@ and to <strong>run a Ponzi scheme</strong> by running inventories down forever.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_14_0.png" src="_images/lq_inventories_14_0.png" />
+<img alt="_images/2bd35b34ac0f78c3b4173f097e47b035893ac36bac2c7f186118eadfa5f4aa5c.png" src="_images/2bd35b34ac0f78c3b4173f097e47b035893ac36bac2c7f186118eadfa5f4aa5c.png" />
 </div>
 </div>
 <p>Let’s shorten the time span displayed in order to highlight what is
@@ -861,12 +837,12 @@ going on.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_16_0.png" src="_images/lq_inventories_16_0.png" />
+<img alt="_images/6f9fc7c3f78f9c305355eda626a80db173a16ff800247b142f9d6de2c69a2468.png" src="_images/6f9fc7c3f78f9c305355eda626a80db173a16ff800247b142f9d6de2c69a2468.png" />
 </div>
 </div>
-</div>
-<div class="section" id="example-5">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">67.8. </span>Example 5</a><a class="headerlink" href="#example-5" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-5">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">67.8. </span>Example 5</a><a class="headerlink" href="#example-5" title="Permalink to this heading">#</a></h2>
 <p>Now we’ll assume that the demand shock that follows a linear time trend</p>
 <div class="math notranslate nohighlight">
 \[
@@ -905,12 +881,12 @@ b &amp; a\end{array}\right]
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_19_0.png" src="_images/lq_inventories_19_0.png" />
+<img alt="_images/eedceb43b4f184bedb22dad62b4a7f0d3ea2da833b8887d41cc5750b3b3e47bb.png" src="_images/eedceb43b4f184bedb22dad62b4a7f0d3ea2da833b8887d41cc5750b3b3e47bb.png" />
 </div>
 </div>
-</div>
-<div class="section" id="example-6">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">67.9. </span>Example 6</a><a class="headerlink" href="#example-6" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-6">
+<h2><a class="toc-backref" href="#id11"><span class="section-number">67.9. </span>Example 6</a><a class="headerlink" href="#example-6" title="Permalink to this heading">#</a></h2>
 <p>Now we’ll assume a deterministically seasonal demand shock.</p>
 <p>To represent this we’ll set</p>
 <div class="math notranslate nohighlight">
@@ -943,7 +919,7 @@ x_0 = \begin{bmatrix} 1 \cr 0 \cr 1 \cr 0 \cr 0 \end{bmatrix}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_21_0.png" src="_images/lq_inventories_21_0.png" />
+<img alt="_images/ccbce9759859f1a48b7f4f8f1b30836217701f7c7f9f51f0c2e048ae35bc5704.png" src="_images/ccbce9759859f1a48b7f4f8f1b30836217701f7c7f9f51f0c2e048ae35bc5704.png" />
 </div>
 </div>
 <p>Now we’ll generate some more examples that differ simply from the
@@ -956,7 +932,7 @@ initial <strong>season</strong> of the year in which we begin the demand shock</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_23_0.png" src="_images/lq_inventories_23_0.png" />
+<img alt="_images/2a602b54a0aa88a78861659e6cc33663ddfde666a3d9be16dfb05a895ad6c1eb.png" src="_images/2a602b54a0aa88a78861659e6cc33663ddfde666a3d9be16dfb05a895ad6c1eb.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -967,7 +943,7 @@ initial <strong>season</strong> of the year in which we begin the demand shock</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_24_0.png" src="_images/lq_inventories_24_0.png" />
+<img alt="_images/582f023706334c87d0f4d6f9bfbc21ac94f0043fee3e47a03fd3fddf7f64013b.png" src="_images/582f023706334c87d0f4d6f9bfbc21ac94f0043fee3e47a03fd3fddf7f64013b.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -978,18 +954,18 @@ initial <strong>season</strong> of the year in which we begin the demand shock</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_25_0.png" src="_images/lq_inventories_25_0.png" />
+<img alt="_images/8fa9e71f311606cb10e5b16fa6a0946803fadbad8e380540f9bb8be1f11f326f.png" src="_images/8fa9e71f311606cb10e5b16fa6a0946803fadbad8e380540f9bb8be1f11f326f.png" />
 </div>
 </div>
-</div>
-<div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">67.10. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id12"><span class="section-number">67.10. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <p>Please try to analyze some inventory sales smoothing problems using the
 <code class="docutils literal notranslate"><span class="pre">SmoothingExample</span></code> class.</p>
 <div class="exercise admonition" id="lqi_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 67.1 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Assume that the demand shock follows AR(2) process below:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1006,13 +982,13 @@ the same demand shock process but exclude the randomness
 simulating for a long period. Then try to add shocks with different
 magnitude to <span class="math notranslate nohighlight">\(\bar{\nu}_t\)</span> and simulate paths. You should see how
 firms respond differently by staring at the production plans.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="lq_inventories-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#lqi_ex1"> Exercise 67.1</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
+<section id="solution-content">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set parameters</span>
 <span class="n">α</span> <span class="o">=</span> <span class="mi">1</span>
@@ -1044,7 +1020,7 @@ firms respond differently by staring at the production plans.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_29_0.png" src="_images/lq_inventories_29_0.png" />
+<img alt="_images/6ce81df81854491edea0dd60b1869e7df883c5437ce90200d720a9c40740b64b.png" src="_images/6ce81df81854491edea0dd60b1869e7df883c5437ce90200d720a9c40740b64b.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1088,7 +1064,7 @@ a short period response.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_33_0.png" src="_images/lq_inventories_33_0.png" />
+<img alt="_images/fe5ec1f21a9dbdd1fa3dcd826f776f49377dd34bd4052d30ef0f52675834174d.png" src="_images/fe5ec1f21a9dbdd1fa3dcd826f776f49377dd34bd4052d30ef0f52675834174d.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1101,28 +1077,28 @@ a short period response.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_34_0.png" src="_images/lq_inventories_34_0.png" />
+<img alt="_images/40043338f2eada67d26e3805cc071606e55272acd81349d0f9aaf995da572154.png" src="_images/40043338f2eada67d26e3805cc071606e55272acd81349d0f9aaf995da572154.png" />
 </div>
 </div>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="lqi_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 67.2 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Change parameters of <span class="math notranslate nohighlight">\(C(Q_t)\)</span> and <span class="math notranslate nohighlight">\(d(I_t, S_t)\)</span>.</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Make production more costly, by setting <span class="math notranslate nohighlight">\(c_2=5\)</span>.</p></li>
 <li><p>Increase the cost of having inventories deviate from sales, by
 setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 </ol>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="lq_inventories-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#lqi_ex2"> Exercise 67.2</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><div class="cell docutils container">
+<section id="solution-content">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 </pre></div>
@@ -1136,7 +1112,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_37_0.png" src="_images/lq_inventories_37_0.png" />
+<img alt="_images/4720d3a1bdbbd9e1d141946171916ba074149d106ee95d1db569045f087406b8.png" src="_images/4720d3a1bdbbd9e1d141946171916ba074149d106ee95d1db569045f087406b8.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1146,13 +1122,13 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lq_inventories_38_0.png" src="_images/lq_inventories_38_0.png" />
+<img alt="_images/69d82b33f5785f4292c91a97dc3c89dff3795eb6568aeff52dc4ddd6f97a944d.png" src="_images/69d82b33f5785f4292c91a97dc3c89dff3795eb6568aeff52dc4ddd6f97a944d.png" />
 </div>
 </div>
+</section>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1166,7 +1142,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1747,7 +1723,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1889,16 +1865,5 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>9. Using Newton’s Method to Solve Economic Models &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'newton_method';</script>
     <link rel="canonical" href="https://python.quantecon.org/newton_method.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,103 +161,34 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   9.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#fixed-point-computation-using-newtons-method">
-   9.2. Fixed Point Computation Using Newton’s Method
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#the-solow-model">
-     9.2.1. The Solow Model
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#implementation">
-     9.2.2. Implementation
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#successive-approximation">
-       9.2.2.1. Successive Approximation
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#newtons-method">
-       9.2.2.2. Newton’s Method
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#root-finding-in-one-dimension">
-   9.3. Root-Finding in One Dimension
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#newtons-method-for-zeros">
-     9.3.1. Newton’s Method for Zeros
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#application-to-finding-fixed-points">
-     9.3.2. Application to Finding Fixed Points
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#multivariate-newtons-method">
-   9.4. Multivariate Newton’s Method
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#a-two-goods-market-equilibrium">
-     9.4.1. A Two Goods Market Equilibrium
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#a-graphical-exploration">
-       9.4.1.1. A Graphical Exploration
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#using-a-multidimensional-root-finder">
-       9.4.1.2. Using a Multidimensional Root Finder
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#adding-gradient-information">
-       9.4.1.3. Adding Gradient Information
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#using-newtons-method">
-       9.4.1.4. Using Newton’s Method
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#a-high-dimensional-problem">
-     9.4.2. A High-Dimensional Problem
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises">
-   9.5. Exercises
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">9.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-point-computation-using-newtons-method">9.2. Fixed Point Computation Using Newton’s Method</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-solow-model">9.2.1. The Solow Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">9.2.2. Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#successive-approximation">9.2.2.1. Successive Approximation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#newtons-method">9.2.2.2. Newton’s Method</a></li>
 </ul>
-
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#root-finding-in-one-dimension">9.3. Root-Finding in One Dimension</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#newtons-method-for-zeros">9.3.1. Newton’s Method for Zeros</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application-to-finding-fixed-points">9.3.2. Application to Finding Fixed Points</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-newtons-method">9.4. Multivariate Newton’s Method</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-two-goods-market-equilibrium">9.4.1. A Two Goods Market Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-graphical-exploration">9.4.1.1. A Graphical Exploration</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-multidimensional-root-finder">9.4.1.2. Using a Multidimensional Root Finder</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-gradient-information">9.4.1.3. Adding Gradient Information</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-newtons-method">9.4.1.4. Using Newton’s Method</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-high-dimensional-problem">9.4.2. A High-Dimensional Problem</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">9.5. Exercises</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -294,8 +236,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="using-newtons-method-to-solve-economic-models">
-<span id="index-0"></span><h1><a class="toc-backref" href="#id1"><span class="section-number">9. </span>Using Newton’s Method to Solve Economic Models</a><a class="headerlink" href="#using-newtons-method-to-solve-economic-models" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="using-newtons-method-to-solve-economic-models">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1"><span class="section-number">9. </span>Using Newton’s Method to Solve Economic Models</a><a class="headerlink" href="#using-newtons-method-to-solve-economic-models" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -310,8 +252,8 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">9.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id2"><span class="section-number">9.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>Many economic problems involve finding <a class="reference external" href="https://en.wikipedia.org/wiki/Fixed_point_(mathematics)">fixed
 points</a> or
 <a class="reference external" href="https://en.wikipedia.org/wiki/Zero_of_a_function">zeros</a> (sometimes called
@@ -357,20 +299,20 @@ differentiation to solve a very high-dimensional equilibrium problem.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="fixed-point-computation-using-newtons-method">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">9.2. </span>Fixed Point Computation Using Newton’s Method</a><a class="headerlink" href="#fixed-point-computation-using-newtons-method" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="fixed-point-computation-using-newtons-method">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">9.2. </span>Fixed Point Computation Using Newton’s Method</a><a class="headerlink" href="#fixed-point-computation-using-newtons-method" title="Permalink to this heading">#</a></h2>
 <p>In this section we solve the fixed point of the law of motion for capital in
 the setting of the <a class="reference external" href="https://en.wikipedia.org/wiki/Solow%E2%80%93Swan_model">Solow growth
 model</a>.</p>
 <p>We will inspect the fixed point visually, solve it by successive
 approximation, and then apply Newton’s method to achieve faster convergence.</p>
-<div class="section" id="the-solow-model">
-<span id="solow"></span><h3><span class="section-number">9.2.1. </span>The Solow Model<a class="headerlink" href="#the-solow-model" title="Permalink to this headline">¶</a></h3>
+<section id="the-solow-model">
+<span id="solow"></span><h3><span class="section-number">9.2.1. </span>The Solow Model<a class="headerlink" href="#the-solow-model" title="Permalink to this heading">#</a></h3>
 <p>In the Solow growth model, assuming Cobb-Douglas production technology and
 zero population growth, the law of motion for capital is</p>
 <div class="math notranslate nohighlight" id="equation-motion-law">
-<span class="eqno">(9.1)<a class="headerlink" href="#equation-motion-law" title="Permalink to this equation">¶</a></span>\[    k_{t+1} = g(k_t) \quad \text{where} \quad
+<span class="eqno">(9.1)<a class="headerlink" href="#equation-motion-law" title="Permalink to this equation">#</a></span>\[    k_{t+1} = g(k_t) \quad \text{where} \quad
     g(k) := sAk^\alpha + (1-\delta) k\]</div>
 <p>Here</p>
 <ul class="simple">
@@ -389,9 +331,9 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 <p>Using pencil and paper to solve <span class="math notranslate nohighlight">\(g(k)=k\)</span>, you will be able to confirm that</p>
 <div class="math notranslate nohighlight">
 \[ k^* = \left(\frac{s A}{δ}\right)^{1/(1 - α)}  \]</div>
-</div>
-<div class="section" id="implementation">
-<h3><span class="section-number">9.2.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="implementation">
+<h3><span class="section-number">9.2.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h3>
 <p>Let’s store our parameters in <a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.namedtuple"><code class="docutils literal notranslate"><span class="pre">namedtuple</span></code></a> to help us keep our code clean and concise.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -470,7 +412,7 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/newton_method_11_0.png" src="_images/newton_method_11_0.png" />
+<img alt="_images/6cf2e4ef16335fcb31c238afa47e379cec02e64989467ed5dd03cdd65442f588.png" src="_images/6cf2e4ef16335fcb31c238afa47e379cec02e64989467ed5dd03cdd65442f588.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -483,12 +425,12 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/newton_method_12_0.png" src="_images/newton_method_12_0.png" />
+<img alt="_images/c5eb734e2dd0cedbafa6c94f419de4eb14064e017e101e5658a756b0e3cd63be.png" src="_images/c5eb734e2dd0cedbafa6c94f419de4eb14064e017e101e5658a756b0e3cd63be.png" />
 </div>
 </div>
 <p>We see that <span class="math notranslate nohighlight">\(k^*\)</span> is indeed the unique positive fixed point.</p>
-<div class="section" id="successive-approximation">
-<h4><span class="section-number">9.2.2.1. </span>Successive Approximation<a class="headerlink" href="#successive-approximation" title="Permalink to this headline">¶</a></h4>
+<section id="successive-approximation">
+<h4><span class="section-number">9.2.2.1. </span>Successive Approximation<a class="headerlink" href="#successive-approximation" title="Permalink to this heading">#</a></h4>
 <p>First let’s compute the fixed point using successive approximation.</p>
 <p>In this case, successive approximation means repeatedly updating capital
 from some initial state <span class="math notranslate nohighlight">\(k_0\)</span> using the law of motion.</p>
@@ -523,7 +465,7 @@ from some initial state <span class="math notranslate nohighlight">\(k_0\)</span
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/newton_method_15_0.png" src="_images/newton_method_15_0.png" />
+<img alt="_images/418d58d065d4fe67a16e240ba5eba7c3ba809e9617d23c7db0257cff5275e391.png" src="_images/418d58d065d4fe67a16e240ba5eba7c3ba809e9617d23c7db0257cff5275e391.png" />
 </div>
 </div>
 <p>Let’s see the output for a long time series.</p>
@@ -554,9 +496,9 @@ from some initial state <span class="math notranslate nohighlight">\(k_0\)</span
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="newtons-method">
-<h4><span class="section-number">9.2.2.2. </span>Newton’s Method<a class="headerlink" href="#newtons-method" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="newtons-method">
+<h4><span class="section-number">9.2.2.2. </span>Newton’s Method<a class="headerlink" href="#newtons-method" title="Permalink to this heading">#</a></h4>
 <p>In general, when applying Newton’s fixed point method to some function <span class="math notranslate nohighlight">\(g\)</span>,
 we start with a guess <span class="math notranslate nohighlight">\(x_0\)</span> of the fixed
 point and then update by solving for the fixed point of a tangent line at
@@ -565,7 +507,7 @@ point and then update by solving for the fixed point of a tangent line at
 (i.e., the first order Taylor approximation of <span class="math notranslate nohighlight">\(g\)</span> at <span class="math notranslate nohighlight">\(x_0\)</span>) is
 the function</p>
 <div class="math notranslate nohighlight" id="equation-motivation">
-<span class="eqno">(9.2)<a class="headerlink" href="#equation-motivation" title="Permalink to this equation">¶</a></span>\[\hat g(x) \approx g(x_0)+g'(x_0)(x-x_0)\]</div>
+<span class="eqno">(9.2)<a class="headerlink" href="#equation-motivation" title="Permalink to this equation">#</a></span>\[\hat g(x) \approx g(x_0)+g'(x_0)(x-x_0)\]</div>
 <p>We solve for the fixed point of <span class="math notranslate nohighlight">\(\hat g\)</span> by calculating the <span class="math notranslate nohighlight">\(x_1\)</span> that solves</p>
 <div class="math notranslate nohighlight">
 \[
@@ -573,11 +515,11 @@ x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
 \]</div>
 <p>Generalising the process above, Newton’s fixed point method iterates on</p>
 <div class="math notranslate nohighlight" id="equation-newtons-method">
-<span class="eqno">(9.3)<a class="headerlink" href="#equation-newtons-method" title="Permalink to this equation">¶</a></span>\[x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
+<span class="eqno">(9.3)<a class="headerlink" href="#equation-newtons-method" title="Permalink to this equation">#</a></span>\[x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
 \quad x_0 \text{ given}\]</div>
 <p>To implement Newton’s method we observe that the derivative of the law of motion for capital <a class="reference internal" href="#equation-motion-law">(9.1)</a> is</p>
 <div class="math notranslate nohighlight" id="equation-newton-method2">
-<span class="eqno">(9.4)<a class="headerlink" href="#equation-newton-method2" title="Permalink to this equation">¶</a></span>\[g'(k) = \alpha s A k^{\alpha-1} + (1-\delta)\]</div>
+<span class="eqno">(9.4)<a class="headerlink" href="#equation-newton-method2" title="Permalink to this equation">#</a></span>\[g'(k) = \alpha s A k^{\alpha-1} + (1-\delta)\]</div>
 <p>Let’s define this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -642,22 +584,22 @@ x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/newton_method_26_0.png" src="_images/newton_method_26_0.png" />
+<img alt="_images/e1357281ffa7bcdc19f125064b88d855c6143292a3f5c93c7ceef9b99d7c7fc7.png" src="_images/e1357281ffa7bcdc19f125064b88d855c6143292a3f5c93c7ceef9b99d7c7fc7.png" />
 </div>
 </div>
 <p>We can see that Newton’s method converges faster than successive approximation.</p>
-</div>
-</div>
-</div>
-<div class="section" id="root-finding-in-one-dimension">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">9.3. </span>Root-Finding in One Dimension</a><a class="headerlink" href="#root-finding-in-one-dimension" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+</section>
+<section id="root-finding-in-one-dimension">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">9.3. </span>Root-Finding in One Dimension</a><a class="headerlink" href="#root-finding-in-one-dimension" title="Permalink to this heading">#</a></h2>
 <p>In the previous section we computed fixed points.</p>
 <p>In fact Newton’s method is more commonly associated with the problem of
 finding zeros of functions.</p>
 <p>Let’s discuss this “root-finding” problem and then show how it is connected to
 the problem of finding fixed points.</p>
-<div class="section" id="newtons-method-for-zeros">
-<h3><span class="section-number">9.3.1. </span>Newton’s Method for Zeros<a class="headerlink" href="#newtons-method-for-zeros" title="Permalink to this headline">¶</a></h3>
+<section id="newtons-method-for-zeros">
+<h3><span class="section-number">9.3.1. </span>Newton’s Method for Zeros<a class="headerlink" href="#newtons-method-for-zeros" title="Permalink to this heading">#</a></h3>
 <p>Let’s suppose we want to find an <span class="math notranslate nohighlight">\(x\)</span> such that <span class="math notranslate nohighlight">\(f(x)=0\)</span> for some smooth
 function <span class="math notranslate nohighlight">\(f\)</span> mapping real numbers to real numbers.</p>
 <p>Suppose we have a guess <span class="math notranslate nohighlight">\(x_0\)</span> and we want to update it to a new point <span class="math notranslate nohighlight">\(x_1\)</span>.</p>
@@ -675,7 +617,7 @@ x_1 = x_0 - \frac{ f(x_0) }{ f'(x_0) },
 \]</div>
 <p>Generalizing the formula above, for one-dimensional zero-finding problems, Newton’s method iterates on</p>
 <div class="math notranslate nohighlight" id="equation-oned-newton">
-<span class="eqno">(9.5)<a class="headerlink" href="#equation-oned-newton" title="Permalink to this equation">¶</a></span>\[x_{t+1} = x_t - \frac{ f(x_t) }{ f'(x_t) },
+<span class="eqno">(9.5)<a class="headerlink" href="#equation-oned-newton" title="Permalink to this equation">#</a></span>\[x_{t+1} = x_t - \frac{ f(x_t) }{ f'(x_t) },
 \quad x_0 \text{ given}\]</div>
 <p>The following code implements the iteration <a class="reference internal" href="#equation-oned-newton">(9.5)</a></p>
 <div class="cell docutils container" id="first-newton-attempt">
@@ -707,9 +649,9 @@ SciPy, so the code is just for illustrative purposes.</p>
 <p>(That said, when we want to apply Newton’s method using techniques such as
 automatic differentiation or GPU acceleration, it will be helpful to know how
 to implement Newton’s method ourselves.)</p>
-</div>
-<div class="section" id="application-to-finding-fixed-points">
-<h3><span class="section-number">9.3.2. </span>Application to Finding Fixed Points<a class="headerlink" href="#application-to-finding-fixed-points" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="application-to-finding-fixed-points">
+<h3><span class="section-number">9.3.2. </span>Application to Finding Fixed Points<a class="headerlink" href="#application-to-finding-fixed-points" title="Permalink to this heading">#</a></h3>
 <p>Now consider again the Solow fixed-point calculation, where we solve for <span class="math notranslate nohighlight">\(k\)</span>
 satisfying <span class="math notranslate nohighlight">\(g(k) = k\)</span>.</p>
 <p>We can convert to this to a zero-finding problem by setting <span class="math notranslate nohighlight">\(f(x) := g(x)-x\)</span>.</p>
@@ -747,18 +689,18 @@ iteration 5, error = 0.00000
 </div>
 </div>
 <p>The result confirms the descent we saw in the graphs above: a very accurate result is reached with only 5 iterations.</p>
-</div>
-</div>
-<div class="section" id="multivariate-newtons-method">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">9.4. </span>Multivariate Newton’s Method</a><a class="headerlink" href="#multivariate-newtons-method" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="multivariate-newtons-method">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">9.4. </span>Multivariate Newton’s Method</a><a class="headerlink" href="#multivariate-newtons-method" title="Permalink to this heading">#</a></h2>
 <p>In this section, we introduce a two-good problem, present a
 visualization of the problem, and solve for the equilibrium of the two-good market
 using both a zero finder in <code class="docutils literal notranslate"><span class="pre">SciPy</span></code> and Newton’s method.</p>
 <p>We then expand the idea to a larger market with 5,000 goods and compare the
 performance of the two methods again.</p>
 <p>We will see a significant performance gain when using Netwon’s method.</p>
-<div class="section" id="a-two-goods-market-equilibrium">
-<h3><span class="section-number">9.4.1. </span>A Two Goods Market Equilibrium<a class="headerlink" href="#a-two-goods-market-equilibrium" title="Permalink to this headline">¶</a></h3>
+<section id="a-two-goods-market-equilibrium">
+<span id="two-goods-market"></span><h3><span class="section-number">9.4.1. </span>A Two Goods Market Equilibrium<a class="headerlink" href="#a-two-goods-market-equilibrium" title="Permalink to this heading">#</a></h3>
 <p>Let’s start by computing the market equilibrium of a two-good problem.</p>
 <p>We consider a market for two related products, good 0 and good 1, with
 price vector <span class="math notranslate nohighlight">\(p = (p_0, p_1)\)</span></p>
@@ -770,7 +712,7 @@ q^s_i (p) = b_i \sqrt{p_i}
 <p>Demand of good <span class="math notranslate nohighlight">\(i\)</span> at price <span class="math notranslate nohighlight">\(p\)</span> is,</p>
 <div class="math notranslate nohighlight">
 \[ 
-q^d_i (p) = \exp(-a_{i0} p_0) + \exp(-a_{i1} p_1) + c_i
+q^d_i (p) = \exp(-(a_{i0} p_0 + a_{i1} p_1)) + c_i
 \]</div>
 <p>Here <span class="math notranslate nohighlight">\(c_i\)</span>, <span class="math notranslate nohighlight">\(b_i\)</span> and <span class="math notranslate nohighlight">\(a_{ij}\)</span> are parameters.</p>
 <p>For example, the two goods might be computer components that are typically used together, in which case they are complements. Hence demand depends on the price of both components.</p>
@@ -799,8 +741,8 @@ A = \begin{pmatrix}
         \end{pmatrix}
 \end{split}\]</div>
 <p>for this particular question.</p>
-<div class="section" id="a-graphical-exploration">
-<h4><span class="section-number">9.4.1.1. </span>A Graphical Exploration<a class="headerlink" href="#a-graphical-exploration" title="Permalink to this headline">¶</a></h4>
+<section id="a-graphical-exploration">
+<h4><span class="section-number">9.4.1.1. </span>A Graphical Exploration<a class="headerlink" href="#a-graphical-exploration" title="Permalink to this heading">#</a></h4>
 <p>Since our problem is only two-dimensional, we can use graphical analysis to visualize and help understand the problem.</p>
 <p>Our first step is to define the excess demand function</p>
 <div class="math notranslate nohighlight">
@@ -829,13 +771,13 @@ A = \begin{pmatrix}
         \end{pmatrix},
             \qquad 
     b = \begin{pmatrix}
-            0 \\
-            0
+            1 \\
+            1
         \end{pmatrix}
     \qquad \text{and} \qquad
     c = \begin{pmatrix}
-            0 \\
-            0
+            1 \\
+            1
         \end{pmatrix}
 \end{split}\]</div>
 <div class="cell docutils container">
@@ -904,7 +846,7 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/newton_method_41_0.png" src="_images/newton_method_41_0.png" />
+<img alt="_images/680d5f1d5e6c63a79c6e9e5732d88071a8f0f3162348c67f0a2155e1a6f25abc.png" src="_images/680d5f1d5e6c63a79c6e9e5732d88071a8f0f3162348c67f0a2155e1a6f25abc.png" />
 </div>
 </div>
 <p>Here’s our plot of <span class="math notranslate nohighlight">\(e_1\)</span>:</p>
@@ -917,7 +859,7 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/newton_method_43_0.png" src="_images/newton_method_43_0.png" />
+<img alt="_images/fb6ee1444d88a13d52ca6a4692c2fa46acd7d4b6f1d09a490f7ebd997d295066.png" src="_images/fb6ee1444d88a13d52ca6a4692c2fa46acd7d4b6f1d09a490f7ebd997d295066.png" />
 </div>
 </div>
 <p>We see the black contour line of zero, which tells us when <span class="math notranslate nohighlight">\(e_i(p)=0\)</span>.</p>
@@ -933,13 +875,13 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/newton_method_45_0.png" src="_images/newton_method_45_0.png" />
+<img alt="_images/edeeb36bbd30499da40e5ebbae217df95717786ddec0fdf5b4961c8ebb14e470.png" src="_images/edeeb36bbd30499da40e5ebbae217df95717786ddec0fdf5b4961c8ebb14e470.png" />
 </div>
 </div>
 <p>It seems there is an equilibrium close to <span class="math notranslate nohighlight">\(p = (1.6, 1.5)\)</span>.</p>
-</div>
-<div class="section" id="using-a-multidimensional-root-finder">
-<h4><span class="section-number">9.4.1.2. </span>Using a Multidimensional Root Finder<a class="headerlink" href="#using-a-multidimensional-root-finder" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="using-a-multidimensional-root-finder">
+<h4><span class="section-number">9.4.1.2. </span>Using a Multidimensional Root Finder<a class="headerlink" href="#using-a-multidimensional-root-finder" title="Permalink to this heading">#</a></h4>
 <p>To solve for <span class="math notranslate nohighlight">\(p^*\)</span> more precisely, we use a zero-finding algorithm from <code class="docutils literal notranslate"><span class="pre">scipy.optimize</span></code>.</p>
 <p>We supply <span class="math notranslate nohighlight">\(p = (1, 1)\)</span> as our initial guess.</p>
 <div class="cell docutils container">
@@ -958,8 +900,8 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 262 µs, sys: 0 ns, total: 262 µs
-Wall time: 248 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 231 µs, sys: 16 µs, total: 247 µs
+Wall time: 229 µs
 </pre></div>
 </div>
 </div>
@@ -992,9 +934,9 @@ Wall time: 248 µs
 </div>
 </div>
 <p>This is indeed a very small error.</p>
-</div>
-<div class="section" id="adding-gradient-information">
-<h4><span class="section-number">9.4.1.3. </span>Adding Gradient Information<a class="headerlink" href="#adding-gradient-information" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="adding-gradient-information">
+<h4><span class="section-number">9.4.1.3. </span>Adding Gradient Information<a class="headerlink" href="#adding-gradient-information" title="Permalink to this heading">#</a></h4>
 <p>In many cases, for zero-finding algorithms applied to smooth functions, supplying the <a class="reference external" href="https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant">Jacobian</a> of the function leads to better convergence properties.</p>
 <p>Here we manually calculate the elements of the Jacobian</p>
 <div class="math notranslate nohighlight">
@@ -1033,8 +975,8 @@ J(p) =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 208 µs, sys: 69 µs, total: 277 µs
-Wall time: 261 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 256 µs, sys: 18 µs, total: 274 µs
+Wall time: 256 µs
 </pre></div>
 </div>
 </div>
@@ -1053,12 +995,12 @@ Wall time: 261 µs
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="using-newtons-method">
-<h4><span class="section-number">9.4.1.4. </span>Using Newton’s Method<a class="headerlink" href="#using-newtons-method" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="using-newtons-method">
+<h4><span class="section-number">9.4.1.4. </span>Using Newton’s Method<a class="headerlink" href="#using-newtons-method" title="Permalink to this heading">#</a></h4>
 <p>Now let’s use Newton’s method to compute the equilibrium price using the multivariate version of Newton’s method</p>
 <div class="math notranslate nohighlight" id="equation-multi-newton">
-<span class="eqno">(9.6)<a class="headerlink" href="#equation-multi-newton" title="Permalink to this equation">¶</a></span>\[p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)\]</div>
+<span class="eqno">(9.6)<a class="headerlink" href="#equation-multi-newton" title="Permalink to this equation">#</a></span>\[p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)\]</div>
 <p>This is a multivariate version of <a class="reference internal" href="#equation-oned-newton">(9.5)</a></p>
 <p>(Here <span class="math notranslate nohighlight">\(J_e(p_n)\)</span> is the Jacobian of <span class="math notranslate nohighlight">\(e\)</span> evaluated at <span class="math notranslate nohighlight">\(p_n\)</span>.)</p>
 <p>The iteration starts from some initial guess of the price vector <span class="math notranslate nohighlight">\(p_0\)</span>.</p>
@@ -1104,18 +1046,15 @@ Wall time: 261 µs
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 0.62515
 iteration 2, error = 0.11152
 iteration 3, error = 0.00258
 iteration 4, error = 0.00000
 
-Result = [1.570802  1.4692882] 
+Result = [1.5708019 1.4692883] 
 
-CPU times: user 347 ms, sys: 8.41 ms, total: 356 ms
-Wall time: 343 ms
+CPU times: user 2.95 s, sys: 1.69 s, total: 4.64 s
+Wall time: 4.51 s
 </pre></div>
 </div>
 </div>
@@ -1135,10 +1074,10 @@ Wall time: 343 ms
 <p>The result is very accurate.</p>
 <p>With the larger overhead, the speed is not better than the optimized <code class="docutils literal notranslate"><span class="pre">scipy</span></code> function.</p>
 <p>However, things will change when we move to higher dimensional problems.</p>
-</div>
-</div>
-<div class="section" id="a-high-dimensional-problem">
-<h3><span class="section-number">9.4.2. </span>A High-Dimensional Problem<a class="headerlink" href="#a-high-dimensional-problem" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="a-high-dimensional-problem">
+<h3><span class="section-number">9.4.2. </span>A High-Dimensional Problem<a class="headerlink" href="#a-high-dimensional-problem" title="Permalink to this heading">#</a></h3>
 <p>Our next step is to investigate a large market with 5,000 goods.</p>
 <p>To handle this large problem we will use Google JAX.</p>
 <p>The excess demand function is essentially the same, but now the matrix <span class="math notranslate nohighlight">\(A\)</span> is <span class="math notranslate nohighlight">\(5000 \times 5000\)</span> and the parameter vectors <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(c\)</span> are <span class="math notranslate nohighlight">\(5000 \times 1\)</span>.</p>
@@ -1188,13 +1127,13 @@ this very large problem in just a few seconds:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.97755
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.97754
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 5.09284
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 5.09285
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 3, error = 0.10971
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 3, error = 0.10972
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 4, error = 0.00005
@@ -1203,12 +1142,12 @@ this very large problem in just a few seconds:</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 5, error = 0.00001
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 6, error = 0.00000
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 6, error = 0.00001
 
-Result = [1.5015959 1.4990965 1.4964362 ... 1.4844416 1.4900057 1.4991018] 
+Result = [1.501596  1.4990965 1.4964366 ... 1.4844418 1.490006  1.4991019] 
 
-CPU times: user 1min, sys: 1.91 s, total: 1min 1s
-Wall time: 11.6 s
+CPU times: user 9.49 s, sys: 2.84 s, total: 12.3 s
+Wall time: 7.42 s
 </pre></div>
 </div>
 </div>
@@ -1220,7 +1159,7 @@ Wall time: 11.6 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.1920929e-07
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.3841858e-07
 </pre></div>
 </div>
 </div>
@@ -1239,8 +1178,8 @@ even with the Jacobian supplied.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 39s, sys: 1.68 s, total: 2min 41s
-Wall time: 2min 26s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 25s, sys: 0 ns, total: 2min 25s
+Wall time: 2min 24s
 </pre></div>
 </div>
 </div>
@@ -1253,20 +1192,20 @@ Wall time: 2min 26s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.34465e-07
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9.536743e-07
 </pre></div>
 </div>
 </div>
 </div>
 <p>The result is also less accurate.</p>
-</div>
-</div>
-<div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">9.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">9.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="newton_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 9.1 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Consider a three-dimensional extension of the Solow fixed point problem with</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1309,13 +1248,13 @@ s = 0.2, \quad α = 0.5, \quad δ = 0.8
 \[k_0 = (1, 1, 1)\]</div>
 <p>The result should converge to the <a class="reference internal" href="#solved-k"><span class="std std-ref">analytical solution</span></a>.</p>
 </div>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="newton_method-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex1"> Exercise 9.1</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Let’s first define the parameters for this problem</p>
+<section id="solution-content">
+<p>Let’s first define the parameters for this problem</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span>
@@ -1367,10 +1306,10 @@ iteration 4, error = 0.38543
 iteration 5, error = 0.00544
 iteration 6, error = 0.00000
 
-Result = [3.8405812 3.8707178 3.4109194] 
+Result = [3.8405814 3.870718  3.4109194] 
 
-CPU times: user 248 ms, sys: 8.3 ms, total: 257 ms
-Wall time: 249 ms
+CPU times: user 830 ms, sys: 0 ns, total: 830 ms
+Wall time: 669 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
 </pre></div>
@@ -1380,10 +1319,10 @@ iteration 2, error = 0.12642
 iteration 3, error = 0.00060
 iteration 4, error = 0.00000
 
-Result = [3.8405812 3.8707178 3.4109194] 
+Result = [3.8405814 3.8707182 3.4109197] 
 
-CPU times: user 143 ms, sys: 0 ns, total: 143 ms
-Wall time: 139 ms
+CPU times: user 587 ms, sys: 0 ns, total: 587 ms
+Wall time: 219 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
 </pre></div>
@@ -1397,10 +1336,10 @@ iteration 4, error = 0.01620
 iteration 5, error = 0.00001
 iteration 6, error = 0.00000
 
-Result = [3.8405812 3.8707182 3.4109194] 
+Result = [3.840581  3.8707182 3.41092  ] 
 
-CPU times: user 327 ms, sys: 4.17 ms, total: 331 ms
-Wall time: 323 ms
+CPU times: user 1.27 s, sys: 0 ns, total: 1.27 s
+Wall time: 560 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -1416,7 +1355,7 @@ Wall time: 323 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([0.0000000e+00, 0.0000000e+00, 2.3841858e-07], dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([ 4.7683716e-07,  0.0000000e+00, -2.3841858e-07], dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1443,14 +1382,16 @@ Wall time: 323 ms
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 1.57459
-iteration 2, error = 0.21345
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 0.21345
 iteration 3, error = 0.00205
 iteration 4, error = 0.00000
 
 Result = [1.7846744 1.7846744 1.7846744] 
 
-CPU times: user 276 ms, sys: 7.9 ms, total: 284 ms
-Wall time: 279 ms
+CPU times: user 1.17 s, sys: 0 ns, total: 1.17 s
+Wall time: 494 ms
 </pre></div>
 </div>
 </div>
@@ -1480,19 +1421,19 @@ iteration 5, error = 0.00000
 
 Result = [1.78467418 1.78467418 1.78467418] 
 
-CPU times: user 265 ms, sys: 8.12 ms, total: 273 ms
-Wall time: 268 ms
+CPU times: user 867 ms, sys: 0 ns, total: 867 ms
+Wall time: 713 ms
 </pre></div>
 </div>
 </div>
 </div>
 <p>We can see it steps towards a more accurate solution.</p>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="newton_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 9.2 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>In this exercise, let’s try different initial values and check how Newton’s method responds to different starting points.</p>
 <p>Let’s define a three-good problem with the following default values:</p>
 <div class="math notranslate nohighlight">
@@ -1528,13 +1469,13 @@ c = \begin{pmatrix}
 <p class="admonition-title">Hint</p>
 <p>Similar to <a class="reference internal" href="#newton_ex1"><span class="std std-ref">exercise 1</span></a>, enabling <code class="docutils literal notranslate"><span class="pre">float64</span></code> for JAX can improve the precision of our results.</p>
 </div>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="newton_method-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex2"> Exercise 9.2</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Define parameters and initial values</p>
+<section id="solution-content">
+<p>Define parameters and initial values</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
@@ -1579,40 +1520,57 @@ c = \begin{pmatrix}
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">Exception</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">timed</span> <span class="n">exec</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="n">File</span> <span class="o">&lt;</span><span class="n">timed</span> <span class="n">exec</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">1</span>
 
-<span class="nn">/tmp/ipykernel_15499/3851865876.py</span> in <span class="ni">newton</span><span class="nt">(f, x_0, tol, max_iter)</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span>         <span class="n">y</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span>         <span class="k">if</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">))):</span>
-<span class="ne">---&gt; </span><span class="mi">12</span>             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Solution not found with NaN generated&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span>         <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">14</span>         <span class="n">x</span> <span class="o">=</span> <span class="n">y</span>
+<span class="nn">Cell In[33], line 12,</span> in <span class="ni">newton</span><span class="nt">(f, x_0, tol, max_iter)</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">y</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="k">if</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">))):</span>
+<span class="ne">---&gt; </span><span class="mi">12</span>     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Solution not found with NaN generated&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="n">x</span> <span class="o">=</span> <span class="n">y</span>
 
 <span class="ne">Exception</span>: Solution not found with NaN generated
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>----------------------------------------------------------------
 Attempt 2: Starting value is [1. 1. 1.] 
+
+iteration 1, error = 0.73419
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 0.73419
-iteration 2, error = 0.12472
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 0.12472
 iteration 3, error = 0.00269
 iteration 4, error = 0.00000
 iteration 5, error = 0.00000
 iteration 6, error = 0.00000
 iteration 7, error = 0.00000
+iteration 8, error = 0.00000
+iteration 9, error = 0.00000
+iteration 10, error = 0.00000
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">Exception</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">File</span> <span class="o">&lt;</span><span class="n">timed</span> <span class="n">exec</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">1</span>
 
-Result = [1.49744442 1.49744442 1.49744442] 
+<span class="nn">Cell In[33], line 9,</span> in <span class="ni">newton</span><span class="nt">(f, x_0, tol, max_iter)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">n</span><span class="o">+=</span><span class="mi">1</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="k">if</span><span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="n">max_iter</span><span class="p">):</span>
+<span class="ne">----&gt; </span><span class="mi">9</span>     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Max iteration reached without convergence&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">y</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="k">if</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">))):</span>
 
-CPU times: user 145 ms, sys: 4.22 ms, total: 149 ms
-Wall time: 143 ms
-----------------------------------------------------------------
+<span class="ne">Exception</span>: Max iteration reached without convergence
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>----------------------------------------------------------------
 Attempt 3: Starting value is [4.5 0.1 4. ] 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 4.89202
-iteration 2, error = 1.21206
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 1.21206
 iteration 3, error = 0.69421
 iteration 4, error = 0.16895
 iteration 5, error = 0.00521
@@ -1622,8 +1580,8 @@ iteration 8, error = 0.00000
 
 Result = [1.49744442 1.49744442 1.49744442] 
 
-CPU times: user 144 ms, sys: 0 ns, total: 144 ms
-Wall time: 140 ms
+CPU times: user 845 ms, sys: 0 ns, total: 845 ms
+Wall time: 238 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -1645,10 +1603,10 @@ Wall time: 140 ms
 </div>
 </div>
 <p>We can see the result is very accurate.</p>
+</section>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1662,7 +1620,7 @@ Wall time: 140 ms
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -2243,7 +2201,7 @@ Wall time: 140 ms
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -2385,16 +2343,5 @@ Wall time: 140 ms
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

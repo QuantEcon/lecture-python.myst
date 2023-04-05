@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>26. Finite Markov Chains &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'finite_markov';</script>
     <link rel="canonical" href="https://python.quantecon.org/finite_markov.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,159 +161,50 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   26.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#definitions">
-   26.2. Definitions
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#stochastic-matrices">
-     26.2.1. Stochastic Matrices
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#markov-chains">
-     26.2.2. Markov Chains
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example-1">
-     26.2.3. Example 1
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example-2">
-     26.2.4. Example 2
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#simulation">
-   26.3. Simulation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#rolling-our-own">
-     26.3.1. Rolling Our Own
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#using-quantecons-routines">
-     26.3.2. Using QuantEcon’s Routines
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#adding-state-values-and-initial-conditions">
-       26.3.2.1. Adding State Values and Initial Conditions
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#marginal-distributions">
-   26.4. Marginal Distributions
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#multiple-step-transition-probabilities">
-     26.4.1. Multiple Step Transition Probabilities
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example-probability-of-recession">
-     26.4.2. Example: Probability of Recession
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example-2-cross-sectional-distributions">
-     26.4.3. Example 2: Cross-Sectional Distributions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#irreducibility-and-aperiodicity">
-   26.5. Irreducibility and Aperiodicity
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#irreducibility">
-     26.5.1. Irreducibility
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#aperiodicity">
-     26.5.2. Aperiodicity
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#stationary-distributions">
-   26.6. Stationary Distributions
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example">
-     26.6.1. Example
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#calculating-stationary-distributions">
-     26.6.2. Calculating Stationary Distributions
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#convergence-to-stationarity">
-     26.6.3. Convergence to Stationarity
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ergodicity">
-   26.7. Ergodicity
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#mc-eg1-2">
-     26.7.1. Example
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#computing-expectations">
-   26.8. Computing Expectations
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#iterated-expectations">
-     26.8.1. Iterated Expectations
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#expectations-of-geometric-sums">
-     26.8.2. Expectations of Geometric Sums
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises">
-   26.9. Exercises
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">26.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions">26.2. Definitions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stochastic-matrices">26.2.1. Stochastic Matrices</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-chains">26.2.2. Markov Chains</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1">26.2.3. Example 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">26.2.4. Example 2</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">26.3. Simulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rolling-our-own">26.3.1. Rolling Our Own</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-quantecons-routines">26.3.2. Using QuantEcon’s Routines</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-state-values-and-initial-conditions">26.3.2.1. Adding State Values and Initial Conditions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marginal-distributions">26.4. Marginal Distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-step-transition-probabilities">26.4.1. Multiple Step Transition Probabilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-probability-of-recession">26.4.2. Example: Probability of Recession</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-cross-sectional-distributions">26.4.3. Example 2: Cross-Sectional Distributions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#irreducibility-and-aperiodicity">26.5. Irreducibility and Aperiodicity</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#irreducibility">26.5.1. Irreducibility</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aperiodicity">26.5.2. Aperiodicity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stationary-distributions">26.6. Stationary Distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example">26.6.1. Example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-stationary-distributions">26.6.2. Calculating Stationary Distributions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-to-stationarity">26.6.3. Convergence to Stationarity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ergodicity">26.7. Ergodicity</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mc-eg1-2">26.7.1. Example</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-expectations">26.8. Computing Expectations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iterated-expectations">26.8.1. Iterated Expectations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expectations-of-geometric-sums">26.8.2. Expectations of Geometric Sums</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">26.9. Exercises</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -350,8 +252,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="finite-markov-chains">
-<h1><a class="toc-backref" href="#id8"><span class="section-number">26. </span><span class="target" id="index-0"></span>Finite Markov Chains</a><a class="headerlink" href="#finite-markov-chains" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="finite-markov-chains">
+<h1><a class="toc-backref" href="#id8"><span class="section-number">26. </span><span class="target" id="index-0"></span>Finite Markov Chains</a><a class="headerlink" href="#finite-markov-chains" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -372,25 +274,32 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.6.0)
-Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: scipy&gt;=1.5.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.39.1)
-Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.6.0)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: numba in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (65.6.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -398,9 +307,10 @@ Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lectu
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">26.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">26.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>Markov chains are one of the most useful classes of stochastic processes, being</p>
 <ul class="simple">
 <li><p>simple, flexible and supported by many elegant theoretical results</p></li>
@@ -424,35 +334,35 @@ Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lectu
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="definitions">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">26.2. </span>Definitions</a><a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="definitions">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">26.2. </span>Definitions</a><a class="headerlink" href="#definitions" title="Permalink to this heading">#</a></h2>
 <p>The following concepts are fundamental.</p>
-<div class="section" id="stochastic-matrices">
-<span id="finite-dp-stoch-mat"></span><h3><span class="section-number">26.2.1. </span><span class="target" id="index-1"></span>Stochastic Matrices<a class="headerlink" href="#stochastic-matrices" title="Permalink to this headline">¶</a></h3>
+<section id="stochastic-matrices">
+<span id="finite-dp-stoch-mat"></span><h3><span class="section-number">26.2.1. </span><span class="target" id="index-1"></span>Stochastic Matrices<a class="headerlink" href="#stochastic-matrices" title="Permalink to this heading">#</a></h3>
 <p id="index-2">A <strong>stochastic matrix</strong> (or <strong>Markov matrix</strong>)  is an <span class="math notranslate nohighlight">\(n \times n\)</span> square matrix <span class="math notranslate nohighlight">\(P\)</span>
 such that</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>each element of <span class="math notranslate nohighlight">\(P\)</span> is nonnegative, and</p></li>
 <li><p>each row of <span class="math notranslate nohighlight">\(P\)</span> sums to one</p></li>
 </ol>
 <p>Each row of <span class="math notranslate nohighlight">\(P\)</span> can be regarded as a probability mass function over <span class="math notranslate nohighlight">\(n\)</span> possible outcomes.</p>
 <p>It is too not difficult to check <a class="footnote-reference brackets" href="#pm" id="id1">1</a> that if <span class="math notranslate nohighlight">\(P\)</span> is a stochastic matrix, then so is the <span class="math notranslate nohighlight">\(k\)</span>-th power <span class="math notranslate nohighlight">\(P^k\)</span> for all <span class="math notranslate nohighlight">\(k \in \mathbb N\)</span>.</p>
-</div>
-<div class="section" id="markov-chains">
-<h3><span class="section-number">26.2.2. </span><span class="target" id="index-3"></span>Markov Chains<a class="headerlink" href="#markov-chains" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="markov-chains">
+<h3><span class="section-number">26.2.2. </span><span class="target" id="index-3"></span>Markov Chains<a class="headerlink" href="#markov-chains" title="Permalink to this heading">#</a></h3>
 <p id="index-4">There is a close connection between stochastic matrices and Markov chains.</p>
 <p>To begin, let <span class="math notranslate nohighlight">\(S\)</span> be a finite set with <span class="math notranslate nohighlight">\(n\)</span> elements <span class="math notranslate nohighlight">\(\{x_1, \ldots, x_n\}\)</span>.</p>
 <p>The set <span class="math notranslate nohighlight">\(S\)</span> is called the <strong>state space</strong> and <span class="math notranslate nohighlight">\(x_1, \ldots, x_n\)</span> are the <strong>state values</strong>.</p>
 <p>A <strong>Markov chain</strong> <span class="math notranslate nohighlight">\(\{X_t\}\)</span> on <span class="math notranslate nohighlight">\(S\)</span> is a sequence of random variables on <span class="math notranslate nohighlight">\(S\)</span> that have the <strong>Markov property</strong>.</p>
 <p>This means that, for any date <span class="math notranslate nohighlight">\(t\)</span> and any state <span class="math notranslate nohighlight">\(y \in S\)</span>,</p>
 <div class="math notranslate nohighlight" id="equation-fin-markov-mp">
-<span class="eqno">(26.1)<a class="headerlink" href="#equation-fin-markov-mp" title="Permalink to this equation">¶</a></span>\[\mathbb P \{ X_{t+1} = y  \,|\, X_t \}
+<span class="eqno">(26.1)<a class="headerlink" href="#equation-fin-markov-mp" title="Permalink to this equation">#</a></span>\[\mathbb P \{ X_{t+1} = y  \,|\, X_t \}
 = \mathbb P \{ X_{t+1}  = y \,|\, X_t, X_{t-1}, \ldots \}\]</div>
 <p>In other words, knowing the current state is enough to know probabilities for future states.</p>
 <p>In particular, the dynamics of a Markov chain are fully determined by the set of values</p>
 <div class="math notranslate nohighlight" id="equation-mpp">
-<span class="eqno">(26.2)<a class="headerlink" href="#equation-mpp" title="Permalink to this equation">¶</a></span>\[P(x, y) := \mathbb P \{ X_{t+1} = y \,|\, X_t = x \}
+<span class="eqno">(26.2)<a class="headerlink" href="#equation-mpp" title="Permalink to this equation">#</a></span>\[P(x, y) := \mathbb P \{ X_{t+1} = y \,|\, X_t = x \}
 \qquad (x, y \in S)\]</div>
 <p>By construction,</p>
 <ul class="simple">
@@ -472,12 +382,12 @@ chain <span class="math notranslate nohighlight">\(\{X_t\}\)</span> as follows:<
 <li><p>for each <span class="math notranslate nohighlight">\(t = 0, 1, \ldots\)</span>, draw <span class="math notranslate nohighlight">\(X_{t+1}\)</span> from <span class="math notranslate nohighlight">\(P(X_t,\cdot)\)</span></p></li>
 </ul>
 <p>By construction, the resulting process satisfies <a class="reference internal" href="#equation-mpp">(26.2)</a>.</p>
-</div>
-<div class="section" id="example-1">
-<span id="mc-eg1"></span><h3><span class="section-number">26.2.3. </span>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="example-1">
+<span id="mc-eg1"></span><h3><span class="section-number">26.2.3. </span>Example 1<a class="headerlink" href="#example-1" title="Permalink to this heading">#</a></h3>
 <p>Consider a worker who, at any given time <span class="math notranslate nohighlight">\(t\)</span>, is either unemployed (state 0) or employed (state 1).</p>
 <p>Suppose that, over a one month period,</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>An unemployed worker finds a job with probability <span class="math notranslate nohighlight">\(\alpha \in (0, 1)\)</span>.</p></li>
 <li><p>An employed worker loses her job and becomes unemployed with probability <span class="math notranslate nohighlight">\(\beta \in (0, 1)\)</span>.</p></li>
 </ol>
@@ -488,7 +398,7 @@ chain <span class="math notranslate nohighlight">\(\{X_t\}\)</span> as follows:<
 </ul>
 <p>We can write out the transition probabilities in matrix form as</p>
 <div class="math notranslate nohighlight" id="equation-p-unempemp">
-<span class="eqno">(26.3)<a class="headerlink" href="#equation-p-unempemp" title="Permalink to this equation">¶</a></span>\[\begin{split}P
+<span class="eqno">(26.3)<a class="headerlink" href="#equation-p-unempemp" title="Permalink to this equation">#</a></span>\[\begin{split}P
 = \left(
 \begin{array}{cc}
     1 - \alpha &amp; \alpha \\
@@ -502,9 +412,9 @@ chain <span class="math notranslate nohighlight">\(\{X_t\}\)</span> as follows:<
 <li><p>Conditional on employment, what is the probability of becoming unemployed at least once over the next 12 months?</p></li>
 </ul>
 <p>We’ll cover such applications below.</p>
-</div>
-<div class="section" id="example-2">
-<span id="mc-eg2"></span><h3><span class="section-number">26.2.4. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="example-2">
+<span id="mc-eg2"></span><h3><span class="section-number">26.2.4. </span>Example 2<a class="headerlink" href="#example-2" title="Permalink to this heading">#</a></h3>
 <p>From  US unemployment data, Hamilton <span id="id2">[<a class="reference internal" href="zreferences.html#id165" title="James D Hamilton. What's real about the business cycle? Federal Reserve Bank of St. Louis Review, pages 435–452, 2005.">Ham05</a>]</span> estimated the stochastic matrix</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -527,14 +437,14 @@ P =
 <p>For example, the matrix tells us that when the state is normal growth, the state will again be normal growth next month with probability 0.97.</p>
 <p>In general, large values on the main diagonal indicate persistence in the process <span class="math notranslate nohighlight">\(\{ X_t \}\)</span>.</p>
 <p>This Markov process can also be represented as a directed graph, with edges labeled by transition probabilities</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/hamilton_graph.png" src="_images/hamilton_graph.png" />
-</div>
+</figure>
 <p>Here “ng” is normal growth, “mr” is mild recession, etc.</p>
-</div>
-</div>
-<div class="section" id="simulation">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">26.3. </span>Simulation</a><a class="headerlink" href="#simulation" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="simulation">
+<h2><a class="toc-backref" href="#id11"><span class="section-number">26.3. </span>Simulation</a><a class="headerlink" href="#simulation" title="Permalink to this heading">#</a></h2>
 <p id="index-5">One natural way to answer questions about Markov chains is to simulate them.</p>
 <p>(To approximate the probability of event <span class="math notranslate nohighlight">\(E\)</span>, we can simulate many times and count the fraction of times that <span class="math notranslate nohighlight">\(E\)</span> occurs).</p>
 <p>Nice functionality for simulating Markov chains exists in <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>.</p>
@@ -543,11 +453,11 @@ P =
 </ul>
 <p>However, it’s also a good exercise to roll our own routines — let’s do that first and then come back to the methods in <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a>.</p>
 <p>In these exercises, we’ll take the state space to be <span class="math notranslate nohighlight">\(S = 0,\ldots, n-1\)</span>.</p>
-<div class="section" id="rolling-our-own">
-<h3><span class="section-number">26.3.1. </span>Rolling Our Own<a class="headerlink" href="#rolling-our-own" title="Permalink to this headline">¶</a></h3>
+<section id="rolling-our-own">
+<h3><span class="section-number">26.3.1. </span>Rolling Our Own<a class="headerlink" href="#rolling-our-own" title="Permalink to this heading">#</a></h3>
 <p>To simulate a Markov chain, we need its stochastic matrix <span class="math notranslate nohighlight">\(P\)</span> and a marginal probability distribution <span class="math notranslate nohighlight">\(\psi\)</span>  from which to  draw a realization of <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 <p>The Markov chain is then constructed as discussed above.  To repeat:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>At time <span class="math notranslate nohighlight">\(t=0\)</span>, draw a realization of  <span class="math notranslate nohighlight">\(X_0\)</span>  from <span class="math notranslate nohighlight">\(\psi\)</span>.</p></li>
 <li><p>At each subsequent time <span class="math notranslate nohighlight">\(t\)</span>, draw a realization of the new state <span class="math notranslate nohighlight">\(X_{t+1}\)</span> from <span class="math notranslate nohighlight">\(P(X_t, \cdot)\)</span>.</p></li>
 </ol>
@@ -562,7 +472,7 @@ P =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 0, 1, 0, 1])
 </pre></div>
 </div>
 </div>
@@ -622,16 +532,16 @@ P =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.24998
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.25174
 </pre></div>
 </div>
 </div>
 </div>
 <p>You can try changing the initial distribution to confirm that the output is
 always close to 0.25, at least for the <code class="docutils literal notranslate"><span class="pre">P</span></code> matrix above.</p>
-</div>
-<div class="section" id="using-quantecons-routines">
-<h3><span class="section-number">26.3.2. </span>Using QuantEcon’s Routines<a class="headerlink" href="#using-quantecons-routines" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="using-quantecons-routines">
+<h3><span class="section-number">26.3.2. </span>Using QuantEcon’s Routines<a class="headerlink" href="#using-quantecons-routines" title="Permalink to this heading">#</a></h3>
 <p>As discussed above, <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a> has routines for handling Markov chains, including simulation.</p>
 <p>Here’s an illustration using the same P as the preceding example</p>
 <div class="cell docutils container">
@@ -645,7 +555,7 @@ always close to 0.25, at least for the <code class="docutils literal notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.249361
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.250433
 </pre></div>
 </div>
 </div>
@@ -658,11 +568,11 @@ always close to 0.25, at least for the <code class="docutils literal notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 795 ms, sys: 0 ns, total: 795 ms
-Wall time: 795 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 849 ms, sys: 0 ns, total: 849 ms
+Wall time: 848 ms
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 1, ..., 1, 1, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 1, ..., 1, 1, 1])
 </pre></div>
 </div>
 </div>
@@ -674,8 +584,8 @@ Wall time: 795 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 25 ms, sys: 1.64 ms, total: 26.6 ms
-Wall time: 26.2 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 23.8 ms, sys: 2.8 ms, total: 26.6 ms
+Wall time: 26.1 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 1, ..., 0, 1, 1])
@@ -683,8 +593,8 @@ Wall time: 26.2 ms
 </div>
 </div>
 </div>
-<div class="section" id="adding-state-values-and-initial-conditions">
-<h4><span class="section-number">26.3.2.1. </span>Adding State Values and Initial Conditions<a class="headerlink" href="#adding-state-values-and-initial-conditions" title="Permalink to this headline">¶</a></h4>
+<section id="adding-state-values-and-initial-conditions">
+<h4><span class="section-number">26.3.2.1. </span>Adding State Values and Initial Conditions<a class="headerlink" href="#adding-state-values-and-initial-conditions" title="Permalink to this heading">#</a></h4>
 <p>If we wish to, we can provide a specification of state values to <code class="docutils literal notranslate"><span class="pre">MarkovChain</span></code>.</p>
 <p>These state values can be integers, floats, or even strings.</p>
 <p>The following code illustrates</p>
@@ -696,7 +606,7 @@ Wall time: 26.2 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;employed&#39;, &#39;employed&#39;, &#39;employed&#39;, &#39;employed&#39;], dtype=&#39;&lt;U10&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;employed&#39;, &#39;employed&#39;, &#39;employed&#39;, &#39;unemployed&#39;], dtype=&#39;&lt;U10&#39;)
 </pre></div>
 </div>
 </div>
@@ -733,18 +643,18 @@ Wall time: 26.2 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 1, 0, 1])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 1, 1, 1])
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="marginal-distributions">
-<span id="mc-md"></span><h2><a class="toc-backref" href="#id12"><span class="section-number">26.4. </span><span class="target" id="index-6"></span>Marginal Distributions</a><a class="headerlink" href="#marginal-distributions" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+</section>
+<section id="marginal-distributions">
+<span id="mc-md"></span><h2><a class="toc-backref" href="#id12"><span class="section-number">26.4. </span><span class="target" id="index-6"></span>Marginal Distributions</a><a class="headerlink" href="#marginal-distributions" title="Permalink to this heading">#</a></h2>
 <p id="index-7">Suppose that</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\(\{X_t\}\)</span> is a Markov chain with stochastic matrix <span class="math notranslate nohighlight">\(P\)</span></p></li>
 <li><p>the marginal distribution of <span class="math notranslate nohighlight">\(X_t\)</span> is known to be <span class="math notranslate nohighlight">\(\psi_t\)</span></p></li>
 </ol>
@@ -769,7 +679,7 @@ all  ways this can happen and sum their probabilities.</p>
 <p>There are <span class="math notranslate nohighlight">\(n\)</span> such equations, one for each <span class="math notranslate nohighlight">\(y \in S\)</span>.</p>
 <p>If we think of <span class="math notranslate nohighlight">\(\psi_{t+1}\)</span> and <span class="math notranslate nohighlight">\(\psi_t\)</span> as <em>row vectors</em>, these <span class="math notranslate nohighlight">\(n\)</span> equations are summarized by the matrix expression</p>
 <div class="math notranslate nohighlight" id="equation-fin-mc-fr">
-<span class="eqno">(26.4)<a class="headerlink" href="#equation-fin-mc-fr" title="Permalink to this equation">¶</a></span>\[\psi_{t+1} = \psi_t P\]</div>
+<span class="eqno">(26.4)<a class="headerlink" href="#equation-fin-mc-fr" title="Permalink to this equation">#</a></span>\[\psi_{t+1} = \psi_t P\]</div>
 <p>Thus, to move a marginal distribution forward one unit of time, we postmultiply by <span class="math notranslate nohighlight">\(P\)</span>.</p>
 <p>By postmultiplying <span class="math notranslate nohighlight">\(m\)</span> times, we move a marginal distribution forward <span class="math notranslate nohighlight">\(m\)</span> steps into the future.</p>
 <p>Hence, iterating on <a class="reference internal" href="#equation-fin-mc-fr">(26.4)</a>, the expression <span class="math notranslate nohighlight">\(\psi_{t+m} = \psi_t P^m\)</span> is also valid — here <span class="math notranslate nohighlight">\(P^m\)</span> is the <span class="math notranslate nohighlight">\(m\)</span>-th power of <span class="math notranslate nohighlight">\(P\)</span>.</p>
@@ -778,12 +688,12 @@ which <span class="math notranslate nohighlight">\(X_0\)</span> is drawn, then <
 <span class="math notranslate nohighlight">\(X_m\)</span>.</p>
 <p>This is very important, so let’s repeat it</p>
 <div class="math notranslate nohighlight" id="equation-mdfmc">
-<span class="eqno">(26.5)<a class="headerlink" href="#equation-mdfmc" title="Permalink to this equation">¶</a></span>\[X_0 \sim \psi_0 \quad \implies \quad X_m \sim \psi_0 P^m\]</div>
+<span class="eqno">(26.5)<a class="headerlink" href="#equation-mdfmc" title="Permalink to this equation">#</a></span>\[X_0 \sim \psi_0 \quad \implies \quad X_m \sim \psi_0 P^m\]</div>
 <p>and, more generally,</p>
 <div class="math notranslate nohighlight" id="equation-mdfmc2">
-<span class="eqno">(26.6)<a class="headerlink" href="#equation-mdfmc2" title="Permalink to this equation">¶</a></span>\[X_t \sim \psi_t \quad \implies \quad X_{t+m} \sim \psi_t P^m\]</div>
-<div class="section" id="multiple-step-transition-probabilities">
-<span id="finite-mc-mstp"></span><h3><span class="section-number">26.4.1. </span>Multiple Step Transition Probabilities<a class="headerlink" href="#multiple-step-transition-probabilities" title="Permalink to this headline">¶</a></h3>
+<span class="eqno">(26.6)<a class="headerlink" href="#equation-mdfmc2" title="Permalink to this equation">#</a></span>\[X_t \sim \psi_t \quad \implies \quad X_{t+m} \sim \psi_t P^m\]</div>
+<section id="multiple-step-transition-probabilities">
+<span id="finite-mc-mstp"></span><h3><span class="section-number">26.4.1. </span>Multiple Step Transition Probabilities<a class="headerlink" href="#multiple-step-transition-probabilities" title="Permalink to this heading">#</a></h3>
 <p>We know that the probability of transitioning from <span class="math notranslate nohighlight">\(x\)</span> to <span class="math notranslate nohighlight">\(y\)</span> in
 one step is <span class="math notranslate nohighlight">\(P(x,y)\)</span>.</p>
 <p>It turns out that the probability of transitioning from <span class="math notranslate nohighlight">\(x\)</span> to <span class="math notranslate nohighlight">\(y\)</span> in
@@ -799,9 +709,9 @@ one step is <span class="math notranslate nohighlight">\(P(x,y)\)</span>.</p>
 \[
 \mathbb P \{X_{t+m} = y \,|\, X_t = x \} = P^m(x, y) = (x, y) \text{-th element of } P^m
 \]</div>
-</div>
-<div class="section" id="example-probability-of-recession">
-<h3><span class="section-number">26.4.2. </span>Example: Probability of Recession<a class="headerlink" href="#example-probability-of-recession" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="example-probability-of-recession">
+<h3><span class="section-number">26.4.2. </span>Example: Probability of Recession<a class="headerlink" href="#example-probability-of-recession" title="Permalink to this heading">#</a></h3>
 <p id="index-8">Recall the stochastic matrix <span class="math notranslate nohighlight">\(P\)</span> for recession and growth <a class="reference internal" href="#mc-eg2"><span class="std std-ref">considered above</span></a>.</p>
 <p>Suppose that the current state is unknown — perhaps statistics are available only  at the <em>end</em> of the current month.</p>
 <p>We guess that the probability that the economy is in state <span class="math notranslate nohighlight">\(x\)</span> is <span class="math notranslate nohighlight">\(\psi(x)\)</span>.</p>
@@ -818,9 +728,9 @@ one step is <span class="math notranslate nohighlight">\(P(x,y)\)</span>.</p>
   \end{array}
 \right)
 \end{split}\]</div>
-</div>
-<div class="section" id="example-2-cross-sectional-distributions">
-<span id="mc-eg1-1"></span><h3><span class="section-number">26.4.3. </span>Example 2: Cross-Sectional Distributions<a class="headerlink" href="#example-2-cross-sectional-distributions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="example-2-cross-sectional-distributions">
+<span id="mc-eg1-1"></span><h3><span class="section-number">26.4.3. </span>Example 2: Cross-Sectional Distributions<a class="headerlink" href="#example-2-cross-sectional-distributions" title="Permalink to this heading">#</a></h3>
 <p id="index-9">The marginal distributions we have been studying can be viewed either as
 probabilities or as cross-sectional frequencies that a Law of Large Numbers leads us to anticipate for  large samples.</p>
 <p>To illustrate, recall our model of employment/unemployment dynamics for a given worker <a class="reference internal" href="#mc-eg1"><span class="std std-ref">discussed above</span></a>.</p>
@@ -843,14 +753,14 @@ of Large Numbers).</p>
 <span class="math notranslate nohighlight">\(\psi P^{10}\)</span> also represents  fractions of workers in
 each state.</p>
 <p>This is exactly the cross-sectional distribution.</p>
-</div>
-</div>
-<div class="section" id="irreducibility-and-aperiodicity">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">26.5. </span><span class="target" id="index-10"></span>Irreducibility and Aperiodicity</a><a class="headerlink" href="#irreducibility-and-aperiodicity" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="irreducibility-and-aperiodicity">
+<h2><a class="toc-backref" href="#id13"><span class="section-number">26.5. </span><span class="target" id="index-10"></span>Irreducibility and Aperiodicity</a><a class="headerlink" href="#irreducibility-and-aperiodicity" title="Permalink to this heading">#</a></h2>
 <p id="index-11">Irreducibility and aperiodicity are central concepts of modern Markov chain theory.</p>
 <p>Let’s see what they’re about.</p>
-<div class="section" id="irreducibility">
-<h3><span class="section-number">26.5.1. </span>Irreducibility<a class="headerlink" href="#irreducibility" title="Permalink to this headline">¶</a></h3>
+<section id="irreducibility">
+<h3><span class="section-number">26.5.1. </span>Irreducibility<a class="headerlink" href="#irreducibility" title="Permalink to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(P\)</span> be a fixed stochastic matrix.</p>
 <p>Two states <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> are said to <strong>communicate</strong> with each other if
 there exist positive integers <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(k\)</span> such that</p>
@@ -871,9 +781,9 @@ communicate; that is, if <span class="math notranslate nohighlight">\(x\)</span>
 <span class="math notranslate nohighlight">\((x, y)\)</span> in <span class="math notranslate nohighlight">\(S \times S\)</span>.</p>
 <p>For example, consider the following transition probabilities for wealth of a fictitious set of
 households</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/mc_irreducibility1.png" src="_images/mc_irreducibility1.png" />
-</div>
+</figure>
 <p>We can translate this into a stochastic matrix, putting zeros where
 there’s no edge between nodes</p>
 <div class="math notranslate nohighlight">
@@ -908,9 +818,9 @@ reach any state from any other state.</p>
 </div>
 </div>
 <p>Here’s a more pessimistic scenario in which  poor people remain poor forever</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/mc_irreducibility2.png" src="_images/mc_irreducibility2.png" />
-</div>
+</figure>
 <p>This stochastic matrix is not irreducible, since, for example, rich is not accessible from poor.</p>
 <p>Let’s confirm this</p>
 <div class="cell docutils container">
@@ -946,14 +856,14 @@ reach any state from any other state.</p>
 <p>It might be clear to you already that irreducibility is going to be important in terms of long run outcomes.</p>
 <p>For example, poverty is a life sentence in the second graph but not the first.</p>
 <p>We’ll come back to this a bit later.</p>
-</div>
-<div class="section" id="aperiodicity">
-<h3><span class="section-number">26.5.2. </span>Aperiodicity<a class="headerlink" href="#aperiodicity" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="aperiodicity">
+<h3><span class="section-number">26.5.2. </span>Aperiodicity<a class="headerlink" href="#aperiodicity" title="Permalink to this heading">#</a></h3>
 <p>Loosely speaking, a Markov chain is called <strong>periodic</strong> if it cycles in a predictable way, and <strong>aperiodic</strong> otherwise.</p>
 <p>Here’s a trivial example with three states</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/mc_aperiodicity1.png" src="_images/mc_aperiodicity1.png" />
-</div>
+</figure>
 <p>The chain cycles with period 3:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -981,9 +891,9 @@ D(x) := \{j \geq 1 : P^j(x, x) &gt; 0\}
 <p>In the last example, <span class="math notranslate nohighlight">\(D(x) = \{3, 6, 9, \ldots\}\)</span> for every state <span class="math notranslate nohighlight">\(x\)</span>, so the period is 3.</p>
 <p>A stochastic matrix is called <strong>aperiodic</strong> if the period of every state is 1, and <strong>periodic</strong> otherwise.</p>
 <p>For example, the stochastic matrix associated with the transition probabilities below is periodic because, for example, state <span class="math notranslate nohighlight">\(a\)</span> has period 2</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/mc_aperiodicity2.png" src="_images/mc_aperiodicity2.png" />
-</div>
+</figure>
 <p>We can confirm that the stochastic matrix is periodic with the following code</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1015,10 +925,10 @@ D(x) := \{j \geq 1 : P^j(x, x) &gt; 0\}
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="stationary-distributions">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">26.6. </span><span class="target" id="index-12"></span>Stationary Distributions</a><a class="headerlink" href="#stationary-distributions" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="stationary-distributions">
+<h2><a class="toc-backref" href="#id14"><span class="section-number">26.6. </span><span class="target" id="index-12"></span>Stationary Distributions</a><a class="headerlink" href="#stationary-distributions" title="Permalink to this heading">#</a></h2>
 <p id="index-13">As seen in <a class="reference internal" href="#equation-fin-mc-fr">(26.4)</a>, we can shift a marginal distribution forward one unit of time via postmultiplication by <span class="math notranslate nohighlight">\(P\)</span>.</p>
 <p>Some distributions are invariant under this updating process — for example,</p>
 <div class="cell docutils container">
@@ -1058,7 +968,7 @@ state space cannot be accessed from it.</p>
 <p>Thus, infinite persistence of a non-trivial subset is the opposite of irreducibility.</p>
 <p>This gives some intuition for the following fundamental theorem.</p>
 <p id="mc-conv-thm"><strong>Theorem.</strong> If <span class="math notranslate nohighlight">\(P\)</span> is both aperiodic and irreducible, then</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\(P\)</span> has exactly one stationary distribution <span class="math notranslate nohighlight">\(\psi^*\)</span>.</p></li>
 <li><p>For any initial marginal distribution <span class="math notranslate nohighlight">\(\psi_0\)</span>, we have <span class="math notranslate nohighlight">\(\| \psi_0 P^t - \psi^* \| \to 0\)</span> as <span class="math notranslate nohighlight">\(t \to \infty\)</span>.</p></li>
 </ol>
@@ -1070,8 +980,8 @@ requires both irreducibility and aperiodicity)</p>
 <ul class="simple">
 <li><p>Try to convince yourself of this.</p></li>
 </ul>
-<div class="section" id="example">
-<h3><span class="section-number">26.6.1. </span>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<section id="example">
+<h3><span class="section-number">26.6.1. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">#</a></h3>
 <p>Recall our model of the employment/unemployment dynamics of a particular worker <a class="reference internal" href="#mc-eg1"><span class="std std-ref">discussed above</span></a>.</p>
 <p>Assuming <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span> and <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span>, the uniform ergodicity condition is satisfied.</p>
 <p>Let <span class="math notranslate nohighlight">\(\psi^* = (p, 1-p)\)</span> be the stationary distribution, so that <span class="math notranslate nohighlight">\(p\)</span> corresponds to unemployment (state 0).</p>
@@ -1082,9 +992,9 @@ p = \frac{\beta}{\alpha + \beta}
 \]</div>
 <p>This is, in some sense, a steady state probability of unemployment — more about the  interpretation of this below.</p>
 <p>Not surprisingly it tends to zero as <span class="math notranslate nohighlight">\(\beta \to 0\)</span>, and to one as <span class="math notranslate nohighlight">\(\alpha \to 0\)</span>.</p>
-</div>
-<div class="section" id="calculating-stationary-distributions">
-<h3><span class="section-number">26.6.2. </span>Calculating Stationary Distributions<a class="headerlink" href="#calculating-stationary-distributions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="calculating-stationary-distributions">
+<h3><span class="section-number">26.6.2. </span>Calculating Stationary Distributions<a class="headerlink" href="#calculating-stationary-distributions" title="Permalink to this heading">#</a></h3>
 <p id="index-14">As discussed above, a particular Markov matrix <span class="math notranslate nohighlight">\(P\)</span> can have many stationary distributions.</p>
 <p>That is, there can be many row vectors <span class="math notranslate nohighlight">\(\psi\)</span> such that <span class="math notranslate nohighlight">\(\psi = \psi P\)</span>.</p>
 <p>In fact if <span class="math notranslate nohighlight">\(P\)</span> has two distinct stationary distributions <span class="math notranslate nohighlight">\(\psi_1,
@@ -1096,7 +1006,7 @@ p = \frac{\beta}{\alpha + \beta}
 <p>is a stationary distribution for <span class="math notranslate nohighlight">\(P\)</span>.</p>
 <p>If we restrict attention to the case in which only one stationary distribution exists, one way to  finding it is to solve the system</p>
 <div class="math notranslate nohighlight" id="equation-eq-eqpsifixed">
-<span class="eqno">(26.7)<a class="headerlink" href="#equation-eq-eqpsifixed" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(26.7)<a class="headerlink" href="#equation-eq-eqpsifixed" title="Permalink to this equation">#</a></span>\[
 \psi (I_n - P) = 0
 \]</div>
 <p>for <span class="math notranslate nohighlight">\(\psi\)</span>, where <span class="math notranslate nohighlight">\(I_n\)</span> is the <span class="math notranslate nohighlight">\(n \times n\)</span> identity.</p>
@@ -1124,9 +1034,9 @@ with the unit eigenvalue <span class="math notranslate nohighlight">\(\lambda = 
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="convergence-to-stationarity">
-<h3><span class="section-number">26.6.3. </span>Convergence to Stationarity<a class="headerlink" href="#convergence-to-stationarity" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="convergence-to-stationarity">
+<h3><span class="section-number">26.6.3. </span>Convergence to Stationarity<a class="headerlink" href="#convergence-to-stationarity" title="Permalink to this heading">#</a></h3>
 <p id="index-15">Part 2 of the Markov chain convergence theorem <a class="reference internal" href="#mc-conv-thm"><span class="std std-ref">stated above</span></a> tells us that the marginal distribution of <span class="math notranslate nohighlight">\(X_t\)</span> converges to the stationary distribution regardless of where we begin.</p>
 <p>This adds considerable authority to our interpretation of <span class="math notranslate nohighlight">\(\psi^*\)</span> as a stochastic steady state.</p>
 <p>The convergence in the theorem is illustrated in the next figure</p>
@@ -1166,7 +1076,7 @@ with the unit eigenvalue <span class="math notranslate nohighlight">\(\lambda = 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/finite_markov_39_0.png" src="_images/finite_markov_39_0.png" />
+<img alt="_images/dd8620e67ad4685566ad5361250f73d9a45eca900b5dc5bb40d886c5f7fdec6f.png" src="_images/dd8620e67ad4685566ad5361250f73d9a45eca900b5dc5bb40d886c5f7fdec6f.png" />
 </div>
 </div>
 <p>Here</p>
@@ -1177,13 +1087,13 @@ with the unit eigenvalue <span class="math notranslate nohighlight">\(\lambda = 
 <li><p>The black dot is <span class="math notranslate nohighlight">\(\psi^*\)</span>.</p></li>
 </ul>
 <p>You might like to try experimenting with different initial conditions.</p>
-</div>
-</div>
-<div class="section" id="ergodicity">
-<span id="id4"></span><h2><a class="toc-backref" href="#id15"><span class="section-number">26.7. </span><span class="target" id="index-16"></span>Ergodicity</a><a class="headerlink" href="#ergodicity" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="ergodicity">
+<span id="id4"></span><h2><a class="toc-backref" href="#id15"><span class="section-number">26.7. </span><span class="target" id="index-16"></span>Ergodicity</a><a class="headerlink" href="#ergodicity" title="Permalink to this heading">#</a></h2>
 <p id="index-17">Under irreducibility, yet another important result obtains: for all <span class="math notranslate nohighlight">\(x \in S\)</span>,</p>
 <div class="math notranslate nohighlight" id="equation-llnfmc0">
-<span class="eqno">(26.8)<a class="headerlink" href="#equation-llnfmc0" title="Permalink to this equation">¶</a></span>\[\frac{1}{m} \sum_{t = 1}^m \mathbf{1}\{X_t = x\}  \to \psi^*(x)
+<span class="eqno">(26.8)<a class="headerlink" href="#equation-llnfmc0" title="Permalink to this equation">#</a></span>\[\frac{1}{m} \sum_{t = 1}^m \mathbf{1}\{X_t = x\}  \to \psi^*(x)
     \quad \text{as } m \to \infty\]</div>
 <p>Here</p>
 <ul class="simple">
@@ -1194,8 +1104,8 @@ with the unit eigenvalue <span class="math notranslate nohighlight">\(\lambda = 
 <p>The result tells us that the fraction of time the chain spends at state <span class="math notranslate nohighlight">\(x\)</span> converges to <span class="math notranslate nohighlight">\(\psi^*(x)\)</span> as time goes to infinity.</p>
 <p id="new-interp-sd">This gives us another way to interpret the stationary distribution — provided that the convergence result in <a class="reference internal" href="#equation-llnfmc0">(26.8)</a> is valid.</p>
 <p>The convergence asserted in <a class="reference internal" href="#equation-llnfmc0">(26.8)</a> is a special case of a law of large numbers result for Markov chains — see <a class="reference external" href="http://johnstachurski.net/edtc.html">EDTC</a>, section 4.3.4 for some additional information.</p>
-<div class="section" id="mc-eg1-2">
-<span id="id5"></span><h3><span class="section-number">26.7.1. </span>Example<a class="headerlink" href="#mc-eg1-2" title="Permalink to this headline">¶</a></h3>
+<section id="mc-eg1-2">
+<span id="id5"></span><h3><span class="section-number">26.7.1. </span>Example<a class="headerlink" href="#mc-eg1-2" title="Permalink to this heading">#</a></h3>
 <p>Recall our cross-sectional interpretation of the employment/unemployment model <a class="reference internal" href="#mc-eg1-1"><span class="std std-ref">discussed above</span></a>.</p>
 <p>Assume that <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span> and <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span>, so that irreducibility and aperiodicity both hold.</p>
 <p>We saw that the stationary distribution is <span class="math notranslate nohighlight">\((p, 1-p)\)</span>, where</p>
@@ -1207,16 +1117,16 @@ p = \frac{\beta}{\alpha + \beta}
 <p>In view of our latest (ergodicity) result, it is also the fraction of time that a single worker can expect to spend unemployed.</p>
 <p>Thus, in the long-run, cross-sectional averages for a population and time-series averages for a given person coincide.</p>
 <p>This is one aspect of the concept  of ergodicity.</p>
-</div>
-</div>
-<div class="section" id="computing-expectations">
-<span id="finite-mc-expec"></span><h2><a class="toc-backref" href="#id16"><span class="section-number">26.8. </span>Computing Expectations</a><a class="headerlink" href="#computing-expectations" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="computing-expectations">
+<span id="finite-mc-expec"></span><h2><a class="toc-backref" href="#id16"><span class="section-number">26.8. </span>Computing Expectations</a><a class="headerlink" href="#computing-expectations" title="Permalink to this heading">#</a></h2>
 <p id="index-18">We sometimes want to  compute mathematical  expectations of functions of <span class="math notranslate nohighlight">\(X_t\)</span> of the form</p>
 <div class="math notranslate nohighlight" id="equation-mc-une">
-<span class="eqno">(26.9)<a class="headerlink" href="#equation-mc-une" title="Permalink to this equation">¶</a></span>\[\mathbb E [ h(X_t) ]\]</div>
+<span class="eqno">(26.9)<a class="headerlink" href="#equation-mc-une" title="Permalink to this equation">#</a></span>\[\mathbb E [ h(X_t) ]\]</div>
 <p>and conditional expectations such as</p>
 <div class="math notranslate nohighlight" id="equation-mc-cce">
-<span class="eqno">(26.10)<a class="headerlink" href="#equation-mc-cce" title="Permalink to this equation">¶</a></span>\[\mathbb E [ h(X_{t + k})  \mid X_t = x]\]</div>
+<span class="eqno">(26.10)<a class="headerlink" href="#equation-mc-cce" title="Permalink to this equation">#</a></span>\[\mathbb E [ h(X_{t + k})  \mid X_t = x]\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\{X_t\}\)</span> is a Markov chain generated by <span class="math notranslate nohighlight">\(n \times n\)</span> stochastic matrix <span class="math notranslate nohighlight">\(P\)</span></p></li>
@@ -1253,11 +1163,11 @@ write this as</p>
 the conditional distribution of <span class="math notranslate nohighlight">\(X_{t + k}\)</span> given <span class="math notranslate nohighlight">\(X_t = x\)</span>.</p>
 <p>We already know that this is <span class="math notranslate nohighlight">\(P^k(x, \cdot)\)</span>, so</p>
 <div class="math notranslate nohighlight" id="equation-mc-cce2">
-<span class="eqno">(26.11)<a class="headerlink" href="#equation-mc-cce2" title="Permalink to this equation">¶</a></span>\[\mathbb E [ h(X_{t + k})  \mid X_t = x]
+<span class="eqno">(26.11)<a class="headerlink" href="#equation-mc-cce2" title="Permalink to this equation">#</a></span>\[\mathbb E [ h(X_{t + k})  \mid X_t = x]
 = (P^k h)(x)\]</div>
 <p>The vector <span class="math notranslate nohighlight">\(P^k h\)</span> stores the conditional expectation <span class="math notranslate nohighlight">\(\mathbb E [ h(X_{t + k})  \mid X_t = x]\)</span> over all <span class="math notranslate nohighlight">\(x\)</span>.</p>
-<div class="section" id="iterated-expectations">
-<h3><span class="section-number">26.8.1. </span>Iterated Expectations<a class="headerlink" href="#iterated-expectations" title="Permalink to this headline">¶</a></h3>
+<section id="iterated-expectations">
+<h3><span class="section-number">26.8.1. </span>Iterated Expectations<a class="headerlink" href="#iterated-expectations" title="Permalink to this heading">#</a></h3>
 <p>The <strong>law of iterated expectations</strong> states that</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1271,9 +1181,9 @@ the conditional distribution of <span class="math notranslate nohighlight">\(X_{
 \mathbb E \left[ \mathbb E [ h(X_{t + k})  \mid X_t = x] \right] = \psi_t P^k h, 
 \]</div>
 <p>and note <span class="math notranslate nohighlight">\(\psi_t P^k h = \psi_{t+k} h = \mathbb E [  h(X_{t + k}) ] \)</span>.</p>
-</div>
-<div class="section" id="expectations-of-geometric-sums">
-<h3><span class="section-number">26.8.2. </span>Expectations of Geometric Sums<a class="headerlink" href="#expectations-of-geometric-sums" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="expectations-of-geometric-sums">
+<h3><span class="section-number">26.8.2. </span>Expectations of Geometric Sums<a class="headerlink" href="#expectations-of-geometric-sums" title="Permalink to this heading">#</a></h3>
 <p>Sometimes we want to compute the mathematical expectation of a geometric sum, such as
 <span class="math notranslate nohighlight">\(\sum_t \beta^t h(X_t)\)</span>.</p>
 <p>In view of the preceding discussion, this is</p>
@@ -1290,14 +1200,14 @@ the conditional distribution of <span class="math notranslate nohighlight">\(X_{
 (I - \beta P)^{-1}  = I + \beta P + \beta^2 P^2 + \cdots
 \]</div>
 <p>Premultiplication by <span class="math notranslate nohighlight">\((I - \beta P)^{-1}\)</span> amounts to “applying the <strong>resolvent operator</strong>”.</p>
-</div>
-</div>
-<div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id17"><span class="section-number">26.9. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id17"><span class="section-number">26.9. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="fm_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 26.1 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>According to the discussion <a class="reference internal" href="#mc-eg1-2"><span class="std std-ref">above</span></a>, if a worker’s employment dynamics obey the stochastic matrix</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1327,13 +1237,13 @@ it is close to <span class="math notranslate nohighlight">\(p\)</span>.</p>
 <p>You will see that this statement is true regardless of the choice of initial
 condition or the values of <span class="math notranslate nohighlight">\(\alpha, \beta\)</span>, provided both lie in
 <span class="math notranslate nohighlight">\((0, 1)\)</span>.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="finite_markov-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#fm_ex1"> Exercise 26.1</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>We will address this exercise graphically.</p>
+<section id="solution-content">
+<p>We will address this exercise graphically.</p>
 <p>The plots show the time series of <span class="math notranslate nohighlight">\(\bar X_m - p\)</span> for two initial
 conditions.</p>
 <p>As <span class="math notranslate nohighlight">\(m\)</span> gets large, both series converge to zero.</p>
@@ -1369,22 +1279,22 @@ conditions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/finite_markov_41_0.png" src="_images/finite_markov_41_0.png" />
+<img alt="_images/6052313127731a8fb117aad8030f8a48564d6283321d86be32f0576041ede09d.png" src="_images/6052313127731a8fb117aad8030f8a48564d6283321d86be32f0576041ede09d.png" />
 </div>
 </div>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="fm_ex2">
 
 <p class="admonition-title"><span class="caption-number">Exercise 26.2 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>A topic of interest for economics and many other disciplines is <em>ranking</em>.</p>
 <p>Let’s now consider one of the most practical and important ranking problems
 — the rank assigned to web pages by search engines.</p>
 <p>(Although the problem is motivated from outside of economics, there is in fact a deep connection between search ranking systems and prices in certain competitive equilibria — see <span id="id6">[<a class="reference internal" href="zreferences.html#id157" title="Y E Du, Ehud Lehrer, and A D Y Pauzner. Competitive economy as a ranking device over networks. submitted, 2013.">DLP13</a>]</span>.)</p>
 <p>To understand the issue, consider the set of results returned by a query to a web search engine.</p>
 <p>For the user, it is desirable to</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>receive a large set of accurate matches</p></li>
 <li><p>have the matches returned in order, where the order corresponds to some measure of “importance”</p></li>
 </ol>
@@ -1392,9 +1302,9 @@ conditions.</p>
 <p>The methodology developed to solve this problem by Google founders Larry Page and Sergey Brin
 is known as <a class="reference external" href="https://en.wikipedia.org/wiki/PageRank">PageRank</a>.</p>
 <p>To illustrate the idea, consider the following diagram</p>
-<div class="figure align-default">
+<figure class="align-default">
 <img alt="_images/web_graph.png" src="_images/web_graph.png" />
-</div>
+</figure>
 <p>Imagine that this is a miniature version of the WWW, with</p>
 <ul class="simple">
 <li><p>each node representing a web page</p></li>
@@ -1526,13 +1436,13 @@ and return the list of pages ordered by rank.</p>
 </div>
 </div>
 <p>When you solve for the ranking, you will find that the highest ranked node is in fact <code class="docutils literal notranslate"><span class="pre">g</span></code>, while the lowest is <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="finite_markov-solution-3">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#fm_ex2"> Exercise 26.2</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>Here is one solution:</p>
+<section id="solution-content">
+<p>Here is one solution:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -1592,12 +1502,12 @@ a: 0.002911
 </div>
 </div>
 </div>
-</div>
+</section>
 </div>
 <div class="exercise admonition" id="fm_ex3">
 
 <p class="admonition-title"><span class="caption-number">Exercise 26.3 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>In numerical work, it is sometimes convenient to replace a continuous model with a discrete one.</p>
 <p>In particular, Markov chains are routinely generated as discrete approximations to AR(1) processes of the form</p>
 <div class="math notranslate nohighlight">
@@ -1626,7 +1536,7 @@ and a stochastic <span class="math notranslate nohighlight">\(n \times n\)</span
 </ul>
 <p>Let <span class="math notranslate nohighlight">\(F\)</span> be the cumulative distribution function of the normal distribution <span class="math notranslate nohighlight">\(N(0, \sigma_u^2)\)</span>.</p>
 <p>The values <span class="math notranslate nohighlight">\(P(x_i, x_j)\)</span> are computed to approximate the AR(1) process — omitting the derivation, the rules are as follows:</p>
-<ol>
+<ol class="arabic">
 <li><p>If <span class="math notranslate nohighlight">\(j = 0\)</span>, then set</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1652,15 +1562,15 @@ and a stochastic <span class="math notranslate nohighlight">\(n \times n\)</span
 <ul class="simple">
 <li><p>Even better, write a function that returns an instance of <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py’s</a> MarkovChain class.</p></li>
 </ul>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="finite_markov-solution-5">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#fm_ex3"> Exercise 26.3</a></p>
-<div class="section" id="solution-content">
+<section id="solution-content">
 <p>A solution from the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a> library
 can be found <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/markov/approximation.py">here</a>.</p>
-</div>
+</section>
 </div>
 <hr class="footnotes docutils" />
 <dl class="footnote brackets">
@@ -1668,8 +1578,8 @@ can be found <a class="reference external" href="https://github.com/QuantEcon/Qu
 <dd><p>Hint: First show that if <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> are stochastic matrices then so is their product — to check the row sums, try post multiplying by a column vector of ones.  Finally, argue that <span class="math notranslate nohighlight">\(P^n\)</span> is a stochastic matrix using induction.</p>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1683,7 +1593,7 @@ can be found <a class="reference external" href="https://github.com/QuantEcon/Qu
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -2264,7 +2174,7 @@ can be found <a class="reference external" href="https://github.com/QuantEcon/Qu
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -2406,16 +2316,5 @@ can be found <a class="reference external" href="https://github.com/QuantEcon/Qu
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

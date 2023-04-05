@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>59. Likelihood Ratio Processes and Bayesian Learning &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'likelihood_bayes';</script>
     <link rel="canonical" href="https://python.quantecon.org/likelihood_bayes.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,59 +161,18 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   59.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-setting">
-   59.2. The Setting
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#likelihood-ratio-process-and-bayes-law">
-   59.3. Likelihood Ratio Process and Bayes’ Law
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#behavior-of-posterior-probability-pi-t-under-the-subjective-probability-distribution">
-   59.4. Behavior of  posterior probability
-   <span class="math notranslate nohighlight">
-    \(\{\pi_t\}\)
-   </span>
-   under the subjective probability distribution
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#mechanical-details-again">
-     59.4.1. Mechanical details again
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#some-simulations">
-     59.4.2. Some simulations
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#initial-prior-is-verified-by-paths-drawn-from-subjective-conditional-densities">
-   59.5. Initial Prior is Verified by Paths Drawn from Subjective Conditional Densities
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#drilling-down-a-little-bit">
-   59.6. Drilling Down a Little Bit
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sequels">
-   59.7. Sequels
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">59.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-setting">59.2. The Setting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-process-and-bayes-law">59.3. Likelihood Ratio Process and Bayes’ Law</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#behavior-of-posterior-probability-pi-t-under-the-subjective-probability-distribution">59.4. Behavior of  posterior probability <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span>  under the subjective probability distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mechanical-details-again">59.4.1. Mechanical details again</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-simulations">59.4.2. Some simulations</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-prior-is-verified-by-paths-drawn-from-subjective-conditional-densities">59.5. Initial Prior is Verified by Paths Drawn from Subjective Conditional Densities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drilling-down-a-little-bit">59.6. Drilling Down a Little Bit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequels">59.7. Sequels</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -250,10 +220,10 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="likelihood-ratio-processes-and-bayesian-learning">
-<h1><span class="section-number">59. </span>Likelihood Ratio Processes and Bayesian Learning<a class="headerlink" href="#likelihood-ratio-processes-and-bayesian-learning" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="overview">
-<h2><span class="section-number">59.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+</div><section class="tex2jax_ignore mathjax_ignore" id="likelihood-ratio-processes-and-bayesian-learning">
+<h1><span class="section-number">59. </span>Likelihood Ratio Processes and Bayesian Learning<a class="headerlink" href="#likelihood-ratio-processes-and-bayesian-learning" title="Permalink to this heading">#</a></h1>
+<section id="overview">
+<h2><span class="section-number">59.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes the role that <strong>likelihood ratio processes</strong> play in  <strong>Bayesian learning</strong>.</p>
 <p>As in <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a>, we’ll use a simple statistical setting from <a class="reference internal" href="exchangeable.html"><span class="doc">this lecture</span></a>.</p>
 <p>We’ll focus on how a likelihood ratio process and a <strong>prior</strong> probability determine a <strong>posterior</strong> probability.</p>
@@ -288,9 +258,9 @@ and <a class="reference internal" href="wald_friedman.html"><span class="doc">th
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="the-setting">
-<h2><span class="section-number">59.2. </span>The Setting<a class="headerlink" href="#the-setting" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="the-setting">
+<h2><span class="section-number">59.2. </span>The Setting<a class="headerlink" href="#the-setting" title="Permalink to this heading">#</a></h2>
 <p>We begin by reviewing the setting in <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a>, which we adopt here too.</p>
 <p>A nonnegative random variable <span class="math notranslate nohighlight">\(W\)</span> has one of two probability density functions, either
 <span class="math notranslate nohighlight">\(f\)</span> or <span class="math notranslate nohighlight">\(g\)</span>.</p>
@@ -398,9 +368,9 @@ probability distribution, for example, a sequence of  IID draws from <span class
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="likelihood-ratio-process-and-bayes-law">
-<h2><span class="section-number">59.3. </span>Likelihood Ratio Process and Bayes’ Law<a class="headerlink" href="#likelihood-ratio-process-and-bayes-law" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="likelihood-ratio-process-and-bayes-law">
+<h2><span class="section-number">59.3. </span>Likelihood Ratio Process and Bayes’ Law<a class="headerlink" href="#likelihood-ratio-process-and-bayes-law" title="Permalink to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(\pi_t\)</span> be a Bayesian posterior defined as</p>
 <div class="math notranslate nohighlight">
 \[
@@ -410,7 +380,7 @@ probability distribution, for example, a sequence of  IID draws from <span class
 of the posterior probability <span class="math notranslate nohighlight">\(\pi_t\)</span>, an instance of <strong>Bayes’ Law</strong>.</p>
 <p>Bayes’ law implies that <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span> obeys the recursion</p>
 <div class="math notranslate nohighlight" id="equation-eq-recur1">
-<span class="eqno">(59.1)<a class="headerlink" href="#equation-eq-recur1" title="Permalink to this equation">¶</a></span>\[\pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}\]</div>
+<span class="eqno">(59.1)<a class="headerlink" href="#equation-eq-recur1" title="Permalink to this equation">#</a></span>\[\pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}\]</div>
 <p>with <span class="math notranslate nohighlight">\(\pi_{0}\)</span> being a Bayesian prior probability that <span class="math notranslate nohighlight">\(q = f\)</span>,
 i.e., a personal or subjective belief about <span class="math notranslate nohighlight">\(q\)</span> based on our having seen no data.</p>
 <p>Below we define a Python function that updates belief <span class="math notranslate nohighlight">\(\pi\)</span> using
@@ -474,7 +444,7 @@ of the time <span class="math notranslate nohighlight">\(0\)</span> prior <span 
 function of  <span class="math notranslate nohighlight">\(L\left(w^{t+1}\right)\)</span>, the  likelihood ratio process at <span class="math notranslate nohighlight">\(t+1\)</span>,
 and the initial prior <span class="math notranslate nohighlight">\(\pi_{0}\)</span></p>
 <div class="math notranslate nohighlight" id="equation-eq-bayeslaw103">
-<span class="eqno">(59.2)<a class="headerlink" href="#equation-eq-bayeslaw103" title="Permalink to this equation">¶</a></span>\[\pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}} .\]</div>
+<span class="eqno">(59.2)<a class="headerlink" href="#equation-eq-bayeslaw103" title="Permalink to this equation">#</a></span>\[\pi_{t+1}=\frac{\pi_{0}L\left(w^{t+1}\right)}{\pi_{0}L\left(w^{t+1}\right)+1-\pi_{0}} .\]</div>
 <p>Formula <a class="reference internal" href="#equation-eq-bayeslaw103">(59.2)</a> generalizes formula <a class="reference internal" href="#equation-eq-recur1">(59.1)</a>.</p>
 <p>Formula <a class="reference internal" href="#equation-eq-bayeslaw103">(59.2)</a>  can be regarded as a one step  revision of prior probability <span class="math notranslate nohighlight">\(\pi_0\)</span> after seeing
 the batch of data <span class="math notranslate nohighlight">\(\left\{ w_{i}\right\} _{i=1}^{t+1}\)</span>.</p>
@@ -530,7 +500,7 @@ history of IID draws from density <span class="math notranslate nohighlight">\(f
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/likelihood_bayes_14_0.png" src="_images/likelihood_bayes_14_0.png" />
+<img alt="_images/bd9af045f48f8dc85bce1f7a2c1d815199ac2630288235415a97d8577c256e10.png" src="_images/bd9af045f48f8dc85bce1f7a2c1d815199ac2630288235415a97d8577c256e10.png" />
 </div>
 </div>
 <p>The dotted line in the graph above records the logarithm of the  likelihood ratio process <span class="math notranslate nohighlight">\(\log L(w^t)\)</span>.</p>
@@ -570,7 +540,7 @@ history of IID draws from density <span class="math notranslate nohighlight">\(f
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/likelihood_bayes_17_0.png" src="_images/likelihood_bayes_17_0.png" />
+<img alt="_images/ebb90d3b4715d3eccebda60aa33ee29da65e65f3075af219177ff53b1fe2ec39.png" src="_images/ebb90d3b4715d3eccebda60aa33ee29da65e65f3075af219177ff53b1fe2ec39.png" />
 </div>
 </div>
 <p>Below we offer Python code that verifies that nature chose permanently to draw from density <span class="math notranslate nohighlight">\(f\)</span>.</p>
@@ -601,9 +571,9 @@ history of IID draws from density <span class="math notranslate nohighlight">\(f
 <p>We thus conclude that  the likelihood ratio process is a key ingredient of the formula <a class="reference internal" href="#equation-eq-bayeslaw103">(59.2)</a> for
 a Bayesian’s posteior probabilty that nature has drawn history <span class="math notranslate nohighlight">\(w^t\)</span> as repeated draws from density
 <span class="math notranslate nohighlight">\(g\)</span>.</p>
-</div>
-<div class="section" id="behavior-of-posterior-probability-pi-t-under-the-subjective-probability-distribution">
-<h2><span class="section-number">59.4. </span>Behavior of  posterior probability <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span>  under the subjective probability distribution<a class="headerlink" href="#behavior-of-posterior-probability-pi-t-under-the-subjective-probability-distribution" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="behavior-of-posterior-probability-pi-t-under-the-subjective-probability-distribution">
+<h2><span class="section-number">59.4. </span>Behavior of  posterior probability <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span>  under the subjective probability distribution<a class="headerlink" href="#behavior-of-posterior-probability-pi-t-under-the-subjective-probability-distribution" title="Permalink to this heading">#</a></h2>
 <p>We’ll end this lecture by briefly studying what our Baysian learner expects to learn under the
 subjective beliefs <span class="math notranslate nohighlight">\(\pi_t\)</span> cranked out by Bayes’ law.</p>
 <p>This will provide us with some perspective  on our application of  Bayes’s law as a theory of learning.</p>
@@ -621,8 +591,8 @@ probability to compute the conditional distribution of the <span class="math not
 <p>After our worker puts a subjective probability <span class="math notranslate nohighlight">\(\pi_{-1}\)</span> on nature having selected distribution <span class="math notranslate nohighlight">\(F\)</span>, we have in effect assumes from the start that the   decision maker <strong>knows</strong> the joint distribution  for the process <span class="math notranslate nohighlight">\(\{w_t\}_{t=0}\)</span>.</p>
 <p>We assume that the worker also knows the laws of probability theory.</p>
 <p>A respectable view is that Bayes’ law is less a theory of learning than a statement  about the consequences of information inflows for a decision maker who thinks he knows the truth (i.e., a joint probability distribution) from the beginning.</p>
-<div class="section" id="mechanical-details-again">
-<h3><span class="section-number">59.4.1. </span>Mechanical details again<a class="headerlink" href="#mechanical-details-again" title="Permalink to this headline">¶</a></h3>
+<section id="mechanical-details-again">
+<h3><span class="section-number">59.4.1. </span>Mechanical details again<a class="headerlink" href="#mechanical-details-again" title="Permalink to this heading">#</a></h3>
 <p>At time <span class="math notranslate nohighlight">\(0\)</span> <strong>before</strong> drawing a wage offer, the worker attaches probability <span class="math notranslate nohighlight">\(\pi_{-1} \in (0,1)\)</span> to the distribution being <span class="math notranslate nohighlight">\(F\)</span>.</p>
 <p>Before drawing a wage at time <span class="math notranslate nohighlight">\(0\)</span>, the  worker thus believes that the density of <span class="math notranslate nohighlight">\(w_0\)</span>
 is</p>
@@ -641,7 +611,7 @@ that the density is <span class="math notranslate nohighlight">\(f(w)\)</span> i
 <p>More generally,  after making the <span class="math notranslate nohighlight">\(t\)</span>th draw and having   observed   <span class="math notranslate nohighlight">\(w_t, w_{t-1}, \ldots, w_0\)</span>, the worker believes that
 the probability that <span class="math notranslate nohighlight">\(w_{t+1}\)</span> is  being drawn from  distribution  <span class="math notranslate nohighlight">\(F\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-eq-like44">
-<span class="eqno">(59.3)<a class="headerlink" href="#equation-eq-like44" title="Permalink to this equation">¶</a></span>\[ 
+<span class="eqno">(59.3)<a class="headerlink" href="#equation-eq-like44" title="Permalink to this equation">#</a></span>\[ 
 \pi_t = \pi_t(w_t | \pi_{t-1}) \equiv { \pi_{t-1} f(w_t)/g(w_t) \over \pi_{t-1} f(w_t)/g(w_t) + (1-\pi_{t-1})} 
 \]</div>
 <p>or</p>
@@ -733,9 +703,9 @@ the probability that <span class="math notranslate nohighlight">\({\textrm{Prob}
 <p>Thus, under the worker’s subjective distribution, <span class="math notranslate nohighlight">\(\pi_{-1}\)</span> of the sample paths
 of <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span> will converge pointwise to <span class="math notranslate nohighlight">\(1\)</span> and <span class="math notranslate nohighlight">\(1 - \pi_{-1}\)</span> of the sample paths will
 converge pointwise to <span class="math notranslate nohighlight">\(0\)</span>.</p>
-</div>
-<div class="section" id="some-simulations">
-<h3><span class="section-number">59.4.2. </span>Some simulations<a class="headerlink" href="#some-simulations" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="some-simulations">
+<h3><span class="section-number">59.4.2. </span>Some simulations<a class="headerlink" href="#some-simulations" title="Permalink to this heading">#</a></h3>
 <p>Let’s watch the martingale convergence theorem at work in some simulations of our learning model under the worker’s subjective distribution.</p>
 <p>Let us simulate <span class="math notranslate nohighlight">\(\left\{ \pi_{t}\right\} _{t=0}^{T}\)</span>, <span class="math notranslate nohighlight">\(\left\{ w_{t}\right\} _{t=0}^{T}\)</span> paths where for each <span class="math notranslate nohighlight">\(t\geq0\)</span>, <span class="math notranslate nohighlight">\(w_t\)</span> is drawn from the subjective distribution</p>
 <div class="math notranslate nohighlight">
@@ -807,7 +777,7 @@ converge pointwise to <span class="math notranslate nohighlight">\(0\)</span>.</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/likelihood_bayes_23_0.png" src="_images/likelihood_bayes_23_0.png" />
+<img alt="_images/cfa37b88b9b0e8bb8cb14038374cf471e47d63087068429fb856c347106ca3f6.png" src="_images/cfa37b88b9b0e8bb8cb14038374cf471e47d63087068429fb856c347106ca3f6.png" />
 </div>
 </div>
 <p>The above graph indicates that</p>
@@ -832,7 +802,7 @@ converge pointwise to <span class="math notranslate nohighlight">\(0\)</span>.</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/likelihood_bayes_25_0.png" src="_images/likelihood_bayes_25_0.png" />
+<img alt="_images/9dcf8c636d41fdbcddaab00d28bf7cfc2d211bf062488851f2ce5af09e66f7e7.png" src="_images/9dcf8c636d41fdbcddaab00d28bf7cfc2d211bf062488851f2ce5af09e66f7e7.png" />
 </div>
 </div>
 <p>Evidently, by <span class="math notranslate nohighlight">\(t = 199\)</span>, <span class="math notranslate nohighlight">\(\pi_t\)</span> has converged to either <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>.</p>
@@ -868,7 +838,7 @@ in the ensemble.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/likelihood_bayes_28_0.png" src="_images/likelihood_bayes_28_0.png" />
+<img alt="_images/5247efdc9dafdef851bfd23f0c294b55b94e28ca6d9394074ea35186058670ef.png" src="_images/5247efdc9dafdef851bfd23f0c294b55b94e28ca6d9394074ea35186058670ef.png" />
 </div>
 </div>
 <p>For the preceding ensemble that assumed <span class="math notranslate nohighlight">\(\pi_0 = .5\)</span>, the following graph shows two  paths of
@@ -893,13 +863,13 @@ in the ensemble.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/likelihood_bayes_30_0.png" src="_images/likelihood_bayes_30_0.png" />
+<img alt="_images/2b2fe767c775163b9a95efad727bd57bf4a3130c7abdd4acdc3fe0fc7b4364a9.png" src="_images/2b2fe767c775163b9a95efad727bd57bf4a3130c7abdd4acdc3fe0fc7b4364a9.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="initial-prior-is-verified-by-paths-drawn-from-subjective-conditional-densities">
-<h2><span class="section-number">59.5. </span>Initial Prior is Verified by Paths Drawn from Subjective Conditional Densities<a class="headerlink" href="#initial-prior-is-verified-by-paths-drawn-from-subjective-conditional-densities" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="initial-prior-is-verified-by-paths-drawn-from-subjective-conditional-densities">
+<h2><span class="section-number">59.5. </span>Initial Prior is Verified by Paths Drawn from Subjective Conditional Densities<a class="headerlink" href="#initial-prior-is-verified-by-paths-drawn-from-subjective-conditional-densities" title="Permalink to this heading">#</a></h2>
 <p>Now let’s use our Python code to generate a table that checks out our earlier claims about the
 probability distribution of the pointwise limits <span class="math notranslate nohighlight">\(\pi_{\infty}(\omega)\)</span>.</p>
 <p>We’ll use our simulations to generate a histogram of this distribution.</p>
@@ -998,9 +968,9 @@ probability distribution of the pointwise limits <span class="math notranslate n
 </div></div></div>
 </div>
 <p>The fraction of simulations for which <span class="math notranslate nohighlight">\(\pi_{t}\)</span>  had converged to <span class="math notranslate nohighlight">\(1\)</span> is indeed always  close  to <span class="math notranslate nohighlight">\(\pi_{-1}\)</span>, as anticipated.</p>
-</div>
-<div class="section" id="drilling-down-a-little-bit">
-<h2><span class="section-number">59.6. </span>Drilling Down a Little Bit<a class="headerlink" href="#drilling-down-a-little-bit" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="drilling-down-a-little-bit">
+<h2><span class="section-number">59.6. </span>Drilling Down a Little Bit<a class="headerlink" href="#drilling-down-a-little-bit" title="Permalink to this heading">#</a></h2>
 <p>To understand how the local dynamics of <span class="math notranslate nohighlight">\(\pi_t\)</span> behaves, it is enlightening to consult the  variance of <span class="math notranslate nohighlight">\(\pi_{t}\)</span> conditional on <span class="math notranslate nohighlight">\(\pi_{t-1}\)</span>.</p>
 <p>Under the subjective distribution this conditional variance is defined as</p>
 <div class="math notranslate nohighlight">
@@ -1042,19 +1012,19 @@ probability distribution of the pointwise limits <span class="math notranslate n
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/likelihood_bayes_34_0.png" src="_images/likelihood_bayes_34_0.png" />
+<img alt="_images/f181ca213f57781aa04edc69fc57a92f331b5acb172624c244d858ea2399fb0b.png" src="_images/f181ca213f57781aa04edc69fc57a92f331b5acb172624c244d858ea2399fb0b.png" />
 </div>
 </div>
 <p>The shape of the the conditional variance as a function of <span class="math notranslate nohighlight">\(\pi_{t-1}\)</span> is informative about the behavior of sample paths of <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span>.</p>
 <p>Notice how the conditional variance approaches <span class="math notranslate nohighlight">\(0\)</span> for <span class="math notranslate nohighlight">\(\pi_{t-1}\)</span> near  either <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <p>The conditional variance is nearly zero only when the agent  is almost sure that <span class="math notranslate nohighlight">\(w_t\)</span> is drawn from <span class="math notranslate nohighlight">\(F\)</span>,  or is almost sure it is drawn from <span class="math notranslate nohighlight">\(G\)</span>.</p>
-</div>
-<div class="section" id="sequels">
-<h2><span class="section-number">59.7. </span>Sequels<a class="headerlink" href="#sequels" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="sequels">
+<h2><span class="section-number">59.7. </span>Sequels<a class="headerlink" href="#sequels" title="Permalink to this heading">#</a></h2>
 <p>This lecture has been devoted to building some useful infrastructure that will help us understand inferences that are the foundations of
 results described  in <a class="reference internal" href="odu.html"><span class="doc">this lecture</span></a> and <a class="reference internal" href="wald_friedman.html"><span class="doc">this lecture</span></a> and <a class="reference internal" href="navy_captain.html"><span class="doc">this lecture</span></a>.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1068,7 +1038,7 @@ results described  in <a class="reference internal" href="odu.html"><span class=
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1649,7 +1619,7 @@ results described  in <a class="reference internal" href="odu.html"><span class=
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1791,16 +1761,5 @@ results described  in <a class="reference internal" href="odu.html"><span class=
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

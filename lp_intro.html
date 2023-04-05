@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>21. Linear Programming &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lp_intro';</script>
     <link rel="canonical" href="https://python.quantecon.org/lp_intro.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,99 +161,30 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   21.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#objective-function-and-constraints">
-   21.2. Objective Function and Constraints
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-1-production-problem">
-   21.3. Example 1: Production Problem
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-2-investment-problem">
-   21.4. Example 2: Investment Problem
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#standard-form">
-   21.5. Standard Form
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#useful-transformations">
-     21.5.1. Useful Transformations
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id4">
-     21.5.2. Example 1: Production Problem
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id5">
-     21.5.3. Example 2: Investment Problem
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#computations">
-   21.6. Computations
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id6">
-     21.6.1. Example 1: Production Problem
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id7">
-     21.6.2. Example 2: Investment Problem
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#duality">
-   21.7. Duality
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#duality-theorems">
-   21.8. Duality Theorems
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#complementary-slackness">
-     21.8.1. Complementary Slackness
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#interpretations">
-     21.8.2. Interpretations
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id9">
-     21.8.3. Example 1: Production Problem
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id10">
-     21.8.4. Example 2: Investment Problem
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">21.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objective-function-and-constraints">21.2. Objective Function and Constraints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-production-problem">21.3. Example 1: Production Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-investment-problem">21.4. Example 2: Investment Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-form">21.5. Standard Form</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-transformations">21.5.1. Useful Transformations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">21.5.2. Example 1: Production Problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">21.5.3. Example 2: Investment Problem</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computations">21.6. Computations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">21.6.1. Example 1: Production Problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">21.6.2. Example 2: Investment Problem</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duality">21.7. Duality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duality-theorems">21.8. Duality Theorems</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#complementary-slackness">21.8.1. Complementary Slackness</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretations">21.8.2. Interpretations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">21.8.3. Example 1: Production Problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">21.8.4. Example 2: Investment Problem</a></li>
+</ul>
+</li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -286,10 +228,10 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <div class="tex2jax_ignore mathjax_ignore section" id="linear-programming">
-<h1><span class="section-number">21. </span>Linear Programming<a class="headerlink" href="#linear-programming" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="overview">
-<h2><span class="section-number">21.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="linear-programming">
+<h1><span class="section-number">21. </span>Linear Programming<a class="headerlink" href="#linear-programming" title="Permalink to this heading">#</a></h1>
+<section id="overview">
+<h2><span class="section-number">21.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p><strong>Linear programming</strong> problems either maximize or minimize
 a linear objective function subject to a set of  linear equality and/or inequality constraints.</p>
 <p>Linear programs come in pairs:</p>
@@ -314,9 +256,9 @@ a linear objective function subject to a set of  linear equality and/or inequali
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="objective-function-and-constraints">
-<h2><span class="section-number">21.2. </span>Objective Function and Constraints<a class="headerlink" href="#objective-function-and-constraints" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="objective-function-and-constraints">
+<h2><span class="section-number">21.2. </span>Objective Function and Constraints<a class="headerlink" href="#objective-function-and-constraints" title="Permalink to this heading">#</a></h2>
 <p>We want to minimize a <strong>cost function</strong> <span class="math notranslate nohighlight">\(c'x = \sum_{i=1}^n c_i x_i\)</span> over  feasible values of <span class="math notranslate nohighlight">\(x = (x_1,x_2,\dots,x_n)'\)</span>.</p>
 <p>Here</p>
 <ul class="simple">
@@ -334,7 +276,7 @@ a linear objective function subject to a set of  linear equality and/or inequali
 </ul>
 <p>A linear programming can be stated as <span id="id1">[<a class="reference internal" href="zreferences.html#id41" title="J. N. Bertsimas, D. &amp; Tsitsiklis. Introduction to linear optimization. Athena Scientific, 1997.">Ber97</a>]</span>:</p>
 <div class="math notranslate nohighlight" id="equation-linprog">
-<span class="eqno">(21.1)<a class="headerlink" href="#equation-linprog" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(21.1)<a class="headerlink" href="#equation-linprog" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 \min_{x} \ &amp; c' x \\
 \mbox{subject to } \ &amp; a_i' x \ge b_i, &amp; i \in M_1 \\
@@ -351,9 +293,9 @@ a linear objective function subject to a set of  linear equality and/or inequali
 <p>The corresponding value of cost function <span class="math notranslate nohighlight">\(c'x\)</span> is called the  <strong>optimal value</strong>.</p>
 <p>If the feasible set is empty, we say that solving  the  linear programming problem is <strong>infeasible</strong>.</p>
 <p>If, for any <span class="math notranslate nohighlight">\(K \in \mathbb R\)</span>, there exists a feasible solution <span class="math notranslate nohighlight">\(x\)</span> such that <span class="math notranslate nohighlight">\(c'x &lt; K\)</span>, we say that the problem is <strong>unbounded</strong> or equivalently that the optimal value is <span class="math notranslate nohighlight">\(-\infty\)</span>.</p>
-</div>
-<div class="section" id="example-1-production-problem">
-<h2><span class="section-number">21.3. </span>Example 1: Production Problem<a class="headerlink" href="#example-1-production-problem" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-1-production-problem">
+<h2><span class="section-number">21.3. </span>Example 1: Production Problem<a class="headerlink" href="#example-1-production-problem" title="Permalink to this heading">#</a></h2>
 <p>This example was created by <span id="id2">[<a class="reference internal" href="zreferences.html#id41" title="J. N. Bertsimas, D. &amp; Tsitsiklis. Introduction to linear optimization. Athena Scientific, 1997.">Ber97</a>]</span></p>
 <p>Suppose that a factory can produce two goods called Product <span class="math notranslate nohighlight">\(1\)</span> and Product <span class="math notranslate nohighlight">\(2\)</span>.</p>
 <p>To produce each product requires both material and labor.</p>
@@ -361,23 +303,23 @@ a linear objective function subject to a set of  linear equality and/or inequali
 <p>Required per unit material and labor  inputs and  revenues  are shown in table below:</p>
 <table class="colwidths-auto table">
 <thead>
-<tr class="row-odd"><th class="text-align:center head"><p></p></th>
-<th class="text-align:center head"><p>Product 1</p></th>
-<th class="text-align:center head"><p>Product 2</p></th>
+<tr class="row-odd"><th class="text-center head"><p></p></th>
+<th class="text-center head"><p>Product 1</p></th>
+<th class="text-center head"><p>Product 2</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-align:center"><p>Material</p></td>
-<td class="text-align:center"><p>2</p></td>
-<td class="text-align:center"><p>5</p></td>
+<tr class="row-even"><td class="text-center"><p>Material</p></td>
+<td class="text-center"><p>2</p></td>
+<td class="text-center"><p>5</p></td>
 </tr>
-<tr class="row-odd"><td class="text-align:center"><p>Labor</p></td>
-<td class="text-align:center"><p>4</p></td>
-<td class="text-align:center"><p>2</p></td>
+<tr class="row-odd"><td class="text-center"><p>Labor</p></td>
+<td class="text-center"><p>4</p></td>
+<td class="text-center"><p>2</p></td>
 </tr>
-<tr class="row-even"><td class="text-align:center"><p>Revenue</p></td>
-<td class="text-align:center"><p>3</p></td>
-<td class="text-align:center"><p>4</p></td>
+<tr class="row-even"><td class="text-center"><p>Revenue</p></td>
+<td class="text-center"><p>3</p></td>
+<td class="text-center"><p>4</p></td>
 </tr>
 </tbody>
 </table>
@@ -435,7 +377,7 @@ to maximize its revenue.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/lp_intro_3_0.png" src="_images/lp_intro_3_0.png" />
+<img alt="_images/5ff749e52a0e5a931a1ddba6556935c321c2de7db168556cf4922e34f17dc4ea.png" src="_images/5ff749e52a0e5a931a1ddba6556935c321c2de7db168556cf4922e34f17dc4ea.png" />
 </div>
 </div>
 <p>The blue region is the feasible set within which all constraints are satisfied.</p>
@@ -443,13 +385,13 @@ to maximize its revenue.</p>
 <p>The firm’s objective is to find the  parallel orange lines to the upper boundary of the feasible set.</p>
 <p>The intersection of the feasible set and the highest orange line delineates the optimal set.</p>
 <p>In this example, the optimal set is the point <span class="math notranslate nohighlight">\((2.5, 5)\)</span>.</p>
-</div>
-<div class="section" id="example-2-investment-problem">
-<h2><span class="section-number">21.4. </span>Example 2: Investment Problem<a class="headerlink" href="#example-2-investment-problem" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-2-investment-problem">
+<h2><span class="section-number">21.4. </span>Example 2: Investment Problem<a class="headerlink" href="#example-2-investment-problem" title="Permalink to this heading">#</a></h2>
 <p>We now consider a problem posed and solved by  <span id="id3">[<a class="reference internal" href="zreferences.html#id42" title="Y. Hu, Y. &amp; Guo. Operations research. Tsinghua University Press, 5th edition, 2018.">Hu18</a>]</span>.</p>
 <p>A mutual fund has <span class="math notranslate nohighlight">\( \$ 100,000\)</span> to be invested over a three year horizon.</p>
 <p>Three investment options are available:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p><strong>Annuity:</strong>  the fund can  pay a same amount of new capital at the beginning of each of three years and receive a payoff of 130% of <strong>total capital</strong> invested  at the end of the third year. Once the mutual fund decides to invest in this annuity, it has to keep investing in all subsequent  years in the three year horizon.</p></li>
 <li><p><strong>Bank account:</strong> the fund can deposit any amount  into a bank at the beginning of each year and receive its capital plus 6% interest at the end of that year. In addition, the mutual fund is permitted to borrow no more than $20,000 at the beginning of each year and is asked to pay back the amount borrowed plus 6% interest at the end of the year. The mutual fund can choose whether to deposit or borrow at the beginning of each year.</p></li>
 <li><p><strong>Corporate bond:</strong> At the beginning of the second year, a  corporate bond becomes available.
@@ -463,32 +405,32 @@ that is no more than <span class="math notranslate nohighlight">\( \$ \)</span>5
 <p>The table below shows the mutual fund’s decision variables together with the timing protocol described above:</p>
 <table class="colwidths-auto table">
 <thead>
-<tr class="row-odd"><th class="text-align:center head"><p></p></th>
-<th class="text-align:center head"><p>Year 1</p></th>
-<th class="text-align:center head"><p>Year 2</p></th>
-<th class="text-align:center head"><p>Year 3</p></th>
+<tr class="row-odd"><th class="text-center head"><p></p></th>
+<th class="text-center head"><p>Year 1</p></th>
+<th class="text-center head"><p>Year 2</p></th>
+<th class="text-center head"><p>Year 3</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-align:center"><p>Annuity</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(x_1\)</span></p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(x_1\)</span></p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(x_1\)</span></p></td>
+<tr class="row-even"><td class="text-center"><p>Annuity</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(x_1\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(x_1\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(x_1\)</span></p></td>
 </tr>
-<tr class="row-odd"><td class="text-align:center"><p>Bank account</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(x_2\)</span></p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(x_3\)</span></p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(x_4\)</span></p></td>
+<tr class="row-odd"><td class="text-center"><p>Bank account</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(x_2\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(x_3\)</span></p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(x_4\)</span></p></td>
 </tr>
-<tr class="row-even"><td class="text-align:center"><p>Corporate bond</p></td>
-<td class="text-align:center"><p>0</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(x_5\)</span></p></td>
-<td class="text-align:center"><p>0</p></td>
+<tr class="row-even"><td class="text-center"><p>Corporate bond</p></td>
+<td class="text-center"><p>0</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(x_5\)</span></p></td>
+<td class="text-center"><p>0</p></td>
 </tr>
 </tbody>
 </table>
 <p>The  mutual fund’s decision making proceeds according to the following timing protocol:</p>
-<ol>
+<ol class="arabic">
 <li><p>At the beginning of the first year, the mutual fund decides how much to invest in the annuity and
 how much to deposit in the bank. This decision is subject to the constraint:</p>
 <div class="math notranslate nohighlight">
@@ -534,9 +476,9 @@ leaving it with  a bank account balance equal to <span class="math notranslate n
  &amp; x_j \ \text{unrestricted}, \quad j = 2,3,4\\
 \end{aligned}
 \end{split}\]</div>
-</div>
-<div class="section" id="standard-form">
-<h2><span class="section-number">21.5. </span>Standard Form<a class="headerlink" href="#standard-form" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="standard-form">
+<h2><span class="section-number">21.5. </span>Standard Form<a class="headerlink" href="#standard-form" title="Permalink to this heading">#</a></h2>
 <p>For purposes of</p>
 <ul class="simple">
 <li><p>unifying linear programs that are initially stated in superficially different forms, and</p></li>
@@ -570,7 +512,7 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 \end{split}\]</div>
 <p>The standard form LP problem can be expressed concisely as:</p>
 <div class="math notranslate nohighlight" id="equation-lpproblem">
-<span class="eqno">(21.2)<a class="headerlink" href="#equation-lpproblem" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(21.2)<a class="headerlink" href="#equation-lpproblem" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 \min_{x} \ &amp; c'x \\
 \mbox{subject to } \ &amp; Ax = b\\
@@ -579,19 +521,19 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 \end{split}\]</div>
 <p>Here, <span class="math notranslate nohighlight">\(Ax = b\)</span> means that  the <span class="math notranslate nohighlight">\(i\)</span>-th entry of <span class="math notranslate nohighlight">\(Ax\)</span>  equals the <span class="math notranslate nohighlight">\(i\)</span>-th entry of <span class="math notranslate nohighlight">\(b\)</span> for every <span class="math notranslate nohighlight">\(i\)</span>.</p>
 <p>Similarly, <span class="math notranslate nohighlight">\(x &gt;= 0\)</span> means that  <span class="math notranslate nohighlight">\(x_j\)</span> is greater than <span class="math notranslate nohighlight">\(0\)</span> for every <span class="math notranslate nohighlight">\(j\)</span>.</p>
-<div class="section" id="useful-transformations">
-<h3><span class="section-number">21.5.1. </span>Useful Transformations<a class="headerlink" href="#useful-transformations" title="Permalink to this headline">¶</a></h3>
+<section id="useful-transformations">
+<h3><span class="section-number">21.5.1. </span>Useful Transformations<a class="headerlink" href="#useful-transformations" title="Permalink to this heading">#</a></h3>
 <p>It is useful to know how to transform a problem that initially is not stated in the standard form into one that is.</p>
 <p>By deploying the following steps, any linear programming problem can be transformed into an  equivalent  standard form linear programming problem.</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p><strong>Objective Function:</strong> If a problem is originally a constrained <strong>maximization</strong> problem, we can construct a new objective function that  is the additive inverse of the original objective function. The transformed problem is then a <strong>minimization</strong> problem.</p></li>
 <li><p><strong>Decision Variables:</strong> Given a variable <span class="math notranslate nohighlight">\(x_j\)</span> satisfying <span class="math notranslate nohighlight">\(x_j \le 0\)</span>, we can introduce a new variable <span class="math notranslate nohighlight">\(x_j' = - x_j\)</span> and subsitute it into original problem. Given a free variable <span class="math notranslate nohighlight">\(x_i\)</span> with no restriction on its sign, we can introduce two new variables <span class="math notranslate nohighlight">\(x_j^+\)</span> and <span class="math notranslate nohighlight">\(x_j^-\)</span> satisfying <span class="math notranslate nohighlight">\(x_j^+, x_j^- \ge 0\)</span> and replace <span class="math notranslate nohighlight">\(x_j\)</span> by <span class="math notranslate nohighlight">\(x_j^+ - x_j^-\)</span>.</p></li>
 <li><p><strong>Inequality constraints:</strong> Given an inequality constraint <span class="math notranslate nohighlight">\(\sum_{j=1}^n a_{ij}x_j \le 0\)</span>, we can introduce a new variable <span class="math notranslate nohighlight">\(s_i\)</span>, called a <strong>slack variable</strong> that satisfies <span class="math notranslate nohighlight">\(s_i \ge 0\)</span> and replace the original constraint by <span class="math notranslate nohighlight">\(\sum_{j=1}^n a_{ij}x_j + s_i = 0\)</span>.</p></li>
 </ol>
 <p>Let’s apply the above steps to the two examples described above.</p>
-</div>
-<div class="section" id="id4">
-<h3><span class="section-number">21.5.2. </span>Example 1: Production Problem<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id4">
+<h3><span class="section-number">21.5.2. </span>Example 1: Production Problem<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
 <p>The original problem is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -612,9 +554,9 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 &amp; x_1, x_2, s_1, s_2 \ge 0 \\
 \end{aligned}
 \end{split}\]</div>
-</div>
-<div class="section" id="id5">
-<h3><span class="section-number">21.5.3. </span>Example 2: Investment Problem<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id5">
+<h3><span class="section-number">21.5.3. </span>Example 2: Investment Problem<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
 <p>The original problem is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -648,10 +590,10 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
  &amp; s_j \ge 0, \quad j = 1,2,3,4\\
 \end{aligned}
 \end{split}\]</div>
-</div>
-</div>
-<div class="section" id="computations">
-<h2><span class="section-number">21.6. </span>Computations<a class="headerlink" href="#computations" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="computations">
+<h2><span class="section-number">21.6. </span>Computations<a class="headerlink" href="#computations" title="Permalink to this heading">#</a></h2>
 <p>The package <em>scipy.optimize</em> provides a function <em><strong>linprog</strong></em> to solve linear programming problems with a form below:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -667,8 +609,8 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 <p>By default <span class="math notranslate nohighlight">\(l = 0\)</span> and <span class="math notranslate nohighlight">\(u = \text{None}\)</span> unless explicitly specified with the argument ‘bounds’.</p>
 </div>
 <p>Let’s apply this great Python tool to solve our two example problems.</p>
-<div class="section" id="id6">
-<h3><span class="section-number">21.6.1. </span>Example 1: Production Problem<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<section id="id6">
+<h3><span class="section-number">21.6.1. </span>Example 1: Production Problem<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
 <p>The problem is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -698,18 +640,16 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_11876/1851481465.py:11: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_6899/1851481465.py:11: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
   res_ex1 = linprog(-c_ex1, A_ub=A_ex1, b_ub=b_ex1, method=&#39;revised simplex&#39;)
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([], dtype=float64)
-     fun: -27.5
- message: &#39;Optimization terminated successfully.&#39;
-     nit: 2
-   slack: array([0., 0.])
-  status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
  success: True
-       x: array([2.5, 5. ])
+  status: 0
+     fun: -27.5
+       x: [ 2.500e+00  5.000e+00]
+     nit: 2
 </pre></div>
 </div>
 </div>
@@ -724,9 +664,9 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 <p class="admonition-title">Note</p>
 <p>This problem is to maximize the objective, so that we need to put a minus sign in front of parameter vector c.</p>
 </div>
-</div>
-<div class="section" id="id7">
-<h3><span class="section-number">21.6.2. </span>Example 2: Investment Problem<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id7">
+<h3><span class="section-number">21.6.2. </span>Example 2: Investment Problem<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
 <p>The problem is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -774,34 +714,31 @@ x = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \\ \end{bmatrix}. \quad
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_11876/1937289231.py:21: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_6899/1937289231.py:21: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
   res_ex2 = linprog(-c_ex2, A_eq=A_ex2, b_eq=b_ex2,
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([ 1.45519152e-11, -2.18278728e-11,  0.00000000e+00])
-     fun: -141018.24349792692
- message: &#39;Optimization terminated successfully.&#39;
-     nit: 4
-   slack: array([], dtype=float64)
-  status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
  success: True
-       x: array([ 24927.75474306,  75072.24525694,   4648.8252293 , -20000.        ,
-        50000.        ])
+  status: 0
+     fun: -141018.24349792692
+       x: [ 2.493e+04  7.507e+04  4.649e+03 -2.000e+04  5.000e+04]
+     nit: 4
 </pre></div>
 </div>
 </div>
 </div>
 <p>Python tells us that  the best investment strategy is:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>At the beginning of the first year, the mutual fund should buy <span class="math notranslate nohighlight">\( \$24,927.75\)</span> of the annuity. Its bank account balance should be <span class="math notranslate nohighlight">\( \$75,072.25\)</span>.</p></li>
 <li><p>At the beginning of the second year, the mutual fund should buy <span class="math notranslate nohighlight">\( \$50,000 \)</span> of the corporate bond and keep invest in the annuity. Its bank account balance should be <span class="math notranslate nohighlight">\( \$ 4,648.83\)</span>.</p></li>
 <li><p>At the beginning of the third year, the mutual fund should borrow <span class="math notranslate nohighlight">\( \$20,000\)</span> from the bank and invest in the annuity.</p></li>
 <li><p>At the end of the third year, the mutual fund will get payouts from the annuity and corporate bond and repay its loan from the bank. At the end  it will own <span class="math notranslate nohighlight">\( \$ \)</span>141018.24, so that it’s total net  rate of return over the three periods is 41.02%.</p></li>
 </ol>
-</div>
-</div>
-<div class="section" id="duality">
-<h2><span class="section-number">21.7. </span>Duality<a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="duality">
+<h2><span class="section-number">21.7. </span>Duality<a class="headerlink" href="#duality" title="Permalink to this heading">#</a></h2>
 <p>Associated with a  linear programming of form <a class="reference internal" href="#equation-linprog">(21.1)</a> with <span class="math notranslate nohighlight">\(m\)</span> constraints and <span class="math notranslate nohighlight">\(n\)</span> decision variables,
 there is an <strong>dual</strong> linear programming problem that takes the form (please see <span id="id8">[<a class="reference internal" href="zreferences.html#id41" title="J. N. Bertsimas, D. &amp; Tsitsiklis. Introduction to linear optimization. Athena Scientific, 1997.">Ber97</a>]</span>)</p>
 <div class="math notranslate nohighlight">
@@ -831,7 +768,7 @@ a_m' \\
 \end{bmatrix}.
 \end{split}\]</div>
 <p>To construct the  dual of linear programming problem <a class="reference internal" href="#equation-linprog">(21.1)</a>, we proceed as follows:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>For every constraint <span class="math notranslate nohighlight">\(a_i' x \ge(\le or =) b_i\)</span>, <span class="math notranslate nohighlight">\(j = 1,2,...,m\)</span>, in the primal problem, we construct a corresponding dual variable <span class="math notranslate nohighlight">\(p_i\)</span>. <span class="math notranslate nohighlight">\(p_i\)</span> is restricted to be positive if <span class="math notranslate nohighlight">\(a_i' x \ge b_i\)</span> or negative if <span class="math notranslate nohighlight">\(a_i' x \le b_i\)</span> or unrestricted if <span class="math notranslate nohighlight">\(a_i' x = b_i\)</span>. We construct the <span class="math notranslate nohighlight">\(m\)</span>-dimensional vector   <span class="math notranslate nohighlight">\(p\)</span> with entries <span class="math notranslate nohighlight">\(p_i\)</span>.</p></li>
 <li><p>For every variable <span class="math notranslate nohighlight">\(x_j\)</span>, <span class="math notranslate nohighlight">\(j = 1,2,...,n\)</span>, we construct a corresponding dual constraint <span class="math notranslate nohighlight">\(A_j' p \ge(\le or =) c_j\)</span>. The constraint is <span class="math notranslate nohighlight">\(A_j' p \ge c_j\)</span> if <span class="math notranslate nohighlight">\(x_j \le 0\)</span>, <span class="math notranslate nohighlight">\(A_j' p \le c_j\)</span> if <span class="math notranslate nohighlight">\(x_j \ge 0\)</span> or <span class="math notranslate nohighlight">\(A_j' p = c_j\)</span> if <span class="math notranslate nohighlight">\(x_j \)</span> is unrestricted.</p></li>
 <li><p>The dual problem is to <strong>maximize</strong>  objective function <span class="math notranslate nohighlight">\(b'p\)</span>.</p></li>
@@ -841,34 +778,34 @@ a_m' \\
 <p>The following table summarizes relationships between objects in primal and dual problems.</p>
 <table class="colwidths-auto table">
 <thead>
-<tr class="row-odd"><th class="text-align:center head"><p>Objective: Min</p></th>
-<th class="text-align:center head"><p>Objective: Max</p></th>
+<tr class="row-odd"><th class="text-center head"><p>Objective: Min</p></th>
+<th class="text-center head"><p>Objective: Max</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-align:center"><p>m constraints</p></td>
-<td class="text-align:center"><p>m variables</p></td>
+<tr class="row-even"><td class="text-center"><p>m constraints</p></td>
+<td class="text-center"><p>m variables</p></td>
 </tr>
-<tr class="row-odd"><td class="text-align:center"><p>constraint <span class="math notranslate nohighlight">\(\ge\)</span></p></td>
-<td class="text-align:center"><p>variable <span class="math notranslate nohighlight">\(\ge\)</span> 0</p></td>
+<tr class="row-odd"><td class="text-center"><p>constraint <span class="math notranslate nohighlight">\(\ge\)</span></p></td>
+<td class="text-center"><p>variable <span class="math notranslate nohighlight">\(\ge\)</span> 0</p></td>
 </tr>
-<tr class="row-even"><td class="text-align:center"><p>constraint <span class="math notranslate nohighlight">\(\le\)</span></p></td>
-<td class="text-align:center"><p>variable <span class="math notranslate nohighlight">\(\le\)</span> 0</p></td>
+<tr class="row-even"><td class="text-center"><p>constraint <span class="math notranslate nohighlight">\(\le\)</span></p></td>
+<td class="text-center"><p>variable <span class="math notranslate nohighlight">\(\le\)</span> 0</p></td>
 </tr>
-<tr class="row-odd"><td class="text-align:center"><p>constraint <span class="math notranslate nohighlight">\(=\)</span></p></td>
-<td class="text-align:center"><p>variable free</p></td>
+<tr class="row-odd"><td class="text-center"><p>constraint <span class="math notranslate nohighlight">\(=\)</span></p></td>
+<td class="text-center"><p>variable free</p></td>
 </tr>
-<tr class="row-even"><td class="text-align:center"><p>n variables</p></td>
-<td class="text-align:center"><p>n constraints</p></td>
+<tr class="row-even"><td class="text-center"><p>n variables</p></td>
+<td class="text-center"><p>n constraints</p></td>
 </tr>
-<tr class="row-odd"><td class="text-align:center"><p>variable <span class="math notranslate nohighlight">\(\ge\)</span> 0</p></td>
-<td class="text-align:center"><p>constraint <span class="math notranslate nohighlight">\(\le\)</span></p></td>
+<tr class="row-odd"><td class="text-center"><p>variable <span class="math notranslate nohighlight">\(\ge\)</span> 0</p></td>
+<td class="text-center"><p>constraint <span class="math notranslate nohighlight">\(\le\)</span></p></td>
 </tr>
-<tr class="row-even"><td class="text-align:center"><p>variable <span class="math notranslate nohighlight">\(\le\)</span> 0</p></td>
-<td class="text-align:center"><p>constraint <span class="math notranslate nohighlight">\(\ge\)</span></p></td>
+<tr class="row-even"><td class="text-center"><p>variable <span class="math notranslate nohighlight">\(\le\)</span> 0</p></td>
+<td class="text-center"><p>constraint <span class="math notranslate nohighlight">\(\ge\)</span></p></td>
 </tr>
-<tr class="row-odd"><td class="text-align:center"><p>variable free</p></td>
-<td class="text-align:center"><p>constraint <span class="math notranslate nohighlight">\(=\)</span></p></td>
+<tr class="row-odd"><td class="text-center"><p>variable free</p></td>
+<td class="text-center"><p>constraint <span class="math notranslate nohighlight">\(=\)</span></p></td>
 </tr>
 </tbody>
 </table>
@@ -882,7 +819,7 @@ a_m' \\
 \end{split}\]</div>
 <p>As another example, consider a linear programming problem with form:</p>
 <div class="math notranslate nohighlight" id="equation-linprog2">
-<span class="eqno">(21.3)<a class="headerlink" href="#equation-linprog2" title="Permalink to this equation">¶</a></span>\[\begin{split}
+<span class="eqno">(21.3)<a class="headerlink" href="#equation-linprog2" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 \max_{x} \ &amp; c'x \\
 \mbox{subject to } \ &amp; A x \le b\\
@@ -898,9 +835,9 @@ a_m' \\
 &amp; p \ge 0\\
 \end{aligned}
 \end{split}\]</div>
-</div>
-<div class="section" id="duality-theorems">
-<h2><span class="section-number">21.8. </span>Duality Theorems<a class="headerlink" href="#duality-theorems" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="duality-theorems">
+<h2><span class="section-number">21.8. </span>Duality Theorems<a class="headerlink" href="#duality-theorems" title="Permalink to this heading">#</a></h2>
 <p>Primal and dual problems are linked by powerful <strong>duality theorems</strong> that have  <strong>weak</strong> and <strong>strong</strong> forms.</p>
 <p>The duality theorems provide the foundations of enlightening economic interpretations of linear programming problems.</p>
 <p><strong>Weak duality:</strong> For linear programming problem <a class="reference internal" href="#equation-linprog">(21.1)</a>, if <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p\)</span> are feasible solutions to the primal and the dual problems, respectively, then</p>
@@ -915,8 +852,8 @@ b'p = c'x
 \]</div>
 <p>According to strong duality, we can find the optimal value for the primal problem by solving the dual problem.</p>
 <p>But the dual problem tells us even more as we shall see next.</p>
-<div class="section" id="complementary-slackness">
-<h3><span class="section-number">21.8.1. </span>Complementary Slackness<a class="headerlink" href="#complementary-slackness" title="Permalink to this headline">¶</a></h3>
+<section id="complementary-slackness">
+<h3><span class="section-number">21.8.1. </span>Complementary Slackness<a class="headerlink" href="#complementary-slackness" title="Permalink to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p\)</span> be feasible solutions to the primal problem <a class="reference internal" href="#equation-linprog">(21.1)</a> and its dual problem, respectively.</p>
 <p>Then <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(p\)</span> are also  optimal solutions of the primal and dual problems if and only if:</p>
 <div class="math notranslate nohighlight">
@@ -927,9 +864,9 @@ x_j (A_j' p - c_j) = 0, \quad \forall j.
 <p>This means that <span class="math notranslate nohighlight">\(p_i = 0\)</span> if <span class="math notranslate nohighlight">\(a_i' x - b_i \neq 0\)</span> and <span class="math notranslate nohighlight">\(x_j = 0\)</span> if <span class="math notranslate nohighlight">\(A_j' p - c_j \neq 0\)</span>.</p>
 <p>These are the celebrated <strong>complementary slackness</strong> conditions.</p>
 <p>Let’s interpret them.</p>
-</div>
-<div class="section" id="interpretations">
-<h3><span class="section-number">21.8.2. </span>Interpretations<a class="headerlink" href="#interpretations" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="interpretations">
+<h3><span class="section-number">21.8.2. </span>Interpretations<a class="headerlink" href="#interpretations" title="Permalink to this heading">#</a></h3>
 <p>Let’s take a version of problem <a class="reference internal" href="#equation-linprog2">(21.3)</a> as a production problem and consider its associated dual problem.</p>
 <p>A factory produce <span class="math notranslate nohighlight">\(n\)</span> products with <span class="math notranslate nohighlight">\(m\)</span> types of resources.</p>
 <p>Where  <span class="math notranslate nohighlight">\(i=1,2,\dots,m\)</span> and <span class="math notranslate nohighlight">\(j=1,2,\dots,n\)</span>, let</p>
@@ -967,9 +904,9 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <p>If there exists <span class="math notranslate nohighlight">\(j\)</span> such that <span class="math notranslate nohighlight">\(A_j' p - c_j &gt; 0\)</span>, then <span class="math notranslate nohighlight">\(x_j = 0\)</span> by complementary slackness. <span class="math notranslate nohighlight">\(A_j' p - c_j &gt; 0\)</span> means that  the value of all resources used when producing one unit of product <span class="math notranslate nohighlight">\(j\)</span> is greater than its cost.</p>
 <p>This means that  producing another product that  can more efficiently utilize these resources is a better choice than producing product <span class="math notranslate nohighlight">\(j\)</span></p>
 <p>Since producing product <span class="math notranslate nohighlight">\(j\)</span> is not optimal, <span class="math notranslate nohighlight">\(x_j\)</span> should equal <span class="math notranslate nohighlight">\(0\)</span>.</p>
-</div>
-<div class="section" id="id9">
-<h3><span class="section-number">21.8.3. </span>Example 1: Production Problem<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id9">
+<h3><span class="section-number">21.8.3. </span>Example 1: Production Problem<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h3>
 <p>This problem is one specific instance of the problem <a class="reference internal" href="#equation-linprog2">(21.3)</a>, whose economic meaning is interpreted above.</p>
 <p>Its dual problem is:</p>
 <div class="math notranslate nohighlight">
@@ -993,18 +930,16 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_11876/1704321462.py:2: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_6899/1704321462.py:2: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
   res_ex1_dual = linprog(b_ex1, A_ub=-A_ex1.T, b_ub=-c_ex1, method=&#39;revised simplex&#39;)
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([], dtype=float64)
-     fun: 27.5
- message: &#39;Optimization terminated successfully.&#39;
-     nit: 2
-   slack: array([0., 0.])
-  status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
  success: True
-       x: array([0.625 , 0.4375])
+  status: 0
+     fun: 27.5
+       x: [ 6.250e-01  4.375e-01]
+     nit: 2
 </pre></div>
 </div>
 </div>
@@ -1012,9 +947,9 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <p>The optimal value for the dual problem equals  27.5.</p>
 <p>This equals the optimal value of  the primal problem, an illustration of  strong duality.</p>
 <p>Shadow prices for materials and labor are 0.625 and 0.4375, respectively.</p>
-</div>
-<div class="section" id="id10">
-<h3><span class="section-number">21.8.4. </span>Example 2: Investment Problem<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id10">
+<h3><span class="section-number">21.8.4. </span>Example 2: Investment Problem<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h3>
 <p>The dual problem is:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1066,19 +1001,17 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_11876/410442426.py:25: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_6899/410442426.py:25: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
   res_ex2_dual = linprog(c_ex2_dual, A_eq=A_eq_ex2_dual, b_eq=b_eq_ex2_dual,
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     con: array([-2.22044605e-16,  0.00000000e+00,  0.00000000e+00])
-     fun: 141018.2434979269
- message: &#39;Optimization terminated successfully.&#39;
-     nit: 4
-   slack: array([0., 0.])
-  status: 0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
  success: True
-       x: array([ 1.37644176,  1.29852997,  1.22502827,  0.        ,  0.        ,
-       -0.16502827,  0.00147003])
+  status: 0
+     fun: 141018.2434979269
+       x: [ 1.376e+00  1.299e+00  1.225e+00  0.000e+00  0.000e+00
+           -1.650e-01  1.470e-03]
+     nit: 4
 </pre></div>
 </div>
 </div>
@@ -1102,15 +1035,15 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
 <p>If the interest rate is lower than <span class="math notranslate nohighlight">\(|p_i|\)</span>, then the mutual fund should borrow to increase its optimal payoff;  if the interest rate is higher, it is better to not do this.</p>
 <p>For <span class="math notranslate nohighlight">\(i = 7\)</span>, this means that if the amount of the corporate bond the mutual fund can buy changes one dollar, then the optimal payoff will change <span class="math notranslate nohighlight">\(p_7\)</span> dollars at the end of the third year.  Again, <span class="math notranslate nohighlight">\(p_7\)</span> is the shadow price for the amount of the corporate bond the mutual fund can buy.</p>
 <p>As for numerical results</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\(p_1 = 1.38\)</span>, which means one dollar of initial capital is worth <span class="math notranslate nohighlight">\(\$ 1.38\)</span> at the end of the third year.</p></li>
 <li><p><span class="math notranslate nohighlight">\(p_4 = p_5 = 0\)</span>, which means the loan amounts at the beginning of the first and second year are worth nothing. Recall that the optimal solution to the primal problem, <span class="math notranslate nohighlight">\(x_2, x_3 &gt; 0\)</span>, which means at the beginning of the first and second year, the mutual fund has a postive bank account and borrows no capital from the bank. Thus, it is reasonable that the loan amounts at the beginning of the first and second year are valueless. This is what the  complementary slackness conditions mean in this setting.</p></li>
 <li><p><span class="math notranslate nohighlight">\(p_6 = -0.16\)</span>, which means one dollar of the loan amount at the beginning of the third year is worth <span class="math notranslate nohighlight">\(\$ 0.16\)</span>. Since <span class="math notranslate nohighlight">\(|p_6|\)</span> is higher than the interest rate 6%, the mutual fund should borrow as much as possible at the beginning of the third year. Recall that  the optimal solution to the primal problem is  <span class="math notranslate nohighlight">\(x_4 = -20,000\)</span> which means the mutual fund borrows money from the bank as much as it can.</p></li>
 <li><p><span class="math notranslate nohighlight">\(p_7 = 0.0015\)</span>, which means one dollar of the amount of the corporate bond that the mutual fund can buy is worth <span class="math notranslate nohighlight">\(\$ 0.0015\)</span>.</p></li>
 </ol>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1124,7 +1057,7 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1705,7 +1638,7 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1847,16 +1780,5 @@ It is reasonable that the shadow price of Resource <span class="math notranslate
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

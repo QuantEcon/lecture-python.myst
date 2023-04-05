@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>15. Multivariate Normal Distribution &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'multivariate_normal';</script>
     <link rel="canonical" href="https://python.quantecon.org/multivariate_normal.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,122 +161,33 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   15.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-multivariate-normal-distribution">
-   15.2. The Multivariate Normal Distribution
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bivariate-example">
-   15.3. Bivariate Example
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#trivariate-example">
-   15.4. Trivariate Example
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#one-dimensional-intelligence-iq">
-   15.5. One Dimensional Intelligence (IQ)
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#information-as-surprise">
-   15.6. Information as Surprise
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#cholesky-factor-magic">
-   15.7. Cholesky Factor Magic
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#math-and-verbal-intelligence">
-   15.8. Math and Verbal  Intelligence
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#univariate-time-series-analysis">
-   15.9. Univariate Time Series Analysis
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#smoothing-example">
-     15.9.1. Smoothing Example
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#filtering-exercise">
-     15.9.2. Filtering Exercise
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#prediction-exercise">
-     15.9.3. Prediction Exercise
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#constructing-a-wold-representation">
-     15.9.4. Constructing a Wold Representation
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#stochastic-difference-equation">
-   15.10. Stochastic Difference Equation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#application-to-stock-price-model">
-   15.11. Application to Stock Price Model
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#filtering-foundations">
-   15.12. Filtering Foundations
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#step-toward-dynamics">
-     15.12.1. Step toward dynamics
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#dynamic-version">
-     15.12.2. Dynamic version
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#an-example">
-     15.12.3. An example
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#code-for-iterating">
-     15.12.4. Code for Iterating
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#classic-factor-analysis-model">
-   15.13. Classic Factor Analysis Model
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pca-and-factor-analysis">
-   15.14. PCA and Factor Analysis
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">15.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-multivariate-normal-distribution">15.2. The Multivariate Normal Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bivariate-example">15.3. Bivariate Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trivariate-example">15.4. Trivariate Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-dimensional-intelligence-iq">15.5. One Dimensional Intelligence (IQ)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#information-as-surprise">15.6. Information as Surprise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cholesky-factor-magic">15.7. Cholesky Factor Magic</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#math-and-verbal-intelligence">15.8. Math and Verbal  Intelligence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-time-series-analysis">15.9. Univariate Time Series Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing-example">15.9.1. Smoothing Example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-exercise">15.9.2. Filtering Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction-exercise">15.9.3. Prediction Exercise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-a-wold-representation">15.9.4. Constructing a Wold Representation</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stochastic-difference-equation">15.10. Stochastic Difference Equation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-to-stock-price-model">15.11. Application to Stock Price Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-foundations">15.12. Filtering Foundations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-toward-dynamics">15.12.1. Step toward dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-version">15.12.2. Dynamic version</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example">15.12.3. An example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-for-iterating">15.12.4. Code for Iterating</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classic-factor-analysis-model">15.13. Classic Factor Analysis Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-and-factor-analysis">15.14. PCA and Factor Analysis</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -313,8 +235,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="multivariate-normal-distribution">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">15. </span>Multivariate Normal Distribution</a><a class="headerlink" href="#multivariate-normal-distribution" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="multivariate-normal-distribution">
+<h1><a class="toc-backref" href="#id1"><span class="section-number">15. </span>Multivariate Normal Distribution</a><a class="headerlink" href="#multivariate-normal-distribution" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -338,8 +260,8 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">15.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id2"><span class="section-number">15.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes a workhorse in probability theory, statistics, and economics, namely,
 the <strong>multivariate normal distribution</strong>.</p>
 <p>In this lecture, you will learn formulas for</p>
@@ -357,9 +279,9 @@ the <strong>multivariate normal distribution</strong>.</p>
 <li><p>time series generated by linear stochastic difference equations</p></li>
 <li><p>optimal linear filtering theory</p></li>
 </ul>
-</div>
-<div class="section" id="the-multivariate-normal-distribution">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">15.2. </span>The Multivariate Normal Distribution</a><a class="headerlink" href="#the-multivariate-normal-distribution" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="the-multivariate-normal-distribution">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">15.2. </span>The Multivariate Normal Distribution</a><a class="headerlink" href="#the-multivariate-normal-distribution" title="Permalink to this heading">#</a></h2>
 <p>This lecture defines a Python class <code class="docutils literal notranslate"><span class="pre">MultivariateNormal</span></code> to be used
 to generate <strong>marginal</strong> and <strong>conditional</strong> distributions associated
 with a multivariate normal distribution.</p>
@@ -568,9 +490,9 @@ regressions by generating simulations and then computing linear least
 squares regressions.</p>
 <p>We’ll compare those linear least squares regressions for the simulated
 data to their population counterparts.</p>
-</div>
-<div class="section" id="bivariate-example">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">15.3. </span>Bivariate Example</a><a class="headerlink" href="#bivariate-example" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="bivariate-example">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">15.3. </span>Bivariate Example</a><a class="headerlink" href="#bivariate-example" title="Permalink to this heading">#</a></h2>
 <p>We start with a bivariate normal distribution pinned down by</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -714,7 +636,7 @@ b2 =  [[0.5]]
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/multivariate_normal_16_0.png" src="_images/multivariate_normal_16_0.png" />
+<img alt="_images/1c8b662eee38b1a5f21cc3b8b45d37734b32bff3f76058e2d72e15d035d51042.png" src="_images/1c8b662eee38b1a5f21cc3b8b45d37734b32bff3f76058e2d72e15d035d51042.png" />
 </div>
 </div>
 <p>The red line is the  expectation of <span class="math notranslate nohighlight">\(z_1\)</span> conditional on <span class="math notranslate nohighlight">\(z_2\)</span>.</p>
@@ -830,7 +752,7 @@ estimate on <span class="math notranslate nohighlight">\(z_2 - \mu_2\)</span></p
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.5]]), array([0.50064601]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.5]]), array([0.50058535]))
 </pre></div>
 </div>
 </div>
@@ -844,7 +766,7 @@ degrees-of-freedom adjusted estimate of the variance of <span class="math notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.75]]), 0.7506414090515868)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.75]]), 0.7497935897379866)
 </pre></div>
 </div>
 </div>
@@ -858,7 +780,7 @@ compare it with <span class="math notranslate nohighlight">\(\hat{\mu}_1\)</span
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([2.5]), array([2.50258402]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([2.5]), array([2.50234141]))
 </pre></div>
 </div>
 </div>
@@ -867,9 +789,9 @@ compare it with <span class="math notranslate nohighlight">\(\hat{\mu}_1\)</span
 closely approximate their population counterparts.</p>
 <p>A Law of Large
 Numbers explains why  sample analogues approximate  population objects.</p>
-</div>
-<div class="section" id="trivariate-example">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">15.4. </span>Trivariate Example</a><a class="headerlink" href="#trivariate-example" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="trivariate-example">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">15.4. </span>Trivariate Example</a><a class="headerlink" href="#trivariate-example" title="Permalink to this heading">#</a></h2>
 <p>Let’s apply our code to a trivariate example.</p>
 <p>We’ll specify the mean vector and the covariance matrix as follows.</p>
 <div class="cell docutils container">
@@ -890,10 +812,10 @@ Numbers explains why  sample analogues approximate  population objects.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.98461273, 0.75532091, 0.07289053]),
- array([[1.89853162, 0.7104642 , 0.82994935],
-        [0.7104642 , 1.0853282 , 0.41482493],
-        [0.82994935, 0.41482493, 0.37671415]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.16708388, 0.7249158 , 0.84384211]),
+ array([[1.10510352, 0.76577902, 0.97956321],
+        [0.76577902, 0.55113995, 0.74864206],
+        [0.97956321, 0.74864206, 1.11844527]]))
 </pre></div>
 </div>
 </div>
@@ -946,7 +868,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.32368515,  2.55955882]]), array([-0.32374025,  2.55961459]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 2.20069404, -0.59722985]]), array([ 2.20150726, -0.59777205]))
 </pre></div>
 </div>
 </div>
@@ -958,7 +880,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.00419414]]), 0.004198490589146457)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.00488259]]), 0.004891508021085698)
 </pre></div>
 </div>
 </div>
@@ -970,16 +892,16 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([13.19295512]), array([13.1931613]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.49097253]), array([0.489756]))
 </pre></div>
 </div>
 </div>
 </div>
 <p>Once again, sample analogues do a good job of approximating their
 populations counterparts.</p>
-</div>
-<div class="section" id="one-dimensional-intelligence-iq">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">15.5. </span>One Dimensional Intelligence (IQ)</a><a class="headerlink" href="#one-dimensional-intelligence-iq" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="one-dimensional-intelligence-iq">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">15.5. </span>One Dimensional Intelligence (IQ)</a><a class="headerlink" href="#one-dimensional-intelligence-iq" title="Permalink to this heading">#</a></h2>
 <p>Let’s move closer to a real-life example, namely, inferring a
 one-dimensional measure of intelligence called IQ from a list of test
 scores.</p>
@@ -1148,7 +1070,7 @@ random vector from our distribution and then compute the distribution of
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>88.3548108817904
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>97.66568048773964
 </pre></div>
 </div>
 </div>
@@ -1166,7 +1088,7 @@ population regression.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([88.91264492]), array([[1.96078431]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([98.34110479]), array([[1.96078431]]))
 </pre></div>
 </div>
 </div>
@@ -1227,7 +1149,7 @@ change as more test results come in.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/multivariate_normal_58_0.png" src="_images/multivariate_normal_58_0.png" />
+<img alt="_images/57d586103af6206c030faac2bd65db196416b5fcefe9e351c1b42a678ddf7762.png" src="_images/57d586103af6206c030faac2bd65db196416b5fcefe9e351c1b42a678ddf7762.png" />
 </div>
 </div>
 <p>The solid blue line in the plot above shows <span class="math notranslate nohighlight">\(\hat{\mu}_{\theta}\)</span>
@@ -1248,9 +1170,9 @@ approach <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p>If we were to drive the number of tests <span class="math notranslate nohighlight">\(n \rightarrow + \infty\)</span>, the
 conditional standard deviation <span class="math notranslate nohighlight">\(\hat{\sigma}_{\theta}\)</span> would
 converge to <span class="math notranslate nohighlight">\(0\)</span> at  rate <span class="math notranslate nohighlight">\(\frac{1}{n^{.5}}\)</span>.</p>
-</div>
-<div class="section" id="information-as-surprise">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">15.6. </span>Information as Surprise</a><a class="headerlink" href="#information-as-surprise" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="information-as-surprise">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">15.6. </span>Information as Surprise</a><a class="headerlink" href="#information-as-surprise" title="Permalink to this heading">#</a></h2>
 <p>By using a different representation, let’s look at things from a
 different perspective.</p>
 <p>We can represent the random vector <span class="math notranslate nohighlight">\(X\)</span> defined above as</p>
@@ -1290,7 +1212,7 @@ contains the same information as the non-orthogonal vector
 <span class="math notranslate nohighlight">\(C\)</span>.</p>
 <p>Then we can write</p>
 <div class="math notranslate nohighlight" id="equation-mnv-1">
-<span class="eqno">(15.1)<a class="headerlink" href="#equation-mnv-1" title="Permalink to this equation">¶</a></span>\[\theta = \mu_{\theta} + c_1 \epsilon_1 + c_2 \epsilon_2 + \dots + c_n \epsilon_n + c_{n+1} \epsilon_{n+1}\]</div>
+<span class="eqno">(15.1)<a class="headerlink" href="#equation-mnv-1" title="Permalink to this equation">#</a></span>\[\theta = \mu_{\theta} + c_1 \epsilon_1 + c_2 \epsilon_2 + \dots + c_n \epsilon_n + c_{n+1} \epsilon_{n+1}\]</div>
 <p>The mutual orthogonality of the <span class="math notranslate nohighlight">\(\epsilon_i\)</span>’s provides us with an
 informative way to interpret them in light of equation <a class="reference internal" href="#equation-mnv-1">(15.1)</a>.</p>
 <p>Thus, relative to what is known from tests <span class="math notranslate nohighlight">\(i=1, \ldots, n-1\)</span>,
@@ -1363,9 +1285,9 @@ multivariate normal distributions.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="cholesky-factor-magic">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">15.7. </span>Cholesky Factor Magic</a><a class="headerlink" href="#cholesky-factor-magic" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="cholesky-factor-magic">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">15.7. </span>Cholesky Factor Magic</a><a class="headerlink" href="#cholesky-factor-magic" title="Permalink to this heading">#</a></h2>
 <p>Evidently, the Cholesky factorizations automatically computes the
 population  <strong>regression coefficients</strong> and associated statistics
 that are produced by our <code class="docutils literal notranslate"><span class="pre">MultivariateNormal</span></code> class.</p>
@@ -1378,9 +1300,9 @@ that are produced by our <code class="docutils literal notranslate"><span class=
 <li><p>the coefficient <span class="math notranslate nohighlight">\(c_i\)</span> is the simple population regression
 coefficient of <span class="math notranslate nohighlight">\(\theta - \mu_\theta\)</span> on <span class="math notranslate nohighlight">\(\epsilon_i\)</span></p></li>
 </ul>
-</div>
-<div class="section" id="math-and-verbal-intelligence">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">15.8. </span>Math and Verbal  Intelligence</a><a class="headerlink" href="#math-and-verbal-intelligence" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="math-and-verbal-intelligence">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">15.8. </span>Math and Verbal  Intelligence</a><a class="headerlink" href="#math-and-verbal-intelligence" title="Permalink to this heading">#</a></h2>
 <p>We can alter the preceding example to be more realistic.</p>
 <p>There is ample evidence that IQ is not a scalar.</p>
 <p>Some people are good in math skills but poor in language skills.</p>
@@ -1500,7 +1422,7 @@ the mean vector and covariance matrix of the joint normal distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(88.24337396367287, 94.37701410164875)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(123.40814127944944, 93.78540703729008)
 </pre></div>
 </div>
 </div>
@@ -1519,7 +1441,7 @@ the mean vector and covariance matrix of the joint normal distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([91.77600241, 96.69192724]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([120.52159005,  97.13323216]),
  array([[33.33333333,  0.        ],
         [ 0.        , 33.33333333]]))
 </pre></div>
@@ -1562,21 +1484,21 @@ separately conditional on various subsets of test scores.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean and variance of θ conditional on y1, y2, y3, y4  are 91.78 and 33.33 respectively
-The mean and variance of θ conditional on y1, y2          are 91.78 and 33.33 respectively
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean and variance of θ conditional on y1, y2, y3, y4  are 120.52 and 33.33 respectively
+The mean and variance of θ conditional on y1, y2          are 120.52 and 33.33 respectively
 The mean and variance of θ conditional on y3, y4          are 100.00 and 100.00 respectively
-The mean and variance of η conditional on y1, y2, y3, y4  are 96.69 and 33.33 respectively
+The mean and variance of η conditional on y1, y2, y3, y4  are 97.13 and 33.33 respectively
 The mean and variance of η conditional on y1, y2          are 100.00 and 100.00 respectively
-The mean and variance of η conditional on y3, y4          are 96.69 and 33.33 respectively
+The mean and variance of η conditional on y3, y4          are 97.13 and 33.33 respectively
 </pre></div>
 </div>
 </div>
 </div>
 <p>Evidently, math tests provide no information about <span class="math notranslate nohighlight">\(\mu\)</span> and
 language tests provide no information about <span class="math notranslate nohighlight">\(\eta\)</span>.</p>
-</div>
-<div class="section" id="univariate-time-series-analysis">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">15.9. </span>Univariate Time Series Analysis</a><a class="headerlink" href="#univariate-time-series-analysis" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="univariate-time-series-analysis">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">15.9. </span>Univariate Time Series Analysis</a><a class="headerlink" href="#univariate-time-series-analysis" title="Permalink to this heading">#</a></h2>
 <p>We can use the multivariate normal distribution and a little matrix
 algebra to present foundations of univariate linear time series
 analysis.</p>
@@ -1591,7 +1513,7 @@ y_{t} &amp; = c x_{t} + d v_{t}, \quad v_{t} \sim N\left(0, 1\right), t \geq 0
 \end{aligned}
 \end{split}\]</div>
 <p>We can compute the moments of <span class="math notranslate nohighlight">\(x_{t}\)</span></p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\(E x_{t+1}^2 = a^2 E x_{t}^2 + b^2, t \geq 0\)</span>, where
 <span class="math notranslate nohighlight">\(E x_{0}^2 = \sigma_{0}^2\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(E x_{t+j} x_{t} = a^{j} E x_{t}^2, \forall t \ \forall j\)</span></p></li>
@@ -1781,8 +1703,8 @@ the fun exercises below.</p>
 </div>
 </div>
 </div>
-<div class="section" id="smoothing-example">
-<h3><span class="section-number">15.9.1. </span>Smoothing Example<a class="headerlink" href="#smoothing-example" title="Permalink to this headline">¶</a></h3>
+<section id="smoothing-example">
+<h3><span class="section-number">15.9.1. </span>Smoothing Example<a class="headerlink" href="#smoothing-example" title="Permalink to this heading">#</a></h3>
 <p>This is an instance of a classic <code class="docutils literal notranslate"><span class="pre">smoothing</span></code> calculation whose purpose
 is to compute <span class="math notranslate nohighlight">\(E X \mid Y\)</span>.</p>
 <p>An interpretation of this example is</p>
@@ -1823,23 +1745,23 @@ information about the hidden state</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X =  [ 0.34509707 -1.24423501 -2.96757861 -4.45677975]
-Y =  [ 0.32926331 -1.24075032 -2.97865075 -4.3892762 ]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X =  [-4.47041573e-02  4.41797801e-04 -6.61053925e-01 -1.05270082e+00]
+Y =  [-0.01216065  0.0459639  -0.62638834 -1.02316734]
  E [ X | Y] = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([ 0.3250002 , -1.24110321, -2.97783481, -4.38501379]),
- array([[2.48875094e-03, 5.57449314e-06, 1.24861722e-08, 2.80239165e-11],
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.01200658,  0.04432835, -0.6257566 , -1.02202025]),
+ array([[2.48875094e-03, 5.57449314e-06, 1.24861729e-08, 2.80236945e-11],
         [5.57449314e-06, 2.48876343e-03, 5.57452116e-06, 1.25113944e-08],
-        [1.24861721e-08, 5.57452116e-06, 2.48876346e-03, 5.58575339e-06],
-        [2.80239165e-11, 1.25113944e-08, 5.58575339e-06, 2.49377812e-03]]))
+        [1.24861728e-08, 5.57452116e-06, 2.48876346e-03, 5.58575339e-06],
+        [2.80236945e-11, 1.25113941e-08, 5.58575339e-06, 2.49377812e-03]]))
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="filtering-exercise">
-<h3><span class="section-number">15.9.2. </span>Filtering Exercise<a class="headerlink" href="#filtering-exercise" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="filtering-exercise">
+<h3><span class="section-number">15.9.2. </span>Filtering Exercise<a class="headerlink" href="#filtering-exercise" title="Permalink to this heading">#</a></h3>
 <p>Compute <span class="math notranslate nohighlight">\(E\left[x_{t} \mid y_{t-1}, y_{t-2}, \dots, y_{0}\right]\)</span>.</p>
 <p>To do so, we need to first construct the mean vector and the covariance
 matrix of the subvector
@@ -1901,14 +1823,14 @@ matrix of the subvector
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-2.67660737]), array([[1.00201996]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.5622541]), array([[1.00201996]]))
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="prediction-exercise">
-<h3><span class="section-number">15.9.3. </span>Prediction Exercise<a class="headerlink" href="#prediction-exercise" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="prediction-exercise">
+<h3><span class="section-number">15.9.3. </span>Prediction Exercise<a class="headerlink" href="#prediction-exercise" title="Permalink to this heading">#</a></h3>
 <p>Compute <span class="math notranslate nohighlight">\(E\left[y_{t} \mid y_{t-j}, \dots, y_{0} \right]\)</span>.</p>
 <p>As what we did in exercise 2, we will construct the mean vector and
 covariance matrix of the subvector
@@ -1966,14 +1888,14 @@ covariance matrix of the subvector
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-1.00191065]), array([[1.81413617]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.03711609]), array([[1.81413617]]))
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="constructing-a-wold-representation">
-<h3><span class="section-number">15.9.4. </span>Constructing a Wold Representation<a class="headerlink" href="#constructing-a-wold-representation" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="constructing-a-wold-representation">
+<h3><span class="section-number">15.9.4. </span>Constructing a Wold Representation<a class="headerlink" href="#constructing-a-wold-representation" title="Permalink to this heading">#</a></h3>
 <p>Now we’ll apply Cholesky decomposition to decompose
 <span class="math notranslate nohighlight">\(\Sigma_{y}=H H^{\prime}\)</span> and form</p>
 <div class="math notranslate nohighlight">
@@ -2011,7 +1933,7 @@ y_{t} = h_{t,t} \epsilon_{t} + h_{t,t-1} \epsilon_{t-1} + \dots + h_{t,0} \epsil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.3288525 , -1.53288792, -1.86121512, -1.7088113 ])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.01214548,  0.05675307, -0.66612471, -0.45987511])
 </pre></div>
 </div>
 </div>
@@ -2023,16 +1945,16 @@ y_{t} = h_{t,t} \epsilon_{t} + h_{t,t-1} \epsilon_{t-1} + \dots + h_{t,0} \epsil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.32926331, -1.24075032, -2.97865075, -4.3892762 ])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.01216065,  0.0459639 , -0.62638834, -1.02316734])
 </pre></div>
 </div>
 </div>
 </div>
 <p>This example is an instance of what is known as a <strong>Wold representation</strong> in time series analysis.</p>
-</div>
-</div>
-<div class="section" id="stochastic-difference-equation">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">15.10. </span>Stochastic Difference Equation</a><a class="headerlink" href="#stochastic-difference-equation" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="stochastic-difference-equation">
+<h2><a class="toc-backref" href="#id11"><span class="section-number">15.10. </span>Stochastic Difference Equation</a><a class="headerlink" href="#stochastic-difference-equation" title="Permalink to this heading">#</a></h2>
 <p>Consider the stochastic second-order linear difference equation</p>
 <div class="math notranslate nohighlight">
 \[
@@ -2183,9 +2105,9 @@ C\Sigma_{\tilde{y}}C^{\prime} &amp; \boldsymbol{0}_{N-2\times N-2}\\
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="application-to-stock-price-model">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">15.11. </span>Application to Stock Price Model</a><a class="headerlink" href="#application-to-stock-price-model" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="application-to-stock-price-model">
+<h2><a class="toc-backref" href="#id12"><span class="section-number">15.11. </span>Application to Stock Price Model</a><a class="headerlink" href="#application-to-stock-price-model" title="Permalink to this heading">#</a></h2>
 <p>Let</p>
 <div class="math notranslate nohighlight">
 \[
@@ -2320,7 +2242,7 @@ the <code class="docutils literal notranslate"><span class="pre">MultivariateNor
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/multivariate_normal_121_0.png" src="_images/multivariate_normal_121_0.png" />
+<img alt="_images/251284e7cd4e9f9eda1765cf0fc59992790439caeebfdb4fc2088c961345a152.png" src="_images/251284e7cd4e9f9eda1765cf0fc59992790439caeebfdb4fc2088c961345a152.png" />
 </div>
 </div>
 <p>In the above graph, the green line is what the price of the stock would
@@ -2329,9 +2251,9 @@ green line is the conditional expectation <span class="math notranslate nohighli
 be if people did not have perfect foresight but were optimally
 predicting future dividends on the basis of the information
 <span class="math notranslate nohighlight">\(y_t, y_{t-1}\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
-</div>
-<div class="section" id="filtering-foundations">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">15.12. </span>Filtering Foundations</a><a class="headerlink" href="#filtering-foundations" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="filtering-foundations">
+<h2><a class="toc-backref" href="#id13"><span class="section-number">15.12. </span>Filtering Foundations</a><a class="headerlink" href="#filtering-foundations" title="Permalink to this heading">#</a></h2>
 <p>Assume that <span class="math notranslate nohighlight">\(x_0\)</span> is an <span class="math notranslate nohighlight">\(n \times 1\)</span> random vector and that
 <span class="math notranslate nohighlight">\(y_0\)</span> is a <span class="math notranslate nohighlight">\(p \times 1\)</span> random vector determined by the
 <em>observation equation</em></p>
@@ -2376,13 +2298,13 @@ joint probability distribution.</p></li>
 <span class="math notranslate nohighlight">\(x_0\)</span> conditional on <span class="math notranslate nohighlight">\(y_0\)</span> is <span class="math notranslate nohighlight">\({\mathcal N}(\tilde x_0, \tilde \Sigma_0)\)</span> by representing <span class="math notranslate nohighlight">\(x_0\)</span>
 as</p>
 <div class="math notranslate nohighlight" id="equation-eq-x0rep2">
-<span class="eqno">(15.2)<a class="headerlink" href="#equation-eq-x0rep2" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(15.2)<a class="headerlink" href="#equation-eq-x0rep2" title="Permalink to this equation">#</a></span>\[
  x_0 = \tilde x_0 + \zeta_0 
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\zeta_0\)</span> is a Gaussian random vector that is orthogonal to <span class="math notranslate nohighlight">\(\tilde x_0\)</span> and <span class="math notranslate nohighlight">\(y_0\)</span> and that
 has mean vector  <span class="math notranslate nohighlight">\(0\)</span> and conditional covariance matrix <span class="math notranslate nohighlight">\( E [\zeta_0 \zeta_0' | y_0] = \tilde \Sigma_0\)</span>.</p>
-<div class="section" id="step-toward-dynamics">
-<h3><span class="section-number">15.12.1. </span>Step toward dynamics<a class="headerlink" href="#step-toward-dynamics" title="Permalink to this headline">¶</a></h3>
+<section id="step-toward-dynamics">
+<h3><span class="section-number">15.12.1. </span>Step toward dynamics<a class="headerlink" href="#step-toward-dynamics" title="Permalink to this heading">#</a></h3>
 <p>Now suppose that we are in a time series setting and that we have the
 one-step state transition equation</p>
 <div class="math notranslate nohighlight">
@@ -2425,9 +2347,9 @@ x_1 = A (\tilde x_0 + \zeta_0) + C w_1
 \[ 
 K_0 = A \Sigma_0 G' (G \Sigma_0 G' + R)^{-1}
 \]</div>
-</div>
-<div class="section" id="dynamic-version">
-<h3><span class="section-number">15.12.2. </span>Dynamic version<a class="headerlink" href="#dynamic-version" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="dynamic-version">
+<h3><span class="section-number">15.12.2. </span>Dynamic version<a class="headerlink" href="#dynamic-version" title="Permalink to this heading">#</a></h3>
 <p>Suppose now that for <span class="math notranslate nohighlight">\(t \geq 0\)</span>,
 <span class="math notranslate nohighlight">\(\{x_{t+1}, y_t\}_{t=0}^\infty\)</span> are governed by the equations</p>
 <div class="math notranslate nohighlight">
@@ -2486,9 +2408,9 @@ second being a matrix difference equation in the matrix appearing in a quadratic
 <li><p>while many of the terms are similar, one equation seems to apply matrix transformations to some matrices that play similar roles in the other equation</p></li>
 </ul>
 <p>The family resemblences of these two equations reflects a transcendent <strong>duality</strong> between control theory and filtering theory.</p>
-</div>
-<div class="section" id="an-example">
-<h3><span class="section-number">15.12.3. </span>An example<a class="headerlink" href="#an-example" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="an-example">
+<h3><span class="section-number">15.12.3. </span>An example<a class="headerlink" href="#an-example" title="Permalink to this heading">#</a></h3>
 <p>We can use the Python class <em>MultivariateNormal</em> to construct examples.</p>
 <p>Here is an example for a single period problem at time <span class="math notranslate nohighlight">\(0\)</span></p>
 <div class="cell docutils container">
@@ -2559,9 +2481,9 @@ second being a matrix difference equation in the matrix appearing in a quadratic
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="code-for-iterating">
-<h3><span class="section-number">15.12.4. </span>Code for Iterating<a class="headerlink" href="#code-for-iterating" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="code-for-iterating">
+<h3><span class="section-number">15.12.4. </span>Code for Iterating<a class="headerlink" href="#code-for-iterating" title="Permalink to this heading">#</a></h3>
 <p>Here is code for solving a dynamic filtering problem by iterating on our
 equations, followed by an example.</p>
 <div class="cell docutils container">
@@ -2625,10 +2547,10 @@ equations, followed by an example.</p>
 </div>
 <p>The iterative algorithm just described is a version of the celebrated <strong>Kalman filter</strong>.</p>
 <p>We describe the Kalman filter  and some applications of it in <a class="reference internal" href="kalman.html"><span class="doc">A First Look at the Kalman Filter</span></a></p>
-</div>
-</div>
-<div class="section" id="classic-factor-analysis-model">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">15.13. </span>Classic Factor Analysis Model</a><a class="headerlink" href="#classic-factor-analysis-model" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="classic-factor-analysis-model">
+<h2><a class="toc-backref" href="#id14"><span class="section-number">15.13. </span>Classic Factor Analysis Model</a><a class="headerlink" href="#classic-factor-analysis-model" title="Permalink to this heading">#</a></h2>
 <p>The factor analysis model widely used in psychology and other fields can
 be represented as</p>
 <div class="math notranslate nohighlight">
@@ -2636,7 +2558,7 @@ be represented as</p>
 Y = \Lambda f + U
 \]</div>
 <p>where</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\(Y\)</span> is <span class="math notranslate nohighlight">\(n \times 1\)</span> random vector,
 <span class="math notranslate nohighlight">\(E U U^{\prime} = D\)</span> is a diagonal matrix,</p></li>
 <li><p><span class="math notranslate nohighlight">\(\Lambda\)</span> is <span class="math notranslate nohighlight">\(n \times k\)</span> coefficient matrix,</p></li>
@@ -2774,7 +2696,7 @@ for the second column.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-2.18545722, -0.95789598]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.74260507,  1.43143815]),
  array([[0.04761905, 0.        ],
         [0.        , 0.04761905]]))
 </pre></div>
@@ -2793,7 +2715,7 @@ for the second column.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-2.18545722, -0.95789598])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.74260507,  1.43143815])
 </pre></div>
 </div>
 </div>
@@ -2806,8 +2728,8 @@ for the second column.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-2.26617157, -2.26617157, -2.26617157, -2.26617157, -2.26617157,
-        -1.16284064, -1.16284064, -1.16284064, -1.16284064, -1.16284064]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.78614446, -0.78614446, -0.78614446, -0.78614446, -0.78614446,
+         1.34581924,  1.34581924,  1.34581924,  1.34581924,  1.34581924]),
  array([[0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
         [0.  , 0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
         [0.  , 0.  , 0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
@@ -2831,15 +2753,15 @@ for the second column.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-2.26617157, -2.26617157, -2.26617157, -2.26617157, -2.26617157,
-       -1.16284064, -1.16284064, -1.16284064, -1.16284064, -1.16284064])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.78614446, -0.78614446, -0.78614446, -0.78614446, -0.78614446,
+        1.34581924,  1.34581924,  1.34581924,  1.34581924,  1.34581924])
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="pca-and-factor-analysis">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">15.14. </span>PCA and Factor Analysis</a><a class="headerlink" href="#pca-and-factor-analysis" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="pca-and-factor-analysis">
+<h2><a class="toc-backref" href="#id15"><span class="section-number">15.14. </span>PCA and Factor Analysis</a><a class="headerlink" href="#pca-and-factor-analysis" title="Permalink to this heading">#</a></h2>
 <p>To learn about Principal Components Analysis (PCA), please see this lecture <a class="reference internal" href="svd_intro.html"><span class="doc">Singular Value Decompositions</span></a>.</p>
 <p>For fun, let’s apply a PCA decomposition
 to a covariance matrix <span class="math notranslate nohighlight">\(\Sigma_y\)</span> that in fact is governed by our factor-analytic
@@ -2934,8 +2856,8 @@ Y = P \epsilon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ε =  [-5.13117246 -2.24901656  0.35852787  0.15187294 -0.15546131  0.48046115
- -1.01355433 -0.00995011  0.44457956 -0.40330527]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ε =  [ 3.36083266 -1.74354119  0.17554995  0.35351791  0.12312783 -0.70043724
+  0.64049097  0.18110297  0.43474386  0.44883821]
 </pre></div>
 </div>
 </div>
@@ -2949,7 +2871,7 @@ Y = P \epsilon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f =  [-2.26617157 -1.16284064]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f =  [-0.78614446  1.34581924]
 </pre></div>
 </div>
 </div>
@@ -2978,7 +2900,7 @@ non-zero loading in <span class="math notranslate nohighlight">\(\Lambda\)</span
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/multivariate_normal_155_0.png" src="_images/multivariate_normal_155_0.png" />
+<img alt="_images/c1904d81786a7b3409af754edf0f2e6a30ed7596dde56586aeec5f31823836a1.png" src="_images/c1904d81786a7b3409af754edf0f2e6a30ed7596dde56586aeec5f31823836a1.png" />
 </div>
 </div>
 <p>Consequently, the first two <span class="math notranslate nohighlight">\(\epsilon_{j}\)</span> correspond to the
@@ -2991,7 +2913,7 @@ largest two eigenvalues.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-5.13117246, -2.24901656])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 3.36083266, -1.74354119])
 </pre></div>
 </div>
 </div>
@@ -3004,7 +2926,7 @@ largest two eigenvalues.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-2.18545722, -0.95789598])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.74260507,  1.43143815])
 </pre></div>
 </div>
 </div>
@@ -3018,7 +2940,7 @@ principal components can be computed as below.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8399999999999999
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.84
 </pre></div>
 </div>
 </div>
@@ -3060,7 +2982,7 @@ coordinate axis versus <span class="math notranslate nohighlight">\(y\)</span> o
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/multivariate_normal_164_0.png" src="_images/multivariate_normal_164_0.png" />
+<img alt="_images/d9da21bae47544d4e9109632940339290f89cc9e6b7faebd7af95b4a32816ebe.png" src="_images/d9da21bae47544d4e9109632940339290f89cc9e6b7faebd7af95b4a32816ebe.png" />
 </div>
 </div>
 <p>The covariance matrix of <span class="math notranslate nohighlight">\(\hat{Y}\)</span> can be computed by first
@@ -3093,8 +3015,8 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -3108,7 +3030,7 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -3689,7 +3611,7 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -3831,16 +3753,5 @@ upper left block for <span class="math notranslate nohighlight">\(\epsilon_{1}\)
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

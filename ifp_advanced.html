@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>50. The Income Fluctuation Problem II: Stochastic Returns on Assets &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ifp_advanced';</script>
     <link rel="canonical" href="https://python.quantecon.org/ifp_advanced.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,91 +161,30 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   50.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-savings-problem">
-   50.2. The Savings Problem
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#set-up">
-     50.2.1. Set Up
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#assumptions">
-     50.2.2. Assumptions
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#optimality">
-     50.2.3. Optimality
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#solution-algorithm">
-   50.3. Solution Algorithm
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#a-time-iteration-operator">
-     50.3.1. A Time Iteration Operator
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#convergence-properties">
-     50.3.2. Convergence Properties
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#using-an-endogenous-grid">
-     50.3.3. Using an Endogenous Grid
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#finding-optimal-consumption">
-       50.3.3.1. Finding Optimal Consumption
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#iterating">
-       50.3.3.2. Iterating
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#testing-the-assumptions">
-     50.3.4. Testing the Assumptions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implementation">
-   50.4. Implementation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#law-of-motion">
-     50.4.1. Law of Motion
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exercises">
-   50.5. Exercises
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">50.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-savings-problem">50.2. The Savings Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">50.2.1. Set Up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions">50.2.2. Assumptions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimality">50.2.3. Optimality</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-algorithm">50.3. Solution Algorithm</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-time-iteration-operator">50.3.1. A Time Iteration Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-properties">50.3.2. Convergence Properties</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-an-endogenous-grid">50.3.3. Using an Endogenous Grid</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-optimal-consumption">50.3.3.1. Finding Optimal Consumption</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#iterating">50.3.3.2. Iterating</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-the-assumptions">50.3.4. Testing the Assumptions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">50.4. Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#law-of-motion">50.4.1. Law of Motion</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">50.5. Exercises</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -282,8 +232,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="the-income-fluctuation-problem-ii-stochastic-returns-on-assets">
-<h1><a class="toc-backref" href="#id9"><span class="section-number">50. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem II: Stochastic Returns on Assets</a><a class="headerlink" href="#the-income-fluctuation-problem-ii-stochastic-returns-on-assets" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="the-income-fluctuation-problem-ii-stochastic-returns-on-assets">
+<h1><a class="toc-backref" href="#id9"><span class="section-number">50. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem II: Stochastic Returns on Assets</a><a class="headerlink" href="#the-income-fluctuation-problem-ii-stochastic-returns-on-assets" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -300,184 +250,59 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
 <span class="o">!</span>pip install interpolation
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (0.6.0)
-Requirement already satisfied: numba in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (0.55.1)
-Requirement already satisfied: scipy&gt;=1.5.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.9.1)
-Requirement already satisfied: sympy in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.10.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (1.21.5)
-Requirement already satisfied: requests in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (63.4.1)
-Requirement already satisfied: llvmlite&lt;0.39,&gt;=0.38.0rc1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba-&gt;quantecon) (0.38.0)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (3.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2022.9.14)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (1.26.11)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: mpmath&gt;=0.19 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.6.0)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: numba in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (0.39.1)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (65.6.3)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting interpolation
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /opt/conda/envs/quantecon/lib/python3.10/site-packages (2.2.4)
+Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (1.10.0)
+Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (1.23.5)
+Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (0.5.2)
+Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (21.3)
+Requirement already satisfied: numba&gt;=0.47 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (0.56.4)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.47-&gt;interpolation) (65.6.3)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
+Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading interpolation-2.2.4-py3-none-any.whl (69 kB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/69.0 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">69.0/69.0 kB</span> <span class=" -Color -Color-Red">4.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hRequirement already satisfied: numba&gt;=0.47 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (0.55.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting numpy&lt;2.0.0,&gt;=1.22.2
-  Downloading numpy-1.24.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (17.3 MB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/17.3 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2.1/17.3 MB</span> <span class=" -Color -Color-Red">61.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">6.7/17.3 MB</span> <span class=" -Color -Color-Red">95.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">11.3/17.3 MB</span> <span class=" -Color -Color-Red">126.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ <span class=" -Color -Color-Green">16.1/17.3 MB</span> <span class=" -Color -Color-Red">132.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">17.3/17.3 MB</span> <span class=" -Color -Color-Red">133.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">17.3/17.3 MB</span> <span class=" -Color -Color-Red">133.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">17.3/17.3 MB</span> <span class=" -Color -Color-Red">64.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25h
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting tempita&lt;0.6.0,&gt;=0.5.2
-  Downloading Tempita-0.5.2-py3-none-any.whl (12 kB)
-Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (21.3)
-Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from interpolation) (1.9.1)
-Requirement already satisfied: setuptools in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from numba&gt;=0.47-&gt;interpolation) (63.4.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting numba&gt;=0.47
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading numba-0.56.4-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (3.5 MB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/3.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">3.5/3.5 MB</span> <span class=" -Color -Color-Red">142.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3.5/3.5 MB</span> <span class=" -Color -Color-Red">80.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25h
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting llvmlite&lt;0.40,&gt;=0.39.0dev0
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading llvmlite-0.39.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (34.6 MB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/34.6 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4.7/34.6 MB</span> <span class=" -Color -Color-Red">142.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">9.5/34.6 MB</span> <span class=" -Color -Color-Red">137.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">14.2/34.6 MB</span> <span class=" -Color -Color-Red">132.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">18.9/34.6 MB</span> <span class=" -Color -Color-Red">131.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━ <span class=" -Color -Color-Green">23.6/34.6 MB</span> <span class=" -Color -Color-Red">131.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ <span class=" -Color -Color-Green">28.2/34.6 MB</span> <span class=" -Color -Color-Red">131.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━ <span class=" -Color -Color-Green">33.0/34.6 MB</span> <span class=" -Color -Color-Red">132.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">34.6/34.6 MB</span> <span class=" -Color -Color-Red">133.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">34.6/34.6 MB</span> <span class=" -Color -Color-Red">133.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">34.6/34.6 MB</span> <span class=" -Color -Color-Red">133.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">34.6/34.6 MB</span> <span class=" -Color -Color-Red">133.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">34.6/34.6 MB</span> <span class=" -Color -Color-Red">42.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25h
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting numpy&lt;2.0.0,&gt;=1.22.2
-  Downloading numpy-1.23.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (17.1 MB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/17.1 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4.6/17.1 MB</span> <span class=" -Color -Color-Red">138.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">9.3/17.1 MB</span> <span class=" -Color -Color-Red">134.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━ <span class=" -Color -Color-Green">13.9/17.1 MB</span> <span class=" -Color -Color-Red">131.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">17.1/17.1 MB</span> <span class=" -Color -Color-Red">132.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">17.1/17.1 MB</span> <span class=" -Color -Color-Red">132.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">17.1/17.1 MB</span> <span class=" -Color -Color-Red">64.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25h
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /__w/lecture-python.myst/lecture-python.myst/3/envs/quantecon/lib/python3.9/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: tempita, numpy, llvmlite, numba, interpolation
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: numpy
-    Found existing installation: numpy 1.21.5
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Uninstalling numpy-1.21.5:
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      Successfully uninstalled numpy-1.21.5
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: llvmlite
-    Found existing installation: llvmlite 0.38.0
-    Uninstalling llvmlite-0.38.0:
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      Successfully uninstalled llvmlite-0.38.0
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: numba
-    Found existing installation: numba 0.55.1
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Uninstalling numba-0.55.1:
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      Successfully uninstalled numba-0.55.1
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">ERROR: pip&#39;s dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.</span>
-<span class=" -Color -Color-Red">daal4py 2021.6.0 requires daal==2021.4.0, which is not installed.</span>
-Successfully installed interpolation-2.2.4 llvmlite-0.39.1 numba-0.56.4 numpy-1.23.5 tempita-0.5.2
-<span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">50.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">50.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In this lecture, we continue our study of the <a class="reference internal" href="ifp.html"><span class="doc">income fluctuation problem</span></a>.</p>
 <p>While the interest rate was previously taken to be fixed, we now allow
 returns on assets to be state-dependent.</p>
@@ -506,19 +331,19 @@ endogenous grid method to solve the model quickly and accurately.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="the-savings-problem">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">50.2. </span>The Savings Problem</a><a class="headerlink" href="#the-savings-problem" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="the-savings-problem">
+<h2><a class="toc-backref" href="#id11"><span class="section-number">50.2. </span>The Savings Problem</a><a class="headerlink" href="#the-savings-problem" title="Permalink to this heading">#</a></h2>
 <p>In this section we review the household problem and optimality results.</p>
-<div class="section" id="set-up">
-<h3><span class="section-number">50.2.1. </span>Set Up<a class="headerlink" href="#set-up" title="Permalink to this headline">¶</a></h3>
+<section id="set-up">
+<h3><span class="section-number">50.2.1. </span>Set Up<a class="headerlink" href="#set-up" title="Permalink to this heading">#</a></h3>
 <p>A household chooses a consumption-asset path <span class="math notranslate nohighlight">\(\{(c_t, a_t)\}\)</span> to
 maximize</p>
 <div class="math notranslate nohighlight" id="equation-trans-at">
-<span class="eqno">(50.1)<a class="headerlink" href="#equation-trans-at" title="Permalink to this equation">¶</a></span>\[\mathbb E \left\{ \sum_{t=0}^\infty \beta^t u(c_t) \right\}\]</div>
+<span class="eqno">(50.1)<a class="headerlink" href="#equation-trans-at" title="Permalink to this equation">#</a></span>\[\mathbb E \left\{ \sum_{t=0}^\infty \beta^t u(c_t) \right\}\]</div>
 <p>subject to</p>
 <div class="math notranslate nohighlight" id="equation-trans-at2">
-<span class="eqno">(50.2)<a class="headerlink" href="#equation-trans-at2" title="Permalink to this equation">¶</a></span>\[a_{t+1} = R_{t+1} (a_t - c_t) + Y_{t+1}
+<span class="eqno">(50.2)<a class="headerlink" href="#equation-trans-at2" title="Permalink to this equation">#</a></span>\[a_{t+1} = R_{t+1} (a_t - c_t) + Y_{t+1}
 \; \text{ and } \;
 0 \leq c_t \leq a_t,\]</div>
 <p>with initial condition <span class="math notranslate nohighlight">\((a_0, Z_0)=(a,z)\)</span> treated as given.</p>
@@ -526,7 +351,7 @@ maximize</p>
 <p>The sequence <span class="math notranslate nohighlight">\(\{Y_t \}_{t \geq 1}\)</span> is non-financial income.</p>
 <p>The stochastic components of the problem obey</p>
 <div class="math notranslate nohighlight" id="equation-eq-ry-func">
-<span class="eqno">(50.3)<a class="headerlink" href="#equation-eq-ry-func" title="Permalink to this equation">¶</a></span>\[R_t = R(Z_t, \zeta_t)
+<span class="eqno">(50.3)<a class="headerlink" href="#equation-eq-ry-func" title="Permalink to this equation">#</a></span>\[R_t = R(Z_t, \zeta_t)
   \quad \text{and} \quad
 Y_t = Y(Z_t, \eta_t),\]</div>
 <p>where</p>
@@ -540,9 +365,9 @@ Y_t = Y(Z_t, \eta_t),\]</div>
 <p>Our assumptions on preferences are the same as our <a class="reference internal" href="ifp.html"><span class="doc">previous lecture</span></a> on the income fluctuation problem.</p>
 <p>As before, <span class="math notranslate nohighlight">\(\mathbb E_z \hat X\)</span> means expectation of next period value
 <span class="math notranslate nohighlight">\(\hat X\)</span> given current value <span class="math notranslate nohighlight">\(Z = z\)</span>.</p>
-</div>
-<div class="section" id="assumptions">
-<h3><span class="section-number">50.2.2. </span>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="assumptions">
+<h3><span class="section-number">50.2.2. </span>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this heading">#</a></h3>
 <p>We need restrictions to ensure that the objective <a class="reference internal" href="#equation-trans-at">(50.1)</a> is finite and
 the solution methods described below converge.</p>
 <p>We also need to ensure that the present discounted value of wealth
@@ -550,7 +375,7 @@ does not grow too quickly.</p>
 <p>When <span class="math notranslate nohighlight">\(\{R_t\}\)</span> was constant we required that <span class="math notranslate nohighlight">\(\beta R &lt; 1\)</span>.</p>
 <p>Now it is stochastic, we require that</p>
 <div class="math notranslate nohighlight" id="equation-fpbc2">
-<span class="eqno">(50.4)<a class="headerlink" href="#equation-fpbc2" title="Permalink to this equation">¶</a></span>\[\beta G_R &lt; 1,
+<span class="eqno">(50.4)<a class="headerlink" href="#equation-fpbc2" title="Permalink to this equation">#</a></span>\[\beta G_R &lt; 1,
 \quad \text{where} \quad
 G_R := \lim_{n \to \infty}
 \left(\mathbb E \prod_{t=1}^n R_t \right)^{1/n}\]</div>
@@ -568,9 +393,9 @@ gross rate of return.</p>
 \]</div>
 <p>One relatively simple setting where all these restrictions are satisfied is
 the IID and CRRA environment of <span id="id5">[<a class="reference internal" href="zreferences.html#id131" title="Jess Benhabib, Alberto Bisin, and Shenghao Zhu. The wealth distribution in bewley economies with capital income risk. Journal of Economic Theory, 159:489–515, 2015.">BBZ15</a>]</span>.</p>
-</div>
-<div class="section" id="optimality">
-<h3><span class="section-number">50.2.3. </span>Optimality<a class="headerlink" href="#optimality" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="optimality">
+<h3><span class="section-number">50.2.3. </span>Optimality<a class="headerlink" href="#optimality" title="Permalink to this heading">#</a></h3>
 <p>Let the class of candidate consumption policies <span class="math notranslate nohighlight">\(\mathscr C\)</span> be defined
 <a class="reference internal" href="ifp.html"><span class="doc">as before</span></a>.</p>
 <p>In <span id="id6">[<a class="reference internal" href="zreferences.html#id253" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span> it is shown that, under the stated assumptions,</p>
@@ -581,7 +406,7 @@ optimal policy and</p></li>
 </ul>
 <p>In the present setting, the Euler equation takes the form</p>
 <div class="math notranslate nohighlight" id="equation-ifpa-euler">
-<span class="eqno">(50.5)<a class="headerlink" href="#equation-ifpa-euler" title="Permalink to this equation">¶</a></span>\[(u' \circ \sigma) (a, z) =
+<span class="eqno">(50.5)<a class="headerlink" href="#equation-ifpa-euler" title="Permalink to this equation">#</a></span>\[(u' \circ \sigma) (a, z) =
 \max \left\{
            \beta \, \mathbb E_z \,\hat{R} \,
              (u' \circ \sigma)[\hat{R}(a - \sigma(a, z)) + \hat{Y}, \, \hat{Z}],
@@ -592,12 +417,12 @@ the income fluctuation problem.)</p>
 <p>We again solve the Euler equation using time iteration, iterating with a
 Coleman–Reffett operator <span class="math notranslate nohighlight">\(K\)</span> defined to match the Euler equation
 <a class="reference internal" href="#equation-ifpa-euler">(50.5)</a>.</p>
-</div>
-</div>
-<div class="section" id="solution-algorithm">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">50.3. </span>Solution Algorithm</a><a class="headerlink" href="#solution-algorithm" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="a-time-iteration-operator">
-<span id="index-1"></span><h3><span class="section-number">50.3.1. </span>A Time Iteration Operator<a class="headerlink" href="#a-time-iteration-operator" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="solution-algorithm">
+<h2><a class="toc-backref" href="#id12"><span class="section-number">50.3. </span>Solution Algorithm</a><a class="headerlink" href="#solution-algorithm" title="Permalink to this heading">#</a></h2>
+<section id="a-time-iteration-operator">
+<span id="index-1"></span><h3><span class="section-number">50.3.1. </span>A Time Iteration Operator<a class="headerlink" href="#a-time-iteration-operator" title="Permalink to this heading">#</a></h3>
 <p>Our definition of the candidate class <span class="math notranslate nohighlight">\(\sigma \in \mathscr C\)</span> of consumption
 policies is the same as in our <a class="reference internal" href="ifp.html"><span class="doc">earlier lecture</span></a> on the income
 fluctuation problem.</p>
@@ -605,7 +430,7 @@ fluctuation problem.</p>
 <span class="math notranslate nohighlight">\(K\sigma(a,z)\)</span> of the function <span class="math notranslate nohighlight">\(K\sigma\)</span> at <span class="math notranslate nohighlight">\((a,z)\)</span> is defined as the
 <span class="math notranslate nohighlight">\(\xi \in (0,a]\)</span> that solves</p>
 <div class="math notranslate nohighlight" id="equation-k-opr">
-<span class="eqno">(50.6)<a class="headerlink" href="#equation-k-opr" title="Permalink to this equation">¶</a></span>\[u'(\xi) =
+<span class="eqno">(50.6)<a class="headerlink" href="#equation-k-opr" title="Permalink to this equation">#</a></span>\[u'(\xi) =
 \max \left\{
           \beta \, \mathbb E_z \, \hat{R} \,
              (u' \circ \sigma)[\hat{R}(a - \xi) + \hat{Y}, \, \hat{Z}],
@@ -617,9 +442,9 @@ if and only if <span class="math notranslate nohighlight">\(K\sigma(a, z) = \sig
 \mathbf S\)</span>.</p>
 <p>This means that fixed points of <span class="math notranslate nohighlight">\(K\)</span> in <span class="math notranslate nohighlight">\(\mathscr C\)</span> and optimal
 consumption policies exactly coincide (see <span id="id7">[<a class="reference internal" href="zreferences.html#id253" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">MST20</a>]</span> for more details).</p>
-</div>
-<div class="section" id="convergence-properties">
-<h3><span class="section-number">50.3.2. </span>Convergence Properties<a class="headerlink" href="#convergence-properties" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="convergence-properties">
+<h3><span class="section-number">50.3.2. </span>Convergence Properties<a class="headerlink" href="#convergence-properties" title="Permalink to this heading">#</a></h3>
 <p>As before, we pair <span class="math notranslate nohighlight">\(\mathscr C\)</span> with the distance</p>
 <div class="math notranslate nohighlight">
 \[
@@ -631,7 +456,7 @@ consumption policies exactly coincide (see <span id="id7">[<a class="reference i
           \right|,
 \]</div>
 <p>It can be shown that</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\((\mathscr C, \rho)\)</span> is a complete metric space,</p></li>
 <li><p>there exists an integer <span class="math notranslate nohighlight">\(n\)</span> such that <span class="math notranslate nohighlight">\(K^n\)</span> is a contraction
 mapping on <span class="math notranslate nohighlight">\((\mathscr C, \rho)\)</span>, and</p></li>
@@ -641,9 +466,9 @@ the unique optimal policy in <span class="math notranslate nohighlight">\(\maths
 <p>We now have a clear path to successfully approximating the optimal policy:
 choose some <span class="math notranslate nohighlight">\(\sigma \in \mathscr C\)</span> and then iterate with <span class="math notranslate nohighlight">\(K\)</span> until
 convergence (as measured by the distance <span class="math notranslate nohighlight">\(\rho\)</span>).</p>
-</div>
-<div class="section" id="using-an-endogenous-grid">
-<h3><span class="section-number">50.3.3. </span>Using an Endogenous Grid<a class="headerlink" href="#using-an-endogenous-grid" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="using-an-endogenous-grid">
+<h3><span class="section-number">50.3.3. </span>Using an Endogenous Grid<a class="headerlink" href="#using-an-endogenous-grid" title="Permalink to this heading">#</a></h3>
 <p>In the study of that model we found that it was possible to further
 accelerate time iteration via the <a class="reference internal" href="egm_policy_iter.html"><span class="doc">endogenous grid method</span></a>.</p>
 <p>We will use the same method here.</p>
@@ -652,8 +477,8 @@ minor exception that we need to remember that consumption is not always
 interior.</p>
 <p>In particular, optimal consumption can be equal to assets when the level of
 assets is low.</p>
-<div class="section" id="finding-optimal-consumption">
-<h4><span class="section-number">50.3.3.1. </span>Finding Optimal Consumption<a class="headerlink" href="#finding-optimal-consumption" title="Permalink to this headline">¶</a></h4>
+<section id="finding-optimal-consumption">
+<h4><span class="section-number">50.3.3.1. </span>Finding Optimal Consumption<a class="headerlink" href="#finding-optimal-consumption" title="Permalink to this heading">#</a></h4>
 <p>The endogenous grid method (EGM) calls for us to take a grid of <em>savings</em>
 values <span class="math notranslate nohighlight">\(s_i\)</span>, where each such <span class="math notranslate nohighlight">\(s\)</span> is interpreted as <span class="math notranslate nohighlight">\(s = a -
 c\)</span>.</p>
@@ -667,7 +492,7 @@ which pins down the policy at the origin, aiding interpolation.</p>
 consumption is interior.</p>
 <p>Hence the max component of <a class="reference internal" href="#equation-ifpa-euler">(50.5)</a> drops out, and we solve for</p>
 <div class="math notranslate nohighlight" id="equation-eqsifc2">
-<span class="eqno">(50.7)<a class="headerlink" href="#equation-eqsifc2" title="Permalink to this equation">¶</a></span>\[c_i =
+<span class="eqno">(50.7)<a class="headerlink" href="#equation-eqsifc2" title="Permalink to this equation">#</a></span>\[c_i =
 (u')^{-1}
 \left\{
     \beta \, \mathbb E_z
@@ -675,9 +500,9 @@ consumption is interior.</p>
     (u' \circ \sigma) \, [\hat R s_i + \hat Y, \, \hat Z]
 \right\}\]</div>
 <p>at each <span class="math notranslate nohighlight">\(s_i\)</span>.</p>
-</div>
-<div class="section" id="iterating">
-<h4><span class="section-number">50.3.3.2. </span>Iterating<a class="headerlink" href="#iterating" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="iterating">
+<h4><span class="section-number">50.3.3.2. </span>Iterating<a class="headerlink" href="#iterating" title="Permalink to this heading">#</a></h4>
 <p>Once we have the pairs <span class="math notranslate nohighlight">\(\{s_i, c_i\}\)</span>, the endogenous asset grid is
 obtained by <span class="math notranslate nohighlight">\(a_i = c_i + s_i\)</span>.</p>
 <p>Also, we held <span class="math notranslate nohighlight">\(z \in \mathsf Z\)</span> in the discussion above so we can pair
@@ -685,10 +510,10 @@ it with <span class="math notranslate nohighlight">\(a_i\)</span>.</p>
 <p>An approximation of the policy <span class="math notranslate nohighlight">\((a, z) \mapsto \sigma(a, z)\)</span> can be
 obtained by interpolating <span class="math notranslate nohighlight">\(\{a_i, c_i\}\)</span> at each <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <p>In what follows, we use linear interpolation.</p>
-</div>
-</div>
-<div class="section" id="testing-the-assumptions">
-<h3><span class="section-number">50.3.4. </span>Testing the Assumptions<a class="headerlink" href="#testing-the-assumptions" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="testing-the-assumptions">
+<h3><span class="section-number">50.3.4. </span>Testing the Assumptions<a class="headerlink" href="#testing-the-assumptions" title="Permalink to this heading">#</a></h3>
 <p>Convergence of time iteration is dependent on the condition <span class="math notranslate nohighlight">\(\beta G_R &lt; 1\)</span> being satisfied.</p>
 <p>One can check this using the fact that <span class="math notranslate nohighlight">\(G_R\)</span> is equal to the spectral
 radius of the matrix <span class="math notranslate nohighlight">\(L\)</span> defined by</p>
@@ -703,10 +528,10 @@ density of the innovation <span class="math notranslate nohighlight">\(\zeta_t\)
 <p>In that case, it is clear from the definition of <span class="math notranslate nohighlight">\(G_R\)</span> that <span class="math notranslate nohighlight">\(G_R\)</span>
 is just <span class="math notranslate nohighlight">\(\mathbb E R_t\)</span>.</p>
 <p>We test the condition <span class="math notranslate nohighlight">\(\beta \mathbb E R_t &lt; 1\)</span> in the code below.</p>
-</div>
-</div>
-<div class="section" id="implementation">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">50.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="implementation">
+<h2><a class="toc-backref" href="#id13"><span class="section-number">50.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <p>We will assume that <span class="math notranslate nohighlight">\(R_t = \exp(a_r \zeta_t + b_r)\)</span> where <span class="math notranslate nohighlight">\(a_r, b_r\)</span>
 are constants and <span class="math notranslate nohighlight">\(\{ \zeta_t\}\)</span> is IID standard normal.</p>
 <p>We allow labor income to be correlated, with</p>
@@ -923,7 +748,9 @@ assets.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.0019748126990770665.
-Error at iteration 35 is 0.0007219210463285108.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 35 is 0.0007219210463285108.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 40 is 0.0002590544496094971.
@@ -949,15 +776,15 @@ Converged in 45 iterations.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ifp_advanced_18_0.png" src="_images/ifp_advanced_18_0.png" />
+<img alt="_images/171066428998322413c521461024622ae30b296142e665f542d1a3d7623dd8ab.png" src="_images/171066428998322413c521461024622ae30b296142e665f542d1a3d7623dd8ab.png" />
 </div>
 </div>
 <p>Notice that we consume all assets in the lower range of the asset space.</p>
 <p>This is because we anticipate income <span class="math notranslate nohighlight">\(Y_{t+1}\)</span> tomorrow, which makes the need to save less urgent.</p>
 <p>Can you explain why consuming all assets ends earlier (for lower values of
 assets) when <span class="math notranslate nohighlight">\(z=0\)</span>?</p>
-<div class="section" id="law-of-motion">
-<h3><span class="section-number">50.4.1. </span>Law of Motion<a class="headerlink" href="#law-of-motion" title="Permalink to this headline">¶</a></h3>
+<section id="law-of-motion">
+<h3><span class="section-number">50.4.1. </span>Law of Motion<a class="headerlink" href="#law-of-motion" title="Permalink to this heading">#</a></h3>
 <p>Let’s try to get some idea of what will happen to assets over the long run
 under this consumption policy.</p>
 <p>As with our <a class="reference internal" href="ifp.html"><span class="doc">earlier lecture</span></a> on the income fluctuation problem, we
@@ -983,7 +810,7 @@ begin by producing a 45 degree diagram showing the law of motion for assets</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ifp_advanced_20_0.png" src="_images/ifp_advanced_20_0.png" />
+<img alt="_images/043e1c23ed026ec65b56479a5efd91954c54d7aafcdbb163af62238cc7fbf801.png" src="_images/043e1c23ed026ec65b56479a5efd91954c54d7aafcdbb163af62238cc7fbf801.png" />
 </div>
 </div>
 <p>The unbroken lines represent, for each <span class="math notranslate nohighlight">\(z\)</span>, an average update function
@@ -1000,14 +827,14 @@ a \mapsto \bar R (a - \sigma^*(a, z)) + \bar Y(z)
 <p>The dashed line is the 45 degree line.</p>
 <p>We can see from the figure that the dynamics will be stable — assets do not
 diverge even in the highest state.</p>
-</div>
-</div>
-<div class="section" id="exercises">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">50.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id14"><span class="section-number">50.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="ifpa_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 50.1 </span></p>
-<div class="section" id="exercise-content">
+<section id="exercise-content">
 <p>Let’s repeat our <a class="reference internal" href="ifp.html#ifp_ex2"><span class="std std-ref">earlier exercise</span></a> on the long-run
 cross sectional distribution of assets.</p>
 <p>In that exercise, we used a relatively simple income fluctuation model.</p>
@@ -1015,13 +842,13 @@ cross sectional distribution of assets.</p>
 <p>In particular, we failed to match the long right tail of the wealth distribution.</p>
 <p>Your task is to try again, repeating the exercise, but now with our more sophisticated model.</p>
 <p>Use the default parameters.</p>
-</div>
+</section>
 </div>
 <div class="solution dropdown admonition" id="ifp_advanced-solution-1">
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#ifpa_ex1"> Exercise 50.1</a></p>
-<div class="section" id="s">
-<span id="o"></span><span id="l"></span><span id="u"></span><span id="t"></span><span id="i"></span><span id="o"></span><span id="n"></span><span id="-"></span><span id="c"></span><span id="o"></span><span id="n"></span><span id="t"></span><span id="e"></span><span id="n"></span><span id="t"></span><p>First we write a function to compute a long asset series.</p>
+<section id="solution-content">
+<p>First we write a function to compute a long asset series.</p>
 <p>Because we want to JIT-compile the function, we code the solution in a way
 that breaks some rules on good programming style.</p>
 <p>For example, we will pass in the solutions <code class="docutils literal notranslate"><span class="pre">a_star,</span> <span class="pre">σ_star</span></code> along with
@@ -1078,7 +905,7 @@ solutions computed above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ifp_advanced_24_0.png" src="_images/ifp_advanced_24_0.png" />
+<img alt="_images/d315f7dac5afb92d92bd0b5b0901e5f16631a33cfbcb07028fb6e05720772ece.png" src="_images/d315f7dac5afb92d92bd0b5b0901e5f16631a33cfbcb07028fb6e05720772ece.png" />
 </div>
 </div>
 <p>Now we have managed to successfully replicate the long right tail of the
@@ -1094,13 +921,13 @@ wealth distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ifp_advanced_26_0.png" src="_images/ifp_advanced_26_0.png" />
+<img alt="_images/894e7c99f5f0c836d9ec39b35072d4cee2d729691a6d081a312e9b3294af6d86.png" src="_images/894e7c99f5f0c836d9ec39b35072d4cee2d729691a6d081a312e9b3294af6d86.png" />
 </div>
 </div>
+</section>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1114,7 +941,7 @@ wealth distribution.</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1695,7 +1522,7 @@ wealth distribution.</p>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1837,16 +1664,5 @@ wealth distribution.</p>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>

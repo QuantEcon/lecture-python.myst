@@ -1,10 +1,14 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>58. Exchangeability and Bayesian Updating &#8212; Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
@@ -47,47 +51,53 @@
         </script>
     
     
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.1ef59f8f4e91ec8319176e8479c6af4e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -97,6 +107,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'exchangeable';</script>
     <link rel="canonical" href="https://python.quantecon.org/exchangeable.html" />
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -150,83 +161,24 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   58.1. Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#independently-and-identically-distributed">
-   58.2. Independently and Identically Distributed
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#iid-means-past-observations-dont-tell-us-anything-about-future-observations">
-     58.2.1. IID Means Past Observations Don’t Tell Us Anything About Future Observations
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#a-setting-in-which-past-observations-are-informative">
-   58.3. A Setting in Which Past Observations Are Informative
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#relationship-between-iid-and-exchangeable">
-   58.4. Relationship Between IID and Exchangeable
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exchangeability">
-   58.5. Exchangeability
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bayes-law">
-   58.6. Bayes’ Law
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#more-details-about-bayesian-updating">
-   58.7. More Details about Bayesian Updating
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#appendix">
-   58.8. Appendix
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#sample-paths-of-pi-t">
-     58.8.1. Sample Paths of
-     <span class="math notranslate nohighlight">
-      \(\pi_t\)
-     </span>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#rates-of-convergence">
-     58.8.2. Rates of convergence
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#graph-of-ensemble-dynamics-of-pi-t">
-     58.8.3. Graph of Ensemble Dynamics of
-     <span class="math notranslate nohighlight">
-      \(\pi_t\)
-     </span>
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sequels">
-   58.9. Sequels
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">58.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#independently-and-identically-distributed">58.2. Independently and Identically Distributed</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iid-means-past-observations-dont-tell-us-anything-about-future-observations">58.2.1. IID Means Past Observations Don’t Tell Us Anything About Future Observations</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-setting-in-which-past-observations-are-informative">58.3. A Setting in Which Past Observations Are Informative</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relationship-between-iid-and-exchangeable">58.4. Relationship Between IID and Exchangeable</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exchangeability">58.5. Exchangeability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-law">58.6. Bayes’ Law</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-details-about-bayesian-updating">58.7. More Details about Bayesian Updating</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">58.8. Appendix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-paths-of-pi-t">58.8.1. Sample Paths of <span class="math notranslate nohighlight">\(\pi_t\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rates-of-convergence">58.8.2. Rates of convergence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-of-ensemble-dynamics-of-pi-t">58.8.3. Graph of Ensemble Dynamics of <span class="math notranslate nohighlight">\(\pi_t\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sequels">58.9. Sequels</a></li>
+</ul>
                             <p class="logo">
                                 
                                     
@@ -274,8 +226,8 @@ const thebe_selector_output = ".output, .cell_output"
         <a href="https://quantecon.org/" title="quantecon.org">
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
-</div><div class="tex2jax_ignore mathjax_ignore section" id="exchangeability-and-bayesian-updating">
-<h1><a class="toc-backref" href="#id5"><span class="section-number">58. </span>Exchangeability and Bayesian Updating</a><a class="headerlink" href="#exchangeability-and-bayesian-updating" title="Permalink to this headline">¶</a></h1>
+</div><section class="tex2jax_ignore mathjax_ignore" id="exchangeability-and-bayesian-updating">
+<h1><a class="toc-backref" href="#id5"><span class="section-number">58. </span>Exchangeability and Bayesian Updating</a><a class="headerlink" href="#exchangeability-and-bayesian-updating" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -294,8 +246,8 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 </ul>
 </div>
-<div class="section" id="overview">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">58.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">58.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture studies  learning
 via Bayes’ Law.</p>
 <p>We touch foundations of Bayesian statistical inference invented by Bruno DeFinetti <span id="id1">[<a class="reference internal" href="zreferences.html#id43" title="Bruno de Finetti. La prevision: ses lois logiques, ses sources subjectives. Annales de l'Institute Henri Poincare', 7:1 - 68, 1937. English translation in Kyburg and Smokler (eds.), \it Studies in Subjective Probability, Wiley, New York, 1964.">dF37</a>]</span>.</p>
@@ -339,9 +291,9 @@ an assumption of conditional independence makes learning possible.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="independently-and-identically-distributed">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">58.2. </span>Independently and Identically Distributed</a><a class="headerlink" href="#independently-and-identically-distributed" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="independently-and-identically-distributed">
+<h2><a class="toc-backref" href="#id7"><span class="section-number">58.2. </span>Independently and Identically Distributed</a><a class="headerlink" href="#independently-and-identically-distributed" title="Permalink to this heading">#</a></h2>
 <p>We begin by looking at the notion of an  <strong>independently and identically  distributed sequence</strong> of random variables.</p>
 <p>An independently and identically distributed sequence is often abbreviated as IID.</p>
 <p>Two notions are involved</p>
@@ -361,8 +313,8 @@ let <span class="math notranslate nohighlight">\(p(W_t)\)</span> be the <strong>
 p(W_0, W_1, \ldots) =  p(W_0) p(W_1) \cdots
 \]</div>
 <p>so that the joint density is the product of a sequence of identical marginal densities.</p>
-<div class="section" id="iid-means-past-observations-dont-tell-us-anything-about-future-observations">
-<h3><span class="section-number">58.2.1. </span>IID Means Past Observations Don’t Tell Us Anything About Future Observations<a class="headerlink" href="#iid-means-past-observations-dont-tell-us-anything-about-future-observations" title="Permalink to this headline">¶</a></h3>
+<section id="iid-means-past-observations-dont-tell-us-anything-about-future-observations">
+<h3><span class="section-number">58.2.1. </span>IID Means Past Observations Don’t Tell Us Anything About Future Observations<a class="headerlink" href="#iid-means-past-observations-dont-tell-us-anything-about-future-observations" title="Permalink to this heading">#</a></h3>
 <p>If a sequence is random variables is IID, past information provides no information about future realizations.</p>
 <p>Therefore, there is <strong>nothing to learn</strong> from the past  about the future.</p>
 <p>To understand these statements, let the joint distribution of a sequence of random variables <span class="math notranslate nohighlight">\(\{W_t\}_{t=0}^T\)</span>
@@ -395,10 +347,10 @@ p(W_t | W_{t-1}, \ldots, W_0)   =  p(W_t)
 <p>But when the sequence is not IID, there is something to learn about the future from observations of past random variables.</p>
 <p>We turn next to an instance of the general case in which the sequence is not IID.</p>
 <p>Please watch for what can be  learned from the past and when.</p>
-</div>
-</div>
-<div class="section" id="a-setting-in-which-past-observations-are-informative">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">58.3. </span>A Setting in Which Past Observations Are Informative</a><a class="headerlink" href="#a-setting-in-which-past-observations-are-informative" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="a-setting-in-which-past-observations-are-informative">
+<h2><a class="toc-backref" href="#id8"><span class="section-number">58.3. </span>A Setting in Which Past Observations Are Informative</a><a class="headerlink" href="#a-setting-in-which-past-observations-are-informative" title="Permalink to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(\{W_t\}_{t=0}^\infty\)</span> be a sequence of nonnegative
 scalar random variables with a joint probability distribution
 constructed as follows.</p>
@@ -433,9 +385,9 @@ or <span class="math notranslate nohighlight">\(1\)</span>.</p>
 </ul>
 <p>To proceed, we want to know the decision maker’s belief about the joint distribution of the partial history.</p>
 <p>We’ll discuss that next and in the process describe the concept of <strong>exchangeability</strong>.</p>
-</div>
-<div class="section" id="relationship-between-iid-and-exchangeable">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">58.4. </span>Relationship Between IID and Exchangeable</a><a class="headerlink" href="#relationship-between-iid-and-exchangeable" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="relationship-between-iid-and-exchangeable">
+<h2><a class="toc-backref" href="#id9"><span class="section-number">58.4. </span>Relationship Between IID and Exchangeable</a><a class="headerlink" href="#relationship-between-iid-and-exchangeable" title="Permalink to this heading">#</a></h2>
 <p>Conditional on nature selecting <span class="math notranslate nohighlight">\(F\)</span>, the joint density of the
 sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -458,7 +410,7 @@ independently and identically distributed.</p>
 <p>The unconditional distribution of <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is
 evidently</p>
 <div class="math notranslate nohighlight" id="equation-eq-definetti">
-<span class="eqno">(58.1)<a class="headerlink" href="#equation-eq-definetti" title="Permalink to this equation">¶</a></span>\[h(W_0, W_1, \ldots ) \equiv \tilde \pi [f(W_0) f(W_1) \cdots \ ] + ( 1- \tilde \pi) [g(W_0) g(W_1) \cdots \ ]\]</div>
+<span class="eqno">(58.1)<a class="headerlink" href="#equation-eq-definetti" title="Permalink to this equation">#</a></span>\[h(W_0, W_1, \ldots ) \equiv \tilde \pi [f(W_0) f(W_1) \cdots \ ] + ( 1- \tilde \pi) [g(W_0) g(W_1) \cdots \ ]\]</div>
 <p>Under the unconditional distribution <span class="math notranslate nohighlight">\(h(W_0, W_1, \ldots )\)</span>, the
 sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is <strong>not</strong> independently and
 identically distributed.</p>
@@ -478,9 +430,9 @@ h(W_1 | W_0) \equiv \frac{h(W_0, W_1)}{(\tilde \pi f(W_0) + (1-\tilde \pi) g(W_0
 <p>This means that  random variable  <span class="math notranslate nohighlight">\(W_0\)</span> contains information about random variable  <span class="math notranslate nohighlight">\(W_1\)</span>.</p>
 <p>So there is something to learn from the past about the future.</p>
 <p>But what and how?</p>
-</div>
-<div class="section" id="exchangeability">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">58.5. </span>Exchangeability</a><a class="headerlink" href="#exchangeability" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="exchangeability">
+<h2><a class="toc-backref" href="#id10"><span class="section-number">58.5. </span>Exchangeability</a><a class="headerlink" href="#exchangeability" title="Permalink to this heading">#</a></h2>
 <p>While the sequence <span class="math notranslate nohighlight">\(W_0, W_1, \ldots\)</span> is not IID, it can be verified that it is
 <strong>exchangeable</strong>, which means that the  ``re-ordered’’ joint distributions <span class="math notranslate nohighlight">\(h(W_0, W_1)\)</span> and <span class="math notranslate nohighlight">\(h(W_1, W_0)\)</span>
 satisfy</p>
@@ -500,9 +452,9 @@ as a subjective <strong>prior probability</strong> that nature selected probabil
 sequences of IID Bernoulli random variables with parameter <span class="math notranslate nohighlight">\(\theta \in (0,1)\)</span> and mixing probability density <span class="math notranslate nohighlight">\(\pi(\theta)\)</span>
 that a Bayesian statistician would interpret as a prior over the unknown
 Bernoulli parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
-</div>
-<div class="section" id="bayes-law">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">58.6. </span>Bayes’ Law</a><a class="headerlink" href="#bayes-law" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="bayes-law">
+<h2><a class="toc-backref" href="#id11"><span class="section-number">58.6. </span>Bayes’ Law</a><a class="headerlink" href="#bayes-law" title="Permalink to this heading">#</a></h2>
 <p>We noted above that in our example model there is something to learn about about the future from past data drawn
 from our particular instance of a process that is exchangeable but not IID.</p>
 <p>But how can we learn?</p>
@@ -537,7 +489,7 @@ from and let</p>
 \]</div>
 <p>Bayes’ rule for updating <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-eq-bayes102">
-<span class="eqno">(58.2)<a class="headerlink" href="#equation-eq-bayes102" title="Permalink to this equation">¶</a></span>\[
+<span class="eqno">(58.2)<a class="headerlink" href="#equation-eq-bayes102" title="Permalink to this equation">#</a></span>\[
 \pi_{t+1} = \frac{\pi_t f(w_{t+1})}{\pi_t f(w_{t+1}) + (1 - \pi_t) g(w_{t+1})}
 \]</div>
 <p>Equation <a class="reference internal" href="#equation-eq-bayes102">(58.2)</a> follows from Bayes’ rule, which
@@ -553,9 +505,9 @@ tells us that</p>
 \[
 \mathbb{P}\{W = w\} = \sum_{a \in \{f, g\}} \mathbb{P}\{W = w \,|\, q = a \} \mathbb{P}\{q = a \}
 \]</div>
-</div>
-<div class="section" id="more-details-about-bayesian-updating">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">58.7. </span>More Details about Bayesian Updating</a><a class="headerlink" href="#more-details-about-bayesian-updating" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="more-details-about-bayesian-updating">
+<h2><a class="toc-backref" href="#id12"><span class="section-number">58.7. </span>More Details about Bayesian Updating</a><a class="headerlink" href="#more-details-about-bayesian-updating" title="Permalink to this heading">#</a></h2>
 <p>Let’s stare at and rearrange Bayes’ Law as represented in equation <a class="reference internal" href="#equation-eq-bayes102">(58.2)</a> with the aim of understanding
 how the <strong>posterior</strong> probability <span class="math notranslate nohighlight">\(\pi_{t+1}\)</span> is influenced by the <strong>prior</strong> probability <span class="math notranslate nohighlight">\(\pi_t\)</span> and the <strong>likelihood ratio</strong></p>
 <div class="math notranslate nohighlight">
@@ -571,7 +523,7 @@ l(w) = \frac{f(w)}{g(w)}
 \]</div>
 <p>This implies that</p>
 <div class="math notranslate nohighlight" id="equation-eq-bayes103">
-<span class="eqno">(58.3)<a class="headerlink" href="#equation-eq-bayes103" title="Permalink to this equation">¶</a></span>\[\begin{split}\frac{\pi_{t+1}}{\pi_{t}}=\frac{l\left(w_{t+1}\right)}{\pi_{t}l\left(w_{t+1}\right)+\left(1-\pi_{t}\right)}\begin{cases} &gt;1 &amp;
+<span class="eqno">(58.3)<a class="headerlink" href="#equation-eq-bayes103" title="Permalink to this equation">#</a></span>\[\begin{split}\frac{\pi_{t+1}}{\pi_{t}}=\frac{l\left(w_{t+1}\right)}{\pi_{t}l\left(w_{t+1}\right)+\left(1-\pi_{t}\right)}\begin{cases} &gt;1 &amp;
 \text{if }l\left(w_{t+1}\right)&gt;1\\
 \leq1 &amp; \text{if }l\left(w_{t+1}\right)\leq1
 \end{cases}\end{split}\]</div>
@@ -684,7 +636,7 @@ given parameters of <span class="math notranslate nohighlight">\(f\)</span> and 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/exchangeable_5_0.png" src="_images/exchangeable_5_0.png" />
+<img alt="_images/e96d318927829faa81f33b55b10aa55f94f765ce7a9831ea54eece312059a0a6.png" src="_images/e96d318927829faa81f33b55b10aa55f94f765ce7a9831ea54eece312059a0a6.png" />
 </div>
 </div>
 <p>Please look at the three graphs above created for an instance in which <span class="math notranslate nohighlight">\(f\)</span> is a uniform distribution on <span class="math notranslate nohighlight">\([0,1]\)</span>
@@ -719,15 +671,15 @@ is a Beta distribution with parameters <span class="math notranslate nohighlight
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/exchangeable_7_0.png" src="_images/exchangeable_7_0.png" />
+<img alt="_images/3084f05fbeb563fac916cd11aa7f41e1b7523db4f74fff04865732da3838fd6b.png" src="_images/3084f05fbeb563fac916cd11aa7f41e1b7523db4f74fff04865732da3838fd6b.png" />
 </div>
 </div>
 <p>Notice how the likelihood ratio, the middle graph, and the arrows compare with the previous instance of our example.</p>
-</div>
-<div class="section" id="appendix">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">58.8. </span>Appendix</a><a class="headerlink" href="#appendix" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="sample-paths-of-pi-t">
-<h3><span class="section-number">58.8.1. </span>Sample Paths of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#sample-paths-of-pi-t" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="appendix">
+<h2><a class="toc-backref" href="#id13"><span class="section-number">58.8. </span>Appendix</a><a class="headerlink" href="#appendix" title="Permalink to this heading">#</a></h2>
+<section id="sample-paths-of-pi-t">
+<h3><span class="section-number">58.8.1. </span>Sample Paths of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#sample-paths-of-pi-t" title="Permalink to this heading">#</a></h3>
 <p>Now we’ll have some fun by plotting multiple realizations of sample paths of <span class="math notranslate nohighlight">\(\pi_t\)</span> under two possible
 assumptions about nature’s choice of distribution, namely</p>
 <ul class="simple">
@@ -817,7 +769,7 @@ periods when the sequence is truly IID draws from <span class="math notranslate 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/exchangeable_13_0.png" src="_images/exchangeable_13_0.png" />
+<img alt="_images/c3600031a5ff7b13d396b72339e451ec29f806c28daeed56f9ba4d44dee82e19.png" src="_images/c3600031a5ff7b13d396b72339e451ec29f806c28daeed56f9ba4d44dee82e19.png" />
 </div>
 </div>
 <p>In the above example,  for most paths <span class="math notranslate nohighlight">\(\pi_t \rightarrow 1\)</span>.</p>
@@ -833,13 +785,13 @@ periods when the sequence is truly IID draws from <span class="math notranslate 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/exchangeable_15_0.png" src="_images/exchangeable_15_0.png" />
+<img alt="_images/6d58854139c90c3cd5099bdecb010acac8354b251b5b62f486529030aa28f7c5.png" src="_images/6d58854139c90c3cd5099bdecb010acac8354b251b5b62f486529030aa28f7c5.png" />
 </div>
 </div>
 <p>In the above graph we observe that now  most paths <span class="math notranslate nohighlight">\(\pi_t \rightarrow 0\)</span>.</p>
-</div>
-<div class="section" id="rates-of-convergence">
-<h3><span class="section-number">58.8.2. </span>Rates of convergence<a class="headerlink" href="#rates-of-convergence" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="rates-of-convergence">
+<h3><span class="section-number">58.8.2. </span>Rates of convergence<a class="headerlink" href="#rates-of-convergence" title="Permalink to this heading">#</a></h3>
 <p>We study rates of  convergence of <span class="math notranslate nohighlight">\(\pi_t\)</span> to <span class="math notranslate nohighlight">\(1\)</span> when nature generates the data as IID draws from <span class="math notranslate nohighlight">\(F\)</span>
 and of convergence of <span class="math notranslate nohighlight">\(\pi_t\)</span> to <span class="math notranslate nohighlight">\(0\)</span> when nature generates  IID draws from <span class="math notranslate nohighlight">\(G\)</span>.</p>
 <p>We do this by averaging across simulated paths of <span class="math notranslate nohighlight">\(\{\pi_t\}_{t=0}^T\)</span>.</p>
@@ -856,13 +808,13 @@ and compute <span class="math notranslate nohighlight">\(\sum_{i=1}^{N}\pi_{i,t}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/exchangeable_17_0.png" src="_images/exchangeable_17_0.png" />
+<img alt="_images/c7a1fbfd047beda39712485f6e9ed2e9b5e7d29baaf4c1fff8b05754adbea298.png" src="_images/c7a1fbfd047beda39712485f6e9ed2e9b5e7d29baaf4c1fff8b05754adbea298.png" />
 </div>
 </div>
 <p>From the above graph, rates of convergence appear not to depend on whether <span class="math notranslate nohighlight">\(F\)</span> or <span class="math notranslate nohighlight">\(G\)</span> generates the data.</p>
-</div>
-<div class="section" id="graph-of-ensemble-dynamics-of-pi-t">
-<h3><span class="section-number">58.8.3. </span>Graph of Ensemble Dynamics of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#graph-of-ensemble-dynamics-of-pi-t" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="graph-of-ensemble-dynamics-of-pi-t">
+<h3><span class="section-number">58.8.3. </span>Graph of Ensemble Dynamics of <span class="math notranslate nohighlight">\(\pi_t\)</span><a class="headerlink" href="#graph-of-ensemble-dynamics-of-pi-t" title="Permalink to this heading">#</a></h3>
 <p>More insights about the dynamics of <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span> can be gleaned by computing
 conditional expectations of <span class="math notranslate nohighlight">\(\frac{\pi_{t+1}}{\pi_{t}}\)</span> as functions of <span class="math notranslate nohighlight">\(\pi_t\)</span> via integration with respect
 to the pertinent probability distribution:</p>
@@ -914,7 +866,7 @@ E\left[\frac{\pi_{t+1}}{\pi_{t}}\biggm|q=a, \pi_{t}\right] &amp;=E\left[\frac{l\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/exchangeable_21_0.png" src="_images/exchangeable_21_0.png" />
+<img alt="_images/8c2d1e355365aef632fd7dc188de9131e174591980a107513c003fa1519f12d6.png" src="_images/8c2d1e355365aef632fd7dc188de9131e174591980a107513c003fa1519f12d6.png" />
 </div>
 </div>
 <p>The above graphs shows that when <span class="math notranslate nohighlight">\(F\)</span> generates the data, <span class="math notranslate nohighlight">\(\pi_t\)</span> on average always heads north, while
@@ -930,7 +882,7 @@ is nothing to learn.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/exchangeable_23_0.png" src="_images/exchangeable_23_0.png" />
+<img alt="_images/3411674de4a32485ff5a28071c7e73670e3c82f09213bfd778656d3d5eeca320.png" src="_images/3411674de4a32485ff5a28071c7e73670e3c82f09213bfd778656d3d5eeca320.png" />
 </div>
 </div>
 <p>The above graph says that <span class="math notranslate nohighlight">\(\pi_t\)</span> is inert and  remains at its initial value.</p>
@@ -944,13 +896,13 @@ different nor identical, in particular one in which  <span class="math notransla
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/exchangeable_25_0.png" src="_images/exchangeable_25_0.png" />
+<img alt="_images/6774d603621d52553c16a6c3672e010e92595b83f3d3d3d56d2eaa84bffc9f60.png" src="_images/6774d603621d52553c16a6c3672e010e92595b83f3d3d3d56d2eaa84bffc9f60.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="sequels">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">58.9. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="sequels">
+<h2><a class="toc-backref" href="#id14"><span class="section-number">58.9. </span>Sequels</a><a class="headerlink" href="#sequels" title="Permalink to this heading">#</a></h2>
 <p>We’ll apply and dig deeper into some of the ideas presented in this lecture:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">this lecture</span></a> describes <strong>likelihood ratio processes</strong>
@@ -959,8 +911,8 @@ and their role in frequentist and Bayesian statistical theories</p></li>
 him to use was  inferior to a sequential rule that Abraham
 Wald had not yet designed.</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -974,7 +926,7 @@ Wald had not yet designed.</p></li>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1555,7 +1507,7 @@ Wald had not yet designed.</p></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
                             <i data-feather="search"></i>
                         </form>
                     </li> -->
@@ -1697,16 +1649,5 @@ Wald had not yet designed.</p></li>
         </div>
 
     </div> <!-- .wrapper-->
-    
-<script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script>
-                        window.ga = window.ga || function () {
-                            (ga.q = ga.q || []).push(arguments) };
-                        ga.l = +new Date;
-                        ga('create', 'UA-54984338-10', 'auto');
-                        ga('set', 'anonymizeIp', true);
-                        ga('send', 'pageview');
-                    </script>
-
   </body>
 </html>
