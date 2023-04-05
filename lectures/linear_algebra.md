@@ -288,8 +288,7 @@ The span is a two-dimensional plane passing through these two points and the ori
 ---
 tags: [output_scroll]
 ---
-fig = plt.figure(figsize=(10, 8))
-ax = fig.gca(projection='3d')
+ax = plt.figure(figsize=(10, 8)).add_subplot(projection='3d')
 
 x_min, x_max = -5, 5
 y_min, y_max = -5, 5
