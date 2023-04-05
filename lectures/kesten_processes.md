@@ -742,7 +742,7 @@ def generate_draws(μ_a=-0.5,
 %time data = generate_draws().block_until_ready()
 ```
 
-As JIT-compiled `for` loops will lead to very slow compilation, we used `jax.jit` on the update function instead of the whole function.
+As JIT-compiled `for` loops will lead to very slow compilation, we used `jax.jit` on the function `update_s` instead of the whole function.
 
 Let's produce the rank-size plot and check the distribution:
 
