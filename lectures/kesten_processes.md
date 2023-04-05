@@ -699,8 +699,6 @@ print(f"jax backend: {jax.devices()[0].platform}")
 Now we can generate the observations:
 
 ```{code-cell} ipython3
-
-@jax.jit
 def generate_draws(μ_a=-0.5,
                    σ_a=0.1,
                    μ_b=0.0,
@@ -716,33 +714,35 @@ def generate_draws(μ_a=-0.5,
     key = random.PRNGKey(seed)
     keys = random.split(key, 3)
 
-    # Generate arrays of random numbers
-    a_random = μ_a + σ_a * random.normal(keys[0], (T, M))
-    b_random = μ_b + σ_b * random.normal(keys[1], (T, M))
-    e_random = μ_e + σ_e * random.normal(keys[2], (T, M))
-
     # Initialize the array of s values with the initial value
-    s = jnp.full((M, T+1), s_init)
+    s = jnp.full((M, ), s_init)
+    
+    @jax.jit
+    def update_s(s, s_bar, keys):
+        a_random = μ_a + σ_a * random.normal(keys[0], (M, ))
+        b_random = μ_b + σ_b * random.normal(keys[1], (M, ))
+        e_random = μ_e + σ_e * random.normal(keys[2], (M, ))
 
-    # Perform the calculations in a vectorized manner for T periods
+        exp_a = jnp.exp(a_random)
+        exp_b = jnp.exp(b_random)
+        exp_e = jnp.exp(e_random)
+
+        new_s = jnp.where(s < s_bar,
+                          exp_e,
+                          exp_a * s + exp_b)
+        return new_s, keys[-1]
+
+    # Perform updates on s for time t
     for t in range(T):
-        exp_a = jnp.exp(a_random[t, :])
-        exp_b = jnp.exp(b_random[t, :])
-        exp_e = jnp.exp(e_random[t, :])
-        s = s.at[:, t+1].set(jnp.where(s[:, t] < s_bar,
-                             exp_e,
-                             exp_a * s[:, t] + exp_b))
+        s, key = update_s(s, s_bar, keys)
+        keys = random.split(key, 3)
 
-    return s[:, -1]
+    return s
 
 %time data = generate_draws().block_until_ready()
 ```
 
-Since we applied `jax.jit` on the function, it runs even faster when we call the function again
-
-```{code-cell} ipython3
-%time data = generate_draws().block_until_ready()
-```
+As JIT-compiled `for` loops will lead to very slow compilation, we used `jax.jit` on the update function instead of the whole function.
 
 Let's produce the rank-size plot and check the distribution:
 
@@ -802,7 +802,7 @@ def generate_draws_lax(μ_a=-0.5,
 %time data = generate_draws_lax().block_until_ready()
 ```
 
-The compiled function is even faster
+Since we used `jax.jit` on the entire function, the compiled function is even faster
 
 ```{code-cell} ipython3
 %time data = generate_draws_lax().block_until_ready()
