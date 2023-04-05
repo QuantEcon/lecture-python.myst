@@ -718,7 +718,7 @@ def generate_draws(μ_a=-0.5,
     s = jnp.full((M, ), s_init)
     
     @jax.jit
-    def update_s(s, s_bar, keys):
+    def update_s(s, keys):
         a_random = μ_a + σ_a * random.normal(keys[0], (M, ))
         b_random = μ_b + σ_b * random.normal(keys[1], (M, ))
         e_random = μ_e + σ_e * random.normal(keys[2], (M, ))
@@ -730,11 +730,12 @@ def generate_draws(μ_a=-0.5,
         new_s = jnp.where(s < s_bar,
                           exp_e,
                           exp_a * s + exp_b)
+
         return new_s, keys[-1]
 
     # Perform updates on s for time t
     for t in range(T):
-        s, key = update_s(s, s_bar, keys)
+        s, key = update_s(s, keys)
         keys = random.split(key, 3)
 
     return s
@@ -779,7 +780,7 @@ def generate_draws_lax(μ_a=-0.5,
                        seed=123):
 
     key = random.PRNGKey(seed)
-    keys = random.split(key, 3)
+    keys = random.split(key, T)
 
     # Generate random draws and initial values
     a_random = μ_a + σ_a * random.normal(keys[0], (T, M))
@@ -793,7 +794,7 @@ def generate_draws_lax(μ_a=-0.5,
         s = jnp.where(s < s_bar,
                       jnp.exp(e),
                       jnp.exp(a) * s + jnp.exp(b))
-        return s, s
+        return s, None
 
     # Use lax.scan to perform the calculations on all states
     s_final, _ = lax.scan(update_s, s, (a_random, b_random, e_random))
