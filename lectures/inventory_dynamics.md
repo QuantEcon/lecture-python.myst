@@ -369,7 +369,7 @@ We have reached a reasonable approximation of the stationary density.
 You can convince yourself that initial conditions don’t matter by
 testing a few of them.
 
-For example, try rerunning the code above will all firms starting at
+For example, try rerunning the code above with all firms starting at
 $X_0 = 20$ or $X_0 = 80$.
 
 ```{solution-end}
