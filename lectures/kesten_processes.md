@@ -727,11 +727,11 @@ def generate_draws(μ_a=-0.5,
         exp_b = jnp.exp(b_random)
         exp_e = jnp.exp(e_random)
 
-        new_s = jnp.where(s < s_bar,
+        s = jnp.where(s < s_bar,
                           exp_e,
                           exp_a * s + exp_b)
 
-        return new_s, keys[-1]
+        return s, keys[-1]
 
     # Perform updates on s for time t
     for t in range(T):
