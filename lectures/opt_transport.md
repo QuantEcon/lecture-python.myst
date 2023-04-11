@@ -4,9 +4,9 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.10.3
+    jupytext_version: 1.14.4
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -38,13 +38,11 @@ several implementations of linear programming, including, in order,
 2. the [linprog_simplex](https://quanteconpy.readthedocs.io/en/latest/optimize/linprog_simplex.html) solver from QuantEcon and
 3. the simplex-based solvers included in the [Python Optimal Transport](https://pythonot.github.io/) package.
 
-
-
-
 ```{code-cell} ipython3
 :tags: [hide-output]
+
 !pip install --upgrade quantecon
-!pip install --upgrade POT jax jaxlib
+!pip install --upgrade POT
 ```
 
 Let's start with some imports.
@@ -58,11 +56,6 @@ import ot
 from scipy.stats import binom, betabinom
 import networkx as nx
 ```
-
-
-
-
-
 
 ## The Optimal Transport Problem
 
@@ -356,7 +349,7 @@ A = np.vstack([A1, A2])
 b = np.hstack([p, q])
 
 # Solve the primal problem
-res = linprog(C_vec, A_eq=A, b_eq=b, method='Revised simplex')
+res = linprog(C_vec, A_eq=A, b_eq=b)
 
 # Print results
 print("message:", res.message)
@@ -405,15 +398,15 @@ However, we find a  different transportation plan.
 Though it is a different plan, it attains the same cost!
 
 ```{code-cell} ipython3
-linprog(C_vec, A_eq=A[:-1], b_eq=b[:-1], method='Revised simplex')
+linprog(C_vec, A_eq=A[:-1], b_eq=b[:-1])
 ```
 
 ```{code-cell} ipython3
-%time linprog(C_vec, A_eq=A[:-1], b_eq=b[:-1], method='Revised simplex')
+%time linprog(C_vec, A_eq=A[:-1], b_eq=b[:-1])
 ```
 
 ```{code-cell} ipython3
-%time linprog(C_vec, A_eq=A, b_eq=b, method='Revised simplex')
+%time linprog(C_vec, A_eq=A, b_eq=b)
 ```
 
 Evidently, it is slightly quicker to work with the system that removed a redundant constraint.
@@ -438,7 +431,7 @@ cost = []
 for i in range(1000):
 
     np.random.shuffle(arr)
-    res_shuffle = linprog(C_vec, A_eq=A[arr], b_eq=b[arr], method='Revised simplex')
+    res_shuffle = linprog(C_vec, A_eq=A[arr], b_eq=b[arr])
 
     # if find a new solution
     sol = tuple(res_shuffle.x)
@@ -460,7 +453,7 @@ These are the same two plans computed earlier.
 Next, we show that leaving out the first constraint "accidentally" leads to the initial plan that we computed.
 
 ```{code-cell} ipython3
-linprog(C_vec, A_eq=A[1:], b_eq=b[1:], method='Revised simplex')
+linprog(C_vec, A_eq=A[1:], b_eq=b[1:])
 ```
 
 Let's compare this transport plan with
@@ -480,7 +473,7 @@ The minimized cost from the optimal transport plan is given by the $fun$ variabl
 ### Using a Just-in-Time Compiler
 
 We can also solve optimal transportation problems using a powerful tool from
-QuantEcon, namely,`quantecon.optimize.linprog_simplex`. 
+QuantEcon, namely, `quantecon.optimize.linprog_simplex`. 
 
 While this routine uses the same simplex algorithm as
 `scipy.optimize.linprog`, the code is accelerated by using a just-in-time
@@ -523,7 +516,7 @@ Let's do a speed comparison between `scipy.optimize.linprog` and `quantecon.opti
 
 ```{code-cell} ipython3
 # scipy.optimize.linprog
-%time res = linprog(C_vec, A_eq=A[:-1, :], b_eq=b[:-1], method='Revised simplex')
+%time res = linprog(C_vec, A_eq=A[:-1, :], b_eq=b[:-1])
 ```
 
 ```{code-cell} ipython3
@@ -581,7 +574,7 @@ For the same numerical example described above, let's solve the dual problem.
 ```{code-cell} ipython3
 # Solve the dual problem
 res_dual = linprog(-b, A_ub=A.T, b_ub=C_vec,
-                   bounds=[(None, None)]*(m+n), method='Revised simplex')
+                   bounds=[(None, None)]*(m+n))
 
 #Print results
 print("message:", res_dual.message)
@@ -610,7 +603,7 @@ res_dual.x
 We can compare computational times from using our two tools.
 
 ```{code-cell} ipython3
-%time linprog(-b, A_ub=A.T, b_ub=C_vec, bounds=[(None, None)]*(m+n), method='Revised simplex')
+%time linprog(-b, A_ub=A.T, b_ub=C_vec, bounds=[(None, None)]*(m+n))
 ```
 
 ```{code-cell} ipython3
@@ -625,14 +618,14 @@ Try first leaving out the first constraint:
 
 ```{code-cell} ipython3
 linprog(-b[1:], A_ub=A[1:].T, b_ub=C_vec,
-        bounds=[(None, None)]*(m+n-1), method='Revised simplex')
+        bounds=[(None, None)]*(m+n-1))
 ```
 
 Not let's instead leave out the last constraint:
 
 ```{code-cell} ipython3
 linprog(-b[:-1], A_ub=A[:-1].T, b_ub=C_vec,
-        bounds=[(None, None)]*(m+n-1), method='Revised simplex')
+        bounds=[(None, None)]*(m+n-1))
 ```
 
 ### Interpretation of dual problem
@@ -687,7 +680,6 @@ X
 
 Sure enough, we have the same solution and the same cost
 
-
 ```{code-cell} ipython3
 total_cost = np.sum(X * C)
 total_cost
@@ -725,8 +717,6 @@ It allocates to the nodes it creates their location, mass, and group.
 
 Locations are assigned randomly.
 
-
-
 ```{code-cell} ipython3
 def build_nodes_of_one_type(group='p', n=100, seed=123):
 
@@ -752,7 +742,6 @@ def build_nodes_of_one_type(group='p', n=100, seed=123):
 
 Now we build two lists of nodes, each one containing one type (factories or
     locations)
-
 
 ```{code-cell} ipython3
 n_p = 32
@@ -836,8 +825,8 @@ nx.draw_networkx_edges(g,
                        connectionstyle='arc3,rad=0.1',
                        alpha=0.6)
 plt.show()
-
 ```
 
+```{code-cell} ipython3
 
-
+```
