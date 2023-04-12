@@ -19,7 +19,7 @@ kernelspec:
 
 # Wealth Distribution Dynamics
 
-```{include} _notes/gpu.md
+```{include} _admonitions/gpu.md
 ```
 
 ```{contents} Contents
