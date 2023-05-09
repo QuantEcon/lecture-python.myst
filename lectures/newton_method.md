@@ -73,7 +73,12 @@ Then we apply Newton's method to multi-dimensional settings to solve
 market for equilibria with multiple goods.
 
 At the end of the lecture we leverage the power of automatic
-differentiation in [`autograd`](https://github.com/HIPS/autograd) to solve a very high-dimensional equilibrium problem.
+differentiation in [`autograd`](https://github.com/HIPS/autograd) to solve a very high-dimensional equilibrium problem
+
+```{code-cell} ipython3
+!pip install autograd
+```
+
 
 We use the following imports in this lecture
 
