@@ -28,6 +28,11 @@ kernelspec:
 :depth: 2
 ```
 
+```{seealso}
+**GPU:** A version of this lecture which makes use of [jax](https://jax.readthedocs.io) to run the code
+on a `GPU` is [available here](https://jax.quantecon.org/newtons_method.html)
+```
+
 ## Overview
 
 Many economic problems involve finding [fixed
@@ -779,19 +784,17 @@ However, things will change when we move to higher dimensional problems.
 
 ### A High-Dimensional Problem
 
-Our next step is to investigate a large market with 5,000 goods.
+Our next step is to investigate a large market with 3,000 goods.
 
-This section will be very slow to run. 
-
-A JAX version of this lecture section using JAX accelerated linear algebra,
-automatic differentiation, and a GPU is available here TODO: link to JAX lecture
+A JAX version of this section using GPU accelerated linear algebra,
+automatic differentiation is available [here](https://jax.quantecon.org/newtons_method.html#application)
 
 (Spoiler: the JAX version can compute the result in just a few seconds)
 
-The excess demand function is essentially the same, but now the matrix $A$ is $5000 \times 5000$ and the parameter vectors $b$ and $c$ are $5000 \times 1$.
+The excess demand function is essentially the same, but now the matrix $A$ is $3000 \times 3000$ and the parameter vectors $b$ and $c$ are $3000 \times 1$.
 
 ```{code-cell} ipython3
-dim = 5000
+dim = 3000
 np.random.seed(123)
 
 # Create a random matrix A and normalize the rows to sum to one
@@ -820,7 +823,7 @@ p = newton(lambda p: e(p, A, b, c), init_p)
 np.max(np.abs(e(p, A, b, c)))
 ```
 
-With the same tolerance, SciPy's `root` function takes about the same time, but is less accurate
+With the same tolerance, SciPy's `root` function is slightly faster, but is less accurate
 
 ```{code-cell} ipython3
 %%time
