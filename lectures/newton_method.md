@@ -77,6 +77,7 @@ import matplotlib.pyplot as plt
 from collections import namedtuple
 from scipy.optimize import root
 from autograd import jacobian
+# Thinly-wrapped numpy to enable automatic differentiation
 import autograd.numpy as np
 
 plt.rcParams["figure.figsize"] = (10, 5.7)
