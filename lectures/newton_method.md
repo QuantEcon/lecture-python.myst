@@ -76,9 +76,10 @@ At the end of the lecture we leverage the power of automatic
 differentiation in [`autograd`](https://github.com/HIPS/autograd) to solve a very high-dimensional equilibrium problem
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install autograd
 ```
-
 
 We use the following imports in this lecture
 
@@ -944,6 +945,8 @@ def multivariate_solow(k, A=A, s=s, α=α, δ=δ):
 Let's run through each starting value and see the output
 
 ```{code-cell} ipython3
+:tags: ["raises-exception"]
+
 attempt = 1
 for init in initLs:
     print(f'Attempt {attempt}: Starting value is {init} \n')
@@ -1066,6 +1069,8 @@ initLs = [np.repeat(5.0, 3),
 Let’s run through each initial guess and check the output
 
 ```{code-cell} ipython3
+:tags: ["raises-exception"]
+
 attempt = 1
 for init in initLs:
     print(f'Attempt {attempt}: Starting value is {init} \n')
