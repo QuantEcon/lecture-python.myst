@@ -24,8 +24,8 @@ kernelspec:
 ```
 
 ```{seealso}
-**GPU:** A version of this lecture which makes use of [jax](https://jax.readthedocs.io) to run the code
-on a `GPU` is [available here](https://jax.quantecon.org/wealth_dynamics.html)
+A [version of this lecture](https://jax.quantecon.org/wealth_dynamics.html) using a `GPU`
+is [available here](https://jax.quantecon.org/wealth_dynamics.html)
 ```
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
