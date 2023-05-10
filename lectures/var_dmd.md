@@ -835,4 +835,4 @@ Counterparts of all of the salient formulas above then apply.
 
 You can find a Python implementation of DMD here:
 
-https://mathlab.github.io/PyDMD/
+https://mathlab.sissa.it/pydmd
