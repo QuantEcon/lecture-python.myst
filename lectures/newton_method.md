@@ -951,7 +951,7 @@ for init in initLs:
     try:
         %time k = newton(lambda k: multivariate_solow(k) - k, \
                         init)
-    except Exception:
+    except:
         print('This iteration failed to converge')
     print('-'*64)
     attempt += 1
@@ -1082,7 +1082,7 @@ for init in initLs:
        %time p = newton(lambda p: e(p, A, b, c), \
                     init, \
                     tol=0.0)
-    except Exception:
+    except:
        print('This iteration failed to converge')
     print('-'*64)
     attempt += 1
