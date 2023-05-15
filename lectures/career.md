@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.14.4
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -29,10 +31,9 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -46,7 +47,7 @@ This exposition draws on the presentation in {cite}`Ljungqvist2012`, section 6.5
 
 We begin with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 %matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
@@ -165,7 +166,7 @@ Nice properties:
 
 Here's a figure showing the effect on the pmf of different shape parameters when $n=50$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 def gen_probs(n, a, b):
     probs = np.zeros(n+1)
     for k in range(n+1):
@@ -188,7 +189,7 @@ plt.show()
 We will first create a class `CareerWorkerProblem` which will hold the
 default parameterizations of the model and an initial guess for the value function.
 
-```{code-cell} python3
+```{code-cell} ipython3
 class CareerWorkerProblem:
 
     def __init__(self,
@@ -221,7 +222,7 @@ the corresponding Bellman operator $T$ and the greedy policy function.
 In this model, $T$ is defined by $Tv(\theta, \epsilon) = \max\{I, II, III\}$, where
 $I$, $II$ and $III$ are as given in {eq}`eyes`.
 
-```{code-cell} python3
+```{code-cell} ipython3
 def operator_factory(cw, parallel_flag=True):
 
     """
@@ -277,7 +278,7 @@ def operator_factory(cw, parallel_flag=True):
 Lastly, `solve_model` will  take an instance of `CareerWorkerProblem` and
 iterate using the Bellman operator to find the fixed point of the Bellman equation.
 
-```{code-cell} python3
+```{code-cell} ipython3
 def solve_model(cw,
                 use_parallel=True,
                 tol=1e-4,
@@ -311,7 +312,7 @@ def solve_model(cw,
 
 Here's the solution to the model -- an approximate value function
 
-```{code-cell} python3
+```{code-cell} ipython3
 cw = CareerWorkerProblem()
 T, get_greedy = operator_factory(cw)
 v_star = solve_model(cw, verbose=False)
@@ -333,7 +334,7 @@ plt.show()
 
 And here is the optimal policy
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(6, 6))
 tg, eg = np.meshgrid(cw.θ, cw.ϵ)
 lvls = (0.5, 1.5, 2.5, 3.5)
@@ -393,7 +394,7 @@ In reading the code, recall that `optimal_policy[i, j]` = policy at
 $(\theta_i, \epsilon_j)$ = either 1, 2 or 3; meaning 'stay put',
 'new job' and 'new life'.
 
-```{code-cell} python3
+```{code-cell} ipython3
 F = np.cumsum(cw.F_probs)
 G = np.cumsum(cw.G_probs)
 v_star = solve_model(cw, verbose=False)
@@ -465,7 +466,7 @@ Repeat the exercise with $\beta=0.99$ and interpret the change.
 
 The median for the original parameterization can be computed as follows
 
-```{code-cell} python3
+```{code-cell} ipython3
 cw = CareerWorkerProblem()
 F = np.cumsum(cw.F_probs)
 G = np.cumsum(cw.G_probs)
@@ -481,12 +482,12 @@ def passage_time(optimal_policy, F, G):
         if optimal_policy[i, j] == 1:    # Stay put
             return t
         elif optimal_policy[i, j] == 2:  # New job
-            j = qe.random.draw(G)
+            j = qe.random.draw(G, size=1)[0]
         else:                            # New life
-            i, j  = qe.random.draw(F), qe.random.draw(G)
+            i  = qe.random.draw(F, size=1)[0]
+            j  = qe.random.draw(G, size=1)[0]
         t += 1
-
-@njit(parallel=True)
+@njit
 def median_time(optimal_policy, F, G, M=25000):
     samples = np.empty(M)
     for i in prange(M):
@@ -521,7 +522,7 @@ figure -- interpret.
 
 Here is one solution
 
-```{code-cell} python3
+```{code-cell} ipython3
 cw = CareerWorkerProblem(G_a=100, G_b=100)
 T, get_greedy = operator_factory(cw)
 v_star = solve_model(cw, verbose=False)
