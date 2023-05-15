@@ -945,7 +945,7 @@ def multivariate_solow(k, A=A, s=s, α=α, δ=δ):
 Let's run through each starting value and see the output
 
 ```{code-cell} ipython3
-:tags: ["raises-exception"]
+:tags: [raises-exception]
 
 attempt = 1
 for init in initLs:
@@ -1069,7 +1069,7 @@ initLs = [np.repeat(5.0, 3),
 Let’s run through each initial guess and check the output
 
 ```{code-cell} ipython3
-:tags: ["raises-exception"]
+:tags: [raises-exception]
 
 attempt = 1
 for init in initLs:
