@@ -945,15 +945,16 @@ def multivariate_solow(k, A=A, s=s, α=α, δ=δ):
 Let's run through each starting value and see the output
 
 ```{code-cell} ipython3
-
 attempt = 1
 for init in initLs:
     print(f'Attempt {attempt}: Starting value is {init} \n')
-
-    %time k = newton(lambda k: multivariate_solow(k) - k, \
-                     init)
+    try:
+        %time k = newton(lambda k: multivariate_solow(k) - k, \
+                        init)
+    except Exception:
+        print('This iteration failed to converge')
     print('-'*64)
-    attempt +=1
+    attempt += 1
 ```
 
 We find that the results are invariant to the starting values given the well-defined property of this question.
@@ -1073,12 +1074,14 @@ for init in initLs:
     print(f'Attempt {attempt}: Starting value is {init} \n')
 
     init = init.astype('float64')
-
-    p = newton(lambda p: e(p, A, b, c), \
-                 init, \
-                 tol=0.0)
+    try:
+       %time p = newton(lambda p: e(p, A, b, c), \
+                    init, \
+                    tol=0.0)
+    except Exception:
+       print('This iteration failed to converge')
     print('-'*64)
-    attempt +=1
+    attempt += 1
 ```
 
 We can find that Newton's method may fail for some starting values.
