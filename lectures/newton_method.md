@@ -1069,6 +1069,10 @@ initLs = [np.repeat(5.0, 3),
 Let’s run through each initial guess and check the output
 
 ```{code-cell} ipython3
+---
+tags: [raises-exception]
+---
+
 attempt = 1
 for init in initLs:
     print(f'Attempt {attempt}: Starting value is {init} \n')
