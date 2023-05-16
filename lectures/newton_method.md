@@ -1095,6 +1095,10 @@ Sometimes it may take a few initial guesses to achieve convergence.
 Substitute the result back to the formula to check our result
 
 ```{code-cell} ipython3
+init = np.array([4.5, 0.1, 4.0])
+p = newton(lambda p: e(p, A, b, c), \
+                    init, \
+                    tol=0.0)
 e(p, A, b, c)
 ```
 
