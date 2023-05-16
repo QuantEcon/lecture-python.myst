@@ -784,18 +784,13 @@ The result is very accurate.
 
 With the larger overhead, the speed is not better than the optimized `scipy` function.
 
-However, things will change when we move to higher dimensional problems.
-
-
 
 ### A High-Dimensional Problem
 
 Our next step is to investigate a large market with 3,000 goods.
 
-A JAX version of this section using GPU accelerated linear algebra,
+A JAX version of this section using GPU accelerated linear algebra and
 automatic differentiation is available [here](https://jax.quantecon.org/newtons_method.html#application)
-
-(Spoiler: the JAX version can compute the result in just a few seconds)
 
 The excess demand function is essentially the same, but now the matrix $A$ is $3000 \times 3000$ and the parameter vectors $b$ and $c$ are $3000 \times 1$.
 
@@ -829,7 +824,7 @@ p = newton(lambda p: e(p, A, b, c), init_p)
 np.max(np.abs(e(p, A, b, c)))
 ```
 
-With the same tolerance, SciPy's `root` function is slightly faster, but is less accurate
+With the same tolerance, SciPy's `root` function is slightly faster, but the result is less accurate
 
 ```{code-cell} ipython3
 %%time
@@ -844,9 +839,6 @@ solution = root(lambda p: e(p, A, b, c),
 p = solution.x
 np.max(np.abs(e(p, A, b, c)))
 ```
-
-The result is also less accurate.
-
 
 
 ## Exercises
@@ -1094,6 +1086,10 @@ We can find that Newton's method may fail for some starting values.
 Sometimes it may take a few initial guesses to achieve convergence.
 
 Substitute the result back to the formula to check our result
+
+```{code-cell} ipython3
+e(p, A, b, c)
+```
 
 We can see the result is very accurate.
 
