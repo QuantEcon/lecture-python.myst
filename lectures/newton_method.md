@@ -1079,9 +1079,9 @@ for init in initLs:
 
     init = init.astype('float64')
     try:
-       %time p = newton(lambda p: e(p, A, b, c), 
-                    init,
-                    tol=0.0,
+       %time p = newton(lambda p: e(p, A, b, c), \
+                    init, \
+                    tol=0.0, \
                     max_iter=15)
     except:
        print('This iteration failed to converge')
@@ -1094,6 +1094,10 @@ We can find that Newton's method may fail for some starting values.
 Sometimes it may take a few initial guesses to achieve convergence.
 
 Substitute the result back to the formula to check our result
+
+```{code-cell} ipython3
+e(p, A, b, c)
+```
 
 We can see the result is very accurate.
 
