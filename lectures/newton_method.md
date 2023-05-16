@@ -1081,7 +1081,7 @@ for init in initLs:
     try:
        %time p = newton(lambda p: e(p, A, b, c), \
                     init, \
-                    tol=0.0, \
+                    tol=1e-15, \
                     max_iter=15)
     except:
        print('This iteration failed to converge')
