@@ -1063,8 +1063,7 @@ c = np.array([1.0, 1.0, 1.0])
 
 initLs = [np.repeat(5.0, 3),
           np.ones(3),
-          np.array([4.5, 0.1, 4.0]),
-          np.array([0, 1, 0])] 
+          np.array([4.5, 0.1, 4.0])] 
 ```
 
 Let’s run through each initial guess and check the output
@@ -1080,9 +1079,10 @@ for init in initLs:
 
     init = init.astype('float64')
     try:
-       %time p = newton(lambda p: e(p, A, b, c), \
-                    init, \
-                    tol=0.0)
+       %time p = newton(lambda p: e(p, A, b, c), 
+                    init,
+                    tol=0.0,
+                    max_iter=15)
     except:
        print('This iteration failed to converge')
     print('-'*64)
