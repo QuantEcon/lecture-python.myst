@@ -1095,10 +1095,6 @@ Sometimes it may take a few initial guesses to achieve convergence.
 
 Substitute the result back to the formula to check our result
 
-```{code-cell} ipython3
-e(p, A, b, c)
-```
-
 We can see the result is very accurate.
 
 ```{solution-end}
