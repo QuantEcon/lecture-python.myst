@@ -1063,7 +1063,8 @@ c = np.array([1.0, 1.0, 1.0])
 
 initLs = [np.repeat(5.0, 3),
           np.ones(3),
-          np.array([4.5, 0.1, 4.0])] 
+          np.array([4.5, 0.1, 4.0]),
+          np.array([0, 1, 0])] 
 ```
 
 Let’s run through each initial guess and check the output
@@ -1093,14 +1094,6 @@ We can find that Newton's method may fail for some starting values.
 Sometimes it may take a few initial guesses to achieve convergence.
 
 Substitute the result back to the formula to check our result
-
-```{code-cell} ipython3
-init = np.array([4.5, 0.1, 4.0])
-p = newton(lambda p: e(p, A, b, c), \
-                    init, \
-                    tol=0.0)
-e(p, A, b, c)
-```
 
 We can see the result is very accurate.
 
