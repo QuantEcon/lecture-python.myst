@@ -244,11 +244,11 @@ To simplify notation, let's set
 $$  
 \mathbb W := \{w_1, \ldots, w_n  \}
     \quad \text{and} \quad
-    v^*(i) := v^*(w_i)$
+    v^*(i) := v^*(w_i)
 $$
 
-The value function is then represented by the vector $v^* =
-(v^*(i))_{i=1}^n$.
+The value function is then represented by the vector 
+$v^* = (v^*(i))_{i=1}^n$.
 
 In view of {eq}`odu_pv`, this vector satisfies the nonlinear system of equations
 
