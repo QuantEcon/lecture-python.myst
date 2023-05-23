@@ -824,7 +824,7 @@ p = newton(lambda p: e(p, A, b, c), init_p)
 np.max(np.abs(e(p, A, b, c)))
 ```
 
-With the same tolerance, SciPy's `root` function is slightly faster, but the result is less accurate
+With the same tolerance, we compare the runtime and accuracy of Newton's method to SciPy's `root` function
 
 ```{code-cell} ipython3
 %%time
