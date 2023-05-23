@@ -940,11 +940,8 @@ Let's run through each starting value and see the output
 attempt = 1
 for init in initLs:
     print(f'Attempt {attempt}: Starting value is {init} \n')
-    try:
-        %time k = newton(lambda k: multivariate_solow(k) - k, \
-                        init)
-    except:
-        print('This iteration failed to converge')
+    %time k = newton(lambda k: multivariate_solow(k) - k, \
+                    init)
     print('-'*64)
     attempt += 1
 ```
@@ -1068,15 +1065,10 @@ tags: [raises-exception]
 attempt = 1
 for init in initLs:
     print(f'Attempt {attempt}: Starting value is {init} \n')
-
-    init = init.astype('float64')
-    try:
-       %time p = newton(lambda p: e(p, A, b, c), \
-                    init, \
-                    tol=1e-15, \
-                    max_iter=15)
-    except:
-       print('This iteration failed to converge')
+    %time p = newton(lambda p: e(p, A, b, c), \
+                init, \
+                tol=1e-15, \
+                max_iter=15)
     print('-'*64)
     attempt += 1
 ```
