@@ -547,7 +547,7 @@ poi = PoissonRegression(y, X, β=init_β)
 ```
 
 As this was a simple model with few observations, the algorithm achieved
-convergence in only 6 iterations.
+convergence in only 7 iterations.
 
 You can see that with each iteration, the log-likelihood value increased.
 
