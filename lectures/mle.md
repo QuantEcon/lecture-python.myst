@@ -412,19 +412,19 @@ $\beta_0$ (the OLS parameter estimates might be a reasonable
 guess), then
 
 1. Use the updating rule to iterate the algorithm
-   
+
    $$
    \boldsymbol{\beta}_{(k+1)} = \boldsymbol{\beta}_{(k)} - H^{-1}(\boldsymbol{\beta}_{(k)})G(\boldsymbol{\beta}_{(k)})
    $$
    where:
-   
+
    $$
    \begin{aligned}
    G(\boldsymbol{\beta}_{(k)}) = \frac{d \log \mathcal{L(\boldsymbol{\beta}_{(k)})}}{d \boldsymbol{\beta}_{(k)}} \\
    H(\boldsymbol{\beta}_{(k)}) = \frac{d^2 \log \mathcal{L(\boldsymbol{\beta}_{(k)})}}{d \boldsymbol{\beta}_{(k)}d \boldsymbol{\beta}'_{(k)}}
    \end{aligned}
    $$
-   
+
 1. Check whether $\boldsymbol{\beta}_{(k+1)} - \boldsymbol{\beta}_{(k)} < tol$
     - If true, then stop iterating and set
       $\hat{\boldsymbol{\beta}} = \boldsymbol{\beta}_{(k+1)}$
@@ -506,7 +506,7 @@ def newton_raphson(model, tol=1e-3, max_iter=1000, display=True):
     while np.any(error > tol) and i < max_iter:
         H, G = model.H(), model.G()
         β_new = model.β - (np.linalg.inv(H) @ G)
-        error = β_new - model.β
+        error = np.abs(β_new - model.β)
         model.β = β_new
 
         # Print iterations
