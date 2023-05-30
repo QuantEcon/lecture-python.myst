@@ -3,10 +3,8 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.14.4
 kernelspec:
-  display_name: Python 3 (ipykernel)
+  display_name: Python 3
   language: python
   name: python3
 ---
@@ -36,9 +34,10 @@ and the pros and cons as they themselves see them." -- Robert E. Lucas, Jr.
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython3
-:tags: [hide-output]
-
+```{code-cell} ipython
+---
+tags: [hide-output]
+---
 !pip install quantecon
 ```
 
@@ -60,7 +59,7 @@ As we'll see, McCall's model is not only interesting in its own right but also a
 
 Let's start with some imports:
 
-```{code-cell} ipython3
+```{code-cell} ipython
 %matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
@@ -344,21 +343,21 @@ $v$.
 Our default for $q$, the distribution of the state process, will be
 [Beta-binomial](https://en.wikipedia.org/wiki/Beta-binomial_distribution).
 
-```{code-cell} ipython3
+```{code-cell} python3
 n, a, b = 50, 200, 100                        # default parameters
 q_default = BetaBinomial(n, a, b).pdf()       # default choice of q
 ```
 
 Our default set of values for wages will be
 
-```{code-cell} ipython3
+```{code-cell} python3
 w_min, w_max = 10, 60
 w_default = np.linspace(w_min, w_max, n+1)
 ```
 
 Here's a plot of the probabilities of different wage outcomes:
 
-```{code-cell} ipython3
+```{code-cell} python3
 fig, ax = plt.subplots()
 ax.plot(w_default, q_default, '-o', label='$q(w(i))$')
 ax.set_xlabel('wages')
@@ -373,7 +372,7 @@ We are going to use Numba to accelerate our code.
 
 The following helps Numba by providing some type
 
-```{code-cell} ipython3
+```{code-cell} python3
 mccall_data = [
     ('c', float64),      # unemployment compensation
     ('β', float64),      # discount factor
@@ -388,7 +387,7 @@ given the current state and an arbitrary feasible action.
 
 Default parameter values are embedded in the class.
 
-```{code-cell} ipython3
+```{code-cell} python3
 @jitclass(mccall_data)
 class McCallModel:
 
@@ -418,7 +417,7 @@ We will start from guess $v$ given by $v(i) = w(i) / (1 - β)$, which is the val
 
 Here's a function to implement this:
 
-```{code-cell} ipython3
+```{code-cell} python3
 def plot_value_function_seq(mcm, ax, num_plots=6):
     """
     Plot a sequence of value functions.
@@ -443,7 +442,7 @@ def plot_value_function_seq(mcm, ax, num_plots=6):
 
 Now let's create an instance of `McCallModel` and watch iterations  $T^k v$ converge from below:
 
-```{code-cell} ipython3
+```{code-cell} python3
 mcm = McCallModel()
 
 fig, ax = plt.subplots()
@@ -462,7 +461,7 @@ the reservation wage.
 
 We'll be using JIT compilation via Numba to turbocharge our loops.
 
-```{code-cell} ipython3
+```{code-cell} python3
 @jit(nopython=True)
 def compute_reservation_wage(mcm,
                              max_iter=500,
@@ -495,7 +494,7 @@ def compute_reservation_wage(mcm,
 
 The next line computes the reservation wage at  default parameters
 
-```{code-cell} ipython3
+```{code-cell} python3
 compute_reservation_wage(mcm)
 ```
 
@@ -507,7 +506,7 @@ parameters.
 In particular, let's look at what happens when we change $\beta$ and
 $c$.
 
-```{code-cell} ipython3
+```{code-cell} python3
 grid_size = 25
 R = np.empty((grid_size, grid_size))
 
@@ -520,7 +519,7 @@ for i, c in enumerate(c_vals):
         R[i, j] = compute_reservation_wage(mcm)
 ```
 
-```{code-cell} ipython3
+```{code-cell} python3
 fig, ax = plt.subplots()
 
 cs1 = ax.contourf(c_vals, β_vals, R.T, alpha=0.75)
@@ -613,7 +612,7 @@ The big difference here, however, is that we're iterating on a scalar $h$, rathe
 
 Here's an implementation:
 
-```{code-cell} ipython3
+```{code-cell} python3
 @jit(nopython=True)
 def compute_reservation_wage_two(mcm,
                                  max_iter=500,
@@ -731,7 +730,7 @@ Once your code is working, investigate how the reservation wage changes with $c$
 
 Here's one solution
 
-```{code-cell} ipython3
+```{code-cell} python3
 cdf = np.cumsum(q_default)
 
 @jit(nopython=True)
@@ -741,7 +740,7 @@ def compute_stopping_time(w_bar, seed=1234):
     t = 1
     while True:
         # Generate a wage draw
-        w = w_default[qe.random.draw(cdf, size=1)]
+        w = w_default[qe.random.draw(cdf)]
         # Stop when the draw is above the reservation wage
         if w >= w_bar:
             stopping_time = t
@@ -783,7 +782,7 @@ plt.show()
 
 Here is one solution:
 
-```{code-cell} ipython3
+```{code-cell} python3
 mccall_data_continuous = [
     ('c', float64),          # unemployment compensation
     ('β', float64),          # discount factor
@@ -833,7 +832,7 @@ $\beta$.
 
 We will do this using a contour plot.
 
-```{code-cell} ipython3
+```{code-cell} python3
 grid_size = 25
 R = np.empty((grid_size, grid_size))
 
@@ -846,7 +845,7 @@ for i, c in enumerate(c_vals):
         R[i, j] = compute_reservation_wage_continuous(mcmc)
 ```
 
-```{code-cell} ipython3
+```{code-cell} python3
 fig, ax = plt.subplots()
 
 cs1 = ax.contourf(c_vals, β_vals, R.T, alpha=0.75)
