@@ -14,8 +14,6 @@ kernelspec:
 This website presents a set of lectures on quantitative economic modeling, designed and written by
 [Thomas J. Sargent](http://www.tomsargent.com/) and [John Stachurski](https://johnstachurski.net/).
 
-For an overview of the series, see [this page](https://quantecon.org/python-lectures/)
-
 ```{tableofcontents}
 ```
 
