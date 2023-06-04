@@ -990,7 +990,7 @@ init = jnp.repeat(1.0, 3)
 
 The result is very close to the ground truth but still slightly different.
 
-We can increase the precision of the floating point numbers and restrict the tolerance to obtain a more accurate approximation (see detailed discussion in the [lecture on JAX](https://python-programming.quantecon.org/jax_intro.html#differences))
+We can increase the precision of the floating point numbers and restrict the tolerance to obtain a more accurate approximation (see detailed discussion in the [lecture on JAX](https://jax.quantecon.org/jax_intro.html))
 
 ```{code-cell} python3
 from jax.config import config
