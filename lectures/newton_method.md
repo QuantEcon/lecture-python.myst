@@ -978,16 +978,7 @@ init = np.repeat(1.0, 3)
 
 The result is very close to the ground truth but still slightly different.
 
-
-We can increase the precision of the floating point numbers and restrict the tolerance to obtain a more accurate approximation (see detailed discussion in the [lecture on JAX](https://jax.quantecon.org/jax_intro.html))
-
 ```{code-cell} python3
-from jax.config import config
-
-config.update("jax_enable_x64", True)
-
-init = init.astype('float64')
-
 %time k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, \
                  init,\
                  tol=1e-7)
