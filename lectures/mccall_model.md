@@ -661,6 +661,56 @@ Repeat a large number of times and take the average.
 Plot mean unemployment duration as a function of $c$ in `c_vals`.
 ```
 
+```{solution-start} mm_ex1
+:class: dropdown
+```
+
+Here's one solution
+
+```{code-cell} python3
+cdf = np.cumsum(q_default)
+
+@jit(nopython=True)
+def compute_stopping_time(w_bar, seed=1234):
+
+    np.random.seed(seed)
+    t = 1
+    while True:
+        # Generate a wage draw
+        w = w_default[qe.random.draw(cdf)]
+        # Stop when the draw is above the reservation wage
+        if w >= w_bar:
+            stopping_time = t
+            break
+        else:
+            t += 1
+    return stopping_time
+
+@jit(nopython=True)
+def compute_mean_stopping_time(w_bar, num_reps=100000):
+    obs = np.empty(num_reps)
+    for i in range(num_reps):
+        obs[i] = compute_stopping_time(w_bar, seed=i)
+    return obs.mean()
+
+c_vals = np.linspace(10, 40, 25)
+stop_times = np.empty_like(c_vals)
+for i, c in enumerate(c_vals):
+    mcm = McCallModel(c=c)
+    w_bar = compute_reservation_wage_two(mcm)
+    stop_times[i] = compute_mean_stopping_time(w_bar)
+
+fig, ax = plt.subplots()
+
+ax.plot(c_vals, stop_times, label="mean unemployment duration")
+ax.set(xlabel="unemployment compensation", ylabel="months")
+ax.legend()
+
+plt.show()
+```
+
+```{solution-end}
+```
 
 ```{exercise-start}
 :label: mm_ex2
@@ -721,60 +771,6 @@ Once your code is working, investigate how the reservation wage changes with $c$
 
 ```{exercise-end}
 ```
-
-## Solutions
-
-```{solution-start} mm_ex1
-:class: dropdown
-```
-
-Here's one solution
-
-```{code-cell} python3
-cdf = np.cumsum(q_default)
-
-@jit(nopython=True)
-def compute_stopping_time(w_bar, seed=1234):
-
-    np.random.seed(seed)
-    t = 1
-    while True:
-        # Generate a wage draw
-        w = w_default[qe.random.draw(cdf)]
-        # Stop when the draw is above the reservation wage
-        if w >= w_bar:
-            stopping_time = t
-            break
-        else:
-            t += 1
-    return stopping_time
-
-@jit(nopython=True)
-def compute_mean_stopping_time(w_bar, num_reps=100000):
-    obs = np.empty(num_reps)
-    for i in range(num_reps):
-        obs[i] = compute_stopping_time(w_bar, seed=i)
-    return obs.mean()
-
-c_vals = np.linspace(10, 40, 25)
-stop_times = np.empty_like(c_vals)
-for i, c in enumerate(c_vals):
-    mcm = McCallModel(c=c)
-    w_bar = compute_reservation_wage_two(mcm)
-    stop_times[i] = compute_mean_stopping_time(w_bar)
-
-fig, ax = plt.subplots()
-
-ax.plot(c_vals, stop_times, label="mean unemployment duration")
-ax.set(xlabel="unemployment compensation", ylabel="months")
-ax.legend()
-
-plt.show()
-```
-
-```{solution-end}
-```
-
 
 ```{solution-start} mm_ex2
 :class: dropdown
