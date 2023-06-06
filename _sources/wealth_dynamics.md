@@ -19,18 +19,13 @@ kernelspec:
 
 # Wealth Distribution Dynamics
 
-```{admonition} GPU
-:class: warning
-
-This lecture is accelerated via [hardware](status:machine-details) that has access to a GPU and JAX for GPU programming.
-
-Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
-
-Alternatively, if you have your own GPU, you can follow the [instructions](https://github.com/google/jax) for installing JAX with GPU support. If you would like to install jax running on the `cpu` only you can use `pip install jax[cpu]`
-```
-
 ```{contents} Contents
 :depth: 2
+```
+
+```{seealso}
+A [version of this lecture](https://jax.quantecon.org/wealth_dynamics.html) using a `GPU`
+is [available here](https://jax.quantecon.org/wealth_dynamics.html)
 ```
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
@@ -40,7 +35,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 tags: [hide-output]
 ---
 !pip install quantecon
-!pip install myst-nb
 ```
 
 ## Overview
@@ -89,19 +83,6 @@ import numpy as np
 import quantecon as qe
 from numba import njit, float64, prange
 from numba.experimental import jitclass
-import jax
-import jax.numpy as jnp
-from collections import namedtuple
-from myst_nb import glue
-```
-
-Let's check the backend used by JAX and the devices available
-
-```{code-cell} ipython3
-# Check if JAX is using GPU
-print(f"JAX backend: {jax.devices()[0].platform}")
-# Check the devices available for JAX
-print(jax.devices())
 ```
 
 ## Lorenz Curves and the Gini Coefficient
@@ -274,235 +255,7 @@ their wealth.
 We are using something akin to a fixed savings rate model, while
 acknowledging that low wealth households tend to save very little.
 
-## Implementation using JAX
-
-Let's define a model to represent the wealth dynamics.
-
-```{code-cell} ipython3
-# NamedTuple Model
-Model = namedtuple("Model", ("w_hat", "s_0", "c_y", "μ_y",
-                             "σ_y", "c_r", "μ_r", "σ_r", "a",
-                             "b", "σ_z", "z_mean", "z_var", "y_mean"))
-```
-
-Here's a function to create the Model with the given parameters
-
-```{code-cell} ipython3
-def create_wealth_model(w_hat=1.0,
-                        s_0=0.75,
-                        c_y=1.0,
-                        μ_y=1.0,
-                        σ_y=0.2,
-                        c_r=0.05,
-                        μ_r=0.1,
-                        σ_r=0.5,
-                        a=0.5,
-                        b=0.0,
-                        σ_z=0.1):
-    """
-    Create a wealth model with given parameters and return
-    and instance of NamedTuple Model.
-    """
-    z_mean = b / (1 - a)
-    z_var = σ_z**2 / (1 - a**2)
-    exp_z_mean = np.exp(z_mean + z_var / 2)
-    R_mean = c_r * exp_z_mean + np.exp(μ_r + σ_r**2 / 2)
-    y_mean = c_y * exp_z_mean + np.exp(μ_y + σ_y**2 / 2)
-    # Test a stability condition that ensures wealth does not diverge
-    # to infinity.
-    α = R_mean * s_0
-    if α >= 1:
-        raise ValueError("Stability condition failed.")
-    return Model(w_hat=w_hat, s_0=s_0, c_y=c_y, μ_y=μ_y,
-                 σ_y=σ_y, c_r=c_r, μ_r=μ_r, σ_r=σ_r, a=a,
-                 b=b, σ_z=σ_z, z_mean=z_mean, z_var=z_var, y_mean=y_mean)
-```
-
-The following function updates one period with the given current wealth and persistent state.
-
-```{code-cell} ipython3
-def update_states_jax(arrays, wdy, size, rand_key):
-    """
-    Update one period, given current wealth w and persistent
-    state z. They are stored in the form of tuples under the arrays argument
-    """
-    # Unpack w and z
-    w, z = arrays
-
-    rand_key, *subkey = jax.random.split(rand_key, 3)
-    zp = wdy.a * z + wdy.b + wdy.σ_z * jax.random.normal(rand_key, shape=size)
-
-    # Update wealth
-    y = wdy.c_y * jnp.exp(zp) + jnp.exp(wdy.μ_y + wdy.σ_y * jax.random.normal(subkey[0], shape=size))
-    wp = y
-
-    R = wdy.c_r * jnp.exp(zp) + jnp.exp(wdy.μ_r + wdy.σ_r * jax.random.normal(subkey[1], shape=size))
-    wp += (w >= wdy.w_hat) * R * wdy.s_0 * w
-    return wp, zp
-
-# Create the jit function
-update_states_jax = jax.jit(update_states_jax, static_argnums=(2,))
-```
-
-Here’s function to simulate the time series of wealth for individual households using a `for` loop and JAX.
-
-```{code-cell} ipython3
-# Using JAX and for loop
-def wealth_time_series_for_loop_jax(w_0, n, wdy, size, rand_seed=1):
-    """
-    Generate a single time series of length n for wealth given
-    initial value w_0.
-
-    * This implementation uses a for loop.
-
-    The initial persistent state z_0 for each household is drawn from
-    the stationary distribution of the AR(1) process.
-
-        * wdy: NamedTuple Model
-        * w_0: scalar/vector
-        * n: int
-        * size: size/shape of the w_0
-        * rand_seed: int (Used to generate PRNG key)
-    """
-    rand_key = jax.random.PRNGKey(rand_seed)
-    rand_key, *subkey = jax.random.split(rand_key, n)
-
-    w_0 = jax.device_put(w_0).reshape(size)
-
-    z = wdy.z_mean + jnp.sqrt(wdy.z_var) * jax.random.normal(rand_key, shape=size)
-    w = [w_0]
-    for t in range(n-1):
-        w_, z = update_states_jax((w[t], z), wdy, size, subkey[t])
-        w.append(w_)
-    return jnp.array(w)
-
-# Create the jit function
-wealth_time_series_for_loop_jax = jax.jit(wealth_time_series_for_loop_jax, static_argnums=(1,3,))
-```
-
-Let's try simulating the model at different parameter values and investigate the implications for the wealth distribution using the above function.
-
-```{code-cell} ipython3
-wdy = create_wealth_model() # default model
-ts_length = 200
-size = (1,)
-```
-
-```{code-cell} ipython3
-qe.tic()
-w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
-qe.toc()
-```
-
-Running the above function again will be even faster because of JAX's JIT.
-
-```{code-cell} ipython3
-qe.tic()
-# 2nd time is expected to be very fast because of JIT
-w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
-qe.toc()
-```
-
-```{code-cell} ipython3
-fig, ax = plt.subplots()
-ax.plot(w_jax_result)
-plt.show()
-```
-
-We can further try to optimize and speed up the compile time of the above function by replacing `for` loop with [`jax.lax.scan`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html).
-
-```{code-cell} ipython3
-def wealth_time_series_jax(w_0, n, wdy, size, rand_seed=1):
-    """
-    Generate a single time series of length n for wealth given
-    initial value w_0.
-
-    * This implementation uses for jax.lax.scan
-
-    The initial persistent state z_0 for each household is drawn from
-    the stationary distribution of the AR(1) process.
-
-        * wdy: NamedTuple Model
-        * w_0: scalar/vector
-        * n: int
-        * size: size/shape of the w_0
-        * rand_seed: int (Used to generate PRNG key)
-    """
-    rand_key = jax.random.PRNGKey(rand_seed)
-    rand_key, *subkey = jax.random.split(rand_key, n)
-
-    w_0 = jax.device_put(w_0).reshape(size)
-    z_init = wdy.z_mean + jnp.sqrt(wdy.z_var) * jax.random.normal(rand_key, shape=size)
-    arrays = w_0, z_init
-    rand_sub_keys = jnp.array(subkey)
-
-    w_final = jnp.array([w_0])
-
-    # Define the function for each update
-    def update_w_z(arrays, rand_sub_key):
-        wp, zp = update_states_jax(arrays, wdy, size, rand_sub_key)
-        return (wp, zp), wp
-
-    arrays_last, w_values = jax.lax.scan(update_w_z, arrays, rand_sub_keys)
-    return jnp.concatenate((w_final, w_values))
-
-# Create the jit function
-wealth_time_series_jax = jax.jit(wealth_time_series_jax, static_argnums=(1,3,))
-```
-
-Let's try simulating the model at different parameter values and investigate the implications for the wealth distribution and also observe the difference in time between `wealth_time_series_jax` and `wealth_time_series_for_loop_jax`.
-
-```{code-cell} ipython3
-wdy = create_wealth_model() # default model
-ts_length = 200
-size = (1,)
-```
-
-```{code-cell} ipython3
-qe.tic()
-w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
-glue("wealth_time_series_jax_time_1", qe.toc())
-```
-
-Running the above function again will be even faster because of JAX's JIT.
-
-```{code-cell} ipython3
-qe.tic()
-# 2nd time is expected to be very fast because of JIT
-w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
-glue("wealth_time_series_jax_time_2", qe.toc())
-```
-
-```{code-cell} ipython3
-fig, ax = plt.subplots()
-ax.plot(w_jax_result)
-plt.show()
-```
-
-Now here’s function to simulate a cross section of households forward in time.
-
-```{code-cell} ipython3
-def update_cross_section_jax(w_distribution, shift_length, wdy, size, rand_seed=2):
-    """
-    Shifts a cross-section of household forward in time
-
-    * wdy: NamedTuple Model
-    * w_distribution: array_like, represents current cross-section
-
-    Takes a current distribution of wealth values as w_distribution
-    and updates each w_t in w_distribution to w_{t+j}, where
-    j = shift_length.
-
-    Returns the new distribution.
-    """
-    new_dist = wealth_time_series_jax(w_distribution, shift_length, wdy, size, rand_seed)
-    new_distribution = new_dist[-1, :]
-    return new_distribution
-
-# Create the jit function
-update_cross_section_jax = jax.jit(update_cross_section_jax, static_argnums=(1,3,))
-```
-## Implementation using Numba
+## Implementation
 
 Here's some type information to help Numba.
 
@@ -667,30 +420,13 @@ the implications for the wealth distribution.
 
 ### Time Series
 
-Let's look at the wealth dynamics of an individual household using numba.
+Let's look at the wealth dynamics of an individual household.
 
 ```{code-cell} ipython3
 wdy = WealthDynamics()
-
 ts_length = 200
-```
-
-```{code-cell} ipython3
-qe.tic()
 w = wealth_time_series(wdy, wdy.y_mean, ts_length)
-glue("wealth_time_series_time_1", qe.toc())
 ```
-
-```{code-cell} ipython3
-qe.tic()
-# Check the time for 2nd execution
-w = wealth_time_series(wdy, wdy.y_mean, ts_length)
-glue("wealth_time_series_time_2", qe.toc())
-```
-
-Notice the time difference between the `wealth_time_series`: {glue:}`wealth_time_series_time_1` and `wealth_time_series_jax`: {glue:}`wealth_time_series_jax_time_1`
-
-
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -709,26 +445,7 @@ Let's look at how inequality varies with returns on financial assets.
 The next function generates a cross section and then computes the Lorenz
 curve and Gini coefficient.
 
-Let's first write the function that uses the JAX implementation and then for the numba.
-
 ```{code-cell} ipython3
-# Uses JAX
-def generate_lorenz_and_gini_jax(wdy, num_households=100_000, T=500):
-    """
-    Generate the Lorenz curve data and gini coefficient corresponding to a
-    WealthDynamics mode by simulating num_households forward to time T.
-    """
-    size = (num_households, )
-    ψ_0 = jnp.full(size, wdy.y_mean)
-    ψ_star = update_cross_section_jax(ψ_0, T, wdy, size)
-    ψ_star = jax.device_get(ψ_star)  # get back to numpy form
-    return qe.gini_coefficient(ψ_star), qe.lorenz_curve(ψ_star)
-```
-
-The following function uses the numba implementation
-
-```{code-cell} ipython3
-# Uses numba
 def generate_lorenz_and_gini(wdy, num_households=100_000, T=500):
     """
     Generate the Lorenz curve data and gini coefficient corresponding to a
@@ -750,26 +467,6 @@ If you are running this yourself, note that it will take one or two minutes to e
 This is unavoidable because we are executing a CPU intensive task.
 
 In fact the code, which is JIT compiled and parallelized, runs extremely fast relative to the number of computations.
-
-```{code-cell} ipython3
-%%time
-
-fig, ax = plt.subplots()
-μ_r_vals = (0.0, 0.025, 0.05)
-gini_vals = []
-
-for μ_r in μ_r_vals:
-    wdy = create_wealth_model(μ_r=μ_r)
-    gv, (f_vals, l_vals) = generate_lorenz_and_gini_jax(wdy)
-    ax.plot(f_vals, l_vals, label=f'$\psi^*$ at $\mu_r = {μ_r:0.2}$')
-    gini_vals.append(gv)
-
-ax.plot(f_vals, f_vals, label='equality')
-ax.legend(loc="upper left")
-plt.show()
-```
-
-Now let's try to run the same code snippet but using the numba version.
 
 ```{code-cell} ipython3
 %%time
@@ -815,27 +512,6 @@ rise.
 Let's finish this section by investigating what happens when we change the
 volatility term $\sigma_r$ in financial returns.
 
-Firstly, using JAX, we have
-
-```{code-cell} ipython3
-%%time
-
-fig, ax = plt.subplots()
-σ_r_vals = (0.35, 0.45, 0.52)
-gini_vals = []
-
-for σ_r in σ_r_vals:
-    wdy = create_wealth_model(σ_r=σ_r)
-    gv, (f_vals, l_vals) = generate_lorenz_and_gini_jax(wdy)
-    ax.plot(f_vals, l_vals, label=f'$\psi^*$ at $\sigma_r = {σ_r:0.2}$')
-    gini_vals.append(gv)
-
-ax.plot(f_vals, f_vals, label='equality')
-ax.legend(loc="upper left")
-plt.show()
-```
-
-Using numba, we get,
 
 ```{code-cell} ipython3
 %%time
@@ -954,21 +630,6 @@ z_0 = wdy.z_mean
 ```
 
 First let's generate the distribution:
-
-Using the JAX implementation
-
-```{code-cell} ipython3
-num_households = 250_000
-T = 500  # how far to shift forward in time
-size = (num_households, )
-
-wdy = create_wealth_model()
-ψ_0 = jnp.full(size, wdy.y_mean)
-ψ_star = update_cross_section_jax(ψ_0, T, wdy, size)
-ψ_star = jax.device_get(ψ_star) # get back numpy form
-```
-
-Using the numba implementation
 
 ```{code-cell} ipython3
 num_households = 250_000

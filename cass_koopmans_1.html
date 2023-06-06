@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>41. Cass-Koopmans Model &#8212; Quantitative Economics with Python</title>
+    <title>40. Cass-Koopmans Model &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,6 +99,13 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -112,8 +119,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="42. Cass-Koopmans Competitive Equilibrium" href="cass_koopmans_2.html" />
-    <link rel="prev" title="40. Job Search VII: A McCall Worker Q-Learns" href="mccall_q.html" />
+    <link rel="next" title="41. Cass-Koopmans Competitive Equilibrium" href="cass_koopmans_2.html" />
+    <link rel="prev" title="39. Job Search VII: A McCall Worker Q-Learns" href="mccall_q.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -134,7 +141,7 @@ const thebe_selector_output = ".output, .cell_output"
 <meta property="og:url" content="https://python.quantecon.org/cass_koopmans_1.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
 <meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
-<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
 <meta name="theme-color" content="#ffffff" />
 
   </head>
@@ -161,27 +168,27 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">41.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">41.2. The Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#digression-an-aggregation-theory">41.2.1. Digression: an Aggregation Theory</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#an-economy">41.2.1.1. An  Economy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">40.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">40.2. The Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#digression-an-aggregation-theory">40.2.1. Digression: an Aggregation Theory</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#an-economy">40.2.1.1. An  Economy</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#planning-problem">41.3. Planning Problem</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-properties-of-linearly-homogeneous-production-function">41.3.1. Useful Properties of Linearly Homogeneous Production Function</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-order-necessary-conditions">41.3.2. First-order necessary conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#planning-problem">40.3. Planning Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-properties-of-linearly-homogeneous-production-function">40.3.1. Useful Properties of Linearly Homogeneous Production Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-order-necessary-conditions">40.3.2. First-order necessary conditions</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shooting-algorithm">41.4. Shooting Algorithm</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-initial-capital-to-steady-state-capital">41.5. Setting Initial Capital to Steady State Capital</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-turnpike-property">41.6. A Turnpike Property</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-limiting-infinite-horizon-economy">41.7. A Limiting Infinite Horizon Economy</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">41.7.1. Exercise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shooting-algorithm">40.4. Shooting Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-initial-capital-to-steady-state-capital">40.5. Setting Initial Capital to Steady State Capital</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-turnpike-property">40.6. A Turnpike Property</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-limiting-infinite-horizon-economy">40.7. A Limiting Infinite Horizon Economy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">40.7.1. Exercise</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">41.8. Concluding Remarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">40.8. Concluding Remarks</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -209,7 +216,7 @@ const thebe_selector_output = ".output, .cell_output"
 
                     <div class="qe-page__header-copy">
 
-                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
 
                         <p class="qe-page__header-subheading">Cass-Koopmans Model</p>
 
@@ -231,7 +238,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="cass-koopmans-model">
-<h1><a class="toc-backref" href="#id3"><span class="section-number">41. </span>Cass-Koopmans Model</a><a class="headerlink" href="#cass-koopmans-model" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id3"><span class="section-number">40. </span>Cass-Koopmans Model</a><a class="headerlink" href="#cass-koopmans-model" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -250,7 +257,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">41.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">40.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture and <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a> describe a model that Tjalling Koopmans <span id="id1">[<a class="reference internal" href="zreferences.html#id88" title="Tjalling C. Koopmans. On the concept of optimal economic growth. In Tjalling C. Koopmans, editor, The Economic Approach to Development Planning, pages 225-287. Chicago, 1965.">Koo65</a>]</span>
 and David Cass <span id="id2">[<a class="reference internal" href="zreferences.html#id89" title="David Cass. Optimum growth in an aggregative model of capital accumulation. Review of Economic Studies, 32(3):233-240, 1965.">Cas65</a>]</span> used to analyze optimal growth.</p>
 <p>The model can be viewed as an extension of the model of Robert Solow
@@ -296,7 +303,7 @@ long but finite-horizon economies.</p></li>
 </div>
 </section>
 <section id="the-model">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">41.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">40.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Permalink to this heading">#</a></h2>
 <p>Time is discrete and takes values <span class="math notranslate nohighlight">\(t = 0, 1 , \ldots, T\)</span> where <span class="math notranslate nohighlight">\(T\)</span> is  finite.</p>
 <p>(We’ll eventually study a limiting case in which  <span class="math notranslate nohighlight">\(T = + \infty\)</span>)</p>
 <p>A single good can either be consumed or invested in physical capital.</p>
@@ -308,7 +315,7 @@ consumed immediately.</p>
 <p>Let <span class="math notranslate nohighlight">\(\vec{C}\)</span> = <span class="math notranslate nohighlight">\(\{C_0,\dots, C_T\}\)</span> and
 <span class="math notranslate nohighlight">\(\vec{K}\)</span> = <span class="math notranslate nohighlight">\(\{K_0,\dots,K_{T+1}\}\)</span>.</p>
 <section id="digression-an-aggregation-theory">
-<h3><span class="section-number">41.2.1. </span>Digression: an Aggregation Theory<a class="headerlink" href="#digression-an-aggregation-theory" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">40.2.1. </span>Digression: an Aggregation Theory<a class="headerlink" href="#digression-an-aggregation-theory" title="Permalink to this heading">#</a></h3>
 <p>We use a concept of a representative consumer to be thought of as follows.</p>
 <p>There is a unit mass of identical consumers.</p>
 <p>For <span class="math notranslate nohighlight">\(\omega \in [0,1]\)</span>, consumption of consumer  is <span class="math notranslate nohighlight">\(c(\omega)\)</span>.</p>
@@ -324,7 +331,7 @@ C = \int_0^1 c(\omega) d \omega
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(u(\cdot)\)</span> is a concave utility function with <span class="math notranslate nohighlight">\(u' &gt;0, u'' &lt; 0\)</span> and  maximization is subject to</p>
 <div class="math notranslate nohighlight" id="equation-eq-feas200">
-<span class="eqno">(41.1)<a class="headerlink" href="#equation-eq-feas200" title="Permalink to this equation">#</a></span>\[ 
+<span class="eqno">(40.1)<a class="headerlink" href="#equation-eq-feas200" title="Permalink to this equation">#</a></span>\[ 
 C = \int_0^1 c(\omega) d \omega .
 \]</div>
 <p>Form a Lagrangian <span class="math notranslate nohighlight">\(L = \int_0^1 u(c(\omega)) d \omega + \lambda [C - \int_0^1 c(\omega) d \omega ] \)</span>.</p>
@@ -336,7 +343,7 @@ u'(c(\omega)) = \lambda.
 \]</div>
 <p>This condition implies that <span class="math notranslate nohighlight">\(c(\omega)\)</span> equals a constant <span class="math notranslate nohighlight">\(c\)</span> that is independent
 of <span class="math notranslate nohighlight">\(\omega\)</span>.</p>
-<p>To find <span class="math notranslate nohighlight">\(c\)</span>, use the  feasibility constraint <a class="reference internal" href="#equation-eq-feas200">(41.1)</a> to conclude that</p>
+<p>To find <span class="math notranslate nohighlight">\(c\)</span>, use the  feasibility constraint <a class="reference internal" href="#equation-eq-feas200">(40.1)</a> to conclude that</p>
 <div class="math notranslate nohighlight">
 \[ 
 c(\omega) = c = C.
@@ -346,7 +353,7 @@ consumes amount <span class="math notranslate nohighlight">\(C\)</span>.</p>
 <p>It appears often in aggregate economics.</p>
 <p>We shall use it in this lecture and in <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a>.</p>
 <section id="an-economy">
-<h4><span class="section-number">41.2.1.1. </span>An  Economy<a class="headerlink" href="#an-economy" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">40.2.1.1. </span>An  Economy<a class="headerlink" href="#an-economy" title="Permalink to this heading">#</a></h4>
 <p>A representative household is endowed with one unit of labor at each
 <span class="math notranslate nohighlight">\(t\)</span> and likes the consumption good at each <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>The representative household inelastically supplies a single unit of
@@ -355,12 +362,12 @@ labor <span class="math notranslate nohighlight">\(N_t\)</span> at each <span cl
 <p>The representative household has preferences over consumption bundles
 ordered by the utility functional:</p>
 <div class="math notranslate nohighlight" id="equation-utility-functional">
-<span class="eqno">(41.2)<a class="headerlink" href="#equation-utility-functional" title="Permalink to this equation">#</a></span>\[U(\vec{C}) = \sum_{t=0}^{T} \beta^t \frac{C_t^{1-\gamma}}{1-\gamma}\]</div>
+<span class="eqno">(40.2)<a class="headerlink" href="#equation-utility-functional" title="Permalink to this equation">#</a></span>\[U(\vec{C}) = \sum_{t=0}^{T} \beta^t \frac{C_t^{1-\gamma}}{1-\gamma}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span> is a discount factor and <span class="math notranslate nohighlight">\(\gamma &gt;0\)</span>
 governs the curvature of the one-period utility function with larger <span class="math notranslate nohighlight">\(\gamma\)</span> implying more curvature.</p>
 <p>Note that</p>
 <div class="math notranslate nohighlight" id="equation-utility-oneperiod">
-<span class="eqno">(41.3)<a class="headerlink" href="#equation-utility-oneperiod" title="Permalink to this equation">#</a></span>\[u(C_t) = \frac{C_t^{1-\gamma}}{1-\gamma}\]</div>
+<span class="eqno">(40.3)<a class="headerlink" href="#equation-utility-oneperiod" title="Permalink to this equation">#</a></span>\[u(C_t) = \frac{C_t^{1-\gamma}}{1-\gamma}\]</div>
 <p>satisfies <span class="math notranslate nohighlight">\(u'&gt;0,u''&lt;0\)</span>.</p>
 <p><span class="math notranslate nohighlight">\(u' &gt; 0\)</span> asserts that the consumer prefers more to less.</p>
 <p><span class="math notranslate nohighlight">\(u''&lt; 0\)</span> asserts that marginal utility declines with increases
@@ -369,31 +376,31 @@ in <span class="math notranslate nohighlight">\(C_t\)</span>.</p>
 capital stock.</p>
 <p>There is an economy-wide production function</p>
 <div class="math notranslate nohighlight" id="equation-production-function">
-<span class="eqno">(41.4)<a class="headerlink" href="#equation-production-function" title="Permalink to this equation">#</a></span>\[F(K_t,N_t) = A K_t^{\alpha}N_t^{1-\alpha}\]</div>
+<span class="eqno">(40.4)<a class="headerlink" href="#equation-production-function" title="Permalink to this equation">#</a></span>\[F(K_t,N_t) = A K_t^{\alpha}N_t^{1-\alpha}\]</div>
 <p>with <span class="math notranslate nohighlight">\(0 &lt; \alpha&lt;1\)</span>, <span class="math notranslate nohighlight">\(A &gt; 0\)</span>.</p>
 <p>A feasible allocation <span class="math notranslate nohighlight">\(\vec{C}, \vec{K}\)</span> satisfies</p>
 <div class="math notranslate nohighlight" id="equation-allocation">
-<span class="eqno">(41.5)<a class="headerlink" href="#equation-allocation" title="Permalink to this equation">#</a></span>\[C_t + K_{t+1} \leq F(K_t,N_t) + (1-\delta) K_t, \quad \text{for all } t \in [0, T]\]</div>
+<span class="eqno">(40.5)<a class="headerlink" href="#equation-allocation" title="Permalink to this equation">#</a></span>\[C_t + K_{t+1} \leq F(K_t,N_t) + (1-\delta) K_t, \quad \text{for all } t \in [0, T]\]</div>
 <p>where <span class="math notranslate nohighlight">\(\delta \in (0,1)\)</span> is a depreciation rate of capital.</p>
 </section>
 </section>
 </section>
 <section id="planning-problem">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">41.3. </span>Planning Problem</a><a class="headerlink" href="#planning-problem" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">40.3. </span>Planning Problem</a><a class="headerlink" href="#planning-problem" title="Permalink to this heading">#</a></h2>
 <p>A planner chooses an allocation <span class="math notranslate nohighlight">\(\{\vec{C},\vec{K}\}\)</span> to
-maximize <a class="reference internal" href="#equation-utility-functional">(41.2)</a> subject to <a class="reference internal" href="#equation-allocation">(41.5)</a>.</p>
+maximize <a class="reference internal" href="#equation-utility-functional">(40.2)</a> subject to <a class="reference internal" href="#equation-allocation">(40.5)</a>.</p>
 <p>Let <span class="math notranslate nohighlight">\(\vec{\mu}=\{\mu_0,\dots,\mu_T\}\)</span> be a sequence of
 nonnegative <strong>Lagrange multipliers</strong>.</p>
 <p>To find an optimal allocation, form a Lagrangian</p>
 <div class="math notranslate nohighlight" id="equation-eq-lagrangian201">
-<span class="eqno">(41.6)<a class="headerlink" href="#equation-eq-lagrangian201" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(40.6)<a class="headerlink" href="#equation-eq-lagrangian201" title="Permalink to this equation">#</a></span>\[
 \mathcal{L}(\vec{C} ,\vec{K} ,\vec{\mu} ) =
 \sum_{t=0}^T \beta^t\left\{ u(C_t)+ \mu_t
 \left(F(K_t,1) + (1-\delta) K_t- C_t - K_{t+1} \right)\right\}
 \]</div>
 <p>and then pose the following min-max problem:</p>
 <div class="math notranslate nohighlight" id="equation-min-max-prob">
-<span class="eqno">(41.7)<a class="headerlink" href="#equation-min-max-prob" title="Permalink to this equation">#</a></span>\[\min_{\vec{\mu}} \max_{\vec{C},\vec{K}} \mathcal{L}(\vec{C},\vec{K},\vec{\mu} )\]</div>
+<span class="eqno">(40.7)<a class="headerlink" href="#equation-min-max-prob" title="Permalink to this equation">#</a></span>\[\min_{\vec{\mu}} \max_{\vec{C},\vec{K}} \mathcal{L}(\vec{C},\vec{K},\vec{\mu} )\]</div>
 <ul class="simple">
 <li><p><strong>Extremization</strong> means
 maximization with respect to <span class="math notranslate nohighlight">\(\vec{C}, \vec{K}\)</span> and
@@ -405,7 +412,7 @@ first-order conditions that we are about to compute.</p></li>
 </ul>
 <p>Before computing first-order conditions, we present some handy formulas.</p>
 <section id="useful-properties-of-linearly-homogeneous-production-function">
-<h3><span class="section-number">41.3.1. </span>Useful Properties of Linearly Homogeneous Production Function<a class="headerlink" href="#useful-properties-of-linearly-homogeneous-production-function" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">40.3.1. </span>Useful Properties of Linearly Homogeneous Production Function<a class="headerlink" href="#useful-properties-of-linearly-homogeneous-production-function" title="Permalink to this heading">#</a></h3>
 <p>The following technicalities will help us.</p>
 <p>Notice that</p>
 <div class="math notranslate nohighlight">
@@ -420,7 +427,7 @@ F(K_t,N_t) = A K_t^\alpha N_t^{1-\alpha} = N_t A\left(\frac{K_t}{N_t}\right)^\al
 <p>whose argument is <strong>capital per-capita</strong>.</p>
 <p>It is useful to recall the following calculations for the marginal product of capital</p>
 <div class="math notranslate nohighlight" id="equation-useful-calc1">
-<span class="eqno">(41.8)<a class="headerlink" href="#equation-useful-calc1" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(40.8)<a class="headerlink" href="#equation-useful-calc1" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
 \frac{\partial F(K_t,N_t)}{\partial K_t}
 &amp; =
 \frac{\partial N_t f\left( \frac{K_t}{N_t}\right)}{\partial K_t}
@@ -447,24 +454,24 @@ f(K_t) - f'(K_t) K_t
 \end{split}\]</div>
 </section>
 <section id="first-order-necessary-conditions">
-<h3><span class="section-number">41.3.2. </span>First-order necessary conditions<a class="headerlink" href="#first-order-necessary-conditions" title="Permalink to this heading">#</a></h3>
-<p>We now compute <strong>first-order necessary conditions</strong> for extremization of the Lagrangian <a class="reference internal" href="#equation-eq-lagrangian201">(41.6)</a>:</p>
+<h3><span class="section-number">40.3.2. </span>First-order necessary conditions<a class="headerlink" href="#first-order-necessary-conditions" title="Permalink to this heading">#</a></h3>
+<p>We now compute <strong>first-order necessary conditions</strong> for extremization of the Lagrangian <a class="reference internal" href="#equation-eq-lagrangian201">(40.6)</a>:</p>
 <div class="math notranslate nohighlight" id="equation-constraint1">
-<span class="eqno">(41.9)<a class="headerlink" href="#equation-constraint1" title="Permalink to this equation">#</a></span>\[C_t: \qquad u'(C_t)-\mu_t=0 \qquad \text{for all} \quad t= 0,1,\dots,T\]</div>
+<span class="eqno">(40.9)<a class="headerlink" href="#equation-constraint1" title="Permalink to this equation">#</a></span>\[C_t: \qquad u'(C_t)-\mu_t=0 \qquad \text{for all} \quad t= 0,1,\dots,T\]</div>
 <div class="math notranslate nohighlight" id="equation-constraint2">
-<span class="eqno">(41.10)<a class="headerlink" href="#equation-constraint2" title="Permalink to this equation">#</a></span>\[K_t: \qquad \beta \mu_t\left[(1-\delta)+f'(K_t)\right] - \mu_{t-1}=0 \qquad \text{for all } \quad t=1,2,\dots,T\]</div>
+<span class="eqno">(40.10)<a class="headerlink" href="#equation-constraint2" title="Permalink to this equation">#</a></span>\[K_t: \qquad \beta \mu_t\left[(1-\delta)+f'(K_t)\right] - \mu_{t-1}=0 \qquad \text{for all } \quad t=1,2,\dots,T\]</div>
 <div class="math notranslate nohighlight" id="equation-constraint3">
-<span class="eqno">(41.11)<a class="headerlink" href="#equation-constraint3" title="Permalink to this equation">#</a></span>\[\mu_t:\qquad F(K_t,1)+ (1-\delta) K_t  - C_t - K_{t+1}=0 \qquad \text{for all } \quad t=0,1,\dots,T\]</div>
+<span class="eqno">(40.11)<a class="headerlink" href="#equation-constraint3" title="Permalink to this equation">#</a></span>\[\mu_t:\qquad F(K_t,1)+ (1-\delta) K_t  - C_t - K_{t+1}=0 \qquad \text{for all } \quad t=0,1,\dots,T\]</div>
 <div class="math notranslate nohighlight" id="equation-constraint4">
-<span class="eqno">(41.12)<a class="headerlink" href="#equation-constraint4" title="Permalink to this equation">#</a></span>\[K_{T+1}: \qquad -\mu_T \leq 0, \ \leq 0 \text{ if } K_{T+1}=0; \ =0 \text{ if } K_{T+1}&gt;0\]</div>
-<p>In computing  <a class="reference internal" href="#equation-constraint3">(41.11)</a> we recognize that <span class="math notranslate nohighlight">\(K_t\)</span> appears
+<span class="eqno">(40.12)<a class="headerlink" href="#equation-constraint4" title="Permalink to this equation">#</a></span>\[K_{T+1}: \qquad -\mu_T \leq 0, \ \leq 0 \text{ if } K_{T+1}=0; \ =0 \text{ if } K_{T+1}&gt;0\]</div>
+<p>In computing  <a class="reference internal" href="#equation-constraint3">(40.11)</a> we recognize that <span class="math notranslate nohighlight">\(K_t\)</span> appears
 in both the time  <span class="math notranslate nohighlight">\(t\)</span> and time <span class="math notranslate nohighlight">\(t-1\)</span> feasibility constraints.</p>
-<p>Restrictions <a class="reference internal" href="#equation-constraint4">(41.12)</a> come from differentiating with respect
+<p>Restrictions <a class="reference internal" href="#equation-constraint4">(40.12)</a> come from differentiating with respect
 to <span class="math notranslate nohighlight">\(K_{T+1}\)</span> and applying the following <strong>Karush-Kuhn-Tucker condition</strong> (KKT)
 (see <a class="reference external" href="https://en.wikipedia.org/wiki/Karush-Kuhn-Tucker_conditions">Karush-Kuhn-Tucker conditions</a>):</p>
 <div class="math notranslate nohighlight" id="equation-kkt">
-<span class="eqno">(41.13)<a class="headerlink" href="#equation-kkt" title="Permalink to this equation">#</a></span>\[\mu_T K_{T+1}=0\]</div>
-<p>Combining <a class="reference internal" href="#equation-constraint1">(41.9)</a> and <a class="reference internal" href="#equation-constraint2">(41.10)</a> gives</p>
+<span class="eqno">(40.13)<a class="headerlink" href="#equation-kkt" title="Permalink to this equation">#</a></span>\[\mu_T K_{T+1}=0\]</div>
+<p>Combining <a class="reference internal" href="#equation-constraint1">(40.9)</a> and <a class="reference internal" href="#equation-constraint2">(40.10)</a> gives</p>
 <div class="math notranslate nohighlight">
 \[
 u'\left(C_t\right)\left[(1-\delta)+f'\left(K_t\right)\right]-u'\left(C_{t-1}\right)=0
@@ -472,7 +479,7 @@ u'\left(C_t\right)\left[(1-\delta)+f'\left(K_t\right)\right]-u'\left(C_{t-1}\rig
 \]</div>
 <p>which can be rearranged to become</p>
 <div class="math notranslate nohighlight" id="equation-l12">
-<span class="eqno">(41.14)<a class="headerlink" href="#equation-l12" title="Permalink to this equation">#</a></span>\[u'\left(C_{t+1}\right)\left[(1-\delta)+f'\left(K_{t+1}\right)\right]=
+<span class="eqno">(40.14)<a class="headerlink" href="#equation-l12" title="Permalink to this equation">#</a></span>\[u'\left(C_{t+1}\right)\left[(1-\delta)+f'\left(K_{t+1}\right)\right]=
 u'\left(C_{t}\right) \quad \text{ for all } t=0,1,\dots, T\]</div>
 <p>Applying  the inverse of the utility function on both sides of the above
 equation gives</p>
@@ -480,7 +487,7 @@ equation gives</p>
 \[
 C_{t+1} =u'^{-1}\left(\left(\frac{\beta}{u'(C_t)}[f'(K_{t+1}) +(1-\delta)]\right)^{-1}\right)
 \]</div>
-<p>which for our utility function <a class="reference internal" href="#equation-utility-oneperiod">(41.3)</a> becomes the consumption <strong>Euler
+<p>which for our utility function <a class="reference internal" href="#equation-utility-oneperiod">(40.3)</a> becomes the consumption <strong>Euler
 equation</strong></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -583,28 +590,28 @@ that define our economy.</p>
 </section>
 </section>
 <section id="shooting-algorithm">
-<h2><a class="toc-backref" href="#id7"><span class="section-number">41.4. </span>Shooting Algorithm</a><a class="headerlink" href="#shooting-algorithm" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="section-number">40.4. </span>Shooting Algorithm</a><a class="headerlink" href="#shooting-algorithm" title="Permalink to this heading">#</a></h2>
 <p>We use  <strong>shooting</strong> to compute an optimal allocation
 <span class="math notranslate nohighlight">\(\vec{C}, \vec{K}\)</span> and an associated Lagrange multiplier sequence
 <span class="math notranslate nohighlight">\(\vec{\mu}\)</span>.</p>
 <p>The first-order necessary conditions
-<a class="reference internal" href="#equation-constraint1">(41.9)</a>, <a class="reference internal" href="#equation-constraint2">(41.10)</a>, and
-<a class="reference internal" href="#equation-constraint3">(41.11)</a>  for the planning problem form a system of <strong>difference equations</strong> with
+<a class="reference internal" href="#equation-constraint1">(40.9)</a>, <a class="reference internal" href="#equation-constraint2">(40.10)</a>, and
+<a class="reference internal" href="#equation-constraint3">(40.11)</a>  for the planning problem form a system of <strong>difference equations</strong> with
 two boundary conditions:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(K_0\)</span> is a given <strong>initial condition</strong> for capital</p></li>
 <li><p><span class="math notranslate nohighlight">\(K_{T+1} =0\)</span> is a <strong>terminal condition</strong> for capital that we
 deduced from the first-order necessary condition for <span class="math notranslate nohighlight">\(K_{T+1}\)</span>
-the KKT condition <a class="reference internal" href="#equation-kkt">(41.13)</a></p></li>
+the KKT condition <a class="reference internal" href="#equation-kkt">(40.13)</a></p></li>
 </ul>
 <p>We have no initial condition for the Lagrange multiplier
 <span class="math notranslate nohighlight">\(\mu_0\)</span>.</p>
 <p>If we did, our job would be easy:</p>
 <ul class="simple">
 <li><p>Given <span class="math notranslate nohighlight">\(\mu_0\)</span> and <span class="math notranslate nohighlight">\(k_0\)</span>, we could compute <span class="math notranslate nohighlight">\(c_0\)</span> from
-equation <a class="reference internal" href="#equation-constraint1">(41.9)</a> and then <span class="math notranslate nohighlight">\(k_1\)</span> from equation
-<a class="reference internal" href="#equation-constraint3">(41.11)</a> and <span class="math notranslate nohighlight">\(\mu_1\)</span> from equation
-<a class="reference internal" href="#equation-constraint2">(41.10)</a>.</p></li>
+equation <a class="reference internal" href="#equation-constraint1">(40.9)</a> and then <span class="math notranslate nohighlight">\(k_1\)</span> from equation
+<a class="reference internal" href="#equation-constraint3">(40.11)</a> and <span class="math notranslate nohighlight">\(\mu_1\)</span> from equation
+<a class="reference internal" href="#equation-constraint2">(40.10)</a>.</p></li>
 <li><p>We could continue in this way to compute the remaining elements of
 <span class="math notranslate nohighlight">\(\vec{C}, \vec{K}, \vec{\mu}\)</span>.</p></li>
 </ul>
@@ -797,18 +804,18 @@ tolerance bounds), we stop.</p>
 </div>
 </section>
 <section id="setting-initial-capital-to-steady-state-capital">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">41.5. </span>Setting Initial Capital to Steady State Capital</a><a class="headerlink" href="#setting-initial-capital-to-steady-state-capital" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">40.5. </span>Setting Initial Capital to Steady State Capital</a><a class="headerlink" href="#setting-initial-capital-to-steady-state-capital" title="Permalink to this heading">#</a></h2>
 <p>When  <span class="math notranslate nohighlight">\(T \rightarrow +\infty\)</span>, the optimal allocation converges to
 steady state values of <span class="math notranslate nohighlight">\(C_t\)</span> and <span class="math notranslate nohighlight">\(K_t\)</span>.</p>
 <p>It is instructive to set <span class="math notranslate nohighlight">\(K_0\)</span> equal
 to the <span class="math notranslate nohighlight">\(\lim_{T \rightarrow + \infty } K_t\)</span>, which we’ll call  steady state capital.</p>
 <p>In a steady state <span class="math notranslate nohighlight">\(K_{t+1} = K_t=\bar{K}\)</span> for all very
 large <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>Evalauating the feasibility constraint <a class="reference internal" href="#equation-allocation">(41.5)</a> at <span class="math notranslate nohighlight">\(\bar K\)</span> gives</p>
+<p>Evalauating the feasibility constraint <a class="reference internal" href="#equation-allocation">(40.5)</a> at <span class="math notranslate nohighlight">\(\bar K\)</span> gives</p>
 <div class="math notranslate nohighlight" id="equation-feasibility-constraint">
-<span class="eqno">(41.15)<a class="headerlink" href="#equation-feasibility-constraint" title="Permalink to this equation">#</a></span>\[f(\bar{K})-\delta \bar{K} = \bar{C}\]</div>
+<span class="eqno">(40.15)<a class="headerlink" href="#equation-feasibility-constraint" title="Permalink to this equation">#</a></span>\[f(\bar{K})-\delta \bar{K} = \bar{C}\]</div>
 <p>Substituting <span class="math notranslate nohighlight">\(K_t = \bar K\)</span> and <span class="math notranslate nohighlight">\(C_t=\bar C\)</span> for
-all <span class="math notranslate nohighlight">\(t\)</span> into <a class="reference internal" href="#equation-l12">(41.14)</a> gives</p>
+all <span class="math notranslate nohighlight">\(t\)</span> into <a class="reference internal" href="#equation-l12">(40.14)</a> gives</p>
 <div class="math notranslate nohighlight">
 \[
 1=\beta \frac{u'(\bar{C})}{u'(\bar{C})}[f'(\bar{K})+(1-\delta)]
@@ -828,7 +835,7 @@ f'(\bar{K}) = \rho +\delta
 \[
 \bar{K} = f'^{-1}(\rho+\delta)
 \]</div>
-<p>For the  production function <a class="reference internal" href="#equation-production-function">(41.4)</a> this becomes</p>
+<p>For the  production function <a class="reference internal" href="#equation-production-function">(40.4)</a> this becomes</p>
 <div class="math notranslate nohighlight">
 \[
 \alpha \bar{K}^{\alpha-1} = \rho + \delta
@@ -898,7 +905,7 @@ value <span class="math notranslate nohighlight">\(K_{T+1} =0\)</span> when <spa
 </div>
 </section>
 <section id="a-turnpike-property">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">41.6. </span>A Turnpike Property</a><a class="headerlink" href="#a-turnpike-property" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">40.6. </span>A Turnpike Property</a><a class="headerlink" href="#a-turnpike-property" title="Permalink to this heading">#</a></h2>
 <p>The following calculation indicates that when  <span class="math notranslate nohighlight">\(T\)</span> is very large,
 the optimal capital stock stays close to
 its steady state value most of the time.</p>
@@ -969,10 +976,10 @@ over time.</p>
 </div>
 </section>
 <section id="a-limiting-infinite-horizon-economy">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">41.7. </span>A Limiting Infinite Horizon Economy</a><a class="headerlink" href="#a-limiting-infinite-horizon-economy" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">40.7. </span>A Limiting Infinite Horizon Economy</a><a class="headerlink" href="#a-limiting-infinite-horizon-economy" title="Permalink to this heading">#</a></h2>
 <p>We want to set <span class="math notranslate nohighlight">\(T = +\infty\)</span>.</p>
 <p>The appropriate thing to do is to replace terminal condition
-<a class="reference internal" href="#equation-constraint4">(41.12)</a> with</p>
+<a class="reference internal" href="#equation-constraint4">(40.12)</a> with</p>
 <div class="math notranslate nohighlight">
 \[
 \lim_{T \rightarrow +\infty} \beta^T u'(C_T) K_{T+1} = 0 ,
@@ -986,7 +993,7 @@ optimal steady state.</p>
 saving rate.</p>
 <p>We know that in the steady state that the saving rate is constant
 and that <span class="math notranslate nohighlight">\(\bar s= \frac{f(\bar K)-\bar C}{f(\bar K)}\)</span>.</p>
-<p>From <a class="reference internal" href="#equation-feasibility-constraint">(41.15)</a> the steady state saving rate equals</p>
+<p>From <a class="reference internal" href="#equation-feasibility-constraint">(40.15)</a> the steady state saving rate equals</p>
 <div class="math notranslate nohighlight">
 \[
 \bar s =\frac{ \delta \bar{K}}{f(\bar K)}
@@ -1015,10 +1022,10 @@ saving rate.</p>
 <p>The planner slowly lowers the saving rate until reaching a steady
 state in which <span class="math notranslate nohighlight">\(f'(K)=\rho +\delta\)</span>.</p>
 <section id="exercise">
-<h3><span class="section-number">41.7.1. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">40.7.1. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h3>
 <div class="exercise admonition" id="ck1_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 41.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 40.1 </span></p>
 <section id="exercise-content">
 <ul class="simple">
 <li><p>Plot the optimal consumption, capital, and saving paths when the
@@ -1030,7 +1037,7 @@ as we shoot towards the steady state at <span class="math notranslate nohighligh
 </div>
 <div class="solution dropdown admonition" id="cass_koopmans_1-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#ck1_ex1"> Exercise 41.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#ck1_ex1"> Exercise 40.1</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1047,7 +1054,7 @@ as we shoot towards the steady state at <span class="math notranslate nohighligh
 </section>
 </section>
 <section id="concluding-remarks">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">41.8. </span>Concluding Remarks</a><a class="headerlink" href="#concluding-remarks" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">40.8. </span>Concluding Remarks</a><a class="headerlink" href="#concluding-remarks" title="Permalink to this heading">#</a></h2>
 <p>In <a class="reference internal" href="cass_koopmans_2.html"><span class="doc">Cass-Koopmans Competitive Equilibrium</span></a>,  we study a decentralized version of an economy with exactly the same
 technology and preference structure as deployed here.</p>
 <p>In that lecture, we replace the  planner of this lecture with Adam Smith’s <strong>invisible hand</strong>.</p>
@@ -1172,53 +1179,48 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="time_series_with_matrices.html">
-   11. Univariate Time Series with Matrix Algebra
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   12. LLN and CLT
+   11. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   13. Two Meanings of Probability
+   12. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   14. Multivariate Hypergeometric Distribution
+   13. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   15. Multivariate Normal Distribution
+   14. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   16. Heavy-Tailed Distributions
+   15. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   17. Fault Tree Uncertainties
+   16. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   18. Introduction to Artificial Neural Networks
+   17. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   19. Randomized Response Surveys
+   18. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   20. Expected Utilities of Random Responses
+   19. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1230,17 +1232,17 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   21. Linear Programming
+   20. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   22. Optimal Transport
+   21. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   23. Von Neumann Growth Model (and a Generalization)
+   22. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1252,52 +1254,52 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   24. Dynamics in One Dimension
+   23. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   25. AR1 Processes
+   24. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   26. Finite Markov Chains
+   25. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   27. Inventory Dynamics
+   26. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   28. Linear State Space Models
+   27. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   29. Samuelson Multiplier-Accelerator
+   28. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   30. Kesten Processes and Firm Dynamics
+   29. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   31. Wealth Distribution Dynamics
+   30. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   32. A First Look at the Kalman Filter
+   31. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   33. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1309,37 +1311,37 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   34. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   35. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   36. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   37. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   38. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   39. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   40. Job Search VII: A McCall Worker Q-Learns
+   39. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1351,52 +1353,52 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   41. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   42. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   43. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   44. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   45. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   46. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   47. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   48. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   49. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1408,17 +1410,17 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   51. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   52. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   53. Forecasting  an AR(1) process
+   52. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1430,42 +1432,42 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   54. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   55. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   56. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   57. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   58. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   59. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   60. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   61. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1477,32 +1479,32 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1514,37 +1516,37 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   68. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   69. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   70. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   71. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   72. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   73. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   74. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1556,17 +1558,17 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1578,17 +1580,17 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1600,12 +1602,12 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1617,17 +1619,17 @@ studied in <a class="reference internal" href="cass_koopmans_2.html"><span class
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>13. Two Meanings of Probability &#8212; Quantitative Economics with Python</title>
+    <title>12. Two Meanings of Probability &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,6 +99,13 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -112,8 +119,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="14. Multivariate Hypergeometric Distribution" href="multi_hyper.html" />
-    <link rel="prev" title="12. LLN and CLT" href="lln_clt.html" />
+    <link rel="next" title="13. Multivariate Hypergeometric Distribution" href="multi_hyper.html" />
+    <link rel="prev" title="11. LLN and CLT" href="lln_clt.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -134,7 +141,7 @@ const thebe_selector_output = ".output, .cell_output"
 <meta property="og:url" content="https://python.quantecon.org/prob_meaning.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
 <meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
-<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
 <meta name="theme-color" content="#ffffff" />
 
   </head>
@@ -161,10 +168,10 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">13.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frequentist-interpretation">13.2. Frequentist Interpretation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-interpretation">13.3. Bayesian Interpretation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#role-of-a-conjugate-prior">13.4. Role of a Conjugate Prior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">12.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frequentist-interpretation">12.2. Frequentist Interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-interpretation">12.3. Bayesian Interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#role-of-a-conjugate-prior">12.4. Role of a Conjugate Prior</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -192,7 +199,7 @@ const thebe_selector_output = ".output, .cell_output"
 
                     <div class="qe-page__header-copy">
 
-                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
 
                         <p class="qe-page__header-subheading">Two Meanings of Probability</p>
 
@@ -210,9 +217,9 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="two-meanings-of-probability">
-<h1><span class="section-number">13. </span>Two Meanings of Probability<a class="headerlink" href="#two-meanings-of-probability" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">12. </span>Two Meanings of Probability<a class="headerlink" href="#two-meanings-of-probability" title="Permalink to this heading">#</a></h1>
 <section id="overview">
-<h2><span class="section-number">13.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">12.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture  illustrates two distinct interpretations of a  <strong>probability distribution</strong></p>
 <ul class="simple">
 <li><p>A frequentist interpretation as <strong>relative frequencies</strong> anticipated to occur in a large i.i.d. sample</p></li>
@@ -278,7 +285,7 @@ Requirement already satisfied: wcwidth in /opt/conda/envs/quantecon/lib/python3.
 <p>Empowered with these Python tools, we’ll now  explore the two meanings described above.</p>
 </section>
 <section id="frequentist-interpretation">
-<h2><span class="section-number">13.2. </span>Frequentist Interpretation<a class="headerlink" href="#frequentist-interpretation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">12.2. </span>Frequentist Interpretation<a class="headerlink" href="#frequentist-interpretation" title="Permalink to this heading">#</a></h2>
 <p>Consider the following classic example.</p>
 <p>The random variable  <span class="math notranslate nohighlight">\(X \)</span> takes on possible values <span class="math notranslate nohighlight">\(k = 0, 1, 2, \ldots, n\)</span>  with probabilties</p>
 <div class="math notranslate nohighlight">
@@ -317,7 +324,7 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 <p>As usual, a law of large numbers justifies this answer.</p>
 <div class="exercise admonition" id="pm_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 13.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 12.1 </span></p>
 <section id="exercise-content">
 <ol class="arabic simple">
 <li><p>Please write a Python class to compute <span class="math notranslate nohighlight">\(f_k^I\)</span></p></li>
@@ -329,7 +336,7 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 </div>
 <div class="solution dropdown admonition" id="prob_meaning-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex1"> Exercise 13.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex1"> Exercise 12.1</a></p>
 <section id="solution-content">
 <p>Here is one solution:</p>
 <div class="cell docutils container">
@@ -412,22 +419,22 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 | 2  | 3.606884752589999e-08  |     0.0     |
 | 3  |  5.04963865362601e-07  |     0.0     |
 | 4  | 5.007558331512455e-06  |    2e-06    |
-| 5  | 3.7389768875293014e-05 |   4.8e-05   |
-| 6  | 0.00021810698510587546 |   0.000237  |
-| 7  |  0.001017832597160754  |   0.001054  |
-| 8  |  0.003859281930901185  |   0.003787  |
-| 9  |  0.012006654896137007  |   0.012018  |
-| 10 |  0.030817080900085007  |   0.030977  |
-| 11 |   0.065369565545635    |   0.065421  |
-| 12 |  0.11439673970486108   |   0.114042  |
-| 13 |   0.1642619852172365   |   0.164731  |
-| 14 |  0.19163898275344246   |   0.191045  |
-| 15 |  0.17886305056987967   |   0.179459  |
-| 16 |   0.1304209743738704   |   0.130331  |
-| 17 |  0.07160367220526209   |   0.071495  |
-| 18 |  0.027845872524268643  |   0.027855  |
-| 19 |  0.006839337111223871  |   0.006731  |
-| 20 | 0.0007979226629761189  |   0.000767  |
+| 5  | 3.7389768875293014e-05 |   3.1e-05   |
+| 6  | 0.00021810698510587546 |   0.000218  |
+| 7  |  0.001017832597160754  |   0.001009  |
+| 8  |  0.003859281930901185  |   0.003815  |
+| 9  |  0.012006654896137007  |   0.011932  |
+| 10 |  0.030817080900085007  |   0.030753  |
+| 11 |   0.065369565545635    |   0.065497  |
+| 12 |  0.11439673970486108   |   0.114256  |
+| 13 |   0.1642619852172365   |   0.164428  |
+| 14 |  0.19163898275344246   |   0.191391  |
+| 15 |  0.17886305056987967   |   0.178708  |
+| 16 |   0.1304209743738704   |   0.13044   |
+| 17 |  0.07160367220526209   |   0.072039  |
+| 18 |  0.027845872524268643  |   0.027754  |
+| 19 |  0.006839337111223871  |   0.006893  |
+| 20 | 0.0007979226629761189  |   0.000834  |
 +----+------------------------+-------------+
 </pre></div>
 </div>
@@ -477,7 +484,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9e2a5aeb56610fa58a520085d34284f7df0d928e68f78e6cd8fd6d3fc7e69650.png" src="_images/9e2a5aeb56610fa58a520085d34284f7df0d928e68f78e6cd8fd6d3fc7e69650.png" />
+<img alt="_images/d215695dc46b38d053b610cf9dbc3028d704d41e29081ef9b16bb06c8a9bc76b.png" src="_images/d215695dc46b38d053b610cf9dbc3028d704d41e29081ef9b16bb06c8a9bc76b.png" />
 </div>
 </div>
 <p><strong>Comparison with different <span class="math notranslate nohighlight">\(n\)</span></strong></p>
@@ -516,7 +523,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3f46ddaa4b7bc6aa13248ab2cddc4ac12a4ec876135fd0ef583e66029d61b7e9.png" src="_images/3f46ddaa4b7bc6aa13248ab2cddc4ac12a4ec876135fd0ef583e66029d61b7e9.png" />
+<img alt="_images/b07a3a57e932ea1bca44864c65708f5b740fe84a261e3d1d3d7d6fdf2cc878dd.png" src="_images/b07a3a57e932ea1bca44864c65708f5b740fe84a261e3d1d3d7d6fdf2cc878dd.png" />
 </div>
 </div>
 <p><strong>Comparison with different <span class="math notranslate nohighlight">\(I\)</span></strong></p>
@@ -555,7 +562,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/97e979f750671d00787ced38767c292eaec6e1028431fbfd2dc77e6b04a954e7.png" src="_images/97e979f750671d00787ced38767c292eaec6e1028431fbfd2dc77e6b04a954e7.png" />
+<img alt="_images/df646e682238d07c590c6da3ff8c456e1ff97e9eac4fba96f10afcfd454fd421.png" src="_images/df646e682238d07c590c6da3ff8c456e1ff97e9eac4fba96f10afcfd454fd421.png" />
 </div>
 </div>
 <p>From the above graphs, we can see that <strong><span class="math notranslate nohighlight">\(I\)</span>, the number of independent sequences,</strong> plays an important role.</p>
@@ -576,7 +583,7 @@ E[\rho_{k,i}] = \textrm{Prob}(X =  k | \theta) = \left(\frac{n!}{k! (n-k)!} \rig
 <p>as <span class="math notranslate nohighlight">\(I\)</span> goes to infinity.</p>
 </section>
 <section id="bayesian-interpretation">
-<h2><span class="section-number">13.3. </span>Bayesian Interpretation<a class="headerlink" href="#bayesian-interpretation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">12.3. </span>Bayesian Interpretation<a class="headerlink" href="#bayesian-interpretation" title="Permalink to this heading">#</a></h2>
 <p>We again use a binomial distribution.</p>
 <p>But now we don’t regard  <span class="math notranslate nohighlight">\(\theta\)</span> as being a fixed number.</p>
 <p>Instead, we think of it as a <strong>random variable</strong>.</p>
@@ -596,7 +603,7 @@ P(\theta) = \frac{\theta^{\alpha-1}(1-\theta)^{\beta -1}}{B(\alpha, \beta)}
 a <strong>beta distribution</strong> with parameters <span class="math notranslate nohighlight">\(\alpha, \beta\)</span>.</p>
 <div class="exercise admonition" id="pm_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 13.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 12.2 </span></p>
 <section id="exercise-content">
 <p><strong>a)</strong>  Please write down the <strong>likelihood function</strong> for a sample of length <span class="math notranslate nohighlight">\(n\)</span> from a binomial distribution with parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p><strong>b)</strong> Please write down the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of the coin.</p>
@@ -610,7 +617,7 @@ a <strong>beta distribution</strong> with parameters <span class="math notransla
 </div>
 <div class="solution dropdown admonition" id="prob_meaning-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex2"> Exercise 13.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#pm_ex2"> Exercise 12.2</a></p>
 <section id="solution-content">
 <p><strong>a)</strong> Please write down the <strong>likelihood function</strong> and the <strong>posterior</strong> distribution for <span class="math notranslate nohighlight">\(\theta\)</span> after observing  one flip of our coin.</p>
 <p>Suppose the outcome is <strong>Y</strong>.</p>
@@ -735,7 +742,7 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8ecc35bdfe2acd1f0275cf173ded623f93ba23edfba05d1431a01891f777cf4e.png" src="_images/8ecc35bdfe2acd1f0275cf173ded623f93ba23edfba05d1431a01891f777cf4e.png" />
+<img alt="_images/da04db5341937c824a366b642db3ed33d3a0cfbb012cf1472e3c576f7fb4e8dd.png" src="_images/da04db5341937c824a366b642db3ed33d3a0cfbb012cf1472e3c576f7fb4e8dd.png" />
 </div>
 </div>
 <p><strong>e)</strong> For various <span class="math notranslate nohighlight">\(n\)</span>’s, please describe and compute  <span class="math notranslate nohighlight">\(.05\)</span> and <span class="math notranslate nohighlight">\(.95\)</span> quantiles for  posterior probabilities.</p>
@@ -792,36 +799,36 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
     <tr>
       <th>upper</th>
       <td>0.228520</td>
-      <td>0.097308</td>
-      <td>0.062413</td>
-      <td>0.046007</td>
-      <td>0.036447</td>
-      <td>0.117329</td>
-      <td>0.237639</td>
-      <td>0.32360</td>
-      <td>0.366730</td>
-      <td>0.348182</td>
-      <td>0.322252</td>
-      <td>0.344599</td>
-      <td>0.352696</td>
-      <td>0.371793</td>
+      <td>0.430741</td>
+      <td>0.555933</td>
+      <td>0.349293</td>
+      <td>0.437155</td>
+      <td>0.547504</td>
+      <td>0.571380</td>
+      <td>0.587948</td>
+      <td>0.524441</td>
+      <td>0.430856</td>
+      <td>0.448024</td>
+      <td>0.383624</td>
+      <td>0.388038</td>
+      <td>0.393532</td>
     </tr>
     <tr>
       <th>lower</th>
       <td>0.998457</td>
-      <td>0.902692</td>
-      <td>0.764466</td>
-      <td>0.650707</td>
-      <td>0.562845</td>
-      <td>0.558127</td>
-      <td>0.582446</td>
-      <td>0.61429</td>
-      <td>0.594938</td>
-      <td>0.540960</td>
-      <td>0.481969</td>
-      <td>0.436961</td>
-      <td>0.424259</td>
-      <td>0.422646</td>
+      <td>0.999132</td>
+      <td>0.999397</td>
+      <td>0.953993</td>
+      <td>0.963553</td>
+      <td>0.939786</td>
+      <td>0.878492</td>
+      <td>0.846855</td>
+      <td>0.743888</td>
+      <td>0.624573</td>
+      <td>0.610709</td>
+      <td>0.477369</td>
+      <td>0.460610</td>
+      <td>0.444813</td>
     </tr>
   </tbody>
 </table>
@@ -856,7 +863,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/169e4e2509185d98f4e8a05092919f812188c345f444242f1efa770745108226.png" src="_images/169e4e2509185d98f4e8a05092919f812188c345f444242f1efa770745108226.png" />
+<img alt="_images/1f5c31a8911b25ddc7ff9b7bf84c5297a1a4874f8f7cfdb960e3175c23db4672.png" src="_images/1f5c31a8911b25ddc7ff9b7bf84c5297a1a4874f8f7cfdb960e3175c23db4672.png" />
 </div>
 </div>
 <p>Notice that in the graph above the posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> typically exhibits a hump shape as <span class="math notranslate nohighlight">\(n\)</span> increases.</p>
@@ -888,7 +895,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eb2f504af58750c66b3a1052daf03164b040a75ad9b469e9dc96d9c704e979f9.png" src="_images/eb2f504af58750c66b3a1052daf03164b040a75ad9b469e9dc96d9c704e979f9.png" />
+<img alt="_images/b43db86169c2d27e03e470a8da06b1f8864516c2117091ec0e2deef6a83e9c41.png" src="_images/b43db86169c2d27e03e470a8da06b1f8864516c2117091ec0e2deef6a83e9c41.png" />
 </div>
 </div>
 <p>As <span class="math notranslate nohighlight">\(n\)</span> increases, we can see that the probability density functions <em>concentrate</em> on <span class="math notranslate nohighlight">\(0.4\)</span>, the true value of <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
@@ -918,7 +925,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f92785a625588a781e6243748255468c89d0adcaae2537948f6c6dce0eae74b1.png" src="_images/f92785a625588a781e6243748255468c89d0adcaae2537948f6c6dce0eae74b1.png" />
+<img alt="_images/86d82c2f81706155bea8cf0f2530b40c26adcd15ed17f57d002832627c7a75a3.png" src="_images/86d82c2f81706155bea8cf0f2530b40c26adcd15ed17f57d002832627c7a75a3.png" />
 </div>
 </div>
 </section>
@@ -951,7 +958,7 @@ F(a)=p_1,F(b)=p_2
 </ul>
 <p>The random variables <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> are governed by Binomial Distribution with <span class="math notranslate nohighlight">\(\theta=0.4\)</span>.</p>
 <p>Call this the true data generating process.</p>
-<p>According to the Law of Large Numbers, for a large number of observations, observed frequencies of <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> will be described by the true data generating process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See <a class="reference internal" href="#pm_ex1"><span class="std std-numref">Exercise 13.1</span></a>).</p>
+<p>According to the Law of Large Numbers, for a large number of observations, observed frequencies of <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(N-k\)</span> will be described by the true data generating process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See <a class="reference internal" href="#pm_ex1"><span class="std std-numref">Exercise 12.1</span></a>).</p>
 <p>Consequently, the  mean of the posterior distribution converges to <span class="math notranslate nohighlight">\(0.4\)</span> and the variance withers to zero.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -973,7 +980,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3cbcb9f7a02b22a290b1cde8da2ca55b95f678bf10c245715cfb70192a7885eb.png" src="_images/3cbcb9f7a02b22a290b1cde8da2ca55b95f678bf10c245715cfb70192a7885eb.png" />
+<img alt="_images/b97b6461cf063c6488021ccf7e834b77b60ad11d43f17a551d3f8341756ddcfd.png" src="_images/b97b6461cf063c6488021ccf7e834b77b60ad11d43f17a551d3f8341756ddcfd.png" />
 </div>
 </div>
 <p>After observing a large number of outcomes, the  posterior distribution collapses around <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
@@ -982,7 +989,7 @@ F(a)=p_1,F(b)=p_2
 <p>However, if you take a closer look, you will find that the centers of  the BCIs are not exactly <span class="math notranslate nohighlight">\(0.4\)</span>, due to the persistent influence of the prior distribution and the randomness of the simulation path.</p>
 </section>
 <section id="role-of-a-conjugate-prior">
-<h2><span class="section-number">13.4. </span>Role of a Conjugate Prior<a class="headerlink" href="#role-of-a-conjugate-prior" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">12.4. </span>Role of a Conjugate Prior<a class="headerlink" href="#role-of-a-conjugate-prior" title="Permalink to this heading">#</a></h2>
 <p>We have made  assumptions that link functional forms of  our likelihood function and our prior in a way that has eased our calculations considerably.</p>
 <p>In particular, our assumptions that the likelihood function is <strong>binomial</strong> and that the prior distribution is a <strong>beta distribution</strong> have the consequence that the posterior distribution implied by Bayes’ Law is also a <strong>beta distribution</strong>.</p>
 <p>So posterior and prior are both beta distributions, albeit ones with different parameters.</p>
@@ -1114,53 +1121,48 @@ apply the Markov chain Monte Carlo techniques deployed in <a class="reference in
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="time_series_with_matrices.html">
-   11. Univariate Time Series with Matrix Algebra
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   12. LLN and CLT
+   11. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   13. Two Meanings of Probability
+   12. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   14. Multivariate Hypergeometric Distribution
+   13. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   15. Multivariate Normal Distribution
+   14. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   16. Heavy-Tailed Distributions
+   15. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   17. Fault Tree Uncertainties
+   16. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   18. Introduction to Artificial Neural Networks
+   17. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   19. Randomized Response Surveys
+   18. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   20. Expected Utilities of Random Responses
+   19. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1172,17 +1174,17 @@ apply the Markov chain Monte Carlo techniques deployed in <a class="reference in
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   21. Linear Programming
+   20. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   22. Optimal Transport
+   21. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   23. Von Neumann Growth Model (and a Generalization)
+   22. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1194,52 +1196,52 @@ apply the Markov chain Monte Carlo techniques deployed in <a class="reference in
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   24. Dynamics in One Dimension
+   23. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   25. AR1 Processes
+   24. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   26. Finite Markov Chains
+   25. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   27. Inventory Dynamics
+   26. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   28. Linear State Space Models
+   27. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   29. Samuelson Multiplier-Accelerator
+   28. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   30. Kesten Processes and Firm Dynamics
+   29. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   31. Wealth Distribution Dynamics
+   30. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   32. A First Look at the Kalman Filter
+   31. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   33. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1251,37 +1253,37 @@ apply the Markov chain Monte Carlo techniques deployed in <a class="reference in
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   34. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   35. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   36. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   37. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   38. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   39. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   40. Job Search VII: A McCall Worker Q-Learns
+   39. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1293,52 +1295,52 @@ apply the Markov chain Monte Carlo techniques deployed in <a class="reference in
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   41. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   42. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   43. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   44. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   45. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   46. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   47. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   48. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   49. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1350,17 +1352,17 @@ apply the Markov chain Monte Carlo techniques deployed in <a class="reference in
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   51. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   52. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   53. Forecasting  an AR(1) process
+   52. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1372,42 +1374,42 @@ apply the Markov chain Monte Carlo techniques deployed in <a class="reference in
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   54. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   55. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   56. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   57. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   58. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   59. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   60. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   61. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1419,32 +1421,32 @@ apply the Markov chain Monte Carlo techniques deployed in <a class="reference in
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1456,37 +1458,37 @@ apply the Markov chain Monte Carlo techniques deployed in <a class="reference in
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   68. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   69. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   70. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   71. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   72. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   73. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   74. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1498,17 +1500,17 @@ apply the Markov chain Monte Carlo techniques deployed in <a class="reference in
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1520,17 +1522,17 @@ apply the Markov chain Monte Carlo techniques deployed in <a class="reference in
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1542,12 +1544,12 @@ apply the Markov chain Monte Carlo techniques deployed in <a class="reference in
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1559,17 +1561,17 @@ apply the Markov chain Monte Carlo techniques deployed in <a class="reference in
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>

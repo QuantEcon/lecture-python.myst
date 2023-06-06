@@ -4,9 +4,9 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.10.3
+    jupytext_version: 1.14.4
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -423,7 +423,7 @@ b_ex1 = np.array([30,20])
 
 # Solve the problem
 # we put a negative sign on the objective as linprog does minimization
-res_ex1 = linprog(-c_ex1, A_ub=A_ex1, b_ub=b_ex1, method='revised simplex')
+res_ex1 = linprog(-c_ex1, A_ub=A_ex1, b_ub=b_ex1)
 
 res_ex1
 ```
@@ -487,7 +487,7 @@ bounds_ex2 = [(  0,    None),
 
 # Solve the problem
 res_ex2 = linprog(-c_ex2, A_eq=A_ex2, b_eq=b_ex2,
-                  bounds=bounds_ex2, method='revised simplex')
+                  bounds=bounds_ex2)
 
 res_ex2
 ```
@@ -704,7 +704,7 @@ Since parameters used here are defined before when solving the primal problem, w
 
 ```{code-cell} ipython3
 # Solve the dual problem
-res_ex1_dual = linprog(b_ex1, A_ub=-A_ex1.T, b_ub=-c_ex1, method='revised simplex')
+res_ex1_dual = linprog(b_ex1, A_ub=-A_ex1.T, b_ub=-c_ex1)
 
 res_ex1_dual
 ```
@@ -761,8 +761,7 @@ bounds_ex2_dual = [(None, None),
 
 # Solve the dual problem
 res_ex2_dual = linprog(c_ex2_dual, A_eq=A_eq_ex2_dual, b_eq=b_eq_ex2_dual, 
-                       A_ub=A_ub_ex2_dual, b_ub=b_ub_ex2_dual, bounds=bounds_ex2_dual,
-                       method='revised simplex')
+                       A_ub=A_ub_ex2_dual, b_ub=b_ub_ex2_dual, bounds=bounds_ex2_dual)
 
 res_ex2_dual
 ```

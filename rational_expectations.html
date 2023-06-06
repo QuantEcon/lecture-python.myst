@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>70. Rational Expectations Equilibrium &#8212; Quantitative Economics with Python</title>
+    <title>69. Rational Expectations Equilibrium &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,6 +99,13 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -112,8 +119,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="71. Stability in Linear Rational Expectations Models" href="re_with_feedback.html" />
-    <link rel="prev" title="69. A Lake Model of Employment and Unemployment" href="lake_model.html" />
+    <link rel="next" title="70. Stability in Linear Rational Expectations Models" href="re_with_feedback.html" />
+    <link rel="prev" title="68. A Lake Model of Employment and Unemployment" href="lake_model.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -134,7 +141,7 @@ const thebe_selector_output = ".output, .cell_output"
 <meta property="og:url" content="https://python.quantecon.org/rational_expectations.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
 <meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
-<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
 <meta name="theme-color" content="#ffffff" />
 
   </head>
@@ -161,42 +168,42 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">70.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-big-y-little-y-trick">70.1.1. The Big Y, little y Trick</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-static-example-of-the-big-y-little-y-trick">70.1.1.1. A Simple Static Example of the Big Y, little y Trick</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">69.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-big-y-little-y-trick">69.1.1. The Big Y, little y Trick</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-static-example-of-the-big-y-little-y-trick">69.1.1.1. A Simple Static Example of the Big Y, little y Trick</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#related-planning-problem">70.1.2. Related Planning Problem</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">70.1.3. Further Reading</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#related-planning-problem">69.1.2. Related Planning Problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">69.1.3. Further Reading</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">70.2. Rational Expectations Equilibrium</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#competitive-equilibrium-with-adjustment-costs">70.2.1. Competitive Equilibrium with Adjustment Costs</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-firms-problem">70.2.1.1. The Firm’s Problem</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#prices-and-aggregate-output">70.2.1.2. Prices and Aggregate Output</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#representative-firms-beliefs">70.2.1.3. Representative Firm’s Beliefs</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-behavior-given-beliefs">70.2.1.4. Optimal Behavior Given Beliefs</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#characterization-with-first-order-necessary-conditions">70.2.1.5. Characterization with First-Order Necessary Conditions</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-actual-law-of-motion-for-output">70.2.1.6. The Actual Law of Motion for Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">69.2. Rational Expectations Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#competitive-equilibrium-with-adjustment-costs">69.2.1. Competitive Equilibrium with Adjustment Costs</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-firms-problem">69.2.1.1. The Firm’s Problem</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#prices-and-aggregate-output">69.2.1.2. Prices and Aggregate Output</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#representative-firms-beliefs">69.2.1.3. Representative Firm’s Beliefs</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-behavior-given-beliefs">69.2.1.4. Optimal Behavior Given Beliefs</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#characterization-with-first-order-necessary-conditions">69.2.1.5. Characterization with First-Order Necessary Conditions</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-actual-law-of-motion-for-output">69.2.1.6. The Actual Law of Motion for Output</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definition-of-rational-expectations-equilibrium">70.2.2. Definition of Rational Expectations Equilibrium</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-point-characterization">70.2.2.1. Fixed Point Characterization</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-an-equilibrium">70.3. Computing  an Equilibrium</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-of-contractivity">70.3.1. Failure of Contractivity</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-planning-problem-approach">70.3.2. A Planning Problem Approach</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-of-planning-problem">70.3.3. Solution of  Planning Problem</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-insight">70.3.4. Key Insight</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#structure-of-the-law-of-motion">70.3.4.1. Structure of the Law of Motion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definition-of-rational-expectations-equilibrium">69.2.2. Definition of Rational Expectations Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-point-characterization">69.2.2.1. Fixed Point Characterization</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">70.4. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-an-equilibrium">69.3. Computing  an Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-of-contractivity">69.3.1. Failure of Contractivity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-planning-problem-approach">69.3.2. A Planning Problem Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-of-planning-problem">69.3.3. Solution of  Planning Problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-insight">69.3.4. Key Insight</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#structure-of-the-law-of-motion">69.3.4.1. Structure of the Law of Motion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">69.4. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -224,7 +231,7 @@ const thebe_selector_output = ".output, .cell_output"
 
                     <div class="qe-page__header-copy">
 
-                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
 
                         <p class="qe-page__header-subheading">Rational Expectations Equilibrium</p>
 
@@ -246,7 +253,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="rational-expectations-equilibrium">
-<h1><a class="toc-backref" href="#id12"><span class="section-number">70. </span><span class="target" id="index-0"></span>Rational Expectations Equilibrium</a><a class="headerlink" href="#rational-expectations-equilibrium" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id12"><span class="section-number">69. </span><span class="target" id="index-0"></span>Rational Expectations Equilibrium</a><a class="headerlink" href="#rational-expectations-equilibrium" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -276,20 +283,18 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.6.0)
-Requirement already satisfied: numba in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (65.6.3)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (0.39.1)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -301,7 +306,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id13"><span class="section-number">70.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id13"><span class="section-number">69.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture introduces the concept of a <em>rational expectations equilibrium</em>.</p>
 <p>To illustrate it, we describe a linear quadratic version of a  model
 due to Lucas and Prescott <span id="id1">[<a class="reference internal" href="zreferences.html#id185" title="Robert E Lucas, Jr. and Edward C Prescott. Investment under uncertainty. Econometrica: Journal of the Econometric Society, pages 659–681, 1971.">LP71</a>]</span>.</p>
@@ -338,7 +343,7 @@ equilibrium.</p>
 </div>
 </div>
 <section id="the-big-y-little-y-trick">
-<h3><span class="section-number">70.1.1. </span>The Big Y, little y Trick<a class="headerlink" href="#the-big-y-little-y-trick" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.1.1. </span>The Big Y, little y Trick<a class="headerlink" href="#the-big-y-little-y-trick" title="Permalink to this heading">#</a></h3>
 <p>This widely used method applies in contexts in which a <strong>representative firm</strong> or agent is a “price taker” operating within a competitive equilibrium.</p>
 <p>The following setting justifies the concept of a representative firm that stands in for a large number of other firms too.</p>
 <p>There is a uniform unit measure  of identical firms named  <span class="math notranslate nohighlight">\(\omega \in \Omega = [0,1]\)</span>.</p>
@@ -359,12 +364,12 @@ equilibrium.</p>
 <p>Please watch for how this strategy is applied as the lecture unfolds.</p>
 <p>We begin by applying the  Big <span class="math notranslate nohighlight">\(Y\)</span>, little <span class="math notranslate nohighlight">\(y\)</span> trick in a very simple static context.</p>
 <section id="a-simple-static-example-of-the-big-y-little-y-trick">
-<h4><span class="section-number">70.1.1.1. </span>A Simple Static Example of the Big Y, little y Trick<a class="headerlink" href="#a-simple-static-example-of-the-big-y-little-y-trick" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">69.1.1.1. </span>A Simple Static Example of the Big Y, little y Trick<a class="headerlink" href="#a-simple-static-example-of-the-big-y-little-y-trick" title="Permalink to this heading">#</a></h4>
 <p>Consider a static model in which a unit measure of  firms produce a homogeneous good that is sold in a competitive market.</p>
 <p>Each of these firms ends up producing and selling output <span class="math notranslate nohighlight">\(y (\omega) = y\)</span>.</p>
 <p>The price <span class="math notranslate nohighlight">\(p\)</span> of the good lies on an inverse demand curve</p>
 <div class="math notranslate nohighlight" id="equation-ree-comp3d-static">
-<span class="eqno">(70.1)<a class="headerlink" href="#equation-ree-comp3d-static" title="Permalink to this equation">#</a></span>\[p = a_0 - a_1 Y\]</div>
+<span class="eqno">(69.1)<a class="headerlink" href="#equation-ree-comp3d-static" title="Permalink to this equation">#</a></span>\[p = a_0 - a_1 Y\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(a_i &gt; 0\)</span> for <span class="math notranslate nohighlight">\(i = 0, 1\)</span></p></li>
@@ -378,27 +383,27 @@ c(y) = c_1 y + 0.5 c_2 y^2,
 \qquad c_i &gt; 0 \text{ for } i = 1,2
 \]</div>
 <p>The profits of a representative firm are <span class="math notranslate nohighlight">\(p y - c(y)\)</span>.</p>
-<p>Using <a class="reference internal" href="#equation-ree-comp3d-static">(70.1)</a>, we can express the problem of the representative firm as</p>
+<p>Using <a class="reference internal" href="#equation-ree-comp3d-static">(69.1)</a>, we can express the problem of the representative firm as</p>
 <div class="math notranslate nohighlight" id="equation-max-problem-static">
-<span class="eqno">(70.2)<a class="headerlink" href="#equation-max-problem-static" title="Permalink to this equation">#</a></span>\[\max_{y} \Bigl[ (a_0 - a_1 Y) y - c_1 y - 0.5 c_2 y^2 \Bigr]\]</div>
-<p>In posing problem <a class="reference internal" href="#equation-max-problem-static">(70.2)</a>, we want the firm to be a <em>price taker</em>.</p>
+<span class="eqno">(69.2)<a class="headerlink" href="#equation-max-problem-static" title="Permalink to this equation">#</a></span>\[\max_{y} \Bigl[ (a_0 - a_1 Y) y - c_1 y - 0.5 c_2 y^2 \Bigr]\]</div>
+<p>In posing problem <a class="reference internal" href="#equation-max-problem-static">(69.2)</a>, we want the firm to be a <em>price taker</em>.</p>
 <p>We do that by regarding <span class="math notranslate nohighlight">\(p\)</span> and therefore <span class="math notranslate nohighlight">\(Y\)</span> as exogenous to the firm.</p>
 <p>The essence of the Big <span class="math notranslate nohighlight">\(Y\)</span>, little <span class="math notranslate nohighlight">\(y\)</span> trick is <em>not</em> to set <span class="math notranslate nohighlight">\(Y = n y\)</span> <em>before</em> taking the first-order condition with respect
-to <span class="math notranslate nohighlight">\(y\)</span> in problem <a class="reference internal" href="#equation-max-problem-static">(70.2)</a>.</p>
+to <span class="math notranslate nohighlight">\(y\)</span> in problem <a class="reference internal" href="#equation-max-problem-static">(69.2)</a>.</p>
 <p>This assures that the firm is a price taker.</p>
-<p>The first-order condition for problem <a class="reference internal" href="#equation-max-problem-static">(70.2)</a> is</p>
+<p>The first-order condition for problem <a class="reference internal" href="#equation-max-problem-static">(69.2)</a> is</p>
 <div class="math notranslate nohighlight" id="equation-bigysimplefonc">
-<span class="eqno">(70.3)<a class="headerlink" href="#equation-bigysimplefonc" title="Permalink to this equation">#</a></span>\[a_0 - a_1 Y - c_1 - c_2 y = 0\]</div>
-<p>At this point, <em>but not before</em>, we substitute <span class="math notranslate nohighlight">\(Y = y\)</span> into <a class="reference internal" href="#equation-bigysimplefonc">(70.3)</a>
+<span class="eqno">(69.3)<a class="headerlink" href="#equation-bigysimplefonc" title="Permalink to this equation">#</a></span>\[a_0 - a_1 Y - c_1 - c_2 y = 0\]</div>
+<p>At this point, <em>but not before</em>, we substitute <span class="math notranslate nohighlight">\(Y = y\)</span> into <a class="reference internal" href="#equation-bigysimplefonc">(69.3)</a>
 to obtain the following linear equation</p>
 <div class="math notranslate nohighlight" id="equation-staticy">
-<span class="eqno">(70.4)<a class="headerlink" href="#equation-staticy" title="Permalink to this equation">#</a></span>\[a_0 - c_1 - (a_1 +  c_2) Y = 0\]</div>
+<span class="eqno">(69.4)<a class="headerlink" href="#equation-staticy" title="Permalink to this equation">#</a></span>\[a_0 - c_1 - (a_1 +  c_2) Y = 0\]</div>
 <p>to be solved for the competitive equilibrium market-wide output <span class="math notranslate nohighlight">\(Y\)</span>.</p>
-<p>After solving for <span class="math notranslate nohighlight">\(Y\)</span>, we can compute the competitive equilibrium price <span class="math notranslate nohighlight">\(p\)</span> from the inverse demand curve <a class="reference internal" href="#equation-ree-comp3d-static">(70.1)</a>.</p>
+<p>After solving for <span class="math notranslate nohighlight">\(Y\)</span>, we can compute the competitive equilibrium price <span class="math notranslate nohighlight">\(p\)</span> from the inverse demand curve <a class="reference internal" href="#equation-ree-comp3d-static">(69.1)</a>.</p>
 </section>
 </section>
 <section id="related-planning-problem">
-<h3><span class="section-number">70.1.2. </span>Related Planning Problem<a class="headerlink" href="#related-planning-problem" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.1.2. </span>Related Planning Problem<a class="headerlink" href="#related-planning-problem" title="Permalink to this heading">#</a></h3>
 <p>Define <strong>consumer surplus</strong> as the  area under the inverse demand curve:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -412,12 +417,12 @@ S_c (Y)= \int_0^Y (a_0 - a_1 s) ds = a_o Y - \frac{a_1}{2} Y^2 .
 \[
 \max_{Y} [ S_c(Y) - S_p(Y) ]
 \]</div>
-<p>The first-order necessary condition for the planning problem is equation <a class="reference internal" href="#equation-staticy">(70.4)</a>.</p>
-<p>Thus, a <span class="math notranslate nohighlight">\(Y\)</span> that solves <a class="reference internal" href="#equation-staticy">(70.4)</a> is a competitive equilibrium output as well as an output that solves the planning problem.</p>
+<p>The first-order necessary condition for the planning problem is equation <a class="reference internal" href="#equation-staticy">(69.4)</a>.</p>
+<p>Thus, a <span class="math notranslate nohighlight">\(Y\)</span> that solves <a class="reference internal" href="#equation-staticy">(69.4)</a> is a competitive equilibrium output as well as an output that solves the planning problem.</p>
 <p>This type of outcome provides an intellectual justification for liking a competitive equilibrium.</p>
 </section>
 <section id="further-reading">
-<h3><span class="section-number">70.1.3. </span>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.1.3. </span>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">#</a></h3>
 <p>References for this lecture include</p>
 <ul class="simple">
 <li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id185" title="Robert E Lucas, Jr. and Edward C Prescott. Investment under uncertainty. Econometrica: Journal of the Econometric Society, pages 659–681, 1971.">LP71</a>]</span></p></li>
@@ -427,7 +432,7 @@ S_c (Y)= \int_0^Y (a_0 - a_1 s) ds = a_o Y - \frac{a_1}{2} Y^2 .
 </section>
 </section>
 <section id="id5">
-<h2><a class="toc-backref" href="#id14"><span class="section-number">70.2. </span>Rational Expectations Equilibrium</a><a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id14"><span class="section-number">69.2. </span>Rational Expectations Equilibrium</a><a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h2>
 <p id="index-1">Our first illustration of a rational expectations equilibrium involves a market with a unit measure of identical  firms, each of which seeks to maximize the discounted present value of profits in the face of adjustment costs.</p>
 <p>The adjustment costs induce the firms to make gradual adjustments, which in turn requires consideration of future prices.</p>
 <p>Individual firms understand that, via the inverse demand curve, the price is determined by the amounts supplied by other firms.</p>
@@ -437,27 +442,27 @@ S_c (Y)= \int_0^Y (a_0 - a_1 s) ds = a_o Y - \frac{a_1}{2} Y^2 .
 law of motion generated by production choices induced by this belief.</p>
 <p>We formulate a rational expectations equilibrium in terms of a fixed point of an operator that maps beliefs into optimal beliefs.</p>
 <section id="competitive-equilibrium-with-adjustment-costs">
-<span id="ree-ce"></span><h3><span class="section-number">70.2.1. </span>Competitive Equilibrium with Adjustment Costs<a class="headerlink" href="#competitive-equilibrium-with-adjustment-costs" title="Permalink to this heading">#</a></h3>
+<span id="ree-ce"></span><h3><span class="section-number">69.2.1. </span>Competitive Equilibrium with Adjustment Costs<a class="headerlink" href="#competitive-equilibrium-with-adjustment-costs" title="Permalink to this heading">#</a></h3>
 <p id="index-2">To illustrate, consider a collection of <span class="math notranslate nohighlight">\(n\)</span> firms producing a homogeneous good that is sold in a competitive market.</p>
 <p>Each firm sell output <span class="math notranslate nohighlight">\(y_t(\omega) = y_t\)</span>.</p>
 <p>The price <span class="math notranslate nohighlight">\(p_t\)</span> of the good lies on the inverse demand curve</p>
 <div class="math notranslate nohighlight" id="equation-ree-comp3d">
-<span class="eqno">(70.5)<a class="headerlink" href="#equation-ree-comp3d" title="Permalink to this equation">#</a></span>\[p_t = a_0 - a_1 Y_t\]</div>
+<span class="eqno">(69.5)<a class="headerlink" href="#equation-ree-comp3d" title="Permalink to this equation">#</a></span>\[p_t = a_0 - a_1 Y_t\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(a_i &gt; 0\)</span> for <span class="math notranslate nohighlight">\(i = 0, 1\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(Y_t = \int_0^1 y_t(\omega) d \omega = y_t\)</span> is the market-wide level of output</p></li>
 </ul>
 <section id="the-firms-problem">
-<span id="ree-fp"></span><h4><span class="section-number">70.2.1.1. </span>The Firm’s Problem<a class="headerlink" href="#the-firms-problem" title="Permalink to this heading">#</a></h4>
+<span id="ree-fp"></span><h4><span class="section-number">69.2.1.1. </span>The Firm’s Problem<a class="headerlink" href="#the-firms-problem" title="Permalink to this heading">#</a></h4>
 <p>Each firm is a price taker.</p>
 <p>While it faces no uncertainty, it does face adjustment costs</p>
 <p>In particular, it chooses a production plan to maximize</p>
 <div class="math notranslate nohighlight" id="equation-ree-obj">
-<span class="eqno">(70.6)<a class="headerlink" href="#equation-ree-obj" title="Permalink to this equation">#</a></span>\[\sum_{t=0}^\infty \beta^t r_t\]</div>
+<span class="eqno">(69.6)<a class="headerlink" href="#equation-ree-obj" title="Permalink to this equation">#</a></span>\[\sum_{t=0}^\infty \beta^t r_t\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-ree-comp2">
-<span class="eqno">(70.7)<a class="headerlink" href="#equation-ree-comp2" title="Permalink to this equation">#</a></span>\[r_t := p_t y_t - \frac{ \gamma (y_{t+1} - y_t )^2 }{2},
+<span class="eqno">(69.7)<a class="headerlink" href="#equation-ree-comp2" title="Permalink to this equation">#</a></span>\[r_t := p_t y_t - \frac{ \gamma (y_{t+1} - y_t )^2 }{2},
 \qquad  y_0 \text{ given}\]</div>
 <p>Regarding the parameters,</p>
 <ul class="simple">
@@ -470,93 +475,93 @@ law of motion generated by production choices induced by this belief.</p>
 <p>We turn to this problem now.</p>
 </section>
 <section id="prices-and-aggregate-output">
-<h4><span class="section-number">70.2.1.2. </span>Prices and Aggregate Output<a class="headerlink" href="#prices-and-aggregate-output" title="Permalink to this heading">#</a></h4>
-<p>In view of <a class="reference internal" href="#equation-ree-comp3d">(70.5)</a>, the firm’s incentive to forecast the market price translates into an incentive to forecast aggregate output <span class="math notranslate nohighlight">\(Y_t\)</span>.</p>
+<h4><span class="section-number">69.2.1.2. </span>Prices and Aggregate Output<a class="headerlink" href="#prices-and-aggregate-output" title="Permalink to this heading">#</a></h4>
+<p>In view of <a class="reference internal" href="#equation-ree-comp3d">(69.5)</a>, the firm’s incentive to forecast the market price translates into an incentive to forecast aggregate output <span class="math notranslate nohighlight">\(Y_t\)</span>.</p>
 <p>Aggregate output depends on the choices of other firms.</p>
 <p>The output <span class="math notranslate nohighlight">\(y_t(\omega)\)</span> of a single firm <span class="math notranslate nohighlight">\(\omega\)</span> has a negligible effect on aggregate output <span class="math notranslate nohighlight">\(\int_0^1 y_t(\omega) d \omega\)</span>.</p>
 <p>That justifies firms in regarding their forecasts of aggregate output as being unaffected by their own output decisions.</p>
 </section>
 <section id="representative-firms-beliefs">
-<h4><span class="section-number">70.2.1.3. </span>Representative Firm’s Beliefs<a class="headerlink" href="#representative-firms-beliefs" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">69.2.1.3. </span>Representative Firm’s Beliefs<a class="headerlink" href="#representative-firms-beliefs" title="Permalink to this heading">#</a></h4>
 <p>We suppose the firm believes that market-wide output <span class="math notranslate nohighlight">\(Y_t\)</span> follows the law of motion</p>
 <div class="math notranslate nohighlight" id="equation-ree-hlom">
-<span class="eqno">(70.8)<a class="headerlink" href="#equation-ree-hlom" title="Permalink to this equation">#</a></span>\[Y_{t+1} =  H(Y_t)\]</div>
+<span class="eqno">(69.8)<a class="headerlink" href="#equation-ree-hlom" title="Permalink to this equation">#</a></span>\[Y_{t+1} =  H(Y_t)\]</div>
 <p>where <span class="math notranslate nohighlight">\(Y_0\)</span> is a known initial condition.</p>
 <p>The <em>belief function</em> <span class="math notranslate nohighlight">\(H\)</span> is an equilibrium object, and hence remains to be determined.</p>
 </section>
 <section id="optimal-behavior-given-beliefs">
-<h4><span class="section-number">70.2.1.4. </span>Optimal Behavior Given Beliefs<a class="headerlink" href="#optimal-behavior-given-beliefs" title="Permalink to this heading">#</a></h4>
-<p>For now, let’s fix a particular belief <span class="math notranslate nohighlight">\(H\)</span> in <a class="reference internal" href="#equation-ree-hlom">(70.8)</a> and investigate the firm’s response to it.</p>
+<h4><span class="section-number">69.2.1.4. </span>Optimal Behavior Given Beliefs<a class="headerlink" href="#optimal-behavior-given-beliefs" title="Permalink to this heading">#</a></h4>
+<p>For now, let’s fix a particular belief <span class="math notranslate nohighlight">\(H\)</span> in <a class="reference internal" href="#equation-ree-hlom">(69.8)</a> and investigate the firm’s response to it.</p>
 <p>Let <span class="math notranslate nohighlight">\(v\)</span> be the optimal value function for the firm’s problem given <span class="math notranslate nohighlight">\(H\)</span>.</p>
 <p>The value function satisfies the Bellman equation</p>
 <div class="math notranslate nohighlight" id="equation-comp4">
-<span class="eqno">(70.9)<a class="headerlink" href="#equation-comp4" title="Permalink to this equation">#</a></span>\[v(y,Y) = \max_{y'} \left\{ a_0 y - a_1 y Y - \frac{ \gamma (y' - y)^2}{2}   + \beta v(y', H(Y))\right\}\]</div>
+<span class="eqno">(69.9)<a class="headerlink" href="#equation-comp4" title="Permalink to this equation">#</a></span>\[v(y,Y) = \max_{y'} \left\{ a_0 y - a_1 y Y - \frac{ \gamma (y' - y)^2}{2}   + \beta v(y', H(Y))\right\}\]</div>
 <p>Let’s denote the firm’s optimal policy function by <span class="math notranslate nohighlight">\(h\)</span>, so that</p>
 <div class="math notranslate nohighlight" id="equation-comp9">
-<span class="eqno">(70.10)<a class="headerlink" href="#equation-comp9" title="Permalink to this equation">#</a></span>\[y_{t+1} = h(y_t, Y_t)\]</div>
+<span class="eqno">(69.10)<a class="headerlink" href="#equation-comp9" title="Permalink to this equation">#</a></span>\[y_{t+1} = h(y_t, Y_t)\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-ree-opbe">
-<span class="eqno">(70.11)<a class="headerlink" href="#equation-ree-opbe" title="Permalink to this equation">#</a></span>\[h(y, Y) := \textrm{argmax}_{y'}
+<span class="eqno">(69.11)<a class="headerlink" href="#equation-ree-opbe" title="Permalink to this equation">#</a></span>\[h(y, Y) := \textrm{argmax}_{y'}
 \left\{ a_0 y - a_1 y Y - \frac{ \gamma (y' - y)^2}{2}   + \beta v(y', H(Y))\right\}\]</div>
 <p>Evidently <span class="math notranslate nohighlight">\(v\)</span> and <span class="math notranslate nohighlight">\(h\)</span> both depend on <span class="math notranslate nohighlight">\(H\)</span>.</p>
 </section>
 <section id="characterization-with-first-order-necessary-conditions">
-<h4><span class="section-number">70.2.1.5. </span>Characterization with First-Order Necessary Conditions<a class="headerlink" href="#characterization-with-first-order-necessary-conditions" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">69.2.1.5. </span>Characterization with First-Order Necessary Conditions<a class="headerlink" href="#characterization-with-first-order-necessary-conditions" title="Permalink to this heading">#</a></h4>
 <p>In what follows it will be helpful to have a second characterization of <span class="math notranslate nohighlight">\(h\)</span>, based on first-order conditions.</p>
 <p>The first-order necessary condition for choosing <span class="math notranslate nohighlight">\(y'\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-comp5">
-<span class="eqno">(70.12)<a class="headerlink" href="#equation-comp5" title="Permalink to this equation">#</a></span>\[-\gamma (y' - y) + \beta v_y(y', H(Y) ) = 0\]</div>
+<span class="eqno">(69.12)<a class="headerlink" href="#equation-comp5" title="Permalink to this equation">#</a></span>\[-\gamma (y' - y) + \beta v_y(y', H(Y) ) = 0\]</div>
 <p>An important useful envelope result of Benveniste-Scheinkman  <span id="id6">[<a class="reference internal" href="zreferences.html#id147" title="L M Benveniste and J A Scheinkman. On the Differentiability of the Value Function in Dynamic Models of Economics. Econometrica, 47(3):727–732, 1979.">BS79</a>]</span> implies that to
 differentiate <span class="math notranslate nohighlight">\(v\)</span> with respect to <span class="math notranslate nohighlight">\(y\)</span> we can naively differentiate
-the right side of <a class="reference internal" href="#equation-comp4">(70.9)</a>, giving</p>
+the right side of <a class="reference internal" href="#equation-comp4">(69.9)</a>, giving</p>
 <div class="math notranslate nohighlight">
 \[
 v_y(y,Y) = a_0 - a_1 Y + \gamma (y' - y)
 \]</div>
-<p>Substituting this equation into <a class="reference internal" href="#equation-comp5">(70.12)</a> gives the <em>Euler equation</em></p>
+<p>Substituting this equation into <a class="reference internal" href="#equation-comp5">(69.12)</a> gives the <em>Euler equation</em></p>
 <div class="math notranslate nohighlight" id="equation-ree-comp7">
-<span class="eqno">(70.13)<a class="headerlink" href="#equation-ree-comp7" title="Permalink to this equation">#</a></span>\[-\gamma (y_{t+1} - y_t) + \beta [a_0 - a_1 Y_{t+1} + \gamma (y_{t+2} - y_{t+1} )] =0\]</div>
-<p>The firm optimally sets  an output path that satisfies <a class="reference internal" href="#equation-ree-comp7">(70.13)</a>, taking <a class="reference internal" href="#equation-ree-hlom">(70.8)</a> as given, and  subject to</p>
+<span class="eqno">(69.13)<a class="headerlink" href="#equation-ree-comp7" title="Permalink to this equation">#</a></span>\[-\gamma (y_{t+1} - y_t) + \beta [a_0 - a_1 Y_{t+1} + \gamma (y_{t+2} - y_{t+1} )] =0\]</div>
+<p>The firm optimally sets  an output path that satisfies <a class="reference internal" href="#equation-ree-comp7">(69.13)</a>, taking <a class="reference internal" href="#equation-ree-hlom">(69.8)</a> as given, and  subject to</p>
 <ul class="simple">
 <li><p>the initial conditions for <span class="math notranslate nohighlight">\((y_0, Y_0)\)</span>.</p></li>
 <li><p>the terminal condition <span class="math notranslate nohighlight">\(\lim_{t \rightarrow \infty } \beta^t y_t v_y(y_{t}, Y_t) = 0\)</span>.</p></li>
 </ul>
 <p>This last condition is called the <em>transversality condition</em>, and acts as a first-order necessary condition “at infinity”.</p>
-<p>A representative  firm’s decision rule solves the difference equation <a class="reference internal" href="#equation-ree-comp7">(70.13)</a> subject to the given initial condition <span class="math notranslate nohighlight">\(y_0\)</span> and the transversality condition.</p>
-<p>Note that solving the Bellman equation <a class="reference internal" href="#equation-comp4">(70.9)</a> for <span class="math notranslate nohighlight">\(v\)</span> and then <span class="math notranslate nohighlight">\(h\)</span> in <a class="reference internal" href="#equation-ree-opbe">(70.11)</a> yields
-a decision rule that automatically imposes both the Euler equation <a class="reference internal" href="#equation-ree-comp7">(70.13)</a> and the transversality condition.</p>
+<p>A representative  firm’s decision rule solves the difference equation <a class="reference internal" href="#equation-ree-comp7">(69.13)</a> subject to the given initial condition <span class="math notranslate nohighlight">\(y_0\)</span> and the transversality condition.</p>
+<p>Note that solving the Bellman equation <a class="reference internal" href="#equation-comp4">(69.9)</a> for <span class="math notranslate nohighlight">\(v\)</span> and then <span class="math notranslate nohighlight">\(h\)</span> in <a class="reference internal" href="#equation-ree-opbe">(69.11)</a> yields
+a decision rule that automatically imposes both the Euler equation <a class="reference internal" href="#equation-ree-comp7">(69.13)</a> and the transversality condition.</p>
 </section>
 <section id="the-actual-law-of-motion-for-output">
-<h4><span class="section-number">70.2.1.6. </span>The Actual Law of Motion for Output<a class="headerlink" href="#the-actual-law-of-motion-for-output" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">69.2.1.6. </span>The Actual Law of Motion for Output<a class="headerlink" href="#the-actual-law-of-motion-for-output" title="Permalink to this heading">#</a></h4>
 <p>As we’ve seen, a given belief translates into a particular decision rule <span class="math notranslate nohighlight">\(h\)</span>.</p>
 <p>Recalling that in equilbrium  <span class="math notranslate nohighlight">\(Y_t = y_t\)</span>, the <em>actual law of motion</em> for market-wide output is then</p>
 <div class="math notranslate nohighlight" id="equation-ree-comp9a">
-<span class="eqno">(70.14)<a class="headerlink" href="#equation-ree-comp9a" title="Permalink to this equation">#</a></span>\[Y_{t+1} =  h(Y_t, Y_t)\]</div>
-<p>Thus, when firms believe that the law of motion for market-wide output is <a class="reference internal" href="#equation-ree-hlom">(70.8)</a>, their optimizing behavior makes the actual law of motion be <a class="reference internal" href="#equation-ree-comp9a">(70.14)</a>.</p>
+<span class="eqno">(69.14)<a class="headerlink" href="#equation-ree-comp9a" title="Permalink to this equation">#</a></span>\[Y_{t+1} =  h(Y_t, Y_t)\]</div>
+<p>Thus, when firms believe that the law of motion for market-wide output is <a class="reference internal" href="#equation-ree-hlom">(69.8)</a>, their optimizing behavior makes the actual law of motion be <a class="reference internal" href="#equation-ree-comp9a">(69.14)</a>.</p>
 </section>
 </section>
 <section id="definition-of-rational-expectations-equilibrium">
-<span id="ree-def"></span><h3><span class="section-number">70.2.2. </span>Definition of Rational Expectations Equilibrium<a class="headerlink" href="#definition-of-rational-expectations-equilibrium" title="Permalink to this heading">#</a></h3>
+<span id="ree-def"></span><h3><span class="section-number">69.2.2. </span>Definition of Rational Expectations Equilibrium<a class="headerlink" href="#definition-of-rational-expectations-equilibrium" title="Permalink to this heading">#</a></h3>
 <p>A <em>rational expectations equilibrium</em> or <em>recursive competitive equilibrium</em>  of the model with adjustment costs is a decision rule <span class="math notranslate nohighlight">\(h\)</span> and an aggregate law of motion <span class="math notranslate nohighlight">\(H\)</span> such that</p>
 <ol class="arabic simple">
 <li><p>Given belief <span class="math notranslate nohighlight">\(H\)</span>, the map <span class="math notranslate nohighlight">\(h\)</span> is the firm’s optimal policy function.</p></li>
 <li><p>The law of motion <span class="math notranslate nohighlight">\(H\)</span> satisfies <span class="math notranslate nohighlight">\(H(Y)= h(Y,Y)\)</span> for all
 <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
 </ol>
-<p>Thus, a rational expectations equilibrium equates the perceived and actual laws of motion <a class="reference internal" href="#equation-ree-hlom">(70.8)</a> and <a class="reference internal" href="#equation-ree-comp9a">(70.14)</a>.</p>
+<p>Thus, a rational expectations equilibrium equates the perceived and actual laws of motion <a class="reference internal" href="#equation-ree-hlom">(69.8)</a> and <a class="reference internal" href="#equation-ree-comp9a">(69.14)</a>.</p>
 <section id="fixed-point-characterization">
-<h4><span class="section-number">70.2.2.1. </span>Fixed Point Characterization<a class="headerlink" href="#fixed-point-characterization" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">69.2.2.1. </span>Fixed Point Characterization<a class="headerlink" href="#fixed-point-characterization" title="Permalink to this heading">#</a></h4>
 <p>As we’ve seen, the firm’s optimum problem induces a mapping <span class="math notranslate nohighlight">\(\Phi\)</span> from a perceived law of motion <span class="math notranslate nohighlight">\(H\)</span> for market-wide output to an actual law of motion <span class="math notranslate nohighlight">\(\Phi(H)\)</span>.</p>
-<p>The mapping <span class="math notranslate nohighlight">\(\Phi\)</span> is the composition of two mappings, the first of which maps a perceived law of motion into a decision rule via <a class="reference internal" href="#equation-comp4">(70.9)</a>–<a class="reference internal" href="#equation-ree-opbe">(70.11)</a>, the second of which maps a decision rule into an actual law via <a class="reference internal" href="#equation-ree-comp9a">(70.14)</a>.</p>
+<p>The mapping <span class="math notranslate nohighlight">\(\Phi\)</span> is the composition of two mappings, the first of which maps a perceived law of motion into a decision rule via <a class="reference internal" href="#equation-comp4">(69.9)</a>–<a class="reference internal" href="#equation-ree-opbe">(69.11)</a>, the second of which maps a decision rule into an actual law via <a class="reference internal" href="#equation-ree-comp9a">(69.14)</a>.</p>
 <p>The <span class="math notranslate nohighlight">\(H\)</span> component of a rational expectations equilibrium is a fixed point of <span class="math notranslate nohighlight">\(\Phi\)</span>.</p>
 </section>
 </section>
 </section>
 <section id="computing-an-equilibrium">
-<h2><a class="toc-backref" href="#id15"><span class="section-number">70.3. </span>Computing  an Equilibrium</a><a class="headerlink" href="#computing-an-equilibrium" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id15"><span class="section-number">69.3. </span>Computing  an Equilibrium</a><a class="headerlink" href="#computing-an-equilibrium" title="Permalink to this heading">#</a></h2>
 <p id="index-3">Now let’s compute a  rational expectations equilibrium.</p>
 <section id="failure-of-contractivity">
-<h3><span class="section-number">70.3.1. </span>Failure of Contractivity<a class="headerlink" href="#failure-of-contractivity" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">69.3.1. </span>Failure of Contractivity<a class="headerlink" href="#failure-of-contractivity" title="Permalink to this heading">#</a></h3>
 <p>Readers accustomed to dynamic programming arguments might try to address this problem by choosing some guess <span class="math notranslate nohighlight">\(H_0\)</span> for the aggregate law of motion and then iterating with <span class="math notranslate nohighlight">\(\Phi\)</span>.</p>
 <p>Unfortunately, the mapping <span class="math notranslate nohighlight">\(\Phi\)</span> is not a contraction.</p>
 <p>Indeed, there is no guarantee that direct iterations on <span class="math notranslate nohighlight">\(\Phi\)</span> converge <a class="footnote-reference brackets" href="#fn-im" id="id7">1</a>.</p>
@@ -568,14 +573,14 @@ the fundamental theorems of welfare economics (see, e.g, <span id="id8">[<a clas
 <p>Some details follow.</p>
 </section>
 <section id="a-planning-problem-approach">
-<span id="ree-pp"></span><h3><span class="section-number">70.3.2. </span>A Planning Problem Approach<a class="headerlink" href="#a-planning-problem-approach" title="Permalink to this heading">#</a></h3>
+<span id="ree-pp"></span><h3><span class="section-number">69.3.2. </span>A Planning Problem Approach<a class="headerlink" href="#a-planning-problem-approach" title="Permalink to this heading">#</a></h3>
 <p id="index-4">Our plan of attack is to match the Euler equations of the market problem with those for a  single-agent choice problem.</p>
 <p>As we’ll see, this planning problem can be solved by LQ control (<a class="reference internal" href="lqcontrol.html"><span class="doc">linear regulator</span></a>).</p>
 <p>Optimal quantities from the planning problem are rational expectations equilibrium quantities.</p>
 <p>The rational expectations equilibrium price can be obtained as a shadow price in the planning problem.</p>
 <p>We first compute a sum of  consumer and producer surplus at time <span class="math notranslate nohighlight">\(t\)</span></p>
 <div class="math notranslate nohighlight" id="equation-comp10">
-<span class="eqno">(70.15)<a class="headerlink" href="#equation-comp10" title="Permalink to this equation">#</a></span>\[s(Y_t, Y_{t+1})
+<span class="eqno">(69.15)<a class="headerlink" href="#equation-comp10" title="Permalink to this equation">#</a></span>\[s(Y_t, Y_{t+1})
 := \int_0^{Y_t} (a_0 - a_1 x) \, dx - \frac{ \gamma (Y_{t+1} - Y_t)^2}{2}\]</div>
 <p>The first term is the area under the demand curve, while the second measures the social costs of changing output.</p>
 <p>The <em>planning problem</em> is to choose a production plan <span class="math notranslate nohighlight">\(\{Y_t\}\)</span> to maximize</p>
@@ -586,30 +591,30 @@ the fundamental theorems of welfare economics (see, e.g, <span id="id8">[<a clas
 <p>subject to an initial condition for <span class="math notranslate nohighlight">\(Y_0\)</span>.</p>
 </section>
 <section id="solution-of-planning-problem">
-<h3><span class="section-number">70.3.3. </span>Solution of  Planning Problem<a class="headerlink" href="#solution-of-planning-problem" title="Permalink to this heading">#</a></h3>
-<p>Evaluating the integral in <a class="reference internal" href="#equation-comp10">(70.15)</a> yields the quadratic form <span class="math notranslate nohighlight">\(a_0
+<h3><span class="section-number">69.3.3. </span>Solution of  Planning Problem<a class="headerlink" href="#solution-of-planning-problem" title="Permalink to this heading">#</a></h3>
+<p>Evaluating the integral in <a class="reference internal" href="#equation-comp10">(69.15)</a> yields the quadratic form <span class="math notranslate nohighlight">\(a_0
 Y_t - a_1 Y_t^2 / 2\)</span>.</p>
 <p>As a result, the Bellman equation for the planning problem is</p>
 <div class="math notranslate nohighlight" id="equation-comp12">
-<span class="eqno">(70.16)<a class="headerlink" href="#equation-comp12" title="Permalink to this equation">#</a></span>\[V(Y) = \max_{Y'}
+<span class="eqno">(69.16)<a class="headerlink" href="#equation-comp12" title="Permalink to this equation">#</a></span>\[V(Y) = \max_{Y'}
 \left\{a_0  Y - {a_1 \over 2} Y^2 - \frac{ \gamma (Y' - Y)^2}{2} + \beta V(Y') \right\}\]</div>
 <p>The associated first-order condition is</p>
 <div class="math notranslate nohighlight" id="equation-comp14">
-<span class="eqno">(70.17)<a class="headerlink" href="#equation-comp14" title="Permalink to this equation">#</a></span>\[-\gamma (Y' - Y) + \beta V'(Y') = 0\]</div>
+<span class="eqno">(69.17)<a class="headerlink" href="#equation-comp14" title="Permalink to this equation">#</a></span>\[-\gamma (Y' - Y) + \beta V'(Y') = 0\]</div>
 <p>Applying the same Benveniste-Scheinkman formula gives</p>
 <div class="math notranslate nohighlight">
 \[
 V'(Y) = a_0 - a_1 Y + \gamma (Y' - Y)
 \]</div>
-<p>Substituting this into equation <a class="reference internal" href="#equation-comp14">(70.17)</a> and rearranging leads to the Euler
+<p>Substituting this into equation <a class="reference internal" href="#equation-comp14">(69.17)</a> and rearranging leads to the Euler
 equation</p>
 <div class="math notranslate nohighlight" id="equation-comp16">
-<span class="eqno">(70.18)<a class="headerlink" href="#equation-comp16" title="Permalink to this equation">#</a></span>\[\beta a_0 + \gamma Y_t - [\beta a_1 + \gamma (1+ \beta)]Y_{t+1} + \gamma \beta Y_{t+2} =0\]</div>
+<span class="eqno">(69.18)<a class="headerlink" href="#equation-comp16" title="Permalink to this equation">#</a></span>\[\beta a_0 + \gamma Y_t - [\beta a_1 + \gamma (1+ \beta)]Y_{t+1} + \gamma \beta Y_{t+2} =0\]</div>
 </section>
 <section id="key-insight">
-<h3><span class="section-number">70.3.4. </span>Key Insight<a class="headerlink" href="#key-insight" title="Permalink to this heading">#</a></h3>
-<p>Return to equation <a class="reference internal" href="#equation-ree-comp7">(70.13)</a> and set <span class="math notranslate nohighlight">\(y_t = Y_t\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>A small amount of algebra will convince you that when <span class="math notranslate nohighlight">\(y_t=Y_t\)</span>, equations <a class="reference internal" href="#equation-comp16">(70.18)</a> and <a class="reference internal" href="#equation-ree-comp7">(70.13)</a> are identical.</p>
+<h3><span class="section-number">69.3.4. </span>Key Insight<a class="headerlink" href="#key-insight" title="Permalink to this heading">#</a></h3>
+<p>Return to equation <a class="reference internal" href="#equation-ree-comp7">(69.13)</a> and set <span class="math notranslate nohighlight">\(y_t = Y_t\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>A small amount of algebra will convince you that when <span class="math notranslate nohighlight">\(y_t=Y_t\)</span>, equations <a class="reference internal" href="#equation-comp16">(69.18)</a> and <a class="reference internal" href="#equation-ree-comp7">(69.13)</a> are identical.</p>
 <p>Thus, the Euler equation for the planning problem matches the second-order difference equation
 that we derived by</p>
 <ol class="arabic simple">
@@ -617,51 +622,51 @@ that we derived by</p>
 <li><p>substituting into it the expression <span class="math notranslate nohighlight">\(Y_t =  y_t\)</span> that “makes the representative firm be representative”.</p></li>
 </ol>
 <p>If it is appropriate to apply the same terminal conditions for these two difference equations, which it is, then we have verified that a solution of the planning problem is also a rational expectations equilibrium quantity sequence.</p>
-<p>It follows that for this example we can compute equilibrium quantities by forming the optimal linear regulator problem corresponding to the Bellman equation <a class="reference internal" href="#equation-comp12">(70.16)</a>.</p>
+<p>It follows that for this example we can compute equilibrium quantities by forming the optimal linear regulator problem corresponding to the Bellman equation <a class="reference internal" href="#equation-comp12">(69.16)</a>.</p>
 <p>The optimal policy function for the planning problem is the aggregate law of motion
 <span class="math notranslate nohighlight">\(H\)</span> that the representative firm faces within a rational expectations equilibrium.</p>
 <section id="structure-of-the-law-of-motion">
-<h4><span class="section-number">70.3.4.1. </span>Structure of the Law of Motion<a class="headerlink" href="#structure-of-the-law-of-motion" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">69.3.4.1. </span>Structure of the Law of Motion<a class="headerlink" href="#structure-of-the-law-of-motion" title="Permalink to this heading">#</a></h4>
 <p>As you are asked to show in the exercises, the fact that the planner’s
 problem is an LQ control problem implies an optimal policy — and hence aggregate law
 of motion — taking the form</p>
 <div class="math notranslate nohighlight" id="equation-ree-hlom2">
-<span class="eqno">(70.19)<a class="headerlink" href="#equation-ree-hlom2" title="Permalink to this equation">#</a></span>\[Y_{t+1}
+<span class="eqno">(69.19)<a class="headerlink" href="#equation-ree-hlom2" title="Permalink to this equation">#</a></span>\[Y_{t+1}
 = \kappa_0 + \kappa_1 Y_t\]</div>
 <p>for some parameter pair <span class="math notranslate nohighlight">\(\kappa_0, \kappa_1\)</span>.</p>
 <p>Now that we know the aggregate law of motion is linear, we can see from the
-firm’s Bellman equation <a class="reference internal" href="#equation-comp4">(70.9)</a> that the firm’s problem can also be framed as
+firm’s Bellman equation <a class="reference internal" href="#equation-comp4">(69.9)</a> that the firm’s problem can also be framed as
 an LQ problem.</p>
 <p>As you’re asked to show in the exercises, the LQ formulation of the firm’s
 problem implies a law of motion that looks as follows</p>
 <div class="math notranslate nohighlight" id="equation-ree-ex5">
-<span class="eqno">(70.20)<a class="headerlink" href="#equation-ree-ex5" title="Permalink to this equation">#</a></span>\[y_{t+1} = h_0 + h_1 y_t + h_2 Y_t\]</div>
+<span class="eqno">(69.20)<a class="headerlink" href="#equation-ree-ex5" title="Permalink to this equation">#</a></span>\[y_{t+1} = h_0 + h_1 y_t + h_2 Y_t\]</div>
 <p>Hence a rational expectations equilibrium will be defined by the parameters
-<span class="math notranslate nohighlight">\((\kappa_0, \kappa_1, h_0, h_1, h_2)\)</span> in <a class="reference internal" href="#equation-ree-hlom2">(70.19)</a>–<a class="reference internal" href="#equation-ree-ex5">(70.20)</a>.</p>
+<span class="math notranslate nohighlight">\((\kappa_0, \kappa_1, h_0, h_1, h_2)\)</span> in <a class="reference internal" href="#equation-ree-hlom2">(69.19)</a>–<a class="reference internal" href="#equation-ree-ex5">(69.20)</a>.</p>
 </section>
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id16"><span class="section-number">70.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id16"><span class="section-number">69.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="ree_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 70.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 69.1 </span></p>
 <section id="exercise-content">
 <p>Consider the firm problem <a class="reference internal" href="#ree-fp"><span class="std std-ref">described above</span></a>.</p>
-<p>Let the firm’s belief function <span class="math notranslate nohighlight">\(H\)</span> be as given in <a class="reference internal" href="#equation-ree-hlom2">(70.19)</a>.</p>
+<p>Let the firm’s belief function <span class="math notranslate nohighlight">\(H\)</span> be as given in <a class="reference internal" href="#equation-ree-hlom2">(69.19)</a>.</p>
 <p>Formulate the firm’s problem as a discounted optimal linear regulator problem, being careful to describe all of the objects needed.</p>
 <p>Use the class <code class="docutils literal notranslate"><span class="pre">LQ</span></code> from the <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon.py</a> package to solve the firm’s problem for the following parameter values:</p>
 <div class="math notranslate nohighlight">
 \[
 a_0= 100, a_1= 0.05, \beta = 0.95, \gamma=10, \kappa_0 = 95.5, \kappa_1 = 0.95
 \]</div>
-<p>Express the solution of the firm’s problem in the form <a class="reference internal" href="#equation-ree-ex5">(70.20)</a> and give the values for each <span class="math notranslate nohighlight">\(h_j\)</span>.</p>
-<p>If there were a unit measure of  identical competitive firms all behaving according to <a class="reference internal" href="#equation-ree-ex5">(70.20)</a>, what would <a class="reference internal" href="#equation-ree-ex5">(70.20)</a>  imply for the <em>actual</em> law of motion <a class="reference internal" href="#equation-ree-hlom">(70.8)</a> for market supply.</p>
+<p>Express the solution of the firm’s problem in the form <a class="reference internal" href="#equation-ree-ex5">(69.20)</a> and give the values for each <span class="math notranslate nohighlight">\(h_j\)</span>.</p>
+<p>If there were a unit measure of  identical competitive firms all behaving according to <a class="reference internal" href="#equation-ree-ex5">(69.20)</a>, what would <a class="reference internal" href="#equation-ree-ex5">(69.20)</a>  imply for the <em>actual</em> law of motion <a class="reference internal" href="#equation-ree-hlom">(69.8)</a> for market supply.</p>
 </section>
 </div>
 <div class="solution dropdown admonition" id="rational_expectations-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#ree_ex1"> Exercise 70.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#ree_ex1"> Exercise 69.1</a></p>
 <section id="solution-content">
 <p>To map a problem into a <a class="reference external" href="https://python.quantecon.org/lqcontrol.html">discounted optimal linear control
 problem</a>, we need to define</p>
@@ -778,25 +783,25 @@ Y_{t+1}
 </div>
 <div class="exercise admonition" id="ree_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 70.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 69.2 </span></p>
 <section id="exercise-content">
 <p>Consider the following <span class="math notranslate nohighlight">\(\kappa_0, \kappa_1\)</span> pairs as candidates for the
 aggregate law of motion component of a rational expectations equilibrium (see
-<a class="reference internal" href="#equation-ree-hlom2">(70.19)</a>).</p>
-<p>Extending the program that you wrote for <a class="reference internal" href="#ree_ex1"><span class="std std-numref">Exercise 70.1</span></a>, determine which if any
+<a class="reference internal" href="#equation-ree-hlom2">(69.19)</a>).</p>
+<p>Extending the program that you wrote for <a class="reference internal" href="#ree_ex1"><span class="std std-numref">Exercise 69.1</span></a>, determine which if any
 satisfy <a class="reference internal" href="#ree-def"><span class="std std-ref">the definition</span></a> of a rational expectations equilibrium</p>
 <ul class="simple">
 <li><p>(94.0886298678, 0.923409232937)</p></li>
 <li><p>(93.2119845412, 0.984323478873)</p></li>
 <li><p>(95.0818452486, 0.952459076301)</p></li>
 </ul>
-<p>Describe an iterative algorithm that uses the program that you wrote for <a class="reference internal" href="#ree_ex1"><span class="std std-numref">Exercise 70.1</span></a> to compute a rational expectations equilibrium.</p>
+<p>Describe an iterative algorithm that uses the program that you wrote for <a class="reference internal" href="#ree_ex1"><span class="std std-numref">Exercise 69.1</span></a> to compute a rational expectations equilibrium.</p>
 <p>(You are not being asked actually to use the algorithm you are suggesting)</p>
 </section>
 </div>
 <div class="solution dropdown admonition" id="rational_expectations-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#ree_ex2"> Exercise 70.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#ree_ex2"> Exercise 69.2</a></p>
 <section id="solution-content">
 <p>To determine whether a <span class="math notranslate nohighlight">\(\kappa_0, \kappa_1\)</span> pair forms the
 aggregate law of motion component of a rational expectations
@@ -864,7 +869,7 @@ converge to a rational expectations equilibrium)</p>
 </div>
 <div class="exercise admonition" id="ree_ex3">
 
-<p class="admonition-title"><span class="caption-number">Exercise 70.3 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 69.3 </span></p>
 <section id="exercise-content">
 <p>Recall the planner’s problem <a class="reference internal" href="#ree-pp"><span class="std std-ref">described above</span></a></p>
 <ol class="arabic simple">
@@ -881,7 +886,7 @@ converge to a rational expectations equilibrium)</p>
 </div>
 <div class="solution dropdown admonition" id="rational_expectations-solution-5">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#ree_ex3"> Exercise 70.3</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#ree_ex3"> Exercise 69.3</a></p>
 <section id="solution-content">
 <p>We are asked to write the planner problem as an LQ problem.</p>
 <p>For the state and control vectors, we choose</p>
@@ -949,26 +954,26 @@ an equilibrium from the previous exercise.</p>
 </div>
 <div class="exercise admonition" id="ree_ex4">
 
-<p class="admonition-title"><span class="caption-number">Exercise 70.4 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 69.4 </span></p>
 <section id="exercise-content">
-<p>A monopolist faces the industry demand curve <a class="reference internal" href="#equation-ree-comp3d">(70.5)</a>  and chooses <span class="math notranslate nohighlight">\(\{Y_t\}\)</span> to maximize <span class="math notranslate nohighlight">\(\sum_{t=0}^{\infty} \beta^t r_t\)</span> where</p>
+<p>A monopolist faces the industry demand curve <a class="reference internal" href="#equation-ree-comp3d">(69.5)</a>  and chooses <span class="math notranslate nohighlight">\(\{Y_t\}\)</span> to maximize <span class="math notranslate nohighlight">\(\sum_{t=0}^{\infty} \beta^t r_t\)</span> where</p>
 <div class="math notranslate nohighlight">
 \[
 r_t = p_t Y_t - \frac{\gamma (Y_{t+1} - Y_t)^2 }{2}
 \]</div>
 <p>Formulate this problem as an LQ problem.</p>
-<p>Compute the optimal policy using the same parameters as <a class="reference internal" href="#ree_ex2"><span class="std std-numref">Exercise 70.2</span></a>.</p>
+<p>Compute the optimal policy using the same parameters as <a class="reference internal" href="#ree_ex2"><span class="std std-numref">Exercise 69.2</span></a>.</p>
 <p>In particular, solve for the parameters in</p>
 <div class="math notranslate nohighlight">
 \[
 Y_{t+1} = m_0 + m_1 Y_t
 \]</div>
-<p>Compare your results with <a class="reference internal" href="#ree_ex2"><span class="std std-numref">Exercise 70.2</span></a> – comment.</p>
+<p>Compare your results with <a class="reference internal" href="#ree_ex2"><span class="std std-numref">Exercise 69.2</span></a> – comment.</p>
 </section>
 </div>
 <div class="solution dropdown admonition" id="rational_expectations-solution-7">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#ree_ex4"> Exercise 70.4</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#ree_ex4"> Exercise 69.4</a></p>
 <section id="solution-content">
 <p>The monopolist’s LQ problem is almost identical to the planner’s problem
 from the previous exercise, except that</p>
@@ -1146,53 +1151,48 @@ rational expectations equilibrium.</p>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="time_series_with_matrices.html">
-   11. Univariate Time Series with Matrix Algebra
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   12. LLN and CLT
+   11. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   13. Two Meanings of Probability
+   12. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   14. Multivariate Hypergeometric Distribution
+   13. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   15. Multivariate Normal Distribution
+   14. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   16. Heavy-Tailed Distributions
+   15. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   17. Fault Tree Uncertainties
+   16. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   18. Introduction to Artificial Neural Networks
+   17. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   19. Randomized Response Surveys
+   18. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   20. Expected Utilities of Random Responses
+   19. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1204,17 +1204,17 @@ rational expectations equilibrium.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   21. Linear Programming
+   20. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   22. Optimal Transport
+   21. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   23. Von Neumann Growth Model (and a Generalization)
+   22. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1226,52 +1226,52 @@ rational expectations equilibrium.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   24. Dynamics in One Dimension
+   23. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   25. AR1 Processes
+   24. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   26. Finite Markov Chains
+   25. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   27. Inventory Dynamics
+   26. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   28. Linear State Space Models
+   27. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   29. Samuelson Multiplier-Accelerator
+   28. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   30. Kesten Processes and Firm Dynamics
+   29. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   31. Wealth Distribution Dynamics
+   30. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   32. A First Look at the Kalman Filter
+   31. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   33. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1283,37 +1283,37 @@ rational expectations equilibrium.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   34. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   35. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   36. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   37. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   38. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   39. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   40. Job Search VII: A McCall Worker Q-Learns
+   39. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1325,52 +1325,52 @@ rational expectations equilibrium.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   41. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   42. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   43. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   44. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   45. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   46. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   47. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   48. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   49. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1382,17 +1382,17 @@ rational expectations equilibrium.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   51. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   52. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   53. Forecasting  an AR(1) process
+   52. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1404,42 +1404,42 @@ rational expectations equilibrium.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   54. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   55. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   56. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   57. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   58. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   59. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   60. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   61. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1451,32 +1451,32 @@ rational expectations equilibrium.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1488,37 +1488,37 @@ rational expectations equilibrium.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   68. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   69. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   70. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   71. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   72. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   73. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   74. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1530,17 +1530,17 @@ rational expectations equilibrium.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1552,17 +1552,17 @@ rational expectations equilibrium.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1574,12 +1574,12 @@ rational expectations equilibrium.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1591,17 +1591,17 @@ rational expectations equilibrium.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>

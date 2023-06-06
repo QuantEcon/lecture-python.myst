@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>22. Optimal Transport &#8212; Quantitative Economics with Python</title>
+    <title>21. Optimal Transport &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,6 +99,13 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -112,8 +119,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="23. Von Neumann Growth Model (and a Generalization)" href="von_neumann_model.html" />
-    <link rel="prev" title="21. Linear Programming" href="lp_intro.html" />
+    <link rel="next" title="22. Von Neumann Growth Model (and a Generalization)" href="von_neumann_model.html" />
+    <link rel="prev" title="20. Linear Programming" href="lp_intro.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -134,7 +141,7 @@ const thebe_selector_output = ".output, .cell_output"
 <meta property="og:url" content="https://python.quantecon.org/opt_transport.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
 <meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
-<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
 <meta name="theme-color" content="#ffffff" />
 
   </head>
@@ -161,21 +168,21 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">22.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-optimal-transport-problem">22.2. The Optimal Transport Problem</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-linear-programming-approach">22.3. The Linear Programming Approach</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorizing-a-matrix-of-decision-variables">22.3.1. Vectorizing a Matrix of Decision Variables</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#an-application">22.3.2. An Application</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-just-in-time-compiler">22.3.3. Using a Just-in-Time Compiler</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">21.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-optimal-transport-problem">21.2. The Optimal Transport Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-linear-programming-approach">21.3. The Linear Programming Approach</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorizing-a-matrix-of-decision-variables">21.3.1. Vectorizing a Matrix of Decision Variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#an-application">21.3.2. An Application</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-just-in-time-compiler">21.3.3. Using a Just-in-Time Compiler</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-dual-problem">22.4. The Dual Problem</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-dual-problem">22.4.1. Interpretation of dual problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-dual-problem">21.4. The Dual Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-dual-problem">21.4.1. Interpretation of dual problem</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-python-optimal-transport-package">22.5. The Python Optimal Transport Package</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#replicating-previous-results">22.5.1. Replicating Previous Results</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-larger-application">22.5.2. A Larger Application</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-python-optimal-transport-package">21.5. The Python Optimal Transport Package</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#replicating-previous-results">21.5.1. Replicating Previous Results</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-larger-application">21.5.2. A Larger Application</a></li>
 </ul>
 </li>
 </ul>
@@ -205,7 +212,7 @@ const thebe_selector_output = ".output, .cell_output"
 
                     <div class="qe-page__header-copy">
 
-                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
 
                         <p class="qe-page__header-subheading">Optimal Transport</p>
 
@@ -223,9 +230,9 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="optimal-transport">
-<h1><span class="section-number">22. </span>Optimal Transport<a class="headerlink" href="#optimal-transport" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">21. </span>Optimal Transport<a class="headerlink" href="#optimal-transport" title="Permalink to this heading">#</a></h1>
 <section id="overview">
-<h2><span class="section-number">22.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">21.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>The <strong>transportation</strong> or <strong>optimal transport</strong> problem is interesting both
 because of its many applications and because of its important role in the history of
 economic theory.</p>
@@ -248,7 +255,7 @@ solver from SciPy,</p></li>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install --upgrade quantecon
-<span class="o">!</span>pip install --upgrade POT jax jaxlib
+<span class="o">!</span>pip install --upgrade POT
 </pre></div>
 </div>
 </div>
@@ -258,21 +265,23 @@ solver from SciPy,</p></li>
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.6.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: numba in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (65.6.3)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (0.39.1)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
 Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -282,30 +291,20 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting POT
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading POT-0.8.2-cp310-cp310-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (671 kB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/671.1 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">368.6/671.1 kB</span> <span class=" -Color -Color-Red">11.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading POT-0.9.0-cp310-cp310-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (702 kB)
+?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/702.9 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">671.1/671.1 kB</span> <span class=" -Color -Color-Red">13.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hRequirement already satisfied: jax in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.4.8)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jaxlib in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.4.7+cuda12.cudnn88)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from POT) (1.10.0)
-Requirement already satisfied: numpy&gt;=1.16 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from POT) (1.23.5)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: opt-einsum in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jax) (3.3.0)
-Requirement already satisfied: ml-dtypes&gt;=0.0.3 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jax) (0.0.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺ <span class=" -Color -Color-Green">686.1/702.9 kB</span> <span class=" -Color -Color-Red">20.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">702.9/702.9 kB</span> <span class=" -Color -Color-Red">16.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hRequirement already satisfied: numpy&gt;=1.16 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from POT) (1.23.5)
+Requirement already satisfied: scipy&gt;=1.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from POT) (1.10.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: POT
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed POT-0.8.2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed POT-0.9.0
 <span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
@@ -329,7 +328,7 @@ Requirement already satisfied: ml-dtypes&gt;=0.0.3 in /opt/conda/envs/quantecon/
 </div>
 </section>
 <section id="the-optimal-transport-problem">
-<h2><span class="section-number">22.2. </span>The Optimal Transport Problem<a class="headerlink" href="#the-optimal-transport-problem" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">21.2. </span>The Optimal Transport Problem<a class="headerlink" href="#the-optimal-transport-problem" title="Permalink to this heading">#</a></h2>
 <p>Suppose that <span class="math notranslate nohighlight">\(m\)</span> factories produce goods that must be sent to <span class="math notranslate nohighlight">\(n\)</span> locations.</p>
 <p>Let</p>
 <ul class="simple">
@@ -357,7 +356,7 @@ target locations are distributed in the plane.</p>
 stated above.</p>
 <p>The planner’s problem can be expressed as the following constrained minimization problem:</p>
 <div class="math notranslate nohighlight" id="equation-plannerproblem">
-<span class="eqno">(22.1)<a class="headerlink" href="#equation-plannerproblem" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(21.1)<a class="headerlink" href="#equation-plannerproblem" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
     \min_{x_{ij}} \ &amp; \sum_{i=1}^m \sum_{j=1}^n c_{ij} x_{ij} \\
     \mbox{subject to } \ &amp; \sum_{j=1}^n x_{ij} = p_i, &amp; i = 1, 2, \dots, m \\
@@ -372,23 +371,23 @@ stated above.</p>
 </ul>
 <p>Summing the <span class="math notranslate nohighlight">\(q_j\)</span>’s across all <span class="math notranslate nohighlight">\(j\)</span>’s and the <span class="math notranslate nohighlight">\(p_i\)</span>’s across all <span class="math notranslate nohighlight">\(i\)</span>’s indicates that the total capacity of all the factories  equals  total requirements at all locations:</p>
 <div class="math notranslate nohighlight" id="equation-sumconstraints">
-<span class="eqno">(22.2)<a class="headerlink" href="#equation-sumconstraints" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(21.2)<a class="headerlink" href="#equation-sumconstraints" title="Permalink to this equation">#</a></span>\[
     \sum_{j=1}^n q_j 
     = \sum_{j=1}^n \sum_{i=1}^m x_{ij} 
     = \sum_{i=1}^m \sum_{j=1}^n x_{ij} 
     = \sum_{i=1}^m p_i
 \]</div>
-<p>The presence of the restrictions in <a class="reference internal" href="#equation-sumconstraints">(22.2)</a> will be the source of
+<p>The presence of the restrictions in <a class="reference internal" href="#equation-sumconstraints">(21.2)</a> will be the source of
 one redundancy in the complete set of restrictions that we describe below.</p>
 <p>More about this later.</p>
 </section>
 <section id="the-linear-programming-approach">
-<h2><span class="section-number">22.3. </span>The Linear Programming Approach<a class="headerlink" href="#the-linear-programming-approach" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">21.3. </span>The Linear Programming Approach<a class="headerlink" href="#the-linear-programming-approach" title="Permalink to this heading">#</a></h2>
 <p>In this section we discuss using using standard linear programming solvers to
 tackle the optimal transport problem.</p>
 <section id="vectorizing-a-matrix-of-decision-variables">
-<h3><span class="section-number">22.3.1. </span>Vectorizing a Matrix of Decision Variables<a class="headerlink" href="#vectorizing-a-matrix-of-decision-variables" title="Permalink to this heading">#</a></h3>
-<p>A <em>matrix</em> of decision variables <span class="math notranslate nohighlight">\(x_{ij}\)</span> appears in problem <a class="reference internal" href="#equation-plannerproblem">(22.1)</a>.</p>
+<h3><span class="section-number">21.3.1. </span>Vectorizing a Matrix of Decision Variables<a class="headerlink" href="#vectorizing-a-matrix-of-decision-variables" title="Permalink to this heading">#</a></h3>
+<p>A <em>matrix</em> of decision variables <span class="math notranslate nohighlight">\(x_{ij}\)</span> appears in problem <a class="reference internal" href="#equation-plannerproblem">(21.1)</a>.</p>
 <p>The SciPy function <code class="docutils literal notranslate"><span class="pre">linprog</span></code> expects to see a <em>vector</em> of decision variables.</p>
 <p>This situation impels us to rewrite our problem in terms of a
 <em>vector</em> of decision variables.</p>
@@ -435,12 +434,12 @@ an <span class="math notranslate nohighlight">\(n \times t\)</span> matrix.</p>
 <p><span class="math notranslate nohighlight">\(A \otimes B\)</span> is an <span class="math notranslate nohighlight">\(mn \times st\)</span> matrix.</p>
 <p>It has the property that for any <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span></p>
 <div class="math notranslate nohighlight" id="equation-kroneckerprop">
-<span class="eqno">(22.3)<a class="headerlink" href="#equation-kroneckerprop" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(21.3)<a class="headerlink" href="#equation-kroneckerprop" title="Permalink to this equation">#</a></span>\[
     \operatorname{vec}(A'XB) = (B' \otimes A') \operatorname{vec}(X).
 \]</div>
 <p>We can now express our constraints in terms of <span class="math notranslate nohighlight">\(\operatorname{vec}(X)\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(A = \mathbf{I}_m', B = \mathbf{1}_n\)</span>.</p>
-<p>By equation <a class="reference internal" href="#equation-kroneckerprop">(22.3)</a></p>
+<p>By equation <a class="reference internal" href="#equation-kroneckerprop">(21.3)</a></p>
 <div class="math notranslate nohighlight">
 \[
     X \ \mathbf{1}_n 
@@ -462,7 +461,7 @@ an <span class="math notranslate nohighlight">\(n \times t\)</span> matrix.</p>
 <p>With <span class="math notranslate nohighlight">\(z := \operatorname{vec}(X)\)</span>, our problem can now be expressed
 in terms of an <span class="math notranslate nohighlight">\(mn\)</span>-dimensional vector of decision variables:</p>
 <div class="math notranslate nohighlight" id="equation-decisionvars">
-<span class="eqno">(22.4)<a class="headerlink" href="#equation-decisionvars" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(21.4)<a class="headerlink" href="#equation-decisionvars" title="Permalink to this equation">#</a></span>\[\begin{split}
     \begin{aligned}
         \min_{z} \ &amp; \operatorname{vec}(C)' z \\
         \mbox{subject to } \ &amp; A z = b \\
@@ -485,8 +484,8 @@ in terms of an <span class="math notranslate nohighlight">\(mn\)</span>-dimensio
 \end{split}\]</div>
 </section>
 <section id="an-application">
-<h3><span class="section-number">22.3.2. </span>An Application<a class="headerlink" href="#an-application" title="Permalink to this heading">#</a></h3>
-<p>We now provide an example that takes the form <a class="reference internal" href="#equation-decisionvars">(22.4)</a> that we’ll
+<h3><span class="section-number">21.3.2. </span>An Application<a class="headerlink" href="#an-application" title="Permalink to this heading">#</a></h3>
+<p>We now provide an example that takes the form <a class="reference internal" href="#equation-decisionvars">(21.4)</a> that we’ll
 solve by deploying the function <code class="docutils literal notranslate"><span class="pre">linprog</span></code>.</p>
 <p>The table below provides numbers for the requirements vector <span class="math notranslate nohighlight">\(q\)</span>, the capacity vector <span class="math notranslate nohighlight">\(p\)</span>,
 and entries <span class="math notranslate nohighlight">\(c_{ij}\)</span>  of the cost-of-shipping matrix <span class="math notranslate nohighlight">\(C\)</span>.</p>
@@ -569,7 +568,7 @@ p = \begin{pmatrix}
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">])</span>
 
 <span class="c1"># Solve the primal problem</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">C_vec</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">C_vec</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
 
 <span class="c1"># Print results</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;message:&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
@@ -581,19 +580,13 @@ p = \begin{pmatrix}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>message: Optimization terminated successfully.
-nit: 12
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>message: Optimization terminated successfully. (HiGHS Status 7: Optimal)
+nit: 8
 fun: 7225.0
-z: [15. 10.  0. 35.  0. 80.  0. 60.  0.  0. 30.  0.  0.  0. 70.]
-X: [[15. 35.  0.  0.  0.]
+z: [ 0. 10. 15. 50.  0. 65.  0. 60.  0.  0. 30.  0.  0.  0. 70.]
+X: [[ 0. 50.  0.  0.  0.]
  [10.  0. 60. 30.  0.]
- [ 0. 80.  0.  0. 70.]]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_9272/1014317504.py:24: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
-  res = linprog(C_vec, A_eq=A, b_eq=b, method=&#39;Revised simplex&#39;)
-/tmp/ipykernel_9272/1014317504.py:24: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
-  res = linprog(C_vec, A_eq=A, b_eq=b, method=&#39;Revised simplex&#39;)
+ [15. 65.  0.  0. 70.]]
 </pre></div>
 </div>
 </div>
@@ -609,7 +602,7 @@ Galichon</a>.)</p>
 <p><strong>Interpreting the warning:</strong></p>
 <p>The above warning message from SciPy points out that A is not full rank.</p>
 <p>This indicates that the linear program has been set up to include one or more redundant constraints.</p>
-<p>Here, the source of the redundancy is the structure of  restrictions <a class="reference internal" href="#equation-sumconstraints">(22.2)</a>.</p>
+<p>Here, the source of the redundancy is the structure of  restrictions <a class="reference internal" href="#equation-sumconstraints">(21.2)</a>.</p>
 <p>Let’s explore this further by printing out <span class="math notranslate nohighlight">\(A\)</span> and staring at it.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -630,7 +623,7 @@ Galichon</a>.)</p>
 </div>
 </div>
 </div>
-<p>The singularity of <span class="math notranslate nohighlight">\(A\)</span> reflects that the  first three constraints and the last five constraints  both require  that “total requirements equal total capacities” expressed in <a class="reference internal" href="#equation-sumconstraints">(22.2)</a>.</p>
+<p>The singularity of <span class="math notranslate nohighlight">\(A\)</span> reflects that the  first three constraints and the last five constraints  both require  that “total requirements equal total capacities” expressed in <a class="reference internal" href="#equation-sumconstraints">(21.2)</a>.</p>
 <p>One  equality constraint here is redundant.</p>
 <p>Below we drop one of the equality constraints, and use only  7 of them.</p>
 <p>After doing this, we attain the same minimized cost.</p>
@@ -638,70 +631,110 @@ Galichon</a>.)</p>
 <p>Though it is a different plan, it attains the same cost!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linprog</span><span class="p">(</span><span class="n">C_vec</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linprog</span><span class="p">(</span><span class="n">C_vec</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_9272/1219707093.py:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
-  linprog(C_vec, A_eq=A[:-1], b_eq=b[:-1], method=&#39;Revised simplex&#39;)
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
- success: True
-  status: 0
-     fun: 7225.0
-       x: [ 0.000e+00  2.500e+01 ...  0.000e+00  7.000e+01]
-     nit: 13
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        message: Optimization terminated successfully. (HiGHS Status 7: Optimal)
+        success: True
+         status: 0
+            fun: 7225.0
+              x: [ 0.000e+00  1.000e+01 ...  0.000e+00  7.000e+01]
+            nit: 8
+          lower:  residual: [ 0.000e+00  1.000e+01 ...  0.000e+00
+                              7.000e+01]
+                 marginals: [ 0.000e+00  0.000e+00 ...  1.500e+01
+                              0.000e+00]
+          upper:  residual: [       inf        inf ...        inf
+                                    inf]
+                 marginals: [ 0.000e+00  0.000e+00 ...  0.000e+00
+                              0.000e+00]
+          eqlin:  residual: [ 0.000e+00  0.000e+00  0.000e+00  0.000e+00
+                              0.000e+00  0.000e+00  0.000e+00]
+                 marginals: [ 5.000e+00  1.500e+01  2.500e+01  5.000e+00
+                              1.000e+01 -0.000e+00  1.500e+01]
+        ineqlin:  residual: []
+                 marginals: []
+ mip_node_count: 0
+ mip_dual_bound: 0.0
+        mip_gap: 0.0
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> linprog(C_vec, A_eq=A[:-1], b_eq=b[:-1], method=&#39;Revised simplex&#39;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> linprog(C_vec, A_eq=A[:-1], b_eq=b[:-1])
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.84 ms, sys: 4.49 ms, total: 7.33 ms
-Wall time: 5.73 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.49 ms, sys: 168 µs, total: 1.66 ms
+Wall time: 1.34 ms
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;timed eval&gt;:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
- success: True
-  status: 0
-     fun: 7225.0
-       x: [ 0.000e+00  2.500e+01 ...  0.000e+00  7.000e+01]
-     nit: 13
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        message: Optimization terminated successfully. (HiGHS Status 7: Optimal)
+        success: True
+         status: 0
+            fun: 7225.0
+              x: [ 0.000e+00  1.000e+01 ...  0.000e+00  7.000e+01]
+            nit: 8
+          lower:  residual: [ 0.000e+00  1.000e+01 ...  0.000e+00
+                              7.000e+01]
+                 marginals: [ 0.000e+00  0.000e+00 ...  1.500e+01
+                              0.000e+00]
+          upper:  residual: [       inf        inf ...        inf
+                                    inf]
+                 marginals: [ 0.000e+00  0.000e+00 ...  0.000e+00
+                              0.000e+00]
+          eqlin:  residual: [ 0.000e+00  0.000e+00  0.000e+00  0.000e+00
+                              0.000e+00  0.000e+00  0.000e+00]
+                 marginals: [ 5.000e+00  1.500e+01  2.500e+01  5.000e+00
+                              1.000e+01 -0.000e+00  1.500e+01]
+        ineqlin:  residual: []
+                 marginals: []
+ mip_node_count: 0
+ mip_dual_bound: 0.0
+        mip_gap: 0.0
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> linprog(C_vec, A_eq=A, b_eq=b, method=&#39;Revised simplex&#39;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> linprog(C_vec, A_eq=A, b_eq=b)
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 7.19 ms, sys: 406 µs, total: 7.59 ms
-Wall time: 6.02 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.63 ms, sys: 183 µs, total: 1.81 ms
+Wall time: 1.49 ms
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;timed eval&gt;:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
-&lt;timed eval&gt;:1: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
- success: True
-  status: 0
-     fun: 7225.0
-       x: [ 1.500e+01  1.000e+01 ...  0.000e+00  7.000e+01]
-     nit: 12
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        message: Optimization terminated successfully. (HiGHS Status 7: Optimal)
+        success: True
+         status: 0
+            fun: 7225.0
+              x: [ 0.000e+00  1.000e+01 ...  0.000e+00  7.000e+01]
+            nit: 8
+          lower:  residual: [ 0.000e+00  1.000e+01 ...  0.000e+00
+                              7.000e+01]
+                 marginals: [ 0.000e+00  0.000e+00 ...  1.500e+01
+                              0.000e+00]
+          upper:  residual: [       inf        inf ...        inf
+                                    inf]
+                 marginals: [ 0.000e+00  0.000e+00 ...  0.000e+00
+                              0.000e+00]
+          eqlin:  residual: [ 0.000e+00  0.000e+00  0.000e+00  0.000e+00
+                              0.000e+00  0.000e+00  0.000e+00  0.000e+00]
+                 marginals: [ 1.000e+01  2.000e+01  3.000e+01 -0.000e+00
+                              5.000e+00 -5.000e+00  1.000e+01 -5.000e+00]
+        ineqlin:  residual: []
+                 marginals: []
+ mip_node_count: 0
+ mip_dual_bound: 0.0
+        mip_gap: 0.0
 </pre></div>
 </div>
 </div>
@@ -729,21 +762,13 @@ Wall time: 6.02 ms
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
 
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
-    <span class="n">res_shuffle</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">C_vec</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">[</span><span class="n">arr</span><span class="p">],</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">[</span><span class="n">arr</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+    <span class="n">res_shuffle</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="n">C_vec</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">[</span><span class="n">arr</span><span class="p">],</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">[</span><span class="n">arr</span><span class="p">])</span>
 
     <span class="c1"># if find a new solution</span>
     <span class="n">sol</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">res_shuffle</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">sol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sol_found</span><span class="p">:</span>
         <span class="n">sol_found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span>
         <span class="n">cost</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res_shuffle</span><span class="o">.</span><span class="n">fun</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_9272/2305330369.py:8: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
-  res_shuffle = linprog(C_vec, A_eq=A[arr], b_eq=b[arr], method=&#39;Revised simplex&#39;)
-/tmp/ipykernel_9272/2305330369.py:8: OptimizeWarning: A_eq does not appear to be of full row rank. To improve performance, check the problem formulation for redundant equality constraints.
-  res_shuffle = linprog(C_vec, A_eq=A[arr], b_eq=b[arr], method=&#39;Revised simplex&#39;)
 </pre></div>
 </div>
 </div>
@@ -757,10 +782,8 @@ Wall time: 6.02 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>transportation plan 0:  (15.0, 10.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 0.0, 30.0, 0.0, 0.0, 0.0, 70.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>transportation plan 0:  (0.0, 10.0, 15.0, 50.0, 0.0, 65.0, 0.0, 60.0, 0.0, 0.0, 30.0, 0.0, 0.0, 0.0, 70.0)
      minimized cost 0:  7225.0
-transportation plan 1:  (0.0, 25.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 15.0, 15.0, 0.0, 0.0, 0.0, 70.0)
-     minimized cost 1:  7225.0
 </pre></div>
 </div>
 </div>
@@ -770,21 +793,34 @@ transportation plan 1:  (0.0, 25.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 15.0, 
 <p>Next, we show that leaving out the first constraint “accidentally” leads to the initial plan that we computed.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linprog</span><span class="p">(</span><span class="n">C_vec</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linprog</span><span class="p">(</span><span class="n">C_vec</span><span class="p">,</span> <span class="n">A_eq</span><span class="o">=</span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">b_eq</span><span class="o">=</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_9272/2512147953.py:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
-  linprog(C_vec, A_eq=A[1:], b_eq=b[1:], method=&#39;Revised simplex&#39;)
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
- success: True
-  status: 0
-     fun: 7225.0
-       x: [ 1.500e+01  1.000e+01 ...  0.000e+00  7.000e+01]
-     nit: 12
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        message: Optimization terminated successfully. (HiGHS Status 7: Optimal)
+        success: True
+         status: 0
+            fun: 7225.0
+              x: [ 0.000e+00  1.000e+01 ...  0.000e+00  7.000e+01]
+            nit: 8
+          lower:  residual: [ 0.000e+00  1.000e+01 ...  0.000e+00
+                              7.000e+01]
+                 marginals: [ 0.000e+00  0.000e+00 ...  1.500e+01
+                              0.000e+00]
+          upper:  residual: [       inf        inf ...        inf
+                                    inf]
+                 marginals: [ 0.000e+00  0.000e+00 ...  0.000e+00
+                              0.000e+00]
+          eqlin:  residual: [ 0.000e+00  0.000e+00  0.000e+00  0.000e+00
+                              0.000e+00  0.000e+00  0.000e+00]
+                 marginals: [ 1.000e+01  2.000e+01  1.000e+01  1.500e+01
+                              5.000e+00  2.000e+01  5.000e+00]
+        ineqlin:  residual: []
+                 marginals: []
+ mip_node_count: 0
+ mip_dual_bound: 0.0
+        mip_gap: 0.0
 </pre></div>
 </div>
 </div>
@@ -797,7 +833,7 @@ transportation plan 1:  (0.0, 25.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 15.0, 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([15., 10.,  0., 35.,  0., 80.,  0., 60.,  0.,  0., 30.,  0.,  0.,
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0., 10., 15., 50.,  0., 65.,  0., 60.,  0.,  0., 30.,  0.,  0.,
         0., 70.])
 </pre></div>
 </div>
@@ -809,9 +845,9 @@ transportation plan 1:  (0.0, 25.0, 0.0, 35.0, 0.0, 80.0, 0.0, 60.0, 0.0, 15.0, 
 <p>The minimized cost from the optimal transport plan is given by the <span class="math notranslate nohighlight">\(fun\)</span> variable.</p>
 </section>
 <section id="using-a-just-in-time-compiler">
-<h3><span class="section-number">22.3.3. </span>Using a Just-in-Time Compiler<a class="headerlink" href="#using-a-just-in-time-compiler" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">21.3.3. </span>Using a Just-in-Time Compiler<a class="headerlink" href="#using-a-just-in-time-compiler" title="Permalink to this heading">#</a></h3>
 <p>We can also solve optimal transportation problems using a powerful tool from
-QuantEcon, namely,<code class="docutils literal notranslate"><span class="pre">quantecon.optimize.linprog_simplex</span></code>.</p>
+QuantEcon, namely, <code class="docutils literal notranslate"><span class="pre">quantecon.optimize.linprog_simplex</span></code>.</p>
 <p>While this routine uses the same simplex algorithm as
 <code class="docutils literal notranslate"><span class="pre">scipy.optimize.linprog</span></code>, the code is accelerated by using a just-in-time
 compiler shipped in the <code class="docutils literal notranslate"><span class="pre">numba</span></code> library.</p>
@@ -864,9 +900,9 @@ minimization, we need to put a negative sign before vector <code class="docutils
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[15., 35.,  0.,  0.,  0.],
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0., 50.,  0.,  0.,  0.],
        [10.,  0., 60., 30.,  0.],
-       [ 0., 80.,  0.,  0., 70.]])
+       [15., 65.,  0.,  0., 70.]])
 </pre></div>
 </div>
 </div>
@@ -875,16 +911,13 @@ minimization, we need to put a negative sign before vector <code class="docutils
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># scipy.optimize.linprog</span>
-<span class="o">%</span><span class="k">time</span> res = linprog(C_vec, A_eq=A[:-1, :], b_eq=b[:-1], method=&#39;Revised simplex&#39;)
+<span class="o">%</span><span class="k">time</span> res = linprog(C_vec, A_eq=A[:-1, :], b_eq=b[:-1])
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.76 ms, sys: 4.18 ms, total: 6.93 ms
-Wall time: 5.74 ms
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;timed exec&gt;:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.02 ms, sys: 0 ns, total: 2.02 ms
+Wall time: 1.69 ms
 </pre></div>
 </div>
 </div>
@@ -897,8 +930,8 @@ Wall time: 5.74 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 89 µs, sys: 4 µs, total: 93 µs
-Wall time: 98.9 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 97 µs, sys: 6 µs, total: 103 µs
+Wall time: 110 µs
 </pre></div>
 </div>
 </div>
@@ -910,11 +943,11 @@ time.)</p>
 </section>
 </section>
 <section id="the-dual-problem">
-<h2><span class="section-number">22.4. </span>The Dual Problem<a class="headerlink" href="#the-dual-problem" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">21.4. </span>The Dual Problem<a class="headerlink" href="#the-dual-problem" title="Permalink to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(u, v\)</span> denotes vectors of dual decision variables with entries <span class="math notranslate nohighlight">\((u_i), (v_j)\)</span>.</p>
-<p>The <strong>dual</strong> to  <strong>minimization</strong> problem <a class="reference internal" href="#equation-plannerproblem">(22.1)</a> is the <strong>maximization</strong> problem:</p>
+<p>The <strong>dual</strong> to  <strong>minimization</strong> problem <a class="reference internal" href="#equation-plannerproblem">(21.1)</a> is the <strong>maximization</strong> problem:</p>
 <div class="math notranslate nohighlight" id="equation-dualproblem">
-<span class="eqno">(22.5)<a class="headerlink" href="#equation-dualproblem" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(21.5)<a class="headerlink" href="#equation-dualproblem" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 \max_{u_i, v_j} \ &amp; \sum_{i=1}^m p_i u_i + \sum_{j=1}^n q_j v_j \\
 \mbox{subject to } \ &amp; u_i + v_j \le c_{ij}, \ i = 1, 2, \dots, m;\ j = 1, 2, \dots, n \\
@@ -934,7 +967,7 @@ time.)</p>
 <p>Components of the vectors <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> of per unit <strong>values</strong>  are <strong>shadow prices</strong> of the quantities appearing on the right sides of those constraints.</p>
 <p>We can write the dual problem as</p>
 <div class="math notranslate nohighlight" id="equation-dualproblem2">
-<span class="eqno">(22.6)<a class="headerlink" href="#equation-dualproblem2" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(21.6)<a class="headerlink" href="#equation-dualproblem2" title="Permalink to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
 \max_{u_i, v_j} \ &amp; p u + q v \\
 \mbox{subject to } \ &amp; A' \begin{pmatrix} u \\ v \\ \end{pmatrix} = \operatorname{vec}(C) \\
@@ -945,7 +978,7 @@ time.)</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solve the dual problem</span>
 <span class="n">res_dual</span> <span class="o">=</span> <span class="n">linprog</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">A_ub</span><span class="o">=</span><span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">b_ub</span><span class="o">=</span><span class="n">C_vec</span><span class="p">,</span>
-                   <span class="n">bounds</span><span class="o">=</span><span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+                   <span class="n">bounds</span><span class="o">=</span><span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">))</span>
 
 <span class="c1">#Print results</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;message:&quot;</span><span class="p">,</span> <span class="n">res_dual</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
@@ -957,15 +990,11 @@ time.)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>message: Optimization terminated successfully.
-nit: 7
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>message: Optimization terminated successfully. (HiGHS Status 7: Optimal)
+nit: 9
 fun: -7225.0
-u: [ 5. 15. 25.]
-v: [ 5. 10.  0. 15.  0.]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_9272/394279910.py:2: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
-  res_dual = linprog(-b, A_ub=A.T, b_ub=C_vec,
+u: [-20. -10.   0.]
+v: [30. 35. 25. 40. 25.]
 </pre></div>
 </div>
 </div>
@@ -998,7 +1027,7 @@ v: [ 5. 10.  0. 15.  0.]
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 5., 15., 25.,  5., 10.,  0., 15.,  0.])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-20., -10.,   0.,  30.,  35.,  25.,  40.,  25.])
 </pre></div>
 </div>
 </div>
@@ -1006,25 +1035,39 @@ v: [ 5. 10.  0. 15.  0.]
 <p>We can compare computational times from using our two tools.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> linprog(-b, A_ub=A.T, b_ub=C_vec, bounds=[(None, None)]*(m+n), method=&#39;Revised simplex&#39;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> linprog(-b, A_ub=A.T, b_ub=C_vec, bounds=[(None, None)]*(m+n))
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.67 ms, sys: 0 ns, total: 6.67 ms
-Wall time: 5.02 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.69 ms, sys: 82 µs, total: 1.77 ms
+Wall time: 1.56 ms
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;timed eval&gt;:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
- success: True
-  status: 0
-     fun: -7225.0
-       x: [ 5.000e+00  1.500e+01  2.500e+01  5.000e+00  1.000e+01
-            0.000e+00  1.500e+01  0.000e+00]
-     nit: 7
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        message: Optimization terminated successfully. (HiGHS Status 7: Optimal)
+        success: True
+         status: 0
+            fun: -7225.0
+              x: [-2.000e+01 -1.000e+01  0.000e+00  3.000e+01  3.500e+01
+                   2.500e+01  4.000e+01  2.500e+01]
+            nit: 9
+          lower:  residual: [       inf        inf        inf        inf
+                                    inf        inf        inf        inf]
+                 marginals: [ 0.000e+00  0.000e+00  0.000e+00  0.000e+00
+                              0.000e+00  0.000e+00  0.000e+00  0.000e+00]
+          upper:  residual: [       inf        inf        inf        inf
+                                    inf        inf        inf        inf]
+                 marginals: [ 0.000e+00  0.000e+00  0.000e+00  0.000e+00
+                              0.000e+00  0.000e+00  0.000e+00  0.000e+00]
+          eqlin:  residual: []
+                 marginals: []
+        ineqlin:  residual: [ 0.000e+00  0.000e+00 ...  1.500e+01
+                              0.000e+00]
+                 marginals: [-0.000e+00 -1.000e+01 ... -0.000e+00
+                             -7.000e+01]
+ mip_node_count: 0
+ mip_dual_bound: 0.0
+        mip_gap: 0.0
 </pre></div>
 </div>
 </div>
@@ -1036,8 +1079,8 @@ Wall time: 5.02 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 408 µs, sys: 17 µs, total: 425 µs
-Wall time: 433 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 498 µs, sys: 0 ns, total: 498 µs
+Wall time: 506 µs
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SimplexResult(x=array([ 5., 15., 25.,  5., 10.,  0., 15.,  0.]), lambd=array([ 0., 35.,  0., 15.,  0., 25.,  0., 60., 15.,  0.,  0., 80.,  0.,
@@ -1052,22 +1095,35 @@ Wall time: 433 µs
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linprog</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">A_ub</span><span class="o">=</span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">b_ub</span><span class="o">=</span><span class="n">C_vec</span><span class="p">,</span>
-        <span class="n">bounds</span><span class="o">=</span><span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+        <span class="n">bounds</span><span class="o">=</span><span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_9272/57054120.py:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
-  linprog(-b[1:], A_ub=A[1:].T, b_ub=C_vec,
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
- success: True
-  status: 0
-     fun: -7225.0
-       x: [ 1.000e+01  2.000e+01  1.000e+01  1.500e+01  5.000e+00
-            2.000e+01  5.000e+00]
-     nit: 7
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        message: Optimization terminated successfully. (HiGHS Status 7: Optimal)
+        success: True
+         status: 0
+            fun: -7225.0
+              x: [ 1.000e+01  2.000e+01  1.000e+01  1.500e+01  5.000e+00
+                   2.000e+01  5.000e+00]
+            nit: 12
+          lower:  residual: [       inf        inf        inf        inf
+                                    inf        inf        inf]
+                 marginals: [ 0.000e+00  0.000e+00  0.000e+00  0.000e+00
+                              0.000e+00  0.000e+00  0.000e+00]
+          upper:  residual: [       inf        inf        inf        inf
+                                    inf        inf        inf]
+                 marginals: [ 0.000e+00  0.000e+00  0.000e+00  0.000e+00
+                              0.000e+00  0.000e+00  0.000e+00]
+          eqlin:  residual: []
+                 marginals: []
+        ineqlin:  residual: [ 0.000e+00  0.000e+00 ...  1.500e+01
+                              0.000e+00]
+                 marginals: [-1.500e+01 -1.000e+01 ... -0.000e+00
+                             -7.000e+01]
+ mip_node_count: 0
+ mip_dual_bound: 0.0
+        mip_gap: 0.0
 </pre></div>
 </div>
 </div>
@@ -1076,28 +1132,41 @@ Wall time: 433 µs
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linprog</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">A_ub</span><span class="o">=</span><span class="n">A</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">b_ub</span><span class="o">=</span><span class="n">C_vec</span><span class="p">,</span>
-        <span class="n">bounds</span><span class="o">=</span><span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Revised simplex&#39;</span><span class="p">)</span>
+        <span class="n">bounds</span><span class="o">=</span><span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_9272/2450640664.py:1: DeprecationWarning: `method=&#39;revised simplex&#39;` is deprecated and will be removed in SciPy 1.11.0. Please use one of the HiGHS solvers (e.g. `method=&#39;highs&#39;`) in new code.
-  linprog(-b[:-1], A_ub=A[:-1].T, b_ub=C_vec,
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> message: Optimization terminated successfully.
- success: True
-  status: 0
-     fun: -7225.0
-       x: [ 5.000e+00  1.500e+01  2.500e+01  5.000e+00  1.000e+01
-            0.000e+00  1.500e+01]
-     nit: 11
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        message: Optimization terminated successfully. (HiGHS Status 7: Optimal)
+        success: True
+         status: 0
+            fun: -7225.0
+              x: [ 5.000e+00  1.500e+01  2.500e+01  5.000e+00  1.000e+01
+                  -0.000e+00  1.500e+01]
+            nit: 9
+          lower:  residual: [       inf        inf        inf        inf
+                                    inf        inf        inf]
+                 marginals: [ 0.000e+00  0.000e+00  0.000e+00  0.000e+00
+                              0.000e+00  0.000e+00  0.000e+00]
+          upper:  residual: [       inf        inf        inf        inf
+                                    inf        inf        inf]
+                 marginals: [ 0.000e+00  0.000e+00  0.000e+00  0.000e+00
+                              0.000e+00  0.000e+00  0.000e+00]
+          eqlin:  residual: []
+                 marginals: []
+        ineqlin:  residual: [ 0.000e+00  0.000e+00 ...  1.500e+01
+                              0.000e+00]
+                 marginals: [-0.000e+00 -1.000e+01 ... -0.000e+00
+                             -7.000e+01]
+ mip_node_count: 0
+ mip_dual_bound: 0.0
+        mip_gap: 0.0
 </pre></div>
 </div>
 </div>
 </div>
 <section id="interpretation-of-dual-problem">
-<h3><span class="section-number">22.4.1. </span>Interpretation of dual problem<a class="headerlink" href="#interpretation-of-dual-problem" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">21.4.1. </span>Interpretation of dual problem<a class="headerlink" href="#interpretation-of-dual-problem" title="Permalink to this heading">#</a></h3>
 <p>By <strong>strong duality</strong> (please see this lecture
 <a class="reference internal" href="lp_intro.html"><span class="doc">Linear Programming</span></a>), we know that:</p>
 <div class="math notranslate nohighlight">
@@ -1115,7 +1184,7 @@ Wall time: 433 µs
 </section>
 </section>
 <section id="the-python-optimal-transport-package">
-<h2><span class="section-number">22.5. </span>The Python Optimal Transport Package<a class="headerlink" href="#the-python-optimal-transport-package" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">21.5. </span>The Python Optimal Transport Package<a class="headerlink" href="#the-python-optimal-transport-package" title="Permalink to this heading">#</a></h2>
 <p>There is an excellent <a class="reference external" href="https://pythonot.github.io/">Python package</a> for
 optimal transport that simplifies some of the steps we took above.</p>
 <p>In particular, the package takes care of the vectorization steps before
@@ -1123,7 +1192,7 @@ passing the data out to a linear programming routine.</p>
 <p>(That said, the discussion provided above on vectorization remains important,
 since we want to understand what happens under the hood.)</p>
 <section id="replicating-previous-results">
-<h3><span class="section-number">22.5.1. </span>Replicating Previous Results<a class="headerlink" href="#replicating-previous-results" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">21.5.1. </span>Replicating Previous Results<a class="headerlink" href="#replicating-previous-results" title="Permalink to this heading">#</a></h3>
 <p>The following line of code solves the example application discussed above
 using linear programming.</p>
 <div class="cell docutils container">
@@ -1134,7 +1203,7 @@ using linear programming.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_9272/1617639716.py:1: UserWarning: Input histogram consists of integer. The transport plan will be casted accordingly, possibly resulting in a loss of precision. If this behaviour is unwanted, please make sure your input histogram consists of floating point elements.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_5044/1617639716.py:1: UserWarning: Input histogram consists of integer. The transport plan will be casted accordingly, possibly resulting in a loss of precision. If this behaviour is unwanted, please make sure your input histogram consists of floating point elements.
   X = ot.emd(p, q, C)
 </pre></div>
 </div>
@@ -1161,7 +1230,7 @@ using linear programming.</p>
 </div>
 </section>
 <section id="a-larger-application">
-<h3><span class="section-number">22.5.2. </span>A Larger Application<a class="headerlink" href="#a-larger-application" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">21.5.2. </span>A Larger Application<a class="headerlink" href="#a-larger-application" title="Permalink to this heading">#</a></h3>
 <p>Now let’s try using the same package on a slightly larger application.</p>
 <p>The application has the same interpretation as above but we will also give
 each node (i.e., vertex) a location in the plane.</p>
@@ -1252,8 +1321,8 @@ and location.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 672 µs, sys: 33 µs, total: 705 µs
-Wall time: 448 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 880 µs, sys: 0 ns, total: 880 µs
+Wall time: 574 µs
 </pre></div>
 </div>
 </div>
@@ -1436,53 +1505,48 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="time_series_with_matrices.html">
-   11. Univariate Time Series with Matrix Algebra
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   12. LLN and CLT
+   11. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   13. Two Meanings of Probability
+   12. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   14. Multivariate Hypergeometric Distribution
+   13. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   15. Multivariate Normal Distribution
+   14. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   16. Heavy-Tailed Distributions
+   15. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   17. Fault Tree Uncertainties
+   16. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   18. Introduction to Artificial Neural Networks
+   17. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   19. Randomized Response Surveys
+   18. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   20. Expected Utilities of Random Responses
+   19. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1494,17 +1558,17 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   21. Linear Programming
+   20. Linear Programming
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   22. Optimal Transport
+   21. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   23. Von Neumann Growth Model (and a Generalization)
+   22. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1516,52 +1580,52 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   24. Dynamics in One Dimension
+   23. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   25. AR1 Processes
+   24. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   26. Finite Markov Chains
+   25. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   27. Inventory Dynamics
+   26. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   28. Linear State Space Models
+   27. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   29. Samuelson Multiplier-Accelerator
+   28. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   30. Kesten Processes and Firm Dynamics
+   29. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   31. Wealth Distribution Dynamics
+   30. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   32. A First Look at the Kalman Filter
+   31. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   33. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1573,37 +1637,37 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   34. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   35. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   36. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   37. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   38. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   39. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   40. Job Search VII: A McCall Worker Q-Learns
+   39. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1615,52 +1679,52 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   41. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   42. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   43. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   44. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   45. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   46. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   47. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   48. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   49. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1672,17 +1736,17 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   51. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   52. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   53. Forecasting  an AR(1) process
+   52. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1694,42 +1758,42 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   54. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   55. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   56. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   57. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   58. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   59. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   60. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   61. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1741,32 +1805,32 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1778,37 +1842,37 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   68. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   69. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   70. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   71. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   72. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   73. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   74. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1820,17 +1884,17 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1842,17 +1906,17 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1864,12 +1928,12 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1881,17 +1945,17 @@ from <span class="math notranslate nohighlight">\(i\)</span> to <span class="mat
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>

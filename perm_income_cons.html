@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>66. Permanent Income II: LQ Techniques &#8212; Quantitative Economics with Python</title>
+    <title>65. Permanent Income II: LQ Techniques &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,6 +99,13 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -112,8 +119,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="67. Production Smoothing via Inventories" href="lq_inventories.html" />
-    <link rel="prev" title="65. The Permanent Income Model" href="perm_income.html" />
+    <link rel="next" title="66. Production Smoothing via Inventories" href="lq_inventories.html" />
+    <link rel="prev" title="64. The Permanent Income Model" href="perm_income.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -134,7 +141,7 @@ const thebe_selector_output = ".output, .cell_output"
 <meta property="og:url" content="https://python.quantecon.org/perm_income_cons.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
 <meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
-<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
 <meta name="theme-color" content="#ffffff" />
 
   </head>
@@ -161,29 +168,29 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">66.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">66.2. Setup</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#digression-on-a-useful-isomorphism">66.2.1. Digression on a Useful Isomorphism</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-specification-of-the-nonfinancial-income-process">66.2.2. A Specification of the Nonfinancial Income Process</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">65.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">65.2. Setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#digression-on-a-useful-isomorphism">65.2.1. Digression on a Useful Isomorphism</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-specification-of-the-nonfinancial-income-process">65.2.2. A Specification of the Nonfinancial Income Process</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-lq-approach">66.3. The LQ Approach</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-lq-problem">66.3.1. The LQ Problem</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-into-the-lq-framework">66.3.2. Mapping into the LQ Framework</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-lq-approach">65.3. The LQ Approach</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-lq-problem">65.3.1. The LQ Problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-into-the-lq-framework">65.3.2. Mapping into the LQ Framework</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">66.4. Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-exogenous-nonfinancial-income-process">66.4.1. The Exogenous Nonfinancial Income Process</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-the-difference-equation-approach">66.4.2. Comparison with the Difference Equation Approach</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">65.4. Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-exogenous-nonfinancial-income-process">65.4.1. The Exogenous Nonfinancial Income Process</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-the-difference-equation-approach">65.4.2. Comparison with the Difference Equation Approach</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-example-economies">66.5. Two Example Economies</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-set-of-initial-conditions">66.5.1. First Set of Initial Conditions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#population-and-sample-panels">66.5.2. Population and Sample Panels</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cointegration-residual">66.5.2.1. Cointegration Residual</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-example-economies">65.5. Two Example Economies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-set-of-initial-conditions">65.5.1. First Set of Initial Conditions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#population-and-sample-panels">65.5.2. Population and Sample Panels</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cointegration-residual">65.5.2.1. Cointegration Residual</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-borrowers-and-lenders-closed-economy">66.5.3. A “Borrowers and Lenders” Closed Economy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-borrowers-and-lenders-closed-economy">65.5.3. A “Borrowers and Lenders” Closed Economy</a></li>
 </ul>
 </li>
 </ul>
@@ -213,7 +220,7 @@ const thebe_selector_output = ".output, .cell_output"
 
                     <div class="qe-page__header-copy">
 
-                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
 
                         <p class="qe-page__header-subheading">Permanent Income II: LQ Techniques</p>
 
@@ -235,7 +242,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="permanent-income-ii-lq-techniques">
-<h1><a class="toc-backref" href="#id7"><span class="section-number">66. </span><span class="target" id="index-0"></span>Permanent Income II: LQ Techniques</a><a class="headerlink" href="#permanent-income-ii-lq-techniques" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id7"><span class="section-number">65. </span><span class="target" id="index-0"></span>Permanent Income II: LQ Techniques</a><a class="headerlink" href="#permanent-income-ii-lq-techniques" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <span id="index-1"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -263,18 +270,16 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.6.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
-Requirement already satisfied: numba in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (0.39.1)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba-&gt;quantecon) (65.6.3)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
 Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
@@ -288,7 +293,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id8"><span class="section-number">66.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="section-number">65.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture continues our analysis of the linear-quadratic (LQ) permanent income model of savings and consumption.</p>
 <p>As we saw in our <a class="reference internal" href="perm_income.html"><span class="doc">previous lecture</span></a> on this topic, Robert Hall <span id="id1">[<a class="reference internal" href="zreferences.html#id162" title="Robert E Hall. Stochastic Implications of the Life Cycle-Permanent Income Hypothesis: Theory and Evidence. Journal of Political Economy, 86(6):971–987, 1978.">Hal78</a>]</span> used the LQ permanent income model to restrict and interpret intertemporal comovements of nondurable consumption, nonfinancial income, and financial wealth.</p>
 <p>For example, we saw how the model asserts that for any covariance stationary process for nonfinancial income</p>
@@ -330,34 +335,34 @@ consumption dynamics in the spirit of Truman Bewley <span id="id3">[<a class="re
 </div>
 </section>
 <section id="setup">
-<h2><a class="toc-backref" href="#id9"><span class="section-number">66.2. </span>Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9"><span class="section-number">65.2. </span>Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
 <p>Let’s recall the basic features of the model discussed in the <a class="reference internal" href="perm_income.html"><span class="doc">permanent income model</span></a>.</p>
 <p>Consumer preferences are ordered  by</p>
 <div class="math notranslate nohighlight" id="equation-old1">
-<span class="eqno">(66.1)<a class="headerlink" href="#equation-old1" title="Permalink to this equation">#</a></span>\[E_0 \sum_{t=0}^\infty \beta^t u(c_t)\]</div>
+<span class="eqno">(65.1)<a class="headerlink" href="#equation-old1" title="Permalink to this equation">#</a></span>\[E_0 \sum_{t=0}^\infty \beta^t u(c_t)\]</div>
 <p>where <span class="math notranslate nohighlight">\(u(c) = -(c - \gamma)^2\)</span>.</p>
-<p>The consumer maximizes <a class="reference internal" href="#equation-old1">(66.1)</a> by choosing a
+<p>The consumer maximizes <a class="reference internal" href="#equation-old1">(65.1)</a> by choosing a
 consumption, borrowing plan <span class="math notranslate nohighlight">\(\{c_t, b_{t+1}\}_{t=0}^\infty\)</span>
 subject to the sequence of budget constraints</p>
 <div class="math notranslate nohighlight" id="equation-old2">
-<span class="eqno">(66.2)<a class="headerlink" href="#equation-old2" title="Permalink to this equation">#</a></span>\[c_t + b_t = \frac{1}{1 + r} b_{t+1}  + y_t,
+<span class="eqno">(65.2)<a class="headerlink" href="#equation-old2" title="Permalink to this equation">#</a></span>\[c_t + b_t = \frac{1}{1 + r} b_{t+1}  + y_t,
 \quad t \geq 0\]</div>
 <p>and the no-Ponzi condition</p>
 <div class="math notranslate nohighlight" id="equation-old42">
-<span class="eqno">(66.3)<a class="headerlink" href="#equation-old42" title="Permalink to this equation">#</a></span>\[E_0 \sum_{t=0}^\infty \beta^t b_t^2 &lt; \infty\]</div>
+<span class="eqno">(65.3)<a class="headerlink" href="#equation-old42" title="Permalink to this equation">#</a></span>\[E_0 \sum_{t=0}^\infty \beta^t b_t^2 &lt; \infty\]</div>
 <p>The interpretation of all variables and parameters are the same as in the
 <a class="reference internal" href="perm_income.html"><span class="doc">previous lecture</span></a>.</p>
 <p>We continue to assume that <span class="math notranslate nohighlight">\((1 + r) \beta = 1\)</span>.</p>
 <p>The dynamics of <span class="math notranslate nohighlight">\(\{y_t\}\)</span> again follow the linear state space model</p>
 <div class="math notranslate nohighlight" id="equation-sprob15ab2">
-<span class="eqno">(66.4)<a class="headerlink" href="#equation-sprob15ab2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(65.4)<a class="headerlink" href="#equation-sprob15ab2" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{aligned}
     z_{t+1} &amp; = A z_t + C w_{t+1}
     \\
     y_t &amp; = U  z_t
 \end{aligned}\end{split}\]</div>
 <p>The restrictions on the shock process and parameters are the same as in our <a class="reference internal" href="perm_income.html"><span class="doc">previous lecture</span></a>.</p>
 <section id="digression-on-a-useful-isomorphism">
-<h3><span class="section-number">66.2.1. </span>Digression on a Useful Isomorphism<a class="headerlink" href="#digression-on-a-useful-isomorphism" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">65.2.1. </span>Digression on a Useful Isomorphism<a class="headerlink" href="#digression-on-a-useful-isomorphism" title="Permalink to this heading">#</a></h3>
 <p>The LQ permanent income model of consumption is mathematically isomorphic with a version of
 Barro’s <span id="id4">[<a class="reference internal" href="zreferences.html#id146" title="Robert J Barro. On the Determination of the Public Debt. Journal of Political Economy, 87(5):940–971, 1979.">Bar79</a>]</span> model of tax smoothing.</p>
 <p>In the LQ permanent income model</p>
@@ -382,13 +387,13 @@ Barro’s <span id="id4">[<a class="reference internal" href="zreferences.html#i
 <p>See <a class="reference external" href="https://python-advanced.quantecon.org/smoothing.html">consumption and tax smoothing models</a> for further exploitation of an isomorphism between consumption and tax smoothing models.</p>
 </section>
 <section id="a-specification-of-the-nonfinancial-income-process">
-<h3><span class="section-number">66.2.2. </span>A Specification of the Nonfinancial Income Process<a class="headerlink" href="#a-specification-of-the-nonfinancial-income-process" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">65.2.2. </span>A Specification of the Nonfinancial Income Process<a class="headerlink" href="#a-specification-of-the-nonfinancial-income-process" title="Permalink to this heading">#</a></h3>
 <p>For the purposes of this lecture, let’s assume <span class="math notranslate nohighlight">\(\{y_t\}\)</span> is a second-order univariate autoregressive process:</p>
 <div class="math notranslate nohighlight">
 \[
 y_{t+1} = \alpha + \rho_1 y_t + \rho_2 y_{t-1} + \sigma w_{t+1}
 \]</div>
-<p>We can map this into the linear state space framework in <a class="reference internal" href="#equation-sprob15ab2">(66.4)</a>, as
+<p>We can map this into the linear state space framework in <a class="reference internal" href="#equation-sprob15ab2">(65.4)</a>, as
 discussed in our lecture on  <a class="reference internal" href="linear_models.html"><span class="doc">linear models</span></a>.</p>
 <p>To do so we take</p>
 <div class="math notranslate nohighlight">
@@ -417,7 +422,7 @@ U = \begin{bmatrix} 0 &amp; 1 &amp; 0 \end{bmatrix}
 </section>
 </section>
 <section id="the-lq-approach">
-<h2><a class="toc-backref" href="#id10"><span class="section-number">66.3. </span>The LQ Approach</a><a class="headerlink" href="#the-lq-approach" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10"><span class="section-number">65.3. </span>The LQ Approach</a><a class="headerlink" href="#the-lq-approach" title="Permalink to this heading">#</a></h2>
 <p><a class="reference internal" href="perm_income.html#odr-pi"><span class="std std-ref">Previously</span></a> we solved the permanent income model  by solving a system of linear expectational difference equations subject to two boundary conditions.</p>
 <p>Here we solve the same model using <a class="reference internal" href="lqcontrol.html"><span class="doc">LQ methods</span></a> based on dynamic programming.</p>
 <p>After confirming that answers produced by the two methods agree, we apply <a class="reference external" href="http://quantecon.org/quantecon-py">QuantEcon</a>’s <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a>
@@ -431,7 +436,7 @@ class to illustrate features of the model.</p>
 <li><p>iterations on a Bellman equation  implicitly jointly solve both a  forecasting problem and a control problem</p></li>
 </ul>
 <section id="the-lq-problem">
-<h3><span class="section-number">66.3.1. </span>The LQ Problem<a class="headerlink" href="#the-lq-problem" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">65.3.1. </span>The LQ Problem<a class="headerlink" href="#the-lq-problem" title="Permalink to this heading">#</a></h3>
 <p>Recall from our <a class="reference internal" href="lqcontrol.html"><span class="doc">lecture on LQ theory</span></a> that the optimal linear regulator problem is to choose
 a decision rule for <span class="math notranslate nohighlight">\(u_t\)</span> to minimize</p>
 <div class="math notranslate nohighlight">
@@ -441,10 +446,10 @@ a decision rule for <span class="math notranslate nohighlight">\(u_t\)</span> to
 \]</div>
 <p>subject to <span class="math notranslate nohighlight">\(x_0\)</span> given and the law of motion</p>
 <div class="math notranslate nohighlight" id="equation-pilqsd">
-<span class="eqno">(66.5)<a class="headerlink" href="#equation-pilqsd" title="Permalink to this equation">#</a></span>\[x_{t+1} =  \tilde A x_t+ \tilde B u_t+ \tilde C w_{t+1},
+<span class="eqno">(65.5)<a class="headerlink" href="#equation-pilqsd" title="Permalink to this equation">#</a></span>\[x_{t+1} =  \tilde A x_t+ \tilde B u_t+ \tilde C w_{t+1},
 \qquad t\geq 0,\]</div>
 <p>where <span class="math notranslate nohighlight">\(w_{t+1}\)</span> is IID with mean vector zero and <span class="math notranslate nohighlight">\(\mathbb E w_t w'_t= I\)</span>.</p>
-<p>The tildes in <span class="math notranslate nohighlight">\(\tilde A, \tilde B, \tilde C\)</span> are to avoid clashing with notation in <a class="reference internal" href="#equation-sprob15ab2">(66.4)</a>.</p>
+<p>The tildes in <span class="math notranslate nohighlight">\(\tilde A, \tilde B, \tilde C\)</span> are to avoid clashing with notation in <a class="reference internal" href="#equation-sprob15ab2">(65.4)</a>.</p>
 <p>The value function for this problem is <span class="math notranslate nohighlight">\(v(x) = - x'Px - d\)</span>, where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(P\)</span> is the unique positive semidefinite solution of the <a class="reference internal" href="lqcontrol.html#riccati-equation"><span class="std std-ref">corresponding matrix Riccati equation</span></a>.</p></li>
@@ -454,7 +459,7 @@ a decision rule for <span class="math notranslate nohighlight">\(u_t\)</span> to
 <p>Under an optimal decision rule <span class="math notranslate nohighlight">\(F\)</span>, the state vector <span class="math notranslate nohighlight">\(x_t\)</span> evolves according to <span class="math notranslate nohighlight">\(x_{t+1} = (\tilde A-\tilde BF) x_t + \tilde C w_{t+1}\)</span>.</p>
 </section>
 <section id="mapping-into-the-lq-framework">
-<h3><span class="section-number">66.3.2. </span>Mapping into the LQ Framework<a class="headerlink" href="#mapping-into-the-lq-framework" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">65.3.2. </span>Mapping into the LQ Framework<a class="headerlink" href="#mapping-into-the-lq-framework" title="Permalink to this heading">#</a></h3>
 <p>To map into the LQ framework, we’ll use</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -472,7 +477,7 @@ x_t :=
 \end{split}\]</div>
 <p>as the state vector and <span class="math notranslate nohighlight">\(u_t := c_t - \gamma\)</span> as the control.</p>
 <p>With this notation and <span class="math notranslate nohighlight">\(U_\gamma := \begin{bmatrix} \gamma &amp; 0 &amp; 0
-\end{bmatrix}\)</span>, we can write the state dynamics as in <a class="reference internal" href="#equation-pilqsd">(66.5)</a> when</p>
+\end{bmatrix}\)</span>, we can write the state dynamics as in <a class="reference internal" href="#equation-pilqsd">(65.5)</a> when</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \tilde A :=
@@ -493,14 +498,14 @@ x_t :=
    \end{bmatrix}
    w_{t+1}
 \end{split}\]</div>
-<p>Please confirm for yourself that, with these definitions, the LQ dynamics <a class="reference internal" href="#equation-pilqsd">(66.5)</a>  match the dynamics of <span class="math notranslate nohighlight">\(z_t\)</span> and <span class="math notranslate nohighlight">\(b_t\)</span> described above.</p>
+<p>Please confirm for yourself that, with these definitions, the LQ dynamics <a class="reference internal" href="#equation-pilqsd">(65.5)</a>  match the dynamics of <span class="math notranslate nohighlight">\(z_t\)</span> and <span class="math notranslate nohighlight">\(b_t\)</span> described above.</p>
 <p>To map utility into the quadratic form <span class="math notranslate nohighlight">\(x_t' R x_t + u_t'Q u_t\)</span> we can set</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(Q := 1\)</span> (remember that we are minimizing) and</p></li>
 <li><p><span class="math notranslate nohighlight">\(R :=\)</span> a <span class="math notranslate nohighlight">\(4 \times 4\)</span> matrix of zeros</p></li>
 </ul>
 <p>However, there is one problem remaining.</p>
-<p>We have no direct way to capture the non-recursive restriction <a class="reference internal" href="#equation-old42">(66.3)</a>
+<p>We have no direct way to capture the non-recursive restriction <a class="reference internal" href="#equation-old42">(65.3)</a>
 on the debt sequence <span class="math notranslate nohighlight">\(\{b_t\}\)</span> from within the LQ framework.</p>
 <p>To try to enforce it, we’re going to use a trick: put a small penalty on <span class="math notranslate nohighlight">\(b_t^2\)</span> in the criterion function.</p>
 <p>In the present setting, this means adding a small entry <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> in the <span class="math notranslate nohighlight">\((4,4)\)</span> position of <span class="math notranslate nohighlight">\(R\)</span>.</p>
@@ -509,14 +514,14 @@ on the debt sequence <span class="math notranslate nohighlight">\(\{b_t\}\)</spa
 </section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id11"><span class="section-number">66.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11"><span class="section-number">65.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <p>Let’s write some code to solve the model.</p>
 <p>One comment before we start is that the bliss level of consumption <span class="math notranslate nohighlight">\(\gamma\)</span> in the utility function has no effect on the optimal decision rule.</p>
 <p>We saw this in the previous lecture  <a class="reference internal" href="perm_income.html"><span class="doc">permanent income</span></a>.</p>
 <p>The reason is that it drops out of the Euler equation for consumption.</p>
 <p>In what follows we set it equal to unity.</p>
 <section id="the-exogenous-nonfinancial-income-process">
-<h3><span class="section-number">66.4.1. </span>The Exogenous Nonfinancial Income Process<a class="headerlink" href="#the-exogenous-nonfinancial-income-process" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">65.4.1. </span>The Exogenous Nonfinancial Income Process<a class="headerlink" href="#the-exogenous-nonfinancial-income-process" title="Permalink to this heading">#</a></h3>
 <p>First, we create the objects for the optimal linear regulator</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -627,7 +632,7 @@ employing an alternative solution method</p>
 </div>
 </section>
 <section id="comparison-with-the-difference-equation-approach">
-<h3><span class="section-number">66.4.2. </span>Comparison with the Difference Equation Approach<a class="headerlink" href="#comparison-with-the-difference-equation-approach" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">65.4.2. </span>Comparison with the Difference Equation Approach<a class="headerlink" href="#comparison-with-the-difference-equation-approach" title="Permalink to this heading">#</a></h3>
 <p>In our <a class="reference internal" href="perm_income.html"><span class="doc">first lecture</span></a> on the infinite horizon permanent
 income problem we used a different solution method.</p>
 <p>The method was based around</p>
@@ -713,7 +718,7 @@ income problem we used a different solution method.</p>
 </section>
 </section>
 <section id="two-example-economies">
-<h2><a class="toc-backref" href="#id12"><span class="section-number">66.5. </span>Two Example Economies</a><a class="headerlink" href="#two-example-economies" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12"><span class="section-number">65.5. </span>Two Example Economies</a><a class="headerlink" href="#two-example-economies" title="Permalink to this heading">#</a></h2>
 <p>In the spirit of Bewley models <span id="id5">[<a class="reference internal" href="zreferences.html#id110" title="Truman F Bewley. Stationary monetary equilibrium with a continuum of independently fluctuating consumers. In Werner Hildenbran and Andreu Mas-Colell, editors, Contributions to Mathematical Economics in Honor of Gerard Debreu, pages 27-102. North-Holland, Amsterdam, 1986.">Bew86</a>]</span>, we’ll generate panels of consumers.</p>
 <p>The examples differ only in  the initial states with which we endow the consumers.</p>
 <p>All other parameter values are kept the same in the two examples</p>
@@ -737,7 +742,7 @@ pronounced transients early in the sample</p>
 <p>Those transient effects will not be present in the second example.</p>
 <p>We use methods affiliated with the <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class to simulate the model.</p>
 <section id="first-set-of-initial-conditions">
-<h3><span class="section-number">66.5.1. </span>First Set of Initial Conditions<a class="headerlink" href="#first-set-of-initial-conditions" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">65.5.1. </span>First Set of Initial Conditions<a class="headerlink" href="#first-set-of-initial-conditions" title="Permalink to this heading">#</a></h3>
 <p>We generate  25 paths of the exogenous non-financial income process and the associated optimal consumption and debt paths.</p>
 <p>In the first set of graphs,  darker lines depict a particular sample path, while the lighter lines describe 24 other  paths.</p>
 <p>A second graph  plots a collection of simulations against the population distribution that we extract from the <code class="docutils literal notranslate"><span class="pre">LinearStateSpace</span></code> instance <code class="docutils literal notranslate"><span class="pre">LSS</span></code>.</p>
@@ -751,7 +756,7 @@ pronounced transients early in the sample</p>
 </div>
 </section>
 <section id="population-and-sample-panels">
-<h3><span class="section-number">66.5.2. </span>Population and Sample Panels<a class="headerlink" href="#population-and-sample-panels" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">65.5.2. </span>Population and Sample Panels<a class="headerlink" href="#population-and-sample-panels" title="Permalink to this heading">#</a></h3>
 <p>In the code below, we use the <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class to</p>
 <ul class="simple">
 <li><p>compute and plot population quantiles of the distributions of
@@ -882,7 +887,7 @@ graph as the population distribution.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0a714e1447045823f091e6a972031180e8fe33f9dbdebbe1b15b0464972e9647.png" src="_images/0a714e1447045823f091e6a972031180e8fe33f9dbdebbe1b15b0464972e9647.png" />
+<img alt="_images/adc7cc53097fd7fd362598d6b1eaf7fba8e01580b44ab7d6ce73633bcaebe78b.png" src="_images/adc7cc53097fd7fd362598d6b1eaf7fba8e01580b44ab7d6ce73633bcaebe78b.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -895,7 +900,7 @@ graph as the population distribution.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2977c7266e444552a4a67d0bd3d008cd027a026278a51e2ef98f8040ee6792f0.png" src="_images/2977c7266e444552a4a67d0bd3d008cd027a026278a51e2ef98f8040ee6792f0.png" />
+<img alt="_images/66e40e54b1f0c500f754af1b2a7371dd1ac78ec4d89f65944cdd2401f6aef96a.png" src="_images/66e40e54b1f0c500f754af1b2a7371dd1ac78ec4d89f65944cdd2401f6aef96a.png" />
 </div>
 </div>
 <p>Here is what is going on in the above graphs.</p>
@@ -903,7 +908,7 @@ graph as the population distribution.</p></li>
 <p>Because <span class="math notranslate nohighlight">\(y_{-1} = y_{-2} = 0\)</span>, nonfinancial income <span class="math notranslate nohighlight">\(y_t\)</span> starts far below its stationary mean <span class="math notranslate nohighlight">\(\mu_{y, \infty}\)</span> and rises early in each simulation.</p>
 <p>Recall from  the <a class="reference internal" href="perm_income.html"><span class="doc">previous lecture</span></a> that we can represent the optimal decision rule for consumption in terms of the <strong>co-integrating relationship</strong></p>
 <div class="math notranslate nohighlight" id="equation-old12">
-<span class="eqno">(66.6)<a class="headerlink" href="#equation-old12" title="Permalink to this equation">#</a></span>\[(1-\beta) b_t + c_t = (1-\beta) E_t \sum_{j=0}^\infty \beta^j y_{t+j}\]</div>
+<span class="eqno">(65.6)<a class="headerlink" href="#equation-old12" title="Permalink to this equation">#</a></span>\[(1-\beta) b_t + c_t = (1-\beta) E_t \sum_{j=0}^\infty \beta^j y_{t+j}\]</div>
 <p>So at time <span class="math notranslate nohighlight">\(0\)</span> we have</p>
 <div class="math notranslate nohighlight">
 \[
@@ -917,8 +922,8 @@ c_0 = (1-\beta) E_0 \sum_{t=0}^\infty \beta^j y_{t}
 <p>All of them accumulate debt in anticipation of rising nonfinancial income.</p>
 <p>They expect their nonfinancial income to rise toward the invariant distribution of income, a consequence of our having started them at <span class="math notranslate nohighlight">\(y_{-1} = y_{-2} = 0\)</span>.</p>
 <section id="cointegration-residual">
-<h4><span class="section-number">66.5.2.1. </span>Cointegration Residual<a class="headerlink" href="#cointegration-residual" title="Permalink to this heading">#</a></h4>
-<p>The following figure plots realizations of the left side of <a class="reference internal" href="#equation-old12">(66.6)</a>, which,
+<h4><span class="section-number">65.5.2.1. </span>Cointegration Residual<a class="headerlink" href="#cointegration-residual" title="Permalink to this heading">#</a></h4>
+<p>The following figure plots realizations of the left side of <a class="reference internal" href="#equation-old12">(65.6)</a>, which,
 <a class="reference internal" href="perm_income.html#coint-pi"><span class="std std-ref">as discussed in our last lecture</span></a>, is called the <strong>cointegrating residual</strong>.</p>
 <p>As mentioned above, the right side can be thought of as an
 annuity payment on the expected present value of future income
@@ -961,13 +966,13 @@ behavior early in the sample.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9d69358090e589f2e24ea8656ad4abaddd865eb58365aae51c47d3e838901ffa.png" src="_images/9d69358090e589f2e24ea8656ad4abaddd865eb58365aae51c47d3e838901ffa.png" />
+<img alt="_images/f128000c4bf6877cd0f2920d305a863338e3c8bf0c21398515424048381ceef8.png" src="_images/f128000c4bf6877cd0f2920d305a863338e3c8bf0c21398515424048381ceef8.png" />
 </div>
 </div>
 </section>
 </section>
 <section id="a-borrowers-and-lenders-closed-economy">
-<h3><span class="section-number">66.5.3. </span>A “Borrowers and Lenders” Closed Economy<a class="headerlink" href="#a-borrowers-and-lenders-closed-economy" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">65.5.3. </span>A “Borrowers and Lenders” Closed Economy<a class="headerlink" href="#a-borrowers-and-lenders-closed-economy" title="Permalink to this heading">#</a></h3>
 <p>When we set <span class="math notranslate nohighlight">\(y_{-1} = y_{-2} = 0\)</span> and <span class="math notranslate nohighlight">\(b_0 =0\)</span> in the
 preceding exercise, we make debt “head north” early in the sample.</p>
 <p>Average debt in the cross-section rises and approaches the asymptote.</p>
@@ -1006,7 +1011,7 @@ with each other at a gross risk-free interest rate of
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a665042409bd1df837cf8d477cb03f83e6cfa8a6fb4248d0bc259b9345f7e308.png" src="_images/a665042409bd1df837cf8d477cb03f83e6cfa8a6fb4248d0bc259b9345f7e308.png" />
+<img alt="_images/b021a14de928a9e48e295176109de88290aff64bc8c16492b476fd40e3f136bc.png" src="_images/b021a14de928a9e48e295176109de88290aff64bc8c16492b476fd40e3f136bc.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1019,7 +1024,7 @@ with each other at a gross risk-free interest rate of
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9151f33708fdb92f5cdf8b3a1bdf946fa6e3b01109a85fca58e241b069256c7e.png" src="_images/9151f33708fdb92f5cdf8b3a1bdf946fa6e3b01109a85fca58e241b069256c7e.png" />
+<img alt="_images/94bac8c82a5f8e8b0991a2507fad3347903f2f00cd1d7f2ccb41ec58a4e06644.png" src="_images/94bac8c82a5f8e8b0991a2507fad3347903f2f00cd1d7f2ccb41ec58a4e06644.png" />
 </div>
 </div>
 <p>The graphs confirm the following outcomes:</p>
@@ -1041,7 +1046,7 @@ with each other at a gross risk-free interest rate of
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/40188e3d3d1812364451591ceb66371f7d91c8b46258bf15023a1e0037fec4a4.png" src="_images/40188e3d3d1812364451591ceb66371f7d91c8b46258bf15023a1e0037fec4a4.png" />
+<img alt="_images/4a28a1d621ff958ca07eefc26e23491821d28e427483b3bb703214d354dd9ff4.png" src="_images/4a28a1d621ff958ca07eefc26e23491821d28e427483b3bb703214d354dd9ff4.png" />
 </div>
 </div>
 </section>
@@ -1161,53 +1166,48 @@ with each other at a gross risk-free interest rate of
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="time_series_with_matrices.html">
-   11. Univariate Time Series with Matrix Algebra
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   12. LLN and CLT
+   11. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   13. Two Meanings of Probability
+   12. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   14. Multivariate Hypergeometric Distribution
+   13. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   15. Multivariate Normal Distribution
+   14. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   16. Heavy-Tailed Distributions
+   15. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hoist_failure.html">
-   17. Fault Tree Uncertainties
+   16. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   18. Introduction to Artificial Neural Networks
+   17. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   19. Randomized Response Surveys
+   18. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   20. Expected Utilities of Random Responses
+   19. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1219,17 +1219,17 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   21. Linear Programming
+   20. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   22. Optimal Transport
+   21. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   23. Von Neumann Growth Model (and a Generalization)
+   22. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1241,52 +1241,52 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   24. Dynamics in One Dimension
+   23. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   25. AR1 Processes
+   24. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   26. Finite Markov Chains
+   25. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   27. Inventory Dynamics
+   26. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   28. Linear State Space Models
+   27. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   29. Samuelson Multiplier-Accelerator
+   28. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   30. Kesten Processes and Firm Dynamics
+   29. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   31. Wealth Distribution Dynamics
+   30. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   32. A First Look at the Kalman Filter
+   31. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   33. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1298,37 +1298,37 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   34. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   35. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   36. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   37. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   38. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   39. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   40. Job Search VII: A McCall Worker Q-Learns
+   39. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1340,52 +1340,52 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   41. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   42. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   43. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   44. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   45. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   46. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   47. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   48. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   49. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1397,17 +1397,17 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   51. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   52. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   53. Forecasting  an AR(1) process
+   52. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1419,42 +1419,42 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   54. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   55. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   56. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   57. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   58. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   59. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   60. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   61. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1466,32 +1466,32 @@ with each other at a gross risk-free interest rate of
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   66. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1503,37 +1503,37 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   68. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   69. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   70. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   71. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   72. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   73. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   74. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1545,17 +1545,17 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1567,17 +1567,17 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1589,12 +1589,12 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1606,17 +1606,17 @@ with each other at a gross risk-free interest rate of
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>

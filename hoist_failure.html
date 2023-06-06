@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>17. Fault Tree Uncertainties &#8212; Quantitative Economics with Python</title>
+    <title>16. Fault Tree Uncertainties &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -99,6 +99,13 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -112,8 +119,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="18. Introduction to Artificial Neural Networks" href="back_prop.html" />
-    <link rel="prev" title="16. Heavy-Tailed Distributions" href="heavy_tails.html" />
+    <link rel="next" title="17. Introduction to Artificial Neural Networks" href="back_prop.html" />
+    <link rel="prev" title="15. Heavy-Tailed Distributions" href="heavy_tails.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -134,7 +141,7 @@ const thebe_selector_output = ".output, .cell_output"
 <meta property="og:url" content="https://python.quantecon.org/hoist_failure.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
 <meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
-<meta property="og:site_name" content="Quantitative Economics with Python" />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
 <meta name="theme-color" content="#ffffff" />
 
   </head>
@@ -161,15 +168,15 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">17.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#log-normal-distribution">17.2. Log normal distribution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-convolution-property">17.3. The Convolution Property</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-distributions">17.4. Approximating Distributions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolving-probability-mass-functions">17.5. Convolving Probability Mass Functions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-tree-analysis">17.6. Failure Tree Analysis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application">17.7. Application</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-rates-unknown">17.8. Failure Rates Unknown</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#waste-hoist-failure-rate">17.9. Waste Hoist Failure Rate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">16.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#log-normal-distribution">16.2. Log normal distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-convolution-property">16.3. The Convolution Property</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approximating-distributions">16.4. Approximating Distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolving-probability-mass-functions">16.5. Convolving Probability Mass Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-tree-analysis">16.6. Failure Tree Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application">16.7. Application</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-rates-unknown">16.8. Failure Rates Unknown</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#waste-hoist-failure-rate">16.9. Waste Hoist Failure Rate</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -197,7 +204,7 @@ const thebe_selector_output = ".output, .cell_output"
 
                     <div class="qe-page__header-copy">
 
-                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python</a></p>
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
 
                         <p class="qe-page__header-subheading">Fault Tree Uncertainties</p>
 
@@ -215,9 +222,9 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="fault-tree-uncertainties">
-<h1><span class="section-number">17. </span>Fault Tree Uncertainties<a class="headerlink" href="#fault-tree-uncertainties" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">16. </span>Fault Tree Uncertainties<a class="headerlink" href="#fault-tree-uncertainties" title="Permalink to this heading">#</a></h1>
 <section id="overview">
-<h2><span class="section-number">17.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture puts elementary tools to work to approximate probability distributions of the annual failure rates of a system consisting of
 a number of critical parts.</p>
 <p>We’ll use log normal distributions to approximate probability distributions of critical  component parts.</p>
@@ -277,7 +284,7 @@ uncertainty about the reliability of a safety system.</p>
 <!-- #region -->
 </section>
 <section id="log-normal-distribution">
-<h2><span class="section-number">17.2. </span>Log normal distribution<a class="headerlink" href="#log-normal-distribution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.2. </span>Log normal distribution<a class="headerlink" href="#log-normal-distribution" title="Permalink to this heading">#</a></h2>
 <p>If a random variable <span class="math notranslate nohighlight">\(x\)</span> follows a normal distribution with mean <span class="math notranslate nohighlight">\(\mu\)</span> and variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>,
 then the natural logarithm of <span class="math notranslate nohighlight">\(x\)</span>, say <span class="math notranslate nohighlight">\(y = \log(x)\)</span>, follows a <strong>log normal distribution</strong> with parameters <span class="math notranslate nohighlight">\(\mu, \sigma^2\)</span>.</p>
 <p>Notice that we said <strong>parameters</strong> and not <strong>mean and variance</strong> <span class="math notranslate nohighlight">\(\mu,\sigma^2\)</span>.</p>
@@ -319,7 +326,7 @@ with parameters <span class="math notranslate nohighlight">\((\mu_1 + \mu_2, \si
 <p>To compute the probability distribution of the sum of two log normal distributions, we can use the following convolution property of a probability distribution that is a sum of independent random variables.</p>
 </section>
 <section id="the-convolution-property">
-<h2><span class="section-number">17.3. </span>The Convolution Property<a class="headerlink" href="#the-convolution-property" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.3. </span>The Convolution Property<a class="headerlink" href="#the-convolution-property" title="Permalink to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(x\)</span> be a random variable with probability density <span class="math notranslate nohighlight">\(f(x)\)</span>, where <span class="math notranslate nohighlight">\(x \in {\bf R}\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(y\)</span> be a random variable with probability density <span class="math notranslate nohighlight">\(g(y)\)</span>, where <span class="math notranslate nohighlight">\(y \in {\bf R}\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> be independent random variables and let <span class="math notranslate nohighlight">\(z = x + y \in {\bf R}\)</span>.</p>
@@ -383,7 +390,7 @@ hf =  [0.   0.45 0.15 0.3  0.1 ] ,np.sum(hf) =  1.0000000000000002
 <p>That’s why we rely on it later in this lecture.</p>
 </section>
 <section id="approximating-distributions">
-<h2><span class="section-number">17.4. </span>Approximating Distributions<a class="headerlink" href="#approximating-distributions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.4. </span>Approximating Distributions<a class="headerlink" href="#approximating-distributions" title="Permalink to this heading">#</a></h2>
 <p>We’ll construct an example to verify that  discretized distributions can do a good job of approximating  samples drawn from underlying
 continuous distributions.</p>
 <p>We’ll start by generating samples of size 25000 of three independent  log normal random variates as well as pairwise and triple-wise sums.</p>
@@ -411,7 +418,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1f36be9503e45fce574765c74318e9e06e1ce6eeaa2cc6e8c3c701207674884a.png" src="_images/1f36be9503e45fce574765c74318e9e06e1ce6eeaa2cc6e8c3c701207674884a.png" />
+<img alt="_images/dc23eb724e88e10ab12cbe0d287c1534a10e2eb71b46aa7e637b59dba85f8191.png" src="_images/dc23eb724e88e10ab12cbe0d287c1534a10e2eb71b46aa7e637b59dba85f8191.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -421,7 +428,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/16a85a8f5b8b69da43b833a71b143cb52816b7c8f27562385a9d582bbf748379.png" src="_images/16a85a8f5b8b69da43b833a71b143cb52816b7c8f27562385a9d582bbf748379.png" />
+<img alt="_images/0dc0d220d16b7832b5aa751d752e59e207c5e6fcbb560f19822294ac283a2591.png" src="_images/0dc0d220d16b7832b5aa751d752e59e207c5e6fcbb560f19822294ac283a2591.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -431,7 +438,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1daec4dab495084de3343fbd5eaeedd90946db4f89f531476305c4843838f44b.png" src="_images/1daec4dab495084de3343fbd5eaeedd90946db4f89f531476305c4843838f44b.png" />
+<img alt="_images/58ae02d3a2f166b3aefaba9ed41881c06666276e3b7cd8819aa1b63bc1ced78a.png" src="_images/58ae02d3a2f166b3aefaba9ed41881c06666276e3b7cd8819aa1b63bc1ced78a.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -444,7 +451,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(244.69193226422038, 248.5551019573413, 5.0, 1.0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(244.69193226422038, 242.73635500523986, 5.0, 1.0)
 </pre></div>
 </div>
 </div>
@@ -504,7 +511,7 @@ to compute a convolution of two sequences (discrete distributions).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a7263160a3bb90d71a4535326a787a351e48d4443846ef7ef38a0c5f641b6ccf.png" src="_images/a7263160a3bb90d71a4535326a787a351e48d4443846ef7ef38a0c5f641b6ccf.png" />
+<img alt="_images/fc6978c4d138329b10a516b375c359df20f56e2be98ed9047994339c5fea5aa6.png" src="_images/fc6978c4d138329b10a516b375c359df20f56e2be98ed9047994339c5fea5aa6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -525,7 +532,7 @@ to compute a convolution of two sequences (discrete distributions).</p>
 </div>
 </section>
 <section id="convolving-probability-mass-functions">
-<h2><span class="section-number">17.5. </span>Convolving Probability Mass Functions<a class="headerlink" href="#convolving-probability-mass-functions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.5. </span>Convolving Probability Mass Functions<a class="headerlink" href="#convolving-probability-mass-functions" title="Permalink to this heading">#</a></h2>
 <p>Now let’s use the convolution theorem to compute the probability distribution of a sum of the two log normal random variables we have parameterized above.</p>
 <p>We’ll also compute the probability of a sum of three log normal distributions constructed above.</p>
 <p>Before we do these things, we shall explain our choice of Python algorithm to compute a convolution
@@ -539,17 +546,17 @@ is much faster.</p>
 <p>The <strong>Fourier transform</strong> of a sequence <span class="math notranslate nohighlight">\(\{x_t\}_{t=0}^{T-1}\)</span> is  a sequence of complex numbers
 <span class="math notranslate nohighlight">\(\{x(\omega_j)\}_{j=0}^{T-1}\)</span> given by</p>
 <div class="math notranslate nohighlight" id="equation-eq-ft1">
-<span class="eqno">(17.1)<a class="headerlink" href="#equation-eq-ft1" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(16.1)<a class="headerlink" href="#equation-eq-ft1" title="Permalink to this equation">#</a></span>\[
  x(\omega_j) = \sum_{t=0}^{T-1} x_t \exp(- i \omega_j t)
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\omega_j = \frac{2 \pi j}{T}\)</span> for <span class="math notranslate nohighlight">\(j=0, 1, \ldots, T-1\)</span>.</p>
 <p>The <strong>inverse Fourier transform</strong> of the sequence <span class="math notranslate nohighlight">\(\{x(\omega_j)\}_{j=0}^{T-1}\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-eq-ift1">
-<span class="eqno">(17.2)<a class="headerlink" href="#equation-eq-ift1" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(16.2)<a class="headerlink" href="#equation-eq-ift1" title="Permalink to this equation">#</a></span>\[
  x_t = T^{-1} \sum_{j=0}^{T-1} x(\omega_j) \exp (i \omega_j t) 
 \]</div>
 <p>The sequences <span class="math notranslate nohighlight">\(\{x_t\}_{t=0}^{T-1}\)</span> and <span class="math notranslate nohighlight">\(\{x(\omega_j)\}_{j=0}^{T-1}\)</span> contain the same information.</p>
-<p>The pair of equations <a class="reference internal" href="#equation-eq-ft1">(17.1)</a> and <a class="reference internal" href="#equation-eq-ift1">(17.2)</a> tell how to recover one series from its Fourier partner.</p>
+<p>The pair of equations <a class="reference internal" href="#equation-eq-ft1">(16.1)</a> and <a class="reference internal" href="#equation-eq-ift1">(16.2)</a> tell how to recover one series from its Fourier partner.</p>
 <p>The program <code class="docutils literal notranslate"><span class="pre">scipy.signal.fftconvolve</span></code> deploys  the theorem that  a convolution of two sequences <span class="math notranslate nohighlight">\(\{f_k\}, \{g_k\}\)</span> can be computed in the following way:</p>
 <ul class="simple">
 <li><p>Compute Fourier transforms <span class="math notranslate nohighlight">\(F(\omega), G(\omega)\)</span> of the <span class="math notranslate nohighlight">\(\{f_k\}\)</span> and <span class="math notranslate nohighlight">\(\{g_k\}\)</span> sequences, respectively</p></li>
@@ -591,7 +598,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time with np.convolve =  47.23284988700016 ; time with fftconvolve =  0.19968579699980182
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time with np.convolve =  45.86395090099995 ; time with fftconvolve =  0.20141698800034646
 </pre></div>
 </div>
 </div>
@@ -615,7 +622,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/640b70ef9b6b8c09e03ec18f2667df317977713613fbfdc59041f07556bf8e09.png" src="_images/640b70ef9b6b8c09e03ec18f2667df317977713613fbfdc59041f07556bf8e09.png" />
+<img alt="_images/054ff4603274fc46a4384112cbfe4a10026a90c1244717fe49df5b73ad081d2e.png" src="_images/054ff4603274fc46a4384112cbfe4a10026a90c1244717fe49df5b73ad081d2e.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -634,7 +641,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d2fb14979da40e7e0912272744da6afb1530c525eebbce0f55c1cb5f81162937.png" src="_images/d2fb14979da40e7e0912272744da6afb1530c525eebbce0f55c1cb5f81162937.png" />
+<img alt="_images/8775d75ed79e0003dce368d515c387e5a3483eb3e8ce846a1dc100d6e851d884.png" src="_images/8775d75ed79e0003dce368d515c387e5a3483eb3e8ce846a1dc100d6e851d884.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -670,7 +677,7 @@ calculations very quickly.</p>
 <!-- #region -->
 </section>
 <section id="failure-tree-analysis">
-<h2><span class="section-number">17.6. </span>Failure Tree Analysis<a class="headerlink" href="#failure-tree-analysis" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.6. </span>Failure Tree Analysis<a class="headerlink" href="#failure-tree-analysis" title="Permalink to this heading">#</a></h2>
 <p>We shall soon apply the convolution theorem to compute the probability of a <strong>top event</strong> in a failure tree analysis.</p>
 <p>Before applying the convolution theorem, we first describe the model that connects constituent events to the <strong>top</strong> end whose
 failure rate we seek to quantify.</p>
@@ -695,7 +702,7 @@ the event that <span class="math notranslate nohighlight">\(A\)</span> <strong>O
 <p>This approximation is widely used in evaluating system failures.</p>
 </section>
 <section id="application">
-<h2><span class="section-number">17.7. </span>Application<a class="headerlink" href="#application" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.7. </span>Application<a class="headerlink" href="#application" title="Permalink to this heading">#</a></h2>
 <p>A system has been designed with the feature a system  failure occurs when <strong>any</strong> of  <span class="math notranslate nohighlight">\(n\)</span> critical  components  fails.</p>
 <p>The failure probability <span class="math notranslate nohighlight">\(P(A_i)\)</span>  of each event <span class="math notranslate nohighlight">\(A_i\)</span>  is small.</p>
 <p>We assume that failures of the components are statistically independent random variables.</p>
@@ -705,13 +712,13 @@ of a system failure:</p>
 \[ P(F) \approx P(A_1) + P (A_2) + \cdots + P (A_n) \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-probtop">
-<span class="eqno">(17.3)<a class="headerlink" href="#equation-eq-probtop" title="Permalink to this equation">#</a></span>\[ 
+<span class="eqno">(16.3)<a class="headerlink" href="#equation-eq-probtop" title="Permalink to this equation">#</a></span>\[ 
 P(F) \approx \sum_{i=1}^n P (A_i) 
 \]</div>
 <p>Probabilities for each event are recorded as failure rates per year.</p>
 </section>
 <section id="failure-rates-unknown">
-<h2><span class="section-number">17.8. </span>Failure Rates Unknown<a class="headerlink" href="#failure-rates-unknown" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.8. </span>Failure Rates Unknown<a class="headerlink" href="#failure-rates-unknown" title="Permalink to this heading">#</a></h2>
 <p>Now we come to the problem that really interests us, following  <span id="id5">[<a class="reference internal" href="zreferences.html#id19" title="Ashraf Ben El-Shanawany, Keith H Ardron, and Simon P Walker. Lognormal approximations of fault tree uncertainty distributions. Risk Analysis, 38(8):1576–1584, 2018.">ESAW18</a>]</span> and Greenfield and Sargent
 <span id="id6">[<a class="reference internal" href="zreferences.html#id18" title="Moses A Greenfield and Thomas J Sargent. A probabilistic analysis of a catastrophic transuranic waste hoise accident at the wipp. Environmental Evaluation Group, Albuquerque, New Mexico, June 1993. URL: http://www.tomsargent.com/research/EEG-53.pdf.">GS93</a>]</span>  in the spirit of Apostolakis  <span id="id7">[<a class="reference internal" href="zreferences.html#id17" title="George Apostolakis. The concept of probability in safety assessments of technological systems. Science, 250(4986):1359–1364, 1990.">Apo90</a>]</span>.</p>
 <p>The constituent probabilities or failure rates <span class="math notranslate nohighlight">\(P(A_i)\)</span> are not known a priori and have to be estimated.</p>
@@ -737,11 +744,11 @@ of the systems failure probability <span class="math notranslate nohighlight">\(
 <li><p>We say probability mass function because of how we discretize each random variable, as described earlier.</p></li>
 </ul>
 <p>The analyst calculates the probability mass function for the <strong>top event</strong> <span class="math notranslate nohighlight">\(F\)</span>, i.e., a <strong>system failure</strong>,  by repeatedly applying the convolution theorem to compute the probability distribution of a sum of independent log normal random variables, as described in equation
-<a class="reference internal" href="#equation-eq-probtop">(17.3)</a>.</p>
+<a class="reference internal" href="#equation-eq-probtop">(16.3)</a>.</p>
 <!-- #endregion -->
 </section>
 <section id="waste-hoist-failure-rate">
-<h2><span class="section-number">17.9. </span>Waste Hoist Failure Rate<a class="headerlink" href="#waste-hoist-failure-rate" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.9. </span>Waste Hoist Failure Rate<a class="headerlink" href="#waste-hoist-failure-rate" title="Permalink to this heading">#</a></h2>
 <p>We’ll take close to a real world example by assuming that <span class="math notranslate nohighlight">\(n = 14\)</span>.</p>
 <p>The example estimates the annual failure rate of a critical  hoist at a nuclear waste facility.</p>
 <p>A regulatory agency wants the sytem to be designed in a way that makes the failure rate of the top event small with high probability.</p>
@@ -835,7 +842,7 @@ and we’ll also present a counterpart to their Table 11 on page 28.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time for 13 convolutions =  10.399798321000162
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time for 13 convolutions =  11.20612581899968
 </pre></div>
 </div>
 </div>
@@ -1019,53 +1026,48 @@ and in the number of points deployed in the discretizations.</p>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="time_series_with_matrices.html">
-   11. Univariate Time Series with Matrix Algebra
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="lln_clt.html">
-   12. LLN and CLT
+   11. LLN and CLT
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="prob_meaning.html">
-   13. Two Meanings of Probability
+   12. Two Meanings of Probability
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multi_hyper.html">
-   14. Multivariate Hypergeometric Distribution
+   13. Multivariate Hypergeometric Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="multivariate_normal.html">
-   15. Multivariate Normal Distribution
+   14. Multivariate Normal Distribution
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="heavy_tails.html">
-   16. Heavy-Tailed Distributions
+   15. Heavy-Tailed Distributions
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   17. Fault Tree Uncertainties
+   16. Fault Tree Uncertainties
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="back_prop.html">
-   18. Introduction to Artificial Neural Networks
+   17. Introduction to Artificial Neural Networks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rand_resp.html">
-   19. Randomized Response Surveys
+   18. Randomized Response Surveys
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="util_rand_resp.html">
-   20. Expected Utilities of Random Responses
+   19. Expected Utilities of Random Responses
   </a>
  </li>
 </ul>
@@ -1077,17 +1079,17 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lp_intro.html">
-   21. Linear Programming
+   20. Linear Programming
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   22. Optimal Transport
+   21. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   23. Von Neumann Growth Model (and a Generalization)
+   22. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1099,52 +1101,52 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="scalar_dynam.html">
-   24. Dynamics in One Dimension
+   23. Dynamics in One Dimension
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_processes.html">
-   25. AR1 Processes
+   24. AR1 Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   26. Finite Markov Chains
+   25. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   27. Inventory Dynamics
+   26. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   28. Linear State Space Models
+   27. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   29. Samuelson Multiplier-Accelerator
+   28. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   30. Kesten Processes and Firm Dynamics
+   29. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   31. Wealth Distribution Dynamics
+   30. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   32. A First Look at the Kalman Filter
+   31. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   33. Shortest Paths
+   32. Shortest Paths
   </a>
  </li>
 </ul>
@@ -1156,37 +1158,37 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   34. Job Search I: The McCall Search Model
+   33. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   35. Job Search II: Search and Separation
+   34. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   36. Job Search III: Fitted Value Function Iteration
+   35. Job Search III: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_correlated.html">
-   37. Job Search IV: Correlated Wage Offers
+   36. Job Search IV: Correlated Wage Offers
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   38. Job Search V: Modeling Career Choice
+   37. Job Search V: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   39. Job Search VI: On-the-Job Search
+   38. Job Search VI: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   40. Job Search VII: A McCall Worker Q-Learns
+   39. Job Search VII: A McCall Worker Q-Learns
   </a>
  </li>
 </ul>
@@ -1198,52 +1200,52 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   41. Cass-Koopmans Model
+   40. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   42. Cass-Koopmans Competitive Equilibrium
+   41. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_problem.html">
-   43. Cake Eating I: Introduction to Optimal Saving
+   42. Cake Eating I: Introduction to Optimal Saving
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   44. Cake Eating II: Numerical Methods
+   43. Cake Eating II: Numerical Methods
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth.html">
-   45. Optimal Growth I: The Stochastic Optimal Growth Model
+   44. Optimal Growth I: The Stochastic Optimal Growth Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="optgrowth_fast.html">
-   46. Optimal Growth II: Accelerating the Code with Numba
+   45. Optimal Growth II: Accelerating the Code with Numba
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="coleman_policy_iter.html">
-   47. Optimal Growth III: Time Iteration
+   46. Optimal Growth III: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="egm_policy_iter.html">
-   48. Optimal Growth IV: The Endogenous Grid Method
+   47. Optimal Growth IV: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp.html">
-   49. The Income Fluctuation Problem I: Basic Model
+   48. The Income Fluctuation Problem I: Basic Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   50. The Income Fluctuation Problem II: Stochastic Returns on Assets
+   49. The Income Fluctuation Problem II: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1255,17 +1257,17 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="bayes_nonconj.html">
-   51. Non-Conjugate Priors
+   50. Non-Conjugate Priors
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_bayes.html">
-   52. Posterior Distributions for  AR(1) Parameters
+   51. Posterior Distributions for  AR(1) Parameters
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ar1_turningpts.html">
-   53. Forecasting  an AR(1) process
+   52. Forecasting  an AR(1) process
   </a>
  </li>
 </ul>
@@ -1277,42 +1279,42 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   54. Job Search VII: Search with Learning
+   53. Job Search VII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_ratio_process.html">
-   55. Likelihood Ratio Processes
+   54. Likelihood Ratio Processes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="imp_sample.html">
-   56. Computing Mean of a Likelihood Ratio Process
+   55. Computing Mean of a Likelihood Ratio Process
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wald_friedman.html">
-   57. A Problem that Stumped Milton Friedman
+   56. A Problem that Stumped Milton Friedman
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="exchangeable.html">
-   58. Exchangeability and Bayesian Updating
+   57. Exchangeability and Bayesian Updating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="likelihood_bayes.html">
-   59. Likelihood Ratio Processes and Bayesian Learning
+   58. Likelihood Ratio Processes and Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   60. Incorrect Models
+   59. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   61. Bayesian versus Frequentist Decision Rules
+   60. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
 </ul>
@@ -1324,32 +1326,32 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   61. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   62. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   63. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   64. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   65. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   66. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1361,37 +1363,37 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="schelling.html">
-   68. Schelling’s Segregation Model
+   67. Schelling’s Segregation Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   69. A Lake Model of Employment and Unemployment
+   68. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   70. Rational Expectations Equilibrium
+   69. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   71. Stability in Linear Rational Expectations Models
+   70. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   72. Markov Perfect Equilibrium
+   71. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   73. Uncertainty Traps
+   72. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   74. The Aiyagari Model
+   73. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1403,17 +1405,17 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   75. Asset Pricing: Finite State Models
+   74. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   76. Competitive Equilibria with Arrow Securities
+   75. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   77. Heterogeneous Beliefs and Bubbles
+   76. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
 </ul>
@@ -1425,17 +1427,17 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   78. Pandas for Panel Data
+   77. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   79. Linear Regression in Python
+   78. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   80. Maximum Likelihood Estimation
+   79. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1447,12 +1449,12 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   81. First-Price and Second-Price Auctions
+   80. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   82. Multiple Good Allocation Mechanisms
+   81. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1464,17 +1466,17 @@ and in the number of points deployed in the discretizations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   83. Troubleshooting
+   82. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   84. References
+   83. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   85. Execution Statistics
+   84. Execution Statistics
   </a>
  </li>
 </ul>
