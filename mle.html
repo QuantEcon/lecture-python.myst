@@ -823,7 +823,7 @@ iteration.</p>
     <span class="k">while</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
         <span class="n">H</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">H</span><span class="p">(),</span> <span class="n">model</span><span class="o">.</span><span class="n">G</span><span class="p">()</span>
         <span class="n">β_new</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">H</span><span class="p">)</span> <span class="o">@</span> <span class="n">G</span><span class="p">)</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">β_new</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">β_new</span> <span class="o">-</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">)</span>
         <span class="n">model</span><span class="o">.</span><span class="n">β</span> <span class="o">=</span> <span class="n">β_new</span>
 
         <span class="c1"># Print iterations</span>
@@ -875,14 +875,15 @@ variables in <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</
 3            -3.3788646      [&#39;-5.92&#39;, &#39;0.909&#39;, &#39;0.82&#39;]
 4            -3.3783559      [&#39;-6.07&#39;, &#39;0.933&#39;, &#39;0.843&#39;]
 5            -3.3783555      [&#39;-6.08&#39;, &#39;0.933&#39;, &#39;0.843&#39;]
-Number of iterations: 6
-β_hat = [-6.07848205  0.93340226  0.84329625]
+6            -3.3783555      [&#39;-6.08&#39;, &#39;0.933&#39;, &#39;0.843&#39;]
+Number of iterations: 7
+β_hat = [-6.07848573  0.9334028   0.84329677]
 </pre></div>
 </div>
 </div>
 </div>
 <p>As this was a simple model with few observations, the algorithm achieved
-convergence in only 6 iterations.</p>
+convergence in only 7 iterations.</p>
 <p>You can see that with each iteration, the log-likelihood value increased.</p>
 <p>Remember, our objective was to maximize the log-likelihood function,
 which the algorithm has worked to achieve.</p>
@@ -898,9 +899,9 @@ and therefore the numerator in our updating equation is becoming smaller.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-3.95169228e-07],
-       [-1.00114805e-06],
-       [-7.73114562e-07]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-2.54574140e-13],
+       [-6.44040377e-13],
+       [-4.99100761e-13]])
 </pre></div>
 </div>
 </div>
@@ -983,8 +984,8 @@ to confirm we obtain the same coefficients and log-likelihood value.</p>
 Dep. Variable:                      y   No. Observations:                    5
 Model:                        Poisson   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Tue, 06 Jun 2023   Pseudo R-squ.:                  0.2546
-Time:                        09:30:26   Log-Likelihood:                -3.3784
+Date:                Tue, 13 Jun 2023   Pseudo R-squ.:                  0.2546
+Time:                        01:27:21   Log-Likelihood:                -3.3784
 converged:                       True   LL-Null:                       -4.5325
 Covariance Type:            nonrobust   LLR p-value:                    0.3153
 ==============================================================================
@@ -1050,8 +1051,8 @@ model.</p>
 Dep. Variable:                numbil0   No. Observations:                  197
 Model:                        Poisson   Df Residuals:                      193
 Method:                           MLE   Df Model:                            3
-Date:                Tue, 06 Jun 2023   Pseudo R-squ.:                  0.8574
-Time:                        09:30:26   Log-Likelihood:                -438.54
+Date:                Tue, 13 Jun 2023   Pseudo R-squ.:                  0.8574
+Time:                        01:27:21   Log-Likelihood:                -438.54
 converged:                       True   LL-Null:                       -3074.7
 Covariance Type:                  HC0   LLR p-value:                     0.000
 ==============================================================================
@@ -1409,8 +1410,8 @@ Number of iterations: 4
 Dep. Variable:                      y   No. Observations:                    5
 Model:                         Probit   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Tue, 06 Jun 2023   Pseudo R-squ.:                  0.2961
-Time:                        09:30:26   Log-Likelihood:                -2.3687
+Date:                Tue, 13 Jun 2023   Pseudo R-squ.:                  0.2961
+Time:                        01:27:21   Log-Likelihood:                -2.3687
 converged:                       True   LL-Null:                       -3.3651
 Covariance Type:            nonrobust   LLR p-value:                    0.3692
 ==============================================================================

@@ -51,7 +51,7 @@ tails.
 
 The wealth distribution in many countries exhibits a Pareto tail
 
-* See {doc}`this lecture <heavy_tails>` for a definition.
+* See {doc}`this lecture <intro:heavy_tails>` for a definition.
 * For a review of the empirical evidence, see, for example, {cite}`benhabib2018skewed`.
 
 This is consistent with high concentration of wealth amongst the richest households.

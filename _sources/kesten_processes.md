@@ -276,7 +276,7 @@ labor income has finite mean and $\mathbb E \ln R_t  + \ln s < 0$.
 Under certain conditions, the stationary distribution of a Kesten process has
 a Pareto tail.
 
-(See our {doc}`earlier lecture <heavy_tails>`  on heavy-tailed distributions for background.)
+(See our {doc}`earlier lecture <intro:heavy_tails>`  on heavy-tailed distributions for background.)
 
 This fact is significant for economics because of the prevalence of Pareto-tailed distributions.
 
@@ -362,7 +362,7 @@ plt.show()
 
 ## Application: Firm Dynamics
 
-As noted in our {doc}`lecture on heavy tails <heavy_tails>`, for common measures of firm size such as revenue or employment, the US firm size distribution exhibits a Pareto tail (see, e.g., {cite}`axtell2001zipf`, {cite}`gabaix2016power`).
+As noted in our {doc}`lecture on heavy tails <intro:heavy_tails>`, for common measures of firm size such as revenue or employment, the US firm size distribution exhibits a Pareto tail (see, e.g., {cite}`axtell2001zipf`, {cite}`gabaix2016power`).
 
 Let us try to explain this rather striking fact using the Kesten--Goldie Theorem.
 
