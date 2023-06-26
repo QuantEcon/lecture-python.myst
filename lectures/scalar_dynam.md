@@ -268,7 +268,7 @@ def plot45(g, xmin, xmax, x0, num_arrows=6, var='x'):
         x = g(x)
         xticks.append(x)
         xtick_labels.append(r'${}_{}$'.format(var, str(i+1)))
-        ax.plot((x, x), (0, x), 'k-', ls='dotted')
+        ax.plot((x, x), (0, x), 'k', ls='dotted')
 
     xticks.append(xmax)
     xtick_labels.append(xmax)
