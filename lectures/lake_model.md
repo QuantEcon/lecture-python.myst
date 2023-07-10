@@ -265,12 +265,8 @@ class LakeModel:
         --------
         xbar : steady state vector of employment and unemployment rates
         """
-        x = np.full(2, 0.5)
-        error = tol + 1
-        while error > tol:
-            new_x = self.A_hat @ x
-            error = np.max(np.abs(new_x - x))
-            x = new_x
+        x = np.array([self.A_hat[0, 1], self.A_hat[1, 0]])
+        x /= x.sum()
         return x
 
     def simulate_stock_path(self, X0, T):
