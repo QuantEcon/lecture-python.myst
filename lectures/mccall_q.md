@@ -75,7 +75,6 @@ import numpy as np
 
 from numba import jit, float64, int64
 from numba.experimental import jitclass
-import quantecon as qe
 from quantecon.distributions import BetaBinomial
 
 import matplotlib.pyplot as plt

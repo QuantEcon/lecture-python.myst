@@ -56,7 +56,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import random
 import numpy as np
-from scipy.stats import t, beta, lognorm, expon, gamma, uniform, cauchy
+from scipy.stats import t, beta, lognorm, expon, gamma, uniform
 from scipy.stats import gaussian_kde, poisson, binom, norm, chi2
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.collections import PolyCollection

@@ -65,8 +65,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from interpolation import interp
-from numba import jit, njit, prange, float64, int32
-from numba.experimental import jitclass
+from numba import jit, njit
 from quantecon.optimize.scalar_maximization import brent_max
 ```
 

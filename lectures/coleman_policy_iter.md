@@ -65,11 +65,9 @@ Let's start with some imports:
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-import quantecon as qe
 from interpolation import interp
 from quantecon.optimize import brentq
-from numba import njit, float64
-from numba.experimental import jitclass
+from numba import njit
 ```
 
 ## The Euler Equation

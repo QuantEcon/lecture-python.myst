@@ -53,7 +53,6 @@ import pandas as pd
 from mpl_toolkits.mplot3d import Axes3D
 import statsmodels.api as sm
 from statsmodels.api import Poisson
-from scipy import stats
 from scipy.stats import norm
 from statsmodels.iolib.summary2 import summary_col
 ```

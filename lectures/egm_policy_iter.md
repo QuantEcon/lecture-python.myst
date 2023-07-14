@@ -29,7 +29,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!pip install quantecon
 !pip install interpolation
 ```
 
@@ -55,11 +54,8 @@ Let's start with some standard imports:
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-import quantecon as qe
 from interpolation import interp
-from numba import njit, float64
-from numba.experimental import jitclass
-from quantecon.optimize import brentq
+from numba import njit
 ```
 
 ## Key Idea
@@ -266,4 +262,3 @@ has managed to shave off still more run time without compromising accuracy.
 This is due to the lack of a numerical root-finding step.
 
 We can now solve the optimal growth model at given parameters extremely fast.
-

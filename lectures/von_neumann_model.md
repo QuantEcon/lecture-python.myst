@@ -49,7 +49,6 @@ We'll begin with some imports:
 ```{code-cell} ipython
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.linalg import solve
 from scipy.optimize import fsolve, linprog
 from textwrap import dedent
 %matplotlib inline
@@ -375,17 +374,17 @@ an economy.
 Two key assumptions restrict economy $(A,B)$:
 
 - **Assumption I:** (every good that is consumed is also produced)
-  
+
   $$
   b_{.,j} > \mathbf{0}\hspace{5mm}\forall j=1,2,\dots,n
   $$
-  
+
 - **Assumption II:** (no free lunch)
-  
+
   $$
   a_{i,.} > \mathbf{0}\hspace{5mm}\forall i=1,2,\dots,m
   $$
-  
+
 
 A semi-positive  *intensity* $m$-vector  $x$ denotes  levels at which
 activities are operated.
@@ -1044,4 +1043,3 @@ associated expansion and interest factors, respectively. Then we have
 $$
 \alpha_0 = \max_i \{\alpha_i\}\hspace{1cm}\text{and}\hspace{1cm}\beta_0 = \min_i \{\beta_i\}
 $$
-
