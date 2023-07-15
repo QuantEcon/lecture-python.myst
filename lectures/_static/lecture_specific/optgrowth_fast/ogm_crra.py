@@ -1,4 +1,5 @@
-
+from numba import float64
+from numba.experimental import jitclass
 
 opt_growth_data = [
     ('α', float64),          # Production parameter
@@ -14,11 +15,11 @@ opt_growth_data = [
 class OptimalGrowthModel_CRRA:
 
     def __init__(self,
-                α=0.4, 
-                β=0.96, 
+                α=0.4,
+                β=0.96,
                 μ=0,
                 s=0.1,
-                γ=1.5, 
+                γ=1.5,
                 grid_max=4,
                 grid_size=120,
                 shock_size=250,
@@ -32,7 +33,7 @@ class OptimalGrowthModel_CRRA:
         # Store shocks (with a seed, so results are reproducible)
         np.random.seed(seed)
         self.shocks = np.exp(μ + s * np.random.randn(shock_size))
-       
+
 
     def f(self, k):
         "The production function."
@@ -52,4 +53,3 @@ class OptimalGrowthModel_CRRA:
 
     def u_prime_inv(c):
         return c**(-1 / self.γ)
-
