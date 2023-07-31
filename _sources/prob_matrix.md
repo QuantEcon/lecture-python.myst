@@ -84,11 +84,11 @@ where ${\mathcal G}$ is the subset of $\Omega$ for which $X(\omega) \in A$.
 We call this the induced probability distribution of random variable $X$.
 
 
-## Digression: What Does Probability Mean? 
+## What Does Probability Mean? 
 
 Before diving in, we'll say a few words about what probability theory means and how it connects to statistics.
 
-These are topics that are also touched on in the quantecon lectures  <https://python.quantecon.org/prob_meaning.html> and <https://python.quantecon.org/navy_captain.html>.
+We  also touch  on these topics in the quantecon lectures  <https://python.quantecon.org/prob_meaning.html> and <https://python.quantecon.org/navy_captain.html>.
 
 For much of this lecture we'll be discussing  fixed "population" probabilities. 
 
@@ -248,10 +248,10 @@ where $\theta $ is a vector of parameters that is of much smaller dimension than
 **Remarks:**
 
 - The concept of  **parameter** is intimately related to the notion of  **sufficient statistic**.
--  Sufficient statistic are  nonlinear function of a data set.
--  Sufficient statistics are designed to  summarize all  **information** about the parameters that is contained in the big data set. 
--  They are important tools that AI uses to reduce the size of a **big data** set
--  R. A. Fisher provided a sharp definition of **information** -- see <https://en.wikipedia.org/wiki/Fisher_information>
+-  Sufficient statistics are  nonlinear functions of a data set.
+-  Sufficient statistics are designed to  summarize all  **information** about  parameters that is contained in a data set. 
+-  They are important tools that AI uses to summarize  a **big data** set
+-  R. A. Fisher provided a rigorous definition of **information** -- see <https://en.wikipedia.org/wiki/Fisher_information>
 
 
  
@@ -294,7 +294,7 @@ To begin, we restrict ourselves to two discrete random variables.
 Let $X,Y$ be two discrete random variables that take values:
 
 $$
-X\in\{0,\ldots,J-1\} 
+X\in\{0,\ldots,I-1\} 
 $$
 
 $$
@@ -304,7 +304,7 @@ $$
 Then their **joint distribution** is described by a matrix 
 
 $$
-F_{I\times J}=[f_{ij}]_{i\in\{0,\ldots,J-1\}, j\in\{0,\ldots,J-1\}}
+F_{I\times J}=[f_{ij}]_{i\in\{0,\ldots,I-1\}, j\in\{0,\ldots,J-1\}}
 $$
 
 whose elements are
@@ -331,7 +331,7 @@ $$
 \textrm{Prob}\{Y=j\}= \sum_{i=0}^{I-1}f_{ij} = \nu_j, \quad j=0,\ldots,J-1 
 $$
 
-For example, let the joint distribution over $(X,Y)$ be 
+For example, let a joint distribution over $(X,Y)$ be 
 
 $$
 F = \left[
@@ -342,7 +342,7 @@ F = \left[
 \right]
 $$ (eq:example101discrete)
 
-Then marginal distributions are:
+The implied  marginal distributions are:
 
 $$ 
 \begin{aligned} 
@@ -405,7 +405,7 @@ $$
 Random variables X and Y are statistically **independent** if 
 
 $$ 
-\textrm{Prob}\{X=i,Y=j\}={f_ig_i}
+\textrm{Prob}\{X=i,Y=j\}={f_ig_j}
 $$
 
 where 
@@ -421,8 +421,8 @@ Conditional distributions are
 
 $$
 \begin{aligned}
-\textrm{Prob}\{X=i|Y=j\} & =\frac{f_ig_i}{\sum_{i}f_ig_j}=\frac{f_ig_i}{g_i}=f_i \\
-\textrm{Prob}\{Y=j|X=i\} & =\frac{f_ig_i}{\sum_{j}f_ig_j}=\frac{f_ig_i}{f_i}=g_i
+\textrm{Prob}\{X=i|Y=j\} & =\frac{f_ig_j}{\sum_{i}f_ig_j}=\frac{f_ig_j}{g_i}=f_i \\
+\textrm{Prob}\{Y=j|X=i\} & =\frac{f_ig_j}{\sum_{j}f_ig_j}=\frac{f_ig_j}{f_i}=g_j
 \end{aligned}
 $$
 
@@ -449,7 +449,7 @@ $$
 $$
 
 
-## Classic Trick for Generating Random Numbers
+## Generating Random Numbers
 
 Suppose we have at our disposal a pseudo random number that draws a uniform random variable, i.e., one with probability distribution
 

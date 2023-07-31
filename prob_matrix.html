@@ -169,7 +169,7 @@ const thebe_selector_output = ".output, .cell_output"
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sketch-of-basic-concepts">10.1. Sketch of Basic Concepts</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#digression-what-does-probability-mean">10.2. Digression: What Does Probability Mean?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-does-probability-mean">10.2. What Does Probability Mean?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#representing-probability-distributions">10.3. Representing  Probability Distributions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-probability-distributions">10.4. Univariate Probability Distributions</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-random-variable">10.4.1. Discrete random variable</a></li>
@@ -181,7 +181,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditional-probability-distributions">10.7. Conditional Probability  Distributions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-independence">10.8. Statistical Independence</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#means-and-variances">10.9. Means and Variances</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classic-trick-for-generating-random-numbers">10.10. Classic Trick for Generating Random Numbers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-random-numbers">10.10. Generating Random Numbers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#some-discrete-probability-distributions">10.11. Some Discrete Probability Distributions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometric-distribution">10.12. Geometric distribution</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#newcombbenford-distribution">10.12.1. Newcomb–Benford distribution</a></li>
@@ -313,10 +313,10 @@ const thebe_selector_output = ".output, .cell_output"
 <p>where <span class="math notranslate nohighlight">\({\mathcal G}\)</span> is the subset of <span class="math notranslate nohighlight">\(\Omega\)</span> for which <span class="math notranslate nohighlight">\(X(\omega) \in A\)</span>.</p>
 <p>We call this the induced probability distribution of random variable <span class="math notranslate nohighlight">\(X\)</span>.</p>
 </section>
-<section id="digression-what-does-probability-mean">
-<h2><span class="section-number">10.2. </span>Digression: What Does Probability Mean?<a class="headerlink" href="#digression-what-does-probability-mean" title="Permalink to this heading">#</a></h2>
+<section id="what-does-probability-mean">
+<h2><span class="section-number">10.2. </span>What Does Probability Mean?<a class="headerlink" href="#what-does-probability-mean" title="Permalink to this heading">#</a></h2>
 <p>Before diving in, we’ll say a few words about what probability theory means and how it connects to statistics.</p>
-<p>These are topics that are also touched on in the quantecon lectures  <a class="reference external" href="https://python.quantecon.org/prob_meaning.html">https://python.quantecon.org/prob_meaning.html</a> and <a class="reference external" href="https://python.quantecon.org/navy_captain.html">https://python.quantecon.org/navy_captain.html</a>.</p>
+<p>We  also touch  on these topics in the quantecon lectures  <a class="reference external" href="https://python.quantecon.org/prob_meaning.html">https://python.quantecon.org/prob_meaning.html</a> and <a class="reference external" href="https://python.quantecon.org/navy_captain.html">https://python.quantecon.org/navy_captain.html</a>.</p>
 <p>For much of this lecture we’ll be discussing  fixed “population” probabilities.</p>
 <p>These are purely mathematical objects.</p>
 <p>To appreciate how statisticians connect probabilities to data, the key is to understand the following concepts:</p>
@@ -441,10 +441,10 @@ f_i = g(i; \theta)
 <p><strong>Remarks:</strong></p>
 <ul class="simple">
 <li><p>The concept of  <strong>parameter</strong> is intimately related to the notion of  <strong>sufficient statistic</strong>.</p></li>
-<li><p>Sufficient statistic are  nonlinear function of a data set.</p></li>
-<li><p>Sufficient statistics are designed to  summarize all  <strong>information</strong> about the parameters that is contained in the big data set.</p></li>
-<li><p>They are important tools that AI uses to reduce the size of a <strong>big data</strong> set</p></li>
-<li><p>R. A. Fisher provided a sharp definition of <strong>information</strong> – see <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher_information">https://en.wikipedia.org/wiki/Fisher_information</a></p></li>
+<li><p>Sufficient statistics are  nonlinear functions of a data set.</p></li>
+<li><p>Sufficient statistics are designed to  summarize all  <strong>information</strong> about  parameters that is contained in a data set.</p></li>
+<li><p>They are important tools that AI uses to summarize  a <strong>big data</strong> set</p></li>
+<li><p>R. A. Fisher provided a rigorous definition of <strong>information</strong> – see <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher_information">https://en.wikipedia.org/wiki/Fisher_information</a></p></li>
 </ul>
 <p>An example of a parametric probability distribution is  a <strong>geometric distribution</strong>.</p>
 <p>It is described by</p>
@@ -480,7 +480,7 @@ f_i( \theta)\ge0, \sum_{i=0}^{\infty}f_i(\theta)=1
 <p>Let <span class="math notranslate nohighlight">\(X,Y\)</span> be two discrete random variables that take values:</p>
 <div class="math notranslate nohighlight">
 \[
-X\in\{0,\ldots,J-1\} 
+X\in\{0,\ldots,I-1\} 
 \]</div>
 <div class="math notranslate nohighlight">
 \[
@@ -489,7 +489,7 @@ Y\in\{0,\ldots,J-1\}
 <p>Then their <strong>joint distribution</strong> is described by a matrix</p>
 <div class="math notranslate nohighlight">
 \[
-F_{I\times J}=[f_{ij}]_{i\in\{0,\ldots,J-1\}, j\in\{0,\ldots,J-1\}}
+F_{I\times J}=[f_{ij}]_{i\in\{0,\ldots,I-1\}, j\in\{0,\ldots,J-1\}}
 \]</div>
 <p>whose elements are</p>
 <div class="math notranslate nohighlight">
@@ -513,7 +513,7 @@ f_{ij}=\textrm{Prob}\{X=i,Y=j\} \geq 0
 \[
 \textrm{Prob}\{Y=j\}= \sum_{i=0}^{I-1}f_{ij} = \nu_j, \quad j=0,\ldots,J-1 
 \]</div>
-<p>For example, let the joint distribution over <span class="math notranslate nohighlight">\((X,Y)\)</span> be</p>
+<p>For example, let a joint distribution over <span class="math notranslate nohighlight">\((X,Y)\)</span> be</p>
 <div class="math notranslate nohighlight" id="equation-eq-example101discrete">
 <span class="eqno">(10.3)<a class="headerlink" href="#equation-eq-example101discrete" title="Permalink to this equation">#</a></span>\[\begin{split}
 F = \left[
@@ -523,7 +523,7 @@ F = \left[
   \end{matrix}
 \right]
 \end{split}\]</div>
-<p>Then marginal distributions are:</p>
+<p>The implied  marginal distributions are:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split} 
 \begin{aligned} 
@@ -579,7 +579,7 @@ f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 <p>Random variables X and Y are statistically <strong>independent</strong> if</p>
 <div class="math notranslate nohighlight">
 \[ 
-\textrm{Prob}\{X=i,Y=j\}={f_ig_i}
+\textrm{Prob}\{X=i,Y=j\}={f_ig_j}
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
@@ -593,8 +593,8 @@ f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}
-\textrm{Prob}\{X=i|Y=j\} &amp; =\frac{f_ig_i}{\sum_{i}f_ig_j}=\frac{f_ig_i}{g_i}=f_i \\
-\textrm{Prob}\{Y=j|X=i\} &amp; =\frac{f_ig_i}{\sum_{j}f_ig_j}=\frac{f_ig_i}{f_i}=g_i
+\textrm{Prob}\{X=i|Y=j\} &amp; =\frac{f_ig_j}{\sum_{i}f_ig_j}=\frac{f_ig_j}{g_i}=f_i \\
+\textrm{Prob}\{Y=j|X=i\} &amp; =\frac{f_ig_j}{\sum_{j}f_ig_j}=\frac{f_ig_j}{f_i}=g_j
 \end{aligned}
 \end{split}\]</div>
 </section>
@@ -618,8 +618,8 @@ f(y)&amp; = \int_{\mathbb{R}} f(x,y) dx
 \end{aligned}
 \end{split}\]</div>
 </section>
-<section id="classic-trick-for-generating-random-numbers">
-<h2><span class="section-number">10.10. </span>Classic Trick for Generating Random Numbers<a class="headerlink" href="#classic-trick-for-generating-random-numbers" title="Permalink to this heading">#</a></h2>
+<section id="generating-random-numbers">
+<h2><span class="section-number">10.10. </span>Generating Random Numbers<a class="headerlink" href="#generating-random-numbers" title="Permalink to this heading">#</a></h2>
 <p>Suppose we have at our disposal a pseudo random number that draws a uniform random variable, i.e., one with probability distribution</p>
 <div class="math notranslate nohighlight">
 \[
@@ -718,7 +718,7 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c9e05247ef9aeb5c9a169d9b9aa6fef1a3346b554646065b357a04c2d2afd2e8.png" src="_images/c9e05247ef9aeb5c9a169d9b9aa6fef1a3346b554646065b357a04c2d2afd2e8.png" />
+<img alt="_images/78cfdda5a70ddc6ef690396a130f07335e1a6f9fd85e0db9c5e9bfe213fbe701.png" src="_images/78cfdda5a70ddc6ef690396a130f07335e1a6f9fd85e0db9c5e9bfe213fbe701.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -729,7 +729,7 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1a8272fb7750723aef4b6cfe6b2b0a942be2d9cd2b807e00707154935a03eb72.png" src="_images/1a8272fb7750723aef4b6cfe6b2b0a942be2d9cd2b807e00707154935a03eb72.png" />
+<img alt="_images/4371b4a380c842488a49fd7183e33ebd0a076568e8b861e794d640349495d289.png" src="_images/4371b4a380c842488a49fd7183e33ebd0a076568e8b861e794d640349495d289.png" />
 </div>
 </div>
 <p><strong>Geometric distribution</strong></p>
@@ -796,7 +796,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/112f547450241aeecf374f51991026716341202659406783729db1f4edeebcdf.png" src="_images/112f547450241aeecf374f51991026716341202659406783729db1f4edeebcdf.png" />
+<img alt="_images/38d5d420ad94fb3e8e9ca99cb4c2c1d3805e72aafc088d661e24ee31b595b33f.png" src="_images/38d5d420ad94fb3e8e9ca99cb4c2c1d3805e72aafc088d661e24ee31b595b33f.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -806,7 +806,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>68
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>61
 </pre></div>
 </div>
 </div>
@@ -831,7 +831,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7c24b7d48cb252ee0699b092fc2a333dfff0bb019ff0841d45b769f3065fcbac.png" src="_images/7c24b7d48cb252ee0699b092fc2a333dfff0bb019ff0841d45b769f3065fcbac.png" />
+<img alt="_images/c08536c6ac2da867f53c919780cc28294b957c45f769e4995878026c8fb763b6.png" src="_images/c08536c6ac2da867f53c919780cc28294b957c45f769e4995878026c8fb763b6.png" />
 </div>
 </div>
 </section>
@@ -880,8 +880,8 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.338038 
-The sample variance is:  7.787984310556
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.339947 
+The sample variance is:  7.851323037190998
 
 The population mean is:  3.3333333333333335
 The population variance is:  7.777777777777778
@@ -995,8 +995,8 @@ X  &amp; \sim NB(r,p) \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.323518 
-The sample variance is:  77.78716010367597
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.325499 
+The sample variance is:  77.62711340099897
 
 The population mean is:  23.333333333333336
 The population variance is:  77.77777777777779
@@ -1040,8 +1040,8 @@ X \sim N(\mu,\sigma^2)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  -0.00020163987865214379
-The sample standard deviation is:  0.0999471451513429
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  -9.070368103827626e-05
+The sample standard deviation is:  0.09996525382308256
 </pre></div>
 </div>
 </div>
@@ -1101,8 +1101,8 @@ f(x)&amp; = \begin{cases} \frac{1}{b-a}, &amp; a \leq x \leq b \\ \quad0, &amp; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  14.997116323335664 
-The sample variance is:  8.331020779145286
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  14.998946860400945 
+The sample variance is:  8.333479794834888
 
 The population mean is:  15.0
 The population variance is:  8.333333333333334
@@ -1146,8 +1146,8 @@ f(x) = 0.0005
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.472189012611732 
-The sample variance is:  5850.71132114663
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.347767291449898 
+The sample variance is:  5812.08168373288
 </pre></div>
 </div>
 </div>
@@ -1230,8 +1230,8 @@ F=[f_{ij}]=\left[\begin{array}{cc}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.  0.  0. ...  1.  0.  0.]
- [10. 20. 10. ... 20. 10. 10.]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.  0.  1. ...  0.  0.  0.]
+ [20. 10. 10. ... 10. 10. 20.]]
 </pre></div>
 </div>
 </div>
@@ -1265,17 +1265,17 @@ F=[f_{ij}]=\left[\begin{array}{cc}
 +---------+----------+
 | x_value |  x_prob  |
 +---------+----------+
-|    0    | 0.499849 |
-|    1    | 0.500151 |
+|    0    | 0.498996 |
+|    1    | 0.501004 |
 +---------+----------+
 
 marginal distribution for y
-+---------+--------------------+
-| y_value |       y_prob       |
-+---------+--------------------+
-|    10   |       0.3997       |
-|    20   | 0.6003000000000001 |
-+---------+--------------------+
++---------+----------+
+| y_value |  y_prob  |
++---------+----------+
+|    10   | 0.399484 |
+|    20   | 0.600516 |
++---------+----------+
 </pre></div>
 </div>
 </div>
@@ -1315,17 +1315,17 @@ marginal distribution for y
 +---------+--------------------+---------------------+
 | y_value |     prob(x=0)      |      prob(x=1)      |
 +---------+--------------------+---------------------+
-|    10   | 0.7507330497873405 | 0.24926695021265954 |
-|    20   | 0.3328019323671498 |  0.6671980676328502 |
+|    10   | 0.749168927917013  | 0.25083107208298705 |
+|    20   | 0.3325723211371554 |  0.6674276788628446 |
 +---------+--------------------+---------------------+
 
 conditional distribution for y
-+---------+---------------------+--------------------+
-| x_value |      prob(y=10)     |     prob(y=20)     |
-+---------+---------------------+--------------------+
-|    0    |  0.6003172958233387 | 0.3996827041766613 |
-|    1    | 0.19920384044018707 | 0.800796159559813  |
-+---------+---------------------+--------------------+
++---------+---------------------+---------------------+
+| x_value |      prob(y=10)     |      prob(y=20)     |
++---------+---------------------+---------------------+
+|    0    |  0.5997663307922309 | 0.40023366920776915 |
+|    1    | 0.20000439118250554 |  0.7999956088174944 |
++---------+---------------------+---------------------+
 </pre></div>
 </div>
 </div>
@@ -1529,19 +1529,19 @@ x=x_2 &amp; \vdots &amp; \frac{0.1}{0.5}=0.2 &amp; \frac{0.4}{0.5}=0.8 \\
  +---------+----------+
 | x_value |  x_prob  |
 +---------+----------+
-|    0    | 0.499338 |
-|    1    | 0.500662 |
+|    0    | 0.500282 |
+|    1    | 0.499718 |
 |   sum   |   1.0    |
 +---------+----------+
 
 marginal distribution for y
- +---------+----------+
-| y_value |  y_prob  |
-+---------+----------+
-|    10   | 0.400408 |
-|    20   | 0.599592 |
-|   sum   |   1.0    |
-+---------+----------+
+ +---------+---------+
+| y_value |  y_prob |
++---------+---------+
+|    10   | 0.39996 |
+|    20   | 0.60004 |
+|   sum   |   1.0   |
++---------+---------+
 </pre></div>
 </div>
 </div>
@@ -1555,19 +1555,19 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
- +---------+---------------------+--------------------+-----+
-| x_value |          0          |         1          | sum |
-+---------+---------------------+--------------------+-----+
-|    10   |  0.7486363908813011 | 0.2513636091186989 | 1.0 |
-|    20   | 0.33285634231277267 | 0.6671436576872273 | 1.0 |
-+---------+---------------------+--------------------+-----+
+ +---------+---------------------+---------------------+-----+
+| x_value |          0          |          1          | sum |
++---------+---------------------+---------------------+-----+
+|    10   |  0.750970097009701  | 0.24902990299029903 | 1.0 |
+|    20   | 0.33318445436970867 |  0.6668155456302913 | 1.0 |
++---------+---------------------+---------------------+-----+
 
 conditional distribution for y
  +---------+---------------------+---------------------+-----+
 | y_value |          10         |          20         | sum |
 +---------+---------------------+---------------------+-----+
-|    0    |  0.6003148168174663 | 0.39968518318253365 | 1.0 |
-|    1    | 0.20102983649647865 |  0.7989701635035213 | 1.0 |
+|    0    |  0.6003773871536453 | 0.39962261284635464 | 1.0 |
+|    1    | 0.19931641445775417 |  0.8006835855422458 | 1.0 |
 +---------+---------------------+---------------------+-----+
 </pre></div>
 </div>
@@ -1610,20 +1610,20 @@ conditional distribution for y
  +---------+----------+
 | x_value |  x_prob  |
 +---------+----------+
-|    10   | 0.299486 |
-|    20   | 0.399846 |
-|    30   | 0.300668 |
+|    10   | 0.299188 |
+|    20   | 0.400643 |
+|    30   | 0.300169 |
 |   sum   |   1.0    |
 +---------+----------+
 
 marginal distribution for y
- +---------+---------+
-| y_value |  y_prob |
-+---------+---------+
-|    1    | 0.44949 |
-|    2    | 0.55051 |
-|   sum   |   1.0   |
-+---------+---------+
+ +---------+----------+
+| y_value |  y_prob  |
++---------+----------+
+|    1    | 0.450103 |
+|    2    | 0.549897 |
+|   sum   |   1.0    |
++---------+----------+
 </pre></div>
 </div>
 </div>
@@ -1639,18 +1639,18 @@ marginal distribution for y
  +---------+---------------------+---------------------+---------------------+-----+
 | x_value |          10         |          20         |          30         | sum |
 +---------+---------------------+---------------------+---------------------+-----+
-|    1    |  0.4436294467062671 | 0.22211172662350664 |  0.3342588266702263 | 1.0 |
-|    2    | 0.18179324626255655 |  0.544965577373708  | 0.27324117636373546 | 1.0 |
+|    1    | 0.44294305969966874 | 0.22302895115118096 | 0.33402798914915033 | 1.0 |
+|    2    |  0.1815212667099475 |  0.5460240735992377 | 0.27245465969081484 | 1.0 |
 +---------+---------------------+---------------------+---------------------+-----+
 
 conditional distribution for y
- +---------+--------------------+---------------------+-----+
-| y_value |         1          |          2          | sum |
-+---------+--------------------+---------------------+-----+
-|    10   | 0.6658307900870157 | 0.33416920991298427 | 1.0 |
-|    20   | 0.2496886301225972 |  0.7503113698774028 | 1.0 |
-|    30   | 0.4997073183710937 |  0.5002926816289063 | 1.0 |
-+---------+--------------------+---------------------+-----+
+ +---------+---------------------+---------------------+-----+
+| y_value |          1          |          2          | sum |
++---------+---------------------+---------------------+-----+
+|    10   |  0.6663703089696111 |  0.3336296910303889 | 1.0 |
+|    20   | 0.25056222122937377 |  0.7494377787706262 | 1.0 |
+|    30   |  0.5008745073608534 | 0.49912549263914663 | 1.0 |
++---------+---------------------+---------------------+-----+
 </pre></div>
 </div>
 </div>
@@ -1775,10 +1775,10 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0013548005389782823 2.235400683539991
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0008226392304796091 2.237330105766815
 </pre></div>
 </div>
-<img alt="_images/75f8906744f20f7e4b1ba7655390af4bc5ca5b4cc29ab7169f0d3f90b4a62ca2.png" src="_images/75f8906744f20f7e4b1ba7655390af4bc5ca5b4cc29ab7169f0d3f90b4a62ca2.png" />
+<img alt="_images/27b80b90b7420f991af30603d9b9d92c9dc26650b96ce4c911fc9360519a29d8.png" src="_images/27b80b90b7420f991af30603d9b9d92c9dc26650b96ce4c911fc9360519a29d8.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1793,10 +1793,10 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.000425367760897 1.0000043077972482
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.99931394759817 0.999776299667058
 </pre></div>
 </div>
-<img alt="_images/11f99a889ac46adb561255e04919015cdd597292c1e945eebbee1ecd20e996e9.png" src="_images/11f99a889ac46adb561255e04919015cdd597292c1e945eebbee1ecd20e996e9.png" />
+<img alt="_images/dd666536c4ee4fdbec2f11dd84b35d1ce3c6d38e0c89789036fa2a6b7c607b1d.png" src="_images/dd666536c4ee4fdbec2f11dd84b35d1ce3c6d38e0c89789036fa2a6b7c607b1d.png" />
 </div>
 </div>
 <p><strong>Conditional distribution</strong></p>
@@ -1854,7 +1854,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/13708826e3f28a0aac009697d08bbd862f0a4e7f14516acca0c84bc910cd3084.png" src="_images/13708826e3f28a0aac009697d08bbd862f0a4e7f14516acca0c84bc910cd3084.png" />
+<img alt="_images/ef2d7b84daf587bf931d5fffc1ce1b01bc746960bd3c7fbb0ab99fd8252828e9.png" src="_images/ef2d7b84daf587bf931d5fffc1ce1b01bc746960bd3c7fbb0ab99fd8252828e9.png" />
 </div>
 </div>
 <p>Fix <span class="math notranslate nohighlight">\(x=1\)</span>.</p>
@@ -1885,7 +1885,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b062f32dbc2478d6e07ea68a3f97143476144705880953fa41d017d38754b099.png" src="_images/b062f32dbc2478d6e07ea68a3f97143476144705880953fa41d017d38754b099.png" />
+<img alt="_images/eeca65b6208e11bd304d39d0f184a418e9f52497cc15b20610992b9a80129a37.png" src="_images/eeca65b6208e11bd304d39d0f184a418e9f52497cc15b20610992b9a80129a37.png" />
 </div>
 </div>
 <p>We compare  with the analytically computed parameters and note that they are close.</p>
@@ -2167,18 +2167,18 @@ C(u_1,u_2,\dots,u_n) = H[F^{-1}_1(u_1),F^{-1}_2(u_2),\dots,F^{-1}_N(u_N)]
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distribution for x
-+---------+---------+
-| x_value |  x_prob |
-+---------+---------+
-|    0    | 0.60023 |
-|    1    | 0.39977 |
-+---------+---------+
++---------+--------------------+
+| x_value |       x_prob       |
++---------+--------------------+
+|    0    | 0.5992500000000001 |
+|    1    |      0.40075       |
++---------+--------------------+
 distribution for y
 +---------+---------------------+
 | y_value |        y_prob       |
 +---------+---------------------+
-|    0    | 0.29988000000000004 |
-|    1    |       0.70012       |
+|    0    | 0.30005400000000004 |
+|    1    |       0.699946      |
 +---------+---------------------+
 </pre></div>
 </div>
@@ -2254,10 +2254,10 @@ distribution for y
 +------------+------------+----------+
 | c1_x_value | c1_y_value | c1_prob  |
 +------------+------------+----------+
-|     0      |     0      | 0.180079 |
-|     0      |     1      | 0.419497 |
-|     1      |     0      | 0.120219 |
-|     1      |     1      | 0.280205 |
+|     0      |     0      | 0.179386 |
+|     0      |     1      | 0.419697 |
+|     1      |     0      | 0.120442 |
+|     1      |     1      | 0.280475 |
 +------------+------------+----------+
 </pre></div>
 </div>
@@ -2291,16 +2291,16 @@ distribution for y
 +------------+-----------+
 | c1_x_value | c1_x_prob |
 +------------+-----------+
-|     0      |  0.599576 |
-|     1      |  0.400424 |
+|     0      |  0.599083 |
+|     1      |  0.400917 |
 +------------+-----------+
 marginal distribution for y
-+------------+---------------------+
-| c1_y_value |      c1_y_prob      |
-+------------+---------------------+
-|     0      | 0.30029799999999995 |
-|     1      |       0.699702      |
-+------------+---------------------+
++------------+-----------+
+| c1_y_value | c1_y_prob |
++------------+-----------+
+|     0      |  0.299828 |
+|     1      |  0.700172 |
++------------+-----------+
 </pre></div>
 </div>
 </div>
@@ -2368,10 +2368,10 @@ marginal distribution for y
 +------------+------------+----------+
 | c2_x_value | c2_y_value | c2_prob  |
 +------------+------------+----------+
-|     0      |     0      | 0.300462 |
-|     0      |     1      | 0.299623 |
+|     0      |     0      | 0.299795 |
+|     0      |     1      | 0.299777 |
 |     1      |     0      |   0.0    |
-|     1      |     1      | 0.399915 |
+|     1      |     1      | 0.400428 |
 +------------+------------+----------+
 </pre></div>
 </div>
@@ -2405,16 +2405,16 @@ marginal distribution for y
 +------------+-----------+
 | c2_x_value | c2_x_prob |
 +------------+-----------+
-|     0      |  0.600085 |
-|     1      |  0.399915 |
+|     0      |  0.599572 |
+|     1      |  0.400428 |
 +------------+-----------+
 marginal distribution for y
-+------------+-----------+
-| c2_y_value | c2_y_prob |
-+------------+-----------+
-|     0      |  0.300462 |
-|     1      |  0.699538 |
-+------------+-----------+
++------------+---------------------+
+| c2_y_value |      c2_y_prob      |
++------------+---------------------+
+|     0      | 0.29979500000000003 |
+|     1      |       0.700205      |
++------------+---------------------+
 </pre></div>
 </div>
 </div>
