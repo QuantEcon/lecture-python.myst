@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Forecasting  an AR(1) process
+# Forecasting  an AR(1) Process
 
 ```{code-cell} ipython3
 :tags: [hide-output]
