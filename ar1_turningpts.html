@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>52. Forecasting an AR(1) process &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>52. Forecasting an AR(1) Process &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -130,13 +130,13 @@ const thebe_selector_output = ".output, .cell_output"
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@quantecon" />
-<meta name="twitter:title" content="Forecasting  an AR(1) process"/>
+<meta name="twitter:title" content="Forecasting  an AR(1) Process"/>
 <meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
 <meta name="twitter:creator" content="@quantecon">
 <meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
 
 <!-- Opengraph tags -->
-<meta property="og:title" content="Forecasting  an AR(1) process" />
+<meta property="og:title" content="Forecasting  an AR(1) Process" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://python.quantecon.org/ar1_turningpts.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
@@ -206,7 +206,7 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
 
-                        <p class="qe-page__header-subheading">Forecasting  an AR(1) process</p>
+                        <p class="qe-page__header-subheading">Forecasting  an AR(1) Process</p>
 
                     </div>
 
@@ -222,7 +222,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="forecasting-an-ar-1-process">
-<h1><span class="section-number">52. </span>Forecasting  an AR(1) process<a class="headerlink" href="#forecasting-an-ar-1-process" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">52. </span>Forecasting  an AR(1) Process<a class="headerlink" href="#forecasting-an-ar-1-process" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install arviz pymc
@@ -236,42 +236,46 @@ const thebe_selector_output = ".output, .cell_output"
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: arviz in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.15.1)
-Requirement already satisfied: pymc in /opt/conda/envs/quantecon/lib/python3.10/site-packages (5.6.1)
+Requirement already satisfied: pymc in /opt/conda/envs/quantecon/lib/python3.10/site-packages (5.7.0)
+Requirement already satisfied: packaging in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (22.0)
+Requirement already satisfied: h5netcdf&gt;=1.0.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.1.0)
 Requirement already satisfied: setuptools&gt;=60.0.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (65.6.3)
+Requirement already satisfied: typing-extensions&gt;=4.1.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (4.4.0)
+Requirement already satisfied: xarray&gt;=0.21.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (2022.11.0)
+Requirement already satisfied: scipy&gt;=1.8.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.10.0)
+Requirement already satisfied: matplotlib&gt;=3.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (3.7.0)
 Requirement already satisfied: numpy&gt;=1.20.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.23.5)
 Requirement already satisfied: xarray-einstats&gt;=0.3 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (0.5.1)
-Requirement already satisfied: typing-extensions&gt;=4.1.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (4.4.0)
-Requirement already satisfied: h5netcdf&gt;=1.0.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.1.0)
-Requirement already satisfied: xarray&gt;=0.21.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (2022.11.0)
-Requirement already satisfied: matplotlib&gt;=3.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (3.7.0)
-Requirement already satisfied: packaging in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (22.0)
 Requirement already satisfied: pandas&gt;=1.3.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.5.3)
-Requirement already satisfied: scipy&gt;=1.8.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.10.0)
-Requirement already satisfied: cachetools&gt;=4.2.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pymc) (5.3.1)
-Requirement already satisfied: pytensor&lt;2.13,&gt;=2.12.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pymc) (2.12.3)
-Requirement already satisfied: cloudpickle in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pymc) (2.0.0)
 Requirement already satisfied: fastprogress&gt;=0.2.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pymc) (1.0.3)
+Requirement already satisfied: pytensor&lt;2.15,&gt;=2.14.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pymc) (2.14.1)
+Requirement already satisfied: cachetools&gt;=4.2.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pymc) (5.3.1)
+Requirement already satisfied: cloudpickle in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pymc) (2.0.0)
 Requirement already satisfied: h5py in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from h5netcdf&gt;=1.0.2-&gt;arviz) (3.7.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: contourpy&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.0.5)
-Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (4.25.0)
-Requirement already satisfied: kiwisolver&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.4.4)
-Requirement already satisfied: pyparsing&gt;=2.3.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (3.0.9)
-Requirement already satisfied: python-dateutil&gt;=2.7 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (2.8.2)
-Requirement already satisfied: pillow&gt;=6.2.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (9.4.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: python-dateutil&gt;=2.7 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (2.8.2)
 Requirement already satisfied: cycler&gt;=0.10 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (0.11.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (3.0.9)
+Requirement already satisfied: pillow&gt;=6.2.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (9.4.0)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (4.25.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.0.5)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.4.4)
 Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pandas&gt;=1.3.0-&gt;arviz) (2023.3)
-Requirement already satisfied: filelock in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.13,&gt;=2.12.0-&gt;pymc) (3.9.0)
-Requirement already satisfied: miniKanren in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.13,&gt;=2.12.0-&gt;pymc) (1.0.3)
-Requirement already satisfied: logical-unification in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.13,&gt;=2.12.0-&gt;pymc) (0.4.6)
-Requirement already satisfied: cons in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.13,&gt;=2.12.0-&gt;pymc) (0.4.6)
-Requirement already satisfied: etuples in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.13,&gt;=2.12.0-&gt;pymc) (0.3.9)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: miniKanren in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.15,&gt;=2.14.1-&gt;pymc) (1.0.3)
+Requirement already satisfied: filelock in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.15,&gt;=2.14.1-&gt;pymc) (3.9.0)
+Requirement already satisfied: logical-unification in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.15,&gt;=2.14.1-&gt;pymc) (0.4.6)
+Requirement already satisfied: etuples in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.15,&gt;=2.14.1-&gt;pymc) (0.3.9)
+Requirement already satisfied: cons in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.15,&gt;=2.14.1-&gt;pymc) (0.4.6)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six&gt;=1.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.2-&gt;arviz) (1.16.0)
-Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from logical-unification-&gt;pytensor&lt;2.13,&gt;=2.12.0-&gt;pymc) (0.6.0)
-Requirement already satisfied: toolz in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from logical-unification-&gt;pytensor&lt;2.13,&gt;=2.12.0-&gt;pymc) (0.12.0)
+Requirement already satisfied: toolz in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from logical-unification-&gt;pytensor&lt;2.15,&gt;=2.14.1-&gt;pymc) (0.12.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from logical-unification-&gt;pytensor&lt;2.15,&gt;=2.14.1-&gt;pymc) (0.6.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -596,9 +600,9 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </div><div class="output text_html">
     <div>
       <progress value='60000' class='' max='60000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      100.00% [60000/60000 00:21&lt;00:00 Sampling 4 chains, 2 divergences]
+      100.00% [60000/60000 00:20&lt;00:00 Sampling 4 chains, 0 divergences]
     </div>
-    </div><img alt="_images/baea373da730393749c20dd29ccc5763662d33e68e043b1d27d7f07c8d712a94.png" src="_images/baea373da730393749c20dd29ccc5763662d33e68e043b1d27d7f07c8d712a94.png" />
+    </div><img alt="_images/9421725e69581b33ac4a98be3939582fea7ec7497bf1a4cfd91ee6fcc1e8217c.png" src="_images/9421725e69581b33ac4a98be3939582fea7ec7497bf1a4cfd91ee6fcc1e8217c.png" />
 </div>
 </div>
 <p>The graphs on the left portray posterior marginal distributions.</p>
@@ -799,7 +803,7 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/15a8d2ff9bc5cd46ca6a3e28e2efa1e5f0ee9c995786bdd59540cbab41c3c8d6.png" src="_images/15a8d2ff9bc5cd46ca6a3e28e2efa1e5f0ee9c995786bdd59540cbab41c3c8d6.png" />
+<img alt="_images/f1ffc971a8622deaafdc68c2e0c79e2509ee5b5c8c9b6ac7615e1e80ce496966.png" src="_images/f1ffc971a8622deaafdc68c2e0c79e2509ee5b5c8c9b6ac7615e1e80ce496966.png" />
 </div>
 </div>
 </section>
@@ -818,7 +822,7 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7e899a7599c61b817f46aaa2364663fc61a3a1790849f57c3060bce4902ae73e.png" src="_images/7e899a7599c61b817f46aaa2364663fc61a3a1790849f57c3060bce4902ae73e.png" />
+<img alt="_images/34dc91330b723909ea7ff3fefcd0f4eb95f4ec6073f16d32098bd47d3284212c.png" src="_images/34dc91330b723909ea7ff3fefcd0f4eb95f4ec6073f16d32098bd47d3284212c.png" />
 </div>
 </div>
 </section>
@@ -1178,7 +1182,7 @@ on the true  parameters associated with the data-generating model.</p>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   52. Forecasting  an AR(1) process
+   52. Forecasting  an AR(1) Process
   </a>
  </li>
 </ul>
