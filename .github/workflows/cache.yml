@@ -4,39 +4,20 @@ on:
     branches:
       - main
 jobs:
-  deploy-runner:
+  cache:
     runs-on: ubuntu-latest
     steps:
-      - uses: iterative/setup-cml@v1
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Anaconda
+        uses: conda-incubator/setup-miniconda@v2
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Deploy runner on EC2
-        env:
-          REPO_TOKEN: ${{ secrets.QUANTECON_SERVICES_PAT }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
-          cml runner launch \
-              --cloud=aws \
-              --cloud-region=us-west-2 \
-              --cloud-type=p3.2xlarge \
-              --labels=cml-gpu \
-              --cloud-hdd-size=40
-  cache:
-    needs: deploy-runner
-    runs-on: [self-hosted, cml-gpu]
-    container:
-      image: docker://mmcky/quantecon-lecture-python:cuda-12.1.0-anaconda-2023-03-py310
-      options: --gpus all
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Check nvidia drivers
-        shell: bash -l {0}
-        run: |
-          nvidia-smi
+          auto-update-conda: true
+          auto-activate-base: true
+          miniconda-version: 'latest'
+          python-version: "3.10"
+          environment-file: environment.yml
+          activate-environment: quantecon
       - name: Build HTML
         shell: bash -l {0}
         run: |

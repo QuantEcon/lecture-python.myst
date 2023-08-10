@@ -4,42 +4,34 @@ on:
     tags:
       - 'publish*'
 jobs:
-  deploy-runner:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: iterative/setup-cml@v1
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Deploy runner on EC2
-        env:
-          REPO_TOKEN: ${{ secrets.QUANTECON_SERVICES_PAT }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
-          cml runner launch \
-              --cloud=aws \
-              --cloud-region=us-west-2 \
-              --cloud-type=p3.2xlarge \
-              --labels=cml-gpu \
-              --cloud-hdd-size=40
   publish:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-    needs: deploy-runner
-    runs-on: [self-hosted, cml-gpu]
-    container:
-      image: docker://mmcky/quantecon-lecture-python:cuda-12.1.0-anaconda-2023-03-py310
-      options: --gpus all
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install Git (required to commit notebooks)
-        shell: bash -l {0}
-        run: apt-get install -y git
-      - name: Check nvidia drivers
-        shell: bash -l {0}
+      - name: Setup Anaconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          auto-activate-base: true
+          miniconda-version: 'latest'
+          python-version: "3.10"
+          environment-file: environment.yml
+          activate-environment: quantecon
+      - name: Install latex dependencies
         run: |
-          nvidia-smi
+          sudo apt-get -qq update
+          sudo apt-get install -y     \
+            texlive-latex-recommended \
+            texlive-latex-extra       \
+            texlive-fonts-recommended \
+            texlive-fonts-extra       \
+            texlive-xetex             \
+            latexmk                   \
+            xindy                     \
+            dvipng                    \
+            cm-super
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
