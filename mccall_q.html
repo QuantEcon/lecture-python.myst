@@ -268,17 +268,19 @@ actions that he can take in each state.</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.31.0)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
 Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -295,7 +297,6 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">float64</span><span class="p">,</span> <span class="n">int64</span>
 <span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
-<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
 <span class="kn">from</span> <span class="nn">quantecon.distributions</span> <span class="kn">import</span> <span class="n">BetaBinomial</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -779,9 +780,7 @@ Progress: EPOCHs = 8000
 Progress: EPOCHs = 10000
 Progress: EPOCHs = 12000
 Progress: EPOCHs = 14000
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 16000
+Progress: EPOCHs = 16000
 Progress: EPOCHs = 18000
 </pre></div>
 </div>
@@ -794,17 +793,17 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[5210.6500192     0.        ]
- [5281.42601429 5245.0693988 ]
- [5320.80035613 5280.74052423]
- [5631.7478197  5370.71167444]
- [5354.67578453 5258.57363391]
- [5334.00889689 5247.37237097]
- [5367.61651043 5328.86866816]
- [5690.40973617 5229.58667735]
- [5272.3107951  5359.0605643 ]
- [5455.59449069 5609.69450218]
- [5319.71743464 6000.        ]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[5135.39638857    0.        ]
+ [5308.99665086 5234.96693318]
+ [5310.10606311 5222.74871268]
+ [5271.15995121 5203.15676081]
+ [5342.60411491 5188.65408476]
+ [5246.24538265 5216.16450932]
+ [5251.48093619 5240.50879149]
+ [5252.54497739 5211.70327542]
+ [5361.39455772 5240.57807283]
+ [5308.68952067 5500.00000644]
+ [5323.98059586 6000.        ]]
 </pre></div>
 </div>
 </div>
@@ -819,8 +818,8 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[5210.6500192  5281.42601429 5320.80035613 5631.7478197  5354.67578453
- 5334.00889689 5367.61651043 5690.40973617 5359.0605643  5609.69450218
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[5135.39638857 5308.99665086 5310.10606311 5271.15995121 5342.60411491
+ 5246.24538265 5251.48093619 5252.54497739 5361.39455772 5500.00000644
  6000.        ]
 </pre></div>
 </div>
@@ -841,7 +840,7 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/59fdd10b24ed1701a4fb3cb2492f70cad14d4fc84ec72a6eeae55241c01564c1.png" src="_images/59fdd10b24ed1701a4fb3cb2492f70cad14d4fc84ec72a6eeae55241c01564c1.png" />
+<img alt="_images/25a9fbf5ff2f23ae3d6d15d3a2b753b7339852fa05245ab8cf71a6f02ddb46b1.png" src="_images/25a9fbf5ff2f23ae3d6d15d3a2b753b7339852fa05245ab8cf71a6f02ddb46b1.png" />
 </div>
 </div>
 <p>Now, let us compute the case with a larger state space: <span class="math notranslate nohighlight">\(n=30\)</span> instead of <span class="math notranslate nohighlight">\(n=10\)</span>.</p>
@@ -967,7 +966,7 @@ Progress: EPOCHs = 18000
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 200000
 </pre></div>
 </div>
-<img alt="_images/b498a95154a994e8e294f1b2ccc4ce5d431bc26031805aaf6a1b867df16ebac5.png" src="_images/b498a95154a994e8e294f1b2ccc4ce5d431bc26031805aaf6a1b867df16ebac5.png" />
+<img alt="_images/3bb284784e8a2689c99ebe360152470492e3f4c835ff44570c67102142a164fb.png" src="_images/3bb284784e8a2689c99ebe360152470492e3f4c835ff44570c67102142a164fb.png" />
 </div>
 </div>
 <p>The above graphs indicates that</p>
@@ -1039,7 +1038,7 @@ exploitation only.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 200000
 </pre></div>
 </div>
-<img alt="_images/3dbe58d55dfab3565086c67c6259a89fa8b73583e6ad91746c2d6119a0e61f54.png" src="_images/3dbe58d55dfab3565086c67c6259a89fa8b73583e6ad91746c2d6119a0e61f54.png" />
+<img alt="_images/65187ee303413baeec1e68cd65a8ff43606236265e67eb2fc667bff7ea953f7b.png" src="_images/65187ee303413baeec1e68cd65a8ff43606236265e67eb2fc667bff7ea953f7b.png" />
 </div>
 </div>
 </section>
@@ -1653,9 +1652,8 @@ network as a good function approximator.</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/mccall_q.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/mccall_q.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1668,7 +1666,7 @@ network as a good function approximator.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

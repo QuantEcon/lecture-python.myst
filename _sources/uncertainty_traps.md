@@ -55,7 +55,6 @@ Let's start with some standard imports:
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-import itertools
 ```
 
 ## The Model

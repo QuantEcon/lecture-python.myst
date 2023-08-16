@@ -17,12 +17,12 @@ kernelspec:
 
 ## Overview
 
-This lecture puts elementary tools to work to approximate probability distributions of the annual failure rates of a system consisting of 
-a number of critical parts.  
+This lecture puts elementary tools to work to approximate probability distributions of the annual failure rates of a system consisting of
+a number of critical parts.
 
 We'll use log normal distributions to approximate probability distributions of critical  component parts.
 
-To  approximate the probability distribution of the **sum** of $n$ log normal probability distributions that describes the failure rate of the 
+To  approximate the probability distribution of the **sum** of $n$ log normal probability distributions that describes the failure rate of the
 entire system, we'll compute the convolution of those $n$ log normal probability distributions.
 
 We'll use the following concepts and tools:
@@ -30,9 +30,9 @@ We'll use the following concepts and tools:
 * log normal distributions
 * the convolution theorem that describes the probability distribution of the sum independent random variables
 * fault tree analysis for approximating a failure rate of a multi-component system
-* a hierarchical probability model for describing uncertain probabilities  
+* a hierarchical probability model for describing uncertain probabilities
 * Fourier transforms and inverse Fourier tranforms as efficient ways of computing convolutions of sequences
-  
+
 For more about Fourier transforms see this quantecon lecture [Circulant Matrices](https://python.quantecon.org/eig_circulant.html)
 as well as these  lecture  [Covariance Stationary Processes](https://python-advanced.quantecon.org/arma.html) and [Estimation of Spectra](https://python-advanced.quantecon.org/estspec.html).
 
@@ -55,9 +55,7 @@ We'll start by bringing in some Python machinery.
 
 ```{code-cell} python3
 import numpy as np
-from numpy import fft
 import matplotlib.pyplot as plt
-import scipy as sc
 from scipy.signal import fftconvolve
 from tabulate import tabulate
 import time
@@ -77,7 +75,7 @@ np.set_printoptions(precision=3, suppress=True)
 
 
 If a random variable $x$ follows a normal distribution with mean $\mu$ and variance $\sigma^2$,
-then the natural logarithm of $x$, say $y = \log(x)$, follows a **log normal distribution** with parameters $\mu, \sigma^2$.  
+then the natural logarithm of $x$, say $y = \log(x)$, follows a **log normal distribution** with parameters $\mu, \sigma^2$.
 
 Notice that we said **parameters** and not **mean and variance** $\mu,\sigma^2$.
 
@@ -85,14 +83,14 @@ Notice that we said **parameters** and not **mean and variance** $\mu,\sigma^2$.
  * they are **not** the mean and variance of $y$
  * instead, the  mean of $y$ is $e ^{\mu + \frac{1}{2} \sigma^2}$ and the variance of $y$ is $(e^{\sigma^2} - 1) e^{2 \mu + \sigma^2} $
 
-A log normal  random variable $y$ is nonnegative. 
-  
+A log normal  random variable $y$ is nonnegative.
+
 
 The density for a log normal random variate $y$ is
 
 $$ f(y) = \frac{1}{y \sigma \sqrt{2 \pi}} \exp \left(  \frac{- (\log y - \mu)^2 }{2 \sigma^2} \right) $$
 
-for $y \geq 0$.  
+for $y \geq 0$.
 
 
 Important features of a log normal random variable are
@@ -119,13 +117,13 @@ Independent log normal distributions have a different _stability_ property.
 
 The **product** of  independent log normal random variables is also log normal.
 
-   
-In particular, if $y_1$ is log normal with parameters $(\mu_1, \sigma_1^2)$ and 
+
+In particular, if $y_1$ is log normal with parameters $(\mu_1, \sigma_1^2)$ and
 $y_2$ is log normal with parameters $(\mu_2, \sigma_2^2)$, then the product $y_1 y_2$ is log normal
 with parameters $(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$.
 
 ```{note}
-While the product of two log normal distributions is log normal, the **sum** of two log normal distributions is **not** log normal.  
+While the product of two log normal distributions is log normal, the **sum** of two log normal distributions is **not** log normal.
 ```
 
 This observation sets the stage for challenge that confronts us in this lecture, namely, to approximate probability distributions of **sums** of independent log normal random variables.
@@ -140,7 +138,7 @@ Let $y$ be a random variable with probability density $g(y)$, where $y \in {\bf 
 
 Let $x$ and $y$ be independent random variables and let $z = x + y \in {\bf R}$.
 
-Then the probability distribution of $z$ is 
+Then the probability distribution of $z$ is
 
 $$ h(z) = (f * g)(z) \equiv \int_{-\infty}^\infty f (z) g(z - \tau) d \tau $$
 
@@ -150,18 +148,18 @@ If the random variables are both nonnegative, then the above formula specializes
 
 $$ h(z) = (f * g)(z) \equiv \int_{0}^\infty f (z) g(z - \tau) d \tau $$
 
-Below, we'll use a discretized version of the preceding formula.  
+Below, we'll use a discretized version of the preceding formula.
 
 In particular, we'll replace both $f$ and $g$ with discretized counterparts, normalized to sum to $1$ so that they are probability distributions.
- 
-  * by **discretized** we mean an equally spaced sampled version 
+
+  * by **discretized** we mean an equally spaced sampled version
 
 Then we'll use the following version of the above formula
 
 $$ h_n = (f*g)_n = \sum_{m=0}^\infty f_m g_{n-m} , n \geq 0 $$
 
 to compute a discretized version of the probability distribution of the sum of two random variables,
-one with probability mass function $f$, the other with probability mass function $g$.    
+one with probability mass function $f$, the other with probability mass function $g$.
 
 
 
@@ -174,11 +172,11 @@ To take one  example, let's consider the following two probability distributions
 
 $$ f_j = \textrm{Prob} (X = j), j = 0, 1 $$
 
-and 
+and
 
 $$ g_j = \textrm{Prob} (Y = j ) , j = 0, 1, 2, 3 $$
 
-and 
+and
 
 $$ h_j = \textrm{Prob} (Z \equiv X + Y = j) , j=0, 1, 2, 3, 4 $$
 
@@ -196,7 +194,7 @@ g = [0., .6,  0., .4]
 h = np.convolve(f,g)
 hf = fftconvolve(f,g)
 
-print("f = ", f,  ", np.sum(f) = ", np.sum(f)) 
+print("f = ", f,  ", np.sum(f) = ", np.sum(f))
 print("g = ", g, ", np.sum(g) = ", np.sum(g))
 print("h = ", h, ", np.sum(h) = ", np.sum(h))
 print("hf = ", hf, ",np.sum(hf) = ", np.sum(hf))
@@ -212,7 +210,7 @@ That's why we rely on it later in this lecture.
 ## Approximating Distributions
 
 We'll construct an example to verify that  discretized distributions can do a good job of approximating  samples drawn from underlying
-continuous distributions. 
+continuous distributions.
 
 We'll start by generating samples of size 25000 of three independent  log normal random variates as well as pairwise and triple-wise sums.
 
@@ -258,7 +256,7 @@ pop_mean2, samp_mean2, mu2, sigma2
 ```
 
 Here are helper functions that create a discretized version of a log normal
-probability density function. 
+probability density function.
 
 ```{code-cell} python3
 def p_log_normal(x,μ,σ):
@@ -282,7 +280,7 @@ to compute a convolution of two sequences (discrete distributions).
 
 We recommend experimenting with different values of the power $p$ of 2.
 
-Setting it to 15 rather than 12, for example, improves how well the discretized probability mass function approximates the original continuous probability density function being studied. 
+Setting it to 15 rather than 12, for example, improves how well the discretized probability mass function approximates the original continuous probability density function being studied.
 
 <!-- #endregion -->
 
@@ -294,7 +292,7 @@ m = .1 # increment size
 ```
 
 ```{code-cell} python3
-## Cell to check -- note what happens when don't normalize!  
+## Cell to check -- note what happens when don't normalize!
 ## things match up without adjustment. Compare with above
 
 p1,p1_norm,x = pdf_seq(mu1,sigma1,I,m)
@@ -321,7 +319,7 @@ mean, meantheory
 
 ## Convolving Probability Mass Functions
 
-Now let's use the convolution theorem to compute the probability distribution of a sum of the two log normal random variables we have parameterized above. 
+Now let's use the convolution theorem to compute the probability distribution of a sum of the two log normal random variables we have parameterized above.
 
 We'll also compute the probability of a sum of three log normal distributions constructed above.
 
@@ -330,7 +328,7 @@ Before we do these things, we shall explain our choice of Python algorithm to co
 of two sequences.
 
 Because the sequences that we convolve are long, we use the `scipy.signal.fftconvolve` function
-rather than the numpy.convove function.  
+rather than the numpy.convove function.
 
 These two functions give virtually equivalent answers but for long sequences `scipy.signal.fftconvolve`
 is much faster.
@@ -351,7 +349,7 @@ where $\omega_j = \frac{2 \pi j}{T}$ for $j=0, 1, \ldots, T-1$.
 The **inverse Fourier transform** of the sequence $\{x(\omega_j)\}_{j=0}^{T-1}$ is
 
 $$
- x_t = T^{-1} \sum_{j=0}^{T-1} x(\omega_j) \exp (i \omega_j t) 
+ x_t = T^{-1} \sum_{j=0}^{T-1} x(\omega_j) \exp (i \omega_j t)
 $$ (eq:ift1)
 
 The sequences $\{x_t\}_{t=0}^{T-1}$ and $\{x(\omega_j)\}_{j=0}^{T-1}$ contain the same information.
@@ -464,7 +462,7 @@ The model is an example of the widely used  **failure tree analysis** described 
 
 To construct the statistical model, we repeatedly use  what is called the **rare event approximation**.
 
-We want to compute the probabilty of an event $A \cup B$. 
+We want to compute the probabilty of an event $A \cup B$.
 
  * the union $A \cup B$ is the event that $A$ OR $B$ occurs
 
@@ -475,11 +473,11 @@ $$ P(A \cup B) = P(A) + P(B) - P(A \cap B) $$
 where the intersection $A \cap B$ is the event that $A$ **AND** $B$ both occur and the union $A \cup B$ is
 the event that $A$ **OR** $B$ occurs.
 
-If $A$ and $B$ are independent, then 
+If $A$ and $B$ are independent, then
 
 $$ P(A \cap B) = P(A) P(B)  $$
 
-If $P(A)$ and $P(B)$ are both small, then $P(A) P(B)$ is even smaller.  
+If $P(A)$ and $P(B)$ are both small, then $P(A) P(B)$ is even smaller.
 
 The **rare event approximation** is
 
@@ -488,7 +486,7 @@ $$ P(A \cup B) \approx P(A) + P(B)  $$
 This approximation is widely used in evaluating system failures.
 
 
-## Application 
+## Application
 
 A system has been designed with the feature a system  failure occurs when **any** of  $n$ critical  components  fails.
 
@@ -502,10 +500,10 @@ of a system failure:
 
 $$ P(F) \approx P(A_1) + P (A_2) + \cdots + P (A_n) $$
 
-or 
+or
 
-$$ 
-P(F) \approx \sum_{i=1}^n P (A_i) 
+$$
+P(F) \approx \sum_{i=1}^n P (A_i)
 $$ (eq:probtop)
 
 Probabilities for each event are recorded as failure rates per year.
@@ -513,10 +511,10 @@ Probabilities for each event are recorded as failure rates per year.
 
 ## Failure Rates Unknown
 
-Now we come to the problem that really interests us, following  {cite}`Ardron_2018` and Greenfield and Sargent 
- {cite}`Greenfield_Sargent_1993`  in the spirit of Apostolakis  {cite}`apostolakis1990`.  
+Now we come to the problem that really interests us, following  {cite}`Ardron_2018` and Greenfield and Sargent
+ {cite}`Greenfield_Sargent_1993`  in the spirit of Apostolakis  {cite}`apostolakis1990`.
 
-The constituent probabilities or failure rates $P(A_i)$ are not known a priori and have to be estimated.  
+The constituent probabilities or failure rates $P(A_i)$ are not known a priori and have to be estimated.
 
 We address this problem by specifying **probabilities of probabilities** that  capture one  notion of not knowing the constituent probabilities that are inputs into a failure tree analysis.
 
@@ -528,15 +526,15 @@ The analyst copes with this situation by regarding the systems failure probabili
   * dispersions of the probability distribution of $P(A_i)$ characterizes the analyst's uncertainty about the failure probability $P(A_i)$
 
   * the dispersion of the implied probability distribution of $P(F)$ characterizes his uncertainty about the probability of a system's failure.
-  
+
 This leads to what is sometimes called a **hierarchical** model in which the analyst has  probabilities about the probabilities $P(A_i)$.
 
-The analyst formalizes his uncertainty by assuming that 
+The analyst formalizes his uncertainty by assuming that
 
  * the failure probability $P(A_i)$ is itself a log normal random variable with parameters $(\mu_i, \sigma_i)$.
  * failure rates $P(A_i)$ and $P(A_j)$ are statistically independent for all pairs with $i \neq j$.
 
-The analyst  calibrates the parameters  $(\mu_i, \sigma_i)$ for the failure events $i = 1, \ldots, n$ by reading reliability studies in engineering papers that have studied historical failure rates of components that are as similar as possible to the components being used in the system under study. 
+The analyst  calibrates the parameters  $(\mu_i, \sigma_i)$ for the failure events $i = 1, \ldots, n$ by reading reliability studies in engineering papers that have studied historical failure rates of components that are as similar as possible to the components being used in the system under study.
 
 The analyst assumes that such  information about the observed dispersion of annual failure rates, or times to failure, can inform him of what to expect about parts' performances in his system.
 
@@ -550,7 +548,7 @@ of the systems failure probability $P(F)$.
   * We say probability mass function because of how we discretize each random variable, as described earlier.
 
 The analyst calculates the probability mass function for the **top event** $F$, i.e., a **system failure**,  by repeatedly applying the convolution theorem to compute the probability distribution of a sum of independent log normal random variables, as described in equation
-{eq}`eq:probtop`. 
+{eq}`eq:probtop`.
 
 <!-- #endregion -->
 
@@ -566,7 +564,7 @@ This example is Design Option B-2 (Case I) described in Table 10 on page 27 of {
 
 The table describes parameters $\mu_i, \sigma_i$ for  fourteen log normal random variables that consist of  **seven pairs** of random variables that are identically and independently distributed.
 
- * Within a pair, parameters $\mu_i, \sigma_i$ are the same 
+ * Within a pair, parameters $\mu_i, \sigma_i$ are the same
 
  * As described in table 10 of {cite}`Greenfield_Sargent_1993`  p. 27, parameters of log normal distributions for  the seven unique probabilities $P(A_i)$ have been calibrated to be the values in the following Python code:
 
@@ -602,7 +600,7 @@ We compute the required thirteen convolutions in the following code.
 (Please feel free to try different values of the power parameter $p$ that we use to set the number of points in our grid for constructing
 the probability mass functions that discretize the continuous log normal distributions.)
 
-We'll plot a counterpart to the cumulative distribution function (CDF) in  figure 5 on page 29 of {cite}`Greenfield_Sargent_1993` 
+We'll plot a counterpart to the cumulative distribution function (CDF) in  figure 5 on page 29 of {cite}`Greenfield_Sargent_1993`
 and we'll also present a counterpart to their Table 11 on page 28.
 
 ```{code-cell} python3
@@ -675,7 +673,7 @@ x_66 = x[find_nearest(d13,0.665)]
 x_85 = x[find_nearest(d13,0.85)]
 x_90 = x[find_nearest(d13,0.90)]
 x_95 = x[find_nearest(d13,0.95)]
-x_99 = x[find_nearest(d13,0.99)] 
+x_99 = x[find_nearest(d13,0.99)]
 x_9978 = x[find_nearest(d13,0.9978)]
 
 print(tabulate([
@@ -683,15 +681,15 @@ print(tabulate([
     ['5%',f"{x_5}"],
     ['10%',f"{x_10}"],
     ['50%',f"{x_50}"],
-    ['66.5%',f"{x_66}"],    
+    ['66.5%',f"{x_66}"],
     ['85%',f"{x_85}"],
     ['90%',f"{x_90}"],
     ['95%',f"{x_95}"],
     ['99%',f"{x_99}"],
-    ['99.78%',f"{x_9978}"]],    
+    ['99.78%',f"{x_9978}"]],
     headers = ['Percentile', 'x * 1e-9']))
 ```
-The above table agrees closely with column 2 of  Table 11 on p. 28 of  of {cite}`Greenfield_Sargent_1993`. 
+The above table agrees closely with column 2 of  Table 11 on p. 28 of  of {cite}`Greenfield_Sargent_1993`.
 
 Discrepancies are probably due to slight differences in the number of digits retained in inputting $\mu_i, \sigma_i, i = 1, \ldots, 14$
 and in the number of points deployed in the discretizations.

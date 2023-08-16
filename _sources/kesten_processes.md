@@ -108,7 +108,6 @@ Composite Index for the period 1st January 2006 to 1st November 2019.
 (ndcode)=
 ```{code-cell} python3
 import yfinance as yf
-import pandas as pd
 
 s = yf.download('^IXIC', '2006-1-1', '2019-11-1')['Adj Close']
 
@@ -673,7 +672,7 @@ s_init = 1.0      # initial condition for each firm
 :class: dropdown
 ```
 
-Here's one solution.  
+Here's one solution.
 First we generate the observations:
 
 ```{code-cell} ipython3

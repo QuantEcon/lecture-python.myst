@@ -263,13 +263,13 @@ form  foundations for many statistical and  machine learning methods.</p>
 <p>A <strong>singular value decomposition</strong> of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span> of rank <span class="math notranslate nohighlight">\(p \leq \min(m,n)\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-eq-svd101">
 <span class="eqno">(7.1)<a class="headerlink" href="#equation-eq-svd101" title="Permalink to this equation">#</a></span>\[
-X  = U \Sigma V^\top 
+X  = U \Sigma V^\top
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
 \[
 \begin{aligned}
-UU^\top  &amp;  = I  &amp;  \quad U^\top  U = I \cr    
+UU^\top  &amp;  = I  &amp;  \quad U^\top  U = I \cr
 VV^\top  &amp; = I &amp; \quad V^\top  V = I
 \end{aligned}
 \]</div>
@@ -335,14 +335,14 @@ that we’ll describe now.</p>
 <div class="math notranslate nohighlight" id="equation-eq-fullsvdpartition">
 <span class="eqno">(7.2)<a class="headerlink" href="#equation-eq-fullsvdpartition" title="Permalink to this equation">#</a></span>\[
 X = \begin{bmatrix} U_L &amp; U_R \end{bmatrix} \begin{bmatrix} \Sigma_p &amp; 0 \cr 0 &amp; 0 \end{bmatrix}
-     \begin{bmatrix} V_L &amp; V_R \end{bmatrix}^\top 
+     \begin{bmatrix} V_L &amp; V_R \end{bmatrix}^\top
 \]</div>
 <p>where  <span class="math notranslate nohighlight">\( \Sigma_p\)</span> is  a <span class="math notranslate nohighlight">\(p \times p\)</span> diagonal matrix with the <span class="math notranslate nohighlight">\(p\)</span> singular values on the diagonal and</p>
 <div class="math notranslate nohighlight">
 \[
 \begin{aligned}
 U_L &amp; = \begin{bmatrix}u_1 &amp; \cdots  &amp; u_p \end{bmatrix},  \quad U_R  = \begin{bmatrix}u_{p+1} &amp; \cdots u_m \end{bmatrix}  \cr
-V_L &amp; = \begin{bmatrix}v_1 &amp; \cdots  &amp; v_p \end{bmatrix} , \quad U_R  = \begin{bmatrix}v_{p+1} &amp; \cdots u_n \end{bmatrix} 
+V_L &amp; = \begin{bmatrix}v_1 &amp; \cdots  &amp; v_p \end{bmatrix} , \quad U_R  = \begin{bmatrix}v_{p+1} &amp; \cdots u_n \end{bmatrix}
 \end{aligned}
 \]</div>
 <p>Representation <a class="reference internal" href="#equation-eq-fullsvdpartition">(7.2)</a> implies that</p>
@@ -354,8 +354,8 @@ X \begin{bmatrix} V_L &amp; V_R \end{bmatrix} = \begin{bmatrix} U_L &amp; U_R \e
 <div class="math notranslate nohighlight" id="equation-eq-xfour1a">
 <span class="eqno">(7.3)<a class="headerlink" href="#equation-eq-xfour1a" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
-X V_L &amp; = U_L \Sigma_p \cr 
-X V_R &amp; = 0 
+X V_L &amp; = U_L \Sigma_p \cr
+X V_R &amp; = 0
 \end{aligned}
 \]</div>
 <p>or</p>
@@ -385,15 +385,15 @@ X^\top  \begin{bmatrix} U_L &amp; U_R \end{bmatrix} = \begin{bmatrix} V_L &amp; 
 <span class="eqno">(7.5)<a class="headerlink" href="#equation-eq-xfour1b" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
 X^\top  U_L &amp; = V_L \Sigma_p \cr
-X^\top  U_R &amp; = 0 
+X^\top  U_R &amp; = 0
 \end{aligned}
 \]</div>
 <p>or</p>
 <div class="math notranslate nohighlight" id="equation-eq-orthoortho2">
-<span class="eqno">(7.6)<a class="headerlink" href="#equation-eq-orthoortho2" title="Permalink to this equation">#</a></span>\[ 
+<span class="eqno">(7.6)<a class="headerlink" href="#equation-eq-orthoortho2" title="Permalink to this equation">#</a></span>\[
 \begin{aligned}
 X^\top  u_i &amp; = \sigma_i v_i, \quad i=1, \ldots, p \cr
-X^\top  u_i &amp; = 0 \quad i= p+1, \ldots, m 
+X^\top  u_i &amp; = 0 \quad i= p+1, \ldots, m
 \end{aligned}
 \]</div>
 <p>Notice how equations <a class="reference internal" href="#equation-eq-orthoortho2">(7.6)</a> assert that  the transformation <span class="math notranslate nohighlight">\(X^\top \)</span> maps a pairsof distinct orthonormal  vectors <span class="math notranslate nohighlight">\(u_i, u_j\)</span>  for <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> both less than or equal to the rank <span class="math notranslate nohighlight">\(p\)</span> of <span class="math notranslate nohighlight">\(X\)</span> into a pair of distinct orthonormal vectors <span class="math notranslate nohighlight">\(v_i, v_j\)</span> .</p>
@@ -402,7 +402,7 @@ X^\top  u_i &amp; = 0 \quad i= p+1, \ldots, m
 \[
 \begin{aligned}
 {\mathcal R}(X) &amp; \equiv  {\mathcal C}(X^\top ) = {\mathcal C} (V_L) \cr
-{\mathcal N}(X^\top ) &amp; = {\mathcal C}(U_R) 
+{\mathcal N}(X^\top ) &amp; = {\mathcal C}(U_R)
 \end{aligned}
 \]</div>
 <p>Thus, taken together, the systems of quations <a class="reference internal" href="#equation-eq-xfour1a">(7.3)</a> and <a class="reference internal" href="#equation-eq-xfour1b">(7.5)</a>
@@ -410,7 +410,7 @@ describe the  four fundamental subspaces of <span class="math notranslate nohigh
 <div class="math notranslate nohighlight" id="equation-eq-fourspacesvd">
 <span class="eqno">(7.7)<a class="headerlink" href="#equation-eq-fourspacesvd" title="Permalink to this equation">#</a></span>\[ \begin{align}\begin{aligned}
 \begin{aligned}
-{\mathcal C}(X) &amp; = {\mathcal C}(U_L) \cr 
+{\mathcal C}(X) &amp; = {\mathcal C}(U_L) \cr
 {\mathcal N}(X^\top ) &amp; = {\mathcal C}(U_R) \cr
 {\mathcal R}(X) &amp; \equiv  {\mathcal C}(X^\top ) = {\mathcal C} (V_L) \cr
 {\mathcal N}(X) &amp; = {\mathcal C} (V_R) \cr\\\end{aligned}
@@ -435,63 +435,12 @@ that</p>
 <li><p><span class="math notranslate nohighlight">\({\mathcal R}(X)\)</span> is the orthogonal complement  <span class="math notranslate nohighlight">\({\mathcal N}(X)\)</span></p></li>
 </ul>
 <p>Let’s do an example.</p>
-<p>In addition to regular packages contained in Anaconda by default, this example and some other parts of  lecture also requires:</p>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quandl
-</pre></div>
-</div>
-</div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quandl
-  Downloading Quandl-3.7.0-py2.py3-none-any.whl (26 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests&gt;=2.7.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quandl) (2.31.0)
-Requirement already satisfied: numpy&gt;=1.8 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quandl) (1.23.5)
-Requirement already satisfied: six in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quandl) (1.16.0)
-Requirement already satisfied: python-dateutil in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quandl) (2.8.2)
-Requirement already satisfied: inflection&gt;=0.3.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quandl) (0.5.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting more-itertools
-  Downloading more_itertools-10.0.0-py3-none-any.whl (55 kB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/55.3 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">55.3/55.3 kB</span> <span class=" -Color -Color-Red">10.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hRequirement already satisfied: pandas&gt;=0.14 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quandl) (1.5.3)
-Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pandas&gt;=0.14-&gt;quandl) (2023.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2022.12.7)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.7.0-&gt;quandl) (1.26.14)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.7.0-&gt;quandl) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests&gt;=2.7.0-&gt;quandl) (3.4)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: more-itertools, quandl
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed more-itertools-10.0.0 quandl-3.7.0
-<span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
-
-</pre></div>
-</div>
-</div>
-</details>
-</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">LA</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">quandl</span> <span class="k">as</span> <span class="nn">ql</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </div>
@@ -502,8 +451,8 @@ Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/l
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Define the matrix</span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> 
-              <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> 
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
               <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
               <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
               <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]])</span>
@@ -592,7 +541,7 @@ of dimension <span class="math notranslate nohighlight">\(m \times n\)</span>.</
 <p>The Eckart-Young theorem states that for each of these three norms, same rank <span class="math notranslate nohighlight">\(r\)</span> matrix is best and that it equals</p>
 <div class="math notranslate nohighlight" id="equation-eq-ekart">
 <span class="eqno">(7.8)<a class="headerlink" href="#equation-eq-ekart" title="Permalink to this equation">#</a></span>\[
-\hat X_r = \sigma_1 U_1 V_1^\top  + \sigma_2 U_2 V_2^\top  + \cdots + \sigma_r U_r V_r^\top 
+\hat X_r = \sigma_1 U_1 V_1^\top  + \sigma_2 U_2 V_2^\top  + \cdots + \sigma_r U_r V_r^\top
 \]</div>
 <p>You can read about the Eckart-Young theorem and some of its uses here <a class="reference external" href="https://en.wikipedia.org/wiki/Low-rank_approximation">https://en.wikipedia.org/wiki/Low-rank_approximation</a>.</p>
 <p>We’ll make use of this theorem when we discuss principal components analysis (PCA) and also dynamic mode decomposition (DMD).</p>
@@ -609,7 +558,7 @@ of dimension <span class="math notranslate nohighlight">\(m \times n\)</span>.</
 <div class="math notranslate nohighlight">
 \[
 \begin{aligned}
-UU^\top  &amp;  = I  &amp;  \quad U^\top  U = I \cr    
+UU^\top  &amp;  = I  &amp;  \quad U^\top  U = I \cr
 VV^\top  &amp; = I &amp; \quad V^\top  V = I
 \end{aligned}
 \]</div>
@@ -621,7 +570,7 @@ VV^\top  &amp; = I &amp; \quad V^\top  V = I
 <div class="math notranslate nohighlight">
 \[
 \begin{aligned}
-UU^\top  &amp;  \neq I  &amp;  \quad U^\top  U = I \cr    
+UU^\top  &amp;  \neq I  &amp;  \quad U^\top  U = I \cr
 VV^\top  &amp; = I &amp; \quad V^\top  V = I
 \end{aligned}
 \]</div>
@@ -631,7 +580,7 @@ VV^\top  &amp; = I &amp; \quad V^\top  V = I
 <div class="math notranslate nohighlight">
 \[
 \begin{aligned}
-UU^\top  &amp;  = I  &amp;  \quad U^\top  U = I \cr    
+UU^\top  &amp;  = I  &amp;  \quad U^\top  U = I \cr
 VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 \end{aligned}
 \]</div>
@@ -671,14 +620,14 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U, S, V =
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.47, -0.59, -0.35, -0.46, -0.3 ],
-        [-0.38, -0.09,  0.35,  0.61, -0.59],
-        [-0.43,  0.33,  0.65, -0.52,  0.08],
-        [-0.59,  0.56, -0.54,  0.18,  0.16],
-        [-0.32, -0.47,  0.19,  0.32,  0.73]]),
- array([1.54, 0.66]),
- array([[-0.66, -0.75],
-        [ 0.75, -0.66]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.24, -0.31, -0.4 , -0.54, -0.63],
+        [-0.43, -0.68,  0.48, -0.15,  0.33],
+        [-0.32,  0.52,  0.66, -0.19, -0.39],
+        [-0.57, -0.07, -0.18,  0.75, -0.28],
+        [-0.57,  0.41, -0.38, -0.29,  0.52]]),
+ array([1.5 , 0.45]),
+ array([[-0.8, -0.6],
+        [ 0.6, -0.8]]))
 </pre></div>
 </div>
 </div>
@@ -694,14 +643,14 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uhat, Shat, Vhat = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.47, -0.59],
-        [-0.38, -0.09],
-        [-0.43,  0.33],
-        [-0.59,  0.56],
-        [-0.32, -0.47]]),
- array([1.54, 0.66]),
- array([[-0.66, -0.75],
-        [ 0.75, -0.66]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.24, -0.31],
+        [-0.43, -0.68],
+        [-0.32,  0.52],
+        [-0.57, -0.07],
+        [-0.57,  0.41]]),
+ array([1.5 , 0.45]),
+ array([[-0.8, -0.6],
+        [ 0.6, -0.8]]))
 </pre></div>
 </div>
 </div>
@@ -730,7 +679,7 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">UTU</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">T</span><span class="nd">@U</span>
 <span class="n">UUT</span> <span class="o">=</span> <span class="n">U</span><span class="nd">@U</span><span class="o">.</span><span class="n">T</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;UUT, UTU = &#39;</span><span class="p">)</span>
-<span class="n">UUT</span><span class="p">,</span> <span class="n">UTU</span> 
+<span class="n">UUT</span><span class="p">,</span> <span class="n">UTU</span>
 </pre></div>
 </div>
 </div>
@@ -738,16 +687,16 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UUT, UTU = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 1.00e+00,  1.53e-16,  3.75e-17, -1.37e-16,  1.44e-16],
-        [ 1.53e-16,  1.00e+00,  4.58e-17, -5.88e-17,  4.99e-17],
-        [ 3.75e-17,  4.58e-17,  1.00e+00,  2.19e-16, -8.74e-18],
-        [-1.37e-16, -5.88e-17,  2.19e-16,  1.00e+00, -9.34e-17],
-        [ 1.44e-16,  4.99e-17, -8.74e-18, -9.34e-17,  1.00e+00]]),
- array([[ 1.00e+00,  6.39e-17, -1.37e-16,  8.83e-17,  7.63e-17],
-        [ 6.39e-17,  1.00e+00,  2.94e-17, -6.46e-17,  8.31e-17],
-        [-1.37e-16,  2.94e-17,  1.00e+00,  7.53e-17,  6.64e-18],
-        [ 8.83e-17, -6.46e-17,  7.53e-17,  1.00e+00, -7.51e-17],
-        [ 7.63e-17,  8.31e-17,  6.64e-18, -7.51e-17,  1.00e+00]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 1.00e+00,  7.97e-17, -1.24e-17, -1.81e-17,  7.25e-17],
+        [ 7.97e-17,  1.00e+00, -1.38e-16, -3.16e-17, -6.75e-17],
+        [-1.24e-17, -1.38e-16,  1.00e+00, -6.65e-17, -2.95e-17],
+        [-1.81e-17, -3.16e-17, -6.65e-17,  1.00e+00, -1.62e-17],
+        [ 7.25e-17, -6.75e-17, -2.95e-17, -1.62e-17,  1.00e+00]]),
+ array([[ 1.00e+00,  1.52e-16,  8.73e-18,  1.41e-16, -3.37e-17],
+        [ 1.52e-16,  1.00e+00, -1.20e-16,  9.75e-18, -2.02e-16],
+        [ 8.73e-18, -1.20e-16,  1.00e+00,  4.06e-17,  3.22e-17],
+        [ 1.41e-16,  9.75e-18,  4.06e-17,  1.00e+00,  4.42e-17],
+        [-3.37e-17, -2.02e-16,  3.22e-17,  4.42e-17,  1.00e+00]]))
 </pre></div>
 </div>
 </div>
@@ -765,13 +714,13 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UhatUhatT, UhatTUhat= 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.58,  0.23,  0.01, -0.05,  0.43],
-        [ 0.23,  0.15,  0.13,  0.17,  0.16],
-        [ 0.01,  0.13,  0.29,  0.44, -0.01],
-        [-0.05,  0.17,  0.44,  0.65, -0.07],
-        [ 0.43,  0.16, -0.01, -0.07,  0.33]]),
- array([[1.00e+00, 9.17e-17],
-        [9.17e-17, 1.00e+00]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.15,  0.31, -0.08,  0.16,  0.01],
+        [ 0.31,  0.64, -0.22,  0.29, -0.03],
+        [-0.08, -0.22,  0.38,  0.15,  0.4 ],
+        [ 0.16,  0.29,  0.15,  0.33,  0.3 ],
+        [ 0.01, -0.03,  0.4 ,  0.3 ,  0.5 ]]),
+ array([[1.00e+00, 1.52e-16],
+        [1.52e-16, 1.00e+00]]))
 </pre></div>
 </div>
 </div>
@@ -798,14 +747,14 @@ Using <code class="docutils literal notranslate"><span class="pre">full-matrices
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U, S, V = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.76, -0.65],
-        [ 0.65,  0.76]]),
- array([2.08, 0.47]),
- array([[ 0.64,  0.26,  0.39,  0.46,  0.4 ],
-        [ 0.21,  0.51,  0.13,  0.01, -0.82],
-        [-0.37, -0.16,  0.91, -0.1 , -0.06],
-        [-0.45, -0.05, -0.1 ,  0.87, -0.15],
-        [-0.45,  0.8 , -0.03, -0.12,  0.37]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.64,  0.77],
+        [-0.77, -0.64]]),
+ array([1.79, 0.46]),
+ array([[-0.52, -0.35, -0.4 , -0.48, -0.47],
+        [-0.15,  0.02, -0.76,  0.21,  0.59],
+        [-0.12, -0.85,  0.33,  0.09,  0.39],
+        [-0.53,  0.04,  0.08,  0.78, -0.32],
+        [-0.64,  0.4 ,  0.37, -0.32,  0.42]]))
 </pre></div>
 </div>
 </div>
@@ -821,11 +770,11 @@ Using <code class="docutils literal notranslate"><span class="pre">full-matrices
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uhat, Shat, Vhat = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.76, -0.65],
-        [ 0.65,  0.76]]),
- array([2.08, 0.47]),
- array([[ 0.64,  0.26,  0.39,  0.46,  0.4 ],
-        [ 0.21,  0.51,  0.13,  0.01, -0.82]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.64,  0.77],
+        [-0.77, -0.64]]),
+ array([1.79, 0.46]),
+ array([[-0.52, -0.35, -0.4 , -0.48, -0.47],
+        [-0.15,  0.02, -0.76,  0.21,  0.59]]))
 </pre></div>
 </div>
 </div>
@@ -850,14 +799,14 @@ Using <code class="docutils literal notranslate"><span class="pre">full-matrices
 <p>A <strong>reduced</strong> singular value decomposition (SVD) of <span class="math notranslate nohighlight">\(X\)</span> is related to a <strong>polar decomposition</strong> of <span class="math notranslate nohighlight">\(X\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-X  = SQ   
+X  = SQ
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
 \[
 \begin{aligned}
  S &amp; = U\Sigma U^\top  \cr
-Q &amp; = U V^\top  
+Q &amp; = U V^\top
 \end{aligned}
 \]</div>
 <p>Here</p>
@@ -894,7 +843,7 @@ X =  \begin{bmatrix} X_1 \mid X_2 \mid \cdots \mid X_n\end{bmatrix}
 <p>To relate a SVD to a PCA (principal component analysis) of data set <span class="math notranslate nohighlight">\(X\)</span>, first construct  the  SVD of the data matrix <span class="math notranslate nohighlight">\(X\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-pca1">
 <span class="eqno">(7.9)<a class="headerlink" href="#equation-eq-pca1" title="Permalink to this equation">#</a></span>\[
-X = U \Sigma V^\top  = \sigma_1 U_1 V_1^\top  + \sigma_2 U_2 V_2^\top  + \cdots + \sigma_p U_p V_p^\top 
+X = U \Sigma V^\top  = \sigma_1 U_1 V_1^\top  + \sigma_2 U_2 V_2^\top  + \cdots + \sigma_p U_p V_p^\top
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
@@ -930,12 +879,12 @@ is a vector of <strong>loadings</strong> of variables <span class="math notransl
 <p>Define a sample covariance matrix <span class="math notranslate nohighlight">\(\Omega\)</span> as</p>
 <div class="math notranslate nohighlight">
 \[
-\Omega = XX^\top 
+\Omega = XX^\top
 \]</div>
 <p>Then use an eigen decomposition to represent <span class="math notranslate nohighlight">\(\Omega\)</span> as follows:</p>
 <div class="math notranslate nohighlight">
 \[
-\Omega =P\Lambda P^\top 
+\Omega =P\Lambda P^\top
 \]</div>
 <p>Here</p>
 <ul class="simple">
@@ -949,7 +898,7 @@ X=P\epsilon
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
-\[ 
+\[
 \epsilon = P^{-1} X
 \]</div>
 <p>and</p>
@@ -966,7 +915,7 @@ XX^\top =P\Lambda P^\top  .
 <div class="amsmath math notranslate nohighlight">
 \[\begin{equation*}
 X=\begin{bmatrix}X_1|X_2|\ldots|X_m\end{bmatrix} =\begin{bmatrix}P_1|P_2|\ldots|P_m\end{bmatrix}
-\begin{bmatrix}\epsilon_1\\\epsilon_2\\\ldots\\\epsilon_m\end{bmatrix} 
+\begin{bmatrix}\epsilon_1\\\epsilon_2\\\ldots\\\epsilon_m\end{bmatrix}
 = P_1\epsilon_1+P_2\epsilon_2+\ldots+P_m\epsilon_m
 \end{equation*}\]</div>
 <p>To reconcile the preceding representation with the PCA that we had obtained earlier through the SVD, we first note that <span class="math notranslate nohighlight">\(\epsilon_j^2=\lambda_j\equiv\sigma^2_j\)</span>.</p>
@@ -1003,7 +952,7 @@ X=\sigma_1U_1{V_1}^{T}+\sigma_2 U_2{V_2}^{T}+\ldots+\sigma_{r} U_{r}{V_{r}}^{T}
 <p>First, consider an  SVD of an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix:</p>
 <div class="math notranslate nohighlight">
 \[
-X = U\Sigma V^\top 
+X = U\Sigma V^\top
 \]</div>
 <p>Compute:</p>
 <div class="math notranslate nohighlight" id="equation-eq-xxcompare">
@@ -1011,7 +960,7 @@ X = U\Sigma V^\top
 \begin{aligned}
 XX^\top &amp;=U\Sigma V^\top V\Sigma^\top  U^\top \cr
 &amp;\equiv U\Sigma\Sigma^\top U^\top \cr
-&amp;\equiv U\Lambda U^\top 
+&amp;\equiv U\Lambda U^\top
 \end{aligned}
 \]</div>
 <p>Compare representation <a class="reference internal" href="#equation-eq-xxcompare">(7.12)</a> with equation <a class="reference internal" href="#equation-eq-xxo">(7.11)</a> above.</p>
@@ -1022,7 +971,7 @@ eigenvectors of <span class="math notranslate nohighlight">\(XX^\top \)</span> a
 \[\begin{split}
 \begin{aligned}
 X^\top X &amp;=V\Sigma^\top  U^\top U\Sigma V^\top \\
-&amp;=V\Sigma^\top {\Sigma}V^\top 
+&amp;=V\Sigma^\top {\Sigma}V^\top
 \end{aligned}
 \end{split}\]</div>
 <p>Thus, the matrix <span class="math notranslate nohighlight">\(V\)</span> in the SVD is the matrix of eigenvectors of <span class="math notranslate nohighlight">\(X^\top X\)</span></p>
@@ -1030,19 +979,19 @@ X^\top X &amp;=V\Sigma^\top  U^\top U\Sigma V^\top \\
 covariance matrix</p>
 <div class="math notranslate nohighlight">
 \[
-X X^\top  = P \Lambda P^\top 
+X X^\top  = P \Lambda P^\top
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(P\)</span> is an orthogonal matrix.</p>
 <p>Further, from the SVD of <span class="math notranslate nohighlight">\(X\)</span>, we know that</p>
 <div class="math notranslate nohighlight">
 \[
-X X^\top  = U \Sigma \Sigma^\top  U^\top 
+X X^\top  = U \Sigma \Sigma^\top  U^\top
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(U\)</span> is an orthonal matrix.</p>
 <p>Thus, <span class="math notranslate nohighlight">\(P = U\)</span> and we have the representation of <span class="math notranslate nohighlight">\(X\)</span></p>
 <div class="math notranslate nohighlight">
 \[
-X = P \epsilon = U \Sigma V^\top 
+X = P \epsilon = U \Sigma V^\top
 \]</div>
 <p>It follows that</p>
 <div class="math notranslate nohighlight">
@@ -1092,7 +1041,7 @@ U^\top  X = \Sigma V^\top  = \epsilon
 
         <span class="bp">self</span><span class="o">.</span><span class="n">explained_ratio_pca</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">𝜆</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">𝜆</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
-        <span class="c1"># compute the N by T matrix of principal components </span>
+        <span class="c1"># compute the N by T matrix of principal components</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">𝜖</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span>
 
         <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">[:,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_component</span><span class="p">]</span>
@@ -1805,9 +1754,8 @@ obtained by different algorithms.</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/svd_intro.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/svd_intro.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1820,7 +1768,7 @@ obtained by different algorithms.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

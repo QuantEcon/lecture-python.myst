@@ -417,7 +417,6 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">prettytable</span> <span class="k">as</span> <span class="nn">pt</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
@@ -487,23 +486,23 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">find_argmax_with_randomness</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    We build our own verion of argmax function such that the argmax index will be returned randomly </span>
+<span class="sd">    We build our own verion of argmax function such that the argmax index will be returned randomly</span>
 <span class="sd">    when there are multiple maximum values. This function is similiar to np.argmax(v,axis=0)</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">    ----------</span>
 <span class="sd">    v: 2 dimensional np.array</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">index_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="n">result</span><span class="o">=</span><span class="p">[]</span>
-    
+
     <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
         <span class="n">max_value</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:,</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
         <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">index_array</span><span class="p">[</span><span class="n">v</span><span class="p">[:,</span><span class="n">ii</span><span class="p">]</span> <span class="o">==</span> <span class="n">max_value</span><span class="p">]))</span>
-        
+
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -518,9 +517,9 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 <span class="sd">    Parameters:</span>
 <span class="sd">    ----------</span>
 <span class="sd">    dt: dictionary.</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="n">ymtb</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">PrettyTable</span><span class="p">()</span>
     <span class="n">ymtb</span><span class="o">.</span><span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;House Number&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">dt</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
     <span class="n">ymtb</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s1">&#39;Buyer&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">dt</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
@@ -535,7 +534,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_kick_off_condition</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A function that checks whether the auction could be initiated given the reservation price and value matrix.</span>
-<span class="sd">    To avoid the situation that the reservation prices are so high that no one would even bid in the first round. </span>
+<span class="sd">    To avoid the situation that the reservation prices are so high that no one would even bid in the first round.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">    ----------</span>
@@ -543,13 +542,13 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 
 <span class="sd">    r: the reservation price</span>
 
-<span class="sd">    ϵ: the minimun price increment in each round </span>
-<span class="sd">    </span>
+<span class="sd">    ϵ: the minimun price increment in each round</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="c1"># we convert the price vector to a matrix in the same shape as value matrix to facilitate subtraction</span>
     <span class="n">p_start</span> <span class="o">=</span> <span class="p">(</span><span class="n">ϵ</span><span class="o">+</span><span class="n">r</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">m</span><span class="p">)[</span><span class="kc">None</span><span class="p">,:]</span>
-    
+
     <span class="n">surplus_value</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">p_start</span>
     <span class="n">buyer_decision</span> <span class="o">=</span> <span class="p">(</span><span class="n">surplus_value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">buyer_decision</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
@@ -576,7 +575,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">submit_initial_bid</span><span class="p">(</span><span class="n">p_initial</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A function that describes the bid information in the first round. </span>
+<span class="sd">    A function that describes the bid information in the first round.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">    ----------</span>
@@ -584,35 +583,35 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 
 <span class="sd">    v: the value matrix</span>
 
-<span class="sd">    ϵ: the minimun price increment in each round </span>
-<span class="sd">    </span>
+<span class="sd">    ϵ: the minimun price increment in each round</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">    ----------</span>
 <span class="sd">    p: price array after this round of bidding</span>
-<span class="sd">    </span>
+
 <span class="sd">    bid_info: a dictionary that contains bidding information (house number as keys and buyer as values).</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="n">p</span> <span class="o">=</span> <span class="n">p_initial</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">p_start_mat</span> <span class="o">=</span> <span class="p">(</span><span class="n">ϵ</span> <span class="o">+</span> <span class="n">p</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">m</span><span class="p">)[</span><span class="kc">None</span><span class="p">,:]</span>
     <span class="n">surplus_value</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">p_start_mat</span>
-    
+
     <span class="c1"># we only care about active buyers who have positve surplus values</span>
     <span class="n">active_buyer_diagnosis</span> <span class="o">=</span> <span class="p">(</span><span class="n">surplus_value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">active_buyer_list</span> <span class="o">=</span> <span class="n">buyer_list</span><span class="p">[</span><span class="n">active_buyer_diagnosis</span><span class="p">]</span>
     <span class="n">active_buyer_surplus_value</span> <span class="o">=</span> <span class="n">surplus_value</span><span class="p">[:,</span><span class="n">active_buyer_diagnosis</span><span class="p">]</span>
     <span class="n">active_buyer_choice</span> <span class="o">=</span> <span class="n">find_argmax_with_randomness</span><span class="p">(</span><span class="n">active_buyer_surplus_value</span><span class="p">)</span>
     <span class="c1"># choice means the favourite houses given the current price and ϵ</span>
-    
+
     <span class="c1"># we only retain the unique house index because prices increase once at one round</span>
     <span class="n">house_bid</span> <span class="o">=</span>  <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">active_buyer_choice</span><span class="p">))</span>
     <span class="n">p</span><span class="p">[</span><span class="n">house_bid</span><span class="p">]</span> <span class="o">+=</span> <span class="n">ϵ</span>
-    
+
     <span class="n">bid_info</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">house_num</span> <span class="ow">in</span> <span class="n">house_bid</span><span class="p">:</span>
         <span class="n">bid_info</span><span class="p">[</span><span class="n">house_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">active_buyer_list</span><span class="p">[</span><span class="n">active_buyer_choice</span> <span class="o">==</span> <span class="n">house_num</span><span class="p">]</span>
-    
+
     <span class="k">return</span> <span class="n">p</span><span class="p">,</span> <span class="n">bid_info</span>
 </pre></div>
 </div>
@@ -666,7 +665,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_terminal_condition</span><span class="p">(</span><span class="n">bid_info</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A function that checks whether the auction ends.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Recall that the auction ends when either losers have non-positive surplus values for each house</span>
 <span class="sd">    or there is no loser (every buyer gets a house).</span>
 
@@ -676,37 +675,37 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 
 <span class="sd">    p: np.array. price array of houses</span>
 
-<span class="sd">    v: value matrix </span>
-<span class="sd">    </span>
+<span class="sd">    v: value matrix</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">    ----------</span>
 <span class="sd">    allocation: a dictionary that descirbe how the houses bid are assigned.</span>
-<span class="sd">    </span>
+
 <span class="sd">    winner_list: a list of winners</span>
-<span class="sd">    </span>
+
 <span class="sd">    loser_list: a list of losers</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="c1"># there may be several buyers bidding one house, we choose a winner randomly</span>
     <span class="n">winner_list</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">bid_info</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">bid_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
-    
+
     <span class="n">allocation</span> <span class="o">=</span> <span class="p">{</span><span class="n">house_num</span><span class="p">:</span><span class="n">winner</span> <span class="k">for</span> <span class="n">house_num</span><span class="p">,</span><span class="n">winner</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bid_info</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span><span class="n">winner_list</span><span class="p">)}</span>
-    
+
     <span class="n">loser_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">buyer_list</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">winner_list</span><span class="p">))</span>
     <span class="n">loser_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">loser_set</span><span class="p">)</span>
     <span class="n">loser_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">loser_list</span><span class="p">)</span>
-    
+
     <span class="k">if</span> <span class="n">loser_num</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The auction ends because every buyer gets one house.&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">allocation</span><span class="p">,</span><span class="n">winner_list</span><span class="p">,</span><span class="n">loser_list</span>
-    
+
     <span class="n">p_mat</span> <span class="o">=</span> <span class="p">(</span><span class="n">ϵ</span> <span class="o">+</span> <span class="n">p</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">loser_num</span><span class="p">)[</span><span class="kc">None</span><span class="p">,:]</span>
     <span class="n">loser_surplus_value</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:,</span><span class="n">loser_list</span><span class="p">]</span> <span class="o">-</span> <span class="n">p_mat</span>
     <span class="n">loser_decision</span> <span class="o">=</span> <span class="p">(</span><span class="n">loser_surplus_value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-    
+
     <span class="nb">print</span><span class="p">(</span><span class="o">~</span><span class="p">(</span><span class="n">loser_decision</span><span class="o">.</span><span class="n">any</span><span class="p">()))</span>
-    
+
     <span class="k">return</span> <span class="n">allocation</span><span class="p">,</span><span class="n">winner_list</span><span class="p">,</span><span class="n">loser_list</span>
 </pre></div>
 </div>
@@ -782,23 +781,23 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 <span class="sd">    loser_list: a list that includes the indexes of losers</span>
 
 <span class="sd">    p: np.array. price array of houses</span>
-<span class="sd">    </span>
+
 <span class="sd">    ϵ: minimum increment of bid price</span>
 
-<span class="sd">    v: value matrix </span>
-<span class="sd">    </span>
+<span class="sd">    v: value matrix</span>
+
 <span class="sd">    bid_info: a dictionary that contains bidding information of house numbers (as keys) and buyers (as values).</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">    ----------</span>
 <span class="sd">    p_end: a price array after this round of bidding</span>
-<span class="sd">    </span>
+
 <span class="sd">    bid_info: a dictionary that contains updated bidding information.</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="n">p_end</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    
+
     <span class="n">loser_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">loser_list</span><span class="p">)</span>
     <span class="n">p_mat</span> <span class="o">=</span> <span class="p">(</span><span class="n">ϵ</span> <span class="o">+</span> <span class="n">p_end</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">loser_num</span><span class="p">)[</span><span class="kc">None</span><span class="p">,:]</span>
     <span class="n">loser_surplus_value</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:,</span><span class="n">loser_list</span><span class="p">]</span> <span class="o">-</span> <span class="n">p_mat</span>
@@ -809,7 +808,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
     <span class="n">active_loser_choice</span> <span class="o">=</span> <span class="n">find_argmax_with_randomness</span><span class="p">(</span><span class="n">active_loser_surplus_value</span><span class="p">)</span>
 
     <span class="c1"># we retain the unique house index and increasing the corresponding bid price</span>
-    <span class="n">house_bid</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">active_loser_choice</span><span class="p">))</span>  
+    <span class="n">house_bid</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">active_loser_choice</span><span class="p">))</span>
     <span class="n">p_end</span><span class="p">[</span><span class="n">house_bid</span><span class="p">]</span> <span class="o">+=</span> <span class="n">ϵ</span>
 
     <span class="c1"># we record the bidding information from active losers</span>
@@ -820,7 +819,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
     <span class="c1"># we update the bidding information according to the bidding from actice losers</span>
     <span class="k">for</span> <span class="n">house_num</span> <span class="ow">in</span> <span class="n">bid_info_active_loser</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="n">bid_info</span><span class="p">[</span><span class="n">house_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">bid_info_active_loser</span><span class="p">[</span><span class="n">house_num</span><span class="p">]</span>
-    
+
     <span class="k">return</span> <span class="n">p_end</span><span class="p">,</span><span class="n">bid_info</span>
 </pre></div>
 </div>
@@ -1128,24 +1127,24 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ascending_bid_auction</span><span class="p">:</span>
-    
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ϵ</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A class that simulates an ascending bid auction for houses. </span>
-<span class="sd">        </span>
+<span class="sd">        A class that simulates an ascending bid auction for houses.</span>
+
 <span class="sd">        Given buyers&#39; value matrix, sellers&#39; reservation prices and minimum increment of bid prices,</span>
 <span class="sd">        this class can execute an ascending bid auction and present information round by round until the end.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">        ----------</span>
-<span class="sd">        v: 2 dimensional value matrix </span>
+<span class="sd">        v: 2 dimensional value matrix</span>
 
 <span class="sd">        r: np.array of reservation prices</span>
 
 <span class="sd">        ϵ: minimum increment of bid price</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">r</span>
@@ -1157,8 +1156,8 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
         <span class="bp">self</span><span class="o">.</span><span class="n">allocation_history</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">winner_history</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loser_history</span> <span class="o">=</span> <span class="p">[]</span>
-        
-        
+
+
     <span class="k">def</span> <span class="nf">find_argmax_with_randomness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="n">n</span><span class="p">,</span><span class="n">m</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">index_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -1169,18 +1168,18 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
             <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">index_array</span><span class="p">[</span><span class="n">v</span><span class="p">[:,</span><span class="n">ii</span><span class="p">]</span> <span class="o">==</span> <span class="n">max_value</span><span class="p">]))</span>
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-    
-    
+
+
     <span class="k">def</span> <span class="nf">check_kick_off_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># we convert the price vector to a matrix in the same shape as value matrix to facilitate subtraction</span>
         <span class="n">p_start</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ϵ</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)[</span><span class="kc">None</span><span class="p">,:]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">surplus_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">-</span> <span class="n">p_start</span>
         <span class="n">buyer_decision</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surplus_value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">buyer_decision</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
-    
-    
+
+
     <span class="k">def</span> <span class="nf">submit_initial_bid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># we intend to find the optimal choice of each buyer </span>
+        <span class="c1"># we intend to find the optimal choice of each buyer</span>
         <span class="n">p_start_mat</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ϵ</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)[</span><span class="kc">None</span><span class="p">,:]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">surplus_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">-</span> <span class="n">p_start_mat</span>
 
@@ -1198,37 +1197,37 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
         <span class="k">for</span> <span class="n">house_num</span> <span class="ow">in</span> <span class="n">house_bid</span><span class="p">:</span>
             <span class="n">bid_info</span><span class="p">[</span><span class="n">house_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">active_buyer_list</span><span class="p">[</span><span class="n">active_buyer_choice</span> <span class="o">==</span> <span class="n">house_num</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bid_info_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bid_info</span><span class="p">)</span>
-        
+
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The bid information is&#39;</span><span class="p">)</span>
         <span class="n">ymtb</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">PrettyTable</span><span class="p">()</span>
         <span class="n">ymtb</span><span class="o">.</span><span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;House Number&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">bid_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
         <span class="n">ymtb</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s1">&#39;Buyer&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">bid_info</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">ymtb</span><span class="p">)</span>
-        
+
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The bid prices for houses are&#39;</span><span class="p">)</span>
         <span class="n">ymtb</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">PrettyTable</span><span class="p">()</span>
         <span class="n">ymtb</span><span class="o">.</span><span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;House Number&#39;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">house_list</span><span class="p">]</span>
         <span class="n">ymtb</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s1">&#39;Price&#39;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">ymtb</span><span class="p">)</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">winner_list</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">bid_info</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">bid_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">winner_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">winner_list</span><span class="p">)</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">allocation</span> <span class="o">=</span> <span class="p">{</span><span class="n">house_num</span><span class="p">:[</span><span class="n">winner</span><span class="p">]</span> <span class="k">for</span> <span class="n">house_num</span><span class="p">,</span><span class="n">winner</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bid_info</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">winner_list</span><span class="p">)}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">allocation_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="p">)</span>
-        
+
         <span class="n">loser_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buyer_list</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">winner_list</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loser_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">loser_set</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loser_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loser_list</span><span class="p">)</span>
-        
+
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The winners are&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">winner_list</span><span class="p">)</span>
-        
+
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The losers are&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loser_list</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        
-    
+
+
     <span class="k">def</span> <span class="nf">check_terminal_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">loser_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loser_list</span><span class="p">)</span>
 
@@ -1242,11 +1241,11 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
         <span class="bp">self</span><span class="o">.</span><span class="n">loser_decision</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loser_surplus_value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="o">~</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loser_decision</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
-    
-    
+
+
     <span class="k">def</span> <span class="nf">submit_bid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">bid_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">allocation_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># we only record the bid info of winner</span>
-        
+
         <span class="n">loser_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loser_list</span><span class="p">)</span>
         <span class="n">p_mat</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ϵ</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">loser_num</span><span class="p">)[</span><span class="kc">None</span><span class="p">,:]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loser_surplus_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">[:,</span><span class="bp">self</span><span class="o">.</span><span class="n">loser_list</span><span class="p">]</span> <span class="o">-</span> <span class="n">p_mat</span>
@@ -1257,7 +1256,7 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
         <span class="n">active_loser_choice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_argmax_with_randomness</span><span class="p">(</span><span class="n">active_loser_surplus_value</span><span class="p">)</span>
 
         <span class="c1"># we retain the unique house index and increasing the corresponding bid price</span>
-        <span class="n">house_bid</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">active_loser_choice</span><span class="p">))</span>  
+        <span class="n">house_bid</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">active_loser_choice</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">house_bid</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ϵ</span>
 
         <span class="c1"># we record the bidding information from active losers</span>
@@ -1269,50 +1268,50 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
         <span class="k">for</span> <span class="n">house_num</span> <span class="ow">in</span> <span class="n">bid_info_active_loser</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">bid_info</span><span class="p">[</span><span class="n">house_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">bid_info_active_loser</span><span class="p">[</span><span class="n">house_num</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bid_info_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bid_info</span><span class="p">)</span>
-        
+
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The bid information is&#39;</span><span class="p">)</span>
         <span class="n">ymtb</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">PrettyTable</span><span class="p">()</span>
         <span class="n">ymtb</span><span class="o">.</span><span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;House Number&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">bid_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
         <span class="n">ymtb</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s1">&#39;Buyer&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">bid_info</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">ymtb</span><span class="p">)</span>
-        
+
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The bid prices for houses are&#39;</span><span class="p">)</span>
         <span class="n">ymtb</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">PrettyTable</span><span class="p">()</span>
         <span class="n">ymtb</span><span class="o">.</span><span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;House Number&#39;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">house_list</span><span class="p">]</span>
         <span class="n">ymtb</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s1">&#39;Price&#39;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">])</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">ymtb</span><span class="p">)</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">winner_list</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">bid_info</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">bid_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">winner_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">winner_list</span><span class="p">)</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">allocation</span> <span class="o">=</span> <span class="p">{</span><span class="n">house_num</span><span class="p">:[</span><span class="n">winner</span><span class="p">]</span> <span class="k">for</span> <span class="n">house_num</span><span class="p">,</span><span class="n">winner</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bid_info</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">winner_list</span><span class="p">)}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">allocation_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="p">)</span>
-        
+
         <span class="n">loser_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buyer_list</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">winner_list</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loser_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">loser_set</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loser_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loser_list</span><span class="p">)</span>
-        
+
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The winners are&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">winner_list</span><span class="p">)</span>
-        
+
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The losers are&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loser_list</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        
-        
+
+
     <span class="k">def</span> <span class="nf">start_auction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The Ascending Bid Auction for Houses&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        
+
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Basic Information: </span><span class="si">%d</span><span class="s1"> houses, </span><span class="si">%d</span><span class="s1"> buyers&#39;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">))</span>
-        
+
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The valuation matrix is as follows&#39;</span><span class="p">)</span>
         <span class="n">ymtb</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">PrettyTable</span><span class="p">()</span>
         <span class="n">ymtb</span><span class="o">.</span><span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Buyer Number&#39;</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">))]</span>
         <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
             <span class="n">ymtb</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s1">&#39;House </span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">ii</span><span class="p">),</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">ii</span><span class="p">,:]])</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">ymtb</span><span class="p">)</span>
-        
+
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The reservation prices for houses are&#39;</span><span class="p">)</span>
         <span class="n">ymtb</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">PrettyTable</span><span class="p">()</span>
         <span class="n">ymtb</span><span class="o">.</span><span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;House Number&#39;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">house_list</span><span class="p">]</span>
@@ -1320,20 +1319,20 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
         <span class="nb">print</span><span class="p">(</span><span class="n">ymtb</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The minimum increment of bid price is </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">ϵ</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        
+
         <span class="n">ctr</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_kick_off_condition</span><span class="p">():</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Auction starts successfully&#39;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Round </span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span> <span class="n">ctr</span><span class="p">)</span>
-            
+
             <span class="bp">self</span><span class="o">.</span><span class="n">submit_initial_bid</span><span class="p">()</span>
-            
+
             <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_terminal_condition</span><span class="p">():</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Auction ends&#39;</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-                    
+
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The final result is as follows&#39;</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The allocation plan is&#39;</span><span class="p">)</span>
@@ -1341,52 +1340,52 @@ person <span class="math notranslate nohighlight">\(j\)</span> bought house <spa
                     <span class="n">ymtb</span><span class="o">.</span><span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;House Number&#39;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
                     <span class="n">ymtb</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s1">&#39;Buyer&#39;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">ymtb</span><span class="p">)</span>
-                    
+
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The bid prices for houses are&#39;</span><span class="p">)</span>
                     <span class="n">ymtb</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">PrettyTable</span><span class="p">()</span>
                     <span class="n">ymtb</span><span class="o">.</span><span class="n">field_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;House Number&#39;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">house_list</span><span class="p">]</span>
                     <span class="n">ymtb</span><span class="o">.</span><span class="n">add_row</span><span class="p">([</span><span class="s1">&#39;Price&#39;</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">])</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">ymtb</span><span class="p">)</span>
-                    
+
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The winners are&#39;</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">winner_list</span><span class="p">)</span>
 
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The losers are&#39;</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loser_list</span><span class="p">)</span>
-                    
+
                     <span class="bp">self</span><span class="o">.</span><span class="n">house_unsold_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">house_list</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The houses unsold are&#39;</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">house_unsold_list</span><span class="p">)</span>
-                    
+
                     <span class="bp">self</span><span class="o">.</span><span class="n">total_revenue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">keys</span><span class="p">())]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The total revenue is </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_revenue</span><span class="p">)</span>
-                    
+
                     <span class="k">break</span>
-                    
+
                 <span class="n">ctr</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Round </span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span> <span class="n">ctr</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">submit_bid</span><span class="p">()</span>
-            
+
             <span class="c1"># we compute the surplus matrix S and the quantity matrix X as required in 1.1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">ii</span><span class="p">,</span><span class="n">jj</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="n">jj</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
-            
+
             <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># the last column records the houses unsold</span>
             <span class="k">for</span> <span class="n">ii</span><span class="p">,</span><span class="n">jj</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">house_unsold_list</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-            
+
             <span class="c1"># we sort the allocation result by the house number</span>
             <span class="n">house_sold_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
             <span class="n">house_sold_list</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-            
+
             <span class="n">dict_temp</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">house_sold_list</span><span class="p">:</span>
                 <span class="n">dict_temp</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">allocation</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">allocation</span> <span class="o">=</span> <span class="n">dict_temp</span>
-            
+
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The auction can not start because of high reservation prices&#39;</span><span class="p">)</span>
 </pre></div>
@@ -2618,36 +2617,36 @@ V =\begin{bmatrix} 10 &amp; 9 &amp; 8 &amp; 7 &amp; 6 \cr
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">GC_Mechanism</span><span class="p">:</span>
-    
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Implementation of the special Groves Clarke Mechanism for house auction. </span>
-<span class="sd">        </span>
+<span class="sd">        Implementation of the special Groves Clarke Mechanism for house auction.</span>
+
 <span class="sd">        Parameters:</span>
 <span class="sd">        ----------</span>
-<span class="sd">        V: 2 dimensional private value matrix </span>
+<span class="sd">        V: 2 dimensional private value matrix</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">V_orig</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="o">.</span><span class="n">shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">)</span>
-        
+
     <span class="k">def</span> <span class="nf">find_argmax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find the house-buyer pair with the highest value.</span>
-<span class="sd">        When the highest private value corresponds to more than one house, bidder pairs, </span>
-<span class="sd">        we choose the pair with the highest sale price. </span>
-<span class="sd">        Moreoever, if the highest sale price corresponds to two or more pairs with highest private value, </span>
+<span class="sd">        When the highest private value corresponds to more than one house, bidder pairs,</span>
+<span class="sd">        we choose the pair with the highest sale price.</span>
+<span class="sd">        Moreoever, if the highest sale price corresponds to two or more pairs with highest private value,</span>
 <span class="sd">        We randomly choose one.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">        ----------</span>
 <span class="sd">        V: 2 dimensional private value matrix with -1 indicating revomed rows and columns</span>
-<span class="sd">        </span>
+
 <span class="sd">        Returns:</span>
 <span class="sd">        ----------</span>
 <span class="sd">        i: the index of the sold house</span>
@@ -2656,29 +2655,29 @@ V =\begin{bmatrix} 10 &amp; 9 &amp; 8 &amp; 7 &amp; 6 \cr
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">))</span>
-        
+
         <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">):</span>
             <span class="n">p_candidate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)):</span>
                 <span class="n">p_candidate</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="p">:],</span> <span class="n">j</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
             <span class="n">k</span><span class="p">,</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">p_candidate</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">p_candidate</span><span class="p">))</span>
             <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">j</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-            
+
             <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">):</span>
                 <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
                 <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">k</span><span class="p">])</span>
                 <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">j</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span>
-    
+
     <span class="k">def</span> <span class="nf">update_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">j</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        
+
     <span class="k">def</span> <span class="nf">calculate_surplus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V_orig</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">)</span><span class="nd">@self</span><span class="o">.</span><span class="n">Q</span>
-        
+
     <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">while</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">)</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">):</span>
             <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_argmax</span><span class="p">()</span>
@@ -2691,7 +2690,6 @@ V =\begin{bmatrix} 10 &amp; 9 &amp; 8 &amp; 7 &amp; 6 \cr
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The status matrix:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The surplus matrix:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="p">)</span>
-    
 </pre></div>
 </div>
 </div>
@@ -2700,7 +2698,7 @@ V =\begin{bmatrix} 10 &amp; 9 &amp; 8 &amp; 7 &amp; 6 \cr
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">666</span><span class="p">)</span>
 
-<span class="n">V_orig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> 
+<span class="n">V_orig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
                    <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
                    <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
                    <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">]])</span>
@@ -2717,9 +2715,9 @@ House 1 is sold to buyer 1 at price 7
 
 
 House 2 is sold to buyer 3 at price 6
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>House 3 is sold to buyer 4 at price 6
+
+
+House 3 is sold to buyer 4 at price 6
 
 
 Prices of house:
@@ -2758,12 +2756,12 @@ The surplus matrix:
 <p>The  VCG mechanism chooses the allocation</p>
 <div class="math notranslate nohighlight" id="equation-eq-gc1">
 <span class="eqno">(81.1)<a class="headerlink" href="#equation-eq-gc1" title="Permalink to this equation">#</a></span>\[
-X(v)  = \operatorname{argmax}_{x \in X} \sum_{j=1}^m v_j(x)  
+X(v)  = \operatorname{argmax}_{x \in X} \sum_{j=1}^m v_j(x)
 \]</div>
 <p>and charges person <span class="math notranslate nohighlight">\(j\)</span> a “social cost”</p>
 <div class="math notranslate nohighlight" id="equation-eq-gc2">
 <span class="eqno">(81.2)<a class="headerlink" href="#equation-eq-gc2" title="Permalink to this equation">#</a></span>\[
-\check t_j(v) = \max_{x \in  X} \sum_{k \neq j} v_k(x) -  \sum_{k \neq j} v_k(X(v)) 
+\check t_j(v) = \max_{x \in  X} \sum_{k \neq j} v_k(x) -  \sum_{k \neq j} v_k(X(v))
 \]</div>
 <p>In our setting, equation <a class="reference internal" href="#equation-eq-gc1">(81.1)</a> says that the VCG allocation allocates houses to maximize the total value of the successful prospective buyers.</p>
 <p>In our setting, equation <a class="reference internal" href="#equation-eq-gc2">(81.2)</a> says that the mechanism charges people for the externality that their presence in society imposes on other prospective buyers.</p>
@@ -2790,7 +2788,7 @@ V =\begin{bmatrix} 10 &amp; 9 &amp; 8 &amp; 7 &amp; 6 \cr
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">666</span><span class="p">)</span>
 
-<span class="n">V_orig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> 
+<span class="n">V_orig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
                    <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
                    <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
 <span class="n">gc_mechanism</span> <span class="o">=</span> <span class="n">GC_Mechanism</span><span class="p">(</span><span class="n">V_orig</span><span class="p">)</span>
@@ -2868,7 +2866,7 @@ The surplus matrix:
 <p>Calculate the social cost of buyer 0.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The social cost of buyer 0:&quot;</span><span class="p">,</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The social cost of buyer 0:&quot;</span><span class="p">,</span>
      <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">gc_mechanism_exc_0</span><span class="o">.</span><span class="n">Q</span><span class="o">*</span><span class="n">gc_mechanism_exc_0</span><span class="o">.</span><span class="n">V_orig</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">gc_mechanism</span><span class="o">.</span><span class="n">Q</span><span class="o">*</span><span class="n">gc_mechanism</span><span class="o">.</span><span class="n">V_orig</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span>
 </pre></div>
 </div>
@@ -2888,7 +2886,7 @@ The surplus matrix:
 <span class="n">gc_mechanism_exc_1</span> <span class="o">=</span> <span class="n">GC_Mechanism</span><span class="p">(</span><span class="n">V_exc_1</span><span class="p">)</span>
 <span class="n">gc_mechanism_exc_1</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The social cost of buyer 1:&quot;</span><span class="p">,</span> 
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The social cost of buyer 1:&quot;</span><span class="p">,</span>
      <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">gc_mechanism_exc_1</span><span class="o">.</span><span class="n">Q</span><span class="o">*</span><span class="n">gc_mechanism_exc_1</span><span class="o">.</span><span class="n">V_orig</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">gc_mechanism</span><span class="o">.</span><span class="n">Q</span><span class="o">*</span><span class="n">gc_mechanism</span><span class="o">.</span><span class="n">V_orig</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span>
 </pre></div>
 </div>
@@ -2931,7 +2929,7 @@ The social cost of buyer 1: 6.0
 <span class="n">gc_mechanism_exc_2</span> <span class="o">=</span> <span class="n">GC_Mechanism</span><span class="p">(</span><span class="n">V_exc_2</span><span class="p">)</span>
 <span class="n">gc_mechanism_exc_2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The social cost of buyer 2:&quot;</span><span class="p">,</span> 
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The social cost of buyer 2:&quot;</span><span class="p">,</span>
      <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">gc_mechanism_exc_2</span><span class="o">.</span><span class="n">Q</span><span class="o">*</span><span class="n">gc_mechanism_exc_2</span><span class="o">.</span><span class="n">V_orig</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">gc_mechanism</span><span class="o">.</span><span class="n">Q</span><span class="o">*</span><span class="n">gc_mechanism</span><span class="o">.</span><span class="n">V_orig</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span>
 </pre></div>
 </div>
@@ -3569,9 +3567,8 @@ The social cost of buyer 2: 5.0
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/house_auction.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/house_auction.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -3584,7 +3581,7 @@ The social cost of buyer 2: 5.0
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

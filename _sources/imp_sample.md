@@ -21,7 +21,7 @@ kernelspec:
 
 In  {doc}`this lecture <likelihood_ratio_process>` we described a peculiar property of a likelihood ratio process, namely, that it's mean equals one for all $t \geq 0$ despite it's converging to zero almost surely.
 
-While it is easy to verify that peculiar properly analytically (i.e., in population), it is challenging to use a computer simulation to verify it via an application of a law of large numbers that entails studying sample averages of repeated simulations.  
+While it is easy to verify that peculiar properly analytically (i.e., in population), it is challenging to use a computer simulation to verify it via an application of a law of large numbers that entails studying sample averages of repeated simulations.
 
 To confront this challenge, this lecture puts __importance sampling__ to work to accelerate convergence of sample averages to population means.
 
@@ -35,7 +35,6 @@ from numba import njit, vectorize, prange
 import matplotlib.pyplot as plt
 %matplotlib inline
 from math import gamma
-from scipy.stats import beta
 ```
 
 ## Mathematical Expectation of Likelihood Ratio
@@ -332,7 +331,7 @@ Evidently, the bias increases with increases in $T$.
 
 Above, we arbitraily chose $h = Beta(0.5,0.5)$ as the importance distribution.
 
-Is there an optimal importance distribution? 
+Is there an optimal importance distribution?
 
 In our particular case, since we  know in advance that $E_0 \left[ L\left(\omega^t\right) \right] = 1$.
 
@@ -340,7 +339,7 @@ We can use that knowledge to our advantage.
 
 Thus, suppose that we simply use  $h = f$.
 
-When estimating the mean of the likelihood ratio (T=1), we get: 
+When estimating the mean of the likelihood ratio (T=1), we get:
 
 $$
 \hat{E}^f \left[\ell(\omega) \frac{g(\omega)}{f(\omega)} \right] = \hat{E}^f \left[\frac{f(\omega)}{g(\omega)} \frac{g(\omega)}{f(\omega)} \right] = \frac{1}{N} \sum_{i=1}^{N} \ell(w_i^f) \frac{g(w_i^f)}{f(w_i^f)} = 1
@@ -379,19 +378,19 @@ plt.show()
 
 We consider two additonal distributions.
 
-As a reminder $h_1$ is the original $Beta(0.5,0.5)$ distribution that we used above. 
+As a reminder $h_1$ is the original $Beta(0.5,0.5)$ distribution that we used above.
 
-$h_2$ is the $Beta(1,1.2)$ distribution. 
+$h_2$ is the $Beta(1,1.2)$ distribution.
 
-Note how $h_2$ has a similar shape to $g$ at higher values of distribution but more mass at lower values. 
+Note how $h_2$ has a similar shape to $g$ at higher values of distribution but more mass at lower values.
 
 Our hunch is that $h_2$ should be a good importance sampling distribution.
 
-$h_3$ is the $Beta(2,5)$ distribution. 
+$h_3$ is the $Beta(2,5)$ distribution.
 
 Note how $h_3$ has zero mass at values very close to 0 and at values close to 1.
 
-Our hunch is that $h_3$ will  be a poor importance sampling distribution. 
+Our hunch is that $h_3$ will  be a poor importance sampling distribution.
 
 
 We first simulate a plot the distribution of estimates for $\hat{E} \left[L\left(\omega^t\right)\right]$ using $h_2$ as the importance sampling distribution.

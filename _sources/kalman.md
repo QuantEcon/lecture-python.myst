@@ -64,7 +64,6 @@ import matplotlib.cm as cm
 from quantecon import Kalman, LinearStateSpace
 from scipy.stats import norm
 from scipy.integrate import quad
-from numpy.random import multivariate_normal
 from scipy.linalg import eigvals
 ```
 
@@ -812,4 +811,3 @@ The interpretation is that more randomness in the law of motion for $x_t$ causes
 ```
 
 [^f1]: See, for example, page 93 of {cite}`Bishop2006`. To get from his expressions to the ones used above, you will also need to apply the [Woodbury matrix identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity).
-

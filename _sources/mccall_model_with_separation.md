@@ -438,11 +438,8 @@ def compute_reservation_wage(mcm):
     v, d = solve_model(mcm)
     h = u(mcm.c) + mcm.β * d
 
-    w_bar = np.inf
-    for i, wage in enumerate(mcm.w):
-        if v[i] > h:
-            w_bar = wage
-            break
+    i = np.searchsorted(v, h, side='right')
+    w_bar = mcm.w[i]
 
     return w_bar
 ```

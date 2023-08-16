@@ -53,7 +53,6 @@ import numpy as np
 import scipy.stats as stats
 from interpolation import interp
 from numba import njit, prange
-from math import gamma
 ```
 
 ### Model Features
