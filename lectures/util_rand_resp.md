@@ -12,22 +12,20 @@ kernelspec:
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
-from sympy import *
-import math
 ```
 
-# Expected Utilities of Random Responses 
+# Expected Utilities of Random Responses
 
 
 ## Overview
 
 
-{doc}`This QuantEcon lecture <rand_resp>` describes randomized response surveys in the tradition of Warner {cite}`warner1965randomized` that are designed  to protect  respondents' privacy. 
+{doc}`This QuantEcon lecture <rand_resp>` describes randomized response surveys in the tradition of Warner {cite}`warner1965randomized` that are designed  to protect  respondents' privacy.
 
 
-Lars Ljungqvist {cite}`ljungqvist1993unified`  analyzed how a respondent's decision about whether to answer truthfully depends on  **expected utility**. 
+Lars Ljungqvist {cite}`ljungqvist1993unified`  analyzed how a respondent's decision about whether to answer truthfully depends on  **expected utility**.
 
- 
+
 
 The lecture tells how Ljungqvist  used his  framework to shed light on alternative randomized response survey techniques
 proposed, for example, by {cite}`lanke1975choice`, {cite}`lanke1976degree`, {cite}`leysieffer1976respondent`,
@@ -79,7 +77,7 @@ $$
 \frac{\text{Pr}(A|r)}{\text{Pr}(A^{'}|r)}\times \frac{(1-\pi_A)}{\pi_A} = \frac{\text{Pr}(r|A)}{\text{Pr}(r|A^{'})}
 $$ (eq:util-rand-three)
 
-If this expression is greater (less) than unity, it follows that $r$ is jeopardizing with respect to $A$($A^{'}$). Then, the natural measure of jeopardy will be: 
+If this expression is greater (less) than unity, it follows that $r$ is jeopardizing with respect to $A$($A^{'}$). Then, the natural measure of jeopardy will be:
 
 $$
 \begin{aligned}
@@ -96,11 +94,11 @@ $$
 \begin{aligned}
 g(\text{yes}|A)&>1\\
 \text{and}&\\
-g(\text{no}|A^{'})&>1 
+g(\text{no}|A^{'})&>1
 \end{aligned}
 $$
 
-Leysieffer and Warner proved that the variance of the estimate can only be decreased through an increase in one or both of these two measures of jeopardy. 
+Leysieffer and Warner proved that the variance of the estimate can only be decreased through an increase in one or both of these two measures of jeopardy.
 
 An efficient randomized response model is, therefore, any model that attains the maximum acceptable levels of jeopardy that are consistent with cooperation of the respondents.
 
@@ -130,7 +128,7 @@ $$ (eq:util-rand-five-a)
 
 Holding this measure constant, he explained under what conditions the smallest variance of the estimate was achieved with the unrelated question model or Warner's (1965) original model.
 
-### 2.3 Fligner, Policello, and Singh 
+### 2.3 Fligner, Policello, and Singh
 
 Fligner, Policello, and Singh reached similar conclusion as Lanke (1976). {cite}`fligner1977comparison`
 
@@ -143,9 +141,9 @@ $$ (eq:util-rand-six)
 
 ### 2.4 Greenberg, Kuebler, Abernathy, and Horvitz (1977)
 
-{cite}`greenberg1977respondent` 
+{cite}`greenberg1977respondent`
 
-Greenberg, Kuebler, Abernathy, and Horvitz (1977) stressed the importance of examining the risk to respondents who do not belong to $A$ as well as the risk to those who do belong to the sensitive group. 
+Greenberg, Kuebler, Abernathy, and Horvitz (1977) stressed the importance of examining the risk to respondents who do not belong to $A$ as well as the risk to those who do belong to the sensitive group.
 
 They defined the hazard for an individual in $A$ as the probability that he or she is perceived as belonging to $A$:
 
@@ -190,11 +188,11 @@ Let $r_i$ denote individual $i$'s response to the randomized question.
 $r_i$ can only take values "yes" or "no".
 
 For a given  design of a randomized response interview and a given belief about the fraction of  the population
-that belongs to $A$, the respondent's  answer is associated with a conditional probability $ \text{Pr}(A|r_i)$ that the individual belongs to $A$. 
+that belongs to $A$, the respondent's  answer is associated with a conditional probability $ \text{Pr}(A|r_i)$ that the individual belongs to $A$.
 
 Given $r_i$ and complete privacy,  the individual's utility  is higher if $r_i$ represents a truthful answer rather than a lie.
 
-In terms of a respondent's expected utility as a function of $ \text{Pr}(A|r_i)$ and $r_i$ 
+In terms of a respondent's expected utility as a function of $ \text{Pr}(A|r_i)$ and $r_i$
 
 - The higher is $ \text{Pr}(A|r_i)$, the lower isindividual $i$'s  expected utility.
 
@@ -220,7 +218,7 @@ $$ (eq:util-rand-nine-b)
 
 Suppose now that  correct answer for individual $i$ is "yes".
 
-Individual $i$ would  choose to answer truthfully if 
+Individual $i$ would  choose to answer truthfully if
 
 $$
 U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)
@@ -233,17 +231,17 @@ $$
 U_i\left(\text{Pr}(A|\text{no}),\text{truth}\right)\geq U_i\left(\text{Pr}(A|\text{yes}),\text{lie}\right)
 $$ (eq:util-rand-ten-b)
 
-Assume that 
+Assume that
 
 $$
 \text{Pr}(A|\text{yes})>\pi_A>\text{Pr}(A|\text{no})
 $$
 
-so that a "yes" answer increases the odds that an individual belongs to $A$. 
+so that a "yes" answer increases the odds that an individual belongs to $A$.
 
 Constraint {eq}`eq:util-rand-ten-b` holds for sure.
 
-Consequently,  constraint {eq}`eq:util-rand-ten-a` becomes the single necessary condition for individual $i$  always to answer truthfully. 
+Consequently,  constraint {eq}`eq:util-rand-ten-a` becomes the single necessary condition for individual $i$  always to answer truthfully.
 
 At equality, constraint $(10.\text{a})$ determines   conditional probabilities that make the individual indifferent between telling the truth and lying when the correct answer is "yes":
 
@@ -269,7 +267,7 @@ The source of the positive relationship is:
 
 We can deduce two things about the truth border:
 
-- The truth border divides the space of conditional probabilities into two subsets: "truth telling" and "lying". Thus, sufficient  privacy elicits a truthful answer, whereas insufficient privacy results in a lie. The truth border depends on a respondent's utility function. 
+- The truth border divides the space of conditional probabilities into two subsets: "truth telling" and "lying". Thus, sufficient  privacy elicits a truthful answer, whereas insufficient privacy results in a lie. The truth border depends on a respondent's utility function.
 
 - Assumptions in {eq}`eq:util-rand-nine-a` and {eq}`eq:util-rand-nine-a` are  sufficient only to guarantee a positive slope of the truth border. The truth border can have either a concave or a convex shape.
 
@@ -303,7 +301,7 @@ plt.title('Figure 1.1')
 plt.show()
 ```
 
-Figure 1.1 three types of truth border. 
+Figure 1.1 three types of truth border.
 
 
 Without loss of generality, we consider the truth border:
@@ -322,7 +320,7 @@ z2 = 0
 plt.figure(figsize=(12, 10))
 plt.plot(x1, y1,'r-',label='Truth Border of: $U_i(Pr(A|r_i),\phi_i)=-Pr(A|r_i)+f(\phi_i)$')
 plt.plot(x1, x1, ':', linewidth=2)
-plt.fill_between(x1, y1, z1, facecolor='blue', alpha=0.05, label='truth telling') 
+plt.fill_between(x1, y1, z1, facecolor='blue', alpha=0.05, label='truth telling')
 plt.fill_between(x1, z2, y1, facecolor='green', alpha=0.05, label='lying')
 plt.xlim([0, 1])
 plt.ylim([0, 1])
@@ -341,7 +339,7 @@ plt.show()
 
 ### Iso-variance Curves
 
-A statistician's objective is   
+A statistician's objective is
 
 - to find a randomized response survey design that minimizes the bias and the variance of the estimator.
 
@@ -354,7 +352,7 @@ V(\text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}))
 \end{aligned}
 $$ (eq:util-rand-thirteen)
 
-where the random sample with replacement consists of $n$ individuals. 
+where the random sample with replacement consists of $n$ individuals.
 
 We can use Expression {eq}`eq:util-rand-thirteen` to draw  iso-variance curves.
 
@@ -391,11 +389,11 @@ class Iso_Variance:
     def __init__(self, pi, n):
         self.pi = pi
         self.n = n
-    
+
     def plotting_iso_variance_curve(self):
         pi = self.pi
         n = self.n
-        
+
         nv = np.array([0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7])
         x = np.arange(0, 1, 0.001)
         x0 = np.arange(pi, 1, 0.001)
@@ -403,7 +401,7 @@ class Iso_Variance:
         y1 = [pi for i in x0]
         y2 = [pi for i in x2]
         y0 = 1 / (1 + (x0 * (1 - pi)**2) / ((1 - x0) * pi**2))
-        
+
         plt.figure(figsize=(12, 10))
         plt.plot(x0, y0, 'm-', label='Warner')
         plt.plot(x, x, 'c:', linewidth=2)
@@ -442,7 +440,7 @@ var = Iso_Variance(pi=0.3, n=100)
 var.plotting_iso_variance_curve()
 ```
 
-### Optimal Survey 
+### Optimal Survey
 
 A point on an iso-variance curves can be attained with the unrelated question design.
 
@@ -450,9 +448,9 @@ We now focus on finding an "optimal survey design" that
 
 - Minimizes the variance of the estimator subject to privacy restrictions.
 
-To obtain an optimal  design, we first superimpose all individuals' truth borders  on the iso-variance mapping. 
+To obtain an optimal  design, we first superimpose all individuals' truth borders  on the iso-variance mapping.
 
-To construct an optimal  design 
+To construct an optimal  design
 
 - The statistician should  find the intersection of  areas above all truth borders; that is, the set of conditional probabilities ensuring truthful answers from all respondents.
 
@@ -470,11 +468,11 @@ Here are some comments about the model design:
 
 - If  respondents experience a large enough increase in expected utility from telling the truth, then there is no need to use a randomized response model. The smallest possible variance of the estimate is then obtained at $\text{ Pr}(A|\text{yes})=1$ and $\text{ Pr}(A|\text{no})=0$ ; that is, when respondents answer truthfully to direct questioning.
 
-- A more general design problem would be to minimize some weighted sum of the estimator's variance and bias. It would be optimal to accept some lies from the most "reluctant" respondents. 
+- A more general design problem would be to minimize some weighted sum of the estimator's variance and bias. It would be optimal to accept some lies from the most "reluctant" respondents.
 
 ## Criticisms of Proposed Privacy Measures
 
-We can use a utilitarian approach to analyze some  privacy measures. 
+We can use a utilitarian approach to analyze some  privacy measures.
 
 We'll enlist Python Code to help us.
 
@@ -507,12 +505,12 @@ plt.plot(x, x, 'c:', linewidth=2)
 plt.plot(x0, y1, 'c:', linewidth=2)
 plt.plot(y2, x2, 'c:', linewidth=2)
 plt.plot(x, y, 'r-', label='Truth Border')
-plt.fill_between(x, y, z, facecolor='blue', alpha=0.05, label='truth telling') 
+plt.fill_between(x, y, z, facecolor='blue', alpha=0.05, label='truth telling')
 plt.fill_between(x, 0, y, facecolor='green', alpha=0.05, label='lying')
 for i in range(len(nv)):
     y = pi - (pi**2 * (1 - pi)**2) / (n * (nv[i] / n) * (x0 - pi + 1e-8))
     plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
-    
+
 
 plt.scatter(0.498, 0.1, c='b', marker='*', label='Z', s=150)
 plt.scatter(0.4, 0, c='y', label='X', s=150)
@@ -549,7 +547,7 @@ This is  not an optimal  choice under a utilitarian approach.
 
 {cite}`Chadhuri_Mukerjee_88`
 
-Chaudhuri and Mukerjee (1988) argued that the individual may find that since "yes" may sometimes relate to the sensitive group A, a clever respondent may falsely but safely always be inclined to respond "no". In this situation, the truth border is such that individuals choose to lie whenever the truthful answer is "yes" and 
+Chaudhuri and Mukerjee (1988) argued that the individual may find that since "yes" may sometimes relate to the sensitive group A, a clever respondent may falsely but safely always be inclined to respond "no". In this situation, the truth border is such that individuals choose to lie whenever the truthful answer is "yes" and
 
 $$
 \text{Pr}(A|\text{no})=0
@@ -560,12 +558,12 @@ Here the gain from lying is too high for someone to volunteer a "yes" answer.
 This  means that
 
 $$
-U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)< U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right) 
+U_i\left(\text{Pr}(A|\text{yes}),\text{truth}\right)< U_i\left(\text{Pr}(A|\text{no}),\text{lie}\right)
 $$
 
-in any situation always. 
+in any situation always.
 
-As a result, there is no attainable model design. 
+As a result, there is no attainable model design.
 
 However, under a utilitarian approach there should exist other survey designs that are consistent with truthful answers.
 
@@ -600,7 +598,7 @@ plt.plot(x, x, 'c:', linewidth=2)
 plt.plot(x0, y1,'c:', linewidth=2)
 plt.plot(y2, x2,'c:', linewidth=2)
 plt.plot(x3, y3,'b-', label='Truth Border')
-plt.fill_between(x, y, z, facecolor='blue', alpha=0.05, label='Truth telling') 
+plt.fill_between(x, y, z, facecolor='blue', alpha=0.05, label='Truth telling')
 plt.fill_between(x3, 0, y3,facecolor='green', alpha=0.05, label='Lying')
 for i in range(len(nv)):
     y = pi - (pi**2 * (1 - pi)**2) / (n * (nv[i] / n) * (x0 - pi + 1e-8))
@@ -634,7 +632,7 @@ $$
 \text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})+\text{Pr}(\text{no}|A^{'}) \times \text{Pr}(A|\text{no})
 $$ (eq:util-rand-seven-bb)
 
-They also considered an alternative related measure of hazard that they said  "is likely to be closer to the actual concern felt by a respondent." 
+They also considered an alternative related measure of hazard that they said  "is likely to be closer to the actual concern felt by a respondent."
 
 Their "limited hazard" for an individual in $A$ and $A^{'}$ is
 
@@ -648,7 +646,7 @@ $$
 \text{Pr}(\text{yes}|A^{'})\times \text{Pr}(A|\text{yes})
 $$ (eq:util-rand-eight-bb)
 
-According to Greenberg et al. (1977), a respondent commits himself or herself to answer truthfully on the basis of a probability in {eq}`eq:util-rand-seven-aa` or {eq}`eq:util-rand-eight-aa` **before** randomly selecting the question to be answered. 
+According to Greenberg et al. (1977), a respondent commits himself or herself to answer truthfully on the basis of a probability in {eq}`eq:util-rand-seven-aa` or {eq}`eq:util-rand-eight-aa` **before** randomly selecting the question to be answered.
 
 Suppose that the appropriate privacy measure is captured by the notion of "limited hazard" in {eq}`eq:util-rand-eight-aa` and {eq}`eq:util-rand-eight-bb`.
 
@@ -668,7 +666,7 @@ Even though this hazard can be set arbitrarily close to 0, an individual in $A$ 
 
 However, under utilitarian framework, it is obviously contradictory.
 
-If the individuals are willing to volunteer this information, it seems that the randomized response design was not necessary in the first place. 
+If the individuals are willing to volunteer this information, it seems that the randomized response design was not necessary in the first place.
 
 It ignores the fact that respondents retain the option of lying until they have seen the question to be answered.
 
@@ -681,7 +679,7 @@ The justifications for a randomized response procedure are that
 
 - Respondents prefer to answer questions truthfully than to lie, unless it is too revealing.
 
-If a privacy measure is not completely consistent with the rational behavior of the respondents, all efforts to derive an optimal model design are futile. 
+If a privacy measure is not completely consistent with the rational behavior of the respondents, all efforts to derive an optimal model design are futile.
 
 A utilitarian approach provides a systematic way to model respondents' behavior under the assumption that they maximize their expected utilities.
 

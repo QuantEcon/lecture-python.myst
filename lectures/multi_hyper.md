@@ -114,7 +114,6 @@ Let's start with some imports.
 %matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
-import matplotlib.cm as cm
 import numpy as np
 from scipy.special import comb
 from scipy.stats import normaltest
@@ -472,4 +471,3 @@ test_normal.pvalue
 ```
 
 The lesson to take away from this is that the normal approximation is imperfect.
-

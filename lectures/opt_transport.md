@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Optimal Transport 
+# Optimal Transport
 
 ## Overview
 
@@ -19,9 +19,9 @@ The **transportation** or **optimal transport** problem is interesting both
 because of its many applications and because of its important role in the history of
 economic theory.
 
-In this lecture, we describe the problem, tell how 
+In this lecture, we describe the problem, tell how
 {doc}`linear programming <lp_intro>` is a
-key tool for solving it, and then provide some examples.  
+key tool for solving it, and then provide some examples.
 
 We will provide other applications in followup lectures.
 
@@ -34,7 +34,7 @@ several implementations of linear programming, including, in order,
 
 1. the
    [linprog](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html)
-   solver from SciPy, 
+   solver from SciPy,
 2. the [linprog_simplex](https://quanteconpy.readthedocs.io/en/latest/optimize/linprog_simplex.html) solver from QuantEcon and
 3. the simplex-based solvers included in the [Python Optimal Transport](https://pythonot.github.io/) package.
 
@@ -53,7 +53,7 @@ import matplotlib.pyplot as plt
 from scipy.optimize import linprog
 from quantecon.optimize.linprog_simplex import linprog_simplex
 import ot
-from scipy.stats import binom, betabinom
+from scipy.stats import betabinom
 import networkx as nx
 ```
 
@@ -61,13 +61,13 @@ import networkx as nx
 
 Suppose that $m$ factories produce goods that must be sent to $n$ locations.
 
-Let 
+Let
 
 * $x_{ij}$ denote the quantity  shipped from factory $i$ to location  $j$
 
 * $c_{ij}$ denote the cost of shipping one unit  from factory $i$ to location $j$
 
-* $p_i$ denote the capacity of factory $i$ and $q_j$ denote the amount required at location $j$. 
+* $p_i$ denote the capacity of factory $i$ and $q_j$ denote the amount required at location $j$.
 
 *  $i = 1, 2, \dots, m$ and $j = 1, 2, \dots, n$.
 
@@ -85,7 +85,7 @@ target locations are distributed in the plane.
 
 ```
 
-The size of the vertices in the figure are proportional to 
+The size of the vertices in the figure are proportional to
 
 - capacity, for the factories, and
 - demand (amount required) for the target locations.
@@ -111,17 +111,17 @@ This is an **optimal transport problem** with
 
 * $m+n$ constraints.
 
-Summing the $q_j$'s across all $j$'s and the $p_i$'s across all $i$'s indicates that the total capacity of all the factories  equals  total requirements at all locations: 
+Summing the $q_j$'s across all $j$'s and the $p_i$'s across all $i$'s indicates that the total capacity of all the factories  equals  total requirements at all locations:
 
 $$
-    \sum_{j=1}^n q_j 
-    = \sum_{j=1}^n \sum_{i=1}^m x_{ij} 
-    = \sum_{i=1}^m \sum_{j=1}^n x_{ij} 
+    \sum_{j=1}^n q_j
+    = \sum_{j=1}^n \sum_{i=1}^m x_{ij}
+    = \sum_{i=1}^m \sum_{j=1}^n x_{ij}
     = \sum_{i=1}^m p_i
 $$ (sumconstraints)
 
 The presence of the restrictions in {eq}`sumconstraints` will be the source of
-one redundancy in the complete set of restrictions that we describe below.  
+one redundancy in the complete set of restrictions that we describe below.
 
 More about this later.
 
@@ -136,20 +136,20 @@ tackle the optimal transport problem.
 
 ### Vectorizing a Matrix of Decision Variables
 
-A *matrix* of decision variables $x_{ij}$ appears in problem {eq}`plannerproblem`. 
+A *matrix* of decision variables $x_{ij}$ appears in problem {eq}`plannerproblem`.
 
-The SciPy function `linprog` expects to see a *vector* of decision variables. 
+The SciPy function `linprog` expects to see a *vector* of decision variables.
 
 This situation impels us to rewrite our problem in terms of a
 *vector* of decision variables.
 
-Let 
+Let
 
 * $X, C$ be $m \times n$ matrices with entries $x_{ij}, c_{ij}$,
 
 * $p$ be $m$-dimensional vector with entries $p_i$,
 
-* $q$ be $n$-dimensional vector with entries $q_j$. 
+* $q$ be $n$-dimensional vector with entries $q_j$.
 
 With $\mathbf{1}_n$ denoting the $n$-dimensional column vector $(1, 1, \dots,
 1)'$, our  problem can now be expressed compactly as:
@@ -163,9 +163,9 @@ $$
 \end{aligned}
 $$
 
-We can convert the matrix $X$ into a vector by stacking all of its columns into a  column vector. 
+We can convert the matrix $X$ into a vector by stacking all of its columns into a  column vector.
 
-Doing this is called **vectorization**, an operation that we denote  $\operatorname{vec}(X)$. 
+Doing this is called **vectorization**, an operation that we denote  $\operatorname{vec}(X)$.
 
 Similarly, we convert the matrix $C$ into an $mn$-dimensional vector $\operatorname{vec}(C)$.
 
@@ -184,12 +184,12 @@ an $n \times t$ matrix.
 The **Kronecker product** of $A$ and $B$ is defined, in block matrix form, by
 
 $$
-    A \otimes B = 
+    A \otimes B =
     \begin{pmatrix}
-    a_{11}B & a_{12}B & \dots & a_{1s}B \\ 
-    a_{21}B & a_{22}B & \dots & a_{2s}B \\ 
-      &   & \vdots &   \\ 
-    a_{m1}B & a_{m2}B & \dots & a_{ms}B \\ 
+    a_{11}B & a_{12}B & \dots & a_{1s}B \\
+    a_{21}B & a_{22}B & \dots & a_{2s}B \\
+      &   & \vdots &   \\
+    a_{m1}B & a_{m2}B & \dots & a_{ms}B \\
     \end{pmatrix}.
 $$
 
@@ -208,9 +208,9 @@ Let $A = \mathbf{I}_m', B = \mathbf{1}_n$.
 By equation {eq}`kroneckerprop`
 
 $$
-    X \ \mathbf{1}_n 
-    = \operatorname{vec}(X \ \mathbf{1}_n) 
-    = \operatorname{vec}(\mathbf{I}_m X \ \mathbf{1}_n) 
+    X \ \mathbf{1}_n
+    = \operatorname{vec}(X \ \mathbf{1}_n)
+    = \operatorname{vec}(\mathbf{I}_m X \ \mathbf{1}_n)
     = (\mathbf{1}_n' \otimes \mathbf{I}_m) \operatorname{vec}(X).
 $$
 
@@ -242,15 +242,15 @@ $$ (decisionvars)
 where
 
 $$
-    A = 
+    A =
     \begin{pmatrix}
-        \mathbf{1}_n' \otimes \mathbf{I}_m \\ 
-        \mathbf{I}_n \otimes \mathbf{1}_m' \\ 
+        \mathbf{1}_n' \otimes \mathbf{I}_m \\
+        \mathbf{I}_n \otimes \mathbf{1}_m' \\
     \end{pmatrix}
     \quad \text{and} \quad
-    b = \begin{pmatrix} 
-            p \\ 
-            q \\ 
+    b = \begin{pmatrix}
+            p \\
+            q \\
         \end{pmatrix}
 $$
 
@@ -270,7 +270,7 @@ and entries $c_{ij}$  of the cost-of-shipping matrix $C$.
     <tr>
 	    <th> </th>
         <th colspan="3"><center>Factory</center></th>
-	    <th rowspan="2">Requirement</th>  
+	    <th rowspan="2">Requirement</th>
 	</tr >
     <tr>
         <th> Location </th> <th>1</th> <th>2</th> <th>3</th>
@@ -303,10 +303,10 @@ $$
 p = \begin{pmatrix}
         50 \\
         100 \\
-        150 
+        150
     \end{pmatrix},
     \quad
-    q = 
+    q =
     \begin{pmatrix}
         25 \\
         115 \\
@@ -315,11 +315,11 @@ p = \begin{pmatrix}
         70
     \end{pmatrix}
     \quad \text{and} \quad
-    C = 
+    C =
     \begin{pmatrix}
         10 &15 &20 &20 &40 \\
         20 &40 &15 &30 &30 \\
-        30 &35 &40 &55 &25 
+        30 &35 &40 &55 &25
     \end{pmatrix}.
 $$
 
@@ -363,7 +363,7 @@ Notice how, in the line `C_vec = C.reshape((m*n, 1), order='F')`, we are
 careful to vectorize using the flag `order='F'`.
 
 This is consistent with converting $C$ into a vector by stacking all of its
-columns into a  column vector. 
+columns into a  column vector.
 
 Here `'F'` stands for "Fortran", and we are using Fortran style column-major order.
 
@@ -371,7 +371,7 @@ Here `'F'` stands for "Fortran", and we are using Fortran style column-major ord
         lecture by Alfred
         Galichon](https://www.math-econ-code.org/dynamic-programming).)
 
-**Interpreting the warning:**  
+**Interpreting the warning:**
 
 The above warning message from SciPy points out that A is not full rank.
 
@@ -391,7 +391,7 @@ One  equality constraint here is redundant.
 
 Below we drop one of the equality constraints, and use only  7 of them.
 
-After doing this, we attain the same minimized cost. 
+After doing this, we attain the same minimized cost.
 
 However, we find a  different transportation plan.
 
@@ -473,7 +473,7 @@ The minimized cost from the optimal transport plan is given by the $fun$ variabl
 ### Using a Just-in-Time Compiler
 
 We can also solve optimal transportation problems using a powerful tool from
-QuantEcon, namely, `quantecon.optimize.linprog_simplex`. 
+QuantEcon, namely, `quantecon.optimize.linprog_simplex`.
 
 While this routine uses the same simplex algorithm as
 `scipy.optimize.linprog`, the code is accelerated by using a just-in-time
@@ -546,21 +546,21 @@ $$ (dualproblem)
 
 The dual problem is also a linear programming problem.
 
-It has $m+n$ dual variables and $mn$ constraints. 
+It has $m+n$ dual variables and $mn$ constraints.
 
 Vectors $u$ and $v$ of **values** are attached to the first and the second sets of primal constraits, respectively.
 
-Thus, $u$ is attached to the constraints 
+Thus, $u$ is attached to the constraints
 
-* $(\mathbf{1}_n' \otimes \mathbf{I}_m) \operatorname{vec}(X) = p$ 
- 
-and  $v$ is attached to constraints 
- 
+* $(\mathbf{1}_n' \otimes \mathbf{I}_m) \operatorname{vec}(X) = p$
+
+and  $v$ is attached to constraints
+
 * $(\mathbf{I}_n \otimes \mathbf{1}_m') \operatorname{vec}(X) = q.$
 
 Components of the vectors $u$ and $v$ of per unit **values**  are **shadow prices** of the quantities appearing on the right sides of those constraints.
 
-We can write the dual problem as 
+We can write the dual problem as
 
 $$
 \begin{aligned}
@@ -639,7 +639,7 @@ $$
 
 One unit more  capacity in factory $i$, i.e. $p_i$,   results in $u_i$ more transportation costs.
 
-Thus, $u_i$ describes the  cost of shipping one unit  **from** factory $i$. 
+Thus, $u_i$ describes the  cost of shipping one unit  **from** factory $i$.
 
 Call this  the ship-out cost of one unit  shipped from factory $i$.
 
@@ -694,9 +694,9 @@ each node (i.e., vertex) a location in the plane.
 
 This will allow us to plot the resulting transport plan as edges in a graph.
 
-The following class defines a node by 
+The following class defines a node by
 
-* its location $(x, y) \in \mathbb R^2$, 
+* its location $(x, y) \in \mathbb R^2$,
 * its group (factory or location, denoted by `p` or `q`) and
 * its mass (e.g., $p_i$ or $q_j$).
 
@@ -724,7 +724,7 @@ def build_nodes_of_one_type(group='p', n=100, seed=123):
     np.random.seed(seed)
 
     for i in range(n):
-        
+
         if group == 'p':
             m = 1/n
             x = np.random.uniform(-2, 2)
@@ -733,7 +733,7 @@ def build_nodes_of_one_type(group='p', n=100, seed=123):
             m = betabinom.pmf(i, n-1, 2, 2)
             x = 0.6 * np.random.uniform(-1.5, 1.5)
             y = 0.6 * np.random.uniform(-1.5, 1.5)
-            
+
         name = group + str(i)
         nodes.append(Node(x, y, m, group, name))
 
@@ -773,7 +773,7 @@ Now we are ready to apply the solver
 
 Finally, let's plot the results using `networkx`.
 
-In the plot below, 
+In the plot below,
 
 * node size is proportional to probability mass
 * an edge (arrow) from $i$ to $j$ is drawn when a positive transfer is made
@@ -810,8 +810,8 @@ for q in q_list:
 fig, ax = plt.subplots(figsize=(7, 10))
 plt.axis('off')
 
-nx.draw_networkx_nodes(g, 
-                       node_pos_dict, 
+nx.draw_networkx_nodes(g,
+                       node_pos_dict,
                        node_color=node_color_list,
                        node_size=node_size_list,
                        edgecolors='grey',
@@ -819,8 +819,8 @@ nx.draw_networkx_nodes(g,
                        alpha=0.5,
                        ax=ax)
 
-nx.draw_networkx_edges(g, 
-                       node_pos_dict, 
+nx.draw_networkx_edges(g,
+                       node_pos_dict,
                        arrows=True,
                        connectionstyle='arc3,rad=0.1',
                        alpha=0.6)

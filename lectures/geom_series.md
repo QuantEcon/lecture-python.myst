@@ -54,7 +54,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import sympy as sym
-from sympy import init_printing, latex
+from sympy import init_printing
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 ```

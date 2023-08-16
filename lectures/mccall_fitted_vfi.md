@@ -29,7 +29,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ---
 tags: [hide-output]
 ---
-!pip install quantecon
 !pip install interpolation
 ```
 
@@ -62,10 +61,8 @@ We will use the following imports:
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-import quantecon as qe
 from interpolation import interp
-from numpy.random import randn
-from numba import njit, prange, float64, int32
+from numba import njit, float64
 from numba.experimental import jitclass
 ```
 

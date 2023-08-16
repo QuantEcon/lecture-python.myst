@@ -60,7 +60,6 @@ We require the following imports:
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
-from quantecon.optimize import brent_max, brentq
 from interpolation import interp
 from numba import njit, float64
 from numba.experimental import jitclass
