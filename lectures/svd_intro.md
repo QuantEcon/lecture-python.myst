@@ -80,9 +80,9 @@ $$
 and
 
 * $U$ is an $m \times m$ orthogonal  matrix of **left singular vectors** of $X$
-* Columns of $U$ are eigenvectors of $X^\top  X$
-* $V$ is an $n \times n$ orthogonal matrix of **right singular values** of $X$
-* Columns of $V$  are eigenvectors of $X X^\top $
+* Columns of $U$ are eigenvectors of $X X^\top $
+* $V$ is an $n \times n$ orthogonal matrix of **right singular vectors** of $X$
+* Columns of $V$  are eigenvectors of $X^\top  X$
 * $\Sigma$ is an $m \times n$ matrix in which the first $p$ places on its main diagonal are positive numbers $\sigma_1, \sigma_2, \ldots, \sigma_p$ called **singular values**; remaining entries of $\Sigma$ are all zero
 
 * The $p$ singular values are positive square roots of the eigenvalues of the $m \times m$ matrix  $X X^\top $ and also of the $n \times n$ matrix $X^\top  X$
@@ -99,10 +99,10 @@ The matrices $U,\Sigma,V$ entail linear transformations that reshape in vectors 
 * multiplying vectors by the diagonal  matrix $\Sigma$ leaves **angles between vectors** unchanged but **rescales** vectors.
 
 Thus, representation {eq}`eq:SVD101` asserts that multiplying an $n \times 1$  vector $y$ by the $m \times n$ matrix $X$
-amounts to performing the following three multiplcations of $y$ sequentially:
+amounts to performing the following three multiplications of $y$ sequentially:
 
 * **rotating** $y$ by computing $V^\top  y$
-* **rescaling** $V^\top  y$ by multipying it by $\Sigma$
+* **rescaling** $V^\top  y$ by multiplying it by $\Sigma$
 * **rotating** $\Sigma V^\top  y$ by multiplying it by $U$
 
 This structure of the $m \times n$ matrix  $X$ opens the door to constructing systems
@@ -144,11 +144,11 @@ matrix $X$ of rank $p$.
 
 * The **column space** of $X$, denoted ${\mathcal C}(X)$, is the span of the  columns of  $X$, i.e., all vectors $y$ that can be written as linear combinations of columns of $X$. Its dimension is $p$.
 * The **null space** of $X$, denoted ${\mathcal N}(X)$ consists of all vectors $y$ that satisfy
-$X y = 0$. Its dimension is $m-p$.
+$X y = 0$. Its dimension is $n-p$.
 * The **row space** of $X$, denoted ${\mathcal R}(X)$ is the column space of $X^\top $. It consists of all
 vectors $z$ that can be written as  linear combinations of rows of $X$. Its dimension is $p$.
 * The **left null space** of $X$, denoted ${\mathcal N}(X^\top )$, consist of all vectors $z$ such that
-$X^\top  z =0$.  Its dimension is $n-p$.
+$X^\top  z =0$.  Its dimension is $m-p$.
 
 For a  full SVD of a matrix $X$, the matrix $U$ of left singular vectors  and the matrix $V$ of right singular vectors contain orthogonal bases for all four subspaces.
 
@@ -236,7 +236,7 @@ X^\top  u_i & = 0 \quad i= p+1, \ldots, m
 \end{aligned}
 $$ (eq:orthoortho2)
 
-Notice how equations {eq}`eq:orthoortho2` assert that  the transformation $X^\top $ maps a pairsof distinct orthonormal  vectors $u_i, u_j$  for $i$ and $j$ both less than or equal to the rank $p$ of $X$ into a pair of distinct orthonormal vectors $v_i, v_j$ .
+Notice how equations {eq}`eq:orthoortho2` assert that  the transformation $X^\top $ maps a pair of distinct orthonormal  vectors $u_i, u_j$  for $i$ and $j$ both less than or equal to the rank $p$ of $X$ into a pair of distinct orthonormal vectors $v_i, v_j$ .
 
 
 Equations {eq}`eq:Xfour1b` assert that
@@ -250,7 +250,7 @@ $$
 
 
 
-Thus, taken together, the systems of quations {eq}`eq:Xfour1a` and {eq}`eq:Xfour1b`
+Thus, taken together, the systems of equations {eq}`eq:Xfour1a` and {eq}`eq:Xfour1b`
 describe the  four fundamental subspaces of $X$ in the following ways:
 
 $$
@@ -278,7 +278,7 @@ We have verified the four claims in {eq}`eq:fourspaceSVD` simply  by performing 
 The claims in {eq}`eq:fourspaceSVD` and the fact that $U$ and $V$ are both unitary (i.e, orthonormal) matrices  imply
 that
 
-* the column space of $X$ is orthogonal to the null space of of $X^\top $
+* the column space of $X$ is orthogonal to the null space of $X^\top $
 * the null space of $X$ is orthogonal to the row space of $X$
 
 Sometimes these properties are described with the following two pairs of orthogonal complement subspaces:
@@ -339,7 +339,7 @@ print("Right null space:\n", null_space.T)
 
 Suppose that we want to construct  the best rank $r$ approximation of an $m \times n$ matrix $X$.
 
-By best we mean a  matrix $X_r$ of rank $r < p$ that, among all rank $r$ matrices, minimizes
+By best, we mean a  matrix $X_r$ of rank $r < p$ that, among all rank $r$ matrices, minimizes
 
 $$ || X - X_r || $$
 
@@ -350,7 +350,7 @@ of dimension $m \times n$.
 
 Three popular **matrix norms**  of an $m \times n$ matrix $X$ can be expressed in terms of the singular values of $X$
 
-* the **spectral** or $l^2$ norm $|| X ||_2 = \max_{y \in \textbf{R}^n} \frac{||X y ||}{||y||} = \sigma_1$
+* the **spectral** or $l^2$ norm $|| X ||_2 = \max_{y \neq 0} \frac{||X y ||}{||y||} = \sigma_1$
 * the **Frobenius** norm $||X ||_F = \sqrt{\sigma_1^2 + \cdots + \sigma_p^2}$
 * the **nuclear** norm $ || X ||_N = \sigma_1 + \cdots + \sigma_p $
 
@@ -360,6 +360,13 @@ $$
 \hat X_r = \sigma_1 U_1 V_1^\top  + \sigma_2 U_2 V_2^\top  + \cdots + \sigma_r U_r V_r^\top
 $$ (eq:Ekart)
 
+This is a very powerful theorem, it says that we can take our $ m \times n $ matrix $X$ that in not full rank, and we can best approximate it to a full rank $p_x p$ matrix through the SVD. 
+
+Moreover, if some of these $p$ singular values carry more information than others, and if we want to have the most amount of information with the least amount of data, we can order these singular values in a decreasing order by magnitude and set a threshold $r$, from where past this point we set all singular values to zero. 
+
+This is what model reduction is about, we project the data into a new space, where we extract the patterns that are behind this data, and then we can then keep most of the important patterns and truncate the rest.
+
+But more about it later when we present Principal Component Analysis.
 
 You can read about the Eckart-Young theorem and some of its uses here <https://en.wikipedia.org/wiki/Low-rank_approximation>.
 
@@ -465,7 +472,7 @@ print(f'rank of X = {rr}')
 
 **Properties:**
 
-* Where $U$ is constructed via a full SVD, $U^\top  U = I_{p\times p}$ and  $U U^\top  = I_{m \times m}$
+* Where $U$ is constructed via a full SVD, $U^\top  U = I_{m\times m}$ and  $U U^\top  = I_{m \times m}$
 * Where $\hat U$ is constructed via a reduced SVD, although $\hat U^\top  \hat U = I_{p\times p}$ it happens that  $\hat U \hat U^\top  \neq I_{m \times m}$
 
 We illustrate these properties for our example with the following code cells.
@@ -493,7 +500,7 @@ UhatUhatT, UhatTUhat
 The cells above illustrate application of the  `fullmatrices=True` and `full-matrices=False` options.
 Using `full-matrices=False` returns a reduced singular value decomposition.
 
-The **full** and **reduced** SVd's both accurately  decompose an $m \times n$ matrix $X$
+The **full** and **reduced** SVD's both accurately  decompose an $m \times n$ matrix $X$
 
 When we study Dynamic Mode Decompositions below, it  will be important for us to remember the preceding properties of full and reduced SVD's in such tall-skinny cases.
 
@@ -569,19 +576,78 @@ where for $j = 1, \ldots, n$ the column vector $X_j = \begin{bmatrix}X_{1j}\\X_{
 
 In a **time series** setting, we would think of columns $j$ as indexing different __times__ at which random variables are observed, while rows index different random variables.
 
-In a **cross section** setting, we would think of columns $j$ as indexing different __individuals__ for  which random variables are observed, while rows index different **attributes**.
+In a **cross-section** setting, we would think of columns $j$ as indexing different __individuals__ for  which random variables are observed, while rows index different **attributes**.
 
-The number of positive singular values equals the rank of  matrix $X$.
+As we have seen before, the SVD is a way to decompose a matrix into useful components, just like polar decomposition, eigen decomposition and many others. PCA on the other hand, is method that builds on the SVD, to analyse data. The goal is to apply certain steps, to help better visualize patterns in data, using statistical tools to capture the most important patterns in data.
 
-Arrange the singular values  in decreasing order.
+**Step 1: Standardize the data:** Because our data matrix may hold variables of different units and scales like mentioned above, we first need to standardize the data. First by computing the average of each row of $X$.
 
-Arrange   the positive singular values on the main diagonal of the matrix $\Sigma$ of into a vector $\sigma_R$.
+$$
+\bar{X_j}= \frac{1}{m} \sum_{i = 1}^{m} x_{i,j}
+$$
 
-Set all other entries of $\Sigma$ to zero.
+We then create an average matrix out of these means:
+
+
+$$
+\bar{X} =  \begin{bmatrix}1 \\1 \\\ldots\\1 \end{bmatrix}  \begin{bmatrix} \bar{X_1} \mid \bar{X_2} \mid \cdots \mid \bar{X_n}\end{bmatrix}
+$$
+
+And subtract out of the original matrix to create a mean centered matrix:
+
+$$
+B = X - \bar{X}
+$$
+
+
+**Step 2: Compute the covariance matrix:** Then because we want to extract the relationships between variables rather than just their magnitude, in other words, we want to know how they can explain each other, we compute the covariance matrix of $B$.
+
+$$
+C = \frac{1}{{n}} B^T  B
+$$
+
+**Step 3: Decompose the covariance matrix and arrange the singular values:**
+
+If the matrix $C$ is diagonalizable, we can eigendecompose it, find its eigenvalues and rearrange the eigenvalue and eigenvector matrices in a decreasing other. If $C$ is not diagonalizable, we can perform an SVD of $C$:
+
+$$
+\begin{align}
+B^T B &= V \Sigma^\top U^\top U \Sigma V^\top \cr
+&= V \Sigma^\top \Sigma V^\top
+\end{align}
+$$
+
+$$
+C = \frac{1}{{n}} V \Sigma^\top \Sigma V^\top
+$$
+
+We can then rearrange the columns in the matrices $V$ and $\Sigma$ so that the singular values are in decreasing order.
+
+
+**Step 4: Select singular values, (optional) truncate the rest:**
+
+We can now decide how many singular values to pick, based on how much variance you want to retain. (e.g., retaining 95% of the total variance). 
+
+$$
+\frac{\sum_{i = 1}^{r} \sigma^2_{i}}{\sum_{i = 1}^{p} \sigma^2_{i}}
+$$
+
+**Step 5: Create the Score Matrix:
+
+$$
+\begin{align}
+T&= BV \cr
+&= U\Sigma V^\top \cr
+&= U\Sigma
+\end{align}
+$$
+
 
 ## Relationship of PCA to SVD
 
-To relate a SVD to a PCA (principal component analysis) of data set $X$, first construct  the  SVD of the data matrix $X$:
+To relate an SVD to a PCA (principal component analysis) of data set $X$, first construct  the  SVD of the data matrix $X$:
+
+Let’s assume that sample means of all variables are zero, so we don't need to standardize our matrix.
 
 $$
 X = U \Sigma V^\top  = \sigma_1 U_1 V_1^\top  + \sigma_2 U_2 V_2^\top  + \cdots + \sigma_p U_p V_p^\top
@@ -763,7 +829,7 @@ $$
 X X^\top  = U \Sigma \Sigma^\top  U^\top
 $$
 
-where $U$ is an orthonal matrix.
+where $U$ is an orthogonal matrix.
 
 Thus, $P = U$ and we have the representation of $X$
 
@@ -791,9 +857,11 @@ Below we define a class `DecomAnalysis` that wraps  PCA and SVD for a given a da
 class DecomAnalysis:
     """
     A class for conducting PCA and SVD.
+    X: data matrix
+    r_component: chosen rank for best approximation
     """
 
-    def __init__(self, X, n_component=None):
+    def __init__(self, X, r_component=None):
 
         self.X = X
 
@@ -802,10 +870,10 @@ class DecomAnalysis:
         self.m, self.n = X.shape
         self.r = LA.matrix_rank(X)
 
-        if n_component:
-            self.n_component = n_component
+        if r_component:
+            self.r_component = r_component
         else:
-            self.n_component = self.m
+            self.r_component = self.m
 
     def pca(self):
 
@@ -825,8 +893,8 @@ class DecomAnalysis:
         # compute the N by T matrix of principal components
         self.𝜖 = self.P.T @ self.X
 
-        P = self.P[:, :self.n_component]
-        𝜖 = self.𝜖[:self.n_component, :]
+        P = self.P[:, :self.r_component]
+        𝜖 = self.𝜖[:self.r_component, :]
 
         # transform data
         self.X_pca = P @ 𝜖
@@ -854,26 +922,26 @@ class DecomAnalysis:
         self.explained_ratio_svd = np.cumsum(𝜎_sq) / 𝜎_sq.sum()
 
         # slicing matrices by the number of components to use
-        U = self.U[:, :self.n_component]
-        Σ = self.Σ[:self.n_component, :self.n_component]
-        VT = self.VT[:self.n_component, :]
+        U = self.U[:, :self.r_component]
+        Σ = self.Σ[:self.r_component, :self.r_component]
+        VT = self.VT[:self.r_component, :]
 
         # transform data
         self.X_svd = U @ Σ @ VT
 
-    def fit(self, n_component):
+    def fit(self, r_component):
 
         # pca
-        P = self.P[:, :n_component]
-        𝜖 = self.𝜖[:n_component, :]
+        P = self.P[:, :r_component]
+        𝜖 = self.𝜖[:r_component, :]
 
         # transform data
         self.X_pca = P @ 𝜖
 
         # svd
-        U = self.U[:, :n_component]
-        Σ = self.Σ[:n_component, :n_component]
-        VT = self.VT[:n_component, :]
+        U = self.U[:, :r_component]
+        Σ = self.Σ[:r_component, :r_component]
+        VT = self.VT[:r_component, :]
 
         # transform data
         self.X_svd = U @ Σ @ VT
@@ -924,6 +992,56 @@ def compare_pca_svd(da):
     axs[1].set_title('$V^\top *\sqrt{\lambda}$')
     axs[1].set_xlabel('n')
     plt.show()
+```
+
+## Exercises
+
+```{exercise}
+:label: svd_ex1
+
+In Ordinary Least Squares (OLS), we learn to compute $ \hat{\beta} = (X^T X)^{-1} X^T y $, but there are cases such as when we have colinearity or an underdetermined system: **short fat** matrix.
+
+In these cases, the $ (X^T X) $ matrix is not inversible. Its determinant is zero or close to zero and we cannot invert it.
+
+What we can do instead is to create what is called a pseudoinverse, a full rank approximation of the inverted matrix so we can compute $ \hat{\beta} $ with it.
+
+Thinking in terms of the Eckart-Young theorem, build the pseudoinverse matrix $ X^{+} $ and use it to compute $ \hat{\beta} $.
+
+```
+
+```{solution-start} svd_ex1
+:class: dropdown
+```
+
+```{code-cell} python3
+
+We can use SVD to compute the pseudoinverse:
+
+$$
+X  = U \Sigma V^\top
+$$
+
+inverting $X$, we have:
+
+$$
+X^{+}  = V \Sigma^{+} U^\top
+$$
+
+where:
+
+$$
+\Sigma^{+} \Sigma = \begin{bmatrix} I_p & 0 \cr 0 & 0 \end{bmatrix}
+$$
+
+and finally:
+
+$$
+\hat{\beta} = X^{+}y = V \Sigma^{+} U^\top y 
+$$
+
+```
+
+```{solution-end}
 ```
 
 
