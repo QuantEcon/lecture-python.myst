@@ -362,9 +362,7 @@ $$ (eq:Ekart)
 
 This is a very powerful theorem, it says that we can take our $ m \times n $ matrix $X$ that in not full rank, and we can best approximate it to a full rank $p_x p$ matrix through the SVD. 
 
-Moreover, if some of these $p$ singular values carry more information than others, and if we want to have the most amount of information with the least amount of data, we can order these singular values in a decreasing order by magnitude and set a threshold $r$, from where past this point we set all singular values to zero. 
-
-This is what model reduction is about, we project the data into a new space, where we extract the patterns that are behind this data, and then we can then keep most of the important patterns and truncate the rest.
+Moreover, if some of these $p$ singular values carry more information than others, and if we want to have the most amount of information with the least amount of data, we can take $r$ leading singular values ordered by magnitude.
 
 But more about it later when we present Principal Component Analysis.
 
@@ -1023,9 +1021,6 @@ Thinking in terms of the Eckart-Young theorem, build the pseudoinverse matrix $ 
 
 ```{solution-start} svd_ex1
 :class: dropdown
-```
-
-```{code-cell} python3
 
 We can use SVD to compute the pseudoinverse:
 
@@ -1050,8 +1045,6 @@ and finally:
 $$
 \hat{\beta} = X^{+}y = V \Sigma^{+} U^\top y 
 $$
-
-```
 
 ```{solution-end}
 ```
