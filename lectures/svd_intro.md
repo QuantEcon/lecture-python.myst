@@ -350,7 +350,7 @@ of dimension $m \times n$.
 
 Three popular **matrix norms**  of an $m \times n$ matrix $X$ can be expressed in terms of the singular values of $X$
 
-* the **spectral** or $l^2$ norm $|| X ||_2 = \max_{y \neq 0} \frac{||X y ||}{||y||} = \sigma_1$
+* the **spectral** or $l^2$ norm $|| X ||_2 = \max_{||y|| \neq 0} \frac{||X y ||}{||y||} = \sigma_1$
 * the **Frobenius** norm $||X ||_F = \sqrt{\sigma_1^2 + \cdots + \sigma_p^2}$
 * the **nuclear** norm $ || X ||_N = \sigma_1 + \cdots + \sigma_p $
 
@@ -368,7 +368,7 @@ This is what model reduction is about, we project the data into a new space, whe
 
 But more about it later when we present Principal Component Analysis.
 
-You can read about the Eckart-Young theorem and some of its uses here <https://en.wikipedia.org/wiki/Low-rank_approximation>.
+You can read about the Eckart-Young theorem and some of its uses [here](https://en.wikipedia.org/wiki/Low-rank_approximation).
 
 We'll make use of this theorem when we discuss principal components analysis (PCA) and also dynamic mode decomposition (DMD).
 
@@ -497,8 +497,8 @@ UhatUhatT, UhatTUhat
 
 **Remarks:**
 
-The cells above illustrate application of the  `fullmatrices=True` and `full-matrices=False` options.
-Using `full-matrices=False` returns a reduced singular value decomposition.
+The cells above illustrate the application of the  `full_matrices=True` and `full_matrices=False` options.
+Using `full_matrices=False` returns a reduced singular value decomposition.
 
 The **full** and **reduced** SVD's both accurately  decompose an $m \times n$ matrix $X$
 
@@ -578,9 +578,15 @@ In a **time series** setting, we would think of columns $j$ as indexing differen
 
 In a **cross-section** setting, we would think of columns $j$ as indexing different __individuals__ for  which random variables are observed, while rows index different **attributes**.
 
-As we have seen before, the SVD is a way to decompose a matrix into useful components, just like polar decomposition, eigen decomposition and many others. PCA on the other hand, is method that builds on the SVD, to analyse data. The goal is to apply certain steps, to help better visualize patterns in data, using statistical tools to capture the most important patterns in data.
+As we have seen before, the SVD is a way to decompose a matrix into useful components, just like polar decomposition, eigendecomposition, and many others. 
 
-**Step 1: Standardize the data:** Because our data matrix may hold variables of different units and scales like mentioned above, we first need to standardize the data. First by computing the average of each row of $X$.
+PCA, on the other hand, is a method that builds on the SVD to analyze data. The goal is to apply certain steps, to help better visualize patterns in data, using statistical tools to capture the most important patterns in data.
+
+**Step 1: Standardize the data:** 
+
+Because our data matrix may hold variables of different units and scales, we first need to standardize the data. 
+
+First by computing the average of each row of $X$.
 
 $$
 \bar{X_j}= \frac{1}{m} \sum_{i = 1}^{m} x_{i,j}
@@ -600,15 +606,19 @@ B = X - \bar{X}
 $$
 
 
-**Step 2: Compute the covariance matrix:** Then because we want to extract the relationships between variables rather than just their magnitude, in other words, we want to know how they can explain each other, we compute the covariance matrix of $B$.
+**Step 2: Compute the covariance matrix:** 
+
+Then because we want to extract the relationships between variables rather than just their magnitude, in other words, we want to know how they can explain each other, we compute the covariance matrix of $B$.
 
 $$
-C = \frac{1}{{n}} B^T  B
+C = \frac{1}{{n}} B^\top  B
 $$
 
 **Step 3: Decompose the covariance matrix and arrange the singular values:**
 
-If the matrix $C$ is diagonalizable, we can eigendecompose it, find its eigenvalues and rearrange the eigenvalue and eigenvector matrices in a decreasing other. If $C$ is not diagonalizable, we can perform an SVD of $C$:
+If the matrix $C$ is diagonalizable, we can eigendecompose it, find its eigenvalues and rearrange the eigenvalue and eigenvector matrices in a decreasing other. 
+
+If $C$ is not diagonalizable, we can perform an SVD of $C$:
 
 $$
 \begin{align}
@@ -628,11 +638,13 @@ We can then rearrange the columns in the matrices $V$ and $\Sigma$ so that the s
 
 We can now decide how many singular values to pick, based on how much variance you want to retain. (e.g., retaining 95% of the total variance). 
 
+We can obtain the percentage by calculating the variance contained in the leading $r$ factors divided by the variance in total:
+
 $$
 \frac{\sum_{i = 1}^{r} \sigma^2_{i}}{\sum_{i = 1}^{p} \sigma^2_{i}}
 $$
 
-**Step 5: Create the Score Matrix:
+**Step 5: Create the Score Matrix:**
 
 $$
 \begin{align}
@@ -645,7 +657,7 @@ $$
 
 ## Relationship of PCA to SVD
 
-To relate an SVD to a PCA (principal component analysis) of data set $X$, first construct  the  SVD of the data matrix $X$:
+To relate an SVD to a PCA of data set $X$, first construct the SVD of the data matrix $X$:
 
 Let’s assume that sample means of all variables are zero, so we don't need to standardize our matrix.
 
@@ -999,11 +1011,11 @@ def compare_pca_svd(da):
 ```{exercise}
 :label: svd_ex1
 
-In Ordinary Least Squares (OLS), we learn to compute $ \hat{\beta} = (X^T X)^{-1} X^T y $, but there are cases such as when we have colinearity or an underdetermined system: **short fat** matrix.
+In Ordinary Least Squares (OLS), we learn to compute $ \hat{\beta} = (X^\top X)^{-1} X^\top y $, but there are cases such as when we have colinearity or an underdetermined system: **short fat** matrix.
 
-In these cases, the $ (X^T X) $ matrix is not inversible. Its determinant is zero or close to zero and we cannot invert it.
+In these cases, the $ (X^\top X) $ matrix is not inversible. Its determinant is zero or close to zero and we cannot invert it.
 
-What we can do instead is to create what is called a pseudoinverse, a full rank approximation of the inverted matrix so we can compute $ \hat{\beta} $ with it.
+What we can do instead is to create what is called a [pseudoinverse](https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse), a full rank approximation of the inverted matrix so we can compute $ \hat{\beta} $ with it.
 
 Thinking in terms of the Eckart-Young theorem, build the pseudoinverse matrix $ X^{+} $ and use it to compute $ \hat{\beta} $.
 
