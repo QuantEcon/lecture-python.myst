@@ -360,7 +360,7 @@ $$
 \hat X_r = \sigma_1 U_1 V_1^\top  + \sigma_2 U_2 V_2^\top  + \cdots + \sigma_r U_r V_r^\top
 $$ (eq:Ekart)
 
-This is a very powerful theorem, it says that we can take our $ m \times n $ matrix $X$ that in not full rank, and we can best approximate it to a full rank $p_x p$ matrix through the SVD. 
+This is a very powerful theorem, it says that we can take our $ m \times n $ matrix $X$ that in not full rank, and we can best approximate it to a full rank $p \times p$ matrix through the SVD. 
 
 Moreover, if some of these $p$ singular values carry more information than others, and if we want to have the most amount of information with the least amount of data, we can take $r$ leading singular values ordered by magnitude.
 
