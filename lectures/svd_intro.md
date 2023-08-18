@@ -360,11 +360,11 @@ $$
 \hat X_r = \sigma_1 U_1 V_1^\top  + \sigma_2 U_2 V_2^\top  + \cdots + \sigma_r U_r V_r^\top
 $$ (eq:Ekart)
 
-This is a very powerful theorem, it says that we can take our $ m \times n $ matrix $X$ that in not full rank, and we can best approximate it to a full rank $p \times p$ matrix through the SVD. 
+This is a very powerful theorem that says that we can take our $ m \times n $ matrix $X$ that in not full rank, and we can best approximate it by a full rank $p \times p$ matrix through the SVD. 
 
 Moreover, if some of these $p$ singular values carry more information than others, and if we want to have the most amount of information with the least amount of data, we can take $r$ leading singular values ordered by magnitude.
 
-But more about it later when we present Principal Component Analysis.
+We'll say more about this later when we present Principal Component Analysis.
 
 You can read about the Eckart-Young theorem and some of its uses [here](https://en.wikipedia.org/wiki/Low-rank_approximation).
 
@@ -1011,7 +1011,7 @@ def compare_pca_svd(da):
 
 In Ordinary Least Squares (OLS), we learn to compute $ \hat{\beta} = (X^\top X)^{-1} X^\top y $, but there are cases such as when we have colinearity or an underdetermined system: **short fat** matrix.
 
-In these cases, the $ (X^\top X) $ matrix is not inversible. Its determinant is zero or close to zero and we cannot invert it.
+In these cases, the $ (X^\top X) $ matrix is not not invertible (its determinant is zero) or ill-conditioned (its determinant is very close to zero).
 
 What we can do instead is to create what is called a [pseudoinverse](https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse), a full rank approximation of the inverted matrix so we can compute $ \hat{\beta} $ with it.
 
