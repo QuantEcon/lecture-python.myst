@@ -660,7 +660,7 @@ and it follows that:
 
 - Hazard for an individual in $A^{'}$ is 0.
 
-- Hazard for an individual in A can also be made arbitrarily small by choosing a sufficiently small $\text{Pr}(\text{yes}|A)$.
+- Hazard for an individual in $A$ can also be made arbitrarily small by choosing a sufficiently small $\text{Pr}(\text{yes}|A)$.
 
 Even though this hazard can be set arbitrarily close to 0, an individual in $A$ will completely reveal his or her identity whenever truthfully answering the sensitive question.
 
