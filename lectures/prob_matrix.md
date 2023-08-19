@@ -34,11 +34,16 @@ Among concepts that we'll be studying include
 We'll use a matrix to represent a bivariate probability distribution and a vector to represent a univariate probability distribution
 
 
-As usual, we'll start with some imports
+In addition to what's in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
-# !pip install prettytable
+---
+tags: [hide-output]
+---
+!pip install prettytable
 ```
+
+As usual, we'll start with some imports
 
 ```{code-cell} ipython3
 import numpy as np
