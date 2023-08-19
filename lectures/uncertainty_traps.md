@@ -51,7 +51,6 @@ Uncertainty traps stem from a positive externality: high aggregate economic acti
 Let's start with some standard imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np

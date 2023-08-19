@@ -60,7 +60,6 @@ As we'll see, McCall's model is not only interesting in its own right but also a
 Let's start with some imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
@@ -128,7 +127,7 @@ We'll go through these steps in turn.
 In order to optimally trade-off current and future rewards, we need to think about two things:
 
 1. the current payoffs we get from different choices
-1. the different states that those choices will lead to in next period 
+1. the different states that those choices will lead to in next period
 
 To weigh these two aspects of the decision problem, we need to assign *values*
 to states.
@@ -226,7 +225,7 @@ where
     \bar w := (1 - \beta) \left\{ c + \beta \sum_{w'} v^*(w') q (w') \right\}
 ```
 
-Here $\bar w$ (called the *reservation wage*) is a constant depending on 
+Here $\bar w$ (called the *reservation wage*) is a constant depending on
 $\beta, c$ and the wage distribution.
 
 The agent should accept if and only if the current wage offer exceeds the reservation wage.
@@ -239,15 +238,15 @@ In view of {eq}`reswage`, we can compute this reservation wage if we can compute
 To put the above ideas into action, we need to compute the value function at
 each possible state $w \in \mathbb W$.
 
-To simplify notation, let's set 
+To simplify notation, let's set
 
-$$  
+$$
 \mathbb W := \{w_1, \ldots, w_n  \}
     \quad \text{and} \quad
     v^*(i) := v^*(w_i)
 $$
 
-The value function is then represented by the vector 
+The value function is then represented by the vector
 $v^* = (v^*(i))_{i=1}^n$.
 
 In view of {eq}`odu_pv`, this vector satisfies the nonlinear system of equations

@@ -34,8 +34,6 @@ import jax.numpy as jnp
 from jax import random
 import matplotlib.pyplot as plt
 
-%matplotlib inline
-
 import logging
 logging.basicConfig()
 logger = logging.getLogger('pymc')
@@ -71,7 +69,7 @@ $$ (eq:themodel_2)
 
 
 
-Consider a sample $\{y_t\}_{t=0}^T$ governed by this statistical model.  
+Consider a sample $\{y_t\}_{t=0}^T$ governed by this statistical model.
 
 The model
 implies that the likelihood function of $\{y_t\}_{t=0}^T$ can be **factored**:
@@ -80,7 +78,7 @@ $$
 f(y_T, y_{T-1}, \ldots, y_0) = f(y_T| y_{T-1}) f(y_{T-1}| y_{T-2}) \cdots f(y_1 | y_0 ) f(y_0)
 $$
 
-where we use $f$ to denote a generic probability density.  
+where we use $f$ to denote a generic probability density.
 
 The  statistical model {eq}`eq:themodel`-{eq}`eq:themodel_2` implies
 
@@ -95,7 +93,7 @@ We want to study how inferences about the unknown parameters $(\rho, \sigma_x)$ 
 
 Below, we study two widely used alternative assumptions:
 
--  $(\mu_0,\sigma_0) = (y_0, 0)$ which means  that $y_0$ is  drawn from the distribution ${\mathcal N}(y_0, 0)$; in effect, we are **conditioning on an observed initial value**.  
+-  $(\mu_0,\sigma_0) = (y_0, 0)$ which means  that $y_0$ is  drawn from the distribution ${\mathcal N}(y_0, 0)$; in effect, we are **conditioning on an observed initial value**.
 
 -  $\mu_0,\sigma_0$ are functions of $\rho, \sigma_x$ because $y_0$ is drawn from the stationary distribution implied by $\rho, \sigma_x$.
 
@@ -105,7 +103,7 @@ Below, we study two widely used alternative assumptions:
 
 Unknown parameters are $\rho, \sigma_x$.
 
-We have  independent **prior probability distributions** for $\rho, \sigma_x$ and want to compute a posterior probability distribution after observing a sample $\{y_{t}\}_{t=0}^T$.  
+We have  independent **prior probability distributions** for $\rho, \sigma_x$ and want to compute a posterior probability distribution after observing a sample $\{y_{t}\}_{t=0}^T$.
 
 The notebook uses `pymc4` and `numpyro` to compute a posterior distribution of $\rho, \sigma_x$. We will use NUTS samplers to generate samples from the posterior in a chain. Both of these libraries support NUTS samplers.
 
@@ -113,12 +111,12 @@ NUTS is a form of Monte Carlo Markov Chain (MCMC) algorithm that bypasses random
 
 Thus, we explore consequences of making these alternative assumptions about the distribution of $y_0$:
 
-- A first procedure is to condition on whatever value of $y_0$ is observed. This amounts to assuming that the probability distribution of the random variable  $y_0$ is a Dirac delta function that puts probability one on the observed value of $y_0$.    
+- A first procedure is to condition on whatever value of $y_0$ is observed. This amounts to assuming that the probability distribution of the random variable  $y_0$ is a Dirac delta function that puts probability one on the observed value of $y_0$.
 
 - A second procedure  assumes that $y_0$ is drawn from the stationary distribution of a process described by {eq}`eq:themodel`
 so that  $y_0 \sim {\cal N} \left(0, {\sigma_x^2\over (1-\rho)^2} \right) $
 
-When the initial value $y_0$ is far out in a tail of the stationary distribution, conditioning on an initial value gives a posterior that is **more accurate** in a sense that we'll explain.   
+When the initial value $y_0$ is far out in a tail of the stationary distribution, conditioning on an initial value gives a posterior that is **more accurate** in a sense that we'll explain.
 
 Basically, when $y_0$ happens to be  in a tail of the stationary distribution and we **don't condition on $y_0$**, the likelihood function for $\{y_t\}_{t=0}^T$ adjusts the posterior distribution of the parameter pair $\rho, \sigma_x $ to make the observed value of $y_0$  more likely than it really is under the stationary distribution, thereby adversely twisting the posterior in short samples.
 
@@ -129,7 +127,7 @@ We begin by solving a **direct problem** that simulates an AR(1) process.
 
 How we select the initial value $y_0$ matters.
 
-   * If we think $y_0$ is drawn from the stationary distribution ${\mathcal N}(0, \frac{\sigma_x^{2}}{1-\rho^2})$, then it is a good idea to use this distribution as $f(y_0)$.  Why? Because $y_0$ contains information about $\rho, \sigma_x$.  
+   * If we think $y_0$ is drawn from the stationary distribution ${\mathcal N}(0, \frac{\sigma_x^{2}}{1-\rho^2})$, then it is a good idea to use this distribution as $f(y_0)$.  Why? Because $y_0$ contains information about $\rho, \sigma_x$.
 
    * If we suspect that $y_0$ is far in the tails of the stationary distribution -- so that variation in early observations in the sample have a significant **transient component** -- it is better to condition on $y_0$ by setting $f(y_0) = 1$.
 
@@ -273,7 +271,7 @@ summary_y0
 
 Please note how the posterior for $\rho$ has shifted to the right relative to when we conditioned on $y_0$ instead of assuming that $y_0$ is drawn from the stationary distribution.
 
-Think about why this happens.  
+Think about why this happens.
 
 ```{hint}
 It is connected to how Bayes Law (conditional probability) solves an **inverse problem** by putting high probability on parameter values

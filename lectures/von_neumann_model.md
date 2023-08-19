@@ -51,7 +51,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve, linprog
 from textwrap import dedent
-%matplotlib inline
 
 np.set_printoptions(precision=2)
 ```

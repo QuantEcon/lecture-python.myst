@@ -67,7 +67,6 @@ Except that for us
 Let's start with some standard imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
@@ -87,7 +86,7 @@ The following setting justifies the concept of a representative firm that stands
 
 There is a uniform unit measure  of identical firms named  $\omega \in \Omega = [0,1]$.
 
-The output of firm $\omega$ is $y(\omega)$.  
+The output of firm $\omega$ is $y(\omega)$.
 
 The output of all firms is $Y = \int_{0}^1 y(\omega) d \, \omega $.
 
@@ -185,19 +184,19 @@ $$
 S_c (Y)= \int_0^Y (a_0 - a_1 s) ds = a_o Y - \frac{a_1}{2} Y^2 .
 $$
 
-Define the social cost of production as 
+Define the social cost of production as
 
 $$ S_p (Y) = c_1 Y + \frac{c_2}{2} Y^2  $$
 
-Consider the planning problem  
+Consider the planning problem
 
 $$
 \max_{Y} [ S_c(Y) - S_p(Y) ]
 $$
 
-The first-order necessary condition for the planning problem is equation {eq}`staticY`.  
+The first-order necessary condition for the planning problem is equation {eq}`staticY`.
 
-Thus, a $Y$ that solves {eq}`staticY` is a competitive equilibrium output as well as an output that solves the planning problem.  
+Thus, a $Y$ that solves {eq}`staticY` is a competitive equilibrium output as well as an output that solves the planning problem.
 
 This type of outcome provides an intellectual justification for liking a competitive equilibrium.
 
@@ -957,4 +956,3 @@ See {cite}`MarcetSargent1989` and {cite}`EvansHonkapohja2001` for statements
 and applications of this approach to establish conditions under which
 collections of adaptive agents who use least squares learning to converge to a
 rational expectations equilibrium.
-

@@ -65,7 +65,6 @@ The lecture uses important ideas including
 Let's start with some standard imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from numba import njit, float64
@@ -101,9 +100,9 @@ There is a unit mass of identical consumers.
 
 For $\omega \in [0,1]$, consumption of consumer  is $c(\omega)$.
 
-Aggregate consumption is 
+Aggregate consumption is
 
-$$ 
+$$
 C = \int_0^1 c(\omega) d \omega
 $$
 
@@ -111,36 +110,36 @@ Consider the a welfare problem of choosing an allocation $\{c(\omega)\}$ across 
 
 $$
  \int_0^1 u(c(\omega)) d \omega
-$$ 
+$$
 
-where $u(\cdot)$ is a concave utility function with $u' >0, u'' < 0$ and  maximization is subject to 
+where $u(\cdot)$ is a concave utility function with $u' >0, u'' < 0$ and  maximization is subject to
 
-$$ 
+$$
 C = \int_0^1 c(\omega) d \omega .
 $$ (eq:feas200)
 
 Form a Lagrangian $L = \int_0^1 u(c(\omega)) d \omega + \lambda [C - \int_0^1 c(\omega) d \omega ] $.
 
 Differentiate under the integral signs with respect to each $\omega$ to  obtain the first-order
-necessary condtions 
+necessary condtions
 
 $$
-u'(c(\omega)) = \lambda. 
-$$ 
+u'(c(\omega)) = \lambda.
+$$
 
-This condition implies that $c(\omega)$ equals a constant $c$ that is independent 
-of $\omega$.  
+This condition implies that $c(\omega)$ equals a constant $c$ that is independent
+of $\omega$.
 
-To find $c$, use the  feasibility constraint {eq}`eq:feas200` to conclude that 
+To find $c$, use the  feasibility constraint {eq}`eq:feas200` to conclude that
 
-$$ 
+$$
 c(\omega) = c = C.
 $$
 
-This line of argument indicates the special *aggregation theory* that lies beneath outcomes in which a representative consumer 
+This line of argument indicates the special *aggregation theory* that lies beneath outcomes in which a representative consumer
 consumes amount $C$.
 
-It appears often in aggregate economics. 
+It appears often in aggregate economics.
 
 We shall use it in this lecture and in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
 
@@ -900,4 +899,3 @@ by a representative household and a representative firm.
 
 The relationship between a command economy like the one studied in this lecture and a market economy like that
 studied in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>` is a foundational topic in general equilibrium theory and welfare economics.
-

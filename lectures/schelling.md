@@ -47,7 +47,6 @@ In this lecture, we (in fact you) will build and run a version of Schelling's mo
 Let's start with some imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from random import uniform, seed

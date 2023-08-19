@@ -21,8 +21,8 @@ kernelspec:
 This lecture presents Python code for experimenting with  competitive equilibria of  an infinite-horizon pure exchange economy with
 
 * Heterogeneous agents
-  
-* Endowments of a single consumption that are person-specific functions of a common Markov state 
+
+* Endowments of a single consumption that are person-specific functions of a common Markov state
 
 * Complete markets in one-period Arrow state-contingent securities
 
@@ -40,7 +40,7 @@ We impose  restrictions that allow us to **Bellmanize** competitive equilibrium 
 
 We use  Bellman equations  to describe
 
-* asset prices 
+* asset prices
 
 * continuation wealth levels for each person
 
@@ -50,14 +50,14 @@ We use  Bellman equations  to describe
 In the course of presenting the model we shall describe these important ideas
 
 *  a **resolvent operator**   widely  used in this class of models
-  
+
 * absence of  **borrowing limits** in finite horizon economies
 
 * state-by-state **borrowing limits** required in infinite horizon economies
 
 * a counterpart of the **law of iterated expectations** known as a **law of iterated values**
 
-* a  **state-variable degeneracy** that prevails within a competitive equilibrium and that opens the way to various appearances of resolvent operators 
+* a  **state-variable degeneracy** that prevails within a competitive equilibrium and that opens the way to various appearances of resolvent operators
 
 
 +++
@@ -69,7 +69,7 @@ In effect, this lecture implements a Python version of  the model presented in s
 ### Preferences and endowments
 
 In each period $t\geq 0$,  a stochastic
-event $s_t \in {\bf S}$ is realized. 
+event $s_t \in {\bf S}$ is realized.
 
 Let the history of events up until time $t$
 be denoted $s^t = [s_0, s_{1}, \ldots, s_{t-1}, s_t]$.
@@ -89,8 +89,8 @@ which we capture by setting $\pi_0(s_0)=1$ for the initially
 given value of $s_0$.
 
 In this lecture we shall follow much macroeconomics and econometrics and assume that
-$\pi_t(s^t)$  is induced by  a Markov process. 
- 
+$\pi_t(s^t)$  is induced by  a Markov process.
+
 
 There are $K$ consumers named $k=1, \ldots , K$.
 
@@ -104,24 +104,24 @@ The history $s^t$ is publicly observable.
 
 Consumer $i$
 purchases a history-dependent  consumption plan $c^k =
- \{c_t^k(s^t)\}_{t=0}^\infty$ 
- 
+ \{c_t^k(s^t)\}_{t=0}^\infty$
+
 Consumer $i$  orders consumption plans by
 
 $$ U_k(c^k) =
    \sum_{t=0}^\infty \sum_{s^t} \beta^t u_k[c_t^k(s^t)]
    \pi_t(s^t),
   $$
-  
+
 where $0 < \beta < 1$.
 
 The right side is equal to $ E_0 \sum_{t=0}^\infty \beta^t
 u_k(c_t^k) $, where $E_0$ is the mathematical expectation operator,
-conditioned on $s_0$. 
+conditioned on $s_0$.
 
 Here $u_k(c)$ is an increasing, twice
 continuously differentiable, strictly concave function of
-consumption $c\geq 0$  of one good. 
+consumption $c\geq 0$  of one good.
 
 The utility function pf person $k$ satisfies
 the Inada condition
@@ -130,7 +130,7 @@ $$ \lim_{c \downarrow 0} u'_k(c) = +\infty.$$
 
 This condition implies that each
 agent chooses strictly positive consumption for every
-date-history pair $(t, s^t)$. 
+date-history pair $(t, s^t)$.
 
 Those interior solutions enable us to confine our
 analysis to Euler equations that hold with equality and also guarantee that
@@ -145,7 +145,7 @@ that  consumers share   probabilities $\pi_t(s^t)$  for all $t$ and $s^t$.
 A **feasible allocation** satisfies
 
 $$
-\sum_i c_t^k(s^t) \leq \sum_i y_t^k(s^t) 
+\sum_i c_t^k(s^t) \leq \sum_i y_t^k(s^t)
 $$
 
 for all $t$ and for all $s^t$.
@@ -159,7 +159,7 @@ Following descriptions in section 9.3.3 of Ljungqvist and Sargent {cite}`Ljungqv
 
 
 When  endowments $y^k(s)$ are all functions of a common Markov state $s$,
-the pricing kernel takes the form $Q(s'|s)$, where $Q(s'| s)$ is the price of one unit of consumption 
+the pricing kernel takes the form $Q(s'|s)$, where $Q(s'| s)$ is the price of one unit of consumption
 in state $s'$ at date $t+1$ when the Markov state at date $t$ is $s$.
 
 These enable us to provide a
@@ -172,21 +172,21 @@ Let $v^k(a,s)$ be the optimal value of consumer $i$'s problem
 starting from state $(a, s)$.
 
  * $v^k(a,s)$ is the maximum expected discounted utility  that consumer $i$ with current financial wealth $a$ can attain in Markov state $s$.
- 
+
 The optimal  value function satisfies the Bellman equation
 
 $$
 v^k(a, s) = \max_{c, \hat a(s')} \left\{ u_k(c) + \beta \sum_{s'} v^k[\hat a(s'),s'] \pi (s' | s) \right\}
-$$ 
+$$
 
 
 where  maximization is subject to the budget constraint
 
 $$
 c + \sum_{s'} \hat a(s') Q(s' | s)
-     \leq  y^k(s) + a    
+     \leq  y^k(s) + a
      $$
-     
+
 and also the constraints
 
 $$
@@ -202,14 +202,14 @@ Note that the value function and decision rule that solve  the Bellman equation 
 on the pricing kernel $Q(\cdot \vert \cdot)$ because it appears in the agent's budget constraint.
 
 Use the first-order conditions for  the
-problem on the right of the Bellman  equation and a 
+problem on the right of the Bellman  equation and a
 Benveniste-Scheinkman formula and rearrange to get
 
-$$ 
+$$
 Q(s_{t+1} | s_t ) = {\beta u'_k(c_{t+1}^k) \pi(s_{t+1} | s_t)
-                 \over u'_k(c_t^k) }, 
+                 \over u'_k(c_t^k) },
                  $$
-                 
+
 where it is understood that $c_t^k = c^k(s_t)$
 and $c_{t+1}^k = c^k(s_{t+1})$.
 
@@ -238,18 +238,18 @@ $\sum_i \hat a_{t+1}^k(s') = 0$
 for all $t$ and $s'$.
 
 * The initial financial wealth vector $\vec a_0$ satisfies $\sum_{i=1}^K a_0^k = 0 $.
- 
- 
+
+
 The third condition asserts that there are  zero net aggregate claims in all Markov states.
 
-The fourth condition asserts that the economy is closed and  starts  from a situation in which there 
+The fourth condition asserts that the economy is closed and  starts  from a situation in which there
 are  zero net aggregate claims.
 
 
 
 ## State Variable Degeneracy
 
-Please see Ljungqvist and Sargent {cite}`Ljungqvist2012` for a description of 
+Please see Ljungqvist and Sargent {cite}`Ljungqvist2012` for a description of
 timing protocol for trades  consistent with an  Arrow-Debreu vision in which
 
   * at time $0$ there are complete markets in a complete menu of history $s^t$-contingent claims on consumption at all dates that all trades occur at time zero
@@ -258,11 +258,11 @@ timing protocol for trades  consistent with an  Arrow-Debreu vision in which
 
 If  an allocation and pricing kernel $Q$ in   a recursive competitive equilibrium are to be
 consistent
-with the equilibrium allocation and price system that prevail in a  corresponding complete markets economy with such history-contingent commodities and 
+with the equilibrium allocation and price system that prevail in a  corresponding complete markets economy with such history-contingent commodities and
  all trades occurring at time $0$,
-we must impose that $a_0^k = 0$ for $k = 1, \ldots , K$. 
+we must impose that $a_0^k = 0$ for $k = 1, \ldots , K$.
 
-That  is 
+That  is
 what assures that at time $0$ the present value of each agent's consumption equals the present value of his endowment stream,
 the  single  budget constraint in   arrangement with all trades occurring at time $0$.
 
@@ -278,12 +278,12 @@ Although two state variables $a,s$ appear in the value function $v^k(a,s)$, with
 
 *  $a_0^k = 0 $ for all $i$ whenever the Markov state $s_t$ returns to   $s_0$.
 
-* Financial wealth $a$ is an exact function of the Markov state $s$.  
+* Financial wealth $a$ is an exact function of the Markov state $s$.
 
 The first finding  asserts that each household  recurrently visits the zero financial wealth state with which it began life.
 
 
-The second finding  asserts that within a competitive equilibrium  the exogenous Markov state is all we require to track an individual.  
+The second finding  asserts that within a competitive equilibrium  the exogenous Markov state is all we require to track an individual.
 
 Financial wealth turns out to be redundant because it is an exact function of the Markov state for each individual.
 
@@ -294,7 +294,7 @@ For example, it does not prevail in the incomplete markets setting of this lectu
 
 +++
 
-## Markov Asset Prices 
+## Markov Asset Prices
 
 
 Let's start with a brief summary of formulas for computing asset prices in
@@ -313,7 +313,7 @@ $$
 
 
 
-* An $n \times n$ matrix  pricing kernel $Q$ for one-period Arrow securities, where $ Q_{ij}$  = price at time $t$ in state $s_t = 
+* An $n \times n$ matrix  pricing kernel $Q$ for one-period Arrow securities, where $ Q_{ij}$  = price at time $t$ in state $s_t =
 \bar s_i$ of one unit of consumption when $s_{t+1} = \bar s_j$ at time $t+1$:
 
 
@@ -338,16 +338,16 @@ Two examples would be
 
 We'll write down implications of  Markov asset pricing in a nutshell for two types of assets
 
-  * the price in Markov state $s$ at time $t$ of a **cum dividend** stock that entitles the owner at the beginning of time $t$ to the time $t$ dividend and the option to sell the asset at time $t+1$.  The price evidently satisfies $p^h(\bar s_i) = d^h(\bar s_i) + \sum_j Q_{ij} p^h(\bar s_j) $, which implies that the vector $p^h$ satisfies $p^h = d^h + Q p^h$ which implies the formula 
-  
+  * the price in Markov state $s$ at time $t$ of a **cum dividend** stock that entitles the owner at the beginning of time $t$ to the time $t$ dividend and the option to sell the asset at time $t+1$.  The price evidently satisfies $p^h(\bar s_i) = d^h(\bar s_i) + \sum_j Q_{ij} p^h(\bar s_j) $, which implies that the vector $p^h$ satisfies $p^h = d^h + Q p^h$ which implies the formula
+
 $$
 p^h = (I - Q)^{-1} d^h
 $$
 
 
-* the price in Markov state $s$ at time $t$ of an **ex dividend** stock that entitles the owner at the end  of time $t$ to the time $t+1$ dividend and the option to sell the stock at time $t+1$. The  price is 
+* the price in Markov state $s$ at time $t$ of an **ex dividend** stock that entitles the owner at the end  of time $t$ to the time $t+1$ dividend and the option to sell the stock at time $t+1$. The  price is
 
-$$ 
+$$
 p^h = (I - Q)^{-1} Q d^h
 $$
 
@@ -360,7 +360,7 @@ In constructing our model, we'll repeatedly encounter formulas that remind us of
 
 ### Multi-Step-Forward Transition Probabilities and Pricing Kernels
 
-The $(i,j)$ component of  the $k$-step ahead transition probability $P^\ell$ is 
+The $(i,j)$ component of  the $k$-step ahead transition probability $P^\ell$ is
 
 $$
 Prob(s_{t+\ell} = \bar s_j | s_t = \bar s_i)   = P^{\ell}_{i,j}
@@ -396,7 +396,7 @@ on $s_t$ via the following string of equalities
 
 $$
 \begin{aligned}
-E \left[ E d(s_{t+j}) | s_{t+1} \right] | s_t 
+E \left[ E d(s_{t+j}) | s_{t+1} \right] | s_t
     & = \sum_{s_{t+1}} \left[ \sum_{s_{t+j}} d(s_{t+j}) P_{j-1}(s_{t+j}| s_{t+1} ) \right]         P(s_{t+1} | s_t) \\
  & = \sum_{s_{t+j}}  d(s_{t+j}) \left[ \sum_{s_{t+1}} P_{j-1} ( s_{t+j} |s_{t+1}) P(s_{t+1}| s_t) \right] \\
  & = \sum_{s_{t+j}} d(s_{t+j}) P_j (s_{t+j} | s_t ) \\
@@ -412,11 +412,11 @@ $$
 
 
 The time $t$ **value** in Markov state $s_t$  of a time $t+j$  payout $d(s_{t+j})$
-is 
+is
 
 
 $$
-V(d(s_{t+j})|s_t) = \sum_{s_{t+j}} d(s_{t+j}) Q_j(s_{t+j}| s_t) 
+V(d(s_{t+j})|s_t) = \sum_{s_{t+j}} d(s_{t+j}) Q_j(s_{t+j}| s_t)
 $$
 
 The **law of iterated values** states
@@ -430,7 +430,7 @@ to verify the law of iterated expectations:
 
 $$
 \begin{aligned}
-V \left[ V  ( d(s_{t+j}) | s_{t+1} ) \right] | s_t 
+V \left[ V  ( d(s_{t+j}) | s_{t+1} ) \right] | s_t
     & = \sum_{s_{t+1}} \left[ \sum_{s_{t+j}} d(s_{t+j}) Q_{j-1}(s_{t+j}| s_{t+1} ) \right]         Q(s_{t+1} | s_t) \\
  & = \sum_{s_{t+j}}  d(s_{t+j}) \left[ \sum_{s_{t+1}} Q_{j-1} ( s_{t+j} |s_{t+1}) Q(s_{t+1}| s_t) \right] \\
  & = \sum_{s_{t+j}} d(s_{t+j}) Q_j (s_{t+j} | s_t ) \\
@@ -440,7 +440,7 @@ $$
 
 +++
 
-## General Equilibrium 
+## General Equilibrium
 
 Now we are ready to do some fun calculations.
 
@@ -465,13 +465,13 @@ $$
 * A collection of restrictions  on feasible consumption allocations for $s \in S$:
 
 $$
-c\left(s\right)= \sum_{k=1}^K c^k\left(s\right) 
-\leq  y\left(s\right) 
+c\left(s\right)= \sum_{k=1}^K c^k\left(s\right)
+\leq  y\left(s\right)
 $$
 
 * Preferences: a common utility functional across agents $ E_0 \sum_{t=0}^\infty \beta^t u(c^k_t) $ with  CRRA one-period utility function $u\left(c\right)$ and discount factor $\beta \in (0,1)$
 
-The one-period utility function is 
+The one-period utility function is
 
 $$
 u \left(c\right) = \frac{c^{1-\gamma}}{1-\gamma}
@@ -485,7 +485,7 @@ $$
 
 ### Outputs
 
-* An $n \times n$ matrix  pricing kernel $Q$ for one-period Arrow securities, where $ Q_{ij}$  = price at time $t$ in state $s_t = \bar s_i$ of one unit of consumption when $s_{t+1} = \bar s_j$ at time $t+1$ 
+* An $n \times n$ matrix  pricing kernel $Q$ for one-period Arrow securities, where $ Q_{ij}$  = price at time $t$ in state $s_t = \bar s_i$ of one unit of consumption when $s_{t+1} = \bar s_j$ at time $t+1$
 
 * pure exchange so that $c\left(s\right) = y\left(s\right)$
 
@@ -515,20 +515,20 @@ with aggregate consumption and therefore with the aggregate endowment.
 
   * This is a consequence of our preference specification implying that **Engle curves** affine in wealth and therefore  satisfy conditions for **Gorman aggregation**
 
-Thus, 
+Thus,
 
 $$
 c^k \left(s\right) = \alpha_k c\left(s\right) = \alpha_k y\left(s\right)
 $$
 
-for an arbitrary   **distribution of wealth**  in the form of an   $K \times 1$ vector $\alpha$ 
+for an arbitrary   **distribution of wealth**  in the form of an   $K \times 1$ vector $\alpha$
 that satisfies
 
 $$ \alpha_k \in \left(0, 1\right), \quad \sum_{k=1}^K \alpha_k = 1 $$
 
 +++
 
-This means that we can compute the pricing kernel from  
+This means that we can compute the pricing kernel from
 
 $$
 Q_{ij} = \beta \left(\frac{y_j}{y_i}\right)^{-\gamma} P_{ij}
@@ -543,11 +543,11 @@ Note that $Q_{ij}$ is independent of vector $\alpha$.
 
 +++
 
-### Values 
+### Values
 
 
 Having computed an equilibrium pricing kernel $Q$, we can compute several **values** that are required
-to pose or represent the solution of an individual household's optimum problem. 
+to pose or represent the solution of an individual household's optimum problem.
 
 
 We denote  an $K \times 1$ vector of  state-dependent values of agents' endowments in Markov state $s$ as
@@ -588,7 +588,7 @@ $$
 
 
 In a competitive equilibrium of an **infinite horizon** economy with sequential trading of one-period Arrow securities, $A^k(s)$ serves as a state-by-state vector of **debt limits** on the quantities of one-period  Arrow securities
-paying off  in state $s$ at time $t+1$ that individual $k$ can issue at time $t$.  
+paying off  in state $s$ at time $t+1$ that individual $k$ can issue at time $t$.
 
 
 These are often called **natural debt limits**.
@@ -596,8 +596,8 @@ These are often called **natural debt limits**.
 Evidently, they equal the maximum amount that it is feasible for  individual $k$ to repay
 even if he consumes zero goods forevermore.
 
-**Remark:** If  we have an Inada condition at zero consumption or just impose that consumption 
-be nonnegative, then in a **finite horizon** economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. See the section below on a Finite Horizon Economy. 
+**Remark:** If  we have an Inada condition at zero consumption or just impose that consumption
+be nonnegative, then in a **finite horizon** economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. See the section below on a Finite Horizon Economy.
 
 +++
 
@@ -653,7 +653,7 @@ Note that $\sum_{k=1}^K \psi^k = {0}_{n \times 1}$.
 
 **Remark:** At the initial state $s_0 \in \begin{bmatrix} \bar s_1, \ldots, \bar s_n \end{bmatrix}$,
 the continuation wealth $\psi^k(s_0) = 0$ for all agents $k = 1, \ldots, K$.  This indicates that
-the economy begins with  all agents being debt-free and financial-asset-free at time $0$, state $s_0$.  
+the economy begins with  all agents being debt-free and financial-asset-free at time $0$, state $s_0$.
 
 
 **Remark:** Note that all agents' continuation wealths recurrently return to zero when the Markov state returns to whatever value $s_0$ it had at time $0$.
@@ -667,7 +667,7 @@ A nifty feature of the model is that an optimal portfolio of  a type $k$ agent e
 Thus, agent $k$'s state-by-state purchases of Arrow securities next period depend only on next period's
 Markov state and equal
 
-$$ 
+$$
 a_k(s) = \psi^k(s), \quad s \in \left[\bar s_1, \ldots, \bar s_n \right]
 $$ (eqn:optport)
 
@@ -676,7 +676,7 @@ $$ (eqn:optport)
 ### Equilibrium Wealth Distribution $\alpha$
 
 
-With the initial state being  a particular state $s_0 \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]$, 
+With the initial state being  a particular state $s_0 \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]$,
 we must have
 
 $$
@@ -691,7 +691,7 @@ $$ (eqn:alphakform)
 
 
 
-where $V \equiv \left[I - Q\right]^{-1}$ and $z$ is the row index corresponding to the initial state $s_0$. 
+where $V \equiv \left[I - Q\right]^{-1}$ and $z$ is the row index corresponding to the initial state $s_0$.
 
 Since $\sum_{k=1}^K V_z y^k = V_z y$,  $\sum_{k=1}^K \alpha_k = 1$.
 
@@ -713,13 +713,13 @@ In summary, here is the logical flow of an algorithm to compute a competitive eq
 We can also add formulas for optimal value functions in  a competitive equilibrium with trades
 in a complete set of one-period state-contingent Arrow securities.
 
-Call the optimal value functions $J^k$ for consumer $k$. 
+Call the optimal value functions $J^k$ for consumer $k$.
 
 For the infinite horizon economy now under study, the formula is
 
 $$ J^k = (I - \beta P)^{-1} u(\alpha_k y)  , \quad u(c) = \frac{c^{1-\gamma}}{1-\gamma} $$
 
-where it is understood that $ u(\alpha_k y)$ is a vector. 
+where it is understood that $ u(\alpha_k y)$ is a vector.
 
 
 
@@ -735,7 +735,6 @@ As usual, we start with Python imports.
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-%matplotlib inline
 ```
 
 ```{code-cell} ipython3
@@ -746,7 +745,7 @@ np.set_printoptions(suppress=True)
 First, we create a Python class to compute  the objects that comprise a competitive equilibrium
 with sequential trading of one-period Arrow securities.
 
-In addition to  handly infinite-horizon economies, the code is set up to handle finite-horizon economies indexed by horizon $T$. 
+In addition to  handly infinite-horizon economies, the code is set up to handle finite-horizon economies indexed by horizon $T$.
 
 We'll study some finite horizon economies after we look at some infinite-horizon economies.
 
@@ -780,10 +779,10 @@ class RecurCompetitive:
 
         # compute pricing kernel
         self.Q = self.pricing_kernel()
-        
+
         # compute price of risk-free one-period bond
         self.PRF = self.price_risk_free_bond()
-        
+
         # compute risk-free rate
         self.R = self.risk_free_rate()
 
@@ -866,12 +865,12 @@ class RecurCompetitive:
 
     def price_risk_free_bond(self):
         "Give Q, compute price of one-period risk free bond"
-        
+
         PRF = np.sum(self.Q, 0)
         self.PRF = PRF
-        
+
         return PRF
-    
+
     def risk_free_rate(self):
         "Given Q, compute one-period gross risk-free interest rate R"
 
@@ -916,7 +915,7 @@ class RecurCompetitive:
 
 ### Example 1
 
-Please read the preceding class for default parameter values and the  following Python code for the fundamentals of the economy.  
+Please read the preceding class for default parameter values and the  following Python code for the fundamentals of the economy.
 
 Here goes.
 
@@ -1182,21 +1181,21 @@ for i in range(1, 4):
     print(f'J = \n{ex4.value_functionss()}\n')
 ```
 
-## Finite Horizon 
+## Finite Horizon
 
 The Python class **RecurCompetitive** provided above also can be used to compute competitive equilibrium
-allocations and Arrow securities prices for finite horizon economies.  
+allocations and Arrow securities prices for finite horizon economies.
 
-The setting is a finite-horizon version of  the one above except that time now runs for $T+1$ periods 
-$t \in {\bf T} = \{ 0, 1, \ldots, T\}$.  
+The setting is a finite-horizon version of  the one above except that time now runs for $T+1$ periods
+$t \in {\bf T} = \{ 0, 1, \ldots, T\}$.
 
 Consequently, we want  $T+1$ counterparts to objects described above, with one important exception:
 we won't need **borrowing limits**.
 
  * borrowing limits aren't required for a finite horizon economy in which a
-one-period utility function $u(c)$ satisfies an Inada condition that sets the marginal utility of consumption at zero consumption to zero.  
+one-period utility function $u(c)$ satisfies an Inada condition that sets the marginal utility of consumption at zero consumption to zero.
  * Nonnegativity of consumption choices at all $t \in {\bf T}$ automatically
-limits borrowing. 
+limits borrowing.
 
 
 ### Continuation Wealths
@@ -1251,9 +1250,9 @@ $$
 
 Note that $\sum_{k=1}^K \psi_t^k = {0}_{n \times 1}$ for all $t \in {\bf T}$.
 
-**Remark:** At the initial state $s_0 \in \begin{bmatrix} \bar s_1, \ldots, \bar s_n \end{bmatrix}$, 
+**Remark:** At the initial state $s_0 \in \begin{bmatrix} \bar s_1, \ldots, \bar s_n \end{bmatrix}$,
  for all agents $k = 1, \ldots, K$, continuation wealth $\psi_0^k(s_0) = 0$.  This indicates that
-the economy begins with  all agents being debt-free and financial-asset-free at time $0$, state $s_0$.  
+the economy begins with  all agents being debt-free and financial-asset-free at time $0$, state $s_0$.
 
 
 **Remark:** Note that all agents' continuation wealths  return to zero when the Markov state returns to whatever value $s_0$ it had at time $0$. This will recur if the Markov chain makes the initial state $s_0$ recurrent.
@@ -1275,13 +1274,13 @@ $$ (eq:w)
 
 
 
-where  now in our finite-horizon economy  
+where  now in our finite-horizon economy
 
 $$
  V = \left[I + Q + Q^2 + \cdots + Q^T \right]
 $$ (eq:ww)
 
-and $z$ is the row index corresponding to the initial state $s_0$. 
+and $z$ is the row index corresponding to the initial state $s_0$.
 
 Since $\sum_{k=1}^K V_z y^k = V_z y$,  $\sum_{k=1}^K \alpha_k = 1$.
 
@@ -1308,7 +1307,7 @@ for the finite horizon economy the formula is
 
 $$ J_0^k = (I + \beta P + \cdots + \beta^T P^T) u(\alpha_k y) , $$
 
-where it is understood that $ u(\alpha_k y)$ is a vector.  
+where it is understood that $ u(\alpha_k y)$ is a vector.
 
 
 +++

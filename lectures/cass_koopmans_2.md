@@ -45,7 +45,7 @@ The earlier  lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>` studi
 The present lecture uses  additional  ideas including
 
 - Hicks-Arrow prices, named after John R. Hicks and Kenneth Arrow.
-- A connection between some Lagrange multipliers from the planning 
+- A connection between some Lagrange multipliers from the planning
   problem and the Hicks-Arrow prices.
 - A **Big** $K$ **, little** $k$ trick widely used in
   macroeconomic dynamics.
@@ -66,7 +66,6 @@ The present lecture uses  additional  ideas including
 Let's start with some standard imports:
 
 ```{code-cell} ipython
-%matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 from numba import njit, float64
@@ -178,7 +177,7 @@ consumer (also known as a *household*) chooses for itself subject to a budget co
   **price takers** who believe that prices are not affected by their choices
 
 ```{note}
-We can think of there being  unit measures of identical representative consumers and 
+We can think of there being  unit measures of identical representative consumers and
 identical representative firms.
 ```
 
@@ -198,13 +197,13 @@ all other dates $t=1, 2, \ldots, T$.
 
 There are  sequences of prices
 $\{w_t,\eta_t\}_{t=0}^T= \{\vec{w}, \vec{\eta} \}$
-where 
+where
 
 - $w_t$ is a wage or rental rate for labor at time $t$
 
 - $\eta_t$ is a rental rate for capital at time $t$
 
-In addition there is a vector $\{q_t^0\}$ of  intertemporal prices where  
+In addition there is a vector $\{q_t^0\}$ of  intertemporal prices where
 
 - $q^0_t$ is the price of a good at date $t$ relative
 to a good at date $0$.
@@ -212,7 +211,7 @@ to a good at date $0$.
 We call $\{q^0_t\}_{t=0}^T$  a vector of **Hicks-Arrow prices**,
 named after the 1972 economics Nobel prize winners.
 
-Units of $q_t^0$ could be 
+Units of $q_t^0$ could be
 
 $$
 \frac{\text{number of time 0 goods}}{\text{number of time t goods}}
@@ -970,4 +969,3 @@ Now we plot when $t_0=20$
 ```{code-cell} python3
 plot_yield_curves(pp, 20, 0.3, k_ss/3, T_arr)
 ```
-
