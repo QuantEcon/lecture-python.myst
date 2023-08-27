@@ -14,6 +14,14 @@ kernelspec:
 (likelihood-ratio-process)=
 # Incorrect Models
 
+In addition to what's in Anaconda, this lecture will need the following libraries:
+```{code-cell} ipython
+---
+tags: [hide-output]
+---
+!pip install numpyro jax
+```
+
 ## Overview
 
 This  is a sequel to {doc}`this  quantecon lecture <likelihood_bayes>`.
