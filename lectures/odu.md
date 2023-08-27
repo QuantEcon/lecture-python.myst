@@ -30,8 +30,7 @@ In addition to what’s in Anaconda, this lecture deploys the libraries:
 ---
 tags: [hide-output]
 ---
-  !pip install quantecon
-  !pip install interpolation
+!pip install interpolation
 ```
 
 ## Overview
