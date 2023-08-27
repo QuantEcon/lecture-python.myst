@@ -72,7 +72,7 @@ permanently draws from that distribution.
 Our second type of agent knows, correctly, that nature mixes $f$ and $g$ with mixing probability $\alpha \in (0,1)$
 each period, though the agent doesn't know the mixing parameter.
 
-Our first type of agent applies the learning algorithm described in {doc}`this  quantecon lecture <likelihood_bayes>`>.
+Our first type of agent applies the learning algorithm described in {doc}`this  quantecon lecture <likelihood_bayes>`.
 
 In the context of the statistical model that prevailed in that lecture, that was a good learning algorithm and it enabled the Bayesian learner
 eventually to learn the distribution that nature had drawn at time $-1$.
