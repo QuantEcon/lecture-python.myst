@@ -1037,7 +1037,13 @@ $$
 where:
 
 $$
-\Sigma^{+} \Sigma = \begin{bmatrix} I_p & 0 \cr 0 & 0 \end{bmatrix}
+\Sigma^{+} = \begin{bmatrix}
+\frac{1}{\sigma_1} & 0 & \cdots & 0 & 0 \\
+0 & \frac{1}{\sigma_2} & \cdots & 0 & 0 \\
+\vdots & \vdots & \ddots & \vdots & \vdots \\
+0 & 0 & \cdots & \frac{1}{\sigma_p} & 0 \\
+0 & 0 & \cdots & 0 & 0 \\
+\end{bmatrix}
 $$
 
 and finally:
