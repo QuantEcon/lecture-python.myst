@@ -27,15 +27,6 @@ kernelspec:
 :depth: 2
 ```
 
-In addition to what's in Anaconda, this lecture will need the following libraries:
-
-```{code-cell} ipython
----
-tags: [hide-output]
----
-!pip install quantecon
-```
-
 ## Overview
 
 This lecture describes a rational expectations version of the famous permanent income model of Milton Friedman {cite}`Friedman1956`.
