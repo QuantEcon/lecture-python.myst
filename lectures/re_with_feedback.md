@@ -42,7 +42,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import quantecon as qe
-from sympy import *
+from sympy import init_printing, symbols, Matrix
 init_printing()
 ```
 
@@ -1066,7 +1066,7 @@ Compare $F^*$ with $F_1 + F_2 F^*$
 F_check[0] + F_check[1] * F_star, F_star
 ```
 
-## Fun with SymPy 
+## Fun with SymPy
 
 This section is a  gift for readers who have made it this far.
 
@@ -1161,4 +1161,3 @@ $−(Q^{22})^{−1}Q^{21}$
 ```{code-cell} python3
 - Q_inv[1, 0] / Q_inv[1, 1]
 ```
-
