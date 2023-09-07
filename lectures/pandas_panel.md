@@ -473,7 +473,7 @@ import seaborn as sns
 continents = grouped.groups.keys()
 
 for continent in continents:
-    sns.kdeplot(grouped.get_group(continent).loc['2015'].unstack(), label=continent, shade=True)
+    sns.kdeplot(grouped.get_group(continent).loc['2015'].unstack(), label=continent, fill=True)
 
 plt.title('Real minimum wages in 2015')
 plt.xlabel('US dollars')
