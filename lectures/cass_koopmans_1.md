@@ -93,13 +93,13 @@ Let $K_t$ be the stock of physical capital at time $t$.
 Let $\vec{C}$ = $\{C_0,\dots, C_T\}$ and
 $\vec{K}$ = $\{K_0,\dots,K_{T+1}\}$.
 
-### Digression: an Aggregation Theory
+### Digression: Aggregation Theory
 
 We use a concept of a representative consumer to be thought of as follows.
 
-There is a unit mass of identical consumers.
+There is a unit mass of identical consumers indexed by $\omega \in [0,1]$.
 
-For $\omega \in [0,1]$, consumption of consumer  is $c(\omega)$.
+Consumption of consumer $\omega$ is $c(\omega)$.
 
 Aggregate consumption is 
 
@@ -107,7 +107,7 @@ $$
 C = \int_0^1 c(\omega) d \omega
 $$
 
-Consider the a welfare problem of choosing an allocation $\{c(\omega)\}$ across consumers to maximize
+Consider  a welfare problem that chooses an allocation $\{c(\omega)\}$ across consumers to maximize
 
 $$
  \int_0^1 u(c(\omega)) d \omega
@@ -122,16 +122,16 @@ $$ (eq:feas200)
 Form a Lagrangian $L = \int_0^1 u(c(\omega)) d \omega + \lambda [C - \int_0^1 c(\omega) d \omega ] $.
 
 Differentiate under the integral signs with respect to each $\omega$ to  obtain the first-order
-necessary condtions 
+necessary conditions 
 
 $$
 u'(c(\omega)) = \lambda. 
 $$ 
 
-This condition implies that $c(\omega)$ equals a constant $c$ that is independent 
+These conditions imply that $c(\omega)$ equals a constant $c$ that is independent 
 of $\omega$.  
 
-To find $c$, use the  feasibility constraint {eq}`eq:feas200` to conclude that 
+To find $c$, use   feasibility constraint {eq}`eq:feas200` to conclude that 
 
 $$ 
 c(\omega) = c = C.
@@ -142,7 +142,7 @@ consumes amount $C$.
 
 It appears often in aggregate economics. 
 
-We shall use it in this lecture and in {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
+We shall use this aggregation theory here and also  in  this lecture  {doc}`Cass-Koopmans Competitive Equilibrium <cass_koopmans_2>`.
 
 
 #### An  Economy
@@ -153,7 +153,7 @@ $t$ and likes the consumption good at each $t$.
 
 The representative household inelastically supplies a single unit of
 labor $N_t$ at each $t$, so that
-$N_t =1 \text{ for all } t \in [0,T]$.
+$N_t =1 \text{ for all } t \in \{0, 1, \ldots,  T\}$.
 
 The representative household has preferences over consumption bundles
 ordered by the utility functional:
@@ -165,7 +165,9 @@ U(\vec{C}) = \sum_{t=0}^{T} \beta^t \frac{C_t^{1-\gamma}}{1-\gamma}
 ```
 
 where $\beta \in (0,1)$ is a discount factor and $\gamma >0$
-governs the curvature of the one-period utility function with larger $\gamma$ implying more curvature.
+governs the curvature of the one-period utility function.
+
+Larger $\gamma$'s imply more curvature.
 
 Note that
 
@@ -200,7 +202,7 @@ A feasible allocation $\vec{C}, \vec{K}$ satisfies
 ```{math}
 :label: allocation
 
-C_t + K_{t+1} \leq F(K_t,N_t) + (1-\delta) K_t, \quad \text{for all } t \in [0, T]
+C_t + K_{t+1} \leq F(K_t,N_t) + (1-\delta) K_t \quad \text{for all } t \in \{0, 1, \ldots,  T\}
 ```
 
 where $\delta \in (0,1)$ is a depreciation rate of capital.
@@ -221,7 +223,7 @@ $$
 \left(F(K_t,1) + (1-\delta) K_t- C_t - K_{t+1} \right)\right\}
 $$ (eq:Lagrangian201)
 
-and then pose the following min-max problem:
+and  pose the following min-max problem:
 
 ```{math}
 :label: min-max-prob
@@ -233,9 +235,9 @@ and then pose the following min-max problem:
   maximization with respect to $\vec{C}, \vec{K}$ and
   minimization with respect to $\vec{\mu}$.
 - Our problem satisfies
-  conditions that assure that required second-order
+  conditions that assure that  second-order
   conditions are satisfied at an allocation that satisfies the
-  first-order conditions that we are about to compute.
+  first-order necessary conditions that we are about to compute.
 
 Before computing first-order conditions, we present some handy formulas.
 
@@ -290,9 +292,11 @@ f(K_t) - f'(K_t) K_t
 \end{aligned}
 $$
 
+(Here we are using that $N_t = 1$ for all $t$, so that $K_t = \frac{K_t}{N_t}$.)
+
 ### First-order necessary conditions
 
-We now compute **first-order necessary conditions** for extremization of the Lagrangian {eq}`eq:Lagrangian201`:
+We now compute **first-order necessary conditions** for extremization of  Lagrangian {eq}`eq:Lagrangian201`:
 
 ```{math}
 :label: constraint1
@@ -319,7 +323,7 @@ K_{T+1}: \qquad -\mu_T \leq 0, \ \leq 0 \text{ if } K_{T+1}=0; \ =0 \text{ if } 
 ```
 
 In computing  {eq}`constraint3` we recognize that $K_t$ appears
-in both the time  $t$ and time $t-1$ feasibility constraints.
+in both the time  $t$ and time $t-1$ feasibility constraints {eq}`allocation`.
 
 Restrictions {eq}`constraint4` come from differentiating with respect
 to $K_{T+1}$ and applying the following **Karush-Kuhn-Tucker condition** (KKT)
@@ -347,7 +351,7 @@ u'\left(C_{t+1}\right)\left[(1-\delta)+f'\left(K_{t+1}\right)\right]=
 u'\left(C_{t}\right) \quad \text{ for all } t=0,1,\dots, T
 ```
 
-Applying  the inverse of the utility function on both sides of the above
+Applying  the inverse  marginal utility  of consumption  function on both sides of the above
 equation gives
 
 $$
@@ -362,6 +366,8 @@ $$
 (1-\delta)]\right)^{1/\gamma} \notag\\= C_t\left(\beta [f'(K_{t+1}) +
 (1-\delta)]\right)^{1/\gamma} \end{aligned}
 $$
+
+This is a non-linear first-order difference equation that an optimal sequence $\vec C$ must satisfy.
 
 Below we define a `jitclass` that stores parameters and functions
 that define our economy.
@@ -454,7 +460,7 @@ We use  **shooting** to compute an optimal allocation
 $\vec{C}, \vec{K}$ and an associated Lagrange multiplier sequence
 $\vec{\mu}$.
 
-The first-order necessary conditions
+First-order necessary conditions
 {eq}`constraint1`, {eq}`constraint2`, and
 {eq}`constraint3`  for the planning problem form a system of **difference equations** with
 two boundary conditions:
@@ -476,10 +482,13 @@ If we did, our job would be easy:
 - We could continue in this way to compute the remaining elements of
   $\vec{C}, \vec{K}, \vec{\mu}$.
 
-But we don't have an initial condition for $\mu_0$, so this
-won't work.
+However, we woujld not be assured that the Kuhn-Tucker condition {eq}`kkt` would be satisfied.
 
-Indeed, part of our task is to compute the optimal value of $\mu_0$.
+Furthermore,  we don't have an initial condition for $\mu_0$.
+
+So this won't work.
+
+Indeed, part of our task is to compute the **optimal** value of $\mu_0$.
 
 To compute $\mu_0$ and the other objects we want, a  simple modification of the above procedure will work.
 
@@ -490,7 +499,7 @@ algorithm that consists of the following steps:
 
 - Guess an initial Lagrange multiplier $\mu_0$.
 - Apply the **simple algorithm** described above.
-- Compute $k_{T+1}$ and check whether it
+- Compute $K_{T+1}$ and check whether it
   equals zero.
 - If  $K_{T+1} =0$, we have solved the problem.
 - If $K_{T+1} > 0$, lower $\mu_0$ and try again.
@@ -499,8 +508,8 @@ algorithm that consists of the following steps:
 The following Python code implements the shooting algorithm for the
 planning problem.
 
-We actually modify the algorithm slightly by starting with a guess for
-$c_0$ instead of $\mu_0$ in the following code.
+(Actually, we modified the preceding  algorithm slightly by starting with a guess for
+$c_0$ instead of $\mu_0$ in the following code.)
 
 ```{code-cell} python3
 @njit
@@ -569,7 +578,7 @@ We make an initial guess for $C_0$ (we can eliminate
 $\mu_0$ because $C_0$ is an exact function of
 $\mu_0$).
 
-We know that the lowest $C_0$ can ever be is $0$ and the
+We know that the lowest $C_0$ can ever be is $0$ and that the
 largest it can be is initial output $f(K_0)$.
 
 Guess $C_0$  and shoot forward to $T+1$.
@@ -670,7 +679,7 @@ to the $\lim_{T \rightarrow + \infty } K_t$, which we'll call  steady state capi
 In a steady state $K_{t+1} = K_t=\bar{K}$ for all very
 large $t$.
 
-Evalauating the feasibility constraint {eq}`allocation` at $\bar K$ gives
+Evalauating  feasibility constraint {eq}`allocation` at $\bar K$ gives
 
 ```{math}
 :label: feasibility-constraint
@@ -703,7 +712,7 @@ $$
 \bar{K} = f'^{-1}(\rho+\delta)
 $$
 
-For the  production function {eq}`production-function` this becomes
+For   production function {eq}`production-function`, this becomes
 
 $$
 \alpha \bar{K}^{\alpha-1} = \rho + \delta
@@ -763,10 +772,10 @@ its steady state value most of the time.
 plot_paths(pp, 0.3, k_ss/3, [250, 150, 50, 25], k_ss=k_ss);
 ```
 
-Different colors in the above graphs are associated with
+In the above graphs, different colors  are associated with
 different horizons $T$.
 
-Notice that as the horizon increases, the planner puts $K_t$
+Notice that as the horizon increases, the planner keeps $K_t$
 closer to the steady state value $\bar K$ for longer.
 
 This pattern reflects a **turnpike** property of the steady state.
@@ -859,7 +868,7 @@ Since $K_0<\bar K$, $f'(K_0)>\rho +\delta$.
 The planner chooses a positive saving rate that is higher than  the steady state
 saving rate.
 
-Note, $f''(K)<0$, so as $K$ rises, $f'(K)$ declines.
+Note that $f''(K)<0$, so as $K$ rises, $f'(K)$ declines.
 
 The planner slowly lowers the saving rate until reaching a steady
 state in which $f'(K)=\rho +\delta$.
@@ -893,7 +902,7 @@ technology and preference structure as deployed here.
 
 In that lecture, we replace the  planner of this lecture with Adam Smith's **invisible hand**.
 
-In place of quantity choices made by the planner, there are market prices that are set by a mechanism outside the model, a so-called invisible hand.
+In place of quantity choices made by the planner, there are market prices that are set by a *deus ex machina* from outside the model, a so-called invisible hand.
 
 Equilibrium market prices must reconcile distinct decisions that are made independently
 by a representative household and a representative firm.
