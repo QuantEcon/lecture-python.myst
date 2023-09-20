@@ -338,7 +338,7 @@ to $K_{T+1}$ and applying the following **Karush-Kuhn-Tucker condition** (KKT)
 Combining {eq}`constraint1` and {eq}`constraint2` gives
 
 $$
-u'\left(C_t\right)\left[(1-\delta)+f'\left(K_t\right)\right]-u'\left(C_{t-1}\right)=0
+\beta u'\left(C_t\right)\left[(1-\delta)+f'\left(K_t\right)\right]-u'\left(C_{t-1}\right)=0
 \quad \text{ for all } t=1,2,\dots, T+1
 $$
 
@@ -347,7 +347,7 @@ which can be rearranged to become
 ```{math}
 :label: l12
 
-u'\left(C_{t+1}\right)\left[(1-\delta)+f'\left(K_{t+1}\right)\right]=
+\beta u'\left(C_{t+1}\right)\left[(1-\delta)+f'\left(K_{t+1}\right)\right]=
 u'\left(C_{t}\right) \quad \text{ for all } t=0,1,\dots, T
 ```
 
@@ -363,11 +363,25 @@ equation**
 
 $$
 \begin{aligned} C_{t+1} =\left(\beta C_t^{\gamma}[f'(K_{t+1}) +
-(1-\delta)]\right)^{1/\gamma} \notag\\= C_t\left(\beta [f'(K_{t+1}) +
-(1-\delta)]\right)^{1/\gamma} \end{aligned}
+(1-\delta)]\right)^{1/\gamma} 
+%\notag\\= C_t\left(\beta [f'(K_{t+1}) +
+%(1-\delta)]\right)^{1/\gamma} 
+\end{aligned}
 $$
 
-This is a non-linear first-order difference equation that an optimal sequence $\vec C$ must satisfy.
+which we can  combine with the feasibility constraint {eq}`allocation` to get
+
+$$ 
+\begin{aligned}
+C_{t+1} & = C_t\left(\beta [f'(F(K_t,1)+ (1-\delta) K_t  - C_t) +
+(1-\delta)]\right)^{1/\gamma}  \\
+K_{t+1}  & = F(K_t,1)+ (1-\delta) K_t  - C_t .
+\end{aligned}
+$$
+
+This is a pair of non-linear first-order difference equations that map $C_t, K_t$ into $C_{t+1}, K_{t+1}$ and that  an optimal sequence $\vec C , \vec K$ must satisfy.
+
+It must also satisfy the initial condition that $K_0$ is given and $K_{T+1} = 0$.
 
 Below we define a `jitclass` that stores parameters and functions
 that define our economy.
