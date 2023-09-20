@@ -275,7 +275,7 @@ be described below.</p>
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpyro in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.12.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpyro in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.13.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pyro-ppl
@@ -285,16 +285,16 @@ be described below.</p>
 ?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/732.8 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">727.0/732.8 kB</span> <span class=" -Color -Color-Red">26.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">732.8/732.8 kB</span> <span class=" -Color -Color-Red">20.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━ <span class=" -Color -Color-Green">614.4/732.8 kB</span> <span class=" -Color -Color-Red">19.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">732.8/732.8 kB</span> <span class=" -Color -Color-Red">16.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25hRequirement already satisfied: torch in /opt/conda/envs/quantecon/lib/python3.10/site-packages (1.12.1)
-Requirement already satisfied: jax in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.4.14)
+Requirement already satisfied: jax in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.4.16)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numpyro) (1.23.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numpyro) (0.6.0)
+Requirement already satisfied: jaxlib&gt;=0.4.14 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numpyro) (0.4.16)
 Requirement already satisfied: tqdm in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numpyro) (4.64.1)
-Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numpyro) (0.6.0)
-Requirement already satisfied: jaxlib&gt;=0.4.7 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numpyro) (0.4.14)
+Requirement already satisfied: numpy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numpyro) (1.23.5)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: opt-einsum&gt;=2.3.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pyro-ppl) (3.3.0)
@@ -961,7 +961,9 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1695157792.654198    1404 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
+No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
 </pre></div>
 </div>
 <img alt="_images/1d6e10ed08d1a3fad385d0ae7cfab97fb19844ffede9ffb9a053544562f264fc.png" src="_images/1d6e10ed08d1a3fad385d0ae7cfab97fb19844ffede9ffb9a053544562f264fc.png" />
@@ -984,7 +986,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 <div class="cell_output docutils container">
 <img alt="_images/1239fba5d65789a867491a70d71e886eaf84d7482c8919823d5eb3d4ce2d6ef0.png" src="_images/1239fba5d65789a867491a70d71e886eaf84d7482c8919823d5eb3d4ce2d6ef0.png" />
-<img alt="_images/d836aa609a2054358ea787d69eddd3da23f52c20c954089d087d9f3d77ec2237.png" src="_images/d836aa609a2054358ea787d69eddd3da23f52c20c954089d087d9f3d77ec2237.png" />
+<img alt="_images/4df6c8b3f29c5b55371ea05f87b8b489760d22474130508a800282763cb671e0.png" src="_images/4df6c8b3f29c5b55371ea05f87b8b489760d22474130508a800282763cb671e0.png" />
 </div>
 </div>
 <p>These graphs look good too.</p>
@@ -1199,7 +1201,7 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5edb79164e9ed1e6599dd5a1197e46a97477d6c0c9ff4ba5a99610da781a36b7.png" src="_images/5edb79164e9ed1e6599dd5a1197e46a97477d6c0c9ff4ba5a99610da781a36b7.png" />
+<img alt="_images/da0bdb175507c27075ca46b915bbc6ef0555ece1b06d651107bc1e0844b6f6ed.png" src="_images/da0bdb175507c27075ca46b915bbc6ef0555ece1b06d651107bc1e0844b6f6ed.png" />
 </div>
 </div>
 <p>Now let’s use MCMC while still using a beta prior.</p>
@@ -1212,8 +1214,8 @@ ELBO\equiv\int d\theta q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)}=
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/84b50bf0f8ba6b97adccd808231d79b9b2da229e1dd8602ab4b10ec0e8f39b80.png" src="_images/84b50bf0f8ba6b97adccd808231d79b9b2da229e1dd8602ab4b10ec0e8f39b80.png" />
-<img alt="_images/aeb31d2c971b26cc0afcc93bebec6771d7d7a5acab022505f081b6e130ced089.png" src="_images/aeb31d2c971b26cc0afcc93bebec6771d7d7a5acab022505f081b6e130ced089.png" />
+<img alt="_images/0c654278a78ed0f1aef5435333e210b0dd91cfed0f3ff8c5b6cd7dd94492f63b.png" src="_images/0c654278a78ed0f1aef5435333e210b0dd91cfed0f3ff8c5b6cd7dd94492f63b.png" />
+<img alt="_images/1fbd6169a3da80b5f1640937aa490d667aaab463a02ffa17dbca70498d1bcc5a.png" src="_images/1fbd6169a3da80b5f1640937aa490d667aaab463a02ffa17dbca70498d1bcc5a.png" />
 </div>
 </div>
 <p>Here the MCMC approximation looks good.</p>
@@ -1232,7 +1234,7 @@ will be  more accurate, as we shall see next.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ef4a215059d413f29cc7e8868f33980aecd2df36a36b4cab6262de5ebf2387ba.png" src="_images/ef4a215059d413f29cc7e8868f33980aecd2df36a36b4cab6262de5ebf2387ba.png" />
+<img alt="_images/6b54891cd90478b854e2c4eb18bffab3fd751013e4362659443878926b6518d4.png" src="_images/6b54891cd90478b854e2c4eb18bffab3fd751013e4362659443878926b6518d4.png" />
 </div>
 </div>
 </section>
@@ -1289,14 +1291,14 @@ Prior Dist: uniform
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/c15a78640aad631883434ab936e5bc7cf092dd074b8d1e58915d6dc897fcd544.png" src="_images/c15a78640aad631883434ab936e5bc7cf092dd074b8d1e58915d6dc897fcd544.png" />
+<img alt="_images/699c380a52fd5a3c07f8c22c13a2eaa2b152933b706991445b78b43f9e8c996b.png" src="_images/699c380a52fd5a3c07f8c22c13a2eaa2b152933b706991445b78b43f9e8c996b.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: (0.2, 0.7)
 Prior Dist: uniform
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/13fcfb0e64defacaa4fc76c86eab8f312b8f6714c1e56b5c559de3e0bebb8a90.png" src="_images/13fcfb0e64defacaa4fc76c86eab8f312b8f6714c1e56b5c559de3e0bebb8a90.png" />
+<img alt="_images/93c2d4415590b0ce1298ba54893235e59194413c106005d90f45af464c112b9a.png" src="_images/93c2d4415590b0ce1298ba54893235e59194413c106005d90f45af464c112b9a.png" />
 </div>
 </div>
 <p>In the situation depicted above, we have assumed a  <span class="math notranslate nohighlight">\(Uniform(\underline{\theta}, \overline{\theta})\)</span> prior that puts zero probability   outside a bounded support that excludes the true value.</p>
@@ -1322,14 +1324,14 @@ Prior Dist: lognormal
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/aafdd8f7c88f13147b23138f63bfc7a7c478b5f15a9a8c06352c68a700fc15de.png" src="_images/aafdd8f7c88f13147b23138f63bfc7a7c478b5f15a9a8c06352c68a700fc15de.png" />
+<img alt="_images/90f8cb144bdf306ec2f326393f595120a5c1825cc6487c42f7b4615790124563.png" src="_images/90f8cb144bdf306ec2f326393f595120a5c1825cc6487c42f7b4615790124563.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: (0, 2)
 Prior Dist: lognormal
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/7430a34979599ff5b23a6342ebea62300b0bb00a7f945c634f33120fe4cb0125.png" src="_images/7430a34979599ff5b23a6342ebea62300b0bb00a7f945c634f33120fe4cb0125.png" />
+<img alt="_images/bca666a512a1c0549c8b11560d8f434d14deabde8d7455e82629219519f83ce0.png" src="_images/bca666a512a1c0549c8b11560d8f434d14deabde8d7455e82629219519f83ce0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1356,7 +1358,7 @@ Solver: numpyro
 NOTE: Shifted von Mises
 </pre></div>
 </div>
-<img alt="_images/02c51807e6aaaae9b716109bb91dec95b2a1c03008da117bfd8f0e8ecaf3413b.png" src="_images/02c51807e6aaaae9b716109bb91dec95b2a1c03008da117bfd8f0e8ecaf3413b.png" />
+<img alt="_images/96d1baa520956dbbd59a474810987f485beb6e6fa8addaace494a05adf64bc7a.png" src="_images/96d1baa520956dbbd59a474810987f485beb6e6fa8addaace494a05adf64bc7a.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: 40
 Prior Dist: vonMises
@@ -1365,7 +1367,7 @@ Solver: pyro
 NOTE: Truncated von Mises
 </pre></div>
 </div>
-<img alt="_images/79c03ebb12b3ab58c46e50b771c7cea8654bdb7ba164d1eb302b19895bf0ab9c.png" src="_images/79c03ebb12b3ab58c46e50b771c7cea8654bdb7ba164d1eb302b19895bf0ab9c.png" />
+<img alt="_images/4282a8cc57712c9eb2550c13d85fee18c1e28468fc885b1b5c1a838f2c8f51cd.png" src="_images/4282a8cc57712c9eb2550c13d85fee18c1e28468fc885b1b5c1a838f2c8f51cd.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1384,7 +1386,7 @@ Prior Dist: laplace
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/6d36b81f6cbf8bac83795a86ac824696e38b935891594fed706518e34b6c5179.png" src="_images/6d36b81f6cbf8bac83795a86ac824696e38b935891594fed706518e34b6c5179.png" />
+<img alt="_images/902928b4ced1d2083395586a864a9449c182ea9621e46ba5d1600382211f63a2.png" src="_images/902928b4ced1d2083395586a864a9449c182ea9621e46ba5d1600382211f63a2.png" />
 </div>
 </div>
 <p>To get more accuracy we will now increase the number of steps for Variational Inference (VI)</p>
@@ -1413,7 +1415,7 @@ Prior Dist: uniform
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/8e5150cc7e4fe3b8b2960bd1df09485573139ed7a296021e212ba2608c3c66b1.png" src="_images/8e5150cc7e4fe3b8b2960bd1df09485573139ed7a296021e212ba2608c3c66b1.png" />
+<img alt="_images/a8c5415b76aab4422f360f700a0dbf96a9d646e7ccf4fb364187024606a2eacc.png" src="_images/a8c5415b76aab4422f360f700a0dbf96a9d646e7ccf4fb364187024606a2eacc.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1432,7 +1434,7 @@ Prior Dist: lognormal
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/d70ce24c31304af8dc4cc230cfbf4efb0b000865524b2941bc2ec5cba8eb85ba.png" src="_images/d70ce24c31304af8dc4cc230cfbf4efb0b000865524b2941bc2ec5cba8eb85ba.png" />
+<img alt="_images/5949977caa856def64d1a519c09b322f804e369c9fff1e4cc4d830ffd8a67ce8.png" src="_images/5949977caa856def64d1a519c09b322f804e369c9fff1e4cc4d830ffd8a67ce8.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1454,7 +1456,7 @@ Solver: numpyro
 NB: Shifted von Mises
 </pre></div>
 </div>
-<img alt="_images/be9e45249efcc5d3317c0c3d8e6e40b3af8e6bb114e9e3a0c3dc8ee617509960.png" src="_images/be9e45249efcc5d3317c0c3d8e6e40b3af8e6bb114e9e3a0c3dc8ee617509960.png" />
+<img alt="_images/9b48cc986d9f5c2cff1e9fd845a18e27fd6bc22033e1018822e3dce6e537a451.png" src="_images/9b48cc986d9f5c2cff1e9fd845a18e27fd6bc22033e1018822e3dce6e537a451.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1473,7 +1475,7 @@ Prior Dist: laplace
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/0b93990c04b622507bc64c0e5c5e4a33a1184bf22f563cb6ef4a17995dd299d8.png" src="_images/0b93990c04b622507bc64c0e5c5e4a33a1184bf22f563cb6ef4a17995dd299d8.png" />
+<img alt="_images/a326c618d38c9c21ae076f845efa45c2e58396351c7a1bd1037b3bfcd3ba267c.png" src="_images/a326c618d38c9c21ae076f845efa45c2e58396351c7a1bd1037b3bfcd3ba267c.png" />
 </div>
 </div>
 </section>
@@ -1495,7 +1497,7 @@ Prior Dist: uniform
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/232740e2e9ebcbf097e02e505844bff4f24ffef614f22f8c665fed202cb2827d.png" src="_images/232740e2e9ebcbf097e02e505844bff4f24ffef614f22f8c665fed202cb2827d.png" />
+<img alt="_images/1f78aad643a10ed5a2eb32d8f9bfee8adb719dd82bb179f8c9e927677f8a53d5.png" src="_images/1f78aad643a10ed5a2eb32d8f9bfee8adb719dd82bb179f8c9e927677f8a53d5.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1518,14 +1520,14 @@ Prior Dist: lognormal
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/43fef56eaf5efcce8bb045e37eb37e503f0d4b1498324a144f7b836c49f762e7.png" src="_images/43fef56eaf5efcce8bb045e37eb37e503f0d4b1498324a144f7b836c49f762e7.png" />
+<img alt="_images/69c7c5a3565fb3ff7fbde43e7d2737eca222c6fc28bdb8f6fb7645404f76ec68.png" src="_images/69c7c5a3565fb3ff7fbde43e7d2737eca222c6fc28bdb8f6fb7645404f76ec68.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: (0, 2)
 Prior Dist: lognormal
 Solver: pyro
 </pre></div>
 </div>
-<img alt="_images/65d3b896d825d9d1efe8f38e17d5f90b97643e79fb96f6ceb7835a40811c1bfa.png" src="_images/65d3b896d825d9d1efe8f38e17d5f90b97643e79fb96f6ceb7835a40811c1bfa.png" />
+<img alt="_images/ae86895e90d028a97500b38cadeb16c58a537870919dc3c60a8867fa12535485.png" src="_images/ae86895e90d028a97500b38cadeb16c58a537870919dc3c60a8867fa12535485.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1552,7 +1554,7 @@ Solver: numpyro
 NB: Shifted von Mises
 </pre></div>
 </div>
-<img alt="_images/4e00e6053c3d01c24b75095f966d10b11eca89464872944aa2c3dd0d32dbbf85.png" src="_images/4e00e6053c3d01c24b75095f966d10b11eca89464872944aa2c3dd0d32dbbf85.png" />
+<img alt="_images/3a5bbd93c85eebc5cb3746e6cda0595da8cb3ed0fe7af01dd06d1342f13cd18c.png" src="_images/3a5bbd93c85eebc5cb3746e6cda0595da8cb3ed0fe7af01dd06d1342f13cd18c.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======INFO=======
 Parameters: 40
 Prior Dist: vonMises
@@ -1561,7 +1563,7 @@ Solver: pyro
 NB: Truncated von Mises
 </pre></div>
 </div>
-<img alt="_images/93770b4c9f663744a62c69ec334ab5a28f894a4ffaa3294896c56c3d4718aa91.png" src="_images/93770b4c9f663744a62c69ec334ab5a28f894a4ffaa3294896c56c3d4718aa91.png" />
+<img alt="_images/c2910b384eea775f10d073edbbf9d0a8469acf9241a23fb90fdd1c0f0fd1ffe8.png" src="_images/c2910b384eea775f10d073edbbf9d0a8469acf9241a23fb90fdd1c0f0fd1ffe8.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1580,7 +1582,7 @@ Prior Dist: laplace
 Solver: numpyro
 </pre></div>
 </div>
-<img alt="_images/1c06becc68a5ec011445b570fdc119c82e291e09252a5cd374a7fac4767b38e4.png" src="_images/1c06becc68a5ec011445b570fdc119c82e291e09252a5cd374a7fac4767b38e4.png" />
+<img alt="_images/10b38adea0f2d39b00b22ed4063a2383c67a632975c531d484147c27e4b2022c.png" src="_images/10b38adea0f2d39b00b22ed4063a2383c67a632975c531d484147c27e4b2022c.png" />
 </div>
 </div>
 </section>
@@ -2187,8 +2189,9 @@ Solver: numpyro
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/bayes_nonconj.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/bayes_nonconj.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -2201,7 +2204,7 @@ Solver: numpyro
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

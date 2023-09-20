@@ -189,8 +189,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-a-competitive-equilibrium">41.7. Computing a Competitive Equilibrium</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guess-for-price-system">41.7.1. Guess for Price System</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verification-procedure">41.7.2. Verification Procedure</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#households-lagrangian">41.7.3. Household’s Lagrangian</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#varying-curvature">41.7.3.1. Varying Curvature</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#households-lagrangian">41.7.3. Household’s Lagrangian</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#representative-firms-problem">41.7.4. Representative Firm’s Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#varying-curvature">41.7.4.1. Varying Curvature</a></li>
 </ul>
 </li>
 </ul>
@@ -324,9 +325,7 @@ decisions</p></li>
 <h2><a class="toc-backref" href="#id5"><span class="section-number">41.2. </span>Review of Cass-Koopmans Model</a><a class="headerlink" href="#review-of-cass-koopmans-model" title="Permalink to this heading">#</a></h2>
 <p>The physical setting is identical with that in <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">Cass-Koopmans Planning Model</span></a>.</p>
 <p>Time is discrete and takes values <span class="math notranslate nohighlight">\(t = 0, 1 , \ldots, T\)</span>.</p>
-<p>A single good can either be consumed or invested in physical capital.</p>
-<p>The consumption good is not durable and depreciates completely if not
-consumed immediately.</p>
+<p>Output of a single good can either be consumed or invested in physical capital.</p>
 <p>The capital good is durable but partially depreciates each period at a constant rate.</p>
 <p>We let <span class="math notranslate nohighlight">\(C_t\)</span> be a nondurable consumption good at time t.</p>
 <p>Let <span class="math notranslate nohighlight">\(K_t\)</span> be the stock of physical capital at time t.</p>
@@ -336,7 +335,7 @@ consumed immediately.</p>
 <span class="math notranslate nohighlight">\(t\)</span> and likes the consumption good at each <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>The representative household inelastically supplies a single unit of
 labor <span class="math notranslate nohighlight">\(N_t\)</span> at each <span class="math notranslate nohighlight">\(t\)</span>, so that
-<span class="math notranslate nohighlight">\(N_t =1 \text{ for all } t \in [0,T]\)</span>.</p>
+<span class="math notranslate nohighlight">\(N_t =1 \text{ for all } t \in \{0, 1, \ldots, T\}\)</span>.</p>
 <p>The representative household has preferences over consumption bundles
 ordered by the utility functional:</p>
 <div class="math notranslate nohighlight">
@@ -355,7 +354,7 @@ F(K_t,N_t) = A K_t^{\alpha}N_t^{1-\alpha}
 <p>A feasible allocation <span class="math notranslate nohighlight">\(\vec{C}, \vec{K}\)</span> satisfies</p>
 <div class="math notranslate nohighlight">
 \[
-C_t + K_{t+1} \leq F(K_t,N_t) + (1-\delta) K_t, \quad \text{for all } t \in [0, T]
+C_t + K_{t+1} \leq F(K_t,N_t) + (1-\delta) K_t \quad \text{for all } t \in \{0, 1, \ldots, T\}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\delta \in (0,1)\)</span> is a depreciation rate of capital.</p>
 <section id="planning-problem">
@@ -371,15 +370,15 @@ maximize <a class="reference internal" href="cass_koopmans_1.html#equation-utili
 <p>It shares  the same
 technology and preference structure as the planned economy studied in this lecture <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">Cass-Koopmans Planning Model</span></a>.</p>
 <p>But now there is no planner.</p>
-<p>There are (unit masses of) price taking consumers and firms.</p>
+<p>There are (unit masses of) price-taking consumers and firms.</p>
 <p>Market prices are set to reconcile distinct decisions that are made
-separately by a representative household and a representative firm.</p>
+separately by a representative consumer and a representative firm.</p>
 <p>There is a representative consumer who has the same preferences over
 consumption plans as did a consumer in the planned economy.</p>
 <p>Instead of being told what to consume and save by a planner, a
-consumer (also known as a <em>household</em>) chooses for itself subject to a budget constraint</p>
+consumer (also known as a <em>household</em>) chooses for itself subject to a budget constraint.</p>
 <ul class="simple">
-<li><p>At each time <span class="math notranslate nohighlight">\(t\)</span>, the household receives wages and rentals
+<li><p>At each time <span class="math notranslate nohighlight">\(t\)</span>, the consumer receives wages and rentals
 of capital from a firm – these comprise its <strong>income</strong> at
 time <span class="math notranslate nohighlight">\(t\)</span>.</p></li>
 <li><p>The consumer decides how much income to allocate to consumption or
@@ -388,7 +387,7 @@ to savings.</p></li>
 capital (it trades one for one with time <span class="math notranslate nohighlight">\(t\)</span> consumption)
 or by acquiring claims on consumption at dates other
 than <span class="math notranslate nohighlight">\(t\)</span>.</p></li>
-<li><p>The household owns all physical capital and labor
+<li><p>The household owns  physical capital and labor
 and rents them to the firm.</p></li>
 <li><p>The household consumes, supplies labor, and invests in physical
 capital.</p></li>
@@ -402,7 +401,7 @@ household.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>We can think of there being  unit measures of identical representative consumers and
+<p>Again, we can think of there being  unit measures of identical representative consumers and
 identical representative firms.</p>
 </div>
 </section>
@@ -412,7 +411,7 @@ identical representative firms.</p>
 <p>The household owns both factors of production, namely, labor and physical capital.</p>
 <p>Each period, the firm rents both factors from the household.</p>
 <p>There is a <strong>single</strong> grand competitive market in which a
-household can trade date <span class="math notranslate nohighlight">\(0\)</span> goods for goods at
+household  trades date <span class="math notranslate nohighlight">\(0\)</span> goods for goods at
 all other dates <span class="math notranslate nohighlight">\(t=1, 2, \ldots, T\)</span>.</p>
 <section id="prices">
 <h3><span class="section-number">41.4.1. </span>Prices<a class="headerlink" href="#prices" title="Permalink to this heading">#</a></h3>
@@ -430,13 +429,14 @@ to a good at date <span class="math notranslate nohighlight">\(0\)</span>.</p></
 </ul>
 <p>We call <span class="math notranslate nohighlight">\(\{q^0_t\}_{t=0}^T\)</span>  a vector of <strong>Hicks-Arrow prices</strong>,
 named after the 1972 economics Nobel prize winners.</p>
-<p>Units of <span class="math notranslate nohighlight">\(q_t^0\)</span> could be</p>
+<p>But because <span class="math notranslate nohighlight">\(q^0_t\)</span> is a <strong>relative price</strong>, the units in terms of
+which prices are quoted are arbitrary, we are free to re-normalize them.</p>
+<p>Units of <span class="math notranslate nohighlight">\(q_t^0\)</span> could be set so that</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{\text{number of time 0 goods}}{\text{number of time t goods}}
 \]</div>
-<p>But because <span class="math notranslate nohighlight">\(q^0_t\)</span> is a <strong>relative price</strong>, the units in terms of
-which prices are quoted are arbitrary, we are free to re-normalize them.</p>
+<p>In this case, we would be taking the time <span class="math notranslate nohighlight">\(0\)</span> consumption good to be the <strong>numeraire</strong>.</p>
 </section>
 </section>
 <section id="firm-problem">
@@ -457,7 +457,7 @@ F(\tilde k_t, \tilde n_t) = A \tilde k_t^\alpha \tilde n_t^{1-\alpha}
 \]</div>
 <section id="zero-profit-conditions">
 <h3><span class="section-number">41.5.1. </span>Zero Profit Conditions<a class="headerlink" href="#zero-profit-conditions" title="Permalink to this heading">#</a></h3>
-<p>Zero-profits condition for capital and labor are</p>
+<p>Zero-profits conditions for capital and labor are</p>
 <div class="math notranslate nohighlight">
 \[
 F_k(\tilde k_t, \tilde n_t) =\eta_t
@@ -469,18 +469,18 @@ F_k(\tilde k_t, \tilde n_t) =\eta_t
 <p>To describe this no-arbitrage profits  reasoning, we begin by applying a theorem of
 Euler about linearly homogenous functions.</p>
 <p>The theorem applies to the Cobb-Douglas production function because
-it assumed displays constant returns to scale:</p>
+we it  displays constant returns to scale:</p>
 <div class="math notranslate nohighlight">
 \[
 \alpha F(\tilde k_t, \tilde n_t) =  F(\alpha  \tilde k_t, \alpha \tilde n_t)
 \]</div>
 <p>for <span class="math notranslate nohighlight">\(\alpha \in (0,1)\)</span>.</p>
-<p>Taking the partial derivative
-<span class="math notranslate nohighlight">\(\frac{\partial F }{\partial \alpha}\)</span> on both sides of the
+<p>Taking  partial derivatives
+<span class="math notranslate nohighlight">\(\frac{\partial  }{\partial \alpha}\)</span> on both sides of the
 above equation gives</p>
 <div class="math notranslate nohighlight">
 \[
-F(\tilde k_t,\tilde n_t) =_\text{chain rule} \frac{\partial F}{\partial \tilde k_t}
+F(\tilde k_t,\tilde n_t) =  \frac{\partial F}{\partial \tilde k_t}
 \tilde k_t + \frac{\partial F}{\partial \tilde  n_t} \tilde n_t
 \]</div>
 <p>Rewrite the firm’s profits as</p>
@@ -505,14 +505,14 @@ firm makes positive profits on each additional unit of
 <span class="math notranslate nohighlight">\(\tilde k_t\)</span>, so it would want to make <span class="math notranslate nohighlight">\(\tilde k_t\)</span>
 arbitrarily large.</p>
 <p>But setting <span class="math notranslate nohighlight">\(\tilde k_t = + \infty\)</span> is not physically feasible,
-so presumably <strong>equilibrium</strong> prices will assume values that present
+so  <strong>equilibrium</strong> prices must take  values that present
 the firm with no such arbitrage opportunity.</p>
 <p>A similar argument applies if
 <span class="math notranslate nohighlight">\(\frac{\partial F}{\partial \tilde n_t}&gt; w_t\)</span>.</p>
 <p>If <span class="math notranslate nohighlight">\(\frac{\partial \tilde k_t}{\partial \tilde k_t}&lt; \eta_t\)</span>,
 the firm would want to set  <span class="math notranslate nohighlight">\(\tilde k_t\)</span> to zero, which is not feasible.</p>
 <p>It is convenient to define
-<span class="math notranslate nohighlight">\(\vec{w} =\{w_0, \dots,w_T\}\)</span>and <span class="math notranslate nohighlight">\(\vec{\eta}= \{\eta_0, \dots, \eta_T\}\)</span>.</p>
+<span class="math notranslate nohighlight">\(\vec{w} =\{w_0, \dots,w_T\}\)</span> and <span class="math notranslate nohighlight">\(\vec{\eta}= \{\eta_0, \dots, \eta_T\}\)</span>.</p>
 </section>
 </section>
 <section id="household-problem">
@@ -533,11 +533,11 @@ purchases</p>
 <p>Here <span class="math notranslate nohighlight">\(\left(k_{t+1} -(1-\delta)k_t\right)\)</span> is the household’s
 net investment in physical capital and <span class="math notranslate nohighlight">\(\delta \in (0,1)\)</span> is
 again a depreciation rate of capital.</p>
-<p>In period <span class="math notranslate nohighlight">\(t\)</span> is free to purchase more goods to be consumed and
+<p>In period <span class="math notranslate nohighlight">\(t\)</span>, the consumer is free to purchase more goods to be consumed and
 invested in physical capital than its income from supplying capital
 and labor to the firm, provided that in some other periods its income
 exceeds its purchases.</p>
-<p>A household’s net excess demand for time <span class="math notranslate nohighlight">\(t\)</span> consumption goods
+<p>A consumer’s net excess demand for time <span class="math notranslate nohighlight">\(t\)</span> consumption goods
 is the gap</p>
 <div class="math notranslate nohighlight">
 \[
@@ -545,8 +545,8 @@ e_t \equiv \left(c_t + (k_{t+1} -(1-\delta)k_t)\right)-(w_t 1 + \eta_t k_t)
 \]</div>
 <p>Let <span class="math notranslate nohighlight">\(\vec{c} = \{c_0,\dots,c_T\}\)</span> and let <span class="math notranslate nohighlight">\(\vec{k} = \{k_1,\dots,k_{T+1}\}\)</span>.</p>
 <p><span class="math notranslate nohighlight">\(k_0\)</span> is given to the household.</p>
-<p>The household faces a <strong>single</strong> budget constraint.
-that states that the present value of the household’s net excess
+<p>The household faces a <strong>single</strong> budget constraint
+that requires that the present value of the household’s net excess
 demands must be zero:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -557,7 +557,7 @@ demands must be zero:</p>
 \[
 \sum_{t=0}^T q^0_t  \left(c_t + (k_{t+1} -(1-\delta)k_t)-(w_t 1 + \eta_t k_t) \right) \leq 0
 \]</div>
-<p>The household chooses an allocation to solve the constrained optimization problem:</p>
+<p>The household faces price system <span class="math notranslate nohighlight">\(\{q^0_t, w_t, \eta_t\}\)</span> as a price-taker and  chooses an allocation to solve the constrained optimization problem:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned}&amp; \max_{\vec{c}, \vec{k} }  \sum_{t=0}^T \beta^t u(c_t) \\ \text{subject to} \ \   &amp; \sum_{t=0}^T q_t^0\left(c_t +\left(k_{t+1}-(1-\delta) k_t\right) -w_t -\eta_t k_t\right) \leq 0  \notag \end{aligned}
@@ -594,15 +594,18 @@ the firm choose the same allocation.</p></li>
 <section id="guess-for-price-system">
 <h3><span class="section-number">41.7.1. </span>Guess for Price System<a class="headerlink" href="#guess-for-price-system" title="Permalink to this heading">#</a></h3>
 <p>In this lecture <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">Cass-Koopmans Planning Model</span></a>, we  computed an allocation <span class="math notranslate nohighlight">\(\{\vec{C}, \vec{K}, \vec{N}\}\)</span>
-that solves the planning problem.</p>
-<p>(This allocation will constitute the <strong>Big</strong> <span class="math notranslate nohighlight">\(K\)</span>  to be in the present instance of the <strong>Big</strong> <span class="math notranslate nohighlight">\(K\)</span> <strong>, little</strong> <span class="math notranslate nohighlight">\(k\)</span> trick
-that we’ll apply to  a competitive equilibrium in the spirit of <a class="reference external" href="https://python.quantecon.org/rational_expectations.html">this lecture</a>
-and  <a class="reference external" href="https://python-advanced.quantecon.org/dyn_stack.html">this lecture</a>.)</p>
+that solves a planning problem.</p>
 <p>We use that allocation to construct a guess for the equilibrium
 price system.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This allocation will constitute the <strong>Big</strong> <span class="math notranslate nohighlight">\(K\)</span>  to be in the present instance of the <strong>Big</strong> <span class="math notranslate nohighlight">\(K\)</span> <strong>, little</strong> <span class="math notranslate nohighlight">\(k\)</span> trick
+that we’ll apply to  a competitive equilibrium in the spirit of <a class="reference external" href="https://python.quantecon.org/rational_expectations.html">this lecture</a>
+and  <a class="reference external" href="https://python-advanced.quantecon.org/dyn_stack.html">this lecture</a>.```</p>
 <p>In particular, we guess that for <span class="math notranslate nohighlight">\(t=0,\dots,T\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-price">
 <span class="eqno">(41.2)<a class="headerlink" href="#equation-eq-price" title="Permalink to this equation">#</a></span>\[\lambda q_t^0 = \beta^t u'(K_t) =\beta^t \mu_t\]</div>
+</div>
 <div class="math notranslate nohighlight" id="equation-eq-price2">
 <span class="eqno">(41.3)<a class="headerlink" href="#equation-eq-price2" title="Permalink to this equation">#</a></span>\[w_t = f(K_t) -K_t f'(K_t)\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-price3">
@@ -662,7 +665,7 @@ problem.</p>
 <span class="eqno">(41.11)<a class="headerlink" href="#equation-cond3" title="Permalink to this equation">#</a></span>\[\lambda:  \quad \left(\sum_{t=0}^T q_t^0\left(c_t + \left(k_{t+1}-(1-\delta) k_t\right) -w_t -\eta_t k_t\right)\right) \leq 0\]</div>
 <div class="math notranslate nohighlight" id="equation-cond4">
 <span class="eqno">(41.12)<a class="headerlink" href="#equation-cond4" title="Permalink to this equation">#</a></span>\[k_{T+1}: \quad -\lambda q_0^{T+1} \leq 0, \ \leq 0 \text{ if } k_{T+1}=0; \ =0 \text{ if } k_{T+1}&gt;0\]</div>
-<p>Now we plug in our guesses of prices and embark on some algebra in the hope of recovering all first-order necessary conditions
+<p>Now we plug in our guesses of prices and do some algebra in the hope of recovering all first-order necessary conditions
 <a class="reference internal" href="cass_koopmans_1.html#equation-constraint1">(40.9)</a>-<a class="reference internal" href="cass_koopmans_1.html#equation-constraint4">(40.12)</a> for the planning problem from this lecture <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">Cass-Koopmans Planning Model</span></a>.</p>
 <p>Combining <a class="reference internal" href="#equation-cond1">(41.9)</a> and <a class="reference internal" href="#equation-eq-price">(41.2)</a>, we get:</p>
 <div class="math notranslate nohighlight">
@@ -671,7 +674,7 @@ u'(C_t) = \mu_t
 \]</div>
 <p>which is <a class="reference internal" href="cass_koopmans_1.html#equation-constraint1">(40.9)</a>.</p>
 <p>Combining <a class="reference internal" href="#equation-cond2">(41.10)</a>, <a class="reference internal" href="#equation-eq-price">(41.2)</a>, and
-<a class="reference internal" href="#equation-eq-price3">(41.4)</a> we get:</p>
+<a class="reference internal" href="#equation-eq-price3">(41.4)</a>, we get:</p>
 <div class="math notranslate nohighlight" id="equation-co-re">
 <span class="eqno">(41.13)<a class="headerlink" href="#equation-co-re" title="Permalink to this equation">#</a></span>\[-\lambda \beta^t \mu_t\left[(1-\delta) +f'(K_t)\right] +\lambda \beta^{t-1}\mu_{t-1}=0\]</div>
 <p>Rewriting <a class="reference internal" href="#equation-co-re">(41.13)</a> by dividing by <span class="math notranslate nohighlight">\(\lambda\)</span> on
@@ -701,7 +704,7 @@ and <a class="reference internal" href="#equation-eq-price3">(41.4)</a> after mu
 <p>Since <span class="math notranslate nohighlight">\(\beta^t \mu_t &gt;0\)</span> for <span class="math notranslate nohighlight">\(t =0, \ldots, T\)</span>, it follows that</p>
 <div class="math notranslate nohighlight">
 \[
-C_t+K_{t+1}-(1-\delta)K_t -F(K_t,1)=0 \quad  \text{ for all }t \text{ in } 0,\dots,T
+C_t+K_{t+1}-(1-\delta)K_t -F(K_t,1)=0 \quad  \text{ for all }t \text{ in } \{0, 1, \ldots, T\}
 \]</div>
 <p>which is <a class="reference internal" href="cass_koopmans_1.html#equation-constraint3">(40.11)</a>.</p>
 <p>Combining <a class="reference internal" href="#equation-cond4">(41.12)</a> and <a class="reference internal" href="#equation-eq-price">(41.2)</a>, we get:</p>
@@ -718,6 +721,9 @@ C_t+K_{t+1}-(1-\delta)K_t -F(K_t,1)=0 \quad  \text{ for all }t \text{ in } 0,\do
 <p>Thus, at our guess of the equilibrium price system, the allocation
 that solves the planning problem also solves the problem faced by a
 representative household living in a competitive equilibrium.</p>
+</section>
+<section id="representative-firms-problem">
+<h3><span class="section-number">41.7.4. </span>Representative Firm’s Problem<a class="headerlink" href="#representative-firms-problem" title="Permalink to this heading">#</a></h3>
 <p>We now turn to  the problem faced by a firm in a competitive
 equilibrium:</p>
 <p>If we plug <a class="reference internal" href="#equation-eq-pl">(41.8)</a> into <a class="reference internal" href="#equation-zero-profits">(41.1)</a> for all t, we
@@ -981,7 +987,7 @@ out to be the allocation associated with a competitive equilibium.</p>
 </div>
 </div>
 <section id="varying-curvature">
-<h4><span class="section-number">41.7.3.1. </span>Varying Curvature<a class="headerlink" href="#varying-curvature" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">41.7.4.1. </span>Varying Curvature<a class="headerlink" href="#varying-curvature" title="Permalink to this heading">#</a></h4>
 <p>Now we see how our results change if we keep <span class="math notranslate nohighlight">\(T\)</span> constant, but allow
 the curvature parameter, <span class="math notranslate nohighlight">\(\gamma\)</span> to vary, starting
 with <span class="math notranslate nohighlight">\(K_0\)</span> below the steady state.</p>
@@ -1024,8 +1030,9 @@ with <span class="math notranslate nohighlight">\(K_0\)</span> below the steady 
 <p>Adjusting <span class="math notranslate nohighlight">\(\gamma\)</span> means adjusting how much individuals prefer
 to smooth consumption.</p>
 <p>Higher <span class="math notranslate nohighlight">\(\gamma\)</span> means individuals prefer to smooth more
-resulting in slower adjustments to the steady state allocations.</p>
-<p>Vice-versa for lower <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
+resulting in slower convergence to a  steady state allocation.</p>
+<p>Lower <span class="math notranslate nohighlight">\(\gamma\)</span> means individuals prefer to smooth less,
+resulting in faster convergence  to a steady state allocation.</p>
 </section>
 </section>
 </section>
@@ -1033,13 +1040,13 @@ resulting in slower adjustments to the steady state allocations.</p>
 <h2><a class="toc-backref" href="#id11"><span class="section-number">41.8. </span>Yield Curves and Hicks-Arrow Prices</a><a class="headerlink" href="#yield-curves-and-hicks-arrow-prices" title="Permalink to this heading">#</a></h2>
 <p>We return to  Hicks-Arrow prices and  calculate how they are related to  <strong>yields</strong>  on loans of alternative maturities.</p>
 <p>This will let us plot a <strong>yield curve</strong> that graphs   yields  on bonds of  maturities <span class="math notranslate nohighlight">\(j=1, 2, \ldots\)</span> against <span class="math notranslate nohighlight">\(j=1,2, \ldots\)</span>.</p>
-<p>The formulas we want are:</p>
+<p>We use the following formulas.</p>
 <p>A <strong>yield to maturity</strong> on a loan made at time <span class="math notranslate nohighlight">\(t_0\)</span> that matures at time <span class="math notranslate nohighlight">\(t &gt; t_0\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 r_{t_0,t}= -\frac{\log q^{t_0}_t}{t - t_0}
 \]</div>
-<p>A Hicks-Arrow price for a base-year <span class="math notranslate nohighlight">\(t_0\leq t\)</span></p>
+<p>A Hicks-Arrow price system for a base-year <span class="math notranslate nohighlight">\(t_0\leq t\)</span> satisfies</p>
 <div class="math notranslate nohighlight">
 \[
 q^{t_0}_t = \beta^{t-t_0} \frac{u'(c_t)}{u'(c_{t_0})}= \beta^{t-t_0}
@@ -1711,8 +1718,9 @@ years, and define a new function for <span class="math notranslate nohighlight">
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/cass_koopmans_2.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/cass_koopmans_2.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1725,7 +1733,7 @@ years, and define a new function for <span class="math notranslate nohighlight">
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

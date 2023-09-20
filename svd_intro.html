@@ -620,14 +620,14 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U, S, V =
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.24, -0.31, -0.4 , -0.54, -0.63],
-        [-0.43, -0.68,  0.48, -0.15,  0.33],
-        [-0.32,  0.52,  0.66, -0.19, -0.39],
-        [-0.57, -0.07, -0.18,  0.75, -0.28],
-        [-0.57,  0.41, -0.38, -0.29,  0.52]]),
- array([1.5 , 0.45]),
- array([[-0.8, -0.6],
-        [ 0.6, -0.8]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.23,  0.35, -0.87, -0.16, -0.19],
+        [-0.62, -0.46,  0.12, -0.6 , -0.15],
+        [-0.45,  0.77,  0.45, -0.  , -0.09],
+        [-0.55, -0.28, -0.09,  0.78, -0.08],
+        [-0.23,  0.05, -0.12, -0.06,  0.96]]),
+ array([1.52, 0.54]),
+ array([[-0.44, -0.9 ],
+        [ 0.9 , -0.44]]))
 </pre></div>
 </div>
 </div>
@@ -643,14 +643,14 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uhat, Shat, Vhat = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.24, -0.31],
-        [-0.43, -0.68],
-        [-0.32,  0.52],
-        [-0.57, -0.07],
-        [-0.57,  0.41]]),
- array([1.5 , 0.45]),
- array([[-0.8, -0.6],
-        [ 0.6, -0.8]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.23,  0.35],
+        [-0.62, -0.46],
+        [-0.45,  0.77],
+        [-0.55, -0.28],
+        [-0.23,  0.05]]),
+ array([1.52, 0.54]),
+ array([[-0.44, -0.9 ],
+        [ 0.9 , -0.44]]))
 </pre></div>
 </div>
 </div>
@@ -671,7 +671,7 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <p><strong>Properties:</strong></p>
 <ul class="simple">
 <li><p>Where <span class="math notranslate nohighlight">\(U\)</span> is constructed via a full SVD, <span class="math notranslate nohighlight">\(U^\top  U = I_{p\times p}\)</span> and  <span class="math notranslate nohighlight">\(U U^\top  = I_{m \times m}\)</span></p></li>
-<li><p>Where <span class="math notranslate nohighlight">\(\hat U\)</span> is constructed via a reduced SVD, although <span class="math notranslate nohighlight">\(\hat U^\top  \hat U = I_{p\times p}\)</span> it happens that  <span class="math notranslate nohighlight">\(\hat U \hat U^\top  \neq I_{m \times m}\)</span></p></li>
+<li><p>Where <span class="math notranslate nohighlight">\(\hat U\)</span> is constructed via a reduced SVD, although <span class="math notranslate nohighlight">\(\hat U^\top  \hat U = I_{p\times p}\)</span>, it happens that  <span class="math notranslate nohighlight">\(\hat U \hat U^\top  \neq I_{m \times m}\)</span></p></li>
 </ul>
 <p>We illustrate these properties for our example with the following code cells.</p>
 <div class="cell docutils container">
@@ -687,16 +687,16 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UUT, UTU = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 1.00e+00,  7.97e-17, -1.24e-17, -1.81e-17,  7.25e-17],
-        [ 7.97e-17,  1.00e+00, -1.38e-16, -3.16e-17, -6.75e-17],
-        [-1.24e-17, -1.38e-16,  1.00e+00, -6.65e-17, -2.95e-17],
-        [-1.81e-17, -3.16e-17, -6.65e-17,  1.00e+00, -1.62e-17],
-        [ 7.25e-17, -6.75e-17, -2.95e-17, -1.62e-17,  1.00e+00]]),
- array([[ 1.00e+00,  1.52e-16,  8.73e-18,  1.41e-16, -3.37e-17],
-        [ 1.52e-16,  1.00e+00, -1.20e-16,  9.75e-18, -2.02e-16],
-        [ 8.73e-18, -1.20e-16,  1.00e+00,  4.06e-17,  3.22e-17],
-        [ 1.41e-16,  9.75e-18,  4.06e-17,  1.00e+00,  4.42e-17],
-        [-3.37e-17, -2.02e-16,  3.22e-17,  4.42e-17,  1.00e+00]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 1.00e+00, -8.26e-17,  1.91e-16, -5.18e-17, -2.40e-17],
+        [-8.26e-17,  1.00e+00, -7.21e-17,  8.33e-17,  3.98e-17],
+        [ 1.91e-16, -7.21e-17,  1.00e+00,  4.71e-18,  3.70e-17],
+        [-5.18e-17,  8.33e-17,  4.71e-18,  1.00e+00, -1.54e-17],
+        [-2.40e-17,  3.98e-17,  3.70e-17, -1.54e-17,  1.00e+00]]),
+ array([[ 1.00e+00,  7.37e-17, -9.56e-17,  1.26e-16,  7.29e-18],
+        [ 7.37e-17,  1.00e+00, -4.73e-17,  1.37e-16, -1.09e-17],
+        [-9.56e-17, -4.73e-17,  1.00e+00,  1.43e-17,  1.37e-17],
+        [ 1.26e-16,  1.37e-16,  1.43e-17,  1.00e+00,  7.02e-18],
+        [ 7.29e-18, -1.09e-17,  1.37e-17,  7.02e-18,  1.00e+00]]))
 </pre></div>
 </div>
 </div>
@@ -714,13 +714,13 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UhatUhatT, UhatTUhat= 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.15,  0.31, -0.08,  0.16,  0.01],
-        [ 0.31,  0.64, -0.22,  0.29, -0.03],
-        [-0.08, -0.22,  0.38,  0.15,  0.4 ],
-        [ 0.16,  0.29,  0.15,  0.33,  0.3 ],
-        [ 0.01, -0.03,  0.4 ,  0.3 ,  0.5 ]]),
- array([[1.00e+00, 1.52e-16],
-        [1.52e-16, 1.00e+00]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.18, -0.02,  0.37,  0.03,  0.07],
+        [-0.02,  0.6 , -0.07,  0.47,  0.12],
+        [ 0.37, -0.07,  0.79,  0.04,  0.14],
+        [ 0.03,  0.47,  0.04,  0.38,  0.11],
+        [ 0.07,  0.12,  0.14,  0.11,  0.05]]),
+ array([[1.0e+00, 7.2e-17],
+        [7.2e-17, 1.0e+00]]))
 </pre></div>
 </div>
 </div>
@@ -747,14 +747,14 @@ Using <code class="docutils literal notranslate"><span class="pre">full-matrices
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U, S, V = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.64,  0.77],
-        [-0.77, -0.64]]),
- array([1.79, 0.46]),
- array([[-0.52, -0.35, -0.4 , -0.48, -0.47],
-        [-0.15,  0.02, -0.76,  0.21,  0.59],
-        [-0.12, -0.85,  0.33,  0.09,  0.39],
-        [-0.53,  0.04,  0.08,  0.78, -0.32],
-        [-0.64,  0.4 ,  0.37, -0.32,  0.42]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.46,  0.89],
+        [-0.89, -0.46]]),
+ array([2.09, 0.47]),
+ array([[-0.53, -0.44, -0.43, -0.47, -0.35],
+        [ 0.34,  0.5 ,  0.  , -0.31, -0.73],
+        [-0.48,  0.02,  0.85, -0.17, -0.13],
+        [-0.5 ,  0.31, -0.2 ,  0.71, -0.33],
+        [-0.35,  0.68, -0.21, -0.39,  0.47]]))
 </pre></div>
 </div>
 </div>
@@ -770,11 +770,11 @@ Using <code class="docutils literal notranslate"><span class="pre">full-matrices
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uhat, Shat, Vhat = 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.64,  0.77],
-        [-0.77, -0.64]]),
- array([1.79, 0.46]),
- array([[-0.52, -0.35, -0.4 , -0.48, -0.47],
-        [-0.15,  0.02, -0.76,  0.21,  0.59]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.46,  0.89],
+        [-0.89, -0.46]]),
+ array([2.09, 0.47]),
+ array([[-0.53, -0.44, -0.43, -0.47, -0.35],
+        [ 0.34,  0.5 ,  0.  , -0.31, -0.73]]))
 </pre></div>
 </div>
 </div>
@@ -939,7 +939,7 @@ X=\sigma_1U_1{V_1}^{T}+\sigma_2 U_2{V_2}^{T}+\ldots+\sigma_{r} U_{r}{V_{r}}^{T}
 <li><p><span class="math notranslate nohighlight">\(U_j=P_j\)</span> (a vector of  loadings of variables on principal component <span class="math notranslate nohighlight">\(j\)</span>)</p></li>
 <li><p><span class="math notranslate nohighlight">\({V_k}^{T}=\tilde{\epsilon_k}\)</span> (the <span class="math notranslate nohighlight">\(k\)</span>th principal component)</p></li>
 </ul>
-<p>Because  there are alternative algorithms for  computing  <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(U\)</span> for  given a data matrix <span class="math notranslate nohighlight">\(X\)</span>, depending on  algorithms used, we might have sign differences or different orders between eigenvectors.</p>
+<p>Because  there are alternative algorithms for  computing  <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(U\)</span> for  given a data matrix <span class="math notranslate nohighlight">\(X\)</span>, depending on  algorithms used, we might have sign differences or different orders of eigenvectors.</p>
 <p>We can resolve such ambiguities about  <span class="math notranslate nohighlight">\(U\)</span> and <span class="math notranslate nohighlight">\(P\)</span> by</p>
 <ol class="arabic simple">
 <li><p>sorting eigenvalues and singular values in descending order</p></li>
@@ -1754,8 +1754,9 @@ obtained by different algorithms.</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/svd_intro.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/svd_intro.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1768,7 +1769,7 @@ obtained by different algorithms.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>
