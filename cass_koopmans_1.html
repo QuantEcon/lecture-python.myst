@@ -476,12 +476,12 @@ to <span class="math notranslate nohighlight">\(K_{T+1}\)</span> and applying th
 <p>Combining <a class="reference internal" href="#equation-constraint1">(40.9)</a> and <a class="reference internal" href="#equation-constraint2">(40.10)</a> gives</p>
 <div class="math notranslate nohighlight">
 \[
-u'\left(C_t\right)\left[(1-\delta)+f'\left(K_t\right)\right]-u'\left(C_{t-1}\right)=0
+\beta u'\left(C_t\right)\left[(1-\delta)+f'\left(K_t\right)\right]-u'\left(C_{t-1}\right)=0
 \quad \text{ for all } t=1,2,\dots, T+1
 \]</div>
 <p>which can be rearranged to become</p>
 <div class="math notranslate nohighlight" id="equation-l12">
-<span class="eqno">(40.14)<a class="headerlink" href="#equation-l12" title="Permalink to this equation">#</a></span>\[u'\left(C_{t+1}\right)\left[(1-\delta)+f'\left(K_{t+1}\right)\right]=
+<span class="eqno">(40.14)<a class="headerlink" href="#equation-l12" title="Permalink to this equation">#</a></span>\[\beta u'\left(C_{t+1}\right)\left[(1-\delta)+f'\left(K_{t+1}\right)\right]=
 u'\left(C_{t}\right) \quad \text{ for all } t=0,1,\dots, T\]</div>
 <p>Applying  the inverse  marginal utility  of consumption  function on both sides of the above
 equation gives</p>
@@ -494,10 +494,22 @@ equation</strong></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{aligned} C_{t+1} =\left(\beta C_t^{\gamma}[f'(K_{t+1}) +
-(1-\delta)]\right)^{1/\gamma} \notag\\= C_t\left(\beta [f'(K_{t+1}) +
-(1-\delta)]\right)^{1/\gamma} \end{aligned}
+(1-\delta)]\right)^{1/\gamma} 
+%\notag\\= C_t\left(\beta [f'(K_{t+1}) +
+%(1-\delta)]\right)^{1/\gamma} 
+\end{aligned}
 \end{split}\]</div>
-<p>This is a non-linear first-order difference equation that an optimal sequence <span class="math notranslate nohighlight">\(\vec C\)</span> must satisfy.</p>
+<p>which we can  combine with the feasibility constraint <a class="reference internal" href="#equation-allocation">(40.5)</a> to get</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} 
+\begin{aligned}
+C_{t+1} &amp; = C_t\left(\beta [f'(F(K_t,1)+ (1-\delta) K_t  - C_t) +
+(1-\delta)]\right)^{1/\gamma}  \\
+K_{t+1}  &amp; = F(K_t,1)+ (1-\delta) K_t  - C_t .
+\end{aligned}
+\end{split}\]</div>
+<p>This is a pair of non-linear first-order difference equations that map <span class="math notranslate nohighlight">\(C_t, K_t\)</span> into <span class="math notranslate nohighlight">\(C_{t+1}, K_{t+1}\)</span> and that  an optimal sequence <span class="math notranslate nohighlight">\(\vec C , \vec K\)</span> must satisfy.</p>
+<p>It must also satisfy the initial condition that <span class="math notranslate nohighlight">\(K_0\)</span> is given and <span class="math notranslate nohighlight">\(K_{T+1} = 0\)</span>.</p>
 <p>Below we define a <code class="docutils literal notranslate"><span class="pre">jitclass</span></code> that stores parameters and functions
 that define our economy.</p>
 <div class="cell docutils container">
