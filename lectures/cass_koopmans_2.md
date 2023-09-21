@@ -212,7 +212,7 @@ named after the 1972 economics Nobel prize winners.
 
 
 But because $q^0_t$ is a **relative price**, the units in terms of
-which prices are quoted are arbitrary, we are free to re-normalize them.
+which prices are quoted are arbitrary, we are free to re-normalize them by multiplying  all of them by a positive scalar, say $\lambda > 0$.
 
 Units of $q_t^0$ could be set so that
 
@@ -331,11 +331,12 @@ w_t 1+ \eta_t k_t
 $$
 
 At $t$ the household allocates its income to the following
-purchases
+purchases between the following two categories:
 
-$$
-\left(c_t + (k_{t+1} -(1-\delta)k_t)\right)
-$$
+* consumption $c_t$
+
+* net investment $k_{t+1} -(1-\delta)k_t$
+
 
 Here $\left(k_{t+1} -(1-\delta)k_t\right)$ is the household's
 net investment in physical capital and $\delta \in (0,1)$ is
@@ -377,6 +378,15 @@ $$
 \begin{aligned}& \max_{\vec{c}, \vec{k} }  \sum_{t=0}^T \beta^t u(c_t) \\ \text{subject to} \ \   & \sum_{t=0}^T q_t^0\left(c_t +\left(k_{t+1}-(1-\delta) k_t\right) -w_t -\eta_t k_t\right) \leq 0  \notag \end{aligned}
 $$
 
+Components of a  **price system** have the following units:
+
+* $w_t$ is measured in units of the  time $t$ good per unit of time $t$ labor hired
+
+* $\eta_t$ is measured in  units of the time $t$ good per unit of time $t$ capital  hired
+
+* $q_t^0$ is measured in units of the time $t$ good per unit of a numeraire
+
+
 ### Definitions
 
 - A **price system** is a sequence
@@ -384,11 +394,16 @@ $$
 - An **allocation** is a sequence
   $\{c_t,k_{t+1},n_t=1\}_{t=0}^T = \{\vec{c}, \vec{k}, \vec{n}\}$.
 - A **competitive equilibrium** is a price system and an allocation
-  for which
+  with the following properties:
     - Given the price system, the allocation solves the household's
       problem.
     - Given the price system, the allocation solves the firm's
       problem.
+
+
+The vision here is that an equilibrium price system and allocation are determined once and for all.
+
+In effect, we imagine that all trades occur just before time $0$.
 
 ## Computing a Competitive Equilibrium
 
@@ -420,7 +435,7 @@ In particular, we guess that for $t=0,\dots,T$:
 ```{math}
 :label: eq-price
 
-\lambda q_t^0 = \beta^t u'(K_t) =\beta^t \mu_t
+q_t^0 = \beta^t u'(K_t) 
 ```
 
 ```{math}
@@ -435,7 +450,7 @@ w_t = f(K_t) -K_t f'(K_t)
 \eta_t = f'(K_t)
 ```
 
-At these prices, let the capital chosen by the household be
+At these prices, let  capital chosen by the household be
 
 ```{math}
 :label: eq-pr4
@@ -470,7 +485,7 @@ $$
 c_t^* + k_{t+1}^* - (1-\delta) k_t^*  = F(\tilde k_t^*, \tilde n_t^*)
 $$
 
-We shall verify that for $t=0,\dots,T$ the allocations chosen
+We shall verify that for $t=0,\dots,T$  allocations chosen
 by the household and the firm both equal the allocation that solves
 the planning problem:
 
@@ -482,7 +497,7 @@ k^*_t = \tilde k^*_t=K_t, \tilde n_t=1, c^*_t=C_t
 
 ### Verification Procedure
 
-Our approach is to stare at first-order necessary conditions for the
+Our approach is to stare at first-order necessary conditions for 
 optimization problems of the household and the firm.
 
 At the price system we have guessed, we'll then verify that both sets of first-order
