@@ -197,24 +197,22 @@ There are  sequences of prices
 $\{w_t,\eta_t\}_{t=0}^T= \{\vec{w}, \vec{\eta} \}$
 where 
 
-- $w_t$ is a wage or rental rate for labor at time $t$
+- $w_t$ is a wage, i.e., a rental rate, for labor at time $t$
 
 - $\eta_t$ is a rental rate for capital at time $t$
 
 In addition there is a vector $\{q_t^0\}$ of  intertemporal prices where  
 
-- $q^0_t$ is the price of a good at date $t$ relative
-to a good at date $0$.
+- $q^0_t$ is the price at time $0$ of one unit of the  good at date $t$.
 
 We call $\{q^0_t\}_{t=0}^T$  a vector of **Hicks-Arrow prices**,
 named after the 1972 economics Nobel prize winners.
 
 
 
-But because $q^0_t$ is a **relative price**, the units in terms of
-which prices are quoted are arbitrary, we are free to re-normalize them.
+Because  is a **relative price**. the unit of account  in terms of which the prices $q^0_t$ are stated is; we are free to re-normalize them by multiplying  all of them by a positive scalar, say $\lambda > 0$.
 
-Units of $q_t^0$ could be set so that
+Units of $q_t^0$ could be set so that they are
 
 $$
 \frac{\text{number of time 0 goods}}{\text{number of time t goods}}
@@ -331,11 +329,12 @@ w_t 1+ \eta_t k_t
 $$
 
 At $t$ the household allocates its income to the following
-purchases
+purchases between the following two categories:
 
-$$
-\left(c_t + (k_{t+1} -(1-\delta)k_t)\right)
-$$
+* consumption $c_t$
+
+* net investment $k_{t+1} -(1-\delta)k_t$
+
 
 Here $\left(k_{t+1} -(1-\delta)k_t\right)$ is the household's
 net investment in physical capital and $\delta \in (0,1)$ is
@@ -368,14 +367,23 @@ $$
 or
 
 $$
-\sum_{t=0}^T q^0_t  \left(c_t + (k_{t+1} -(1-\delta)k_t)-(w_t 1 + \eta_t k_t) \right) \leq 0
+\sum_{t=0}^T q^0_t  \left(c_t + (k_{t+1} -(1-\delta)k_t)\right) \leq \sum_{t=0}^T q^0_t(w_t 1 + \eta_t k_t)  \
 $$
 
 The household faces price system $\{q^0_t, w_t, \eta_t\}$ as a price-taker and  chooses an allocation to solve the constrained optimization problem:
 
 $$
-\begin{aligned}& \max_{\vec{c}, \vec{k} }  \sum_{t=0}^T \beta^t u(c_t) \\ \text{subject to} \ \   & \sum_{t=0}^T q_t^0\left(c_t +\left(k_{t+1}-(1-\delta) k_t\right) -w_t -\eta_t k_t\right) \leq 0  \notag \end{aligned}
+\begin{aligned}& \max_{\vec{c}, \vec{k} }  \sum_{t=0}^T \beta^t u(c_t) \\ \text{subject to} \ \   & \sum_{t=0}^T q_t^0\left(c_t +\left(k_{t+1}-(1-\delta) k_t \right) - (w_t -\eta_t k_t) \right)\leq 0  \notag \end{aligned}
 $$
+
+Components of a  **price system** have the following units:
+
+* $w_t$ is measured in units of the  time $t$ good per unit of time $t$ labor hired
+
+* $\eta_t$ is measured in  units of the time $t$ good per unit of time $t$ capital  hired
+
+* $q_t^0$ is measured in units of a numeraire  per unit of the time $t$ good
+
 
 ### Definitions
 
@@ -384,11 +392,16 @@ $$
 - An **allocation** is a sequence
   $\{c_t,k_{t+1},n_t=1\}_{t=0}^T = \{\vec{c}, \vec{k}, \vec{n}\}$.
 - A **competitive equilibrium** is a price system and an allocation
-  for which
+  with the following properties:
     - Given the price system, the allocation solves the household's
       problem.
     - Given the price system, the allocation solves the firm's
       problem.
+
+
+The vision here is that an equilibrium price system and allocation are determined once and for all.
+
+In effect, we imagine that all trades occur just before time $0$.
 
 ## Computing a Competitive Equilibrium
 
@@ -413,14 +426,22 @@ price system.
 ```{note}
 This allocation will constitute the **Big** $K$  to be in the present instance of the **Big** $K$ **, little** $k$ trick
 that we'll apply to  a competitive equilibrium in the spirit of [this lecture](https://python.quantecon.org/rational_expectations.html)
-and  [this lecture](https://python-advanced.quantecon.org/dyn_stack.html).```
+and  [this lecture](https://python-advanced.quantecon.org/dyn_stack.html).
+```
 
-In particular, we guess that for $t=0,\dots,T$:
+In particular, we shall use the following procedure:
+
+* obtain first-order conditions for the representative firm and the representative consumer.
+* from these equations, obtain a new set of equations by replacing the firm's choice variables $\tilde k, \tilde n$ and the consumer's choice variables with the quantities $\vec C, \vec K$ that solve the planning problem.
+* solve the resulting equations for  $\{\vec{q}, \vec{\eta}, \vec{w}\}$ as functions of $\vec C, \vec K$.
+* verify that at these prices, $c_t = C_t, k_t = \tilde k_t = K_t, \tilde n_t = 1$ for $t = 0, 1, \ldots, T$.
+
+Thus, we guess that for $t=0,\dots,T$:
 
 ```{math}
 :label: eq-price
 
-\lambda q_t^0 = \beta^t u'(K_t) =\beta^t \mu_t
+q_t^0 = \beta^t u'(C_t) 
 ```
 
 ```{math}
@@ -435,7 +456,7 @@ w_t = f(K_t) -K_t f'(K_t)
 \eta_t = f'(K_t)
 ```
 
-At these prices, let the capital chosen by the household be
+At these prices, let  capital chosen by the household be
 
 ```{math}
 :label: eq-pr4
@@ -470,7 +491,7 @@ $$
 c_t^* + k_{t+1}^* - (1-\delta) k_t^*  = F(\tilde k_t^*, \tilde n_t^*)
 $$
 
-We shall verify that for $t=0,\dots,T$ the allocations chosen
+We shall verify that for $t=0,\dots,T$  allocations chosen
 by the household and the firm both equal the allocation that solves
 the planning problem:
 
@@ -482,7 +503,7 @@ k^*_t = \tilde k^*_t=K_t, \tilde n_t=1, c^*_t=C_t
 
 ### Verification Procedure
 
-Our approach is to stare at first-order necessary conditions for the
+Our approach is firsts to stare at first-order necessary conditions for 
 optimization problems of the household and the firm.
 
 At the price system we have guessed, we'll then verify that both sets of first-order
@@ -637,12 +658,12 @@ identical to the one that solves the consumer's problem.
 
 ```{note}
 Because budget sets are affected only by relative prices,
-$\{q_0^t\}$ is determined only up to multiplication by a
+$\{q^0_t\}$ is determined only up to multiplication by a
 positive constant.
 ```
 
-**Normalization:** We are free to choose a $\{q_0^t\}$ that
-makes $\lambda=1$ so that we are measuring $q_0^t$  in
+**Normalization:** We are free to choose a $\{q_t^0\}$ that
+makes $\lambda=1$ so that we are measuring $q_t^0$  in
 units of the marginal utility of time $0$ goods.
 
 We will  plot $q, w, \eta$ below to show these equilibrium  prices
@@ -801,8 +822,9 @@ k_ss = pp.f_prime_inv(ρ+pp.δ)
 c_ss = pp.f(k_ss) - pp.δ * k_ss
 ```
 
-The above code from this lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>` lets us compute an optimal allocation for the planning problem that turns
-out to be the allocation associated with a competitive equilibium.
+The above code from this lecture {doc}`Cass-Koopmans Planning Model <cass_koopmans_1>` lets us compute an optimal allocation for the planning problem.
+
+* from the preceding analysis, we know that it will also be  an  allocation associated with a competitive equilibium.
 
 Now  we're ready to bring in Python code that we require to compute additional objects that appear in a competitive equilibrium.
 

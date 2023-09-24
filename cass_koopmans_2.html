@@ -419,19 +419,17 @@ all other dates <span class="math notranslate nohighlight">\(t=1, 2, \ldots, T\)
 <span class="math notranslate nohighlight">\(\{w_t,\eta_t\}_{t=0}^T= \{\vec{w}, \vec{\eta} \}\)</span>
 where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(w_t\)</span> is a wage or rental rate for labor at time <span class="math notranslate nohighlight">\(t\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(w_t\)</span> is a wage, i.e., a rental rate, for labor at time <span class="math notranslate nohighlight">\(t\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\eta_t\)</span> is a rental rate for capital at time <span class="math notranslate nohighlight">\(t\)</span></p></li>
 </ul>
 <p>In addition there is a vector <span class="math notranslate nohighlight">\(\{q_t^0\}\)</span> of  intertemporal prices where</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(q^0_t\)</span> is the price of a good at date <span class="math notranslate nohighlight">\(t\)</span> relative
-to a good at date <span class="math notranslate nohighlight">\(0\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(q^0_t\)</span> is the price at time <span class="math notranslate nohighlight">\(0\)</span> of one unit of the  good at date <span class="math notranslate nohighlight">\(t\)</span>.</p></li>
 </ul>
 <p>We call <span class="math notranslate nohighlight">\(\{q^0_t\}_{t=0}^T\)</span>  a vector of <strong>Hicks-Arrow prices</strong>,
 named after the 1972 economics Nobel prize winners.</p>
-<p>But because <span class="math notranslate nohighlight">\(q^0_t\)</span> is a <strong>relative price</strong>, the units in terms of
-which prices are quoted are arbitrary, we are free to re-normalize them.</p>
-<p>Units of <span class="math notranslate nohighlight">\(q_t^0\)</span> could be set so that</p>
+<p>Because  is a <strong>relative price</strong>. the unit of account  in terms of which the prices <span class="math notranslate nohighlight">\(q^0_t\)</span> are stated is; we are free to re-normalize them by multiplying  all of them by a positive scalar, say <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>.</p>
+<p>Units of <span class="math notranslate nohighlight">\(q_t^0\)</span> could be set so that they are</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{\text{number of time 0 goods}}{\text{number of time t goods}}
@@ -525,11 +523,11 @@ and <span class="math notranslate nohighlight">\(k_t\)</span> units of capital t
 w_t 1+ \eta_t k_t
 \]</div>
 <p>At <span class="math notranslate nohighlight">\(t\)</span> the household allocates its income to the following
-purchases</p>
-<div class="math notranslate nohighlight">
-\[
-\left(c_t + (k_{t+1} -(1-\delta)k_t)\right)
-\]</div>
+purchases between the following two categories:</p>
+<ul class="simple">
+<li><p>consumption <span class="math notranslate nohighlight">\(c_t\)</span></p></li>
+<li><p>net investment <span class="math notranslate nohighlight">\(k_{t+1} -(1-\delta)k_t\)</span></p></li>
+</ul>
 <p>Here <span class="math notranslate nohighlight">\(\left(k_{t+1} -(1-\delta)k_t\right)\)</span> is the household’s
 net investment in physical capital and <span class="math notranslate nohighlight">\(\delta \in (0,1)\)</span> is
 again a depreciation rate of capital.</p>
@@ -555,13 +553,19 @@ demands must be zero:</p>
 <p>or</p>
 <div class="math notranslate nohighlight">
 \[
-\sum_{t=0}^T q^0_t  \left(c_t + (k_{t+1} -(1-\delta)k_t)-(w_t 1 + \eta_t k_t) \right) \leq 0
+\sum_{t=0}^T q^0_t  \left(c_t + (k_{t+1} -(1-\delta)k_t)\right) \leq \sum_{t=0}^T q^0_t(w_t 1 + \eta_t k_t)  \
 \]</div>
 <p>The household faces price system <span class="math notranslate nohighlight">\(\{q^0_t, w_t, \eta_t\}\)</span> as a price-taker and  chooses an allocation to solve the constrained optimization problem:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{aligned}&amp; \max_{\vec{c}, \vec{k} }  \sum_{t=0}^T \beta^t u(c_t) \\ \text{subject to} \ \   &amp; \sum_{t=0}^T q_t^0\left(c_t +\left(k_{t+1}-(1-\delta) k_t\right) -w_t -\eta_t k_t\right) \leq 0  \notag \end{aligned}
+\begin{aligned}&amp; \max_{\vec{c}, \vec{k} }  \sum_{t=0}^T \beta^t u(c_t) \\ \text{subject to} \ \   &amp; \sum_{t=0}^T q_t^0\left(c_t +\left(k_{t+1}-(1-\delta) k_t \right) - (w_t -\eta_t k_t) \right)\leq 0  \notag \end{aligned}
 \end{split}\]</div>
+<p>Components of a  <strong>price system</strong> have the following units:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(w_t\)</span> is measured in units of the  time <span class="math notranslate nohighlight">\(t\)</span> good per unit of time <span class="math notranslate nohighlight">\(t\)</span> labor hired</p></li>
+<li><p><span class="math notranslate nohighlight">\(\eta_t\)</span> is measured in  units of the time <span class="math notranslate nohighlight">\(t\)</span> good per unit of time <span class="math notranslate nohighlight">\(t\)</span> capital  hired</p></li>
+<li><p><span class="math notranslate nohighlight">\(q_t^0\)</span> is measured in units of a numeraire  per unit of the time <span class="math notranslate nohighlight">\(t\)</span> good</p></li>
+</ul>
 <section id="definitions">
 <h3><span class="section-number">41.6.1. </span>Definitions<a class="headerlink" href="#definitions" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
@@ -570,7 +574,7 @@ demands must be zero:</p>
 <li><p>An <strong>allocation</strong> is a sequence
 <span class="math notranslate nohighlight">\(\{c_t,k_{t+1},n_t=1\}_{t=0}^T = \{\vec{c}, \vec{k}, \vec{n}\}\)</span>.</p></li>
 <li><p>A <strong>competitive equilibrium</strong> is a price system and an allocation
-for which</p>
+with the following properties:</p>
 <ul>
 <li><p>Given the price system, the allocation solves the household’s
 problem.</p></li>
@@ -579,6 +583,8 @@ problem.</p></li>
 </ul>
 </li>
 </ul>
+<p>The vision here is that an equilibrium price system and allocation are determined once and for all.</p>
+<p>In effect, we imagine that all trades occur just before time <span class="math notranslate nohighlight">\(0\)</span>.</p>
 </section>
 </section>
 <section id="computing-a-competitive-equilibrium">
@@ -601,16 +607,23 @@ price system.</p>
 <p class="admonition-title">Note</p>
 <p>This allocation will constitute the <strong>Big</strong> <span class="math notranslate nohighlight">\(K\)</span>  to be in the present instance of the <strong>Big</strong> <span class="math notranslate nohighlight">\(K\)</span> <strong>, little</strong> <span class="math notranslate nohighlight">\(k\)</span> trick
 that we’ll apply to  a competitive equilibrium in the spirit of <a class="reference external" href="https://python.quantecon.org/rational_expectations.html">this lecture</a>
-and  <a class="reference external" href="https://python-advanced.quantecon.org/dyn_stack.html">this lecture</a>.```</p>
-<p>In particular, we guess that for <span class="math notranslate nohighlight">\(t=0,\dots,T\)</span>:</p>
-<div class="math notranslate nohighlight" id="equation-eq-price">
-<span class="eqno">(41.2)<a class="headerlink" href="#equation-eq-price" title="Permalink to this equation">#</a></span>\[\lambda q_t^0 = \beta^t u'(K_t) =\beta^t \mu_t\]</div>
+and  <a class="reference external" href="https://python-advanced.quantecon.org/dyn_stack.html">this lecture</a>.</p>
 </div>
+<p>In particular, we shall use the following procedure:</p>
+<ul class="simple">
+<li><p>obtain first-order conditions for the representative firm and the representative consumer.</p></li>
+<li><p>from these equations, obtain a new set of equations by replacing the firm’s choice variables <span class="math notranslate nohighlight">\(\tilde k, \tilde n\)</span> and the consumer’s choice variables with the quantities <span class="math notranslate nohighlight">\(\vec C, \vec K\)</span> that solve the planning problem.</p></li>
+<li><p>solve the resulting equations for  <span class="math notranslate nohighlight">\(\{\vec{q}, \vec{\eta}, \vec{w}\}\)</span> as functions of <span class="math notranslate nohighlight">\(\vec C, \vec K\)</span>.</p></li>
+<li><p>verify that at these prices, <span class="math notranslate nohighlight">\(c_t = C_t, k_t = \tilde k_t = K_t, \tilde n_t = 1\)</span> for <span class="math notranslate nohighlight">\(t = 0, 1, \ldots, T\)</span>.</p></li>
+</ul>
+<p>Thus, we guess that for <span class="math notranslate nohighlight">\(t=0,\dots,T\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-price">
+<span class="eqno">(41.2)<a class="headerlink" href="#equation-eq-price" title="Permalink to this equation">#</a></span>\[q_t^0 = \beta^t u'(C_t) \]</div>
 <div class="math notranslate nohighlight" id="equation-eq-price2">
 <span class="eqno">(41.3)<a class="headerlink" href="#equation-eq-price2" title="Permalink to this equation">#</a></span>\[w_t = f(K_t) -K_t f'(K_t)\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-price3">
 <span class="eqno">(41.4)<a class="headerlink" href="#equation-eq-price3" title="Permalink to this equation">#</a></span>\[\eta_t = f'(K_t)\]</div>
-<p>At these prices, let the capital chosen by the household be</p>
+<p>At these prices, let  capital chosen by the household be</p>
 <div class="math notranslate nohighlight" id="equation-eq-pr4">
 <span class="eqno">(41.5)<a class="headerlink" href="#equation-eq-pr4" title="Permalink to this equation">#</a></span>\[k^*_t(\vec {q}, \vec{w}, \vec{\eta)} , \quad t \geq 0\]</div>
 <p>and let the allocation chosen by the firm be</p>
@@ -629,7 +642,7 @@ must occur that</p>
 \[
 c_t^* + k_{t+1}^* - (1-\delta) k_t^*  = F(\tilde k_t^*, \tilde n_t^*)
 \]</div>
-<p>We shall verify that for <span class="math notranslate nohighlight">\(t=0,\dots,T\)</span> the allocations chosen
+<p>We shall verify that for <span class="math notranslate nohighlight">\(t=0,\dots,T\)</span>  allocations chosen
 by the household and the firm both equal the allocation that solves
 the planning problem:</p>
 <div class="math notranslate nohighlight" id="equation-eq-pl">
@@ -637,7 +650,7 @@ the planning problem:</p>
 </section>
 <section id="verification-procedure">
 <h3><span class="section-number">41.7.2. </span>Verification Procedure<a class="headerlink" href="#verification-procedure" title="Permalink to this heading">#</a></h3>
-<p>Our approach is to stare at first-order necessary conditions for the
+<p>Our approach is firsts to stare at first-order necessary conditions for
 optimization problems of the household and the firm.</p>
 <p>At the price system we have guessed, we’ll then verify that both sets of first-order
 conditions are satisfied at the allocation that solves the planning
@@ -748,11 +761,11 @@ identical to the one that solves the consumer’s problem.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Because budget sets are affected only by relative prices,
-<span class="math notranslate nohighlight">\(\{q_0^t\}\)</span> is determined only up to multiplication by a
+<span class="math notranslate nohighlight">\(\{q^0_t\}\)</span> is determined only up to multiplication by a
 positive constant.</p>
 </div>
-<p><strong>Normalization:</strong> We are free to choose a <span class="math notranslate nohighlight">\(\{q_0^t\}\)</span> that
-makes <span class="math notranslate nohighlight">\(\lambda=1\)</span> so that we are measuring <span class="math notranslate nohighlight">\(q_0^t\)</span>  in
+<p><strong>Normalization:</strong> We are free to choose a <span class="math notranslate nohighlight">\(\{q_t^0\}\)</span> that
+makes <span class="math notranslate nohighlight">\(\lambda=1\)</span> so that we are measuring <span class="math notranslate nohighlight">\(q_t^0\)</span>  in
 units of the marginal utility of time <span class="math notranslate nohighlight">\(0\)</span> goods.</p>
 <p>We will  plot <span class="math notranslate nohighlight">\(q, w, \eta\)</span> below to show these equilibrium  prices
 induce the same aggregate movements that we saw earlier in the planning
@@ -922,8 +935,10 @@ the characterize an economy.</p>
 </div>
 </div>
 </div>
-<p>The above code from this lecture <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">Cass-Koopmans Planning Model</span></a> lets us compute an optimal allocation for the planning problem that turns
-out to be the allocation associated with a competitive equilibium.</p>
+<p>The above code from this lecture <a class="reference internal" href="cass_koopmans_1.html"><span class="doc">Cass-Koopmans Planning Model</span></a> lets us compute an optimal allocation for the planning problem.</p>
+<ul class="simple">
+<li><p>from the preceding analysis, we know that it will also be  an  allocation associated with a competitive equilibium.</p></li>
+</ul>
 <p>Now  we’re ready to bring in Python code that we require to compute additional objects that appear in a competitive equilibrium.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
