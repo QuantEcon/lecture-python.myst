@@ -16,8 +16,3 @@ This website presents a set of lectures on quantitative economic modeling, desig
 
 ```{tableofcontents}
 ```
-
-
-```{admonition} Previous website
-While this new site will receive all future updates, you may still view the [old site here](https://d6mtww49nma8j.cloudfront.net/) for the next month.
-```
