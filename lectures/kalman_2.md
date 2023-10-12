@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.14.4
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -20,6 +22,21 @@ kernelspec:
 
 # A Second Look at the Kalman Filter
 
+```{index} single: Kalman Filter 2
+```
+
+```{contents} Contents
+:depth: 2
+```
+
+In addition to what's in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython
+---
+tags: [hide-output]
+---
+!pip install quantecon
+```
 
 The purpose is to watch how the firm ends of learning a worker's "type" and how the worker's pay evolves as the firm learns. 
 
@@ -27,7 +44,7 @@ The $h_t$ part of the worker's "type" moves over time, but the effort type $u_t$
 
 To conduct simulations, we want to bring in these imports, as in the "first looks" lecture
 
-```{code-cell} ipython
+```{code-cell} ipython3
 %matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
