@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -298,7 +299,7 @@ market for equilibria with multiple goods.</p>
 differentiation in <a class="reference external" href="https://github.com/HIPS/autograd"><code class="docutils literal notranslate"><span class="pre">autograd</span></code></a> to solve a very high-dimensional equilibrium problem</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install autograd
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>autograd
 </pre></div>
 </div>
 </div>
@@ -309,19 +310,65 @@ differentiation in <a class="reference external" href="https://github.com/HIPS/a
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting autograd
+  Obtaining dependency information for autograd from https://files.pythonhosted.org/packages/81/70/d5c7c2a458b8be96495c8b1634c2155beab58cbe864b7a9a5c06c2e52520/autograd-1.6.2-py3-none-any.whl.metadata
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading autograd-1.6.2-py3-none-any.whl (49 kB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/49.3 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">49.3/49.3 kB</span> <span class=" -Color -Color-Red">5.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hRequirement already satisfied: future&gt;=0.15.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from autograd) (0.18.3)
-Requirement already satisfied: numpy&gt;=1.12 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from autograd) (1.23.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading autograd-1.6.2-py3-none-any.whl.metadata (706 bytes)
+Requirement already satisfied: numpy&gt;=1.12 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from autograd) (1.24.3)
+Collecting future&gt;=0.15.2 (from autograd)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: autograd
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading future-0.18.3.tar.gz (840 kB)
+?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/840.9 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+     ━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">317.4/840.9 kB</span> <span class=" -Color -Color-Red">9.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed autograd-1.6.2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ <span class=" -Color -Color-Green">727.0/840.9 kB</span> <span class=" -Color -Color-Red">10.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">840.9/840.9 kB</span> <span class=" -Color -Color-Red">10.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Preparing metadata (setup.py) ... ?25l-
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
+?25hDownloading autograd-1.6.2-py3-none-any.whl (49 kB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/49.3 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">49.3/49.3 kB</span> <span class=" -Color -Color-Red">8.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hBuilding wheels for collected packages: future
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for future (setup.py) ... ?25l-
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> /
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
+?25h  Created wheel for future: filename=future-0.18.3-py3-none-any.whl size=492025 sha256=0913c714910908e7e51bf80ba4637bd3f6ffd1dd23740b9efea4d51cccb7fe6a
+  Stored in directory: /github/home/.cache/pip/wheels/da/19/ca/9d8c44cd311a955509d7e13da3f0bea42400c469ef825b580b
+Successfully built future
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: future, autograd
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed autograd-1.6.2 future-0.18.3
 <span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
@@ -457,7 +504,7 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6cf2e4ef16335fcb31c238afa47e379cec02e64989467ed5dd03cdd65442f588.png" src="_images/6cf2e4ef16335fcb31c238afa47e379cec02e64989467ed5dd03cdd65442f588.png" />
+<img alt="_images/53bc945d02714c2546844f88dff2cb6820094471cdf13a1babf38dcc0a58d923.png" src="_images/53bc945d02714c2546844f88dff2cb6820094471cdf13a1babf38dcc0a58d923.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -470,7 +517,7 @@ since <span class="math notranslate nohighlight">\(k_t = k^*\)</span> implies <s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c5eb734e2dd0cedbafa6c94f419de4eb14064e017e101e5658a756b0e3cd63be.png" src="_images/c5eb734e2dd0cedbafa6c94f419de4eb14064e017e101e5658a756b0e3cd63be.png" />
+<img alt="_images/4cfd5ec70ec081fac0e89611b4b70579d216474682abf95616febf0ca46a76c1.png" src="_images/4cfd5ec70ec081fac0e89611b4b70579d216474682abf95616febf0ca46a76c1.png" />
 </div>
 </div>
 <p>We see that <span class="math notranslate nohighlight">\(k^*\)</span> is indeed the unique positive fixed point.</p>
@@ -510,7 +557,7 @@ from some initial state <span class="math notranslate nohighlight">\(k_0\)</span
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/418d58d065d4fe67a16e240ba5eba7c3ba809e9617d23c7db0257cff5275e391.png" src="_images/418d58d065d4fe67a16e240ba5eba7c3ba809e9617d23c7db0257cff5275e391.png" />
+<img alt="_images/30f8afdec6a56632d4495fe05f3d39d76d76bed7dbc4edfafc66447ae3266694.png" src="_images/30f8afdec6a56632d4495fe05f3d39d76d76bed7dbc4edfafc66447ae3266694.png" />
 </div>
 </div>
 <p>Let’s see the output for a long time series.</p>
@@ -629,7 +676,7 @@ x_1=\frac{g(x_0)-g'(x_0) x_0}{1-g'(x_0)}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e1357281ffa7bcdc19f125064b88d855c6143292a3f5c93c7ceef9b99d7c7fc7.png" src="_images/e1357281ffa7bcdc19f125064b88d855c6143292a3f5c93c7ceef9b99d7c7fc7.png" />
+<img alt="_images/c9e614550de042be48e707b24c717af613462cb3604d14e65c1e711a5210897d.png" src="_images/c9e614550de042be48e707b24c717af613462cb3604d14e65c1e711a5210897d.png" />
 </div>
 </div>
 <p>We can see that Newton’s method converges faster than successive approximation.</p>
@@ -891,7 +938,7 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/680d5f1d5e6c63a79c6e9e5732d88071a8f0f3162348c67f0a2155e1a6f25abc.png" src="_images/680d5f1d5e6c63a79c6e9e5732d88071a8f0f3162348c67f0a2155e1a6f25abc.png" />
+<img alt="_images/31c4694669fcfd9d048df7d2a92d5c1165785f4717409f7f2d35937ed0469422.png" src="_images/31c4694669fcfd9d048df7d2a92d5c1165785f4717409f7f2d35937ed0469422.png" />
 </div>
 </div>
 <p>Here’s our plot of <span class="math notranslate nohighlight">\(e_1\)</span>:</p>
@@ -904,7 +951,7 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fb6ee1444d88a13d52ca6a4692c2fa46acd7d4b6f1d09a490f7ebd997d295066.png" src="_images/fb6ee1444d88a13d52ca6a4692c2fa46acd7d4b6f1d09a490f7ebd997d295066.png" />
+<img alt="_images/0bcad7957881fa2439a5c74885d71bfe207e8de044aeda7045744ec5f7cbff0a.png" src="_images/0bcad7957881fa2439a5c74885d71bfe207e8de044aeda7045744ec5f7cbff0a.png" />
 </div>
 </div>
 <p>We see the black contour line of zero, which tells us when <span class="math notranslate nohighlight">\(e_i(p)=0\)</span>.</p>
@@ -920,7 +967,7 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/edeeb36bbd30499da40e5ebbae217df95717786ddec0fdf5b4961c8ebb14e470.png" src="_images/edeeb36bbd30499da40e5ebbae217df95717786ddec0fdf5b4961c8ebb14e470.png" />
+<img alt="_images/b98ab8ef0a523180434afe0b4317425d95fa52ba9ad1b10474784dd3edd5ab5b.png" src="_images/b98ab8ef0a523180434afe0b4317425d95fa52ba9ad1b10474784dd3edd5ab5b.png" />
 </div>
 </div>
 <p>It seems there is an equilibrium close to <span class="math notranslate nohighlight">\(p = (1.6, 1.5)\)</span>.</p>
@@ -945,8 +992,8 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 306 µs, sys: 22 µs, total: 328 µs
-Wall time: 306 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 259 µs, sys: 24 µs, total: 283 µs
+Wall time: 263 µs
 </pre></div>
 </div>
 </div>
@@ -1020,8 +1067,8 @@ J(p) =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 451 µs, sys: 33 µs, total: 484 µs
-Wall time: 411 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 478 µs, sys: 0 ns, total: 478 µs
+Wall time: 416 µs
 </pre></div>
 </div>
 </div>
@@ -1098,8 +1145,8 @@ iteration 4, error = 0.00000
 
 Result = [1.57080182 1.46928838] 
 
-CPU times: user 4.57 ms, sys: 0 ns, total: 4.57 ms
-Wall time: 3.52 ms
+CPU times: user 123 µs, sys: 4.19 ms, total: 4.31 ms
+Wall time: 3.38 ms
 </pre></div>
 </div>
 </div>
@@ -1176,8 +1223,8 @@ automatic differentiation is available <a class="reference external" href="https
 
 Result = [1.50185286 1.49865815 1.50028285 ... 1.50875149 1.48724784 1.48577532] 
 
-CPU times: user 2min 53s, sys: 2.31 s, total: 2min 55s
-Wall time: 43.8 s
+CPU times: user 2min 9s, sys: 1.7 s, total: 2min 11s
+Wall time: 32.9 s
 </pre></div>
 </div>
 </div>
@@ -1207,8 +1254,8 @@ Wall time: 43.8 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 39s, sys: 910 ms, total: 1min 40s
-Wall time: 48.6 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 21s, sys: 566 ms, total: 1min 22s
+Wall time: 42.9 s
 </pre></div>
 </div>
 </div>
@@ -1334,8 +1381,8 @@ iteration 6, error = 0.00000
 
 Result = [3.84058108 3.87071771 3.41091933] 
 
-CPU times: user 15.6 ms, sys: 12 ms, total: 27.6 ms
-Wall time: 6.42 ms
+CPU times: user 25 ms, sys: 0 ns, total: 25 ms
+Wall time: 5.74 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
 
@@ -1346,8 +1393,8 @@ iteration 4, error = 0.00000
 
 Result = [3.84058108 3.87071771 3.41091933] 
 
-CPU times: user 17.9 ms, sys: 24 µs, total: 18 ms
-Wall time: 4.17 ms
+CPU times: user 16.4 ms, sys: 0 ns, total: 16.4 ms
+Wall time: 3.77 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
 
@@ -1360,8 +1407,8 @@ iteration 6, error = 0.00000
 
 Result = [3.84058108 3.87071771 3.41091933] 
 
-CPU times: user 26.5 ms, sys: 0 ns, total: 26.5 ms
-Wall time: 6.14 ms
+CPU times: user 23.8 ms, sys: 67 µs, total: 23.9 ms
+Wall time: 5.46 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -1410,8 +1457,8 @@ iteration 4, error = 0.00000
 
 Result = [1.78467418 1.78467418 1.78467418] 
 
-CPU times: user 13.4 ms, sys: 11.9 ms, total: 25.4 ms
-Wall time: 6.03 ms
+CPU times: user 17.1 ms, sys: 0 ns, total: 17.1 ms
+Wall time: 3.92 ms
 </pre></div>
 </div>
 </div>
@@ -1434,8 +1481,8 @@ iteration 5, error = 0.00000
 
 Result = [1.78467418 1.78467418 1.78467418] 
 
-CPU times: user 22.2 ms, sys: 80 µs, total: 22.2 ms
-Wall time: 5.19 ms
+CPU times: user 21.9 ms, sys: 0 ns, total: 21.9 ms
+Wall time: 5.05 ms
 </pre></div>
 </div>
 </div>
@@ -1524,9 +1571,9 @@ c = \begin{pmatrix}
 iteration 1, error = 9.24381
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.10/site-packages/autograd/tracer.py:48: RuntimeWarning: invalid value encountered in sqrt
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/site-packages/autograd/tracer.py:48: RuntimeWarning: invalid value encountered in sqrt
   return f_raw(*args, **kwargs)
-/opt/conda/envs/quantecon/lib/python3.10/site-packages/autograd/numpy/numpy_vjps.py:99: RuntimeWarning: invalid value encountered in power
+/opt/conda/envs/quantecon/lib/python3.11/site-packages/autograd/numpy/numpy_vjps.py:99: RuntimeWarning: invalid value encountered in power
   defvjp(anp.sqrt,    lambda ans, x : lambda g: g * 0.5 * x**-0.5)
 </pre></div>
 </div>
@@ -1556,8 +1603,8 @@ iteration 6, error = 0.00000
 
 Result = [1.49744442 1.49744442 1.49744442] 
 
-CPU times: user 7.43 ms, sys: 0 ns, total: 7.43 ms
-Wall time: 5.72 ms
+CPU times: user 6.45 ms, sys: 0 ns, total: 6.45 ms
+Wall time: 4.99 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [4.5 0.1 4. ] 
 
@@ -1572,8 +1619,8 @@ iteration 8, error = 0.00000
 
 Result = [1.49744442 1.49744442 1.49744442] 
 
-CPU times: user 9.19 ms, sys: 68 µs, total: 9.25 ms
-Wall time: 7.07 ms
+CPU times: user 8.31 ms, sys: 0 ns, total: 8.31 ms
+Wall time: 6.37 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -2186,15 +2233,15 @@ Wall time: 7.07 ms
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
-                    <!-- <li class="btn__search">
-                        <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
-                            <i data-feather="search"></i>
-                        </form>
-                    </li> -->
                 </ul>
 
                 <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
@@ -2202,7 +2249,7 @@ Wall time: 7.07 ms
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/newton_method.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
-                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/newton_method.md" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/newton_method.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
@@ -2231,8 +2278,6 @@ Wall time: 7.07 ms
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/newton_method.ipynb">BinderHub</option>
-                
                     <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/newton_method.ipynb">Colab</option>
                 
                 </select>
@@ -2244,7 +2289,7 @@ Wall time: 7.07 ms
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/newton_method.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/newton_method.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');

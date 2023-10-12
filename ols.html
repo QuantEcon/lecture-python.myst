@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -245,7 +246,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install linearmodels
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>linearmodels
 </pre></div>
 </div>
 </div>
@@ -256,74 +257,93 @@ const thebe_selector_output = ".output, .cell_output"
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting linearmodels
+  Obtaining dependency information for linearmodels from https://files.pythonhosted.org/packages/5e/54/39a20f68c49ec8329db26ef7628a54728f0c4cfb4d7bbae8e87d9f662dce/linearmodels-5.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading linearmodels-5.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.8 MB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.8 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading linearmodels-5.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (8.2 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.1/1.8 MB</span> <span class=" -Color -Color-Red">35.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.8/1.8 MB</span> <span class=" -Color -Color-Red">34.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hRequirement already satisfied: pandas&gt;=1.1.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from linearmodels) (1.5.3)
-Requirement already satisfied: mypy-extensions&gt;=0.4 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from linearmodels) (0.4.3)
-Requirement already satisfied: numpy&gt;=1.19.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from linearmodels) (1.23.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.19.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from linearmodels) (1.24.3)
+Requirement already satisfied: pandas&gt;=1.1.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from linearmodels) (2.0.3)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from linearmodels) (1.11.1)
+Requirement already satisfied: statsmodels&gt;=0.12.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from linearmodels) (0.14.0)
+Requirement already satisfied: mypy-extensions&gt;=0.4 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from linearmodels) (1.0.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting Cython&gt;=0.29.34
-  Downloading Cython-3.0.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.6 MB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/3.6 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting Cython&gt;=0.29.34 (from linearmodels)
+  Obtaining dependency information for Cython&gt;=0.29.34 from https://files.pythonhosted.org/packages/c7/9a/4a9bcbf73180b13eec2ff3bda304ee10cc37ebb10e36c4a7c4dee4dc319e/Cython-3.0.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata
+  Downloading Cython-3.0.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.2 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">3.6/3.6 MB</span> <span class=" -Color -Color-Red">140.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3.6/3.6 MB</span> <span class=" -Color -Color-Red">75.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25h
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pyhdfe&gt;=0.1 (from linearmodels)
+  Obtaining dependency information for pyhdfe&gt;=0.1 from https://files.pythonhosted.org/packages/2f/51/cb006fbc08c32f161035fb19ca718250eb5f6d0692ea6dcc1e62c3e556a2/pyhdfe-0.2.0-py3-none-any.whl.metadata
+  Downloading pyhdfe-0.2.0-py3-none-any.whl.metadata (4.0 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pyhdfe&gt;=0.1
-  Downloading pyhdfe-0.2.0-py3-none-any.whl (19 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting formulaic&gt;=0.6.5 (from linearmodels)
+  Obtaining dependency information for formulaic&gt;=0.6.5 from https://files.pythonhosted.org/packages/ae/f0/ff275c0009f0037c381c6e3a94049b9792df7d7f437c5ccd0c7aefca5f22/formulaic-0.6.6-py3-none-any.whl.metadata
+  Downloading formulaic-0.6.6-py3-none-any.whl.metadata (6.0 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting setuptools-scm[toml]&lt;8.0.0,&gt;=7.0.0
-  Downloading setuptools_scm-7.1.0-py3-none-any.whl (43 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting setuptools-scm[toml]&lt;8.0.0,&gt;=7.0.0 (from linearmodels)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading setuptools_scm-7.1.0-py3-none-any.whl (43 kB)
 ?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/43.8 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">43.8/43.8 kB</span> <span class=" -Color -Color-Red">8.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">43.8/43.8 kB</span> <span class=" -Color -Color-Red">4.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25h
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting formulaic&gt;=0.6.1
-  Downloading formulaic-0.6.4-py3-none-any.whl (88 kB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/88.9 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">88.9/88.9 kB</span> <span class=" -Color -Color-Red">19.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hRequirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from linearmodels) (1.10.0)
-Requirement already satisfied: statsmodels&gt;=0.12.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from linearmodels) (0.13.5)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting interface-meta&gt;=1.2.0
-  Downloading interface_meta-1.3.0-py3-none-any.whl (14 kB)
-Requirement already satisfied: typing-extensions&gt;=4.2.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from formulaic&gt;=0.6.1-&gt;linearmodels) (4.4.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting astor&gt;=0.8
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting astor&gt;=0.8 (from formulaic&gt;=0.6.5-&gt;linearmodels)
   Downloading astor-0.8.1-py2.py3-none-any.whl (27 kB)
-Requirement already satisfied: wrapt&gt;=1.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from formulaic&gt;=0.6.1-&gt;linearmodels) (1.14.1)
+Collecting interface-meta&gt;=1.2.0 (from formulaic&gt;=0.6.5-&gt;linearmodels)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: python-dateutil&gt;=2.8.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pandas&gt;=1.1.0-&gt;linearmodels) (2.8.2)
-Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pandas&gt;=1.1.0-&gt;linearmodels) (2023.3)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from setuptools-scm[toml]&lt;8.0.0,&gt;=7.0.0-&gt;linearmodels) (65.6.3)
-Requirement already satisfied: packaging&gt;=20.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from setuptools-scm[toml]&lt;8.0.0,&gt;=7.0.0-&gt;linearmodels) (21.3)
-Requirement already satisfied: tomli&gt;=1.0.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from setuptools-scm[toml]&lt;8.0.0,&gt;=7.0.0-&gt;linearmodels) (2.0.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading interface_meta-1.3.0-py3-none-any.whl (14 kB)
+Requirement already satisfied: typing-extensions&gt;=4.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from formulaic&gt;=0.6.5-&gt;linearmodels) (4.7.1)
+Requirement already satisfied: wrapt&gt;=1.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from formulaic&gt;=0.6.5-&gt;linearmodels) (1.14.1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: patsy&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from statsmodels&gt;=0.12.0-&gt;linearmodels) (0.5.3)
-Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from packaging&gt;=20.0-&gt;setuptools-scm[toml]&lt;8.0.0,&gt;=7.0.0-&gt;linearmodels) (3.0.9)
-Requirement already satisfied: six in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from patsy&gt;=0.5.2-&gt;statsmodels&gt;=0.12.0-&gt;linearmodels) (1.16.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: python-dateutil&gt;=2.8.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pandas&gt;=1.1.0-&gt;linearmodels) (2.8.2)
+Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pandas&gt;=1.1.0-&gt;linearmodels) (2023.3.post1)
+Requirement already satisfied: tzdata&gt;=2022.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pandas&gt;=1.1.0-&gt;linearmodels) (2023.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: interface-meta, Cython, astor, setuptools-scm, pyhdfe, formulaic, linearmodels
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: packaging&gt;=20.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from setuptools-scm[toml]&lt;8.0.0,&gt;=7.0.0-&gt;linearmodels) (23.1)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from setuptools-scm[toml]&lt;8.0.0,&gt;=7.0.0-&gt;linearmodels) (68.0.0)
+Requirement already satisfied: patsy&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from statsmodels&gt;=0.12.0-&gt;linearmodels) (0.5.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed Cython-3.0.2 astor-0.8.1 formulaic-0.6.4 interface-meta-1.3.0 linearmodels-5.2 pyhdfe-0.2.0 setuptools-scm-7.1.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from patsy&gt;=0.5.2-&gt;statsmodels&gt;=0.12.0-&gt;linearmodels) (1.16.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading linearmodels-5.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.8 MB)
+?25l
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.8 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+   ━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.0/1.8 MB</span> <span class=" -Color -Color-Red">34.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.8/1.8 MB</span> <span class=" -Color -Color-Red">34.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading Cython-3.0.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.6 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/3.6 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">3.6/3.6 MB</span> <span class=" -Color -Color-Red">149.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3.6/3.6 MB</span> <span class=" -Color -Color-Red">82.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading formulaic-0.6.6-py3-none-any.whl (91 kB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/91.0 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">91.0/91.0 kB</span> <span class=" -Color -Color-Red">20.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading pyhdfe-0.2.0-py3-none-any.whl (19 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: setuptools-scm, interface-meta, Cython, astor, pyhdfe, formulaic, linearmodels
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">ERROR: pip&#39;s dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.</span>
+<span class=" -Color -Color-Red">tables 3.8.0 requires blosc2~=2.0.0, which is not installed.</span>
+Successfully installed Cython-3.0.3 astor-0.8.1 formulaic-0.6.6 interface-meta-1.3.0 linearmodels-5.3 pyhdfe-0.2.0 setuptools-scm-7.1.0
 <span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
@@ -521,11 +541,11 @@ expropriation index</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3622/3131956197.py:1: MatplotlibDeprecationWarning: The seaborn styles shipped by Matplotlib are deprecated since 3.6, as they no longer correspond to the styles shipped by seaborn. However, they will remain available as &#39;seaborn-v0_8-&lt;style&gt;&#39;. Alternatively, directly use the seaborn API instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3866/3131956197.py:1: MatplotlibDeprecationWarning: The seaborn styles shipped by Matplotlib are deprecated since 3.6, as they no longer correspond to the styles shipped by seaborn. However, they will remain available as &#39;seaborn-v0_8-&lt;style&gt;&#39;. Alternatively, directly use the seaborn API instead.
   plt.style.use(&#39;seaborn&#39;)
 </pre></div>
 </div>
-<img alt="_images/50df04fee488e07e991f24aaaa117e4c7f124e144e20a7a2a241c7229eb2426c.png" src="_images/50df04fee488e07e991f24aaaa117e4c7f124e144e20a7a2a241c7229eb2426c.png" />
+<img alt="_images/ecbb7c6c2ceca7836c52c2116cd92bc96a1f8e552c79d03c135d0f3a20574032.png" src="_images/ecbb7c6c2ceca7836c52c2116cd92bc96a1f8e552c79d03c135d0f3a20574032.png" />
 </div>
 </div>
 <p>The plot shows a fairly strong positive relationship between
@@ -587,7 +607,7 @@ fits the data, as in the following plot (Figure 2 in <span id="id4">[<a class="r
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a513a89d91df960c3c3b5a6dc2cdf9989537339a923f89d32fe07c7a7b52df0c.png" src="_images/a513a89d91df960c3c3b5a6dc2cdf9989537339a923f89d32fe07c7a7b52df0c.png" />
+<img alt="_images/4b6635e735ccb9fc69f4973ec1e5c79fc37a2f270bf6e0b9046b8e68846e42a4.png" src="_images/4b6635e735ccb9fc69f4973ec1e5c79fc37a2f270bf6e0b9046b8e68846e42a4.png" />
 </div>
 </div>
 <p>The most common technique to estimate the parameters (<span class="math notranslate nohighlight">\(\beta\)</span>’s)
@@ -660,8 +680,8 @@ coefficients differ slightly.</p>
 Dep. Variable:               logpgp95   R-squared:                       0.611
 Model:                            OLS   Adj. R-squared:                  0.608
 Method:                 Least Squares   F-statistic:                     171.4
-Date:                Fri, 22 Sep 2023   Prob (F-statistic):           4.16e-24
-Time:                        18:29:46   Log-Likelihood:                -119.71
+Date:                Wed, 11 Oct 2023   Prob (F-statistic):           4.16e-24
+Time:                        05:33:55   Log-Likelihood:                -119.71
 No. Observations:                 111   AIC:                             243.4
 Df Residuals:                     109   BIC:                             248.8
 Df Model:                           1                                         
@@ -785,7 +805,7 @@ comparison purposes</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2cb9ccbce8f072b87246135e0a758dc9f05da073231c4b3e40b9ea27431632f8.png" src="_images/2cb9ccbce8f072b87246135e0a758dc9f05da073231c4b3e40b9ea27431632f8.png" />
+<img alt="_images/c5c6821e9b325f1d9576ef2304be4762470dfd1594f5fd3f256d886e9b66ac9c.png" src="_images/c5c6821e9b325f1d9576ef2304be4762470dfd1594f5fd3f256d886e9b66ac9c.png" />
 </div>
 </div>
 </section>
@@ -951,7 +971,7 @@ condition of a valid instrument.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/64c019a30daa5f760b74ae37968d50c9a75163a867d4f7af339a6bf926276ad8.png" src="_images/64c019a30daa5f760b74ae37968d50c9a75163a867d4f7af339a6bf926276ad8.png" />
+<img alt="_images/479cd2abd7d05fc415bf65c99c8549d4df6bff88cf61bb0d431ea830bc05283c.png" src="_images/479cd2abd7d05fc415bf65c99c8549d4df6bff88cf61bb0d431ea830bc05283c.png" />
 </div>
 </div>
 <p>The second condition may not be satisfied if settler mortality rates in the 17th to 19th centuries have a direct effect on current GDP (in addition to their indirect effect through institutions).</p>
@@ -1004,8 +1024,8 @@ used for estimation)</p>
 Dep. Variable:                 avexpr   R-squared:                       0.270
 Model:                            OLS   Adj. R-squared:                  0.258
 Method:                 Least Squares   F-statistic:                     22.95
-Date:                Fri, 22 Sep 2023   Prob (F-statistic):           1.08e-05
-Time:                        18:29:48   Log-Likelihood:                -104.83
+Date:                Wed, 11 Oct 2023   Prob (F-statistic):           1.08e-05
+Time:                        05:33:57   Log-Likelihood:                -104.83
 No. Observations:                  64   AIC:                             213.7
 Df Residuals:                      62   BIC:                             218.0
 Df Model:                           1                                         
@@ -1054,8 +1074,8 @@ predicted values <span class="math notranslate nohighlight">\(\widehat{avexpr}_i
 Dep. Variable:               logpgp95   R-squared:                       0.477
 Model:                            OLS   Adj. R-squared:                  0.469
 Method:                 Least Squares   F-statistic:                     56.60
-Date:                Fri, 22 Sep 2023   Prob (F-statistic):           2.66e-10
-Time:                        18:29:48   Log-Likelihood:                -72.268
+Date:                Wed, 11 Oct 2023   Prob (F-statistic):           2.66e-10
+Time:                        05:33:57   Log-Likelihood:                -72.268
 No. Observations:                  64   AIC:                             148.5
 Df Residuals:                      62   BIC:                             152.9
 Df Model:                           1                                         
@@ -1107,8 +1127,8 @@ included exogenous variables)</p>
 Dep. Variable:               logpgp95   R-squared:                      0.1870
 Estimator:                    IV-2SLS   Adj. R-squared:                 0.1739
 No. Observations:                  64   F-statistic:                    37.568
-Date:                Fri, Sep 22 2023   P-value (F-stat)                0.0000
-Time:                        18:29:48   Distribution:                  chi2(1)
+Date:                Wed, Oct 11 2023   P-value (F-stat)                0.0000
+Time:                        05:33:57   Distribution:                  chi2(1)
 Cov. Estimator:            unadjusted                                         
                                                                               
                              Parameter Estimates                              
@@ -1215,8 +1235,8 @@ results.</p>
 Dep. Variable:               logpgp95   R-squared:                       0.689
 Model:                            OLS   Adj. R-squared:                  0.679
 Method:                 Least Squares   F-statistic:                     74.05
-Date:                Fri, 22 Sep 2023   Prob (F-statistic):           1.07e-17
-Time:                        18:29:48   Log-Likelihood:                -62.031
+Date:                Wed, 11 Oct 2023   Prob (F-statistic):           1.07e-17
+Time:                        05:33:57   Log-Likelihood:                -62.031
 No. Observations:                  70   AIC:                             130.1
 Df Residuals:                      67   BIC:                             136.8
 Df Model:                           2                                         
@@ -1907,15 +1927,15 @@ computations.</p>
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
-                    <!-- <li class="btn__search">
-                        <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
-                            <i data-feather="search"></i>
-                        </form>
-                    </li> -->
                 </ul>
 
                 <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
@@ -1923,7 +1943,7 @@ computations.</p>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/ols.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
-                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/ols.md" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/ols.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
@@ -1952,8 +1972,6 @@ computations.</p>
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/ols.ipynb">BinderHub</option>
-                
                     <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/ols.ipynb">Colab</option>
                 
                 </select>
@@ -1965,7 +1983,7 @@ computations.</p>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/ols.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/ols.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');

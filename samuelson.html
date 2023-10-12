@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -274,7 +275,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon
 </pre></div>
 </div>
 </div>
@@ -284,21 +285,22 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.31.0)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (1.26.16)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2023.7.22)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -600,7 +602,7 @@ A = \begin{bmatrix} 1 &amp; 0 &amp; 0 \cr
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">param_plot</span><span class="p">():</span>
 
-    <span class="sd">&quot;&quot;&quot;This function creates the graph on page 189 of</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function creates the graph on page 189 of</span>
 <span class="sd">    Sargent Macroeconomic Theory, second edition, 1987.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -671,7 +673,7 @@ A = \begin{bmatrix} 1 &amp; 0 &amp; 0 \cr
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8403679678a756ed47789379bb92a74c749210b0005de72c4e2bd770dcf42d21.png" src="_images/8403679678a756ed47789379bb92a74c749210b0005de72c4e2bd770dcf42d21.png" />
+<img alt="_images/f5d49df6c27e8c352d066e524e301bc52148b7e3e5c566a82b47a4e78ea36418.png" src="_images/f5d49df6c27e8c352d066e524e301bc52148b7e3e5c566a82b47a4e78ea36418.png" />
 </div>
 </div>
 <p>The graph portrays regions in which the <span class="math notranslate nohighlight">\((\lambda_1, \lambda_2)\)</span>
@@ -697,7 +699,7 @@ point implied by the setting of <span class="math notranslate nohighlight">\((a,
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">categorize_solution</span><span class="p">(</span><span class="n">ρ1</span><span class="p">,</span> <span class="n">ρ2</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;This function takes values of ρ1 and ρ2 and uses them</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function takes values of ρ1 and ρ2 and uses them</span>
 <span class="sd">    to classify the type of solution</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -738,7 +740,7 @@ point implied by the setting of <span class="math notranslate nohighlight">\((a,
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_y</span><span class="p">(</span><span class="n">function</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;Function plots path of Y_t&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function plots path of Y_t&quot;&quot;&quot;</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
@@ -764,7 +766,7 @@ that we set</p>
 
 <span class="k">def</span> <span class="nf">y_nonstochastic</span><span class="p">(</span><span class="n">y_0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">y_1</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.92</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;Takes values of parameters and computes the roots of characteristic</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes values of parameters and computes the roots of characteristic</span>
 <span class="sd">    polynomial. It tells whether they are real or complex and whether they</span>
 <span class="sd">    are less than unity in absolute value.It also computes a simulation of</span>
 <span class="sd">    length n starting from the two given initial conditions for national</span>
@@ -822,7 +824,7 @@ Two real roots:
 Absolute values of roots are less than one
 </pre></div>
 </div>
-<img alt="_images/fcd9a71d28a4c865feee606e010edcf7ec823f487471657fd9762c7719b438bb.png" src="_images/fcd9a71d28a4c865feee606e010edcf7ec823f487471657fd9762c7719b438bb.png" />
+<img alt="_images/7c8da45cc915ca8e31d3061858c30f0e497f963c714f4ce0069bc11cf1afe354.png" src="_images/7c8da45cc915ca8e31d3061858c30f0e497f963c714f4ce0069bc11cf1afe354.png" />
 </div>
 </div>
 </section>
@@ -847,7 +849,7 @@ pairs that would generate those roots</p></li>
 <span class="c1">###</span>
 
 <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">ϕ</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes modulus r and angle ϕ of complex number r exp(j ϕ)</span>
 <span class="sd">    and creates ρ1 and ρ2 of characteristic polynomial for which</span>
 <span class="sd">    r exp(j ϕ) and r exp(- j ϕ) are complex roots.</span>
@@ -940,7 +942,7 @@ a, b = (0.6346322893124001+0j), (0.9024999999999999-0j)
 
 <span class="k">def</span> <span class="nf">y_nonstochastic</span><span class="p">(</span><span class="n">y_0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">y_1</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; Rather than computing the roots of the characteristic</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Rather than computing the roots of the characteristic</span>
 <span class="sd">    polynomial by hand as we did earlier, this function</span>
 <span class="sd">    enlists numpy to do the work for us</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -990,7 +992,7 @@ Roots are complex
 Roots are less than one
 </pre></div>
 </div>
-<img alt="_images/cbd2585c4cf34a0e58894e4c4e988430fd4df1f1fdd98e05453d027ed841df9a.png" src="_images/cbd2585c4cf34a0e58894e4c4e988430fd4df1f1fdd98e05453d027ed841df9a.png" />
+<img alt="_images/934349ecf7946c34f9bfad84d59a0d3bd2b6466340973e8292e2050eaa238dcb.png" src="_images/934349ecf7946c34f9bfad84d59a0d3bd2b6466340973e8292e2050eaa238dcb.png" />
 </div>
 </div>
 </section>
@@ -1029,7 +1031,7 @@ Roots are complex
 Roots are not less than one
 </pre></div>
 </div>
-<img alt="_images/20e37710a1b131914b6c8de1a706fe8e900d62cf609e0b7616d919213fc5f59b.png" src="_images/20e37710a1b131914b6c8de1a706fe8e900d62cf609e0b7616d919213fc5f59b.png" />
+<img alt="_images/e1dc21e47b7357f71e8a31e68cbfeef8d872b459b890315fcd8e41939cb492e2.png" src="_images/e1dc21e47b7357f71e8a31e68cbfeef8d872b459b890315fcd8e41939cb492e2.png" />
 </div>
 </div>
 </section>
@@ -1080,7 +1082,7 @@ demand</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">y_stochastic</span><span class="p">(</span><span class="n">y_0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">σ</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;This function takes parameters of a stochastic version of</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function takes parameters of a stochastic version of</span>
 <span class="sd">    the model and proceeds to analyze the roots of the characteristic</span>
 <span class="sd">    polynomial and also generate a simulation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1135,7 +1137,7 @@ Roots are real
 Roots are less than one
 </pre></div>
 </div>
-<img alt="_images/bcbff40349d697c562298e9b974718e93701f0d189195b5cadd97fc2587a0933.png" src="_images/bcbff40349d697c562298e9b974718e93701f0d189195b5cadd97fc2587a0933.png" />
+<img alt="_images/9a515864cc24465e14a12862b97432409d0770f7c35be061fc2f3e09b8494a1b.png" src="_images/9a515864cc24465e14a12862b97432409d0770f7c35be061fc2f3e09b8494a1b.png" />
 </div>
 </div>
 <p>Let’s do a simulation in which there are shocks and the characteristic polynomial has complex roots</p>
@@ -1167,7 +1169,7 @@ Roots are complex
 Roots are less than one
 </pre></div>
 </div>
-<img alt="_images/50bd6af13ec0e339dfb8a7432afb874c9509850d19f717747007246ec7e181ad.png" src="_images/50bd6af13ec0e339dfb8a7432afb874c9509850d19f717747007246ec7e181ad.png" />
+<img alt="_images/8273f5bca938b32bb9029317038284e3ffdb388050c904e9c0f79cbc06519e87.png" src="_images/8273f5bca938b32bb9029317038284e3ffdb388050c904e9c0f79cbc06519e87.png" />
 </div>
 </div>
 </section>
@@ -1188,7 +1190,7 @@ in government expenditures</p>
                    <span class="n">g_t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                    <span class="n">duration</span><span class="o">=</span><span class="s1">&#39;permanent&#39;</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;This program computes a response to a permanent increase</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This program computes a response to a permanent increase</span>
 <span class="sd">    in government expenditures that occurs at time 20</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1276,7 +1278,7 @@ Roots are real
 Roots are less than one
 </pre></div>
 </div>
-<img alt="_images/ed42e41b2406f877509f21d1102b1c43b142fec2d6c038beeccd5d47c442ee6c.png" src="_images/ed42e41b2406f877509f21d1102b1c43b142fec2d6c038beeccd5d47c442ee6c.png" />
+<img alt="_images/493f949a7737ef6aad7269ad3d5a9e012debaa0a3579a0dbba3e785debe1406c.png" src="_images/493f949a7737ef6aad7269ad3d5a9e012debaa0a3579a0dbba3e785debe1406c.png" />
 </div>
 </div>
 <p>We can also see the response to a one time jump in government expenditures</p>
@@ -1293,7 +1295,7 @@ Roots are real
 Roots are less than one
 </pre></div>
 </div>
-<img alt="_images/cc1fc34129ff104479fcd3983eac7fd9fd1a22c0c42027779596ae7698d9be32.png" src="_images/cc1fc34129ff104479fcd3983eac7fd9fd1a22c0c42027779596ae7698d9be32.png" />
+<img alt="_images/7f4f84d8fa3e167dec93576707c5e97a6602ffc46f5cee18414e09265847bdc9.png" src="_images/7f4f84d8fa3e167dec93576707c5e97a6602ffc46f5cee18414e09265847bdc9.png" />
 </div>
 </div>
 </section>
@@ -1306,7 +1308,7 @@ for the Samuelson model</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Samuelson</span><span class="p">():</span>
 
-    <span class="sd">&quot;&quot;&quot;This class represents the Samuelson model, otherwise known as the</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class represents the Samuelson model, otherwise known as the</span>
 <span class="sd">    multiple-accelerator model. The model combines the Keynesian multiplier</span>
 <span class="sd">    with the accelerator theory of investment.</span>
 
@@ -1530,7 +1532,7 @@ Permanent government spending shock at t = 20
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/846354c3c97964679089f0c5fc1d11c64536a14f78f77b0c2b6c3cab9ff4d2ab.png" src="_images/846354c3c97964679089f0c5fc1d11c64536a14f78f77b0c2b6c3cab9ff4d2ab.png" />
+<img alt="_images/4e3f9741090ae2d00d8f95d18e42822ec07b756eef18224389beeb43edc41f42.png" src="_images/4e3f9741090ae2d00d8f95d18e42822ec07b756eef18224389beeb43edc41f42.png" />
 </div>
 </div>
 </section>
@@ -1547,7 +1549,7 @@ is consistent with the behavior of the path just graphed.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d102f42761b0908737dd141c99907e3a91de742d9f0363b12675a7cce92098bc.png" src="_images/d102f42761b0908737dd141c99907e3a91de742d9f0363b12675a7cce92098bc.png" />
+<img alt="_images/bc452ae37f464e0a8596a1fbcfd6a42f3ded68f1cb47932a391fd31547295098.png" src="_images/bc452ae37f464e0a8596a1fbcfd6a42f3ded68f1cb47932a391fd31547295098.png" />
 </div>
 </div>
 </section>
@@ -1604,7 +1606,7 @@ much of the work that we have done from scratch above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9344724931b08219f308b6be006b9037c129bc38bfefa1cbb0c83bc7da4c2d9e.png" src="_images/9344724931b08219f308b6be006b9037c129bc38bfefa1cbb0c83bc7da4c2d9e.png" />
+<img alt="_images/4d5fa08b5b7c6c025abb3e25d56e0be1586e9af6d05a251c8cac6fe7b28b0615.png" src="_images/4d5fa08b5b7c6c025abb3e25d56e0be1586e9af6d05a251c8cac6fe7b28b0615.png" />
 </div>
 </div>
 <section id="other-methods-in-the-linearstatespace-class">
@@ -1651,7 +1653,7 @@ methods and attributes) to add more functions to use</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SamuelsonLSS</span><span class="p">(</span><span class="n">LinearStateSpace</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This subclass creates a Samuelson multiplier-accelerator model</span>
 <span class="sd">    as a linear state space system.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1774,7 +1776,7 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5bb6c510b61e6360163b6deb4bdbaec07abc83293e4b657968f3e5c2a62e184d.png" src="_images/5bb6c510b61e6360163b6deb4bdbaec07abc83293e4b657968f3e5c2a62e184d.png" />
+<img alt="_images/ba03a7b69977ff40f71fdd60a255dd36227892c156aa4d576329052ed03961fb.png" src="_images/ba03a7b69977ff40f71fdd60a255dd36227892c156aa4d576329052ed03961fb.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1785,7 +1787,7 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3e7960a9fc62c45eaae8beeb4b6811b030ef500e544e1bff660cf7902bc6e78b.png" src="_images/3e7960a9fc62c45eaae8beeb4b6811b030ef500e544e1bff660cf7902bc6e78b.png" />
+<img alt="_images/363ee2ae43086f6201289403d77bcec5b47b1e53bbd8b92f3238f5c7438ed29d.png" src="_images/363ee2ae43086f6201289403d77bcec5b47b1e53bbd8b92f3238f5c7438ed29d.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1796,7 +1798,7 @@ methods and attributes) to add more functions to use</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/900b2e6a41c3d07478aa8ba593a0df5ce3c1ea146040dd15afcd2331c52c846c.png" src="_images/900b2e6a41c3d07478aa8ba593a0df5ce3c1ea146040dd15afcd2331c52c846c.png" />
+<img alt="_images/675e5f68a6e4e09c01a9488b16ea78b77df9a68de35181dc47d321666fa42f17.png" src="_images/675e5f68a6e4e09c01a9488b16ea78b77df9a68de35181dc47d321666fa42f17.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1835,8 +1837,8 @@ accelerator</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/249d923fbdb38d8fca92b6a8e4211b6508014c7f8abcfc3ca499dae7f973665e.png" src="_images/249d923fbdb38d8fca92b6a8e4211b6508014c7f8abcfc3ca499dae7f973665e.png" />
-<img alt="_images/249d923fbdb38d8fca92b6a8e4211b6508014c7f8abcfc3ca499dae7f973665e.png" src="_images/249d923fbdb38d8fca92b6a8e4211b6508014c7f8abcfc3ca499dae7f973665e.png" />
+<img alt="_images/daba53fec6c55808393df541b8e09819e4b6716db361705f06bbb51134209401.png" src="_images/daba53fec6c55808393df541b8e09819e4b6716db361705f06bbb51134209401.png" />
+<img alt="_images/daba53fec6c55808393df541b8e09819e4b6716db361705f06bbb51134209401.png" src="_images/daba53fec6c55808393df541b8e09819e4b6716db361705f06bbb51134209401.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1853,8 +1855,8 @@ accelerator</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/84037754f22daf923c1c3a9c71f9f25d17098161910866a18e8d6633788bfbc0.png" src="_images/84037754f22daf923c1c3a9c71f9f25d17098161910866a18e8d6633788bfbc0.png" />
-<img alt="_images/84037754f22daf923c1c3a9c71f9f25d17098161910866a18e8d6633788bfbc0.png" src="_images/84037754f22daf923c1c3a9c71f9f25d17098161910866a18e8d6633788bfbc0.png" />
+<img alt="_images/1ab8075df9dfb5d684a3be573db40516502bddc9699c82df57dabadaafb49549.png" src="_images/1ab8075df9dfb5d684a3be573db40516502bddc9699c82df57dabadaafb49549.png" />
+<img alt="_images/1ab8075df9dfb5d684a3be573db40516502bddc9699c82df57dabadaafb49549.png" src="_images/1ab8075df9dfb5d684a3be573db40516502bddc9699c82df57dabadaafb49549.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1864,8 +1866,8 @@ accelerator</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d1095eea1260d1c18365b02062fcf3f3fd77e47f9a2d5ca4baad9ec51fb13d15.png" src="_images/d1095eea1260d1c18365b02062fcf3f3fd77e47f9a2d5ca4baad9ec51fb13d15.png" />
-<img alt="_images/d1095eea1260d1c18365b02062fcf3f3fd77e47f9a2d5ca4baad9ec51fb13d15.png" src="_images/d1095eea1260d1c18365b02062fcf3f3fd77e47f9a2d5ca4baad9ec51fb13d15.png" />
+<img alt="_images/369515f5bf2343d39f6fd31b9ba43320d11e1fa21043f008b6c38036fd915666.png" src="_images/369515f5bf2343d39f6fd31b9ba43320d11e1fa21043f008b6c38036fd915666.png" />
+<img alt="_images/369515f5bf2343d39f6fd31b9ba43320d11e1fa21043f008b6c38036fd915666.png" src="_images/369515f5bf2343d39f6fd31b9ba43320d11e1fa21043f008b6c38036fd915666.png" />
 </div>
 </div>
 </section>
@@ -2467,15 +2469,15 @@ could either be stationary, explosive, or oscillating.</p>
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
-                    <!-- <li class="btn__search">
-                        <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
-                            <i data-feather="search"></i>
-                        </form>
-                    </li> -->
                 </ul>
 
                 <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
@@ -2483,7 +2485,7 @@ could either be stationary, explosive, or oscillating.</p>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/samuelson.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
-                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/samuelson.md" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/samuelson.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
@@ -2512,8 +2514,6 @@ could either be stationary, explosive, or oscillating.</p>
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/samuelson.ipynb">BinderHub</option>
-                
                     <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/samuelson.ipynb">Colab</option>
                 
                 </select>
@@ -2525,7 +2525,7 @@ could either be stationary, explosive, or oscillating.</p>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/samuelson.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/samuelson.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');

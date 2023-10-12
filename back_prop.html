@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -224,8 +225,8 @@ const thebe_selector_output = ".output, .cell_output"
 <h1><span class="section-number">17. </span>Introduction to Artificial Neural Networks<a class="headerlink" href="#introduction-to-artificial-neural-networks" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install --upgrade jax jaxlib
-<span class="o">!</span>conda install -y -c plotly plotly plotly-orca retrying
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>jax<span class="w"> </span>jaxlib
+<span class="o">!</span>conda<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>-c<span class="w"> </span>plotly<span class="w"> </span>plotly<span class="w"> </span>plotly-orca<span class="w"> </span>retrying
 </pre></div>
 </div>
 </div>
@@ -235,19 +236,137 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jax in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.4.16)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jax in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.4.16)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jaxlib in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.4.16)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting jax
+  Obtaining dependency information for jax from https://files.pythonhosted.org/packages/b5/5b/5131520dd9a384a640399e5efe4324fdee9e8a48685a33d08eb47140ccc3/jax-0.4.18-py3-none-any.whl.metadata
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&gt;=1.7 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jax) (1.10.0)
-Requirement already satisfied: opt-einsum in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jax) (3.3.0)
-Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jax) (0.3.0)
-Requirement already satisfied: numpy&gt;=1.22 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jax) (1.23.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading jax-0.4.18-py3-none-any.whl.metadata (23 kB)
+Requirement already satisfied: jaxlib in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.4.16+cuda12.cudnn89)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting jaxlib
+  Obtaining dependency information for jaxlib from https://files.pythonhosted.org/packages/75/c4/6c973f70031202f6eab43c632799228912ef5e539338257793d975fb63d0/jaxlib-0.4.18-cp311-cp311-manylinux2014_x86_64.whl.metadata
+  Downloading jaxlib-0.4.18-cp311-cp311-manylinux2014_x86_64.whl.metadata (2.0 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from jax) (0.3.1)
+Requirement already satisfied: numpy&gt;=1.22 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from jax) (1.24.3)
+Requirement already satisfied: opt-einsum in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from jax) (3.3.0)
+Requirement already satisfied: scipy&gt;=1.7 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from jax) (1.11.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading jax-0.4.18-py3-none-any.whl (1.7 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.7 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━ <span class=" -Color -Color-Green">1.5/1.7 MB</span> <span class=" -Color -Color-Red">45.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.7/1.7 MB</span> <span class=" -Color -Color-Red">35.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading jaxlib-0.4.18-cp311-cp311-manylinux2014_x86_64.whl (85.0 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/85.0 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5.2/85.0 MB</span> <span class=" -Color -Color-Red">155.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">10.3/85.0 MB</span> <span class=" -Color -Color-Red">150.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">10.5/85.0 MB</span> <span class=" -Color -Color-Red">147.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">13.0/85.0 MB</span> <span class=" -Color -Color-Red">85.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">16.9/85.0 MB</span> <span class=" -Color -Color-Red">80.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">21.9/85.0 MB</span> <span class=" -Color -Color-Red">127.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">26.8/85.0 MB</span> <span class=" -Color -Color-Red">140.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">31.6/85.0 MB</span> <span class=" -Color -Color-Red">138.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">36.5/85.0 MB</span> <span class=" -Color -Color-Red">138.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">41.4/85.0 MB</span> <span class=" -Color -Color-Red">137.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">46.3/85.0 MB</span> <span class=" -Color -Color-Red">139.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">51.1/85.0 MB</span> <span class=" -Color -Color-Red">138.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━ <span class=" -Color -Color-Green">56.0/85.0 MB</span> <span class=" -Color -Color-Red">136.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━ <span class=" -Color -Color-Green">61.0/85.0 MB</span> <span class=" -Color -Color-Red">138.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━ <span class=" -Color -Color-Green">65.8/85.0 MB</span> <span class=" -Color -Color-Red">138.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ <span class=" -Color -Color-Green">70.8/85.0 MB</span> <span class=" -Color -Color-Red">138.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ <span class=" -Color -Color-Green">73.4/85.0 MB</span> <span class=" -Color -Color-Red">139.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━ <span class=" -Color -Color-Green">73.4/85.0 MB</span> <span class=" -Color -Color-Red">139.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━ <span class=" -Color -Color-Green">75.5/85.0 MB</span> <span class=" -Color -Color-Red">71.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━ <span class=" -Color -Color-Green">80.4/85.0 MB</span> <span class=" -Color -Color-Red">69.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">85.0/85.0 MB</span> <span class=" -Color -Color-Red">136.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">85.0/85.0 MB</span> <span class=" -Color -Color-Red">136.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">85.0/85.0 MB</span> <span class=" -Color -Color-Red">136.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">85.0/85.0 MB</span> <span class=" -Color -Color-Red">136.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">85.0/85.0 MB</span> <span class=" -Color -Color-Red">136.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">85.0/85.0 MB</span> <span class=" -Color -Color-Red">136.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">85.0/85.0 MB</span> <span class=" -Color -Color-Red">136.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">85.0/85.0 MB</span> <span class=" -Color -Color-Red">136.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">85.0/85.0 MB</span> <span class=" -Color -Color-Red">136.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">85.0/85.0 MB</span> <span class=" -Color -Color-Red">136.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">85.0/85.0 MB</span> <span class=" -Color -Color-Red">21.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: jaxlib, jax
+  Attempting uninstall: jaxlib
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Found existing installation: jaxlib 0.4.16+cuda12.cudnn89
+    Uninstalling jaxlib-0.4.16+cuda12.cudnn89:
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      Successfully uninstalled jaxlib-0.4.16+cuda12.cudnn89
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: jax
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Found existing installation: jax 0.4.16
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Uninstalling jax-0.4.16:
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      Successfully uninstalled jax-0.4.16
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed jax-0.4.18 jaxlib-0.4.18
+<span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
 </div>
@@ -374,6 +493,16 @@ Requirement already satisfied: numpy&gt;=1.22 in /opt/conda/envs/quantecon/lib/p
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
+Solving environment: | 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
 </pre></div>
 </div>
@@ -399,40 +528,49 @@ Requirement already satisfied: numpy&gt;=1.22 in /opt/conda/envs/quantecon/lib/p
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Solving environment: / 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==&gt; WARNING: A newer version of conda exists. &lt;==
+  current version: 23.5.2
+  latest version: 23.9.0
+
+Please update conda by running
+
+    $ conda update -n base -c defaults conda
+
+Or to minimize the number of packages updated during conda update use
+
+     conda install conda=23.9.0
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>## Package Plan ##
@@ -449,256 +587,57 @@ The following packages will be downloaded:
 
     package                    |            build
     ---------------------------|-----------------
-    boltons-23.0.0             |  py310h06a4308_0         430 KB
-    ca-certificates-2023.08.22 |       h06a4308_0         123 KB
-    certifi-2023.7.22          |  py310h06a4308_0         153 KB
-    conda-23.7.4               |  py310h06a4308_0         1.0 MB
-    jsonpatch-1.32             |     pyhd3eb1b0_0          15 KB
-    jsonpointer-2.1            |     pyhd3eb1b0_0           9 KB
-    openssl-1.1.1w             |       h7f8727e_0         3.7 MB
-    packaging-23.1             |  py310h06a4308_0          78 KB
+    openssl-3.0.11             |       h7f8727e_2         5.2 MB
     plotly-5.17.0              |             py_0         7.1 MB  plotly
     plotly-orca-1.3.1          |                1        56.6 MB  plotly
     retrying-1.3.3             |     pyhd3eb1b0_2          14 KB
-    tenacity-8.2.2             |  py310h06a4308_0          38 KB
     ------------------------------------------------------------
-                                           Total:        69.3 MB
+                                           Total:        69.0 MB
 
 The following NEW packages will be INSTALLED:
 
-  boltons            pkgs/main/linux-64::boltons-23.0.0-py310h06a4308_0 
-  jsonpatch          pkgs/main/noarch::jsonpatch-1.32-pyhd3eb1b0_0 
-  jsonpointer        pkgs/main/noarch::jsonpointer-2.1-pyhd3eb1b0_0 
-  packaging          pkgs/main/linux-64::packaging-23.1-py310h06a4308_0 
   plotly             plotly/noarch::plotly-5.17.0-py_0 
   plotly-orca        plotly/linux-64::plotly-orca-1.3.1-1 
   retrying           pkgs/main/noarch::retrying-1.3.3-pyhd3eb1b0_2 
-  tenacity           pkgs/main/linux-64::tenacity-8.2.2-py310h06a4308_0 
+  tenacity           pkgs/main/linux-64::tenacity-8.2.2-py311h06a4308_0 
 
 The following packages will be UPDATED:
 
-  ca-certificates                     2023.01.10-h06a4308_0 --&gt; 2023.08.22-h06a4308_0 
-  certifi                         2022.12.7-py310h06a4308_0 --&gt; 2023.7.22-py310h06a4308_0 
-  conda                              23.1.0-py310h06a4308_0 --&gt; 23.7.4-py310h06a4308_0 
-  openssl                                 1.1.1s-h7f8727e_0 --&gt; 1.1.1w-h7f8727e_0 
+  ca-certificates                     2023.05.30-h06a4308_0 --&gt; 2023.08.22-h06a4308_0 
+  certifi                          2023.5.7-py311h06a4308_0 --&gt; 2023.7.22-py311h06a4308_0 
+  openssl                                  3.0.9-h7f8727e_0 --&gt; 3.0.11-h7f8727e_2 
 
 
 
 Downloading and Extracting Packages
 
-packaging-23.1       | 78 KB     |                                       |   0% 
-
-openssl-1.1.1w       | 3.7 MB    |                                       |   0% 
-
-
-jsonpatch-1.32       | 15 KB     |                                       |   0% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tenacity-8.2.2       | 38 KB     |                                       |   0% 
-
-
-
-
-plotly-5.17.0        | 7.1 MB    |                                       |   0% 
-
-
-
-
-
-ca-certificates-2023 | 123 KB    |                                       |   0% 
-
-
-
-
-
-
 plotly-orca-1.3.1    | 56.6 MB   |                                       |   0% 
-
-
-
-
-
-
-
-boltons-23.0.0       | 430 KB    |                                       |   0% 
-
-
-
-
-
-
-
-
-jsonpointer-2.1      | 9 KB      |                                       |   0% 
-
-
-
-
-
-
-
-
-
-conda-23.7.4         | 1.0 MB    |                                       |   0% 
-
-
-
-
-
-
-
-
-
 
 retrying-1.3.3       | 14 KB     |                                       |   0% 
 
 
+openssl-3.0.11       | 5.2 MB    |                                       |   0% 
 
 
 
-
-
-
-
-
-
-certifi-2023.7.22    | 153 KB    |                                       |   0% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>openssl-1.1.1w       | 3.7 MB    | ##1                                   |   6% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ca-certificates-2023 | 123 KB    | ####8                                 |  13% 
-
-
-jsonpatch-1.32       | 15 KB     | ##################################### | 100% 
-
-
-jsonpatch-1.32       | 15 KB     | ##################################### | 100% 
-
-
-
-
-
-
-
-boltons-23.0.0       | 430 KB    | #3                                    |   4% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>jsonpointer-2.1      | 9 KB      | ##################################### | 100% 
-
-
-
-
-
-
-
-
-
-conda-23.7.4         | 1.0 MB    | 5                                     |   2% 
-
-openssl-1.1.1w       | 3.7 MB    | #############9                        |  38% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ca-certificates-2023 | 123 KB    | ##################################### | 100% 
-
-
-
-
-
-ca-certificates-2023 | 123 KB    | ##################################### | 100% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tenacity-8.2.2       | 38 KB     | ##################################### | 100% 
-
-
-
-tenacity-8.2.2       | 38 KB     | ##################################### | 100% 
-packaging-23.1       | 78 KB     | ##################################### | 100% 
-packaging-23.1       | 78 KB     | ##################################### | 100% 
-
-
-
-
-
-
-
-
-jsonpointer-2.1      | 9 KB      | ##################################### | 100% 
-
-
-
-
-
-
-
-
-
-
-retrying-1.3.3       | 14 KB     | ##################################### | 100% 
-
-openssl-1.1.1w       | 3.7 MB    | ###############################1      |  84% 
-
-
-
-
-
-
-
-
-
-
-
-certifi-2023.7.22    | 153 KB    | ###8                                  |  10% 
+plotly-5.17.0        | 7.1 MB    |                                       |   0% 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>retrying-1.3.3       | 14 KB     | ##################################### | 100% 
+
+retrying-1.3.3       | 14 KB     | ##################################### | 100% 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>certifi-2023.7.22    | 153 KB    | ##################################### | 100% 
-
-
-
-
-
-
-
-
-
-
-
-certifi-2023.7.22    | 153 KB    | ##################################### | 100% 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>openssl-3.0.11       | 5.2 MB    | 1                                     |   0% 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>boltons-23.0.0       | 430 KB    | ##################################### | 100% 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>openssl-3.0.11       | 5.2 MB    | ##################################### | 100% 
 
 
-
-
-
-
-
-boltons-23.0.0       | 430 KB    | ##################################### | 100% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>openssl-1.1.1w       | 3.7 MB    | ##################################### | 100% 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conda-23.7.4         | 1.0 MB    | ##################################### | 100% 
-
-
-
-
-
-
-
-
-
-conda-23.7.4         | 1.0 MB    | ##################################### | 100% 
+openssl-3.0.11       | 5.2 MB    | ##################################### | 100% 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>plotly-5.17.0        | 7.1 MB    | ##################################### | 100% 
-
 
 
 
@@ -706,12 +645,6 @@ plotly-5.17.0        | 7.1 MB    | ##################################### | 100%
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>plotly-orca-1.3.1    | 56.6 MB   | ##################################### | 100% 
-
-
-
-
-
-
 plotly-orca-1.3.1    | 56.6 MB   | ##################################### | 100% 
                                                                                 
 
@@ -725,81 +658,7 @@ plotly-orca-1.3.1    | 56.6 MB   | ##################################### | 100%
 
                                                                                 
 
-
-
-
-                                                                                
-
-
-
-
-
-                                                                                
-
-
-
-
-
-
-                                                                                
-
-
-
-
-
-
-
-                                                                                
-
-
-
-
-
-
-
-
-                                                                                
-
-
-
-
-
-
-
-
-
-                                                                                
-
-
-
-
-
-
-
-
-
-
-                                                                                
-
-
-
-
-
-
-
-
-
-
-
-                                                                                
-
-Preparing transaction: | 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
+Preparing transaction: - 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
@@ -818,13 +677,13 @@ Preparing transaction: |
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Verifying transaction: - 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
+Verifying transaction: \ 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
@@ -873,70 +732,10 @@ Verifying transaction: -
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>done
-Executing transaction: - 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\ 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>| 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/ 
+Executing transaction: / 
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- 
@@ -1542,9 +1341,7 @@ dx_{N+1}/db_{N}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1695402101.756561     560 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
-No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.
 </pre></div>
 </div>
 </div>
@@ -1741,8 +1538,8 @@ f\left(x\right)=-3x+2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.84 s, sys: 22.9 ms, total: 5.87 s
-Wall time: 5.85 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.95 s, sys: 5.33 ms, total: 5.96 s
+Wall time: 5.94 s
 </pre></div>
 </div>
 </div>
@@ -2488,15 +2285,15 @@ via the <code class="docutils literal notranslate"><span class="pre">cpu</span><
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
-                    <!-- <li class="btn__search">
-                        <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
-                            <i data-feather="search"></i>
-                        </form>
-                    </li> -->
                 </ul>
 
                 <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
@@ -2504,7 +2301,7 @@ via the <code class="docutils literal notranslate"><span class="pre">cpu</span><
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/back_prop.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
-                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/back_prop.md" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/back_prop.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
@@ -2533,8 +2330,6 @@ via the <code class="docutils literal notranslate"><span class="pre">cpu</span><
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/back_prop.ipynb">BinderHub</option>
-                
                     <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/back_prop.ipynb">Colab</option>
                 
                 </select>
@@ -2546,7 +2341,7 @@ via the <code class="docutils literal notranslate"><span class="pre">cpu</span><
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/back_prop.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/back_prop.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');

@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -339,7 +340,7 @@ probability distribution, for example, a sequence of  IID draws from <span class
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
 <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Generate N sets of T observations of the likelihood ratio,</span>
 <span class="sd">    return as N x T matrix.</span>
 
@@ -491,7 +492,7 @@ history of IID draws from density <span class="math notranslate nohighlight">\(f
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
-    <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">π_seq_f</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;$\pi_0$=</span><span class="si">{</span><span class="n">π_seq_f</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">π_seq_f</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;$\pi_0$=</span><span class="si">{</span><span class="n">π_seq_f</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;$\pi_t$&quot;</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
@@ -507,7 +508,7 @@ history of IID draws from density <span class="math notranslate nohighlight">\(f
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bd9af045f48f8dc85bce1f7a2c1d815199ac2630288235415a97d8577c256e10.png" src="_images/bd9af045f48f8dc85bce1f7a2c1d815199ac2630288235415a97d8577c256e10.png" />
+<img alt="_images/ab2d07980e6019d7b348157841f12b49df30505a2136e4946d31b52d26e0f241.png" src="_images/ab2d07980e6019d7b348157841f12b49df30505a2136e4946d31b52d26e0f241.png" />
 </div>
 </div>
 <p>The dotted line in the graph above records the logarithm of the  likelihood ratio process <span class="math notranslate nohighlight">\(\log L(w^t)\)</span>.</p>
@@ -531,7 +532,7 @@ history of IID draws from density <span class="math notranslate nohighlight">\(f
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
-    <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">π_seq_g</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;$\pi_0$=</span><span class="si">{</span><span class="n">π_seq_g</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">π_seq_g</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;$\pi_0$=</span><span class="si">{</span><span class="n">π_seq_g</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;$\pi_t$&quot;</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
@@ -547,7 +548,7 @@ history of IID draws from density <span class="math notranslate nohighlight">\(f
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ebb90d3b4715d3eccebda60aa33ee29da65e65f3075af219177ff53b1fe2ec39.png" src="_images/ebb90d3b4715d3eccebda60aa33ee29da65e65f3075af219177ff53b1fe2ec39.png" />
+<img alt="_images/288ce40491876de92029dd470b4f188d91a4dcc15c13c373f21bd1a3ecf6ff22.png" src="_images/288ce40491876de92029dd470b4f188d91a4dcc15c13c373f21bd1a3ecf6ff22.png" />
 </div>
 </div>
 <p>Below we offer Python code that verifies that nature chose permanently to draw from density <span class="math notranslate nohighlight">\(f\)</span>.</p>
@@ -784,7 +785,7 @@ converge pointwise to <span class="math notranslate nohighlight">\(0\)</span>.</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cfa37b88b9b0e8bb8cb14038374cf471e47d63087068429fb856c347106ca3f6.png" src="_images/cfa37b88b9b0e8bb8cb14038374cf471e47d63087068429fb856c347106ca3f6.png" />
+<img alt="_images/00f05a0a2342f7e6a12289a58b1ad291064f58fe83c57fabcae079970c7fbbc6.png" src="_images/00f05a0a2342f7e6a12289a58b1ad291064f58fe83c57fabcae079970c7fbbc6.png" />
 </div>
 </div>
 <p>The above graph indicates that</p>
@@ -809,7 +810,7 @@ converge pointwise to <span class="math notranslate nohighlight">\(0\)</span>.</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9dcf8c636d41fdbcddaab00d28bf7cfc2d211bf062488851f2ce5af09e66f7e7.png" src="_images/9dcf8c636d41fdbcddaab00d28bf7cfc2d211bf062488851f2ce5af09e66f7e7.png" />
+<img alt="_images/f94fe7521eed3dc30452f65a9b68643c112b12a3c415e1e022c04a1aa2adbc2f.png" src="_images/f94fe7521eed3dc30452f65a9b68643c112b12a3c415e1e022c04a1aa2adbc2f.png" />
 </div>
 </div>
 <p>Evidently, by <span class="math notranslate nohighlight">\(t = 199\)</span>, <span class="math notranslate nohighlight">\(\pi_t\)</span> has converged to either <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>.</p>
@@ -845,7 +846,7 @@ in the ensemble.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5247efdc9dafdef851bfd23f0c294b55b94e28ca6d9394074ea35186058670ef.png" src="_images/5247efdc9dafdef851bfd23f0c294b55b94e28ca6d9394074ea35186058670ef.png" />
+<img alt="_images/1a8551922b20195954ee6f7f191d48dc3c3c8799af16de7c91cbfd2e09a68a21.png" src="_images/1a8551922b20195954ee6f7f191d48dc3c3c8799af16de7c91cbfd2e09a68a21.png" />
 </div>
 </div>
 <p>For the preceding ensemble that assumed <span class="math notranslate nohighlight">\(\pi_0 = .5\)</span>, the following graph shows two  paths of
@@ -870,7 +871,7 @@ in the ensemble.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2b2fe767c775163b9a95efad727bd57bf4a3130c7abdd4acdc3fe0fc7b4364a9.png" src="_images/2b2fe767c775163b9a95efad727bd57bf4a3130c7abdd4acdc3fe0fc7b4364a9.png" />
+<img alt="_images/ae98058c1304bc99e37866991ae43673a8b608ee30e3b5cb6613e3ed8a5b3e75.png" src="_images/ae98058c1304bc99e37866991ae43673a8b608ee30e3b5cb6613e3ed8a5b3e75.png" />
 </div>
 </div>
 </section>
@@ -1019,7 +1020,7 @@ probability distribution of the pointwise limits <span class="math notranslate n
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f181ca213f57781aa04edc69fc57a92f331b5acb172624c244d858ea2399fb0b.png" src="_images/f181ca213f57781aa04edc69fc57a92f331b5acb172624c244d858ea2399fb0b.png" />
+<img alt="_images/f50eaae3ea2c7c26323e33f9ddc47635cb68766521a8eaca951165d48a634f69.png" src="_images/f50eaae3ea2c7c26323e33f9ddc47635cb68766521a8eaca951165d48a634f69.png" />
 </div>
 </div>
 <p>The shape of the the conditional variance as a function of <span class="math notranslate nohighlight">\(\pi_{t-1}\)</span> is informative about the behavior of sample paths of <span class="math notranslate nohighlight">\(\{\pi_t\}\)</span>.</p>
@@ -1619,15 +1620,15 @@ results described  in <a class="reference internal" href="odu.html"><span class=
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
-                    <!-- <li class="btn__search">
-                        <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
-                            <i data-feather="search"></i>
-                        </form>
-                    </li> -->
                 </ul>
 
                 <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
@@ -1635,7 +1636,7 @@ results described  in <a class="reference internal" href="odu.html"><span class=
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/likelihood_bayes.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
-                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/likelihood_bayes.md" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/likelihood_bayes.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
@@ -1664,8 +1665,6 @@ results described  in <a class="reference internal" href="odu.html"><span class=
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/likelihood_bayes.ipynb">BinderHub</option>
-                
                     <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/likelihood_bayes.ipynb">Colab</option>
                 
                 </select>
@@ -1677,7 +1676,7 @@ results described  in <a class="reference internal" href="odu.html"><span class=
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/likelihood_bayes.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/likelihood_bayes.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');

@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -255,8 +256,8 @@ const thebe_selector_output = ".output, .cell_output"
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
-<span class="o">!</span>pip install interpolation
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>interpolation
 </pre></div>
 </div>
 </div>
@@ -266,36 +267,32 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (1.26.16)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2023.7.22)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /opt/conda/envs/quantecon/lib/python3.10/site-packages (2.2.4)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (1.10.0)
-Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (0.5.2)
-Requirement already satisfied: numba&gt;=0.47 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (0.56.4)
-Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (21.3)
-Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (1.23.5)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.47-&gt;interpolation) (65.6.3)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
-Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /opt/conda/envs/quantecon/lib/python3.11/site-packages (2.2.1)
+Requirement already satisfied: numba&gt;=0.47 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.57.1)
+Requirement already satisfied: numpy&gt;=1.18.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.24.3)
+Requirement already satisfied: scipy&gt;=1.4.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.11.1)
+Requirement already satisfied: tempita&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.5.2)
+Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.40.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -334,6 +331,12 @@ the <a class="reference internal" href="optgrowth.html"><span class="doc">stocha
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">float64</span>
 <span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
 <span class="kn">from</span> <span class="nn">quantecon</span> <span class="kn">import</span> <span class="n">MarkovChain</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/site-packages/numba/core/decorators.py:262: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">numba.generated_jit is deprecated. Please see the documentation at: https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-generated-jit for more information and advice on a suitable replacement.</span>
+  warnings.warn(msg, NumbaDeprecationWarning)
 </pre></div>
 </div>
 </div>
@@ -603,7 +606,7 @@ with state space <span class="math notranslate nohighlight">\(\{0, 1\}\)</span> 
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
 <span class="k">def</span> <span class="nf">euler_diff</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">σ_vals</span><span class="p">,</span> <span class="n">ifp</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The difference between the left- and right-hand side</span>
 <span class="sd">    of the Euler Equation, given current policy σ.</span>
 
@@ -640,7 +643,7 @@ policy function.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
 <span class="k">def</span> <span class="nf">K</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">ifp</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The operator K.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -728,7 +731,7 @@ Converged in 60 iterations.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/75574ff318bd82e358a4ae681ba05ec1af08ebc30184ba20917e6e97fe718a12.png" src="_images/75574ff318bd82e358a4ae681ba05ec1af08ebc30184ba20917e6e97fe718a12.png" />
+<img alt="_images/a6b46c96efbd42f6a52b3280ab847200b947b06d9cd36b0528ca8686c875ab70.png" src="_images/a6b46c96efbd42f6a52b3280ab847200b947b06d9cd36b0528ca8686c875ab70.png" />
 </div>
 </div>
 <p>The following exercises walk you through several applications where policy functions are computed.</p>
@@ -786,7 +789,7 @@ Error at iteration 175 is 0.00010021430795081887.
 Converged in 176 iterations.
 </pre></div>
 </div>
-<img alt="_images/8dd8e722a87831bf5a5d6d17438accc575fb3fc4ac98acddd2e616328bf2c1a0.png" src="_images/8dd8e722a87831bf5a5d6d17438accc575fb3fc4ac98acddd2e616328bf2c1a0.png" />
+<img alt="_images/9c17b7d5a3363b05d2cf03b41fa3a700e6ed99695d87e0236934f00a0c748005.png" src="_images/9c17b7d5a3363b05d2cf03b41fa3a700e6ed99695d87e0236934f00a0c748005.png" />
 </div>
 </div>
 <p>Success!</p>
@@ -833,7 +836,7 @@ Converged in 176 iterations.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4b7acc48b6bed46ea35eb007460eba4a48a05ee1c9213c1d391d60c0fd580f36.png" src="_images/4b7acc48b6bed46ea35eb007460eba4a48a05ee1c9213c1d391d60c0fd580f36.png" />
+<img alt="_images/fb6c11e7c2b2c5fae199c86654ee6c493b1ebc85251353f239a31c15039b21e8.png" src="_images/fb6c11e7c2b2c5fae199c86654ee6c493b1ebc85251353f239a31c15039b21e8.png" />
 </div>
 </div>
 </section>
@@ -866,7 +869,7 @@ default parameters.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/90ca3e5fa012b391291e96014c6fa7d3074f62f5458f902538f5e7b664bb380b.png" src="_images/90ca3e5fa012b391291e96014c6fa7d3074f62f5458f902538f5e7b664bb380b.png" />
+<img alt="_images/0c66bc82d183c22029450167841cd16f036b1519413a3f072e8f6dda9eb4f961.png" src="_images/0c66bc82d183c22029450167841cd16f036b1519413a3f072e8f6dda9eb4f961.png" />
 </div>
 </div>
 <p>The unbroken lines show the update function for assets at each <span class="math notranslate nohighlight">\(z\)</span>, which is</p>
@@ -902,7 +905,7 @@ z_0)\)</span> will not matter.</p></li>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_asset_series</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500_000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simulates a time series of length T for assets, given optimal</span>
 <span class="sd">    savings behavior.</span>
 
@@ -942,7 +945,7 @@ z_0)\)</span> will not matter.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6542cd7c85087477726a55e0fd1a375986a23d8bc3f21b1ecc59dc8aa7066e2c.png" src="_images/6542cd7c85087477726a55e0fd1a375986a23d8bc3f21b1ecc59dc8aa7066e2c.png" />
+<img alt="_images/af9b05f55fde6852dba23b7aedfb234e13cf5bd12bd637cc0e243302fea4d5e2.png" src="_images/af9b05f55fde6852dba23b7aedfb234e13cf5bd12bd637cc0e243302fea4d5e2.png" />
 </div>
 </div>
 <p>The shape of the asset distribution is unrealistic.</p>
@@ -1073,7 +1076,7 @@ stationary distribution given the interest rate.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Solving model at r = 0.02
 </pre></div>
 </div>
-<img alt="_images/011a800cc2e10875d5bcdf35856fcabf1454390969179ed3a8718d468ae7601d.png" src="_images/011a800cc2e10875d5bcdf35856fcabf1454390969179ed3a8718d468ae7601d.png" />
+<img alt="_images/e0f1208b8f42894d471203b690d0364fa8738e632e95510c5fc3b1749eaace8f.png" src="_images/e0f1208b8f42894d471203b690d0364fa8738e632e95510c5fc3b1749eaace8f.png" />
 </div>
 </div>
 <p>As expected, aggregate savings increases with the interest rate.</p>
@@ -1668,15 +1671,15 @@ stationary distribution given the interest rate.</p>
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
-                    <!-- <li class="btn__search">
-                        <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
-                            <i data-feather="search"></i>
-                        </form>
-                    </li> -->
                 </ul>
 
                 <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
@@ -1684,7 +1687,7 @@ stationary distribution given the interest rate.</p>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/ifp.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
-                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/ifp.md" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/ifp.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
@@ -1713,8 +1716,6 @@ stationary distribution given the interest rate.</p>
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/ifp.ipynb">BinderHub</option>
-                
                     <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/ifp.ipynb">Colab</option>
                 
                 </select>
@@ -1726,7 +1727,7 @@ stationary distribution given the interest rate.</p>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/ifp.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/ifp.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');

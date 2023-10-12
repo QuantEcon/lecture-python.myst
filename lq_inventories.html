@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -250,7 +251,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>In addition to what’s in Anaconda, this lecture employs the following library:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon
 </pre></div>
 </div>
 </div>
@@ -260,19 +261,20 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.31.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (1.26.16)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2023.7.22)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -448,7 +450,7 @@ its consequences.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SmoothingExample</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class for constructing, solving, and plotting results for</span>
 <span class="sd">    inventories and sales smoothing problem.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -627,7 +629,7 @@ pertinent figures.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/56db5624cf58faf3a92022fdf3424b8206d309336e7c2c4ac23b7df3be8f8b7c.png" src="_images/56db5624cf58faf3a92022fdf3424b8206d309336e7c2c4ac23b7df3be8f8b7c.png" />
+<img alt="_images/48f06ccea645915a3d9b3e395b7aefb7d8839886f316a74eb1c47725da7c8687.png" src="_images/48f06ccea645915a3d9b3e395b7aefb7d8839886f316a74eb1c47725da7c8687.png" />
 </div>
 </div>
 <p>The figures above illustrate various features of an optimal production
@@ -735,7 +737,7 @@ confine the graphs to the first 10 periods:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b3be2d4e674cf74d38f3d1f206d3cd63a9a8b840749d31d57d83944241377172.png" src="_images/b3be2d4e674cf74d38f3d1f206d3cd63a9a8b840749d31d57d83944241377172.png" />
+<img alt="_images/fd28671af290484926d4acd7a8a0469be19c402695323f3330c799a30d8c4415.png" src="_images/fd28671af290484926d4acd7a8a0469be19c402695323f3330c799a30d8c4415.png" />
 </div>
 </div>
 </section>
@@ -758,7 +760,7 @@ confine the graphs to the first 10 periods:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5e90d1aec57f37ca384ccd7b079651cfc2e28e258ddf2ce21528add745d566b7.png" src="_images/5e90d1aec57f37ca384ccd7b079651cfc2e28e258ddf2ce21528add745d566b7.png" />
+<img alt="_images/a58bfe66854e00f034848d638c9f40bb9fdffaeca60038a3ec778478472c9169.png" src="_images/a58bfe66854e00f034848d638c9f40bb9fdffaeca60038a3ec778478472c9169.png" />
 </div>
 </div>
 </section>
@@ -781,7 +783,7 @@ the following figures confirm</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a391f9c622c4746bff598af5ec2003f4c44999359d551bf6492b529b8d1988af.png" src="_images/a391f9c622c4746bff598af5ec2003f4c44999359d551bf6492b529b8d1988af.png" />
+<img alt="_images/8016f038a40bc18831b76d339626cf28235f92823cf11b700279e1791c86003a.png" src="_images/8016f038a40bc18831b76d339626cf28235f92823cf11b700279e1791c86003a.png" />
 </div>
 </div>
 </section>
@@ -828,7 +830,7 @@ and to <strong>run a Ponzi scheme</strong> by running inventories down forever.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/093801859308eaa485a3f6c970afea494d9776aeb1f55cef9933d079f9eb0747.png" src="_images/093801859308eaa485a3f6c970afea494d9776aeb1f55cef9933d079f9eb0747.png" />
+<img alt="_images/69b8dff464aaff1ac289ee4e12749109623155215e1210c78aaf433868744ac6.png" src="_images/69b8dff464aaff1ac289ee4e12749109623155215e1210c78aaf433868744ac6.png" />
 </div>
 </div>
 <p>Let’s shorten the time span displayed in order to highlight what is
@@ -842,7 +844,7 @@ going on.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5eda20bd77ac71936cb143425347850febea687c36f50faa4dea273443f51053.png" src="_images/5eda20bd77ac71936cb143425347850febea687c36f50faa4dea273443f51053.png" />
+<img alt="_images/77e2418107d26c3abc0fbf0f396553db54eeda3714a2088c7479afa009300f5c.png" src="_images/77e2418107d26c3abc0fbf0f396553db54eeda3714a2088c7479afa009300f5c.png" />
 </div>
 </div>
 </section>
@@ -886,7 +888,7 @@ b &amp; a\end{array}\right]
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eedceb43b4f184bedb22dad62b4a7f0d3ea2da833b8887d41cc5750b3b3e47bb.png" src="_images/eedceb43b4f184bedb22dad62b4a7f0d3ea2da833b8887d41cc5750b3b3e47bb.png" />
+<img alt="_images/e4d9e873ceaa992293640e65233f407eac394df6bf73bae80b25bed6f590c405.png" src="_images/e4d9e873ceaa992293640e65233f407eac394df6bf73bae80b25bed6f590c405.png" />
 </div>
 </div>
 </section>
@@ -924,7 +926,7 @@ x_0 = \begin{bmatrix} 1 \cr 0 \cr 1 \cr 0 \cr 0 \end{bmatrix}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ccbce9759859f1a48b7f4f8f1b30836217701f7c7f9f51f0c2e048ae35bc5704.png" src="_images/ccbce9759859f1a48b7f4f8f1b30836217701f7c7f9f51f0c2e048ae35bc5704.png" />
+<img alt="_images/3f868791d7139118f00cade41bfd65ffabc7cd346a50d3f0dac0f7752842a702.png" src="_images/3f868791d7139118f00cade41bfd65ffabc7cd346a50d3f0dac0f7752842a702.png" />
 </div>
 </div>
 <p>Now we’ll generate some more examples that differ simply from the
@@ -937,7 +939,7 @@ initial <strong>season</strong> of the year in which we begin the demand shock</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2a602b54a0aa88a78861659e6cc33663ddfde666a3d9be16dfb05a895ad6c1eb.png" src="_images/2a602b54a0aa88a78861659e6cc33663ddfde666a3d9be16dfb05a895ad6c1eb.png" />
+<img alt="_images/d4c574bbb4b656ad7603e0d30f1689dde70ae056c6990426ceb348673794e63d.png" src="_images/d4c574bbb4b656ad7603e0d30f1689dde70ae056c6990426ceb348673794e63d.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -948,7 +950,7 @@ initial <strong>season</strong> of the year in which we begin the demand shock</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/582f023706334c87d0f4d6f9bfbc21ac94f0043fee3e47a03fd3fddf7f64013b.png" src="_images/582f023706334c87d0f4d6f9bfbc21ac94f0043fee3e47a03fd3fddf7f64013b.png" />
+<img alt="_images/8f57d1530e1921cffbbeb5c8ca64685fabb70ff3c56eeaf58999e9ea4f8587fb.png" src="_images/8f57d1530e1921cffbbeb5c8ca64685fabb70ff3c56eeaf58999e9ea4f8587fb.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -959,7 +961,7 @@ initial <strong>season</strong> of the year in which we begin the demand shock</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8fa9e71f311606cb10e5b16fa6a0946803fadbad8e380540f9bb8be1f11f326f.png" src="_images/8fa9e71f311606cb10e5b16fa6a0946803fadbad8e380540f9bb8be1f11f326f.png" />
+<img alt="_images/26b1aabb2505a4812ef8a9ae17a16530684ef9f9b99673d665166a60a289bf5d.png" src="_images/26b1aabb2505a4812ef8a9ae17a16530684ef9f9b99673d665166a60a289bf5d.png" />
 </div>
 </div>
 </section>
@@ -1025,7 +1027,7 @@ firms respond differently by staring at the production plans.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6b9c016fddcdc1e9b2a913fd43801eb612f3de2638e99fdbddaf8f183b21a520.png" src="_images/6b9c016fddcdc1e9b2a913fd43801eb612f3de2638e99fdbddaf8f183b21a520.png" />
+<img alt="_images/4172753660462c1490c72aeeca9f059762f06c092bca7a3ccf32d91bd6e6ff8b.png" src="_images/4172753660462c1490c72aeeca9f059762f06c092bca7a3ccf32d91bd6e6ff8b.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1069,7 +1071,7 @@ a short period response.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fe5ec1f21a9dbdd1fa3dcd826f776f49377dd34bd4052d30ef0f52675834174d.png" src="_images/fe5ec1f21a9dbdd1fa3dcd826f776f49377dd34bd4052d30ef0f52675834174d.png" />
+<img alt="_images/46be5b008ea748a8293639906ee7159523a90e3a9a086baa66d6cd252b3b6e18.png" src="_images/46be5b008ea748a8293639906ee7159523a90e3a9a086baa66d6cd252b3b6e18.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1082,7 +1084,7 @@ a short period response.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/40043338f2eada67d26e3805cc071606e55272acd81349d0f9aaf995da572154.png" src="_images/40043338f2eada67d26e3805cc071606e55272acd81349d0f9aaf995da572154.png" />
+<img alt="_images/ae9e767db0a645af5bf1b122f17b03241129d20a684cddc5833dbaa382cb9a0d.png" src="_images/ae9e767db0a645af5bf1b122f17b03241129d20a684cddc5833dbaa382cb9a0d.png" />
 </div>
 </div>
 </section>
@@ -1117,7 +1119,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ca72163e64d26375ec46c3e2822876458b40c7a4441b66e939fc153e15387ed3.png" src="_images/ca72163e64d26375ec46c3e2822876458b40c7a4441b66e939fc153e15387ed3.png" />
+<img alt="_images/170ca82f1d39117e7c89a0e716ade879c1c5f56cd484e12d5e6cda8fe871cd90.png" src="_images/170ca82f1d39117e7c89a0e716ade879c1c5f56cd484e12d5e6cda8fe871cd90.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1127,7 +1129,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4e4c93eb9e48010ba32a3a88fa76bd934bc793b9a6c8bc99c755152914e59314.png" src="_images/4e4c93eb9e48010ba32a3a88fa76bd934bc793b9a6c8bc99c755152914e59314.png" />
+<img alt="_images/a839b554d6e6d288805a8281ecc976c3bf3aaa266d862d69dc8c91408e461859.png" src="_images/a839b554d6e6d288805a8281ecc976c3bf3aaa266d862d69dc8c91408e461859.png" />
 </div>
 </div>
 </section>
@@ -1721,15 +1723,15 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
-                    <!-- <li class="btn__search">
-                        <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
-                            <i data-feather="search"></i>
-                        </form>
-                    </li> -->
                 </ul>
 
                 <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
@@ -1737,7 +1739,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/lq_inventories.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
-                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/lq_inventories.md" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/lq_inventories.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
@@ -1766,8 +1768,6 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/lq_inventories.ipynb">BinderHub</option>
-                
                     <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/lq_inventories.ipynb">Colab</option>
                 
                 </select>
@@ -1779,7 +1779,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/lq_inventories.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/lq_inventories.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');

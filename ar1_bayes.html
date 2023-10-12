@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -219,7 +220,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>We’ll begin with some Python imports.</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install arviz pymc numpyro jax
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>arviz<span class="w"> </span>pymc<span class="w"> </span>numpyro<span class="w"> </span>jax
 </pre></div>
 </div>
 </div>
@@ -229,168 +230,88 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: arviz in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.15.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: arviz in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.16.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pymc
+  Obtaining dependency information for pymc from https://files.pythonhosted.org/packages/45/89/341da7baee2d8e6e2654e50ebc4d1dca49c762a8a132b6cd6cb1eae1fa80/pymc-5.9.0-py3-none-any.whl.metadata
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading pymc-5.8.2-py3-none-any.whl (468 kB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/468.9 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading pymc-5.9.0-py3-none-any.whl.metadata (10 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">468.9/468.9 kB</span> <span class=" -Color -Color-Red">17.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hCollecting numpyro
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting numpyro
+  Obtaining dependency information for numpyro from https://files.pythonhosted.org/packages/f9/e1/545f037aa1d119d83bebb6816d9e01138bb2a2ee5878cdd1c1e76fe3a239/numpyro-0.13.2-py3-none-any.whl.metadata
+  Downloading numpyro-0.13.2-py3-none-any.whl.metadata (36 kB)
+Requirement already satisfied: jax in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.4.16)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading numpyro-0.13.1-py3-none-any.whl (312 kB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/312.7 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">312.7/312.7 kB</span> <span class=" -Color -Color-Red">45.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hRequirement already satisfied: jax in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.4.8)
-Requirement already satisfied: pandas&gt;=1.3.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.5.3)
-Requirement already satisfied: typing-extensions&gt;=4.1.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (4.4.0)
-Requirement already satisfied: xarray-einstats&gt;=0.3 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (0.5.1)
-Requirement already satisfied: matplotlib&gt;=3.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (3.7.0)
-Requirement already satisfied: xarray&gt;=0.21.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (2022.11.0)
-Requirement already satisfied: h5netcdf&gt;=1.0.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.1.0)
-Requirement already satisfied: setuptools&gt;=60.0.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (65.6.3)
-Requirement already satisfied: packaging in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (22.0)
-Requirement already satisfied: numpy&gt;=1.20.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.23.5)
-Requirement already satisfied: scipy&gt;=1.8.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.10.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: setuptools&gt;=60.0.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (68.0.0)
+Requirement already satisfied: matplotlib&gt;=3.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (3.7.2)
+Requirement already satisfied: numpy&lt;2.0,&gt;=1.21.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (1.24.3)
+Requirement already satisfied: scipy&gt;=1.8.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (1.11.1)
+Requirement already satisfied: packaging in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (23.1)
+Requirement already satisfied: pandas&gt;=1.3.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (2.0.3)
+Requirement already satisfied: xarray&gt;=0.21.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (2023.6.0)
+Requirement already satisfied: h5netcdf&gt;=1.0.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (1.2.0)
+Requirement already satisfied: typing-extensions&gt;=4.1.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (4.7.1)
+Requirement already satisfied: xarray-einstats&gt;=0.3 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (0.6.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting fastprogress&gt;=0.2.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting cachetools&gt;=4.2.1 (from pymc)
+  Obtaining dependency information for cachetools&gt;=4.2.1 from https://files.pythonhosted.org/packages/a9/c9/c8a7710f2cedcb1db9224fdd4d8307c9e48cbddc46c18b515fefc0f1abbe/cachetools-5.3.1-py3-none-any.whl.metadata
+  Downloading cachetools-5.3.1-py3-none-any.whl.metadata (5.2 kB)
+Requirement already satisfied: cloudpickle in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pymc) (2.2.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting fastprogress&gt;=0.2.0 (from pymc)
   Downloading fastprogress-1.0.3-py3-none-any.whl (12 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting cachetools&gt;=4.2.1
-  Downloading cachetools-5.3.1-py3-none-any.whl (9.3 kB)
-Requirement already satisfied: cloudpickle in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pymc) (2.0.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pytensor&lt;2.18,&gt;=2.17.0 (from pymc)
+  Obtaining dependency information for pytensor&lt;2.18,&gt;=2.17.0 from https://files.pythonhosted.org/packages/ea/50/494392fdee32ecfab48722120c5dfdd8f8a813cfe894f8dbb3e94b382e1c/pytensor-2.17.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pytensor&lt;2.17,&gt;=2.16.1
-  Downloading pytensor-2.16.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.9 MB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.9 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading pytensor-2.17.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.7 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.9/1.9 MB</span> <span class=" -Color -Color-Red">69.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25h
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: jaxlib&gt;=0.4.14 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numpyro) (0.4.16+cuda12.cudnn89)
+Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numpyro) (0.6.0)
+Requirement already satisfied: tqdm in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numpyro) (4.65.0)
+Requirement already satisfied: ml-dtypes&gt;=0.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from jax) (0.3.1)
+Requirement already satisfied: opt-einsum in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from jax) (3.3.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting jaxlib&gt;=0.4.14
-  Downloading jaxlib-0.4.16-cp310-cp310-manylinux2014_x86_64.whl (84.5 MB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/84.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: h5py in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from h5netcdf&gt;=1.0.2-&gt;arviz) (3.9.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.0.5)
+Requirement already satisfied: cycler&gt;=0.10 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (0.11.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4.2/84.5 MB</span> <span class=" -Color -Color-Red">126.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (4.25.0)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.4.4)
+Requirement already satisfied: pillow&gt;=6.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (9.4.0)
+Requirement already satisfied: pyparsing&lt;3.1,&gt;=2.3.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (3.0.9)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (2.8.2)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">8.5/84.5 MB</span> <span class=" -Color -Color-Red">123.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">13.0/84.5 MB</span> <span class=" -Color -Color-Red">124.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pandas&gt;=1.3.0-&gt;arviz) (2023.3.post1)
+Requirement already satisfied: tzdata&gt;=2022.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pandas&gt;=1.3.0-&gt;arviz) (2023.3)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">17.4/84.5 MB</span> <span class=" -Color -Color-Red">124.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: filelock in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc) (3.9.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">21.8/84.5 MB</span> <span class=" -Color -Color-Red">123.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">26.3/84.5 MB</span> <span class=" -Color -Color-Red">125.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting etuples (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc)
+  Downloading etuples-0.3.9.tar.gz (30 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">30.6/84.5 MB</span> <span class=" -Color -Color-Red">123.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Preparing metadata (setup.py) ... ?25l-
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">35.0/84.5 MB</span> <span class=" -Color -Color-Red">124.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">39.4/84.5 MB</span> <span class=" -Color -Color-Red">124.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">43.7/84.5 MB</span> <span class=" -Color -Color-Red">124.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">48.1/84.5 MB</span> <span class=" -Color -Color-Red">123.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">52.5/84.5 MB</span> <span class=" -Color -Color-Red">123.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━ <span class=" -Color -Color-Green">56.8/84.5 MB</span> <span class=" -Color -Color-Red">124.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━ <span class=" -Color -Color-Green">61.2/84.5 MB</span> <span class=" -Color -Color-Red">124.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━ <span class=" -Color -Color-Green">65.6/84.5 MB</span> <span class=" -Color -Color-Red">124.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ <span class=" -Color -Color-Green">70.0/84.5 MB</span> <span class=" -Color -Color-Red">123.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ <span class=" -Color -Color-Green">74.3/84.5 MB</span> <span class=" -Color -Color-Red">123.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━ <span class=" -Color -Color-Green">78.6/84.5 MB</span> <span class=" -Color -Color-Red">123.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺ <span class=" -Color -Color-Green">82.9/84.5 MB</span> <span class=" -Color -Color-Red">122.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">84.5/84.5 MB</span> <span class=" -Color -Color-Red">121.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">84.5/84.5 MB</span> <span class=" -Color -Color-Red">121.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">84.5/84.5 MB</span> <span class=" -Color -Color-Red">121.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">84.5/84.5 MB</span> <span class=" -Color -Color-Red">121.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">84.5/84.5 MB</span> <span class=" -Color -Color-Red">121.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">84.5/84.5 MB</span> <span class=" -Color -Color-Red">121.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">84.5/84.5 MB</span> <span class=" -Color -Color-Red">121.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">84.5/84.5 MB</span> <span class=" -Color -Color-Red">121.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">84.5/84.5 MB</span> <span class=" -Color -Color-Red">121.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">84.5/84.5 MB</span> <span class=" -Color -Color-Red">121.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">84.5/84.5 MB</span> <span class=" -Color -Color-Red">121.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">84.5/84.5 MB</span> <span class=" -Color -Color-Red">19.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25h
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numpyro) (0.6.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting jax
-  Downloading jax-0.4.16-py3-none-any.whl (1.6 MB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.6 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.6/1.6 MB</span> <span class=" -Color -Color-Red">75.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hRequirement already satisfied: tqdm in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numpyro) (4.64.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting ml-dtypes&gt;=0.2.0
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading ml_dtypes-0.3.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (206 kB)
-?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/206.6 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">206.6/206.6 kB</span> <span class=" -Color -Color-Red">37.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hRequirement already satisfied: opt-einsum in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from jax) (3.3.0)
-Requirement already satisfied: h5py in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from h5netcdf&gt;=1.0.2-&gt;arviz) (3.7.0)
-Requirement already satisfied: contourpy&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.0.5)
-Requirement already satisfied: pyparsing&gt;=2.3.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (3.0.9)
-Requirement already satisfied: cycler&gt;=0.10 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (0.11.0)
-Requirement already satisfied: python-dateutil&gt;=2.7 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (2.8.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (4.25.0)
-Requirement already satisfied: pillow&gt;=6.2.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (9.4.0)
-Requirement already satisfied: kiwisolver&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.4.4)
-Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pandas&gt;=1.3.0-&gt;arviz) (2023.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting logical-unification
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hCollecting logical-unification (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc)
   Downloading logical-unification-0.4.6.tar.gz (31 kB)
 </pre></div>
 </div>
@@ -400,10 +321,10 @@ Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hCollecting miniKanren
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hCollecting miniKanren (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc)
   Downloading miniKanren-1.0.3.tar.gz (41 kB)
 ?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/41.3 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">41.3/41.3 kB</span> <span class=" -Color -Color-Red">9.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">41.3/41.3 kB</span> <span class=" -Color -Color-Red">8.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25h
 </pre></div>
 </div>
@@ -413,7 +334,7 @@ Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hCollecting cons
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hCollecting cons (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc)
   Downloading cons-0.4.6.tar.gz (26 kB)
 </pre></div>
 </div>
@@ -423,24 +344,27 @@ Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hCollecting etuples
-  Downloading etuples-0.3.9.tar.gz (30 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>?25hRequirement already satisfied: six in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from multipledispatch-&gt;numpyro) (1.16.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Preparing metadata (setup.py) ... ?25l-
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: toolz in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from logical-unification-&gt;pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc) (0.12.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25hRequirement already satisfied: filelock in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.17,&gt;=2.16.1-&gt;pymc) (3.9.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading pymc-5.9.0-py3-none-any.whl (469 kB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/469.1 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from multipledispatch-&gt;numpyro) (1.16.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">469.1/469.1 kB</span> <span class=" -Color -Color-Red">21.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading numpyro-0.13.2-py3-none-any.whl (312 kB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/312.7 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">312.7/312.7 kB</span> <span class=" -Color -Color-Red">42.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading cachetools-5.3.1-py3-none-any.whl (9.3 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: toolz in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from logical-unification-&gt;pytensor&lt;2.17,&gt;=2.16.1-&gt;pymc) (0.12.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building wheels for collected packages: cons, logical-unification, etuples, miniKanren
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading pytensor-2.17.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.9 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.9 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.9/1.9 MB</span> <span class=" -Color -Color-Red">74.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hBuilding wheels for collected packages: cons, logical-unification, etuples, miniKanren
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for cons (setup.py) ... ?25l-
@@ -449,12 +373,9 @@ Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for cons: filename=cons-0.4.6-py3-none-any.whl size=9100 sha256=f847586bedede12d333f9ed45e15cd53d88b477c1381e44360366f96f3e3c15c
-  Stored in directory: /github/home/.cache/pip/wheels/7b/43/b4/ccd47a951bb42b3ec93e9d2798a768007c4165aa9368322852
+?25h  Created wheel for cons: filename=cons-0.4.6-py3-none-any.whl size=9100 sha256=849c2d466861cbb60be34274d610ff59120ac4ce6faab22dfa5935f60e559a4f
+  Stored in directory: /github/home/.cache/pip/wheels/95/8f/45/fe0a5b5e232401da571d514eb545833fbe220993ac8336c94e
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for logical-unification (setup.py) ... ?25l-
@@ -463,12 +384,9 @@ Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for logical-unification: filename=logical_unification-0.4.6-py3-none-any.whl size=13911 sha256=3ac5db5d15724948618374264826e5f0b76d884459420382252d8db7e7f30c75
-  Stored in directory: /github/home/.cache/pip/wheels/81/57/68/6c4b68f3accea61451bb3dae7378ec44a12f46525cfb4beb77
+?25h  Created wheel for logical-unification: filename=logical_unification-0.4.6-py3-none-any.whl size=13911 sha256=974c4ea81c8d6a9e942cd5d1048e27101a3ca3a8f9114dcc1068eeca86371aef
+  Stored in directory: /github/home/.cache/pip/wheels/b8/34/a9/c11a21ef1f1b6d2e5ae518dd5d28c0bd2b131c5d6e5d4417c3
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for etuples (setup.py) ... ?25l-
@@ -477,12 +395,9 @@ Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for etuples: filename=etuples-0.3.9-py3-none-any.whl size=12617 sha256=79b34c1a4bc0a5b1eb0d0b3e2f1f3601ee98e83c3b4129b98b5dd5a609ae068f
-  Stored in directory: /github/home/.cache/pip/wheels/da/12/be/e5f59b5b13a5d1ba5f0b90dfb2c76eec420aa26b8c2d75cc6d
+?25h  Created wheel for etuples: filename=etuples-0.3.9-py3-none-any.whl size=12617 sha256=5f181e7f430b1e73165aaa4a2c4c338f4eed59e79dcb10e8fb9e6a5ffba6e6ea
+  Stored in directory: /github/home/.cache/pip/wheels/11/5a/ad/ebef6395e95b1dfd742afb44db6d92bd5e8921a572b9ff8618
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Building wheel for miniKanren (setup.py) ... ?25l-
@@ -491,41 +406,16 @@ Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> \
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> |
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> done
-?25h  Created wheel for miniKanren: filename=miniKanren-1.0.3-py3-none-any.whl size=23910 sha256=d5be8c9b01ba7417133ab6c64a40fadb57c4347bcf631a6a8081db4ca6cc1fb6
-  Stored in directory: /github/home/.cache/pip/wheels/28/61/4f/cfd90900d6403ad2b2eeafd0a5d7b487074e2a8c1065be1605
+?25h  Created wheel for miniKanren: filename=miniKanren-1.0.3-py3-none-any.whl size=23910 sha256=6a54aa8d81296a9b89214c6ada93a4d08730ed7fde958a2640877541b513b53b
+  Stored in directory: /github/home/.cache/pip/wheels/8d/86/58/7da4a186a7bb721885e4fb811a54b5a0065b0c624a5deb1259
 Successfully built cons logical-unification etuples miniKanren
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: ml-dtypes, fastprogress, cachetools, logical-unification, jaxlib, jax, numpyro, cons, etuples, miniKanren, pytensor, pymc
-  Attempting uninstall: ml-dtypes
-    Found existing installation: ml-dtypes 0.0.4
-    Uninstalling ml-dtypes-0.0.4:
-      Successfully uninstalled ml-dtypes-0.0.4
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: fastprogress, cachetools, logical-unification, numpyro, cons, etuples, miniKanren, pytensor, pymc
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: jaxlib
-    Found existing installation: jaxlib 0.4.7+cuda12.cudnn88
-    Uninstalling jaxlib-0.4.7+cuda12.cudnn88:
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      Successfully uninstalled jaxlib-0.4.7+cuda12.cudnn88
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Attempting uninstall: jax
-    Found existing installation: jax 0.4.8
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Uninstalling jax-0.4.8:
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      Successfully uninstalled jax-0.4.8
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed cachetools-5.3.1 cons-0.4.6 etuples-0.3.9 fastprogress-1.0.3 jax-0.4.16 jaxlib-0.4.16 logical-unification-0.4.6 miniKanren-1.0.3 ml-dtypes-0.3.0 numpyro-0.13.1 pymc-5.8.2 pytensor-2.16.2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed cachetools-5.3.1 cons-0.4.6 etuples-0.3.9 fastprogress-1.0.3 logical-unification-0.4.6 miniKanren-1.0.3 numpyro-0.13.2 pymc-5.9.0 pytensor-2.17.1
 <span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
@@ -650,7 +540,7 @@ so that  <span class="math notranslate nohighlight">\(y_0 \sim {\cal N} \left(0,
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b443aafe37412746ea90ed8f7a8d980dc90f5215851131e1253cdfc59cd60fbb.png" src="_images/b443aafe37412746ea90ed8f7a8d980dc90f5215851131e1253cdfc59cd60fbb.png" />
+<img alt="_images/a83cb95a851dbe184b9041f6aee4f5903f8cd2a365d397c6e4eb4190520a19d2.png" src="_images/a83cb95a851dbe184b9041f6aee4f5903f8cd2a365d397c6e4eb4190520a19d2.png" />
 </div>
 </div>
 <p>Now we shall use Bayes’ law to construct a posterior distribution, conditioning on the initial value of <span class="math notranslate nohighlight">\(y_0\)</span>.</p>
@@ -707,7 +597,7 @@ so that  <span class="math notranslate nohighlight">\(y_0 \sim {\cal N} \left(0,
 </div><div class="output text_html">
     <div>
       <progress value='240000' class='' max='240000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      100.00% [240000/240000 01:24&lt;00:00 Sampling 4 chains, 0 divergences]
+      100.00% [240000/240000 01:12&lt;00:00 Sampling 4 chains, 0 divergences]
     </div>
     </div></div>
 </div>
@@ -719,7 +609,7 @@ so that  <span class="math notranslate nohighlight">\(y_0 \sim {\cal N} \left(0,
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/31af8b0529dd4cc97d2e2da37168de0e1b1230fc1574e97332bc48e888aefe95.png" src="_images/31af8b0529dd4cc97d2e2da37168de0e1b1230fc1574e97332bc48e888aefe95.png" />
+<img alt="_images/2ede287ccecda43fe0d111c258a5f5afe9a993d0e2c6391294de986eb8f01581.png" src="_images/2ede287ccecda43fe0d111c258a5f5afe9a993d0e2c6391294de986eb8f01581.png" />
 </div>
 </div>
 <p>Evidently, the posteriors aren’t centered on the true values of <span class="math notranslate nohighlight">\(.5, 1\)</span> that we used to generate the data.</p>
@@ -768,27 +658,27 @@ so that  <span class="math notranslate nohighlight">\(y_0 \sim {\cal N} \left(0,
   <tbody>
     <tr>
       <th>rho</th>
-      <td>0.5364</td>
-      <td>0.0712</td>
-      <td>0.4035</td>
-      <td>0.6713</td>
+      <td>0.5365</td>
+      <td>0.0709</td>
+      <td>0.4036</td>
+      <td>0.6707</td>
       <td>0.0002</td>
       <td>0.0001</td>
-      <td>176745.5969</td>
-      <td>123630.9264</td>
-      <td>1.0</td>
+      <td>170793.4530</td>
+      <td>123530.1222</td>
+      <td>1.0001</td>
     </tr>
     <tr>
       <th>sigma</th>
-      <td>1.0105</td>
-      <td>0.1067</td>
-      <td>0.8214</td>
-      <td>1.2135</td>
+      <td>1.0098</td>
+      <td>0.1061</td>
+      <td>0.8216</td>
+      <td>1.2112</td>
       <td>0.0003</td>
       <td>0.0002</td>
-      <td>164066.3034</td>
-      <td>136011.9523</td>
-      <td>1.0</td>
+      <td>172634.9764</td>
+      <td>137072.7724</td>
+      <td>1.0000</td>
     </tr>
   </tbody>
 </table>
@@ -851,7 +741,7 @@ y_0 \sim N \left(0, \frac{\sigma_x^{2}}{1 - \rho^{2}} \right)
 </div><div class="output text_html">
     <div>
       <progress value='240000' class='' max='240000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      100.00% [240000/240000 01:30&lt;00:00 Sampling 4 chains, 63 divergences]
+      100.00% [240000/240000 01:13&lt;00:00 Sampling 4 chains, 43 divergences]
     </div>
     </div></div>
 </div>
@@ -863,7 +753,7 @@ y_0 \sim N \left(0, \frac{\sigma_x^{2}}{1 - \rho^{2}} \right)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/db59a882a200d7eb6415799452e4185078e1dfa4393c3e3b9b0c5919264b0adf.png" src="_images/db59a882a200d7eb6415799452e4185078e1dfa4393c3e3b9b0c5919264b0adf.png" />
+<img alt="_images/bfdef3713aa07c48bdc460b954e9a9c7d54ee8891505fa46d662fafeb55333fc.png" src="_images/bfdef3713aa07c48bdc460b954e9a9c7d54ee8891505fa46d662fafeb55333fc.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -908,26 +798,26 @@ y_0 \sim N \left(0, \frac{\sigma_x^{2}}{1 - \rho^{2}} \right)
   <tbody>
     <tr>
       <th>rho</th>
-      <td>0.8757</td>
+      <td>0.8756</td>
       <td>0.0812</td>
-      <td>0.7315</td>
-      <td>0.9985</td>
+      <td>0.7308</td>
+      <td>0.9979</td>
       <td>0.0002</td>
       <td>0.0002</td>
-      <td>105591.9624</td>
-      <td>79498.6237</td>
+      <td>110603.9789</td>
+      <td>83714.7435</td>
       <td>1.0</td>
     </tr>
     <tr>
       <th>sigma</th>
       <td>1.4045</td>
-      <td>0.1470</td>
-      <td>1.1401</td>
-      <td>1.6833</td>
+      <td>0.1471</td>
+      <td>1.1396</td>
+      <td>1.6817</td>
       <td>0.0004</td>
       <td>0.0003</td>
-      <td>116488.9532</td>
-      <td>99802.8118</td>
+      <td>120982.9833</td>
+      <td>102833.8016</td>
       <td>1.0</td>
     </tr>
   </tbody>
@@ -949,7 +839,7 @@ that make observations more likely.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_posterior</span><span class="p">(</span><span class="n">sample</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot trace and histogram</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># To np array</span>
@@ -1008,8 +898,7 @@ that make observations more likely.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1695401966.257830     167 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
-WARNING:jax._src.xla_bridge:No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
+I0000 00:00:1696996497.996073     167 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
 </pre></div>
 </div>
 </div>
@@ -1021,7 +910,7 @@ WARNING:jax._src.xla_bridge:No GPU/TPU found, falling back to CPU. (Set TF_CPP_M
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4ad4f1146effee56ca0096d4c80727af1679c43cba8f74bd5734d22f2d8978c7.png" src="_images/4ad4f1146effee56ca0096d4c80727af1679c43cba8f74bd5734d22f2d8978c7.png" />
+<img alt="_images/99287afe127cf5b5d34e033e8ad239079d78bafb8a91c4c11feba7b366b94cc0.png" src="_images/99287afe127cf5b5d34e033e8ad239079d78bafb8a91c4c11feba7b366b94cc0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1032,8 +921,8 @@ WARNING:jax._src.xla_bridge:No GPU/TPU found, falling back to CPU. (Set TF_CPP_M
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                mean       std    median      5.0%     95.0%     n_eff     r_hat
-       rho      0.54      0.07      0.54      0.42      0.65  31893.01      1.00
-     sigma      1.01      0.11      1.00      0.84      1.18  32715.75      1.00
+       rho      0.54      0.07      0.54      0.42      0.66  34735.88      1.00
+     sigma      1.01      0.11      1.00      0.83      1.18  33245.42      1.00
 
 Number of divergences: 0
 </pre></div>
@@ -1088,7 +977,7 @@ y_0 \sim N \left(0, \frac{\sigma_x^{2}}{1 - \rho^{2}} \right)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1cf4049074e087b79163fbe681f19949fda35bdefb10069522149165f074a6f6.png" src="_images/1cf4049074e087b79163fbe681f19949fda35bdefb10069522149165f074a6f6.png" />
+<img alt="_images/8267e0e8617b777b1666e91dce1d0759daca82ee2c4960348275353f0015b7b7.png" src="_images/8267e0e8617b777b1666e91dce1d0759daca82ee2c4960348275353f0015b7b7.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1099,8 +988,8 @@ y_0 \sim N \left(0, \frac{\sigma_x^{2}}{1 - \rho^{2}} \right)
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                mean       std    median      5.0%     95.0%     n_eff     r_hat
-       rho      0.88      0.08      0.89      0.76      1.00  27184.82      1.00
-     sigma      1.40      0.15      1.39      1.16      1.64  25417.89      1.00
+       rho      0.88      0.08      0.89      0.76      1.00  29063.44      1.00
+     sigma      1.40      0.15      1.39      1.17      1.64  25674.09      1.00
 
 Number of divergences: 0
 </pre></div>
@@ -1701,15 +1590,15 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
-                    <!-- <li class="btn__search">
-                        <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
-                            <i data-feather="search"></i>
-                        </form>
-                    </li> -->
                 </ul>
 
                 <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
@@ -1717,7 +1606,7 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/ar1_bayes.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
-                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/ar1_bayes.md" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/ar1_bayes.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
@@ -1746,8 +1635,6 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/ar1_bayes.ipynb">BinderHub</option>
-                
                     <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/ar1_bayes.ipynb">Colab</option>
                 
                 </select>
@@ -1759,7 +1646,7 @@ is telling <code class="docutils literal notranslate"><span class="pre">numpyro<
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/ar1_bayes.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/ar1_bayes.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');

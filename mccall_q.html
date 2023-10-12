@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -257,7 +258,7 @@ actions that he can take in each state.</p>
 <p>As usual, let’s  import some Python modules.</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon
 </pre></div>
 </div>
 </div>
@@ -267,19 +268,20 @@ actions that he can take in each state.</p>
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.31.0)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
-Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (1.26.16)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2023.7.22)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -351,7 +353,7 @@ v^{\prime}(i)=\max \left\{\frac{w(i)}{1-\beta}, c+\beta \sum_{1 \leq j \leq n} v
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ea9335e2e5e31e789226be376efe243a4b70e5b6e365bea8f0cb6d219f2faee5.png" src="_images/ea9335e2e5e31e789226be376efe243a4b70e5b6e365bea8f0cb6d219f2faee5.png" />
+<img alt="_images/4bc18cb66cc9cbfa6043825ed99f10fd9da6fde4d56ca1fa0188cf95573578a3.png" src="_images/4bc18cb66cc9cbfa6043825ed99f10fd9da6fde4d56ca1fa0188cf95573578a3.png" />
 </div>
 </div>
 <p>Next we’ll compute the worker’s optimal value function by iterating to convergence on the Bellman equation.</p>
@@ -375,7 +377,7 @@ v^{\prime}(i)=\max \left\{\frac{w(i)}{1-\beta}, c+\beta \sum_{1 \leq j \leq n} v
         <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">w</span><span class="p">,</span> <span class="n">q</span>
 
     <span class="k">def</span> <span class="nf">state_action_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The values of state-action pairs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Simplify names</span>
@@ -388,7 +390,7 @@ v^{\prime}(i)=\max \left\{\frac{w(i)}{1-\beta}, c+\beta \sum_{1 \leq j \leq n} v
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">accept</span><span class="p">,</span> <span class="n">reject</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">VFI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find the optimal value function.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -409,7 +411,7 @@ v^{\prime}(i)=\max \left\{\frac{w(i)}{1-\beta}, c+\beta \sum_{1 \leq j \leq n} v
         <span class="k">return</span> <span class="n">v</span><span class="p">,</span> <span class="n">flag</span>
 
 <span class="k">def</span> <span class="nf">plot_value_function_seq</span><span class="p">(</span><span class="n">mcm</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">num_plots</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot a sequence of value functions.</span>
 
 <span class="sd">        * mcm is an instance of McCallModel</span>
@@ -446,7 +448,7 @@ v^{\prime}(i)=\max \left\{\frac{w(i)}{1-\beta}, c+\beta \sum_{1 \leq j \leq n} v
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f41075aa9d88035059e5b3b3c522b6ab872bb5c3f33c4872015911ed04cd3e58.png" src="_images/f41075aa9d88035059e5b3b3c522b6ab872bb5c3f33c4872015911ed04cd3e58.png" />
+<img alt="_images/4c2c964ccf074c55159eab243413fe6ad14fe64815492621d0e730c1a03bffd5.png" src="_images/4c2c964ccf074c55159eab243413fe6ad14fe64815492621d0e730c1a03bffd5.png" />
 </div>
 </div>
 <p>Next we’ll print out the limit of the sequence of iterates.</p>
@@ -669,7 +671,7 @@ pseudo-code for   our McCall worker to do Q-learning:</p>
 
 
     <span class="k">def</span> <span class="nf">draw_offer_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Draw a state index from the wage distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -677,7 +679,7 @@ pseudo-code for   our McCall worker to do Q-learning:</p>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">q</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">temp_diff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qtable</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">accept</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the TD associated with state and action.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -696,7 +698,7 @@ pseudo-code for   our McCall worker to do Q-learning:</p>
         <span class="k">return</span> <span class="n">TD</span><span class="p">,</span> <span class="n">state_next</span>
 
     <span class="k">def</span> <span class="nf">run_one_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qtable</span><span class="p">,</span> <span class="n">max_times</span><span class="o">=</span><span class="mi">20000</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run an &quot;epoch&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -737,7 +739,7 @@ pseudo-code for   our McCall worker to do Q-learning:</p>
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">run_epochs</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">qlmc</span><span class="p">,</span> <span class="n">qtable</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Run epochs N times with qtable from the last iteration each time.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -778,10 +780,10 @@ Progress: EPOCHs = 8000
 Progress: EPOCHs = 10000
 Progress: EPOCHs = 12000
 Progress: EPOCHs = 14000
+Progress: EPOCHs = 16000
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 16000
-Progress: EPOCHs = 18000
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 18000
 </pre></div>
 </div>
 </div>
@@ -793,17 +795,17 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[5362.5476469  2680.51809631]
- [5352.10213385 5171.15189455]
- [5297.74133488 5244.5386657 ]
- [5310.54675725 5203.55208174]
- [5201.2637939  5230.31389893]
- [5270.27040935 5148.86982961]
- [5205.77076867 5175.90693391]
- [5335.37451957 5158.07551428]
- [5411.11859602 5210.67346843]
- [5316.41759778 5500.00000422]
- [5306.51019188 6000.        ]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[4947.35342127    0.        ]
+ [5284.20834161 5262.52123339]
+ [5413.35806687 5284.4521249 ]
+ [5298.5221308  5239.81717611]
+ [5353.21058914 5308.02799282]
+ [5282.93681883 5276.50162926]
+ [5350.51966999 5294.22324625]
+ [5401.86828148 5270.34656155]
+ [5279.08799443 5289.81043999]
+ [5445.40470687 5500.        ]
+ [5448.63883565 6000.        ]]
 </pre></div>
 </div>
 </div>
@@ -818,8 +820,8 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[5362.5476469  5352.10213385 5297.74133488 5310.54675725 5230.31389893
- 5270.27040935 5205.77076867 5335.37451957 5411.11859602 5500.00000422
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[4947.35342127 5284.20834161 5413.35806687 5298.5221308  5353.21058914
+ 5282.93681883 5350.51966999 5401.86828148 5289.81043999 5500.
  6000.        ]
 </pre></div>
 </div>
@@ -840,7 +842,7 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1c6b4bab9251e9f7bedcdbe1028f368cc481cd3c6c3154e0f299ed34c1454d3c.png" src="_images/1c6b4bab9251e9f7bedcdbe1028f368cc481cd3c6c3154e0f299ed34c1454d3c.png" />
+<img alt="_images/42c787431c9f2f483cfd66affcbb3472735ed25d732344b6dccc711143b0c28c.png" src="_images/42c787431c9f2f483cfd66affcbb3472735ed25d732344b6dccc711143b0c28c.png" />
 </div>
 </div>
 <p>Now, let us compute the case with a larger state space: <span class="math notranslate nohighlight">\(n=30\)</span> instead of <span class="math notranslate nohighlight">\(n=10\)</span>.</p>
@@ -868,7 +870,7 @@ Progress: EPOCHs = 18000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f638b8464078cdbfa3cd964aa9fd89545e60eb6572e637cc0ef71ed00a098e8a.png" src="_images/f638b8464078cdbfa3cd964aa9fd89545e60eb6572e637cc0ef71ed00a098e8a.png" />
+<img alt="_images/10ca25a4aa74ba36269674d7c93e8169fff31d718b34d1f2ace7ecd72e9a42b1.png" src="_images/10ca25a4aa74ba36269674d7c93e8169fff31d718b34d1f2ace7ecd72e9a42b1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -955,9 +957,7 @@ Progress: EPOCHs = 18000
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 140000
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 160000
+Progress: EPOCHs = 160000
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 180000
@@ -966,7 +966,7 @@ Progress: EPOCHs = 18000
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 200000
 </pre></div>
 </div>
-<img alt="_images/8b556e831de296281930f01c1d9f9f213f72994d7d8f5d6cefa000c57cf4ff4f.png" src="_images/8b556e831de296281930f01c1d9f9f213f72994d7d8f5d6cefa000c57cf4ff4f.png" />
+<img alt="_images/9cdf9479bd7aad963509ac3e5aa43c813f379a1f032b1782451ec61668059bdd.png" src="_images/9cdf9479bd7aad963509ac3e5aa43c813f379a1f032b1782451ec61668059bdd.png" />
 </div>
 </div>
 <p>The above graphs indicates that</p>
@@ -1038,7 +1038,7 @@ exploitation only.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Progress: EPOCHs = 200000
 </pre></div>
 </div>
-<img alt="_images/f8e0c9443a4b597fe594b706b456341cd97f2fa2e1a992e7556be54a77d18146.png" src="_images/f8e0c9443a4b597fe594b706b456341cd97f2fa2e1a992e7556be54a77d18146.png" />
+<img alt="_images/ed08d7fb772bc1813a10414bd32b36630891d945bdc420aa98f8c02f51d18f9e.png" src="_images/ed08d7fb772bc1813a10414bd32b36630891d945bdc420aa98f8c02f51d18f9e.png" />
 </div>
 </div>
 </section>
@@ -1639,15 +1639,15 @@ network as a good function approximator.</p>
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
-                    <!-- <li class="btn__search">
-                        <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
-                            <i data-feather="search"></i>
-                        </form>
-                    </li> -->
                 </ul>
 
                 <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
@@ -1655,7 +1655,7 @@ network as a good function approximator.</p>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/mccall_q.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
-                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/mccall_q.md" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/mccall_q.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
@@ -1684,8 +1684,6 @@ network as a good function approximator.</p>
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/mccall_q.ipynb">BinderHub</option>
-                
                     <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/mccall_q.ipynb">Colab</option>
                 
                 </select>
@@ -1697,7 +1695,7 @@ network as a good function approximator.</p>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/mccall_q.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/mccall_q.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');

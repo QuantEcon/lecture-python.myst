@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -373,7 +374,7 @@ dynamics are</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">R0</span><span class="o">=</span><span class="mf">1.6</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Time derivative of the state vector.</span>
 
 <span class="sd">        * x is the state vector (array_like)</span>
@@ -384,7 +385,7 @@ dynamics are</p>
     <span class="n">s</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="n">x</span>
 
     <span class="c1"># New exposure of susceptibles</span>
-    <span class="n">β</span> <span class="o">=</span> <span class="n">R0</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">γ</span> <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">R0</span><span class="p">)</span> <span class="k">else</span> <span class="n">R0</span> <span class="o">*</span> <span class="n">γ</span>
+    <span class="n">β</span> <span class="o">=</span> <span class="n">R0</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">γ</span> <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">R0</span><span class="p">)</span> <span class="k">else</span> <span class="n">R0</span> <span class="o">*</span> <span class="n">γ</span>
     <span class="n">ne</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">s</span> <span class="o">*</span> <span class="n">i</span>
 
     <span class="c1"># Time derivatives</span>
@@ -422,7 +423,7 @@ dynamics are</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve_path</span><span class="p">(</span><span class="n">R0</span><span class="p">,</span> <span class="n">t_vec</span><span class="p">,</span> <span class="n">x_init</span><span class="o">=</span><span class="n">x_0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Solve for i(t) and c(t) via numerical integration,</span>
 <span class="sd">    given the time path for R0.</span>
 
@@ -493,7 +494,7 @@ dynamics are</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d5ad9ac25767d28fa305364e292f547e981ede00a7fb4bd5485732772d73a562.png" src="_images/d5ad9ac25767d28fa305364e292f547e981ede00a7fb4bd5485732772d73a562.png" />
+<img alt="_images/f99e6e9745c29bbc86b929fd28da436ae8938c1119db828593d1ed995f988cac.png" src="_images/f99e6e9745c29bbc86b929fd28da436ae8938c1119db828593d1ed995f988cac.png" />
 </div>
 </div>
 <p>As expected, lower effective transmission rates defer the peak of infections.</p>
@@ -506,7 +507,7 @@ dynamics are</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f15b887885ed03b48e680e8637ed5193545e1be87c3d0601b91eebaa3e1a7e58.png" src="_images/f15b887885ed03b48e680e8637ed5193545e1be87c3d0601b91eebaa3e1a7e58.png" />
+<img alt="_images/62d2c68ebf2520de3019476516eb348d7cae59db7ef6f7e0683573561d85fc96.png" src="_images/62d2c68ebf2520de3019476516eb348d7cae59db7ef6f7e0683573561d85fc96.png" />
 </div>
 </div>
 </section>
@@ -551,7 +552,7 @@ imposed.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2dc9b982688a785aa283b72e5aa404a05a493fd956ccdf4e1bb2ca33bc27b942.png" src="_images/2dc9b982688a785aa283b72e5aa404a05a493fd956ccdf4e1bb2ca33bc27b942.png" />
+<img alt="_images/9de791793fbbebe7f09474d0dea8e664537da687d0b9d161e96d6fe12a3a8ddc.png" src="_images/9de791793fbbebe7f09474d0dea8e664537da687d0b9d161e96d6fe12a3a8ddc.png" />
 </div>
 </div>
 <p>Let’s calculate the time path of infected people:</p>
@@ -576,7 +577,7 @@ imposed.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6ece5c3f4a80e042f2313ebe50f6ec348d059610f4b983ebca2fa24e985afa9f.png" src="_images/6ece5c3f4a80e042f2313ebe50f6ec348d059610f4b983ebca2fa24e985afa9f.png" />
+<img alt="_images/4c5b0fcad13ed83db53af400311f76f3b7460e15bca4ec2b83750233655d94fc.png" src="_images/4c5b0fcad13ed83db53af400311f76f3b7460e15bca4ec2b83750233655d94fc.png" />
 </div>
 </div>
 <p>Here are cumulative cases, as a fraction of population:</p>
@@ -587,7 +588,7 @@ imposed.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6e3d2654d9b0e7896887a2a208ef456173f0a2d87c19ba5cd49990d4dbd97826.png" src="_images/6e3d2654d9b0e7896887a2a208ef456173f0a2d87c19ba5cd49990d4dbd97826.png" />
+<img alt="_images/a82ed4d9d8ad4d51b42bd6b7747916edf0f1e29fd8b2b72c31a72bf9d4c21fd8.png" src="_images/a82ed4d9d8ad4d51b42bd6b7747916edf0f1e29fd8b2b72c31a72bf9d4c21fd8.png" />
 </div>
 </div>
 </section>
@@ -639,7 +640,7 @@ and 75,000 agents already exposed to the virus and thus soon to be contagious.</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f41ef8e6483ecf20b31058f945725822abe0e1f8d17a48fe710fc1c72790c690.png" src="_images/f41ef8e6483ecf20b31058f945725822abe0e1f8d17a48fe710fc1c72790c690.png" />
+<img alt="_images/20a3083a6a754f887686489500316e93bc7181049201da5b8b987db3cdae2e62.png" src="_images/20a3083a6a754f887686489500316e93bc7181049201da5b8b987db3cdae2e62.png" />
 </div>
 </div>
 <p>What kind of mortality can we expect under these scenarios?</p>
@@ -660,7 +661,7 @@ and 75,000 agents already exposed to the virus and thus soon to be contagious.</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c7c068479693d08190b59e2b15d67bc63221cea13c6b8ed2c1fd75b7f22c7045.png" src="_images/c7c068479693d08190b59e2b15d67bc63221cea13c6b8ed2c1fd75b7f22c7045.png" />
+<img alt="_images/7177e08a25e419bcd4f43a10713c1205174474df5889bfab28015ea457b95585.png" src="_images/7177e08a25e419bcd4f43a10713c1205174474df5889bfab28015ea457b95585.png" />
 </div>
 </div>
 <p>This is the daily death rate:</p>
@@ -672,7 +673,7 @@ and 75,000 agents already exposed to the virus and thus soon to be contagious.</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5222a8f7413cd6df27533b01f8f04fd0355537444306cf307b70bd63026f9548.png" src="_images/5222a8f7413cd6df27533b01f8f04fd0355537444306cf307b70bd63026f9548.png" />
+<img alt="_images/ef8042f7091f86ad4d7c3366b6490c65f5b25f7fcb27bfe49fa549c11fc16ffa.png" src="_images/ef8042f7091f86ad4d7c3366b6490c65f5b25f7fcb27bfe49fa549c11fc16ffa.png" />
 </div>
 </div>
 <p>Pushing the peak of curve further into the future may reduce cumulative deaths
@@ -1266,15 +1267,15 @@ if a vaccine is found.</p>
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
-                    <!-- <li class="btn__search">
-                        <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
-                            <i data-feather="search"></i>
-                        </form>
-                    </li> -->
                 </ul>
 
                 <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
@@ -1282,7 +1283,7 @@ if a vaccine is found.</p>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/sir_model.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
-                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/sir_model.md" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/sir_model.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
@@ -1311,8 +1312,6 @@ if a vaccine is found.</p>
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/sir_model.ipynb">BinderHub</option>
-                
                     <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/sir_model.ipynb">Colab</option>
                 
                 </select>
@@ -1324,7 +1323,7 @@ if a vaccine is found.</p>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/sir_model.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/sir_model.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');

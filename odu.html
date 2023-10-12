@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -270,8 +271,8 @@ const thebe_selector_output = ".output, .cell_output"
 <p>In addition to what’s in Anaconda, this lecture deploys the libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>  <span class="o">!</span>pip install quantecon
-  <span class="o">!</span>pip install interpolation
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>  <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon
+  <span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>interpolation
 </pre></div>
 </div>
 </div>
@@ -281,34 +282,32 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.31.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
-Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (1.26.16)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2023.7.22)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /opt/conda/envs/quantecon/lib/python3.10/site-packages (2.2.4)
-Requirement already satisfied: scipy&lt;2.0.0,&gt;=1.4.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (1.10.0)
-Requirement already satisfied: numba&gt;=0.47 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (0.56.4)
-Requirement already satisfied: numpy&lt;2.0.0,&gt;=1.22.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (1.23.5)
-Requirement already satisfied: packaging&lt;22.0,&gt;=21.3 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (21.3)
-Requirement already satisfied: tempita&lt;0.6.0,&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from interpolation) (0.5.2)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.39.1)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.47-&gt;interpolation) (65.6.3)
-Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from packaging&lt;22.0,&gt;=21.3-&gt;interpolation) (3.0.9)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: interpolation in /opt/conda/envs/quantecon/lib/python3.11/site-packages (2.2.1)
+Requirement already satisfied: numba&gt;=0.47 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.57.1)
+Requirement already satisfied: numpy&gt;=1.18.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.24.3)
+Requirement already satisfied: scipy&gt;=1.4.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (1.11.1)
+Requirement already satisfied: tempita&gt;=0.5.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from interpolation) (0.5.2)
+Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.47-&gt;interpolation) (0.40.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -350,6 +349,12 @@ must be learned.</p>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
 <span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">op</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">cumfreq</span><span class="p">,</span> <span class="n">beta</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/site-packages/numba/core/decorators.py:262: NumbaDeprecationWarning: <span class=" -Color -Color-Bold">numba.generated_jit is deprecated. Please see the documentation at: https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-generated-jit for more information and advice on a suitable replacement.</span>
+  warnings.warn(msg, NumbaDeprecationWarning)
 </pre></div>
 </div>
 </div>
@@ -488,7 +493,7 @@ our baseline parameterization will be</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e668bfb65392bee33e9dba5be1305fd51fd36bad3437b4bf95cc19c071648142.png" src="_images/e668bfb65392bee33e9dba5be1305fd51fd36bad3437b4bf95cc19c071648142.png" />
+<img alt="_images/edcd58f859d247b82ddd4ccf9ea5a89d85214c379c298321ee152b2f6606fa92.png" src="_images/edcd58f859d247b82ddd4ccf9ea5a89d85214c379c298321ee152b2f6606fa92.png" />
 </div>
 </div>
 </section>
@@ -526,7 +531,7 @@ needed to compute optimal actions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SearchProblem</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class to store a given parameterization of the &quot;offer distribution</span>
 <span class="sd">    unknown&quot; model.</span>
 
@@ -581,7 +586,7 @@ the value function</p>
 
     <span class="nd">@njit</span>
     <span class="k">def</span> <span class="nf">κ</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates π using Bayes&#39; rule and the current wage observation w.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">pf</span><span class="p">,</span> <span class="n">pg</span> <span class="o">=</span> <span class="n">π</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
@@ -591,7 +596,7 @@ the value function</p>
 
     <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The Bellman operator.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -617,7 +622,7 @@ the value function</p>
 
     <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;&quot;</span>
 <span class="sd">        Compute optimal actions taking v as the value function.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -660,7 +665,7 @@ using T to find a fixed point</p>
                 <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">print_skip</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Solves for the value function</span>
 
 <span class="sd">    * sp is an instance of SearchProblem</span>
@@ -711,28 +716,28 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.6181761536235246.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.6247022986902753.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.10306936505162234.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 10 is 0.1072442675302554.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.022253762074461392.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 15 is 0.023933702317490813.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.005200188383231108.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 20 is 0.005591673519264262.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0012171841608399347.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.0013068744107656016.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.0002849289871456051.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 30 is 0.0003054353417031308.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 34 iterations.
 </pre></div>
 </div>
-<img alt="_images/21a5869cc798d782b8d1ba15315bf7efa4874e14c64d59c5b73085b6f3772522.png" src="_images/21a5869cc798d782b8d1ba15315bf7efa4874e14c64d59c5b73085b6f3772522.png" />
+<img alt="_images/c5f5f512163987c45766a07ace555021d1c8682976e21014bd2ea254d1df1067.png" src="_images/c5f5f512163987c45766a07ace555021d1c8682976e21014bd2ea254d1df1067.png" />
 </div>
 </div>
 <p>We will also plot the optimal policy</p>
@@ -754,7 +759,7 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/dcef023e270d53905353d332fed1bf0d6ec4b4446146fbeb389580bcbc0a624a.png" src="_images/dcef023e270d53905353d332fed1bf0d6ec4b4446146fbeb389580bcbc0a624a.png" />
+<img alt="_images/4df936df257cc4a4d615e406353523e42ab56a31272491ebd551a969d8c4b01d.png" src="_images/4df936df257cc4a4d615e406353523e42ab56a31272491ebd551a969d8c4b01d.png" />
 </div>
 </div>
 <p>The results fit well with our intuition from section <a class="reference internal" href="#looking-forward"><span class="std std-ref">looking
@@ -884,7 +889,7 @@ returns the operator <code class="docutils literal notranslate"><span class="pre
 
     <span class="nd">@njit</span>
     <span class="k">def</span> <span class="nf">κ</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">π</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates π using Bayes&#39; rule and the current wage observation w.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">pf</span><span class="p">,</span> <span class="n">pg</span> <span class="o">=</span> <span class="n">π</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">π</span><span class="p">)</span> <span class="o">*</span> <span class="n">g</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
@@ -894,7 +899,7 @@ returns the operator <code class="docutils literal notranslate"><span class="pre
 
     <span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="n">parallel_flag</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">Q</span><span class="p">(</span><span class="n">ω</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        Updates the reservation wage function guess ω via the operator</span>
 <span class="sd">        Q.</span>
@@ -1007,16 +1012,15 @@ fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.02189227083100398.
-Error at iteration 10 is 0.0071870744228111905.
-Error at iteration 15 is 0.0018165458104162369.
-Error at iteration 20 is 0.00041943723981185954.
-Error at iteration 25 is 9.469854449162263e-05.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.020799223259200583.
+Error at iteration 10 is 0.006341997484693107.
+Error at iteration 15 is 0.0014162625334815937.
+Error at iteration 20 is 0.0002962720954480247.
 
-Converged in 25 iterations.
+Converged in 24 iterations.
 </pre></div>
 </div>
-<img alt="_images/5f1f94b7769acdd94c19c51871b085ab7827f9b761da1f8f9610ce0113c16369.png" src="_images/5f1f94b7769acdd94c19c51871b085ab7827f9b761da1f8f9610ce0113c16369.png" />
+<img alt="_images/0d1f75cb5c8dba220983198f755055793302c94c106726e714ca9d22acf98ddb.png" src="_images/0d1f75cb5c8dba220983198f755055793302c94c106726e714ca9d22acf98ddb.png" />
 </div>
 </div>
 </section>
@@ -1068,7 +1072,7 @@ too optimistic and turn down too many jobs.</p>
                   <span class="n">d</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>        <span class="c1"># Change date</span>
                   <span class="n">s</span><span class="o">=</span><span class="mf">0.025</span><span class="p">):</span>     <span class="c1"># Separation rate</span>
 
-    <span class="sd">&quot;&quot;&quot;Simulates path of employment for N number of works over T periods&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulates path of employment for N number of works over T periods&quot;&quot;&quot;</span>
 
     <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
     <span class="n">π</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="mf">1e-3</span><span class="p">)</span>
@@ -1107,7 +1111,7 @@ too optimistic and turn down too many jobs.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c994e846065f5485c83b0ec8db3b92aba44998070b90c720d4f2c88c36a2947a.png" src="_images/c994e846065f5485c83b0ec8db3b92aba44998070b90c720d4f2c88c36a2947a.png" />
+<img alt="_images/66da98ce9b3a351063d4a6cfad2ff6d753edc6714896044ac10b020b74313929.png" src="_images/66da98ce9b3a351063d4a6cfad2ff6d753edc6714896044ac10b020b74313929.png" />
 </div>
 </div>
 </section>
@@ -1126,7 +1130,7 @@ employment.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
 <span class="k">def</span> <span class="nf">empirical_dist</span><span class="p">(</span><span class="n">F_a</span><span class="p">,</span> <span class="n">F_b</span><span class="p">,</span> <span class="n">G_a</span><span class="p">,</span> <span class="n">G_b</span><span class="p">,</span> <span class="n">w_bar</span><span class="p">,</span> <span class="n">π_grid</span><span class="p">,</span>
                    <span class="n">N</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">600</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simulates population for computing empirical cumulative</span>
 <span class="sd">    distribution of unemployment duration and π at time when</span>
 <span class="sd">    the worker accepts the wage offer. For each job searching</span>
@@ -1180,7 +1184,7 @@ employment.</p>
     <span class="k">return</span> <span class="n">accept_t</span><span class="p">,</span> <span class="n">accept_π</span>
 
 <span class="k">def</span> <span class="nf">cumfreq_x</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function for calculating the x grids of</span>
 <span class="sd">    the cumulative frequency histogram.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1204,7 +1208,7 @@ to interpret the solution of our search model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">job_search_example</span><span class="p">(</span><span class="n">F_a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">F_b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">G_a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">G_b</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">0.3</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given the parameters that specify F and G distributions,</span>
 <span class="sd">    calculate and display the rejection and acceptance area,</span>
 <span class="sd">    the evolution of belief π, and the probability of accepting</span>
@@ -1369,8 +1373,8 @@ unemployment verifies our conjecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/96d72ef2c3a1457a08beab1fa8c350053a998bd7c7a84cccbf3dd66d5a47bd20.png" src="_images/96d72ef2c3a1457a08beab1fa8c350053a998bd7c7a84cccbf3dd66d5a47bd20.png" />
-<img alt="_images/e1ce591c951e08b128f544a5db6d1ae2b3176fd6fb754a81e0bfbc34a9f00d61.png" src="_images/e1ce591c951e08b128f544a5db6d1ae2b3176fd6fb754a81e0bfbc34a9f00d61.png" />
+<img alt="_images/eb927b1f6ca249265517e5dc8623d6da25a5bb53b5d5dcabce651032cd0caf45.png" src="_images/eb927b1f6ca249265517e5dc8623d6da25a5bb53b5d5dcabce651032cd0caf45.png" />
+<img alt="_images/8826b97bad2a8999b1e0788e6ee35bb92ae68f34327ff50c7fe324960bc0f278.png" src="_images/8826b97bad2a8999b1e0788e6ee35bb92ae68f34327ff50c7fe324960bc0f278.png" />
 </div>
 </div>
 </section>
@@ -1390,8 +1394,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d1704bd9ff4c6abebafe68c306f169b3dbc68f394862e146f8fc38fd303768ca.png" src="_images/d1704bd9ff4c6abebafe68c306f169b3dbc68f394862e146f8fc38fd303768ca.png" />
-<img alt="_images/2e512ef7c013587e0a1881687f6b7fb199f2fb344ad496b0ee93b72e0dc93901.png" src="_images/2e512ef7c013587e0a1881687f6b7fb199f2fb344ad496b0ee93b72e0dc93901.png" />
+<img alt="_images/de431c23e62fd60d01061e31abe33ebabccb0d12e3455f9d241882ca619036c1.png" src="_images/de431c23e62fd60d01061e31abe33ebabccb0d12e3455f9d241882ca619036c1.png" />
+<img alt="_images/a672adce52dbcf97cc245ebf57ea95e2f54d0c810739791e1e5d37f65133fbdf.png" src="_images/a672adce52dbcf97cc245ebf57ea95e2f54d0c810739791e1e5d37f65133fbdf.png" />
 </div>
 </div>
 </section>
@@ -1408,8 +1412,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b87ffc0dbc73635aa269480bb3e8d144e2a7b8ed21c5a24ec88ead93d8340b17.png" src="_images/b87ffc0dbc73635aa269480bb3e8d144e2a7b8ed21c5a24ec88ead93d8340b17.png" />
-<img alt="_images/9ac2f02adf10a1e6887e21324859765d5fd7f58dc121deebdad8503f897b1407.png" src="_images/9ac2f02adf10a1e6887e21324859765d5fd7f58dc121deebdad8503f897b1407.png" />
+<img alt="_images/2359ed5b1308f415d98dd82389f636ff30d9fffa86263b2365749b4985bb16d6.png" src="_images/2359ed5b1308f415d98dd82389f636ff30d9fffa86263b2365749b4985bb16d6.png" />
+<img alt="_images/3c70c9cede27129e51895775f3a6cfd3f4d3854843ed95f9643af7ae8672c2d7.png" src="_images/3c70c9cede27129e51895775f3a6cfd3f4d3854843ed95f9643af7ae8672c2d7.png" />
 </div>
 </div>
 </section>
@@ -1436,8 +1440,8 @@ when he eventually chooses to accept a wage offer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/69da0212bd4e7280f6647ccb24acb03623d46e9a819290c51668be13cef8bb49.png" src="_images/69da0212bd4e7280f6647ccb24acb03623d46e9a819290c51668be13cef8bb49.png" />
-<img alt="_images/a7739cbc7e8e0f0cca2ca2765910739653da0b0622408b14b4b600ebd74221e8.png" src="_images/a7739cbc7e8e0f0cca2ca2765910739653da0b0622408b14b4b600ebd74221e8.png" />
+<img alt="_images/e5a281005b0c957769d3fd169db366edfa4c32bda3c300fd26f017e9d28bbccf.png" src="_images/e5a281005b0c957769d3fd169db366edfa4c32bda3c300fd26f017e9d28bbccf.png" />
+<img alt="_images/3327daa22ecc177874c2627bb1c053468d7502732542e5a9e9f8bb5dbc9d16a4.png" src="_images/3327daa22ecc177874c2627bb1c053468d7502732542e5a9e9f8bb5dbc9d16a4.png" />
 </div>
 </div>
 </section>
@@ -1453,8 +1457,8 @@ after having acquired less information about the wage distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e13ed88a4cec36109920bb201137f13339ae4d78040270c7c05493dea02018dd.png" src="_images/e13ed88a4cec36109920bb201137f13339ae4d78040270c7c05493dea02018dd.png" />
-<img alt="_images/7b33bad432691fa0e1d506740a6b233fc4e7644b4947d2fb7af6eb21de4a7222.png" src="_images/7b33bad432691fa0e1d506740a6b233fc4e7644b4947d2fb7af6eb21de4a7222.png" />
+<img alt="_images/0efb1bc9fe493f52f28677d291aa3338d8827c5a2c2374077bf126a2125da72d.png" src="_images/0efb1bc9fe493f52f28677d291aa3338d8827c5a2c2374077bf126a2125da72d.png" />
+<img alt="_images/eb01f38a28b17c0d27af1853b9bfcef6a992c2ec435dce4afd66cd85b3b49105.png" src="_images/eb01f38a28b17c0d27af1853b9bfcef6a992c2ec435dce4afd66cd85b3b49105.png" />
 </div>
 </div>
 </section>
@@ -2047,15 +2051,15 @@ after having acquired less information about the wage distribution.</p>
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
-                    <!-- <li class="btn__search">
-                        <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
-                            <i data-feather="search"></i>
-                        </form>
-                    </li> -->
                 </ul>
 
                 <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
@@ -2063,7 +2067,7 @@ after having acquired less information about the wage distribution.</p>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/odu.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
-                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/odu.md" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/odu.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
@@ -2092,8 +2096,6 @@ after having acquired less information about the wage distribution.</p>
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/odu.ipynb">BinderHub</option>
-                
                     <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/odu.ipynb">Colab</option>
                 
                 </select>
@@ -2105,7 +2107,7 @@ after having acquired less information about the wage distribution.</p>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/odu.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/odu.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');

@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.279dae03c5caae754d20501e3fa00bbf.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.15b0c36fffe88f468997fa7b698991d3.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -225,7 +226,7 @@ const thebe_selector_output = ".output, .cell_output"
 <h1><span class="section-number">52. </span>Forecasting  an AR(1) Process<a class="headerlink" href="#forecasting-an-ar-1-process" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install arviz pymc
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>arviz<span class="w"> </span>pymc
 </pre></div>
 </div>
 </div>
@@ -235,43 +236,48 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: arviz in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.15.1)
-Requirement already satisfied: pymc in /opt/conda/envs/quantecon/lib/python3.10/site-packages (5.8.2)
-Requirement already satisfied: typing-extensions&gt;=4.1.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (4.4.0)
-Requirement already satisfied: matplotlib&gt;=3.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (3.7.0)
-Requirement already satisfied: xarray-einstats&gt;=0.3 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (0.5.1)
-Requirement already satisfied: xarray&gt;=0.21.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (2022.11.0)
-Requirement already satisfied: setuptools&gt;=60.0.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (65.6.3)
-Requirement already satisfied: pandas&gt;=1.3.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.5.3)
-Requirement already satisfied: packaging in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (22.0)
-Requirement already satisfied: h5netcdf&gt;=1.0.2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.1.0)
-Requirement already satisfied: numpy&gt;=1.20.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.23.5)
-Requirement already satisfied: scipy&gt;=1.8.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from arviz) (1.10.0)
-Requirement already satisfied: cloudpickle in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pymc) (2.0.0)
-Requirement already satisfied: cachetools&gt;=4.2.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pymc) (5.3.1)
-Requirement already satisfied: pytensor&lt;2.17,&gt;=2.16.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pymc) (2.16.2)
-Requirement already satisfied: fastprogress&gt;=0.2.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pymc) (1.0.3)
-Requirement already satisfied: h5py in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from h5netcdf&gt;=1.0.2-&gt;arviz) (3.7.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: arviz in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.16.1)
+Requirement already satisfied: pymc in /opt/conda/envs/quantecon/lib/python3.11/site-packages (5.9.0)
+Requirement already satisfied: setuptools&gt;=60.0.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (68.0.0)
+Requirement already satisfied: matplotlib&gt;=3.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (3.7.2)
+Requirement already satisfied: numpy&lt;2.0,&gt;=1.21.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (1.24.3)
+Requirement already satisfied: scipy&gt;=1.8.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (1.11.1)
+Requirement already satisfied: packaging in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (23.1)
+Requirement already satisfied: pandas&gt;=1.3.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (2.0.3)
+Requirement already satisfied: xarray&gt;=0.21.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (2023.6.0)
+Requirement already satisfied: h5netcdf&gt;=1.0.2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (1.2.0)
+Requirement already satisfied: typing-extensions&gt;=4.1.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (4.7.1)
+Requirement already satisfied: xarray-einstats&gt;=0.3 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from arviz) (0.6.0)
+Requirement already satisfied: cachetools&gt;=4.2.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pymc) (5.3.1)
+Requirement already satisfied: cloudpickle in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pymc) (2.2.1)
+Requirement already satisfied: fastprogress&gt;=0.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pymc) (1.0.3)
+Requirement already satisfied: pytensor&lt;2.18,&gt;=2.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pymc) (2.17.1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: python-dateutil&gt;=2.7 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (2.8.2)
-Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (4.25.0)
-Requirement already satisfied: pillow&gt;=6.2.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (9.4.0)
-Requirement already satisfied: pyparsing&gt;=2.3.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (3.0.9)
-Requirement already satisfied: kiwisolver&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.4.4)
-Requirement already satisfied: contourpy&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.0.5)
-Requirement already satisfied: cycler&gt;=0.10 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (0.11.0)
-Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pandas&gt;=1.3.0-&gt;arviz) (2023.3)
-Requirement already satisfied: filelock in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.17,&gt;=2.16.1-&gt;pymc) (3.9.0)
-Requirement already satisfied: logical-unification in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.17,&gt;=2.16.1-&gt;pymc) (0.4.6)
-Requirement already satisfied: miniKanren in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.17,&gt;=2.16.1-&gt;pymc) (1.0.3)
-Requirement already satisfied: cons in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.17,&gt;=2.16.1-&gt;pymc) (0.4.6)
-Requirement already satisfied: etuples in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from pytensor&lt;2.17,&gt;=2.16.1-&gt;pymc) (0.3.9)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: h5py in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from h5netcdf&gt;=1.0.2-&gt;arviz) (3.9.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.0.5)
+Requirement already satisfied: cycler&gt;=0.10 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (0.11.0)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (4.25.0)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (1.4.4)
+Requirement already satisfied: pillow&gt;=6.2.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (9.4.0)
+Requirement already satisfied: pyparsing&lt;3.1,&gt;=2.3.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (3.0.9)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from matplotlib&gt;=3.2-&gt;arviz) (2.8.2)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six&gt;=1.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.2-&gt;arviz) (1.16.0)
-Requirement already satisfied: toolz in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from logical-unification-&gt;pytensor&lt;2.17,&gt;=2.16.1-&gt;pymc) (0.12.0)
-Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from logical-unification-&gt;pytensor&lt;2.17,&gt;=2.16.1-&gt;pymc) (0.6.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytz&gt;=2020.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pandas&gt;=1.3.0-&gt;arviz) (2023.3.post1)
+Requirement already satisfied: tzdata&gt;=2022.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pandas&gt;=1.3.0-&gt;arviz) (2023.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: filelock in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc) (3.9.0)
+Requirement already satisfied: etuples in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc) (0.3.9)
+Requirement already satisfied: logical-unification in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc) (0.4.6)
+Requirement already satisfied: miniKanren in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc) (1.0.3)
+Requirement already satisfied: cons in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc) (0.4.6)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six&gt;=1.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3.2-&gt;arviz) (1.16.0)
+Requirement already satisfied: toolz in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from logical-unification-&gt;pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc) (0.12.0)
+Requirement already satisfied: multipledispatch in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from logical-unification-&gt;pytensor&lt;2.18,&gt;=2.17.0-&gt;pymc) (0.6.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -385,7 +391,7 @@ we’ll plot <span class="math notranslate nohighlight">\(.9\)</span> and <span 
 
 
 <span class="k">def</span> <span class="nf">plot_initial_path</span><span class="p">(</span><span class="n">initial_path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot the initial path and the preceding predictive densities</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Compute .9 confidence interval]</span>
@@ -430,7 +436,7 @@ we’ll plot <span class="math notranslate nohighlight">\(.9\)</span> and <span 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/650b1e7d50e18083e82de856b442dddbcf2f837673ee74c0eadd28f272013da8.png" src="_images/650b1e7d50e18083e82de856b442dddbcf2f837673ee74c0eadd28f272013da8.png" />
+<img alt="_images/b8569780dc953cbe3af93d7b4b632fb5bcb5cdd4c0d546cfcdaf2babda0cd459.png" src="_images/b8569780dc953cbe3af93d7b4b632fb5bcb5cdd4c0d546cfcdaf2babda0cd459.png" />
 </div>
 </div>
 <p>As functions of forecast horizon, the coverage intervals have shapes like those described in
@@ -537,7 +543,7 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_from_posterior</span><span class="p">(</span><span class="n">sample</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draw a sample of size N from the posterior distribution.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -596,9 +602,9 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
 </div><div class="output text_html">
     <div>
       <progress value='60000' class='' max='60000' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      100.00% [60000/60000 00:22&lt;00:00 Sampling 4 chains, 0 divergences]
+      100.00% [60000/60000 00:17&lt;00:00 Sampling 4 chains, 15 divergences]
     </div>
-    </div><img alt="_images/03588a49d092e9aeec9982bea966e5acf330de085f8b6961fa56620dd5c02e92.png" src="_images/03588a49d092e9aeec9982bea966e5acf330de085f8b6961fa56620dd5c02e92.png" />
+    </div><img alt="_images/e84f5bc082a75dfb928379d8dcf9d83fe952ea6af7061fe702e114dd5421d75f.png" src="_images/e84f5bc082a75dfb928379d8dcf9d83fe952ea6af7061fe702e114dd5421d75f.png" />
 </div>
 </div>
 <p>The graphs on the left portray posterior marginal distributions.</p>
@@ -637,7 +643,7 @@ Y(\omega_i) = \left\{ Y_{t+1}(\omega_i), Y_{t+2}(\omega_i), \dots, Y_{t+N}(\omeg
         <span class="k">return</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
 
 <span class="k">def</span> <span class="nf">next_turning_point</span><span class="p">(</span><span class="n">omega</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Suppose that omega is of length 6</span>
 <span class="sd">    </span>
 <span class="sd">        y_{t-2}, y_{t-1}, y_{t}, y_{t+1}, y_{t+2}, y_{t+3}</span>
@@ -672,7 +678,7 @@ on the true  parameters associated with the data-generating model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_Wecker</span><span class="p">(</span><span class="n">initial_path</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot the predictive distributions from &quot;pure&quot; Wecker&#39;s method.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Store outcomes</span>
@@ -733,7 +739,7 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/12a20e9fa080402c724c127ffbe3adbb41133cd5fe953a30fd7358c5a4c04db0.png" src="_images/12a20e9fa080402c724c127ffbe3adbb41133cd5fe953a30fd7358c5a4c04db0.png" />
+<img alt="_images/986c986d6bcf4113c152dd359dc915863a33c75fe065072665ac7a20c1f6fdaa.png" src="_images/986c986d6bcf4113c152dd359dc915863a33c75fe065072665ac7a20c1f6fdaa.png" />
 </div>
 </div>
 </section>
@@ -745,7 +751,7 @@ on the true  parameters associated with the data-generating model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_extended_Wecker</span><span class="p">(</span><span class="n">post_samples</span><span class="p">,</span> <span class="n">initial_path</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot the extended Wecker&#39;s predictive distribution</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Select a sample</span>
@@ -799,7 +805,7 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b1f7df595d840142300dac8adb31b0d36d3d1f9aa10a44b7a7460d35acc67f27.png" src="_images/b1f7df595d840142300dac8adb31b0d36d3d1f9aa10a44b7a7460d35acc67f27.png" />
+<img alt="_images/76556938e7f2485314d195d1f0f492deafb51ece7f0fcc903a9ab7fc604e5753.png" src="_images/76556938e7f2485314d195d1f0f492deafb51ece7f0fcc903a9ab7fc604e5753.png" />
 </div>
 </div>
 </section>
@@ -818,7 +824,7 @@ on the true  parameters associated with the data-generating model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5196aac1d1b32c222f3e0023bab33652e298e9cef507be77c8210996c694fce0.png" src="_images/5196aac1d1b32c222f3e0023bab33652e298e9cef507be77c8210996c694fce0.png" />
+<img alt="_images/6739279f158624c452809aad1dc431831426c85cb789446d1843eec879f179ed.png" src="_images/6739279f158624c452809aad1dc431831426c85cb789446d1843eec879f179ed.png" />
 </div>
 </div>
 </section>
@@ -1410,15 +1416,15 @@ on the true  parameters associated with the data-generating model.</p>
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
-                    <!-- <li class="btn__search">
-                        <form action="search.html" method="get">
-                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off">
-                            <i data-feather="search"></i>
-                        </form>
-                    </li> -->
                 </ul>
 
                 <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
@@ -1426,7 +1432,7 @@ on the true  parameters associated with the data-generating model.</p>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/ar1_turningpts.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
-                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/tree/master/lectures/ar1_turningpts.md" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/ar1_turningpts.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
@@ -1455,8 +1461,6 @@ on the true  parameters associated with the data-generating model.</p>
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/ar1_turningpts.ipynb">BinderHub</option>
-                
                     <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/ar1_turningpts.ipynb">Colab</option>
                 
                 </select>
@@ -1468,7 +1472,7 @@ on the true  parameters associated with the data-generating model.</p>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-python.notebooks/master?urlpath=tree/ar1_turningpts.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/master/ar1_turningpts.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
