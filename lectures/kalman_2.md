@@ -101,18 +101,18 @@ def create_worker(α=0.5, β=0.3, c=0.2,
                          uhat_0=uhat_0, σ_h=σ_h, σ_u=σ_u)
 ```
 
-## Steps to get answer
+## Forming an appropriate state-space model
 
 We can write system [](worker_model) in the state-space form
 
 ```{math}
 \begin{align}
-\begin{bmatrix} h_{t+1} \cr u_{t+1} \end{bmatrix} &= \begin{bmatrix} \alpha & \beta \cr 0 & 1 \end{bmatrix}\begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} + \begin{bmatrix} c & 0 \end{bmatrix} w_{t+1} \cr
+\begin{bmatrix} h_{t+1} \cr u_{t+1} \end{bmatrix} &= \begin{bmatrix} \alpha & \beta \cr 0 & 1 \end{bmatrix}\begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} + \begin{bmatrix} c \cr 0 \end{bmatrix} w_{t+1} \cr
 y_t & = \begin{bmatrix} g & 0 \end{bmatrix} \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} + v_t
 \end{align}
 ```
 
-We can further summarize the system as
+and  summarize the system as
 
 ```{math}
 \begin{align}
@@ -123,12 +123,12 @@ x_0 & \sim {\mathcal N}(\hat x_0, \Sigma_0) \end{align}
 where
 
 ```{math}
-\begin{align}
-x_t &= \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} \cr
-\hat x_0 & = \begin{bmatrix} \hat h_0 \cr \hat u_0 \end{bmatrix} \cr
-\Sigma_0 & = \begin{bmatrix} \sigma_{h,0} & 0 \cr
+\begin{equation}
+x_t  = \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} , \quad
+\hat x_0  = \begin{bmatrix} \hat h_0 \cr \hat u_0 \end{bmatrix} , \quad
+\Sigma_0  = \begin{bmatrix} \sigma_{h,0} & 0 \cr
                      0 & \sigma_{u,0} \end{bmatrix}
-\end{align}
+\end{equation}
 ```
 
 Here we compute them using [`LinearStateSpace`](https://quanteconpy.readthedocs.io/en/latest/tools/lss.html) class.
@@ -223,7 +223,9 @@ print(Σ_t[0])
 print(Σ_t[-1])
 ```
 
-We can draw multiple initial points to see the trends converges after a long time $T=5000$
+We can draw multiple initial points to see the trends converges after a long time $T=50$
+
+HUMPHREY AND/OR SMIT: IN THE PLOTS BELOW, COULD YOU ALSO PLEASE DRAW THE "HIDDEN" $u_0$'s THAT ARE  DRAWN AT THE BEGINNING FOR EACH PERSON SIMULATED? THAT WAY WE CAN VISUALLY SEE HOW THE FILTER IS GRADUALLY TEACHING THE WORKER AND FIRM ABOUT THE WORKER'S EFFORT.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -269,11 +271,11 @@ def simulate_workers(ss, T, ax):
 ```{code-cell} ipython3
 :tags: []
 
-iteration = 5
+iteration = 3
 fig, ax = plt.subplots(1, 2)
 
 for i in range(iteration):
-    simulate_workers(ss, 5_000, ax)
+    simulate_workers(ss, 5_0, ax)
     
 fig.tight_layout()
 plt.show()
