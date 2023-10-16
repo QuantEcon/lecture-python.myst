@@ -63,7 +63,7 @@ A representative worker has productivity described by the following dynamic proc
 \begin{align}
 h_{t+1} &= \alpha h_t + \beta u_t + c w_{t+1}, \quad c_{t+1} \sim {\mathcal N}(0,1) \\
 u_{t+1} & = u_t \\
-y_t & = g h_t + v_t , \quad v_t \sim {\mathcal N} (0, R) \tag{1}
+y_t & = g h_t + v_t , \quad v_t \sim {\mathcal N} (0, R)
 \end{align}
 ```
 
