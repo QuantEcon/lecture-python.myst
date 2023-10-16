@@ -112,7 +112,7 @@ y_t & = \begin{bmatrix} g & 0 \end{bmatrix} \begin{bmatrix} h_{t} \cr u_{t} \end
 \end{align}
 ```
 
-We cab further summarize the system as
+We can further summarize the system as
 
 ```{math}
 \begin{align}
@@ -144,8 +144,8 @@ C = np.array([[worker.c],
               [0]])
 G = np.array([worker.g, 0])
 
-# Create LinearStateSpace instance with H = 1
-ss = LinearStateSpace(A, C, G, 1)
+# Create LinearStateSpace instance with H = sqrt(R)
+ss = LinearStateSpace(A, C, G, np.sqrt(worker.R))
 
 T = 100
 x, y = ss.simulate(T)
