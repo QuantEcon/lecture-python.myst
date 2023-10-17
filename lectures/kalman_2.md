@@ -29,6 +29,13 @@ kernelspec:
 :depth: 2
 ```
 
+This is a sequel to this quantecon lecture   {doc}`A First Look at the Kalman filter <kalman>`.
+
+Instead of using a Kalman filter to  track a rocket as we did in that lecture, here we'll use it 
+make inferences about a worker's  human capital and a worker's  effort input into accumulating and maintaining
+human capital, both of which are unobserved to a firm that learns about those things only be observing a history
+of the output that the worker generates for the firm.
+
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
@@ -37,9 +44,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 !pip install quantecon
 ```
 
-The purpose is to watch how the firm ends of learning a worker's "type" and how the worker's pay evolves as the firm learns. 
-
-The $h_t$ part of the worker's "type" moves over time, but the effort type $u_t$ is fixed, so for this part the firm is in effect "learning a parameter".
 
 To conduct simulations, we want to bring in these imports, as in the "first looks" lecture
 
@@ -52,10 +56,10 @@ from quantecon import Kalman, LinearStateSpace
 from collections import namedtuple
 ```
 
-## A filtering example
+## A worker's output 
 
 
-A representative worker has productivity described by the following dynamic process:
+A representative worker output at a firm where he or she is permanently employed is  described by the following dynamic process:
 
 ```{math}
 :label: worker_model
@@ -70,28 +74,54 @@ y_t & = g h_t + v_t , \quad v_t \sim {\mathcal N} (0, R)
 Here 
 
 * $h_t$ is the logarithm of human capital at time time $t$
-* $u_t$ is the worker's effort at accumulating human capital at $t$ 
-* $y_t$ is the worker's output at time $t$
+* $u_t$ is the logarithm of the worker's effort at accumulating human capital at $t$ 
+* $y_t$ is the logarithm of the worker's output at time $t$
 * $h_0 \sim {\mathcal N}(\hat h_0, \sigma_{h,0})$
 * $u_0 \sim {\mathcal N}(\hat u_0, \sigma_{u,0})$
+
+Parameters of the model are $\alpha, \beta, c, R, g, \hat h_0, \hat u_0, \sigma_h, \sigma_u$.
+
+At time $0$, a firm has hired the worker.
+
+The worker is permanently attached to the firm and so works for the  firm at dates $t =0, 1, 2, \ldots$.
+
+At the beginning of time $0$, the firm observes neither the worker's innate initial human capitl $h_0$ nor its hard-wired permanent effort level $u_0$.
+
+
+
+The $h_t$ part of the worker's "type" moves over time, but the effort type $u_t = u_0$, so it in effectively a fixed ``parameter'' that the firm does not know.
 
 
 At time $t\geq 1$, the  firm where the worker is permanently employed has observed  $y^{t-1} = [y_{t-1}, y_{t-2}, \ldots, y_0]$.
 
-The firm does not observe the  worker's "type" $h_0, u_0$, but does observe his/her output $y_t$ at time $t$ before the worker gets paid at time
-$t$. 
+The firm does not observe the  worker's "type" $h_0, u_0$.
 
-At time $t \geq 0$, the firm pays the worker log wage  
+But the firm  does observe the worker's  output $y_t$ at time $t$ and remembers the worker's past outputs $y^{t-1}$.
+
+
+
+
+## A firm's wage-setting policy
+
+
+
+Based on   information about the worker that the firm has at time $t \geq 1$, the firm pays the worker log wage  
 
 $$
-w_t = g  E [ h_t | y_{t-1} ]
+w_t = g  E [ h_t | y^{t-1} ], \quad t \geq 1
 $$
 
-Parameters of the model are $\alpha, \beta, c, R, g, \hat h_0, \hat u_0, \sigma_h, \sigma_u$.
+and at time $0$ pays the  worker a log wage equal to  the unconditional mean of $y_0$:
 
-## Forming an appropriate state-space model
+$$
+w_0 = g \hat h_0 . 
+$$
 
-We can write system [](worker_model) in the state-space form
+
+
+## Forming a state-space representation
+
+We write system [](worker_model) in the state-space form
 
 ```{math}
 \begin{align}
@@ -100,7 +130,7 @@ y_t & = \begin{bmatrix} g & 0 \end{bmatrix} \begin{bmatrix} h_{t} \cr u_{t} \end
 \end{align}
 ```
 
-and  summarize the system as
+which is equivalent with
 
 ```{math}
 \begin{align}
@@ -119,13 +149,13 @@ x_t  = \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} , \quad
 \end{equation}
 ```
 
-First we create a `namedtuple` to store the parameters of the model
+To prepare for computing the firm's wage setting policy, we first we create a `namedtuple` to store the parameters of the model
 
 ```{code-cell} ipython3
 WorkerModel = namedtuple("WorkerModel", ('A', 'C', 'G', 'R', 'xhat_0', 'Σ_0'))
 
-def create_worker(α=0.3, β=0.2, c=0.2,
-                    R=0.1, g=2, hhat_0=4, uhat_0=4, σ_h=4, σ_u=4):
+def create_worker(α=0.8, β=.2, c=0.2,
+                    R=0.5, g=1.0, hhat_0=4, uhat_0=4, σ_h=4, σ_u=4):
     
     A = np.array([[α, β], 
                   [0, 1]])
@@ -143,9 +173,9 @@ def create_worker(α=0.3, β=0.2, c=0.2,
     return WorkerModel(A=A, C=C, G=G, R=R, xhat_0=xhat_0, Σ_0=Σ_0)
 ```
 
-Now we can compute them using [`LinearStateSpace`](https://quanteconpy.readthedocs.io/en/latest/tools/lss.html) class.
+Now we  form the state space system we want by using the [`LinearStateSpace`](https://quanteconpy.readthedocs.io/en/latest/tools/lss.html) class.
 
-We simulate the system for $T = 100$ periods
+Let's simulate a worker  for $T = 100$ periods
 
 ```{code-cell} ipython3
 # Define A, C, G, R, xhat_0, Σ_0
@@ -165,9 +195,21 @@ print('h_0 =', h_0)
 print('u_0 =', u_0)
 ```
 
-We can now compute the Kalman filter for this system
+To compute the firm's policy for setting the log wage given the information it has about the worker,
+we want to use the Kalman filter described in this quantecon lecture   {doc}`A First Look at the Kalman filter <kalman>`.
 
-Here we use the [`Kalman`](https://quanteconpy.readthedocs.io/en/latest/tools/kalman.html) class to compute the Kalman filter.
+Thus, we want to compute all of the objects in the "innovation representation"
+
+```{math}
+    \begin{align}
+    \hat x_{t+1} & = A \hat x_t + K_t a_t \cr
+    y_{t} & = G \hat x_t + a_t
+    \end{align}
+```
+where $K_t$ is the Kalman gain matrix at time $t$.
+
+
+We accomplish this by using the [`Kalman`](https://quanteconpy.readthedocs.io/en/latest/tools/kalman.html) class.
 
 ```{code-cell} ipython3
 kalman = Kalman(ss, xhat_0, Σ_0)
@@ -185,16 +227,16 @@ for t in range(1, T):
 
 For a draw of $h_0, u_0$,  we plot $E y_t = G \hat x_t $ where $\hat x_t = E [x_t | y^{t-1}]$.
 
-We also plot $E [u_0 | y^{t-1}]$, where the firm is inferring a worker's hard-wired "work ethic" $u_0$.
+We also plot $E [u_0 | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
 
-We find that the firm's inference of the worker's work ethic $E [u_0 | y^{t-1}]$ converges to the true value of $u_0$.
+We can watch as the the firm's inference of the worker's work ethic $E [u_0 | y^{t-1}]$ converges toward the hidden  (to the firm) value $u_0$.
 
 ```{code-cell} ipython3
 :tags: []
 
 fig, ax = plt.subplots(1, 2)
 
-ax[0].plot(y_hat_t, label=r'$E[y_t]$')
+ax[0].plot(y_hat_t, label=r'$E[y_t| y^{t-1}]$')
 ax[0].set_xlabel('Time')
 ax[0].set_ylabel(r'$E[y_t]$')
 ax[0].set_title(r'$E[y_t]$ over time')
@@ -225,7 +267,17 @@ print(Σ_t[0])
 print(Σ_t[-1])
 ```
 
-HUMPHREY AND/OR SMIT: IN THE PLOTS BELOW, COULD YOU ALSO PLEASE DRAW THE "HIDDEN" $u_0$'s THAT ARE  DRAWN AT THE BEGINNING FOR EACH PERSON SIMULATED? THAT WAY WE CAN VISUALLY SEE HOW THE FILTER IS GRADUALLY TEACHING THE WORKER AND FIRM ABOUT THE WORKER'S EFFORT.
+NEW REQUEST FOR HUMPHREY AND SMIT:
+
+HUMPHREY AND/OR SMIT: YOU HAVE DONE A WONDERFUL JOB.  AS A ``REWARD'' FOR YOUR EXCELLENT WORK, I'D LIKE TO ASK YOU TO TWEAK YOUR CODE TO ALLOW US TO DO THE FOLLOWING THINGS:
+
+* LET ME ARBITRARILY SET THE WORKER'S INITIAL $h_0, u_0$ PAIR INSTEAD OF DRAWING IT FROM THE INITIAL DISTRIBUTION THAT THE FIRM HAS IN ITS HEAD.  THAT WILL LET ME GENERATE SOME PATHS WITH HIDDEN STATES AT SET VALUES THAT I ARBITRARILY PUT AT VARIOUS SPOTS IN THE PRIOR DISTRIBUTION OF THESE TWO OBJECTS. IT WILL HELP ME GENERATE SOME INTERESTING GRAPHS.
+
+* TEACH ME HOW TO GENERATE WORKERS CHARACTERIZED BY DIFFERENT PARAMETER VECTORS, I.E., DIFFERENT VALUES OF $\alpha, \beta$ AND SO ON.  THAT WILL ALLOW US TO DO SOME EXPERIMENTS AND GENERATE GRAPHS THAT TEACH THE READER HOW "LEARNING RATES" AND "PAY PROFILES" DEPEND ON THOSE PARAMETERS AS WELL AS ON THE INITIAL HIDDEN $h_0, w_0$.  
+
+* MAKE A GRAPH THAT SHOWS THE EVOLUTION OF THE CONDITIONAL VARIANCES OF THE FIRM'S ESTIMATES OF $u_t$ and $h_t$.  THESE CAN BE EXTRACTED FROM THE FORMULA $ G \Sigma_t G^\top$ OR SOMETHING LIKE THAT. I CAN GIVE YOU CORRECTED VERSION OF THAT FORMULA ONCE YOU GET STARTED.
+
+THANKS SO MUCH!
 
 We can also simulate the system for $T = 50$ periods for different workers.
 
@@ -271,7 +323,7 @@ def simulate_workers(worker, T, ax):
 ```{code-cell} ipython3
 :tags: []
 
-num_workers = 25
+num_workers = 3
 T = 50
 fig, ax = plt.subplots(figsize=(7, 7))
 
@@ -282,19 +334,4 @@ ax.set_ylim(ymin=-2, ymax=2)
 plt.show()
 ```
 
-## Coding steps:
 
-(Note to Tom: A large proportion of the text in this section has been integrated into the previous sections. Please kindly review if there is anything else that we can move to the previous sections. Many thanks in advance.)
-
-For given parameter values, write a program (a class?) to compute the following objects by using the Kalman class and 
-consulting the "First Look ... " quantecon lecture:
-
-* All of the objects in the "innovation representation"
-    \begin{align}
-    \hat x_{t+1} & = A \hat x_t + K_t a_t \cr
-    y_{t} & = G \hat x_t + a_t
-    \end{align}
-    (The Kalman gain $K_t$ is computed in the Kalman class)
-* Please also compute $\Sigma_t$ -- the conditional covariance matrix
-    
-* For a draw of $h_0, u_0$,  please prepare graphs of $E y_t = G \hat x_t $ where $\hat x_t = E [x_t | y^{t-1}]$. Please also prepare a graph of $E [u_t | y^{t-1}]$. (Here the firm is inferring a worker's hard-wired "work ethic" $u_0$.)
