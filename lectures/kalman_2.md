@@ -89,18 +89,6 @@ $$
 
 Parameters of the model are $\alpha, \beta, c, R, g, \hat h_0, \hat u_0, \sigma_h, \sigma_u$.
 
-First we create a `namedtuple` to store the parameters of the model
-
-```{code-cell} ipython3
-WorkerModel = namedtuple("WorkerModel", ('α', 'β', 'c', 'g', 'R',
-                                        'hhat_0', 'uhat_0', 'σ_h', 'σ_u'))
-
-def create_worker(α=0.5, β=0.3, c=0.2,
-                    R=4, g=0.5, hhat_0=1, uhat_0=1, σ_h=1, σ_u=4):
-    return WorkerModel(α=α, β=β, c=c, g=g, R=R, hhat_0=hhat_0,
-                         uhat_0=uhat_0, σ_h=σ_h, σ_u=σ_u)
-```
-
 ## Forming an appropriate state-space model
 
 We can write system [](worker_model) in the state-space form
@@ -131,25 +119,50 @@ x_t  = \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} , \quad
 \end{equation}
 ```
 
-Here we compute them using [`LinearStateSpace`](https://quanteconpy.readthedocs.io/en/latest/tools/lss.html) class.
+First we create a `namedtuple` to store the parameters of the model
+
+```{code-cell} ipython3
+WorkerModel = namedtuple("WorkerModel", ('A', 'C', 'G', 'R', 'xhat_0', 'Σ_0'))
+
+def create_worker(α=0.3, β=0.2, c=0.2,
+                    R=0.1, g=2, hhat_0=4, uhat_0=4, σ_h=4, σ_u=4):
+    
+    A = np.array([[α, β], 
+                  [0, 1]])
+    C = np.array([[c], 
+                  [0]])
+    G = np.array([g, 1])
+
+    # Define initial state and covariance matrix
+    xhat_0 = np.array([[hhat_0], 
+                       [uhat_0]])
+    
+    Σ_0 = np.array([[σ_h, 0],
+                    [0, σ_u]])
+    
+    return WorkerModel(A=A, C=C, G=G, R=R, xhat_0=xhat_0, Σ_0=Σ_0)
+```
+
+Now we can compute them using [`LinearStateSpace`](https://quanteconpy.readthedocs.io/en/latest/tools/lss.html) class.
 
 We simulate the system for $T = 100$ periods
 
 ```{code-cell} ipython3
-# Define A, C, G
+# Define A, C, G, R, xhat_0, Σ_0
 worker = create_worker()
-A = np.array([[worker.α, worker.β], 
-              [0, 1]])
-C = np.array([[worker.c], 
-              [0]])
-G = np.array([worker.g, 0])
+A, C, G, R = worker.A, worker.C, worker.G, worker.R
+xhat_0, Σ_0 = worker.xhat_0, worker.Σ_0
 
-# Create LinearStateSpace instance with H = sqrt(R)
-ss = LinearStateSpace(A, C, G, np.sqrt(worker.R))
+# Create a LinearStateSpace object
+ss = LinearStateSpace(A, C, G, np.sqrt(R), mu_0=xhat_0, Sigma_0=Σ_0)
 
 T = 100
 x, y = ss.simulate(T)
 y = y.flatten()
+
+h_0, u_0 = x[0, 0], x[1, 0]
+print('h_0 =', h_0)
+print('u_0 =', u_0)
 ```
 
 We can now compute the Kalman filter for this system
@@ -157,38 +170,24 @@ We can now compute the Kalman filter for this system
 Here we use the [`Kalman`](https://quanteconpy.readthedocs.io/en/latest/tools/kalman.html) class to compute the Kalman filter.
 
 ```{code-cell} ipython3
-# Define initial state and covariance matrix
-xhat_0 = np.array([[np.random.normal(worker.hhat_0, worker.σ_h)], 
-                   [np.random.normal(worker.uhat_0, worker.σ_u)]])
-
-print('initial state: \n', xhat_0)
-
-Σ_0 = np.array([[worker.σ_h, 0],
-                [0, worker.σ_u]])
-
-print('initial covariance matrix: \n', Σ_0)
-
-# Compute Kalman filter
 kalman = Kalman(ss, xhat_0, Σ_0)
+Σ_t = []
+y_hat_t = np.zeros(T-1)
+u_hat_t = np.zeros(T-1)
+
+for t in range(1, T):
+    kalman.update(y[t])
+    x_hat, Σ = kalman.x_hat, kalman.Sigma
+    Σ_t.append(Σ)
+    y_hat_t[t-1] = worker.G @ x_hat
+    u_hat_t[t-1] = x_hat[1]
 ```
 
 For a draw of $h_0, u_0$,  we plot $E y_t = G \hat x_t $ where $\hat x_t = E [x_t | y^{t-1}]$.
 
 We also plot $E [u_0 | y^{t-1}]$, where the firm is inferring a worker's hard-wired "work ethic" $u_0$.
 
-```{code-cell} ipython3
-Σ_t = []
-y_hat_t = np.zeros(T)
-u_hat_t = np.zeros(T)
-
-x_t_sum = 0
-for i in range(T):
-    kalman.update(y[i])
-    x_hat, Σ = kalman.x_hat, kalman.Sigma
-    Σ_t.append(Σ)
-    y_hat_t[i] = G @ x_hat
-    u_hat_t[i] = x_hat[1]
-```
+We find that the firm's inference of the worker's work ethic $E [u_0 | y^{t-1}]$ converges to the true value of $u_0$.
 
 ```{code-cell} ipython3
 :tags: []
@@ -199,11 +198,14 @@ ax[0].plot(y_hat_t, label=r'$E[y_t]$')
 ax[0].set_xlabel('Time')
 ax[0].set_ylabel(r'$E[y_t]$')
 ax[0].set_title(r'$E[y_t]$ over time')
+ax[0].legend()
 
 ax[1].plot(u_hat_t, label=r'$E[u_t|y^{t-1}]$')
+ax[1].axhline(y=u_0, color='grey', linestyle='dashed', label=fr'$u_0={u_0:0.2f}$')
 ax[1].set_xlabel('Time')
-ax[1].set_ylabel(r'$E[u_0|y^{t-1}]$')
-ax[1].set_title(r'Inferred work ethic ($u_0$) over time')
+ax[1].set_ylabel(r'$E[u_t|y^{t-1}]$')
+ax[1].set_title('Inferred work ethic over time')
+ax[1].legend()
 
 fig.tight_layout()
 plt.show()
@@ -223,25 +225,28 @@ print(Σ_t[0])
 print(Σ_t[-1])
 ```
 
-We can draw multiple initial points to see the trends converges after a long time $T=50$
-
 HUMPHREY AND/OR SMIT: IN THE PLOTS BELOW, COULD YOU ALSO PLEASE DRAW THE "HIDDEN" $u_0$'s THAT ARE  DRAWN AT THE BEGINNING FOR EACH PERSON SIMULATED? THAT WAY WE CAN VISUALLY SEE HOW THE FILTER IS GRADUALLY TEACHING THE WORKER AND FIRM ABOUT THE WORKER'S EFFORT.
+
+We can also simulate the system for $T = 50$ periods for different workers.
+
+The difference between the inferred work ethics and true work ethics converges to $0$ over time.
+
+This shows that the filter is gradually teaching the worker and firm about the worker's effort.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-def simulate_workers(ss, T, ax):
+def simulate_workers(worker, T, ax):
+    A, C, G, R = worker.A, worker.C, worker.G, worker.R
+    xhat_0, Σ_0 = worker.xhat_0, worker.Σ_0
+
+    ss = LinearStateSpace(A, C, G, np.sqrt(R), mu_0=xhat_0, Sigma_0=Σ_0)
+
     x, y = ss.simulate(T)
     y = y.flatten()
 
-    xhat_0 = np.array([[np.random.normal(worker.hhat_0, 
-                                         worker.σ_h)], 
-                       [np.random.normal(worker.uhat_0, 
-                                         worker.σ_u)]])
-
-    Σ_0 = np.array([[worker.σ_h, 0],
-                    [0, worker.σ_u]])
-
+    u_0 = x[1, 0]
+    
     # Compute Kalman filter
     kalman = Kalman(ss, xhat_0, Σ_0)
     Σ_t = []
@@ -249,35 +254,32 @@ def simulate_workers(ss, T, ax):
     y_hat_t = np.zeros(T)
     u_hat_t = np.zeros(T)
 
-    x_t_sum = 0
     for i in range(T):
         kalman.update(y[i])
         x_hat, Σ = kalman.x_hat, kalman.Sigma
         Σ_t.append(Σ)
-        y_hat_t[i] = G @ x_hat
+        y_hat_t[i] = worker.G @ x_hat
         u_hat_t[i] = x_hat[1]
-        
-    ax[0].plot(y_hat_t, label=r'$E[y_t]$', alpha=0.5)
-    ax[0].set_xlabel('Time')
-    ax[0].set_ylabel(r'$E[y_t]$')
-    ax[0].set_title(r'$E[y_t]$ over time')
 
-    ax[1].plot(u_hat_t, label=r'$E[u_t|y^{t-1}]$', alpha=0.5)
-    ax[1].set_xlabel('Time')
-    ax[1].set_ylabel(r'$E[u_0|y^{t-1}]$')
-    ax[1].set_title(r'Inferred work ethic ($u_0$) over time')
+    ax.plot(u_hat_t - u_0, alpha=0.5)
+    ax.axhline(y=0, color='grey', linestyle='dashed')
+    ax.set_xlabel('Time')
+    ax.set_ylabel(r'$E[u_t|y^{t-1}] - u_0$')
+    ax.set_title('Difference between inferred work ethic and true work ethic over time')
 ```
 
 ```{code-cell} ipython3
 :tags: []
 
-iteration = 3
-fig, ax = plt.subplots(1, 2)
+num_workers = 25
+T = 50
+fig, ax = plt.subplots(figsize=(7, 7))
 
-for i in range(iteration):
-    simulate_workers(ss, 5_0, ax)
-    
-fig.tight_layout()
+for i in range(num_workers):
+    worker = create_worker(uhat_0=4+2*i)
+    simulate_workers(worker, T, ax)
+yabs_max = abs(max(ax.get_ylim(), key=abs))
+ax.set_ylim(ymin=-yabs_max, ymax=yabs_max)
 plt.show()
 ```
 
