@@ -265,7 +265,7 @@ def simulate_workers(worker, T, ax):
     ax.axhline(y=0, color='grey', linestyle='dashed')
     ax.set_xlabel('Time')
     ax.set_ylabel(r'$E[u_t|y^{t-1}] - u_0$')
-    ax.set_title('Difference between inferred work ethic and true work ethic over time')
+    ax.set_title('Difference between inferred and true work ethic over time')
 ```
 
 ```{code-cell} ipython3
@@ -278,8 +278,7 @@ fig, ax = plt.subplots(figsize=(7, 7))
 for i in range(num_workers):
     worker = create_worker(uhat_0=4+2*i)
     simulate_workers(worker, T, ax)
-yabs_max = abs(max(ax.get_ylim(), key=abs))
-ax.set_ylim(ymin=-yabs_max, ymax=yabs_max)
+ax.set_ylim(ymin=-2, ymax=2)
 plt.show()
 ```
 
