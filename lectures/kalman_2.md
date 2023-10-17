@@ -44,7 +44,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 !pip install quantecon
 ```
 
-
 To conduct simulations, we want to bring in these imports, as in the "first looks" lecture
 
 ```{code-cell} ipython3
@@ -154,8 +153,9 @@ To prepare for computing the firm's wage setting policy, we first we create a `n
 ```{code-cell} ipython3
 WorkerModel = namedtuple("WorkerModel", ('A', 'C', 'G', 'R', 'xhat_0', 'Σ_0'))
 
-def create_worker(α=0.8, β=.2, c=0.2,
-                    R=0.5, g=1.0, hhat_0=4, uhat_0=4, σ_h=4, σ_u=4):
+def create_worker(α=.8, β=.2, c=.2,
+                  R=.5, g=1.0, hhat_0=4, uhat_0=4, 
+                  σ_h=4, σ_u=4):
     
     A = np.array([[α, β], 
                   [0, 1]])
@@ -243,7 +243,7 @@ ax[0].set_title(r'$E[y_t]$ over time')
 ax[0].legend()
 
 ax[1].plot(u_hat_t, label=r'$E[u_t|y^{t-1}]$')
-ax[1].axhline(y=u_0, color='grey', linestyle='dashed', label=fr'$u_0={u_0:0.2f}$')
+ax[1].axhline(y=u_0, color='grey', linestyle='dashed', label=fr'$u_0={u_0:.2f}$')
 ax[1].set_xlabel('Time')
 ax[1].set_ylabel(r'$E[u_t|y^{t-1}]$')
 ax[1].set_title('Inferred work ethic over time')
@@ -273,9 +273,69 @@ HUMPHREY AND/OR SMIT: YOU HAVE DONE A WONDERFUL JOB.  AS A ``REWARD'' FOR YOUR E
 
 * LET ME ARBITRARILY SET THE WORKER'S INITIAL $h_0, u_0$ PAIR INSTEAD OF DRAWING IT FROM THE INITIAL DISTRIBUTION THAT THE FIRM HAS IN ITS HEAD.  THAT WILL LET ME GENERATE SOME PATHS WITH HIDDEN STATES AT SET VALUES THAT I ARBITRARILY PUT AT VARIOUS SPOTS IN THE PRIOR DISTRIBUTION OF THESE TWO OBJECTS. IT WILL HELP ME GENERATE SOME INTERESTING GRAPHS.
 
+```{code-cell} ipython3
+:tags: []
+
+# For example, we might want h_0 = 3 and u_0 = 4
+mu_0 = np.array([3.0, 4.0])
+
+# Create a LinearStateSpace object with Sigma_0 as a matrix of zeros
+ss_example = LinearStateSpace(A, C, G, np.sqrt(R), mu_0=mu_0, 
+                              Sigma_0=np.zeros((2, 2)) # This line forces exact h_0=3 and u_0=4
+                             )
+
+T = 100
+x, y = ss_example.simulate(T)
+y = y.flatten()
+
+# Now h_0 and u_0 will be exactly hhat_0
+h_0, u_0 = x[0, 0], x[1, 0]
+print('h_0 =', h_0)
+print('u_0 =', u_0)
+
+# This shows h_t and u_t over time.
+print(x)
+```
+
+```{code-cell} ipython3
+:tags: []
+
+# If we want to set the initial 
+# h_0 = hhat_0 = 7 and u_0 = uhhat_0 = 3.5:
+worker = create_worker(hhat_0=7.0, uhat_0=3.5)
+
+ss_example = LinearStateSpace(A, C, G, np.sqrt(R), 
+                              mu_0=worker.xhat_0, # This line takes h_0=hhat_0 and u_0 = uhhat_0
+                              Sigma_0=np.zeros((2, 2)) # This line forces exact h_0=hhat_0 and u_0=uhhat_0
+                             )
+
+T = 100
+x, y = ss_example.simulate(T)
+y = y.flatten()
+
+# Now h_0 and u_0 will be exactly hhat_0
+h_0, u_0 = x[0, 0], x[1, 0]
+print('h_0 =', h_0)
+print('u_0 =', u_0)
+
+# This shows h_t and u_t over time.
+print(x)
+```
+
 * TEACH ME HOW TO GENERATE WORKERS CHARACTERIZED BY DIFFERENT PARAMETER VECTORS, I.E., DIFFERENT VALUES OF $\alpha, \beta$ AND SO ON.  THAT WILL ALLOW US TO DO SOME EXPERIMENTS AND GENERATE GRAPHS THAT TEACH THE READER HOW "LEARNING RATES" AND "PAY PROFILES" DEPEND ON THOSE PARAMETERS AS WELL AS ON THE INITIAL HIDDEN $h_0, w_0$.  
 
+```{code-cell} ipython3
+:tags: []
+
+# We can set these parameters when creating a worker -- just like classes!
+hard_working_worker =  create_worker(α=.4, β=.8, hhat_0=7.0, uhat_0=100, σ_h=2.5, σ_u=3.2)
+
+print(hard_working_worker)
+```
+
 * MAKE A GRAPH THAT SHOWS THE EVOLUTION OF THE CONDITIONAL VARIANCES OF THE FIRM'S ESTIMATES OF $u_t$ and $h_t$.  THESE CAN BE EXTRACTED FROM THE FORMULA $ G \Sigma_t G^\top$ OR SOMETHING LIKE THAT. I CAN GIVE YOU CORRECTED VERSION OF THAT FORMULA ONCE YOU GET STARTED.
+
++++
 
 THANKS SO MUCH!
 
@@ -313,7 +373,7 @@ def simulate_workers(worker, T, ax):
         y_hat_t[i] = worker.G @ x_hat
         u_hat_t[i] = x_hat[1]
 
-    ax.plot(u_hat_t - u_0, alpha=0.5)
+    ax.plot(u_hat_t - u_0, alpha=.5)
     ax.axhline(y=0, color='grey', linestyle='dashed')
     ax.set_xlabel('Time')
     ax.set_ylabel(r'$E[u_t|y^{t-1}] - u_0$')
@@ -333,5 +393,3 @@ for i in range(num_workers):
 ax.set_ylim(ymin=-2, ymax=2)
 plt.show()
 ```
-
-
