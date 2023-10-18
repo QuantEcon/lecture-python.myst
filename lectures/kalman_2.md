@@ -29,12 +29,15 @@ kernelspec:
 :depth: 2
 ```
 
-This is a sequel to this quantecon lecture   {doc}`A First Look at the Kalman filter <kalman>`.
+This is a sequel to this quantecon lecture   {doc}`A First Look at the Kalman filter <kalman>` in which we applied
+a Kalman filter to estimate the location of a rocket. 
 
-Instead of using a Kalman filter to  track a rocket as we did in that lecture, here we'll use it 
-make inferences about a worker's  human capital and a worker's  effort input into accumulating and maintaining
+Here we'll use the Kalman filter to 
+make inferences about a worker's  human capital and his/her  effort to  accumulate or  maintain
 human capital, both of which are unobserved to a firm that learns about those things only be observing a history
 of the output that the worker generates for the firm.
+
+We'll posit a little model of how the firm pays the worker in light of these information limitations.
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
@@ -44,7 +47,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 !pip install quantecon
 ```
 
-To conduct simulations, we want to bring in these imports, as in the "first looks" lecture
+To conduct simulations, we  bring in these imports, as in  {doc}`A First Look at the Kalman filter <kalman>`.
 
 ```{code-cell} ipython3
 %matplotlib inline
@@ -63,7 +66,9 @@ mpl.rcParams['text.latex.preamble'] = r'\usepackage{{amsmath}}'
 ## A worker's output 
 
 
-A representative worker output at a firm where he or she is permanently employed is  described by the following dynamic process:
+A representative worker is permanently employed at a firm.
+
+The workers'  output  is  described by the following dynamic process:
 
 ```{math}
 :label: worker_model
@@ -91,12 +96,15 @@ The worker is permanently attached to the firm and so works for the  firm at dat
 
 At the beginning of time $0$, the firm observes neither the worker's innate initial human capitl $h_0$ nor its hard-wired permanent effort level $u_0$.
 
+The firm believes that $u_0$ for a particular worker is drawn from a Gaussian probability distribution, and so is  described by $u_0 \sim {\mathcal N}(\hat u_0, \sigma_{u,0})$.
 
 
-The $h_t$ part of the worker's "type" moves over time, but the effort type $u_t = u_0$, so it in effectively a fixed ``parameter'' that the firm does not know.
+The $h_t$ part of a worker's "type" moves over time, but the effort part of the type $u_t = u_0$.
+
+So from the firm's point of view, the worker's effort is  effectively an unknown  fixed  "parameter".
 
 
-At time $t\geq 1$, the  firm where the worker is permanently employed has observed  $y^{t-1} = [y_{t-1}, y_{t-2}, \ldots, y_0]$.
+At time $t\geq 1$, for a particular worker the  firm  observed  $y^{t-1} = [y_{t-1}, y_{t-2}, \ldots, y_0]$.
 
 The firm does not observe the  worker's "type" $h_0, u_0$.
 
@@ -125,7 +133,7 @@ $$
 
 ## Forming a state-space representation
 
-We write system [](worker_model) in the state-space form
+Write system [](worker_model) in the state-space form
 
 ```{math}
 \begin{align}
@@ -153,7 +161,7 @@ x_t  = \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} , \quad
 \end{equation}
 ```
 
-To prepare for computing the firm's wage setting policy, we first we create a `namedtuple` to store the parameters of the model
+To prepare to compute the firm's wage setting policy, we first we create a `namedtuple` to store the parameters of the model
 
 ```{code-cell} ipython3
 WorkerModel = namedtuple("WorkerModel", ('A', 'C', 'G', 'R', 'xhat_0', 'Σ_0'))
@@ -178,9 +186,10 @@ def create_worker(α=.8, β=.2, c=.2,
     return WorkerModel(A=A, C=C, G=G, R=R, xhat_0=xhat_0, Σ_0=Σ_0)
 ```
 
-Now we  form the state space system we want by using the [`LinearStateSpace`](https://quanteconpy.readthedocs.io/en/latest/tools/lss.html) class.
+In order to be able to simulate a history $\{y_t, h_t\}$ for a worker, we form 
+ state space system for him/her by using the [`LinearStateSpace`](https://quanteconpy.readthedocs.io/en/latest/tools/lss.html) class.
 
-Let's simulate a worker  for $T = 100$ periods
+
 
 ```{code-cell} ipython3
 # Define A, C, G, R, xhat_0, Σ_0
@@ -200,10 +209,10 @@ print('h_0 =', h_0)
 print('u_0 =', u_0)
 ```
 
-To compute the firm's policy for setting the log wage given the information it has about the worker,
-we want to use the Kalman filter described in this quantecon lecture   {doc}`A First Look at the Kalman filter <kalman>`.
+Next, to  compute the firm's policy for setting the log wage based on the information it has about the worker,
+we  use the Kalman filter described in this quantecon lecture   {doc}`A First Look at the Kalman filter <kalman>`.
 
-Thus, we want to compute all of the objects in the "innovation representation"
+In particular, we want to compute all of the objects in an "innovation representation":
 
 ```{math}
     \begin{align}
@@ -214,7 +223,7 @@ Thus, we want to compute all of the objects in the "innovation representation"
 where $K_t$ is the Kalman gain matrix at time $t$.
 
 
-We accomplish this by using the [`Kalman`](https://quanteconpy.readthedocs.io/en/latest/tools/kalman.html) class.
+We accomplish this in the following code that  uses the [`Kalman`](https://quanteconpy.readthedocs.io/en/latest/tools/kalman.html) class.
 
 ```{code-cell} ipython3
 kalman = Kalman(ss, xhat_0, Σ_0)
@@ -238,7 +247,7 @@ For a draw of $h_0, u_0$,  we plot $E y_t = G \hat x_t $ where $\hat x_t = E [x_
 
 We also plot $E [u_0 | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
 
-We can watch as the the firm's inference of the worker's work ethic $E [u_0 | y^{t-1}]$ converges toward the hidden  (to the firm) value $u_0$.
+We  watch as the  firm's inference of the worker's work ethic $E [u_0 | y^{t-1}]$ converges toward the hidden  (to the firm) value $u_0$.
 
 ```{code-cell} ipython3
 :tags: []
@@ -276,9 +285,9 @@ print(Σ_t[:, :, 0])
 print(Σ_t[:, :, -1])
 ```
 
-The entries in the covariance matrix become smaller over time in this case.
+Evidently,  entries in the covariance matrix become smaller over time.
 
-We can confirm this by plotting the contour plot over time
+We can portray how  conditional covariance matrices $\Sigma_t$ evolves by plotting confidence ellipsoides around $E [x_t |y^{t-1}] $ at various $t$'s.
 
 ```{code-cell} ipython3
 :tags: []
