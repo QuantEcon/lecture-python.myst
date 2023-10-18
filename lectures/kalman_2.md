@@ -322,6 +322,49 @@ print('u_0 =', u_0)
 print(x)
 ```
 
+```{code-cell} ipython3
+:tags: []
+
+# Code to generate a plot like figure 1
+
+# First we get the Kalman filter with initial xhat_0 and Σ_0 
+kalman = Kalman(ss, xhat_0, Σ_0)
+Σ_t = []
+y_hat_t = np.zeros(T-1)
+u_hat_t = np.zeros(T-1)
+
+# Then we iteratively update the kalman filter class using 
+# observation y based on the linear state model above:
+for t in range(1, T):
+    kalman.update(y[t])
+    x_hat, Σ = kalman.x_hat, kalman.Sigma
+    Σ_t.append(Σ)
+    y_hat_t[t-1] = worker.G @ x_hat
+    u_hat_t[t-1] = x_hat[1]
+
+
+# Generate plots for y_hat_t and u_hat_t
+fig, ax = plt.subplots(1, 2)
+
+ax[0].plot(y_hat_t, label=r'$E[y_t| y^{t-1}]$')
+ax[0].set_xlabel('Time')
+ax[0].set_ylabel(r'$E[y_t]$')
+ax[0].set_title(r'$E[y_t]$ over time')
+ax[0].legend()
+
+ax[1].plot(u_hat_t, label=r'$E[u_t|y^{t-1}]$')
+ax[1].axhline(y=u_0, color='grey', linestyle='dashed', label=fr'$u_0={u_0:.2f}$')
+ax[1].set_xlabel('Time')
+ax[1].set_ylabel(r'$E[u_t|y^{t-1}]$')
+ax[1].set_title('Inferred work ethic over time')
+ax[1].legend()
+
+fig.tight_layout()
+plt.show()
+
+# Code to generate a plot like figure 2 is shown below
+```
+
 * TEACH ME HOW TO GENERATE WORKERS CHARACTERIZED BY DIFFERENT PARAMETER VECTORS, I.E., DIFFERENT VALUES OF $\alpha, \beta$ AND SO ON.  THAT WILL ALLOW US TO DO SOME EXPERIMENTS AND GENERATE GRAPHS THAT TEACH THE READER HOW "LEARNING RATES" AND "PAY PROFILES" DEPEND ON THOSE PARAMETERS AS WELL AS ON THE INITIAL HIDDEN $h_0, w_0$.  
 
 ```{code-cell} ipython3
@@ -348,11 +391,16 @@ This shows that the filter is gradually teaching the worker and firm about the w
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-def simulate_workers(worker, T, ax):
+def simulate_workers(worker, T, ax, mu_0=None, Sigma_0=None, diff=True, name=None, title=None):
     A, C, G, R = worker.A, worker.C, worker.G, worker.R
     xhat_0, Σ_0 = worker.xhat_0, worker.Σ_0
-
-    ss = LinearStateSpace(A, C, G, np.sqrt(R), mu_0=xhat_0, Sigma_0=Σ_0)
+    
+    if isinstance(mu_0, type(None)):
+        mu_0 = xhat_0
+    if isinstance(Sigma_0, type(None)):
+        Sigma_0 = worker.Σ_0
+        
+    ss = LinearStateSpace(A, C, G, np.sqrt(R), mu_0=mu_0, Sigma_0=Sigma_0)
 
     x, y = ss.simulate(T)
     y = y.flatten()
@@ -373,11 +421,27 @@ def simulate_workers(worker, T, ax):
         y_hat_t[i] = worker.G @ x_hat
         u_hat_t[i] = x_hat[1]
 
-    ax.plot(u_hat_t - u_0, alpha=.5)
-    ax.axhline(y=0, color='grey', linestyle='dashed')
-    ax.set_xlabel('Time')
-    ax.set_ylabel(r'$E[u_t|y^{t-1}] - u_0$')
-    ax.set_title('Difference between inferred and true work ethic over time')
+    if diff == True:
+        title = ('Difference between inferred and true work ethic over time' 
+                 if title == None else title)
+        
+        ax.plot(u_hat_t - u_0, alpha=.5)
+        ax.axhline(y=0, color='grey', linestyle='dashed')
+        ax.set_xlabel('Time')
+        ax.set_ylabel(r'$E[u_t|y^{t-1}] - u_0$')
+        ax.set_title(title)
+        
+    else:
+        label_line = (r'$E[u_t|y^{t-1}]$' if name == None 
+                      else name)
+        title = ('Inferred work ethic over time' 
+                if title == None else title)
+        
+        u_hat_plot = ax.plot(u_hat_t, label=label_line)
+        ax.axhline(y=u_0, color=u_hat_plot[0].get_color(), linestyle='dashed', alpha=0.5)
+        ax.set_xlabel('Time')
+        ax.set_ylabel(r'$E[u_t|y^{t-1}]$')
+        ax.set_title(title)
 ```
 
 ```{code-cell} ipython3
@@ -391,5 +455,89 @@ for i in range(num_workers):
     worker = create_worker(uhat_0=4+2*i)
     simulate_workers(worker, T, ax)
 ax.set_ylim(ymin=-2, ymax=2)
+plt.show()
+```
+
+```{code-cell} ipython3
+:tags: []
+
+# We can also generate plots of u_t:
+
+T = 50
+fig, ax = plt.subplots(figsize=(7, 7))
+
+uhat_0s = [2, -2, 1]
+αs = [0.2, 0.3, 0.5]
+βs = [0.1, 0.9, 0.3]
+
+for i, (uhat_0, α, β) in enumerate(zip(uhat_0s, αs, βs)):
+    worker = create_worker(uhat_0=uhat_0, α=α, β=β)
+    simulate_workers(worker, T, ax,
+                    diff=False, name=r'$u_{{{}, t}}$'.format(i)) # By setting diff=False, it will give u_t
+    
+ax.axhline(y=u_0, xmin=0, xmax=0, color='grey', 
+           linestyle='dashed', label=r'$u_{i, 0}$')
+ax.legend(bbox_to_anchor=(1, 0.5))
+plt.show()
+```
+
+```{code-cell} ipython3
+:tags: []
+
+# We can also use exact u_0=1 and h_0=2 for all workers
+
+T = 50
+fig, ax = plt.subplots(figsize=(7, 7))
+
+# These two lines set u_0=1 and h_0=2 for all workers
+mu_0 = np.array([[1],
+                 [2]])
+Sigma_0 = np.zeros((2,2))
+
+uhat_0s = [2, -2, 1]
+αs = [0.2, 0.3, 0.5]
+βs = [0.1, 0.9, 0.3]
+
+for i, (uhat_0, α, β) in enumerate(zip(uhat_0s, αs, βs)):
+    worker = create_worker(uhat_0=uhat_0, α=α, β=β)
+    simulate_workers(worker, T, ax, mu_0=mu_0, Sigma_0=Sigma_0, 
+                     diff=False, name=r'$u_{{{}, t}}$'.format(i))
+    
+# This controls the boundary of plots
+ax.set_ylim(ymin=-3, ymax=3)
+ax.axhline(y=u_0, xmin=0, xmax=0, color='grey', 
+           linestyle='dashed', label=r'$u_{i, 0}$')
+ax.legend(bbox_to_anchor=(1, 0.5))
+plt.show()
+```
+
+```{code-cell} ipython3
+:tags: []
+
+# We can generate a plot for only one of the workers:
+
+T = 50
+fig, ax = plt.subplots(figsize=(7, 7))
+
+mu_0_1 = np.array([[1],
+                 [100]])
+mu_0_2 = np.array([[1],
+                 [30]])
+Sigma_0 = np.zeros((2,2))
+
+uhat_0s = 100
+αs = 0.5
+βs = 0.3
+
+worker = create_worker(uhat_0=uhat_0, α=α, β=β)
+simulate_workers(worker, T, ax, mu_0=mu_0_1, Sigma_0=Sigma_0, 
+                 diff=False, name=r'Hard-working worker')
+simulate_workers(worker, T, ax, mu_0=mu_0_2, Sigma_0=Sigma_0, 
+                 diff=False, 
+                 title='A hard-working worker and a less hard-working worker',
+                 name=r'Normal worker')
+ax.axhline(y=u_0, xmin=0, xmax=0, color='grey', 
+           linestyle='dashed', label=r'$u_{i, 0}$')
+ax.legend(bbox_to_anchor=(1, 0.5))
 plt.show()
 ```
