@@ -291,10 +291,10 @@ u_range = np.linspace(x_hat_t[1, :].min()-0.5*Σ_t[1, 1, 1],
 h, u = np.meshgrid(h_range, u_range)
 
 # Create a figure with subplots for each time step
-fig, axs = plt.subplots(1, 5, figsize=(15, 7))
+fig, axs = plt.subplots(1, 3, figsize=(12, 7))
 
 # Iterate through each time step
-for i, t in enumerate(np.linspace(0, T-2, 5, dtype=int)):
+for i, t in enumerate(np.linspace(0, T-1, 3, dtype=int)):
     # Create a multivariate normal distribution with x_hat and Σ at time step t
     mu = x_hat_t[:, t]
     cov = Σ_t[:, :, t]
@@ -313,7 +313,7 @@ for i, t in enumerate(np.linspace(0, T-2, 5, dtype=int)):
     cov_latex = r'$\Sigma_{{{}}}= \begin{{bmatrix}} {:.2f} & {:.2f} \\ {:.2f} & {:.2f} \end{{bmatrix}}$'.format(
         t+1, cov[0, 0], cov[0, 1], cov[1, 0], cov[1, 1]
     )
-    axs[i].text(0.2, -0.3, cov_latex, transform=axs[i].transAxes)
+    axs[i].text(0.2, -0.15, cov_latex, transform=axs[i].transAxes)
 
     
 plt.tight_layout()
@@ -412,7 +412,7 @@ plt.show()
 # Code to generate a plot like figure 2 is shown below
 ```
 
-* TEACH ME HOW TO GENERATE WORKERS CHARACTERIZED BY DIFFERENT PARAMETER VECTORS, I.E., DIFFERENT VALUES OF $\alpha, \beta$ AND SO ON.  THAT WILL ALLOW US TO DO SOME EXPERIMENTS AND GENERATE GRAPHS THAT TEACH THE READER HOW "LEARNING RATES" AND "PAY PROFILES" DEPEND ON THOSE PARAMETERS AS WELL AS ON THE INITIAL HIDDEN $h_0, w_0$.  
+* TEACH ME HOW TO GENERATE WORKERS CHARACTERIZED BY DIFFERENT PARAMETER VECTORS, I.E., DIFFERENT VALUES OF $\alpha, \beta$ AND SO ON.  THAT WILL ALLOW US TO DO SOME EXPERIMENTS AND GENERATE GRAPHS THAT TEACH THE READER HOW "LEARNING RATES" AND "PAY PROFILES" DEPEND ON THOSE PARAMETERS AS WELL AS ON THE INITIAL HIDDEN $h_0, w_0$.
 
 ```{code-cell} ipython3
 :tags: []
