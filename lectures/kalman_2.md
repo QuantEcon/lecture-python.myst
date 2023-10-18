@@ -53,6 +53,11 @@ plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from quantecon import Kalman, LinearStateSpace
 from collections import namedtuple
+from scipy.stats import multivariate_normal
+import matplotlib as mpl
+
+mpl.rcParams['text.usetex'] = True
+mpl.rcParams['text.latex.preamble'] = r'\usepackage{{amsmath}}'
 ```
 
 ## A worker's output 
@@ -184,7 +189,7 @@ A, C, G, R = worker.A, worker.C, worker.G, worker.R
 xhat_0, Σ_0 = worker.xhat_0, worker.Σ_0
 
 # Create a LinearStateSpace object
-ss = LinearStateSpace(A, C, G, np.sqrt(R), mu_0=xhat_0, Sigma_0=Σ_0)
+ss = LinearStateSpace(A, C, G, np.sqrt(R), mu_0=xhat_0, Sigma_0=np.zeros((2,2)))
 
 T = 100
 x, y = ss.simulate(T)
@@ -213,16 +218,20 @@ We accomplish this by using the [`Kalman`](https://quanteconpy.readthedocs.io/en
 
 ```{code-cell} ipython3
 kalman = Kalman(ss, xhat_0, Σ_0)
-Σ_t = []
+Σ_t = np.zeros((*Σ_0.shape, T-1))
 y_hat_t = np.zeros(T-1)
-u_hat_t = np.zeros(T-1)
+x_hat_t = np.zeros((2, T-1))
 
 for t in range(1, T):
     kalman.update(y[t])
     x_hat, Σ = kalman.x_hat, kalman.Sigma
-    Σ_t.append(Σ)
+    Σ_t[:, :, t-1] = Σ
+    x_hat_t[:, t-1] = x_hat.reshape(-1)
     y_hat_t[t-1] = worker.G @ x_hat
-    u_hat_t[t-1] = x_hat[1]
+
+x_hat_t = np.concatenate((x[:, 1][:, np.newaxis], x_hat_t), axis=1)
+Σ_t = np.concatenate((worker.Σ_0[:, :, np.newaxis], Σ_t), axis=2)
+u_hat_t = x_hat_t[1, :]
 ```
 
 For a draw of $h_0, u_0$,  we plot $E y_t = G \hat x_t $ where $\hat x_t = E [x_t | y^{t-1}]$.
@@ -258,13 +267,57 @@ Now we check the $\Sigma_0$ and $\Sigma_T$
 ```{code-cell} ipython3
 :tags: []
 
-print(Σ_t[0])
+print(Σ_t[:, :, 0])
 ```
 
 ```{code-cell} ipython3
 :tags: []
 
-print(Σ_t[-1])
+print(Σ_t[:, :, -1])
+```
+
+The entries in the covariance matrix become smaller over time in this case.
+
+We can confirm this by plotting the contour plot over time
+
+```{code-cell} ipython3
+:tags: []
+
+# Create a grid of points for contour plotting
+h_range = np.linspace(x_hat_t[0, :].min()-0.5*Σ_t[0, 0, 1], 
+                      x_hat_t[0, :].max()+0.5*Σ_t[0, 0, 1], 100)
+u_range = np.linspace(x_hat_t[1, :].min()-0.5*Σ_t[1, 1, 1], 
+                      x_hat_t[1, :].max()+0.5*Σ_t[1, 1, 1], 100)
+h, u = np.meshgrid(h_range, u_range)
+
+# Create a figure with subplots for each time step
+fig, axs = plt.subplots(1, 5, figsize=(15, 7))
+
+# Iterate through each time step
+for i, t in enumerate(np.linspace(0, T-2, 5, dtype=int)):
+    # Create a multivariate normal distribution with x_hat and Σ at time step t
+    mu = x_hat_t[:, t]
+    cov = Σ_t[:, :, t]
+    mvn = multivariate_normal(mean=mu, cov=cov)
+    
+    # Evaluate the multivariate normal PDF on the grid
+    pdf_values = mvn.pdf(np.dstack((h, u)))
+    
+    # Create a contour plot for the PDF
+    con = axs[i].contour(h, u, pdf_values, cmap='viridis')
+    axs[i].clabel(con, inline=1, fontsize=10)
+    axs[i].set_title(f'Time Step {t+1}')
+    axs[i].set_xlabel(r'$h_{{{}}}$'.format(str(t+1)))
+    axs[i].set_ylabel(r'$u_{{{}}}$'.format(str(t+1)))
+    
+    cov_latex = r'$\Sigma_{{{}}}= \begin{{bmatrix}} {:.2f} & {:.2f} \\ {:.2f} & {:.2f} \end{{bmatrix}}$'.format(
+        t+1, cov[0, 0], cov[0, 1], cov[1, 0], cov[1, 1]
+    )
+    axs[i].text(0.2, -0.3, cov_latex, transform=axs[i].transAxes)
+
+    
+plt.tight_layout()
+plt.show()
 ```
 
 NEW REQUEST FOR HUMPHREY AND SMIT:
@@ -292,9 +345,6 @@ y = y.flatten()
 h_0, u_0 = x[0, 0], x[1, 0]
 print('h_0 =', h_0)
 print('u_0 =', u_0)
-
-# This shows h_t and u_t over time.
-print(x)
 ```
 
 ```{code-cell} ipython3
@@ -317,9 +367,6 @@ y = y.flatten()
 h_0, u_0 = x[0, 0], x[1, 0]
 print('h_0 =', h_0)
 print('u_0 =', u_0)
-
-# This shows h_t and u_t over time.
-print(x)
 ```
 
 ```{code-cell} ipython3
@@ -375,10 +422,6 @@ hard_working_worker =  create_worker(α=.4, β=.8, hhat_0=7.0, uhat_0=100, σ_h=
 
 print(hard_working_worker)
 ```
-
-* MAKE A GRAPH THAT SHOWS THE EVOLUTION OF THE CONDITIONAL VARIANCES OF THE FIRM'S ESTIMATES OF $u_t$ and $h_t$.  THESE CAN BE EXTRACTED FROM THE FORMULA $ G \Sigma_t G^\top$ OR SOMETHING LIKE THAT. I CAN GIVE YOU CORRECTED VERSION OF THAT FORMULA ONCE YOU GET STARTED.
-
-+++
 
 THANKS SO MUCH!
 
