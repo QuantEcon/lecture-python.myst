@@ -33,10 +33,10 @@ In  this quantecon lecture   {doc}`A First Look at the Kalman filter <kalman>`, 
 a Kalman filter to estimate  locations of a rocket. 
 
 In this lecture,  we'll use the Kalman filter to 
-infer a worker's  human capital and the  effort that the worker devotes  to  accumulatng 
+infer a worker's  human capital and the  effort that the worker devotes  to  accumulating 
 human capital, neither of which the firm observes directly.
 
-The firm  learns about those things only be observing a history of the output that the worker generates for the firm, and from understanding how that output depends on the worker's human capital and how human capital evolves as a function of the worker's effort. 
+The firm  learns about those things only by observing a history of the output that the worker generates for the firm, and from understanding how that output depends on the worker's human capital and how human capital evolves as a function of the worker's effort. 
 
 We'll posit a rule that expresses how the much  firm pays the worker each period  as a function of the firm's information each period.
 
@@ -83,7 +83,7 @@ y_t & = g h_t + v_t , \quad v_t \sim {\mathcal N} (0, R)
 
 Here 
 
-* $h_t$ is the logarithm of human capital at time time $t$
+* $h_t$ is the logarithm of human capital at time $t$
 * $u_t$ is the logarithm of the worker's effort at accumulating human capital at $t$ 
 * $y_t$ is the logarithm of the worker's output at time $t$
 * $h_0 \sim {\mathcal N}(\hat h_0, \sigma_{h,0})$
@@ -95,12 +95,12 @@ At time $0$, a firm has hired the worker.
 
 The worker is permanently attached to the firm and so works for the same  firm at all  dates $t =0, 1, 2, \ldots$.
 
-At the beginning of time $0$, the firm observes neither the worker's innate initial human capitl $h_0$ nor its hard-wired permanent effort level $u_0$.
+At the beginning of time $0$, the firm observes neither the worker's innate initial human capital $h_0$ nor its hard-wired permanent effort level $u_0$.
 
 The firm believes that $u_0$ for a particular worker is drawn from a Gaussian probability distribution, and so is  described by $u_0 \sim {\mathcal N}(\hat u_0, \sigma_{u,0})$.
 
 
-The $h_t$ part of a worker's "type" moves over time, but the effort compoent  of the worker's  type is  $u_t = u_0$.
+The $h_t$ part of a worker's "type" moves over time, but the effort component of the worker's  type is  $u_t = u_0$.
 
 This means that  from the firm's point of view, the worker's effort is  effectively an unknown  fixed  "parameter".
 
@@ -222,7 +222,7 @@ In particular, we want to compute all of the objects in an "innovation represent
 
 ## An Innovations Representation
 
-We have all the objects in hand required to form an innovations represenation for the output
+We have all the objects in hand required to form an innovations representation for the output
 process $\{y_t\}_{t=0}^T$ for a worker.
 
 Let's code that up now.
@@ -407,7 +407,7 @@ kalman = Kalman(ss, xhat_0, Σ_0)
 y_hat_t = np.zeros(T-1)
 u_hat_t = np.zeros(T-1)
 
-# Then we iteratively update the kalman filter class using 
+# Then we iteratively update the Kalman filter class using 
 # observation y based on the linear state model above:
 for t in range(1, T):
     kalman.update(y[t])
